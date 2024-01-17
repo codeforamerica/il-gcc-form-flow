@@ -17,8 +17,8 @@ form-flow:
       sender-email: 'Testing <test@mail.forms-starter.cfa-platforms.org>'
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/starter-app-test
-    username: starter-app-test
+    url: jdbc:postgresql://localhost:5432/il-gcc-test
+    username: il-gcc-test
     password: postgres
     hikari:
       maximum-pool-size: 2
