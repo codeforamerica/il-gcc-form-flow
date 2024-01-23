@@ -59,8 +59,8 @@ spring:
       dev:
         - dev
         - form-flow-library
-      demo:
-        - demo
+      staging:
+        - staging
         - form-flow-library
   thymeleaf:
     template-resolver-order: 0
