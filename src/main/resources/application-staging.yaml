@@ -2,7 +2,7 @@ spring:
   thymeleaf:
     cache: true
   datasource:
-    url: jdbc:postgresql://host.docker.internal:5432/il-gcc
+    url: jdbc:postgresql://host.docker.internal:5432/illinois-staging
 form-flow:
   aws:
     s3_bucket_name: 'get-child-care-illinois-staging'
