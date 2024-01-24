@@ -4,38 +4,37 @@
 <body class="template--static-page">
 <div class="page-wrapper">
   <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
-  <main id="content" role="main" class="slab slab--white spacing-below-0">
+  <main id="content" role="main" class="slab slab--light-blue padding-top-0 spacing-below-0">
     <section class="slab">
+      <div class="notice--warning spacing-below-35">
+        <p th:utext="'👋🏼 ' + #{index.notice-html}"></p>
+      </div>
       <div class="grid">
         <div class="width-one-half">
-          <th:block th:replace="~{fragments/icons :: cursiveUbi}"></th:block>
-          <th:block th:if="${!ubiEnabled}">
-            <div class="notice--warning" role="region" aria-labelledby="{{ }}" th:utext="#{index.disabled-flow-text}"></div>
-          </th:block>
           <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>
           <p th:text="#{index.apply-for-benefits-in-10}"></p>
-          <th:block th:if="${docUploadEnabled}">
-            <a th:text="#{index.already-applied}" href="#docUpload"></a>
-          </th:block>
           <th:block th:if="${ubiEnabled}">
             <div class="spacing-above-35">
+              <!--TODO: change flow name and next screen name-->
               <a
                 th:href="|/flow/ubi/howThisWorks?lang=${#locale.getLanguage()}|"
-                th:text="#{index.apply-now}"
+                th:text="#{index.apply-now} + ' →'"
                 class="button--primary button"></a>
             </div>
             <div class="spacing-below-35">
+              <!--TODO: change flow name and next screen name-->
               <a
                 th:with="otherLang=${#locale.getLanguage().equals('es') ? 'en' : 'es'}"
                 th:href="|/flow/ubi/howThisWorks?lang=${otherLang}|"
-                th:text="#{index.aplica-ahora}"
+                th:text="#{index.apply-now-other-language} + ' →'"
                 th:lang="${otherLang}"
                 class="button--small button"></a>
             </div>
           </th:block>
         </div>
         <div class="width-one-half">
-          <img src="/assets/images/ubi-landing-splash.png" alt="" class="nudge--large">
+          <!--TODO: make this image look better responsively-->
+          <img src="/assets/images/mother-reading-to-child.svg" alt="" class="nudge--large">
         </div>
       </div>
     </section>

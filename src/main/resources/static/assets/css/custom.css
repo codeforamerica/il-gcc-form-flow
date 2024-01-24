@@ -1,4 +1,32 @@
-/* This file is provided for addition of custom CSS styles */
+:root {
+  --primary-blue: #0c3189;
+  --button-blue: #00088E;
+  --light-blue: rgba(118, 155, 243, 0.35);
+  --white: #ffffff;
+}
+
+.toolbar__wrapper {
+  background-color: var(--primary-blue);
+}
+
+.footer-blue {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+.slab--light-blue {
+  background-color: var(--light-blue);
+}
+
+.padding-top-0 {
+  padding-top: 0;
+}
+
+.button--primary {
+  background-color: var(--primary-blue);
+}
+
+/* Inherited from Starter App */
 
 .reveal a {
   display: flex;
