@@ -30,7 +30,7 @@ public class DesignSystemCfaUswdsJourneyTest extends AbstractBasePageTest {
 
   @Test
   void staticPagesJourney() {
-    assertThat(testPage.getTitle()).isEqualTo("Apply for UBI payments easily online.");
+    assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
 
     var cfaUswdsLinkName = "styles.css";
     WebElement cfaUswdsLink = driver.findElement(By.cssSelector("link[href*='" + cfaUswdsLinkName + "']"));

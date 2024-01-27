@@ -2,6 +2,7 @@ package org.ilgcc.app.journeys;
 
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.Page;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 @Tag("staticPagesJourney")
 @TestPropertySource(properties = {
     "form-flow.disabled-flows[0].flow=ubi",

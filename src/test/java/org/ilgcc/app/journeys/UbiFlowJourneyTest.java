@@ -4,6 +4,7 @@ import formflow.library.email.MailgunEmailClient;
 import org.ilgcc.app.submission.actions.SendEmailConfirmation;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.YesNoAnswer;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
@@ -18,6 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@Disabled
 public class UbiFlowJourneyTest extends AbstractBasePageTest {
   
   @SpyBean

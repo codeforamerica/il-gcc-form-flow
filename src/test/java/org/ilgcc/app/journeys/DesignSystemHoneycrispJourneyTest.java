@@ -29,7 +29,7 @@ public class DesignSystemHoneycrispJourneyTest extends AbstractBasePageTest {
 
   @Test
   void staticPagesJourney() {
-    assertThat(testPage.getTitle()).isEqualTo("Apply for UBI payments easily online.");
+    assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
 
     WebElement customLink = driver.findElement(By.cssSelector("link[href*='custom.css']"));
     assertThat(customLink).isNotNull();

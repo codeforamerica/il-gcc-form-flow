@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{onboarding-getting-started.title})}"></head>
 <body>
-<h1>onboarding-getting-started 🐸</h1>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-getting-started.header})}"/>
+        <div class="form-card__content">
+         ~~ content ~~
+        </div>
+        <div class="form-card__footer">
+          <th:block th:replace="~{fragments/continueButton :: continue}"/>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
 </html>

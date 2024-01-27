@@ -25,12 +25,12 @@ public class StaticPagesJourneyTest extends AbstractBasePageTest {
   void staticPagesJourney() {
     assertThat(environment.getProperty("form-flow.disabled-flows")).isEqualTo(null);
     // Landing screen
-    assertThat(testPage.getTitle()).isEqualTo("Apply for UBI payments easily online.");
+    assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
     assertThat(driver.getWindowHandles().size()).isEqualTo(1);
     String originalWindow = driver.getWindowHandle();
 
     // Go to FAQ tab
-    testPage.clickLink("FAQ");
+    testPage.clickLink("Frequently Asked Questions (FAQ)");
     assertThat(driver.getWindowHandles().size()).isEqualTo(2);
     switchAwayFromOriginalWindow(originalWindow);
     await().until(() -> driver.findElement(By.tagName("h1")).getText().contentEquals("Frequently Asked Questions"));
@@ -38,7 +38,7 @@ public class StaticPagesJourneyTest extends AbstractBasePageTest {
     // Back on landing screen
     driver.close();
     driver.switchTo().window(originalWindow);
-    assertThat(testPage.getTitle()).isEqualTo("Apply for UBI payments easily online.");
+    assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
     assertThat(driver.getWindowHandles().size()).isEqualTo(1);
     // Go to privacy policy tab
     testPage.clickLink("Privacy Policy");
