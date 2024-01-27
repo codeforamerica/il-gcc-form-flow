@@ -1,33 +1,71 @@
 :root {
-  --primary-blue: #0c3189;
-  --button-blue: #00088E;
-  --light-blue: rgba(118, 155, 243, 0.35);
+  --idhs-dark-blue: #05236a;
+  --idhs-base-blue: #0c3189;
+  --idhs-dark-purple: #1d3fa8;
+  --idhs-base-purple: #3262d4;
+  --idhs-light-purple: #769bf3;
+  --idhs-dark-green: #005e59;
+  --idhs-base-green: #048e85;
+  --idhs-light-green: #42c9b0;
+  --idhs-highlight-green: #dafff8;
+  --idhs-base-yellow: #e6a001;
+  --idhs-highlight-yellow: #ffe8ce;
+  --idhs-base-red: #e21121;
+  --idhs-light-red: #ee8d8f;
+  --idhs-highlight-red: #ffd7d7;
+  --light-grey: #f7f5f4;
+  --gray-darkest: #121111;
+  --black: #000000;
   --white: #ffffff;
 }
 
 .toolbar__wrapper {
-  background-color: var(--primary-blue);
+  background-color: var(--idhs-base-blue);
+}
+
+.notice--warning {
+  background-color: var(--idhs-highlight-yellow);
+  color: var(--gray-darkest);
+  border-color: var(--idhs-base-yellow);
+}
+
+.notice--warning a {
+  color: #0C3189;
 }
 
 .footer-blue {
-  background-color: var(--primary-blue);
+  background-color: var(--idhs-base-blue);
   color: var(--white);
 }
 
-.slab--light-blue {
-  background-color: var(--light-blue);
+.slab--light-purple {
+  /* idhs-light-purple + opacity */
+  background-color: rgba(118, 155, 243, 0.35);
 }
 
+/* Links and buttons */
+a, .button--link {
+  color: var(--idhs-base-blue);
+}
+
+.slab a:not(.button):not(.reveal__link):not(.text--red),
+.slab a:not(.button):not(.reveal__link):not(.text--red):focus,
+.button--link, .button--link:focus
+{
+  color: var(--idhs-base-blue);
+}
+
+.button--primary {
+  background-color: var(--idhs-base-blue);
+}
+
+/* Utilities */
 .padding-top-0 {
   padding-top: 0;
 }
 
-.button--primary {
-  background-color: var(--primary-blue);
-}
-
 /* Inherited from Starter App */
-
+/* ========================== */
 .reveal a {
   display: flex;
 }

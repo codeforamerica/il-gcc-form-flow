@@ -1,3 +1,10 @@
+name: gcc
+flow:
+  onboarding-getting-started:
+    nextScreens: null
+landmarks:
+  firstScreen: onboarding-getting-started
+---
 name: ubi
 flow:
   howThisWorks:

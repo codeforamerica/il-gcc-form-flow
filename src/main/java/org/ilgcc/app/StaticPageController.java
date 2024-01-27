@@ -31,10 +31,6 @@ public class StaticPageController {
     httpSession.invalidate(); // For dev, reset session if you visit home
 
     HashMap<String, Object> model = new HashMap<>();
-    model.put("ubiEnabled", formFlowConfigurationProperties == null || 
-        !formFlowConfigurationProperties.isFlowDisabled("ubi"));
-    model.put("docUploadEnabled", formFlowConfigurationProperties == null || 
-        !formFlowConfigurationProperties.isFlowDisabled("docUpload"));
     return new ModelAndView("index", model);
   }
 

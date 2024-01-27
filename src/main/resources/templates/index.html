@@ -4,7 +4,7 @@
 <body class="template--static-page">
 <div class="page-wrapper">
   <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
-  <main id="content" role="main" class="slab slab--light-blue padding-top-0 spacing-below-0">
+  <main id="content" role="main" class="slab slab--light-purple padding-top-0 spacing-below-0">
     <section class="slab">
       <div class="notice--warning spacing-below-35">
         <p th:utext="'👋🏼 ' + #{index.notice-html}"></p>
@@ -13,24 +13,20 @@
         <div class="width-one-half">
           <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>
           <p th:text="#{index.apply-for-benefits-in-10}"></p>
-          <th:block th:if="${ubiEnabled}">
-            <div class="spacing-above-35">
-              <!--TODO: change flow name and next screen name-->
-              <a
-                th:href="|/flow/ubi/howThisWorks?lang=${#locale.getLanguage()}|"
-                th:text="#{index.apply-now} + ' →'"
-                class="button--primary button"></a>
-            </div>
-            <div class="spacing-below-35">
-              <!--TODO: change flow name and next screen name-->
-              <a
-                th:with="otherLang=${#locale.getLanguage().equals('es') ? 'en' : 'es'}"
-                th:href="|/flow/ubi/howThisWorks?lang=${otherLang}|"
-                th:text="#{index.apply-now-other-language} + ' →'"
-                th:lang="${otherLang}"
-                class="button--small button"></a>
-            </div>
-          </th:block>
+          <div class="spacing-above-35">
+            <a
+              th:href="|/flow/gcc/onboarding-getting-started?lang=${#locale.getLanguage()}|"
+              th:text="#{index.apply-now} + ' →'"
+              class="button--primary button"></a>
+          </div>
+          <div class="spacing-below-35">
+            <a
+              th:with="otherLang=${#locale.getLanguage().equals('es') ? 'en' : 'es'}"
+              th:href="|/flow/gcc/onboarding-getting-started?lang=${otherLang}|"
+              th:text="#{index.apply-now-other-language} + ' →'"
+              th:lang="${otherLang}"
+              class="button--small button"></a>
+          </div>
         </div>
         <div class="width-one-half">
           <!--TODO: make this image look better responsively-->
@@ -38,22 +34,24 @@
         </div>
       </div>
     </section>
-    <section class="slab slab--off-white">
+    <section class="slab slab--white">
+      <!-- TODO: make sure the images are vertically aligned with each other, might need flex -->
       <div class="grid">
-        <h2 th:text="#{index.apply-for-cash-assistance}"></h2>
-        <h3 th:text="#{index.universal-basic-income}"></h3>
-        <p th:text="#{index.ubi-provides-750}"></p>
+        <div class="grid__item width-one-half">
+          <!-- TODO: figure out a good size -->
+          <img src="/assets/images/seal-of-illinois.png" alt="" class="">
+        </div>
+        <div class="grid__item width-one-half">
+          <img src="/assets/images/IDHS-logo.png" alt="" class="">
+        </div>
+      </div>
+      <div class="grid">
+        <h2 th:text="#{index.child-care.title}"></h2>
+        <p th:text="#{index.child-care.paragraph}"></p>
+        <!--TODO: add external symbol-->
+        <a th:text="#{index.child-care.link}" target="_blank" rel="noopener noreferrer" href="https://www.inccrra.org/about/sdasearch"></a>
       </div>
     </section>
-    <th:block th:if="${docUploadEnabled}">
-      <section class="slab" id="docUpload">
-        <div class="grid text--centered spacing-below-35">
-          <th:block th:replace="~{fragments/icons :: uploadDocuments}"/>
-          <h2 th:text="#{index.already-applied-additional}"></h2>
-            <a href="/flow/docUpload/documentRecommendations" th:text="#{index.upload-documents}" class="button"></a>
-        </div>
-      </section>
-    </th:block>
   </main>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
