@@ -24,7 +24,7 @@ html, body {
 }
 
 .page-wrapper {
-  padding-bottom: 156px;
+  padding-bottom: 17.8rem;
 }
 
 .toolbar__wrapper {
@@ -44,6 +44,11 @@ html, body {
 .footer-blue {
   background-color: var(--idhs-base-blue);
   color: var(--white);
+}
+
+main.slab {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .slab--light-purple {
@@ -74,6 +79,12 @@ a, .button--link {
 
 .color--idhs-base-blue {
   color: var(--idhs-base-blue);
+}
+
+.img-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Index */
@@ -112,6 +123,16 @@ a, .button--link {
 
 .index-table tbody tr:nth-child(odd) {
   background-color: var(--white);
+}
+
+.index-icon-list {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.index-icon-list p {
+  margin-bottom: 0;
 }
 
 /* Inherited from Starter App */

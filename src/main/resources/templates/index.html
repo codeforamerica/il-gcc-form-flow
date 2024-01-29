@@ -6,11 +6,11 @@
   <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
   <main id="content" role="main" class="slab slab--white padding-top-0 spacing-below-0">
     <section class="slab slab--light-purple">
-      <!-- TODO: add a max width size and center? -->
-      <div class="notice--warning spacing-below-35">
-        <p th:utext="'👋🏼 ' + #{index.notice-html}"></p>
-      </div>
       <div class="grid">
+        <!-- TODO: add a max width size and center? -->
+        <div class="notice--warning spacing-below-35">
+          <p th:utext="'👋🏼 ' + #{index.notice-html}"></p>
+        </div>
         <div class="width-one-half">
           <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>
           <p th:text="#{index.apply-for-benefits-in-10}"></p>
@@ -36,11 +36,11 @@
       </div>
     </section>
     <section class="slab slab--white">
-      <div class="index-child-care-image-container">
-          <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 110px; height: 110px;">
-          <img src="/assets/images/IDHS-logo.png" alt="" class="">
-      </div>
-      <div class="">
+      <div class="grid">
+        <div class="index-child-care-image-container">
+            <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 110px; height: 110px;">
+            <img src="/assets/images/IDHS-logo.png" alt="">
+        </div>
         <h2 th:text="#{index.child-care.title}"></h2>
         <p th:text="#{index.child-care.paragraph}"></p>
         <a
@@ -52,22 +52,44 @@
       </div>
     </section>
     <section class="slab slab--light-purple">
-      <h2 th:text="#{index.eligibility.title}"></h2>
-      <table class="index-table">
-        <thead>
+      <div class="grid">
+        <h2 th:text="#{index.eligibility.title}"></h2>
+        <table class="index-table">
+          <thead>
           <tr>
             <th scope="col" th:text="#{index.eligibility.table.column.header-1}"></th>
             <th scope="col" th:text="#{index.eligibility.table.column.header-2}"></th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           <tr scope="row" th:each="i : ${#numbers.sequence(1, 5)}">
             <td th:text="#{'index.eligibility.table.row-' + ${i} + '.family'}"></td>
             <td th:text="#{'index.eligibility.table.row-' + ${i} + '.income'}"></td>
           </tr>
-        </tbody>
-      </table>
-      <p th:text="#{index.eligibility.paragraph}"></p>
+          </tbody>
+        </table>
+        <p th:text="#{index.eligibility.paragraph}"></p>
+      </div>
+    </section>
+    <section class="slab slab--white">
+      <div class="grid">
+        <h2 th:text="#{index.gather-docs.title}"></h2>
+        <p th:text="#{index.gather-docs.first-paragraph}"></p>
+        <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
+        <p th:text="#{index.gather-docs.second-paragraph}"></p>
+        <div class="index-icon-list spacing-below-15">
+          <th:block th:replace="~{fragments/gcc-icons :: blobWithPayStub}"></th:block>
+          <p th:text="#{index.gather-docs.icon-list.1}"></p>
+        </div>
+        <div class="index-icon-list spacing-below-15">
+          <th:block th:replace="~{fragments/gcc-icons :: blobWithW2}"></th:block>
+          <p th:text="#{index.gather-docs.icon-list.2}"></p>
+        </div>
+        <div class="index-icon-list">
+          <th:block th:replace="~{fragments/gcc-icons :: blobWithSchedule}"></th:block>
+          <p th:text="#{index.gather-docs.icon-list.3}"></p>
+        </div>
+      </div>
     </section>
   </main>
 </div>
