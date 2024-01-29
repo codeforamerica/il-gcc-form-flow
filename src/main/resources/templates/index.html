@@ -4,8 +4,9 @@
 <body class="template--static-page">
 <div class="page-wrapper">
   <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
-  <main id="content" role="main" class="slab slab--light-purple padding-top-0 spacing-below-0">
-    <section class="slab">
+  <main id="content" role="main" class="slab slab--white padding-top-0 spacing-below-0">
+    <section class="slab slab--light-purple">
+      <!-- TODO: add a max width size and center? -->
       <div class="notice--warning spacing-below-35">
         <p th:utext="'👋🏼 ' + #{index.notice-html}"></p>
       </div>
@@ -35,22 +36,38 @@
       </div>
     </section>
     <section class="slab slab--white">
-      <!-- TODO: make sure the images are vertically aligned with each other, might need flex -->
-      <div class="grid">
-        <div class="grid__item width-one-half">
-          <!-- TODO: figure out a good size -->
-          <img src="/assets/images/seal-of-illinois.png" alt="" class="">
-        </div>
-        <div class="grid__item width-one-half">
+      <div class="index-child-care-image-container">
+          <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 110px; height: 110px;">
           <img src="/assets/images/IDHS-logo.png" alt="" class="">
-        </div>
       </div>
-      <div class="grid">
+      <div class="">
         <h2 th:text="#{index.child-care.title}"></h2>
         <p th:text="#{index.child-care.paragraph}"></p>
-        <!--TODO: add external symbol-->
-        <a th:text="#{index.child-care.link}" target="_blank" rel="noopener noreferrer" href="https://www.inccrra.org/about/sdasearch"></a>
+        <a
+            target="_blank" rel="noopener noreferrer"
+            href="https://www.inccrra.org/about/sdasearch">
+          <span th:text="#{index.child-care.link}"></span>
+          <i class="icon-">open_in_new</i>
+        </a>
       </div>
+    </section>
+    <section class="slab slab--light-purple">
+      <h2 th:text="#{index.eligibility.title}"></h2>
+      <table class="index-table">
+        <thead>
+          <tr>
+            <th scope="col" th:text="#{index.eligibility.table.column.header-1}"></th>
+            <th scope="col" th:text="#{index.eligibility.table.column.header-2}"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr scope="row" th:each="i : ${#numbers.sequence(1, 5)}">
+            <td th:text="#{'index.eligibility.table.row-' + ${i} + '.family'}"></td>
+            <td th:text="#{'index.eligibility.table.row-' + ${i} + '.income'}"></td>
+          </tr>
+        </tbody>
+      </table>
+      <p th:text="#{index.eligibility.paragraph}"></p>
     </section>
   </main>
 </div>

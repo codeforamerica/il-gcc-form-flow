@@ -19,6 +19,14 @@
   --white: #ffffff;
 }
 
+html, body {
+  background: var(--white);
+}
+
+.page-wrapper {
+  padding-bottom: 156px;
+}
+
 .toolbar__wrapper {
   background-color: var(--idhs-base-blue);
 }
@@ -30,7 +38,7 @@
 }
 
 .notice--warning a {
-  color: #0C3189;
+  color: var(--idhs-base-blue);
 }
 
 .footer-blue {
@@ -62,6 +70,48 @@ a, .button--link {
 /* Utilities */
 .padding-top-0 {
   padding-top: 0;
+}
+
+.color--idhs-base-blue {
+  color: var(--idhs-base-blue);
+}
+
+/* Index */
+.index-child-care-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.index-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.index-table th {
+  font-weight: normal;
+  font-size: 1.6rem;
+  color: var(--idhs-dark-blue);
+  padding-bottom: 1rem;
+}
+
+.index-table th:first-child,
+.index-table td:first-child {
+  text-align: left;
+}
+
+.index-table th:last-child,
+.index-table td:last-child {
+  text-align: right;
+}
+
+.index-table td {
+  padding: 1rem;
+}
+
+.index-table tbody tr:nth-child(odd) {
+  background-color: var(--white);
 }
 
 /* Inherited from Starter App */
