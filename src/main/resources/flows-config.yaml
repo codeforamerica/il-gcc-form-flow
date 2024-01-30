@@ -4,6 +4,9 @@ flow:
     nextScreens:
       - name: pilot-offboard
   pilot-offboard:
+    nextScreens:
+      - name: activitiesAddEdProgram
+  activitiesAddEdProgram:
     nextScreens: null
 landmarks:
   firstScreen: onboarding-getting-started
