@@ -1,6 +1,9 @@
 name: gcc
 flow:
   onboarding-getting-started:
+    nextScreens:
+      - name: pilot-offboard
+  pilot-offboard:
     nextScreens: null
 landmarks:
   firstScreen: onboarding-getting-started
