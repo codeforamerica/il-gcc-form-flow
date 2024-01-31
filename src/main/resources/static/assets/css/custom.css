@@ -24,8 +24,48 @@ html, body {
   color: var(--gray-darkest);
 }
 
+.demo-banner {
+  background-color: var(--idhs-base-red);
+}
+
 .page-wrapper {
   padding-bottom: 17.8rem;
+}
+
+.slab--hero {
+  position: relative;
+  background-image: url('/assets/images/mother-reading-to-child.svg');
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: 25rem;
+}
+
+@media only screen and (min-width: 600px) and (max-width: 799px) {
+  .slab--hero {
+    background-position: bottom right;
+    background-size: 50rem;
+  }
+}
+
+@media only screen and (min-width: 800px) and (max-width: 899px) {
+  .slab--hero {
+    background-position: bottom right;
+    background-size: 65rem;
+  }
+}
+
+@media only screen and (min-width: 900px) and (max-width: 1180px) {
+  .slab--hero {
+    background-position: bottom right;
+    background-size: 65rem;
+  }
+}
+
+@media only screen and (min-width: 1181px) {
+  .slab--hero {
+    background-position: bottom right;
+    background-size: 65rem;
+  }
 }
 
 .toolbar__wrapper {
