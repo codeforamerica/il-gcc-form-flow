@@ -53,18 +53,18 @@
     </section>
     <section class="slab slab--light-purple">
       <div class="grid">
-        <h2 th:text="#{index.eligibility.title}"></h2>
-        <table class="index-table">
+        <h2 th:text="#{general.eligibility-table.title}"></h2>
+        <table class="eligibility-table">
           <thead>
           <tr>
-            <th scope="col" th:text="#{index.eligibility.table.column.header-1}"></th>
-            <th scope="col" th:text="#{index.eligibility.table.column.header-2}"></th>
+            <th scope="col" th:text="#{general.eligibility-table.column.header-1}"></th>
+            <th scope="col" th:text="#{general.eligibility-table.column.header-2}"></th>
           </tr>
           </thead>
           <tbody>
           <tr scope="row" th:each="i : ${#numbers.sequence(1, 5)}">
-            <td th:text="#{'index.eligibility.table.row-' + ${i} + '.family'}"></td>
-            <td th:text="#{'index.eligibility.table.row-' + ${i} + '.income'}"></td>
+            <td th:text="#{'general.eligibility-table.row-' + ${i} + '.family'}"></td>
+            <td th:text="#{'general.eligibility-table.row-' + ${i} + '.income'}"></td>
           </tr>
           </tbody>
         </table>

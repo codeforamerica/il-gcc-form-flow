@@ -21,6 +21,7 @@
 
 html, body {
   background: var(--white);
+  color: var(--gray-darkest);
 }
 
 .page-wrapper {
@@ -87,6 +88,11 @@ a, .button--link {
   margin-right: auto;
 }
 
+/* Same as .slab--grey, named to be used more generically */
+.background-grey {
+  background-color: #F7F5F4;
+}
+
 /* Index */
 .index-child-care-image-container {
   display: flex;
@@ -95,33 +101,38 @@ a, .button--link {
   gap: 30px;
 }
 
-.index-table {
+.eligibility-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.index-table th {
+.eligibility-table th {
   font-weight: normal;
   font-size: 1.6rem;
   color: var(--idhs-dark-blue);
   padding-bottom: 1rem;
 }
 
-.index-table th:first-child,
-.index-table td:first-child {
+.eligibility-table th.bold {
+  font-weight: bold;
+  color: var(--black);
+}
+
+.eligibility-table th:first-child,
+.eligibility-table td:first-child {
   text-align: left;
 }
 
-.index-table th:last-child,
-.index-table td:last-child {
+.eligibility-table th:last-child,
+.eligibility-table td:last-child {
   text-align: right;
 }
 
-.index-table td {
+.eligibility-table td {
   padding: 1rem;
 }
 
-.index-table tbody tr:nth-child(odd) {
+.eligibility-table tbody tr:nth-child(odd) {
   background-color: var(--white);
 }
 
