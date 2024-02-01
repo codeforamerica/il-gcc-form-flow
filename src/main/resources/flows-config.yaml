@@ -2,12 +2,13 @@ name: gcc
 flow:
   onboarding-getting-started:
     nextScreens:
+      - name: activities-add-ed-program
+  activities-add-ed-program:
+    nextScreens:
       - name: pilot-offboard
   pilot-offboard:
     nextScreens:
-      - name: activities-add-ed-program
-  activities-add-ed-program:
-    nextScreens: null
+      - name: null
 landmarks:
   firstScreen: onboarding-getting-started
 ---
