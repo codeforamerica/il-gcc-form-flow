@@ -2,9 +2,6 @@ name: gcc
 flow:
   onboarding-getting-started:
     nextScreens:
-      - name: pilot-offboard
-  pilot-offboard:
-    nextScreens:
       - name: activities-add-ed-program
   activities-add-ed-program:
     nextScreens:
