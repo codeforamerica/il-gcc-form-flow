@@ -7,6 +7,9 @@ flow:
     nextScreens:
       - name: activities-add-ed-program
   activities-add-ed-program:
+    nextScreens:
+      - name: activities-ed-program-name
+  activities-ed-program-name:
     nextScreens: null
 landmarks:
   firstScreen: onboarding-getting-started
