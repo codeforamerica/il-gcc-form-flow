@@ -5,15 +5,14 @@
 <div class="page-wrapper">
   <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
   <main id="content" role="main" class="slab slab--white padding-top-0 spacing-below-0">
-    <section class="slab slab--light-purple">
+    <section class="slab slab--light-purple slab--hero">
       <div class="grid">
-        <!-- TODO: add a max width size and center? -->
         <div class="notice--warning spacing-below-35">
           <p th:utext="'👋🏼 ' + #{index.notice-html}"></p>
         </div>
         <div class="width-one-half">
           <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>
-          <p th:text="#{index.apply-for-benefits-in-10}"></p>
+          <p th:text="#{index.apply-for-benefits}"></p>
           <div class="spacing-above-35">
             <a
               th:href="|/flow/gcc/onboarding-getting-started?lang=${#locale.getLanguage()}|"
@@ -28,10 +27,6 @@
               th:lang="${otherLang}"
               class="button--small button"></a>
           </div>
-        </div>
-        <div class="width-one-half">
-          <!--TODO: make this image look better responsively-->
-          <img src="/assets/images/mother-reading-to-child.svg" alt="" class="nudge--large">
         </div>
       </div>
     </section>
@@ -53,18 +48,18 @@
     </section>
     <section class="slab slab--light-purple">
       <div class="grid">
-        <h2 th:text="#{index.eligibility.title}"></h2>
-        <table class="index-table">
+        <h2 th:text="#{general.eligibility-table.title}"></h2>
+        <table class="eligibility-table">
           <thead>
           <tr>
-            <th scope="col" th:text="#{index.eligibility.table.column.header-1}"></th>
-            <th scope="col" th:text="#{index.eligibility.table.column.header-2}"></th>
+            <th scope="col" th:text="#{general.eligibility-table.column.header-1}"></th>
+            <th scope="col" th:text="#{general.eligibility-table.column.header-2}"></th>
           </tr>
           </thead>
           <tbody>
           <tr scope="row" th:each="i : ${#numbers.sequence(1, 5)}">
-            <td th:text="#{'index.eligibility.table.row-' + ${i} + '.family'}"></td>
-            <td th:text="#{'index.eligibility.table.row-' + ${i} + '.income'}"></td>
+            <td th:text="#{'general.eligibility-table.row-' + ${i} + '.family'}"></td>
+            <td th:text="#{'general.eligibility-table.row-' + ${i} + '.income'}"></td>
           </tr>
           </tbody>
         </table>

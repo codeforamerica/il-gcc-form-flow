@@ -1,18 +1,60 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head(title=#{onboarding-getting-started.title})}"></head>
-<body>
-<!-- Update colors to match figma -->
+<body class="background-grey">
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
+  <section class="slab slab--grey">
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: prepareToApply}"></th:block>
         <th:block
-            th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-getting-started.header})}"/>
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-getting-started.header}, subtext=#{onboarding-getting-started.subtext})}"/>
         <div class="form-card__content">
-         ~~ content ~~
+          <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(
+            buttonLabel=#{onboarding-getting-started.accordion.first.label},
+            content=~{::first})}">
+              <th:block th:ref="first">
+                <p th:text="#{onboarding-getting-started.accordion.first.paragraph-1}"></p>
+                <p th:text="#{onboarding-getting-started.accordion.first.paragraph-2}"></p>
+              </th:block>
+          </th:block>
+          <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(
+            buttonLabel=#{onboarding-getting-started.accordion.second.label},
+            content=~{::second})}">
+            <th:block th:ref="second">
+              <p th:text="#{general.eligibility-table.title}"></p>
+              <table class="eligibility-table">
+                <thead>
+                <tr>
+                  <th class="bold" scope="col" th:text="#{general.eligibility-table.column.header-1}"></th>
+                  <th class="bold" scope="col" th:text="#{general.eligibility-table.column.header-2}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr scope="row" th:each="i : ${#numbers.sequence(1, 5)}">
+                  <td th:text="#{'general.eligibility-table.row-' + ${i} + '.family'}"></td>
+                  <td th:text="#{'general.eligibility-table.row-' + ${i} + '.income'}"></td>
+                </tr>
+                </tbody>
+              </table>
+            </th:block>
+          </th:block>
+          <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(
+            buttonLabel=#{onboarding-getting-started.accordion.third.label},
+            content=~{::third})}">
+            <th:block th:ref="third">
+              <p th:text="#{onboarding-getting-started.accordion.third.paragraph-1}"></p>
+              <p th:text="#{onboarding-getting-started.accordion.third.paragraph-2}"></p>
+              <p th:text="#{onboarding-getting-started.accordion.third.paragraph-3}"></p>
+              <ul class="list--bulleted">
+                <li th:text="#{onboarding-getting-started.accordion.third.list-1}"></li>
+                <li th:text="#{onboarding-getting-started.accordion.third.list-2}"></li>
+                <li th:text="#{onboarding-getting-started.accordion.third.list-3}"></li>
+              </ul>
+            </th:block>
+          </th:block>
         </div>
         <div class="form-card__footer">
           <th:block th:replace="~{fragments/continueButton :: continue}"/>
