@@ -11,7 +11,7 @@ for i in "${!screenNames[@]}"; do
     echo "found ${screenNames[$i]} in templates"
   else
     echo "${screenNames[$i]} not in templates; creating one"
-    cat scripts/template.html >> "src/main/resources/templates/${flowName}/${screenNames[$i]}.html"
+    cp scripts/template.html "src/main/resources/templates/${flowName}/${screenNames[$i]}.html"
   fi
 done
 
