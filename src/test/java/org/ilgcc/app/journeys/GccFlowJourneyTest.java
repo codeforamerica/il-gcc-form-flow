@@ -13,5 +13,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickButton("Apply now");
     // onboarding-getting-started
     assertThat(testPage.getTitle()).isEqualTo("Getting started");
+    testPage.clickContinue();
+
+    assertThat(testPage.getTitle()).isEqualTo("Now tell us about your school or training program.");
+    testPage.clickContinue();
+
+    assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?");
+    testPage.enter("schoolName", "World");
+    testPage.clickContinue();
+
   }
 }
