@@ -3,177 +3,234 @@ flow:
   onboarding-getting-started:
     nextScreens:
       - name: activities-add-ed-program
+  onboarding-choose-provider:
+    nextScreens:
+      - name: pilot-offboard
+  pilot-offboard:
+    nextScreens: null
+  onboarding-confirm-provider:
+    nextScreens:
+      - name: onboarding-language-pref
+  onboarding-language-pref:
+    nextScreens:
+      - name: parent-info-intro
+
+  parent-info-intro:
+    nextScreens:
+      - name: parent-info-basic-1
+  parent-info-basic-1:
+    nextScreens:
+      - name: parent-info-basic-2
+  parent-info-basic-2:
+    nextScreens:
+      - name: parent-info-service
+  parent-info-service:
+    nextScreens:
+      - name: parent-info-dv
+  parent-info-dv:
+    nextScreens:
+      - name: parent-info-disability
+  parent-info-disability:
+    nextScreens:
+      - name: parent-home-address
+  parent-home-address:
+    nextScreens:
+      - name: parent-mailing-address
+  parent-mailing-address:
+    nextScreens:
+      - name: parent-confirm-address
+  parent-confirm-address:
+    nextScreens:
+      - name: parent-contact
+  parent-contact:
+    nextScreens:
+      - name: parent-info-review
+  parent-info-review:
+    nextScreens:
+      - name: parent-have-a-partner
+  parent-have-a-partner:
+    nextScreens:
+      - name: parent-qualifying-partner
+  parent-qualifying-partner:
+    nextScreens:
+      - name: parent-partner-info-basic
+  parent-partner-info-basic:
+    nextScreens:
+      - name: parent-partner-contact
+  parent-partner-contact:
+    nextScreens:
+      - name: parent-partner-info-service
+  parent-partner-info-service:
+    nextScreens:
+      - name: parent-partner-info-disability
+  parent-partner-info-disability:
+    nextScreens:
+      - name: parent-other-family
+  parent-other-family:
+    nextScreens:
+      - name: parent-add-adults
+  parent-add-adults:
+    nextScreens:
+      - name: parent-intro-family-info
+  parent-intro-family-info:
+    nextScreens:
+      - name: children-info-intro
+
+  children-info-intro:
+    nextScreens:
+      - name: children-add
+  children-add:
+    nextScreens:
+      - name: children-info-basic
+  children-info-basic:
+    nextScreens:
+      - name: children-ccap-info
+  children-ccap-info:
+    nextScreens:
+      - name: children-ccap-in-care
+  children-ccap-in-care:
+    nextScreens:
+      - name: children-ccap-start-date
+  children-ccap-start-date:
+    nextScreens:
+      - name: children-childcare-weekly-schedule
+  children-childcare-weekly-schedule:
+    nextScreens:
+      - name: children-childcare-hourly-schedule
+  children-childcare-hourly-schedule:
+    nextScreens:
+      - name: children-ccap-child-other-ed
+  children-ccap-child-other-ed:
+    nextScreens:
+      - name: activities-parent-intro
+
+  activities-parent-intro:
+    nextScreens:
+      - name: activities-parent-type
+  activities-parent-type:
+    nextScreens:
+      - name: activities-add-jobs
+  activities-add-jobs:
+    nextScreens:
+      - name: activities-employer-name
+  activities-employer-name:
+    nextScreens:
+      - name: activities-employer-address
+  activities-employer-address:
+    nextScreens:
+      - name: activities-self-employment
+  activities-self-employment:
+    nextScreens:
+      - name: activities-pay-by-hour
+  activities-pay-by-hour:
+    nextScreens:
+      - name: activities-hourly-wage
+  activities-hourly-wage:
+    nextScreens:
+      - name: activities-pay-period
+  activities-pay-period:
+    nextScreens:
+      - name: activities-pay-rate
+  activities-pay-rate:
+    nextScreens:
+      - name: activities-pay-last-month
+  activities-pay-last-month:
+    nextScreens:
+      - name: activities-work-schedule-vary
+  activities-work-schedule-vary:
+    nextScreens:
+      - name: activities-next-work-schedule
+  activities-next-work-schedule:
+    nextScreens:
+      - name: activities-job-weekly-schedule
+  activities-job-weekly-schedule:
+    nextScreens:
+      - name: activities-job-hourly-schedule
+  activities-job-hourly-schedule:
+    nextScreens:
+      - name: activities-work-commute
+  activities-work-commute:
+    nextScreens:
+      - name: activities-work-commute-time
+  activities-work-commute-time:
+    nextScreens:
+      - name: activities-add-jobs-list
+  activities-add-jobs-list:
+    nextScreens:
+      - name: activities-add-ed-program
   activities-add-ed-program:
+    nextScreens:
+      - name: activities-ed-program-name
+  activities-ed-program-type:
     nextScreens:
       - name: activities-ed-program-name
   activities-ed-program-name:
     nextScreens:
       - name: activities-ed-program-type
-  activities-ed-program-type:
+  activities-ed-program-info:
     nextScreens:
-      - name: pilot-offboard
-  pilot-offboard:
+      - name: activities-ed-program-method
+  activities-ed-program-method:
+    nextScreens:
+      - name: activities-next-class-schedule
+  activities-next-class-schedule:
+    nextScreens:
+      - name: activities-class-weekly-schedule
+  activities-class-weekly-schedule:
+    nextScreens:
+      - name: activities-class-hourly-schedule
+  activities-class-hourly-schedule:
+    nextScreens:
+      - name: activities-ed-program-dates
+  activities-ed-program-dates:
+    nextScreens:
+      - name: activities-partner-add-job
+  activities-partner-add-job:
+    nextScreens:
+      - name: activities-partner-add-ed-program
+  activities-partner-add-ed-program:
+    nextScreens:
+      - name: unearned-income-intro
+
+  unearned-income-intro:
+    nextScreens:
+      - name: unearned-income-source
+  unearned-income-source:
+    nextScreens:
+      - name: unearned-income-amount
+  unearned-income-amount:
+    nextScreens:
+      - name: unearned-income-assets
+  unearned-income-assets:
+    nextScreens:
+      - name: unearned-income-programs
+  unearned-income-programs:
+    nextScreens:
+      - name: submit-intro
+
+  submit-intro:
+    nextScreens:
+      - name: submit-ccap-terms
+  submit-ccap-terms:
+    nextScreens:
+      - name: submit-sign-name
+  submit-sign-name:
+    nextScreens:
+      - name: submit-complete
+  submit-complete:
+    nextScreens:
+      - name: submit-next-steps
+  submit-next-steps:
+    nextScreens:
+      - name: submit-confirmation
+  submit-confirmation:
+    nextScreens:
+      - name: doc-upload-list
+  doc-upload-list:
+    nextScreens:
+      - name: doc-upload-confirm
+  doc-upload-confirm:
     nextScreens: null
+
 landmarks:
   firstScreen: onboarding-getting-started
----
-name: ubi
-flow:
-  howThisWorks:
-    nextScreens:
-      - name: languagePreference
-  languagePreference:
-    nextScreens:
-      - name: gettingToKnowYou
-  gettingToKnowYou:
-    nextScreens:
-      - name: personalInfo
-  personalInfo:
-    onPostAction: UpdatePersonalInfoDates
-    crossFieldValidationAction: ValidateMovedToUSADate
-    nextScreens:
-      - name: homeAddress
-  homeAddress:
-    nextScreens:
-      - name: contactInfo
-        condition: HomeAddressValidationIsOff
-      - name: pickHomeAddress
-        condition: SmartySuggestionFound
-      - name: verifyHomeAddress
-        condition: SmartySuggestionNotFound
-  pickHomeAddress:
-    nextScreens:
-      - name: contactInfo
-  verifyHomeAddress:
-    nextScreens:
-      - name: contactInfo
-  contactInfo:
-    crossFieldValidationAction: CheckIndicatedContactMethodIsProvided
-    nextScreens:
-      - name: phoneNumberNudge
-        condition: PhoneNumberNotProvidedOnContactInfoPage
-      - name: reviewInfo
-  phoneNumberNudge:
-    nextScreens:
-      - name: reviewInfo
-  reviewInfo:
-    nextScreens:
-      - name: eligibility
-  eligibility:
-    nextScreens:
-      - name: housemates
-  housemates:
-    nextScreens:
-      - name: housemateInfo
-        condition: HasHousehold
-      - name: income
-  housemateInfo:
-    onPostAction: UpdateHouseholdMemberMovedToUSADate
-    crossFieldValidationAction: ValidateHouseholdMemberMovedToUSADate
-    subflow: household
-    nextScreens:
-      - name: householdList
-  householdList:
-    nextScreens:
-      - name: income
-  householdDeleteConfirmation:
-    nextScreens: null
-  income:
-    nextScreens:
-      - name: householdMemberIncome
-  householdMemberIncome:
-    subflow: income
-    nextScreens:
-      - name: incomeTypes
-  incomeTypes:
-    subflow: income
-    nextScreens:
-      - name: incomeAmounts
-  incomeAmounts:
-    beforeSaveAction: UpdateIncomeAmountsBeforeSaving
-    subflow: income
-    nextScreens:
-      - name: annualHouseholdIncome
-  annualHouseholdIncome:
-    nextScreens:
-      - name: exceedsIncomeThreshold
-        condition: ExceedsIncomeThreshold
-      - name: incomeComplete
-  incomeDeleteConfirmation:
-    nextScreens: null
-  reportedAnnualHouseholdIncome:
-    nextScreens:
-      - name: exceedsIncomeThreshold
-        condition: ExceedsIncomeThreshold
-      - name: incomeComplete
-  incomeComplete:
-    nextScreens:
-      - name: economicHardship
-  exceedsIncomeThreshold:
-    nextScreens:
-      - name: economicHardship
-  economicHardship:
-    nextScreens:
-      - name: addingDocuments
-  addingDocuments:
-    nextScreens:
-      - name: howToAddDocuments
-  howToAddDocuments:
-    nextScreens:
-      - name: documentRecommendations
-  documentRecommendations:
-    nextScreens:
-      - name: uploadUBIFlowDocuments
-  documentOffboarding:
-    nextScreens:
-      - name: submitting
-  uploadUBIFlowDocuments:
-    nextScreens:
-      - name: docSubmitConfirmation
-  docSubmitConfirmation:
-    nextScreens:
-      - name: submitting
-  submitting:
-    nextScreens:
-      - name: legalStuff
-  legalStuff:
-    nextScreens:
-      - name: signName
-  signName:
-    beforeSaveAction: SendEmailConfirmation
-    nextScreens:
-      - name: nextSteps
-  nextSteps:
-    nextScreens:
-      - name: success
-  success:
-    nextScreens: null
-landmarks:
-  firstScreen: howThisWorks
-  afterSubmitPages:
-    - nextSteps
-    - success
-subflows:
-  household:
-    entryScreen: housemates
-    iterationStartScreen: housemateInfo
-    reviewScreen: householdList
-    deleteConfirmationScreen: householdDeleteConfirmation
-  income:
-    entryScreen: income
-    iterationStartScreen: householdMemberIncome
-    reviewScreen: annualHouseholdIncome
-    deleteConfirmationScreen: incomeDeleteConfirmation
----
-name: docUpload
-flow:
-  documentRecommendations:
-    nextScreens:
-      - name: uploadDocuments
-  uploadDocuments:
-    nextScreens:
-      - name: success
-  success:
-    nextScreens: null
-landmarks:
-  firstScreen: documentRecommendations
