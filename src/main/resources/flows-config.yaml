@@ -2,7 +2,7 @@ name: gcc
 flow:
   onboarding-getting-started:
     nextScreens:
-      - name: onboarding-choose-provider
+      - name: activities-add-ed-program
   onboarding-choose-provider:
     nextScreens:
       - name: pilot-offboard
@@ -160,13 +160,13 @@ flow:
       - name: activities-add-ed-program
   activities-add-ed-program:
     nextScreens:
-      - name: activities-ed-program-type
+      - name: activities-ed-program-name
   activities-ed-program-type:
     nextScreens:
       - name: activities-ed-program-name
   activities-ed-program-name:
     nextScreens:
-      - name: activities-ed-program-info
+      - name: activities-ed-program-type
   activities-ed-program-info:
     nextScreens:
       - name: activities-ed-program-method
