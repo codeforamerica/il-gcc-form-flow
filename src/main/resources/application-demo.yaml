@@ -4,6 +4,5 @@ spring:
   datasource:
     url: jdbc:postgresql://host.docker.internal:5432/il-gcc
 form-flow:
-  disabled-flows: ~
   aws:
     s3_bucket_name: 'get-child-care-illinois-demo'
