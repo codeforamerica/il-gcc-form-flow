@@ -19,11 +19,12 @@ public class Page {
   }
 
   public String getTitle() {
+    checkForBadMessageKeys();
     return driver.getTitle();
   }
 
   private void checkForBadMessageKeys() {
-    assertThat(getTitle()).doesNotContain("??");
+    assertThat(driver.getTitle()).doesNotContain("??");
     assertThat(driver.findElement(By.xpath("/html")).getText()).doesNotContain("??");
   }
 
