@@ -8,6 +8,9 @@ flow:
       - name: activities-ed-program-name
   activities-ed-program-name:
     nextScreens:
+      - name: activities-ed-program-type
+  activities-ed-program-type:
+    nextScreens:
       - name: pilot-offboard
   pilot-offboard:
     nextScreens: null
