@@ -5,10 +5,12 @@ flow:
       - name: activities-add-ed-program
   activities-add-ed-program:
     nextScreens:
+      - name: activities-ed-program-name
+  activities-ed-program-name:
+    nextScreens:
       - name: pilot-offboard
   pilot-offboard:
-    nextScreens:
-      - name: null
+    nextScreens: null
 landmarks:
   firstScreen: onboarding-getting-started
 ---
