@@ -20,8 +20,12 @@
 }
 
 html, body {
-  background: var(--white);
+  background: var(--light-grey);
   color: var(--gray-darkest);
+}
+
+.template--index {
+  background: var(--white);
 }
 
 .demo-banner {
@@ -116,7 +120,7 @@ a, .button--link {
 
 /* Same as .slab--grey, named to be used more generically */
 .background-grey {
-  background-color: #F7F5F4;
+  background-color: var(--light-grey);
 }
 
 /* Index */
