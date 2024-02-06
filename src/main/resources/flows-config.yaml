@@ -5,7 +5,7 @@ flow:
       - name: onboarding-choose-provider
   onboarding-choose-provider:
     nextScreens:
-      - name: pilot-offboard
+      - name: activities-add-ed-program
   pilot-offboard:
     nextScreens: null
   onboarding-confirm-provider:
