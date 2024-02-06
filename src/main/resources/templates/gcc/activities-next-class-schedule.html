@@ -1,6 +1,50 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{activities-next-class-schedule.header})}">
+  <style>
+    .notice-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      width: 300px;
+      height: 183px;
+      background-color: #ffc70029;
+      border: 2px solid #ffc70029;
+      box-sizing: border-box;
+    }
+
+    .notice {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 17px;
+      gap: 10px;
+      width: 300px;
+      height: 159px;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+
+    .notice-text {
+      width: 266px;
+      height: 125px;
+      font-family: 'SF Pro', sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 19px;
+      line-height: 25px;
+      color: #121111;
+      flex: none;
+      order: 0;
+      flex-grow: 1;
+    }
+  </style>
+
+</head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,14 +52,18 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: linedDocument}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-next-class-schedule.header})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
+                  <div class="notice--warning">
+                    <p class="notice-text" th:utext="#{activities-next-class-schedule.description}">
+                    </p>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/><br>
+              <a th:href="'/flow/' + ${flow} + '/activities-ed-program-dates'"
+                 th:text="#{activities-next-class-schedule.skip}"></a>
             </div>
           </th:block>
         </th:block>
