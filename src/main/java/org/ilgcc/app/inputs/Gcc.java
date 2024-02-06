@@ -9,4 +9,7 @@ public class Gcc extends FlowInputs {
 
     @NotBlank(message = "{activities-add-ed-program-type.validationMessage}")
     private String educationType;
+
+    @NotBlank
+    private String dayCareChoice;
 }
