@@ -15,8 +15,8 @@
           <th:block th:ref="formContents">
             <div class="form-card__content">
               <th:block
-                  th:replace="~{fragments/inputs/select :: select(label=#{onboarding-language-pref.language-to-read-label}, inputName='languageRead', helpText=#{onboarding-language-pref.language-to-read-help-text}, content=~{::content})}">
-                <th:block th:ref="content">
+                  th:replace="~{fragments/inputs/select :: select(label=#{onboarding-language-pref.language-to-read-label}, inputName='languageRead', helpText=#{onboarding-language-pref.language-to-read-help-text}, content=~{::contentRead})}">
+                <th:block th:ref="contentRead">
                   <th:block
                       th:replace="~{fragments/inputs/selectOption :: selectOption(value='English', optionText=#{general.language.english})}"/>
                   <th:block
@@ -24,8 +24,8 @@
                 </th:block>
               </th:block>
               <th:block
-                  th:replace="~{fragments/inputs/select :: select(label=#{onboarding-language-pref.language-to-speak-label}, inputName='languageSpeak', helpText=#{onboarding-language-pref.language-to-speak-help-text}, content=~{::content})}">
-                <th:block th:ref="content">
+                  th:replace="~{fragments/inputs/select :: select(label=#{onboarding-language-pref.language-to-speak-label}, inputName='languageSpeak', helpText=#{onboarding-language-pref.language-to-speak-help-text}, content=~{::contentSpeak})}">
+                <th:block th:ref="contentSpeak">
                   <th:block
                       th:replace="~{fragments/inputs/selectOption :: selectOption(value='English', optionText=#{general.language.english})}"/>
                   <th:block
