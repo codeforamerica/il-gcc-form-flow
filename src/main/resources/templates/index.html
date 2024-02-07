@@ -10,13 +10,14 @@
         <div class="notice--warning spacing-below-35">
           <p th:utext="'👋🏼 ' + #{index.notice-html}"></p>
         </div>
-        <div class="width-one-half">
+        <div class="tracking-home-language-links width-one-half">
           <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>
           <p th:text="#{index.apply-for-benefits}"></p>
           <div class="spacing-above-35">
             <a
               th:href="|/flow/gcc/onboarding-getting-started?lang=${#locale.getLanguage()}|"
               th:text="#{index.apply-now} + ' →'"
+              id="primary-apply-now"
               class="button--primary button"></a>
           </div>
           <div class="spacing-below-35">
@@ -25,6 +26,7 @@
               th:href="|/flow/gcc/onboarding-getting-started?lang=${otherLang}|"
               th:text="#{index.apply-now-other-language} + ' →'"
               th:lang="${otherLang}"
+              id="secondary-apply-now"
               class="button--small button"></a>
           </div>
         </div>
