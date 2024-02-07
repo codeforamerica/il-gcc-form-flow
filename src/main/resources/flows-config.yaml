@@ -2,10 +2,10 @@ name: gcc
 flow:
   onboarding-getting-started:
     nextScreens:
-      - name: activities-add-ed-program
+      - name: onboarding-choose-provider
   onboarding-choose-provider:
     nextScreens:
-      - name: pilot-offboard
+      - name: activities-add-ed-program
   pilot-offboard:
     nextScreens: null
   onboarding-confirm-provider:
