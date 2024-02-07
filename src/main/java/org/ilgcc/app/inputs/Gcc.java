@@ -4,6 +4,9 @@ import formflow.library.data.FlowInputs;
 import jakarta.validation.constraints.NotBlank;
 
 public class Gcc extends FlowInputs {
+
+    private String lang;
+
     @NotBlank
     private String schoolName;
 
@@ -12,4 +15,7 @@ public class Gcc extends FlowInputs {
 
     @NotBlank
     private String dayCareChoice;
+
+    private String languageRead;
+    private String languageSpeak;
 }
