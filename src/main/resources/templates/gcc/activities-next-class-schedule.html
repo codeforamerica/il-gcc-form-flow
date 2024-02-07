@@ -1,50 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{activities-next-class-schedule.header})}">
-  <style>
-    .notice-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-      width: 300px;
-      height: 183px;
-      background-color: #ffc70029;
-      border: 2px solid #ffc70029;
-      box-sizing: border-box;
-    }
-
-    .notice {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      padding: 17px;
-      gap: 10px;
-      width: 300px;
-      height: 159px;
-      flex: none;
-      order: 0;
-      align-self: stretch;
-      flex-grow: 0;
-    }
-
-    .notice-text {
-      width: 266px;
-      height: 125px;
-      font-family: 'SF Pro', sans-serif;
-      font-style: normal;
-      font-weight: 700;
-      font-size: 19px;
-      line-height: 25px;
-      color: #121111;
-      flex: none;
-      order: 0;
-      flex-grow: 1;
-    }
-  </style>
-
-</head>
+<head th:replace="~{fragments/head :: head(title=#{activities-next-class-schedule.header})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
