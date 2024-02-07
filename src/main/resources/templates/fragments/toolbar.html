@@ -14,7 +14,7 @@
         <th:block th:replace="~{fragments/languageSelector :: languageSelector}"></th:block>
       </div>
     </div>
-    <th:block
-        th:replace="~{fragments/demoBanner :: demoBanner(demoText=#{demo.banner-text}, profile='staging')}"/>
+    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=#{demo.banner-text}, profile='staging')}"/>
+    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=#{demo.banner-text}, profile='demo')}"/>
   </header>
 </th:block>
