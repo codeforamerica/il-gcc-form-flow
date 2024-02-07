@@ -15,7 +15,7 @@
               <p class="notice-text" th:utext="#{activities-next-class-schedule.description}"></p>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/><br>
+              <th:block th:replace="~{fragments/continueButton :: continue}"/>
               <a th:href="'/flow/' + ${flow} + '/activities-ed-program-dates'"
                  th:text="#{activities-next-class-schedule.skip}"></a>
             </div>
