@@ -37,6 +37,7 @@ jobs:
           'SMARTY_AUTH_ID=${{ secrets.SMARTY_AUTH_ID }}' \
           'SMARTY_AUTH_TOKEN=${{ secrets.SMARTY_AUTH_TOKEN }}' \
           'MAILGUN_KEY=${{ secrets.MAILGUN_KEY }}' \
+          'MIXPANEL_API_KEY=${{ secrets.MIXPANEL_API_KEY }}' \
           'SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}' \
           'SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}' \
           'SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}' \
