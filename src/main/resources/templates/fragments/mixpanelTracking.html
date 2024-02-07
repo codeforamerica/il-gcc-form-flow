@@ -13,10 +13,6 @@
     'language': htmlLang,
   }
 
-  const ref_id_param = window.location.href.includes("?ref_id=") ? window.location.href.split("?ref_id=")[1].split('&')[0] : null
-  const ref_id = ref_id_param ? ref_id_param : '[[${submission == null ? "" : submission.getUrlParams().getOrDefault("ref_id", "")}]]'
-  const ref_id_sanitized = ref_id.replaceAll("[^a-zA-Z0-9]", "");
-
   const intercepted_param = window.location.href.includes("?intercepted=") ? window.location.href.split("?intercepted=")[1].split('&')[0] : null
 
   if (intercepted_param) {
@@ -26,10 +22,6 @@
           error_location: intercepted_param
         }
     )
-  }
-
-  if ((ref_id_sanitized.startsWith("T")) && (ref_id_sanitized.length === 11)) {
-    tracking_params.ref_id = ref_id_sanitized
   }
 
   if (document.referrer === "") {
