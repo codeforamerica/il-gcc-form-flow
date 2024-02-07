@@ -12,4 +12,7 @@ public class Gcc extends FlowInputs {
 
     @NotBlank
     private String dayCareChoice;
+
+    private String languageRead;
+    private String languageSpeak;
 }
