@@ -10,12 +10,11 @@
       <main id="content" role="main" class="form-card spacing-above-35">
         <th:block th:replace="~{fragments/gcc-icons :: linedDocument}"></th:block>
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-next-class-schedule.header})}"/>
-        <div class="form-card__content">
             <div class="notice--warning">
               <p class="notice-text" th:utext="#{activities-next-class-schedule.description}"></p>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/continueButton :: continue}"/>
+              <th:block th:replace="~{fragments/continueButton :: continue}"/></br>
               <a th:href="'/flow/' + ${flow} + '/activities-ed-program-dates'"
                  th:text="#{activities-next-class-schedule.skip}"></a>
             </div>
