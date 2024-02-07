@@ -21,7 +21,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickElementById("dayCareChoice-none-label");
     testPage.clickContinue();
     //activities-add-ed-program
-    assertThat(testPage.getTitle()).isEqualTo("Now tell us about your school or training program.");
+    assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
 
     //activities-ed-program-name

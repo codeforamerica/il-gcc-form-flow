@@ -18,7 +18,7 @@
                               content=~{::radioOptions})}">
                                 <th:block th:ref="radioOptions">
                                     <th:block
-                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='belowPostSecondary', label=#{activities-add-ed-program-type.belowPostSecondary})}",  />
+                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='belowPostSecondary',  label=#{activities-add-ed-program-type.belowPostSecondary})}" />
                                     <th:block
                                             th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='highSchool', label=#{activities-add-ed-program-type.highSchool})}"/>
                                     <th:block
@@ -26,7 +26,11 @@
                                     <th:block
                                             th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='college', label=#{activities-add-ed-program-type.college})}"/>
                                     <th:block
+                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='graduateSchool', label=#{activities-add-ed-program-type.graduate})}"/>
+                                    <th:block
                                             th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='tanf', label=#{activities-add-ed-program-type.tanf})}"/>
+                                    <th:block
+                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='other', label=#{activities-add-ed-program-type.other})}"/>
                                 </th:block>
                             </th:block>
                         </div>
