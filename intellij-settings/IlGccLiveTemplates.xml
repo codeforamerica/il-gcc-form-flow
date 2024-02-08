@@ -1,0 +1,6 @@
+<template name="gcc:icons" value="&lt;th:block th:replace=&quot;~{fragments/gcc-icons :: $ICON$}&quot;&gt;&lt;/th:block&gt;" description="Include GCC specific icon" toReformat="false" toShortenFQNames="true">
+  <variable name="ICON" expression="" defaultValue="" alwaysStopAt="true" />
+  <context>
+    <option name="HTML" value="true" />
+  </context>
+</template>
