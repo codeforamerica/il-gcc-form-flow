@@ -5,15 +5,16 @@ flow:
       - name: onboarding-choose-provider
   onboarding-choose-provider:
     nextScreens:
-      - name: activities-add-ed-program
+      - name: onboarding-language-pref
   pilot-offboard:
     nextScreens: null
   onboarding-confirm-provider:
     nextScreens:
       - name: onboarding-language-pref
   onboarding-language-pref:
+    beforeDisplayAction: SetLanguagePreferences
     nextScreens:
-      - name: parent-info-intro
+      - name: activities-add-ed-program
 
   parent-info-intro:
     nextScreens:

@@ -11,6 +11,8 @@
   const tracking_params = {
     'page_name': pageName,
     'language': htmlLang,
+    'pref_written_language': '[[ ${inputData != null && inputData.containsKey("languageRead") ? inputData.get("languageRead") : "not_set"} ]]',
+    'pref_spoken_language': '[[ ${inputData != null && inputData.containsKey("languageSpeak") ? inputData.get("languageSpeak") : "not_set"} ]]',
   }
 
   const intercepted_param = window.location.href.includes("?intercepted=") ? window.location.href.split("?intercepted=")[1].split('&')[0] : null
