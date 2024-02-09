@@ -6,7 +6,7 @@ import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 /**
- * This condition will check to see if the income the user has entered exceeds the maximum income allowable, based on their family
+ * This condition will check to see if the applicant answered Yes/No
  * size.
  */
 @Component
