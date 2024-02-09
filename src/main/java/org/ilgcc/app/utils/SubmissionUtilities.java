@@ -20,6 +20,7 @@ public class SubmissionUtilities {
   public static final String HOUSEHOLD = "household";
   public static final String INCOME = "income";
   public static final String ITERATION_UUID = "uuid";
+  public static final String PROGRAM_SCHEDULE = "programSchedule";
 
   public static List<Map<String, Object>> sortIncomeNamesWithApplicantFirst(Submission submission) {
     Map<String, Object> inputData = submission.getInputData();
@@ -164,5 +165,13 @@ public class SubmissionUtilities {
    */
   public static String getFormattedSubmittedAtDate(Submission submission) {
     return dateTimeFormatter.format(submission.getSubmittedAt());
+  }
+
+  /**
+   * @param submission submission containing input data to use
+   * @return the string Yes/No
+   */
+  public static String getProgramSchedule(Submission submission) {
+    return submission.getInputData().get(PROGRAM_SCHEDULE).toString();
   }
 }
