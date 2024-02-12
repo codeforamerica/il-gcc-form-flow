@@ -8,29 +8,29 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: mortarboard}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
               <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
-                              checkboxFieldset(inputName='educationType',
-                              label=#{activities-add-ed-program-type.header},
+                              checkboxFieldset(inputName='weeklySchedule',
+                              label=#{activities-class-weekly-schedule.header},
+                              fieldsetHelpText=#{activities-class-weekly-schedule.subtext},
                               content=~{::checkboxOptions})}">
                 <th:block th:ref="checkboxOptions">
                   <th:block
-                          th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='educationType', value='belowPostSecondary',  label=#{activities-add-ed-program-type.belowPostSecondary})}" />
+                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='weeklySchedule', value='monday',  label=#{activities-class-weekly-schedule.monday})}" />
                   <th:block
-                          th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='educationType', value='highSchool', label=#{activities-add-ed-program-type.highSchool})}"/>
+                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='weeklySchedule', value='tuesday', label=#{activities-class-weekly-schedule.tuesday})}"/>
                   <th:block
-                          th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='educationType', value='vocational', label=#{activities-add-ed-program-type.vocational})}"/>
+                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='weeklySchedule', value='wednesday', label=#{activities-class-weekly-schedule.wednesday})}"/>
                   <th:block
-                          th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='educationType', value='college', label=#{activities-add-ed-program-type.college})}"/>
+                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='weeklySchedule', value='thursday', label=#{activities-class-weekly-schedule.thursday})}"/>
                   <th:block
-                          th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='educationType', value='graduateSchool', label=#{activities-add-ed-program-type.graduate})}"/>
+                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='weeklySchedule', value='friday', label=#{activities-class-weekly-schedule.friday})}"/>
                   <th:block
-                          th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='educationType', value='tanf', label=#{activities-add-ed-program-type.tanf})}"/>
+                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='weeklySchedule', value='saturday', label=#{activities-class-weekly-schedule.saturday})}"/>
                   <th:block
-                          th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='educationType', value='other', label=#{activities-add-ed-program-type.other})}"/>
+                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='weeklySchedule', value='sunday', label=#{activities-class-weekly-schedule.sunday})}"/>
                 </th:block>
               </th:block>
             </div>
