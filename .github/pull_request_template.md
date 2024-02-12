@@ -8,6 +8,7 @@
 <!-- Figma link or screenshot if applicable -->
 
 #### ✅ Completion tasks
-[ ] Added relevant tests
-[ ] Meets acceptance criteria
-[ ] Added testing instructions to ticket
+
+- [ ] Added relevant tests
+- [ ] Meets acceptance criteria
+- [ ] Added testing instructions to ticket
