@@ -2,8 +2,7 @@ package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
 import jakarta.validation.constraints.NotBlank;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class Gcc extends FlowInputs {
 
@@ -18,7 +17,13 @@ public class Gcc extends FlowInputs {
     @NotBlank
     private String dayCareChoice;
 
+    @NotBlank(message = "{activities-ed-program-method.validationMessage}")
+    private String programTaught;
+
+    @NotBlank(message = "{activities-ed-program-method.validationMessage}")
+    private String programSchedule;
+
     private String languageRead;
     private String languageSpeak;
-    private ArrayList<String> weeklySchedule;
+    private List<String> weeklySchedule;
 }
