@@ -299,6 +299,10 @@ a, .button--link {
   margin-top: -35px;
 }
 
+.spacing-left-0 {
+  margin-left: 0;
+}
+
 .icon-person {
   font-size: 3.2rem;
 }

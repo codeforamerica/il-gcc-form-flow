@@ -18,17 +18,16 @@
                             radioFieldset(inputName='dayCareChoice',
                             label=#{onboarding-choose-provider.which-daycare-center-question},
                             content=~{::radioContent})}">
-                            <th:block th:ref="radioContent">
-                              <th:block
-                                  th:replace="~{fragments/inputs/radio :: radio(inputName='dayCareChoice',value='childrensLearningCenter', label=#{onboarding-choose-provider.childrens-learning-center})}"/>
-                              <th:block
-                                  th:replace="~{fragments/inputs/radio :: radio(inputName='dayCareChoice',value='theGrowingPlace', label=#{onboarding-choose-provider.the-growing-place})}"/>
-                              <th:block
-                                  th:replace="~{fragments/inputs/radio :: radio(inputName='dayCareChoice',value='openSesame', label=#{onboarding-choose-provider.open-sesame})}"/>
-                              <th:block
-                                  th:replace="~{fragments/inputs/radio :: radio(inputName='dayCareChoice',value='none', label=#{onboarding-choose-provider.none})}"/>
-                            </th:block>
-                          </th:block>
+                <th:block th:ref="radioContent">
+                  <th:block th:each="providerOption : ${T(org.ilgcc.app.utils.ChildCareProvider).values()}">
+                    <th:block
+                        th:replace="~{fragments/inputs/radio :: radio(inputName='dayCareChoice', value=${providerOption}, label=${providerOption.getDisplayName()})}"/>
+                  </th:block>
+
+                  <th:block
+                      th:replace="~{fragments/inputs/radio :: radio(inputName='dayCareChoice', value='none', label=#{onboarding-choose-provider.none})}"/>
+                </th:block>
+              </th:block>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>

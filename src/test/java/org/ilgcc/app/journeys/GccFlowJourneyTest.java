@@ -17,10 +17,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //onboarding-choose-provider
     assertThat(testPage.getTitle()).isEqualTo("Choose Provider");
-    assertThat(testPage.getElementText("dayCareChoice-none-label")).isEqualTo("None of the above");
-    testPage.clickElementById("dayCareChoice-none-label");
+    testPage.clickElementById("dayCareChoice-OPEN_SESAME-label");
     testPage.clickContinue();
-    // language preference
+    //onboarding-confirm-provider
+    assertThat(testPage.getTitle()).isEqualTo("Confirm provider");
+    testPage.clickLink("Yes, I confirm");
+    //onboarding-language-preference
     assertThat(testPage.getTitle()).isEqualTo("Language Preference");
     testPage.selectFromDropdown("languageRead", "English");
     testPage.selectFromDropdown("languageSpeak", "Español");

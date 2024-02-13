@@ -59,7 +59,11 @@
       'page_name': pageName,
       'element_id': elementId,
       'language': htmlLang
-    })
+    });
+
+    if(elementId === 'confirm-provider') {
+      mixpanel.track('provider_chosen');
+    }
   }
 
   $(document).ready(function () {
