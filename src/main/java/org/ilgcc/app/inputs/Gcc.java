@@ -2,6 +2,7 @@ package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 
 public class Gcc extends FlowInputs {
 
@@ -24,5 +25,5 @@ public class Gcc extends FlowInputs {
 
     private String languageRead;
     private String languageSpeak;
-
+    private List<String> weeklySchedule;
 }
