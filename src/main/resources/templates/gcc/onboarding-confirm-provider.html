@@ -14,10 +14,12 @@
         <div class="form-card__content">
           <div class="grid__item address-validation spacing-below-60">
             <div class="radio-button is-selected">
-              <p class="spacing-below-15" th:text="${provider.getDisplayName()}"></p>
-              <th:block th:each="addressLine : ${provider.getAddressComponents()}">
-                <div th:text="${addressLine}"></div>
-              </th:block>
+              <p id="provider-name" class="spacing-below-15" th:text="${provider.getDisplayName()}"></p>
+              <div id="provider-address">
+                <th:block th:each="addressLine : ${provider.getAddressComponents()}">
+                  <div th:text="${addressLine}"></div>
+                </th:block>
+              </div>
             </div>
           </div>
         </div>
