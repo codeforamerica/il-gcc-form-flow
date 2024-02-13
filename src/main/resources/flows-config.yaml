@@ -161,19 +161,21 @@ flow:
       - name: activities-add-ed-program
   activities-add-ed-program:
     nextScreens:
-      - name: activities-ed-program-name
+      - name: activities-ed-program-type
   activities-ed-program-type:
     nextScreens:
       - name: activities-ed-program-name
   activities-ed-program-name:
     nextScreens:
-      - name: activities-ed-program-type
+      - name: activities-ed-program-info
   activities-ed-program-info:
     nextScreens:
       - name: activities-ed-program-method
   activities-ed-program-method:
     nextScreens:
       - name: activities-next-class-schedule
+        condition: ClassesTaughtSchedule
+      - name: activities-class-weekly-schedule
   activities-next-class-schedule:
     nextScreens:
       - name: activities-class-weekly-schedule
