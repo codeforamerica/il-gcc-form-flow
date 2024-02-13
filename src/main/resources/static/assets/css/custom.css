@@ -46,18 +46,9 @@ html, body {
 
 @media only screen and (min-width: 600px) {
   .slab--hero {
-    /*background-position: bottom right 10rem;*/
-    /*background-size: 50rem;*/
     background-image: none;
   }
 }
-
-/*@media only screen and (min-width: 1181px) {*/
-/*  .slab--hero {*/
-/*    background-position: bottom right 10rem;*/
-/*    background-size: 65rem;*/
-/*  }*/
-/*}*/
 
 .toolbar__wrapper {
   background-color: var(--idhs-base-blue);
@@ -131,14 +122,17 @@ a, .button--link {
   align-items: center;
   gap: 30px;
 }
+.index-child-care-image-container img {
+  margin-bottom: 20px;
 
+}
 .eligibility-table {
   width: 100%;
   border-collapse: collapse;
 }
 
 .eligibility-table th {
-  font-weight: normal;
+  font-weight: bold;
   font-size: 1.6rem;
   color: var(--idhs-dark-blue);
   padding-bottom: 1rem;

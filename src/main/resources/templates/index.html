@@ -35,18 +35,20 @@
     </section>
     <section class="slab slab--white">
       <div class="grid">
-        <div class="index-child-care-image-container">
-            <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 110px; height: 110px;">
-            <img src="/assets/images/IDHS-logo.png" alt="">
+        <div class="index-child-care-image-container width-one-fourth">
+            <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 141px; height: 141px;">
+            <img src="/assets/images/IDHS-logo.png" alt="" style="width: 141px; height: auto">
         </div>
-        <h2 th:text="#{index.child-care.title}"></h2>
-        <p th:text="#{index.child-care.paragraph}"></p>
-        <a
-            target="_blank" rel="noopener noreferrer"
-            href="https://www.inccrra.org/about/sdasearch">
-          <span th:text="#{index.child-care.link}"></span>
-          <i class="icon-">open_in_new</i>
-        </a>
+        <div class="width-one-half">
+          <h2 th:text="#{index.child-care.title}"></h2>
+          <p th:text="#{index.child-care.paragraph}"></p>
+          <a
+              target="_blank" rel="noopener noreferrer"
+              href="https://www.inccrra.org/about/sdasearch">
+            <span th:text="#{index.child-care.link}"></span>
+            <i class="icon-">open_in_new</i>
+          </a>
+        </div>
       </div>
     </section>
     <section class="slab slab--light-purple">
@@ -67,6 +69,7 @@
           </tbody>
         </table>
         <p th:text="#{index.eligibility.paragraph}"></p>
+        <p th:utext="#{index.eligibility.calculator-paragraph}"></p>
       </div>
     </section>
     <section class="slab slab--white">
