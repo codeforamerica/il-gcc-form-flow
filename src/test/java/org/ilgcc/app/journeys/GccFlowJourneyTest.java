@@ -29,15 +29,24 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
 
+    //activities-ed-program-type
+    assertThat(testPage.getElementText("educationType-highSchool-label")).isEqualTo("High School or GED");
+    testPage.clickElementById("educationType-highSchool-label");
+    assertThat(testPage.getTitle()).isEqualTo("What type of school or training are you enrolled in?");
+    testPage.clickContinue();
+
     //activities-ed-program-name
     testPage.enter("schoolName", "World");
     assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?");
     testPage.clickContinue();
 
-    //activities-ed-program-type
-    testPage.clickElementById("educationType-highSchool");
-    assertThat(testPage.getTitle()).isEqualTo("What type of school or training are you enrolled in?");
-    testPage.clickContinue();
+    //activities-ed-program-info
+    //testPage.clickContinue();
+
+    //activities-ed-program-method
+    //assertThat(testPage.getTitle()).isEqualTo("How is the program taught?");
+    //testPage.clickContinue();
+
 
   }
 }
