@@ -30,6 +30,7 @@
               class="button--small button"></a>
           </div>
         </div>
+        <img src="/assets/images/mother-reading-to-child.svg" alt="" class="width-one-half is-tablet-hidden">
       </div>
     </section>
     <section class="slab slab--white">
@@ -70,21 +71,28 @@
     </section>
     <section class="slab slab--white">
       <div class="grid">
-        <h2 th:text="#{index.gather-docs.title}"></h2>
-        <p th:text="#{index.gather-docs.first-paragraph}"></p>
-        <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
-        <p th:text="#{index.gather-docs.second-paragraph}"></p>
-        <div class="index-icon-list spacing-below-15">
-          <th:block th:replace="~{fragments/gcc-icons :: blobWithPayStub}"></th:block>
-          <p th:text="#{index.gather-docs.icon-list.1}"></p>
+        <div class="width-one-half is-desktop-hidden">
+          <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
         </div>
-        <div class="index-icon-list spacing-below-15">
-          <th:block th:replace="~{fragments/gcc-icons :: blobWithW2}"></th:block>
-          <p th:text="#{index.gather-docs.icon-list.2}"></p>
+        <div class="width-one-half">
+          <h2 th:text="#{index.gather-docs.title}"></h2>
+          <p th:text="#{index.gather-docs.first-paragraph}"></p>
+          <p th:text="#{index.gather-docs.second-paragraph}"></p>
+          <div class="index-icon-list spacing-below-15">
+            <th:block th:replace="~{fragments/gcc-icons :: blobWithPayStub}"></th:block>
+            <p th:text="#{index.gather-docs.icon-list.1}"></p>
+          </div>
+          <div class="index-icon-list spacing-below-15">
+            <th:block th:replace="~{fragments/gcc-icons :: blobWithW2}"></th:block>
+            <p th:text="#{index.gather-docs.icon-list.2}"></p>
+          </div>
+          <div class="index-icon-list">
+            <th:block th:replace="~{fragments/gcc-icons :: blobWithSchedule}"></th:block>
+            <p th:text="#{index.gather-docs.icon-list.3}"></p>
+          </div>
         </div>
-        <div class="index-icon-list">
-          <th:block th:replace="~{fragments/gcc-icons :: blobWithSchedule}"></th:block>
-          <p th:text="#{index.gather-docs.icon-list.3}"></p>
+        <div class="width-one-half is-tablet-hidden">
+          <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
         </div>
       </div>
     </section>
