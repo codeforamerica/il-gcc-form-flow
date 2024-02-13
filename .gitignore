@@ -43,3 +43,6 @@ node_modules/
 
 ### Mac OS ###
 .DS_Store
+
+### ProviderCSV ###
+src/main/resources/Provider_Info_Pilot_Phase_1.csv
