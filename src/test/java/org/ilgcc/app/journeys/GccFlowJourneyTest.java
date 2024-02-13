@@ -25,6 +25,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.selectFromDropdown("languageRead", "English");
     testPage.selectFromDropdown("languageSpeak", "Español");
     testPage.clickContinue();
+
+    //children-info-intro
+    assertThat(testPage.getTitle()).isEqualTo("Your Children");
+    testPage.clickContinue();
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();

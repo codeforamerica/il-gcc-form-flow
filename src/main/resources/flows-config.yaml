@@ -14,7 +14,7 @@ flow:
   onboarding-language-pref:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
-      - name: activities-add-ed-program
+      - name: children-info-intro
 
   parent-info-intro:
     nextScreens:
@@ -79,7 +79,7 @@ flow:
 
   children-info-intro:
     nextScreens:
-      - name: children-add
+      - name: activities-add-ed-program
   children-add:
     nextScreens:
       - name: children-info-basic
