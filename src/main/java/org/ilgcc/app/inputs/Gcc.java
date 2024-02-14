@@ -34,7 +34,6 @@ public class Gcc extends FlowInputs {
     private String childDateOfBirthDay;
     private String childDateOfBirthMonth;
     private String childDateOfBirthYear;
-    @NotBlank(message = "{errors.required}")
     private String needFinancialAssistanceForChild;
     private List<String> weeklySchedule;
 }
