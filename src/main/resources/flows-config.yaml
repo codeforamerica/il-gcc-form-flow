@@ -87,7 +87,7 @@ flow:
       - name: children-info-basic
   children-info-basic:
     nextScreens:
-      - name: children-ccap-in-care
+      - name: children-ccap-info
   children-ccap-info:
     nextScreens:
       - name: children-ccap-in-care

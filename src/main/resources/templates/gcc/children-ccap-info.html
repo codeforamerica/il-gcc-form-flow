@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{children-ccap-info.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,11 +8,73 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: baby}"></th:block>
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{children-ccap-info.header(${fieldData.get('childFirstName')})}, subtext=#{children-ccap-info.subheader})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:replace="~{'fragments/inputs/checkboxFieldset' ::
+                  checkboxFieldset(inputName='childGender',
+                  label=#{children-ccap-info.gender-question},
+                  content=~{::genderContent})}">
+                <th:block th:ref="genderContent">
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childGender', value='MALE', label=#{general.inputs.male})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childGender', value='FEMALE', label=#{general.inputs.female})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childGender', value='NONBINARY', label=#{general.inputs.non-binary})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childGender', value='TRANSGENDER', label=#{general.inputs.transgender})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childGender', value='NO_ANSWER', label=#{general.inputs.prefer-not-to-answer})}"/>
+                </th:block>
+              </th:block>
+
+              <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName='childHasDisability',
+                  label=#{children-ccap-info.disability-question},
+                  fieldsetHelpText=#{children-ccap-info.disability-help-text},
+                  content=~{::radioOptions1})}">
+                <th:block th:ref="radioOptions1">
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childHasDisability', value='Yes', label=#{general.inputs.yes})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childHasDisability', value='No', label=#{general.inputs.no})}"/>
+                </th:block>
+              </th:block>
+
+              <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName='childIsUScitizen',
+                  label=#{children-ccap-info.us-citizen-question},
+                  fieldsetHelpText=#{children-ccap-info.us-citizen-help-text},
+                  content=~{::radioOptions2})}">
+                <th:block th:ref="radioOptions2">
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childIsUScitizen', value='Yes', label=#{general.inputs.yes})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childIsUScitizen', value='No', label=#{general.inputs.no})}"/>
+                </th:block>
+              </th:block>
+
+              <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName='childInIntactFamily',
+                  label=#{children-ccap-info.foster-question},
+                  content=~{::radioOptions3})}">
+                <th:block th:ref="radioOptions3">
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childInIntactFamily', value='Yes', label=#{general.inputs.yes})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childInIntactFamily', value='No', label=#{general.inputs.no})}"/>
+                </th:block>
+              </th:block>
+
+              <th:block th:replace="~{'fragments/inputs/checkboxFieldset' ::
+                  checkboxFieldset(inputName='childRaceEthnicity',
+                  label=#{children-ccap-info.race-ethnicity-question},
+                  fieldsetHelpText=#{children-ccap-info.race-ethnicity-help-text},
+                  content=~{::raceEthnicityContent})}">
+                <th:block th:ref="raceEthnicityContent">
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='ASIAN', label=#{general.inputs.race-ethnicity.asian})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='BLACK', label=#{general.inputs.race-ethnicity.black-or-african-american})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='HISPANIC', label=#{general.inputs.race-ethnicity.hispanic-latino-or-spanish})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='MIDDLE_EASTERN', label=#{general.inputs.race-ethnicity.middle-eastern-or-north-african})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='NATIVE_AMERICAN', label=#{general.inputs.race-ethnicity.native-american-or-alaska-native})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='NATIVE_HAWAIIAN', label=#{general.inputs.race-ethnicity.native-hawaiian-or-pacific-islander})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='WHITE', label=#{general.inputs.race-ethnicity.white})}"/>
+                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='other', label=#{general.inputs.race-ethnicity.other})}"/>
+                </th:block>
+              </th:block>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
