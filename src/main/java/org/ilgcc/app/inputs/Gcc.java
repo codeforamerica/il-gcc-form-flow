@@ -35,5 +35,8 @@ public class Gcc extends FlowInputs {
     private String childDateOfBirthMonth;
     private String childDateOfBirthYear;
     private String needFinancialAssistanceForChild;
+
+    private String childInCare;
+
     private List<String> weeklySchedule;
 }

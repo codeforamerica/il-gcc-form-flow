@@ -40,6 +40,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("childDateOfBirthYear", "2020");
     testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
     testPage.clickContinue();
+    //children-ccap-info
+    //children-ccap-in-care
+    assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
+    testPage.clickButton("Yes");
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
