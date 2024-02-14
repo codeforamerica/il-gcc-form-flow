@@ -4,8 +4,6 @@ import formflow.library.data.FlowInputs;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
-import java.util.List;
-
 public class Gcc extends FlowInputs {
 
     private String lang;
