@@ -133,6 +133,7 @@ a, .button--link {
 }
 
 .eligibility-table th {
+  font-weight: normal;
   font-size: 1.6rem;
   color: var(--idhs-dark-blue);
   padding-bottom: 1rem;
