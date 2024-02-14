@@ -81,37 +81,29 @@ flow:
 
   children-info-intro:
     nextScreens:
-      - name: activities-add-ed-program
+      - name: children-info-basic
   children-add:
-    subflow: children
     nextScreens:
       - name: children-info-basic
   children-info-basic:
-    subflow: children
     nextScreens:
-      - name: children-ccap-info
+      - name: activities-add-ed-program
   children-ccap-info:
-    subflow: children
     nextScreens:
       - name: children-ccap-in-care
   children-ccap-in-care:
-    subflow: children
     nextScreens:
       - name: children-ccap-start-date
   children-ccap-start-date:
-    subflow: children
     nextScreens:
       - name: children-childcare-weekly-schedule
   children-childcare-weekly-schedule:
-    subflow: children
     nextScreens:
       - name: children-childcare-hourly-schedule
   children-childcare-hourly-schedule:
-    subflow: children
     nextScreens:
       - name: children-ccap-child-other-ed
   children-ccap-child-other-ed:
-    subflow: children
     nextScreens:
       - name: activities-parent-intro
 
@@ -244,11 +236,6 @@ flow:
       - name: doc-upload-confirm
   doc-upload-confirm:
     nextScreens: null
-subflows:
-  children:
-    entryScreen: children-info-intro
-    iterationStartScreen: children-info-basic
-    reviewScreen: children-add
-    deleteConfirmationScreen: children-delete-confirmation
+
 landmarks:
   firstScreen: onboarding-getting-started

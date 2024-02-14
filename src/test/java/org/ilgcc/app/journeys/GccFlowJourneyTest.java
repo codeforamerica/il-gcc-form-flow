@@ -31,6 +31,15 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-info-intro
     assertThat(testPage.getTitle()).isEqualTo("Your Children");
     testPage.clickContinue();
+    //children-info-basic
+    assertThat(testPage.getTitle()).isEqualTo("Children Info");
+    testPage.enter("childFirstName", "child");
+    testPage.enter("childLastName", "mcchild");
+    testPage.enter("childDateOfBirthMonth", "12");
+    testPage.enter("childDateOfBirthDay", "25");
+    testPage.enter("childDateOfBirthYear", "2020");
+    testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
+    testPage.clickContinue();
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
