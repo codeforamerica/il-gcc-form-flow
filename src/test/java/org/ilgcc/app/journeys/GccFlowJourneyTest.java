@@ -17,11 +17,28 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //onboarding-choose-provider
     assertThat(testPage.getTitle()).isEqualTo("Choose Provider");
-    assertThat(testPage.getElementText("dayCareChoice-none-label")).isEqualTo("None of the above");
-    testPage.clickElementById("dayCareChoice-none-label");
+    testPage.clickElementById("dayCareChoice-OPEN_SESAME-label");
+    testPage.clickContinue();
+    //onboarding-confirm-provider
+    assertThat(testPage.getTitle()).isEqualTo("Confirm provider");
+    testPage.clickLink("Yes, I confirm");
+    //onboarding-language-preference
+    assertThat(testPage.getTitle()).isEqualTo("Language Preference");
+    testPage.selectFromDropdown("languageRead", "English");
+    testPage.selectFromDropdown("languageSpeak", "Español");
+    testPage.clickContinue();
+
+    //children-info-intro
+    assertThat(testPage.getTitle()).isEqualTo("Your Children");
     testPage.clickContinue();
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
+    testPage.clickContinue();
+
+    //activities-ed-program-type
+    assertThat(testPage.getElementText("educationType-highSchool-label")).isEqualTo("High School or GED");
+    testPage.clickElementById("educationType-highSchool-label");
+    assertThat(testPage.getTitle()).isEqualTo("What type of school or training are you enrolled in?");
     testPage.clickContinue();
 
     //activities-ed-program-name
@@ -29,10 +46,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?");
     testPage.clickContinue();
 
-    //activities-ed-program-type
-    testPage.clickElementById("educationType-highSchool");
-    assertThat(testPage.getTitle()).isEqualTo("What type of school or training are you enrolled in?");
-    testPage.clickContinue();
+    //activities-ed-program-info
+    //testPage.clickContinue();
 
+    //activities-ed-program-method
+    //assertThat(testPage.getTitle()).isEqualTo("How is the program taught?");
+    //testPage.clickContinue();
+
+    //activities-next-class-schedule
+    //assertThat(testPage.getTitle()).isEqualTo("What days do you take classes?");
+    //assertThat(testPage.getElementText("weeklySchedule-monday-label")).isEqualTo("Monday");
+    //testPage.clickContinue();
   }
 }
