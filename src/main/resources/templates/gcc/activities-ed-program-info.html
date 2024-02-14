@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{activities-ed-program-info.header})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,11 +8,18 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <div class="spacing-above-15">
+          <p class="text--grey-dark" th:block th:text="${fieldData.schoolName}"></p>
+          <hr class="spacing-below-25 spacing-above-25">
+        </div>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-ed-program-info.header}, subtext=#{activities-ed-program-info.description})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='phoneNumber', label=#{activities-ed-program-info.phone-number})}" />
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='streetAddress', label=#{activities-ed-program-info.street-address})}" />
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='city', label=#{activities-ed-program-info.city})}" />
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='zipCode', label=#{activities-ed-program-info.zip-code})}" />
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
