@@ -81,13 +81,13 @@ flow:
 
   children-info-intro:
     nextScreens:
-      - name: activities-add-ed-program
+      - name: children-info-basic
   children-add:
     nextScreens:
       - name: children-info-basic
   children-info-basic:
     nextScreens:
-      - name: children-ccap-info
+      - name: activities-add-ed-program
   children-ccap-info:
     nextScreens:
       - name: children-ccap-in-care
