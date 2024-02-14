@@ -15,7 +15,7 @@
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/continueButton :: continue}"/></br>
-              <a th:id="skip-coverage-during-classtime" th:href="'/flow/' + ${flow} + '/activities-ed-program-dates'"
+              <a id="skip-coverage-during-classtime" th:href="'/flow/' + ${flow} + '/activities-ed-program-dates'"
                  th:text="#{activities-next-class-schedule.skip}"></a>
             </div>
           </th:block>
