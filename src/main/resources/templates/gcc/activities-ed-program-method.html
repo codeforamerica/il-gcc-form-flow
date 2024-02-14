@@ -9,10 +9,10 @@
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
         <div class="spacing-above-15">
-          <p class="text--grey-dark" th:block th:text="${fieldData.schoolName}"></p>
+          <p class="text--grey-dark size" th:block th:text="${fieldData.schoolName}"></p>
           <hr class="spacing-below-25 spacing-above-25">
         </div>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-ed-program-method.program.header}, subtext=#{activities-ed-program-method.description})}"/>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-ed-program-method.title}, subtext=#{activities-ed-program-method.description})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
