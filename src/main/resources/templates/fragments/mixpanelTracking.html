@@ -54,7 +54,8 @@
     }
 
     if (pageName.startsWith("/flow/gcc/onboarding-language-pref")) {
-        if (($('form')[0]).getAttribute('action').indexOf('?') > 0) {
+        let form = $('form')
+        if (form.length > 0 && (form[0]).getAttribute('action').indexOf('?') > 0) {
           mixpanel.track('language_change', {
               'previous_language': htmlLang,
               'selected_language': $('#languageRead')[0].value,
