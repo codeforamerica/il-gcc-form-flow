@@ -59,7 +59,16 @@
       'page_name': pageName,
       'element_id': elementId,
       'language': htmlLang
-    })
+    });
+
+    if(elementId === 'confirm-provider') {
+      const provider_name = $("#provider-name")[0].innerText;
+      const provider_addr = $("#provider-address")[0].innerText;
+      mixpanel.track('provider_chosen', {
+        'provider_name': provider_name,
+        'provider_address': provider_addr
+      });
+    }
   }
 
   $(document).ready(function () {

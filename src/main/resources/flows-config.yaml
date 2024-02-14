@@ -5,7 +5,9 @@ flow:
       - name: onboarding-choose-provider
   onboarding-choose-provider:
     nextScreens:
-      - name: onboarding-language-pref
+      - name: pilot-offboard
+        condition: NoProviderChosen
+      - name: onboarding-confirm-provider
   pilot-offboard:
     nextScreens: null
   onboarding-confirm-provider:
@@ -14,7 +16,7 @@ flow:
   onboarding-language-pref:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
-      - name: activities-add-ed-program
+      - name: children-info-intro
 
   parent-info-intro:
     nextScreens:
@@ -79,13 +81,13 @@ flow:
 
   children-info-intro:
     nextScreens:
-      - name: children-add
+      - name: children-info-basic
   children-add:
     nextScreens:
       - name: children-info-basic
   children-info-basic:
     nextScreens:
-      - name: children-ccap-info
+      - name: activities-add-ed-program
   children-ccap-info:
     nextScreens:
       - name: children-ccap-in-care
