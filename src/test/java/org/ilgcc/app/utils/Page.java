@@ -5,6 +5,8 @@ import static org.awaitility.Awaitility.await;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import io.percy.selenium.Percy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -13,13 +15,17 @@ public class Page {
 
   protected final RemoteWebDriver driver;
 
+  protected final Percy percy;
+
 
   public Page(RemoteWebDriver driver) {
     this.driver = driver;
+    this.percy = new Percy(driver);
   }
 
   public String getTitle() {
     checkForBadMessageKeys();
+    percy.snapshot(driver.getTitle());
     return driver.getTitle();
   }
 
