@@ -8,9 +8,9 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <div class="spacing-above-15">
-          <p class="text--grey-dark size" th:block th:text="${fieldData.schoolName}"></p>
-          <hr class="spacing-below-25 spacing-above-25">
+        <div class="spacing-above-10">
+          <p class="spacing-below-0 text--grey-dark" th:block th:text="${fieldData.schoolName}"></p>
+          <hr class="spacing-below-10 spacing-above-0">
         </div>
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-ed-program-method.title}, subtext=#{activities-ed-program-method.description})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
@@ -18,6 +18,7 @@
             <div class="form-card__content">
               <th:block th:replace="~{fragments/inputs/radioFieldset ::
                               radioFieldset(inputName='programTaught',
+                              label=#{activities-ed-program-method.program.header},
                               ariaLabel='header',
                               content=~{::radioOptionsProgramTaught},
                               )}">
