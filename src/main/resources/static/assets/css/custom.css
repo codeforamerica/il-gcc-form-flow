@@ -139,7 +139,7 @@ a, .button--link {
   padding-bottom: 1rem;
 }
 
-.eligibility-table th {
+.eligibility-table th.bold {
   font-weight: bold;
 }
 
