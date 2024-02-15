@@ -139,9 +139,8 @@ a, .button--link {
   padding-bottom: 1rem;
 }
 
-.eligibility-table th.bold {
+.eligibility-table th {
   font-weight: bold;
-  color: var(--black);
 }
 
 .eligibility-table th:first-child,
