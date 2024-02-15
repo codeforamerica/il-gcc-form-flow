@@ -54,14 +54,17 @@
     }
 
     if (pageName.startsWith("/flow/gcc/onboarding-language-pref")) {
-        let form = $('form')
-        if (form.length > 0 && (form[0]).getAttribute('action').indexOf('?') > 0) {
-          mixpanel.track('language_change', {
-              'previous_language': htmlLang,
-              'selected_language': $('#languageRead')[0].value,
-              'element_id': 'language_change_dropdown'
-          });
-        }
+      let form = $('form')
+      if (form.length > 0 && (form[0]).getAttribute('action').indexOf('?') > 0) {
+        const langCodes = new Map();
+        langCodes.set('Spanish', 'es');
+        langCodes.set('English', 'en');
+        mixpanel.track('language_change', {
+          'previous_language': htmlLang,
+          'selected_language': langCodes.get($('#languageRead')[0].value),
+          'element_id': 'language_change_dropdown'
+        });
+      }
     }
   }
 
