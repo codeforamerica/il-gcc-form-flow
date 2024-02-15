@@ -30,22 +30,25 @@
               class="button--small button"></a>
           </div>
         </div>
+        <img src="/assets/images/mother-reading-to-child.svg" alt="" class="width-one-half is-tablet-hidden">
       </div>
     </section>
     <section class="slab slab--white">
       <div class="grid">
-        <div class="index-child-care-image-container">
-            <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 110px; height: 110px;">
-            <img src="/assets/images/IDHS-logo.png" alt="">
+        <div class="index-child-care-image-container width-one-fourth">
+            <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 141px; height: 141px;">
+            <img src="/assets/images/IDHS-logo.png" alt="" style="width: 168px; height: auto">
         </div>
-        <h2 th:text="#{index.child-care.title}"></h2>
-        <p th:text="#{index.child-care.paragraph}"></p>
-        <a
-            target="_blank" rel="noopener noreferrer"
-            href="https://www.inccrra.org/about/sdasearch">
-          <span th:text="#{index.child-care.link}"></span>
-          <i class="icon-">open_in_new</i>
-        </a>
+        <div class="width-one-half">
+          <h2 th:text="#{index.child-care.title}"></h2>
+          <p th:text="#{index.child-care.paragraph}"></p>
+          <a
+              target="_blank" rel="noopener noreferrer"
+              href="https://www.inccrra.org/about/sdasearch">
+            <span th:text="#{index.child-care.link}"></span>
+            <i class="icon-">open_in_new</i>
+          </a>
+        </div>
       </div>
     </section>
     <section class="slab slab--light-purple">
@@ -54,8 +57,8 @@
         <table class="eligibility-table">
           <thead>
           <tr>
-            <th scope="col" th:text="#{general.eligibility-table.column.header-1}"></th>
-            <th scope="col" th:text="#{general.eligibility-table.column.header-2}"></th>
+            <th class="color--idhs-base-blue bold" scope="col" th:text="#{general.eligibility-table.column.header-1}"></th>
+            <th class="color--idhs-base-blue bold" scope="col" th:text="#{general.eligibility-table.column.header-2}"></th>
           </tr>
           </thead>
           <tbody>
@@ -66,25 +69,33 @@
           </tbody>
         </table>
         <p th:text="#{index.eligibility.paragraph}"></p>
+        <p th:utext="#{index.eligibility.calculator-paragraph}"></p>
       </div>
     </section>
     <section class="slab slab--white">
       <div class="grid">
-        <h2 th:text="#{index.gather-docs.title}"></h2>
-        <p th:text="#{index.gather-docs.first-paragraph}"></p>
-        <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
-        <p th:text="#{index.gather-docs.second-paragraph}"></p>
-        <div class="index-icon-list spacing-below-15">
-          <th:block th:replace="~{fragments/gcc-icons :: blobWithPayStub}"></th:block>
-          <p th:text="#{index.gather-docs.icon-list.1}"></p>
+        <div class="width-one-half">
+          <h2 th:text="#{index.gather-docs.title}"></h2>
+          <div class="width-one-half is-desktop-hidden">
+            <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
+          </div>
+          <p th:text="#{index.gather-docs.first-paragraph}"></p>
+          <p th:text="#{index.gather-docs.second-paragraph}"></p>
+          <div class="index-icon-list spacing-below-15">
+            <th:block th:replace="~{fragments/gcc-icons :: blobWithPayStub}"></th:block>
+            <p th:text="#{index.gather-docs.icon-list.1}"></p>
+          </div>
+          <div class="index-icon-list spacing-below-15">
+            <th:block th:replace="~{fragments/gcc-icons :: blobWithW2}"></th:block>
+            <p th:text="#{index.gather-docs.icon-list.2}"></p>
+          </div>
+          <div class="index-icon-list">
+            <th:block th:replace="~{fragments/gcc-icons :: blobWithSchedule}"></th:block>
+            <p th:text="#{index.gather-docs.icon-list.3}"></p>
+          </div>
         </div>
-        <div class="index-icon-list spacing-below-15">
-          <th:block th:replace="~{fragments/gcc-icons :: blobWithW2}"></th:block>
-          <p th:text="#{index.gather-docs.icon-list.2}"></p>
-        </div>
-        <div class="index-icon-list">
-          <th:block th:replace="~{fragments/gcc-icons :: blobWithSchedule}"></th:block>
-          <p th:text="#{index.gather-docs.icon-list.3}"></p>
+        <div class="width-one-half is-tablet-hidden">
+          <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
         </div>
       </div>
     </section>
