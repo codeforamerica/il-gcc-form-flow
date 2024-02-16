@@ -46,15 +46,7 @@ html, body {
 
 @media only screen and (min-width: 600px) {
   .slab--hero {
-    background-position: bottom right 10rem;
-    background-size: 50rem;
-  }
-}
-
-@media only screen and (min-width: 1181px) {
-  .slab--hero {
-    background-position: bottom right 10rem;
-    background-size: 65rem;
+    background-image: none;
   }
 }
 
@@ -130,7 +122,11 @@ a, .button--link {
   align-items: center;
   gap: 30px;
 }
-
+.index-child-care-image-container img:first-child {
+  margin-bottom: 41px;
+  margin-left: 14px;
+  margin-right: 13px;
+}
 .eligibility-table {
   width: 100%;
   border-collapse: collapse;
@@ -145,7 +141,6 @@ a, .button--link {
 
 .eligibility-table th.bold {
   font-weight: bold;
-  color: var(--black);
 }
 
 .eligibility-table th:first-child,
@@ -297,6 +292,10 @@ a, .button--link {
 
 .help--header-spacing {
   margin-top: -35px;
+}
+
+.spacing-left-0 {
+  margin-left: 0;
 }
 
 .icon-person {

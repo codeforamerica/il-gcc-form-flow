@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{onboarding-confirm-provider.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
   <section class="slab">
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
+      <main id="content" role="main" class="form-card spacing-above-35"
+            th:with="provider=${T(org.ilgcc.app.utils.ChildCareProvider).valueOf(inputData.get('dayCareChoice'))}">
+        <th:block th:replace="~{fragments/gcc-icons :: caring}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-confirm-provider.header})}"/>
+        <div class="form-card__content">
+          <div class="grid__item address-validation spacing-below-60">
+            <div class="radio-button is-selected">
+              <p id="provider-name" class="spacing-below-15" th:text="${provider.getDisplayName()}"></p>
+              <div id="provider-address">
+                <th:block th:each="addressLine : ${provider.getAddressComponents()}">
+                  <div th:text="${addressLine}"></div>
+                </th:block>
+              </div>
             </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
+          </div>
+        </div>
+
+        <div class="form-card__footer">
+          <a class="button button--primary" th:text="#{onboarding-confirm-provider.yes}"
+             th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+             id="confirm-provider"></a>
+          <a class="button spacing-left-0" th:text="#{onboarding-confirm-provider.no}"
+             href="#" onclick="window.history.back(); return false;"></a>
+        </div>
       </main>
     </div>
   </section>

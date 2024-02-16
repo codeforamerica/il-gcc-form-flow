@@ -48,8 +48,23 @@
     if(elementId === 'language-menu') {
       mixpanel.track('language_picker_click', {
         'page_name': pageName,
-        'language': htmlLang
+        'language': htmlLang,
+        'element_id': elementId
       });
+    }
+
+    if (pageName.startsWith("/flow/gcc/onboarding-language-pref")) {
+      let form = $('form')
+      if (form.length > 0 && (form[0]).getAttribute('action').indexOf('?') > 0) {
+        const langCodes = new Map();
+        langCodes.set('Spanish', 'es');
+        langCodes.set('English', 'en');
+        mixpanel.track('language_change', {
+          'previous_language': htmlLang,
+          'selected_language': langCodes.get($('#languageRead')[0].value),
+          'element_id': 'language_change_dropdown'
+        });
+      }
     }
   }
 
@@ -59,7 +74,16 @@
       'page_name': pageName,
       'element_id': elementId,
       'language': htmlLang
-    })
+    });
+
+    if(elementId === 'confirm-provider') {
+      const provider_name = $("#provider-name")[0].innerText;
+      const provider_addr = $("#provider-address")[0].innerText;
+      mixpanel.track('provider_chosen', {
+        'provider_name': provider_name,
+        'provider_address': provider_addr
+      });
+    }
   }
 
   $(document).ready(function () {
@@ -98,7 +122,7 @@
       $(this).click(function () {
         mixpanel.track('language_change', {
           'page_name': window.location.pathname,
-          'language': htmlLang,
+          'previous_language': htmlLang,
           'selected_language': this.href.split("=")[1]
         });
       });
@@ -107,7 +131,7 @@
       $(this).click(function () {
         mixpanel.track('language_change', {
           'page_name': window.location.pathname,
-          'language': htmlLang,
+          'previous_language': htmlLang,
           'selected_language': this.href.split("=")[1]
         });
       });

@@ -2,6 +2,7 @@ package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 
 public class Gcc extends FlowInputs {
 
@@ -24,4 +25,23 @@ public class Gcc extends FlowInputs {
     private String state;
     private String zipCode;
 
+    @NotBlank(message = "{errors.provide-first-name}")
+    private String childFirstName;
+    @NotBlank(message = "{errors.provide-last-name}")
+    private String childLastName;
+
+    private String childDateOfBirthDay;
+    private String childDateOfBirthMonth;
+    private String childDateOfBirthYear;
+    private String needFinancialAssistanceForChild;
+
+    private String childGender;
+    private String childRaceEthnicity;
+    private String childHasDisability;
+    private String childIsUScitizen;
+    private String childInIntactFamily;
+
+    private String childInCare;
+
+    private List<String> weeklySchedule;
 }

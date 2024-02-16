@@ -22,5 +22,6 @@ public class SetLanguagePreferences implements Action {
 
     String languageToSet = LOCALE_TO_LANG.getOrDefault(locale.getLanguage(), "English");
     submission.getInputData().putIfAbsent("languageRead", languageToSet);
+    submission.getInputData().putIfAbsent("languageSpeak", languageToSet);
   }
 }
