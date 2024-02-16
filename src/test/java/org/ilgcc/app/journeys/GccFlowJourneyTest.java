@@ -6,7 +6,7 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 public class GccFlowJourneyTest extends AbstractBasePageTest {
-  
+
   @Test
   void fullGccFlow() {
     // Home page
@@ -62,15 +62,22 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
 
     //activities-ed-program-info
-    //testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Program information");
+    testPage.clickContinue();
 
     //activities-ed-program-method
-    //assertThat(testPage.getTitle()).isEqualTo("Learning style");
-    //testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("How is the program taught?");
+    testPage.clickElementById("programTaught-Online-label");
+    testPage.clickElementById("programSchedule-No-label");
+    testPage.clickContinue();
 
     //activities-next-class-schedule
-    //assertThat(testPage.getTitle()).isEqualTo("What days do you take classes?");
-    //assertThat(testPage.getElementText("weeklySchedule-monday-label")).isEqualTo("Monday");
-    //testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Next, we'll ask about your class schedule.");
+    testPage.clickContinue();
+
+    //activities-class-weekly-schedule
+    assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
+    assertThat(testPage.getElementText("weeklySchedule-monday-label")).isEqualTo("Monday");
+    testPage.clickContinue();
   }
 }
