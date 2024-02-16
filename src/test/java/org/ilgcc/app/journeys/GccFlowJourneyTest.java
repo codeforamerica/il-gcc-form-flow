@@ -6,7 +6,7 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 public class GccFlowJourneyTest extends AbstractBasePageTest {
-  
+
   @Test
   void fullGccFlow() {
     // Home page
@@ -17,14 +17,35 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //onboarding-choose-provider
     assertThat(testPage.getTitle()).isEqualTo("Choose Provider");
-    assertThat(testPage.getElementText("dayCareChoice-none-label")).isEqualTo("None of the above");
-    testPage.clickElementById("dayCareChoice-none-label");
+    testPage.clickElementById("dayCareChoice-OPEN_SESAME-label");
     testPage.clickContinue();
-    // language preference
+    //onboarding-confirm-provider
+    assertThat(testPage.getTitle()).isEqualTo("Confirm provider");
+    testPage.clickLink("Yes, I confirm");
+    //onboarding-language-preference
     assertThat(testPage.getTitle()).isEqualTo("Language Preference");
     testPage.selectFromDropdown("languageRead", "English");
     testPage.selectFromDropdown("languageSpeak", "Español");
     testPage.clickContinue();
+
+    //children-info-intro
+    assertThat(testPage.getTitle()).isEqualTo("Your Children");
+    testPage.clickContinue();
+    //children-info-basic
+    assertThat(testPage.getTitle()).isEqualTo("Children Info");
+    testPage.enter("childFirstName", "child");
+    testPage.enter("childLastName", "mcchild");
+    testPage.enter("childDateOfBirthMonth", "12");
+    testPage.enter("childDateOfBirthDay", "25");
+    testPage.enter("childDateOfBirthYear", "2020");
+    testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
+    testPage.clickContinue();
+    //children-ccap-info
+    assertThat(testPage.getTitle()).isEqualTo("CCAP Info");
+    testPage.clickContinue();
+    //children-ccap-in-care
+    assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
+    testPage.clickButton("Yes");
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
@@ -46,8 +67,17 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-ed-program-method
     assertThat(testPage.getTitle()).isEqualTo("How is the program taught?");
+    testPage.clickElementById("programTaught-Online-label");
+    testPage.clickElementById("programSchedule-No-label");
     testPage.clickContinue();
 
+    //activities-next-class-schedule
+    assertThat(testPage.getTitle()).isEqualTo("Next, we'll ask about your class schedule.");
+    testPage.clickContinue();
 
+    //activities-class-weekly-schedule
+    assertThat(testPage.getTitle()).isEqualTo("What days do you take classes?");
+    assertThat(testPage.getElementText("weeklySchedule-monday-label")).isEqualTo("Monday");
+    testPage.clickContinue();
   }
 }
