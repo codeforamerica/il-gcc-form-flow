@@ -8,10 +8,7 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <div class="spacing-above-10">
-          <b><p class="spacing-below-0 text--grey-dark" th:block th:text="${fieldData.schoolName}"></p></b>
-          <hr class="spacing-below-10 spacing-above-0">
-        </div>
+        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.schoolName})}"></th:block>
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-ed-program-info.header}, subtext=#{activities-ed-program-info.description})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
