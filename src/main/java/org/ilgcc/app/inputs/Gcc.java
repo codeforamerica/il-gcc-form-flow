@@ -2,6 +2,8 @@ package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 import java.util.List;
 
 public class Gcc extends FlowInputs {
@@ -23,8 +25,8 @@ public class Gcc extends FlowInputs {
     private String streetAddress;
     private String city;
     private String state;
+    @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
     private String zipCode;
-
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
