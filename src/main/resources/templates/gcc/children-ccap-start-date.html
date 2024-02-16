@@ -2,7 +2,7 @@
   th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
     title=#{children-ccap-start-date.title},
-    header=#{children-ccap-start-date.header},
+    header=#{children-ccap-start-date.header(${fieldData.get('childFirstName')})},
     buttonLabel='Continue',
     formAction=${formAction},
     inputContent=~{::inputContent})}">
