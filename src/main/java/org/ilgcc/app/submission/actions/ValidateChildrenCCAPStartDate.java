@@ -32,16 +32,17 @@ public class ValidateChildrenCCAPStartDate extends VerifyDate {
 
     if (this.isDateInvalid(ccapStartingDate)) {
       errorMessages.put(INPUT_NAME, List.of("Please check the date entered. It is not a valid date."));
+    }else{
+      DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
+      DateTime dateCCAPStart = dtf.parseDateTime(ccapStartingDate);
+      DateTime present = DateTime.now();
+      DateTime earliest_supported_date = dtf.parseDateTime(EARLIEST_DATE_SUPPORTED);
+
+      if(this.isDateNotWithinSupportedRange(dateCCAPStart, earliest_supported_date, present)){
+        errorMessages.put(INPUT_NAME, List.of(String.format("Please check the date entered. %s is not a supported start date.", ccapStartingDate)));
+      }
     }
 
-    DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
-    DateTime dateCCAPStart = dtf.parseDateTime(ccapStartingDate);
-    DateTime present = DateTime.now();
-    DateTime earliest_supported_date = dtf.parseDateTime(EARLIEST_DATE_SUPPORTED);
-
-    if(this.isDateNotWithinSupportedRange(dateCCAPStart, earliest_supported_date, present)){
-      errorMessages.put(INPUT_NAME, List.of(String.format("Please check the date entered. %s is not a supported start date.", ccapStartingDate)));
-    }
 
     return errorMessages;
   }
