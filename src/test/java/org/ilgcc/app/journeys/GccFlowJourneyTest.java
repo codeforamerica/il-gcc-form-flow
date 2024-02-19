@@ -50,6 +50,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
     testPage.enter("ccapStartMonth", "11");
     testPage.enter("ccapStartDay", "1");
+    testPage.enter("ccapStartYear", "1889");
+    testPage.clickContinue();
+    assertThat(testPage.hasErrorText("Please check the date entered. " + "11/1/1889" + " is not a supported start date.")).isTrue();
+    testPage.enter("ccapStartMonth", "11");
+    testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "2010");
     testPage.clickContinue();
     //activities-add-ed-program

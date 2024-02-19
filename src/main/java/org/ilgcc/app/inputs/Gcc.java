@@ -50,6 +50,7 @@ public class Gcc extends FlowInputs {
     private String ccapStartDay;
     private String ccapStartMonth;
     private String ccapStartYear;
+
     private String ccapStartDate;
 
 }
