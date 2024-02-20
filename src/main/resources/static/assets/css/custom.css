@@ -301,3 +301,7 @@ a, .button--link {
 .icon-person {
   font-size: 3.2rem;
 }
+
+.phone-input {
+  max-width: 25em;
+}
