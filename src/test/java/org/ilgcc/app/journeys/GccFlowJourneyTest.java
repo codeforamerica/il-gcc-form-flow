@@ -46,6 +46,22 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-ccap-in-care
     assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
     testPage.clickButton("Yes");
+
+    assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
+    testPage.enter("ccapStartMonth", "11");
+    testPage.enter("ccapStartDay", "1");
+    testPage.enter("ccapStartYear", "1889");
+    testPage.clickContinue();
+    assertThat(testPage.hasErrorText("Please check the date entered. " + "11/1/1889" + " is not a supported start date.")).isTrue();
+    testPage.enter("ccapStartMonth", "*1");
+    testPage.enter("ccapStartDay", "1");
+    testPage.enter("ccapStartYear", "1889");
+    testPage.clickContinue();
+    assertThat(testPage.hasErrorText("Please check the date entered. It is not a valid date.")).isTrue();
+    testPage.enter("ccapStartMonth", "11");
+    testPage.enter("ccapStartDay", "1");
+    testPage.enter("ccapStartYear", "2010");
+    testPage.clickContinue();
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();

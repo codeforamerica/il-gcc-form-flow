@@ -46,4 +46,12 @@ public class Gcc extends FlowInputs {
     private String childInCare;
 
     private List<String> weeklySchedule;
+
+
+    private String ccapStartDay;
+    private String ccapStartMonth;
+    private String ccapStartYear;
+
+    private String ccapStartDate;
+
 }
