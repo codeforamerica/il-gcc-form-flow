@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ValidateChildrenCCAPStartDate extends VerifyDate {
-@Autowired
+  @Autowired
   MessageSource messageSource;
 
   private final String INPUT_NAME = "ccapStartDate";

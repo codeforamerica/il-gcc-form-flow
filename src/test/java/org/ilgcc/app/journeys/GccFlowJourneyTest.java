@@ -63,7 +63,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //children-ccap-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Weekly Schedule");
-
     testPage.clickContinue();
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
