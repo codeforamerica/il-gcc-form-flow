@@ -19,10 +19,10 @@
                   <strong th:text="#{children-info-intro.title}"></strong>
                   <ul class="subflow-list list--bulleted">
                     <li th:each="child, iter: ${inputData.children}"
-                        class="spacing-below-15">
+                        class="spacing-below-10">
                     <span class="space-between">
                       <span class="child-name" th:text="|${child.childFirstName} ${child.childLastName}|"/>
-                      <span class="text--small spacing-below-0">
+                      <span class="text--small spacing-below-0 spacing-right-25">
                         <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/child-delete-confirmation'"
                            th:text="#{general.delete}"
                            class="subflow-delete"
