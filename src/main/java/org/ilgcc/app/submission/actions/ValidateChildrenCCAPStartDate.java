@@ -27,6 +27,7 @@ public class ValidateChildrenCCAPStartDate extends VerifyDate {
   private final String INPUT_NAME = "ccapStartDate";
   private static final String EARLIEST_DATE_SUPPORTED = "01/01/1901";
   private static final DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
+  @Override
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
     log.info("Running ValidateCCAPStartDate");
     Locale locale = LocaleContextHolder.getLocale();

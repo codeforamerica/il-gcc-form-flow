@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class NeedsFinancialAssistanceForChild implements Condition {
 
+  @Override
   public Boolean run(Submission submission) {
     return submission.getInputData().getOrDefault("needFinancialAssistanceForChild", "No").equals("Yes");
   }
