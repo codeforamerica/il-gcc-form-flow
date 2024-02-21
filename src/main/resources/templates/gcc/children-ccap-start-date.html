@@ -1,11 +1,11 @@
 <th:block
-  th:replace="~{fragments/inputs/overrides/screenWithOneInput ::
+  th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
     title=#{children-ccap-start-date.title},
     header=#{children-ccap-start-date.header(${fieldData.get('childFirstName')})},
     buttonLabel='Continue',
     formAction=${formAction},
-    iconName='baby',
+    iconFragment=~{fragments/gcc-icons :: baby},
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
     <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
