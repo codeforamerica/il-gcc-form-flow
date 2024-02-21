@@ -51,7 +51,7 @@ def formFlowLibraryVersion = '1.1.1'
 def useLocalLibrary = System.getenv('USE_LOCAL_LIBRARY')
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.1.5'
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
 
@@ -63,22 +63,22 @@ dependencies {
         println "📚Using form flow library ${formFlowLibraryVersion}"
     }
 
-    compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.1.5'
 
-    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.seleniumhq.selenium:selenium-java'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.5'
+    testImplementation 'org.springframework.security:spring-security-test:6.1.5'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.8.3'
     testImplementation 'io.percy:percy-java-selenium:2.0.2'
-    testImplementation 'org.awaitility:awaitility'
+    testImplementation 'org.awaitility:awaitility:4.2.0'
     testImplementation 'org.apache.httpcomponents.client5:httpclient5:5.3'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.6.4'
-    testImplementation 'com.h2database:h2'
+    testImplementation 'com.h2database:h2:2.1.214'
 
-    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql:42.6.0'
 }
 
 springBoot {
