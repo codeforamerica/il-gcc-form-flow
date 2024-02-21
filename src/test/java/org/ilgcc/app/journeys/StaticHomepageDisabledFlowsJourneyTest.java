@@ -26,10 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 })
 public class StaticHomepageDisabledFlowsJourneyTest extends AbstractBasePageTest {
 
-  protected void initTestPage() {
-    testPage = new Page(driver);
-  }
-
   @Autowired
   Environment environment;
 

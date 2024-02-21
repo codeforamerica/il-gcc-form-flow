@@ -134,7 +134,6 @@ public class Page {
   }
 
   public void enterInputById(String inputId, String value) {
-    String id = By.id(inputId).toString();
     WebElement we = driver.findElement(By.id(inputId));
     enterInput(we, value);
   }

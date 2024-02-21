@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClassesTaughtSchedule implements Condition {
 
+  @Override
   public Boolean run(Submission submission) {
     return SubmissionUtilities.getProgramSchedule(submission).equalsIgnoreCase("NO");
   }
