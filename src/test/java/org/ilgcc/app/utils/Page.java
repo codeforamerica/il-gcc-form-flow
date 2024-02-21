@@ -238,6 +238,13 @@ public class Page {
         .collect(Collectors.toList());
   }
 
+  public List<String> getTextBySelector(String cssSelector) {
+    List<WebElement> elements = driver.findElements(By.cssSelector(cssSelector));
+    return elements.stream()
+        .map(WebElement::getText)
+        .collect(Collectors.toList());
+  }
+
   public String getSelectValue(String inputName) {
     return driver.findElement(By.cssSelector(String.format("select[name='%s[]']", inputName)))
         .findElements(By.tagName("option")).stream()
