@@ -21,10 +21,6 @@ import org.springframework.test.context.TestPropertySource;
 })
 public class DesignSystemCfaUswdsJourneyTest extends AbstractBasePageTest {
 
-  protected void initTestPage() {
-    testPage = new Page(driver);
-  }
-
   @Autowired
   Environment environment;
 
