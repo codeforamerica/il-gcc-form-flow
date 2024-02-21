@@ -99,7 +99,7 @@ flow:
   children-ccap-start-date:
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
     nextScreens:
-      - name: activities-add-ed-program
+      - name: children-childcare-weekly-schedule
   children-childcare-weekly-schedule:
     nextScreens:
       - name: activities-add-ed-program
