@@ -83,7 +83,6 @@ flow:
     nextScreens:
       - name: children-add
   children-add:
-    subflow: children
     nextScreens:
 #      - name: activities-parent-intro
       - name: activities-add-ed-program # skipping WIP

@@ -4,6 +4,8 @@ import formflow.library.data.Submission;
 
 import java.time.format.DateTimeFormatter;
 
+import static java.util.Collections.emptyList;
+
 public class SubmissionUtilities {
 
   public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyy");
@@ -25,5 +27,12 @@ public class SubmissionUtilities {
    */
   public static String getProgramSchedule(Submission submission) {
     return submission.getInputData().get(PROGRAM_SCHEDULE).toString();
+  }
+
+  public static List<Map<String, Object>> getCompleteIterations(Submission submission, String subflow) {
+    var iterations = (List<Map<String, Object>>) submission.getInputData().getOrDefault(subflow, emptyList());
+    return iterations.stream()
+        .filter(iter -> (boolean) iter.getOrDefault("iterationIsComplete", false))
+        .toList();
   }
 }
