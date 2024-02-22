@@ -1,3 +1,6 @@
+form-flow:
+  error:
+    show-stack-trace: true
 management:
   endpoints:
     enabled-by-default: true
