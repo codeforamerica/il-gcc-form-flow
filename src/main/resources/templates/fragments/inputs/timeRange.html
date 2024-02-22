@@ -1,0 +1,42 @@
+<th:block
+        th:fragment="timeRange"
+        th:with="
+          hasHelpText=${!#strings.isEmpty(helpText)},
+          hasLabel=${!#strings.isEmpty(label)},
+          hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
+          hasError=${
+            errorMessages != null &&
+            errorMessages.get(inputName) != null &&
+            (#arrays.length(errorMessages.get(inputName)) > 0) }"
+        th:assert="${!#strings.isEmpty(startInputName)},${!#strings.isEmpty(endInputName)}, ${hasLabel || hasAriaLabel}">
+    <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
+        <label th:if="${hasLabel}" th:for="${startInputName}" th:text="${label}" class="form-question"/>
+        <p class="text--help"
+           th:if="${hasHelpText}"
+           th:id="${startInputName + '-help-text'}"
+           th:text="${helpText}"></p>
+        <div class="form-width--long">
+        <input type="time" class="time-input form-width--short"
+               th:id="${startInputName}"
+               th:name="${startInputName}"
+               th:attr="
+            aria-describedby=${hasHelpText ? startInputName + '-help-text' : ''},
+            aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
+            aria-invalid=${hasError}"
+               th:value="${fieldData.getOrDefault(startInputName, '')}">
+            <label th:for="${inputName}" th:text="TO" class="form-question"/>
+            <input type="time" class="time-input form-width--short"
+                   th:id="${endInputName}"
+                   th:name="${endInputName}"
+                   th:attr="
+            aria-describedby=${hasHelpText ? endInputName + '-help-text' : ''},
+            aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
+            aria-invalid=${hasError}"
+                   th:value="${fieldData.getOrDefault(endInputName, '')}">
+        </div>
+        <th:block
+                th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
+        <th:block
+                th:replace="~{fragments/inputError :: validationError(inputName=${endInputName})}"></th:block>
+    </div>
+</th:block>

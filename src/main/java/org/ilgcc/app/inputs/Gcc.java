@@ -27,6 +27,22 @@ public class Gcc extends FlowInputs {
     private String state;
     @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
     private String zipCode;
+    private String classHoursSameEveryDay;
+    private String startTimeMonday;
+    private String endTimeMonday;
+
+    private String startTimeTuesday;
+    private String endTimeTuesday;
+
+    private String startTimeWednesday;
+    private String endTimeWednesday;
+
+    private String startTimeThursday;
+    private String endTimeThursday;
+
+    private String startTimeFriday;
+    private String endTimeFriday;
+
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
