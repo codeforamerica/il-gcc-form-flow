@@ -14,10 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Tag("staticPagesJourney")
 public class StaticPagesJourneyTest extends AbstractBasePageTest {
 
-  protected void initTestPage() {
-    testPage = new Page(driver);
-  }
-
   @Autowired
   Environment environment;
 
@@ -27,7 +23,7 @@ public class StaticPagesJourneyTest extends AbstractBasePageTest {
     // Landing screen
     assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
     assertThat(driver.getWindowHandles().size()).isEqualTo(1);
-    String originalWindow = driver.getWindowHandle();
+//    String originalWindow = driver.getWindowHandle();
 
 //    // Go to FAQ tab
 //    testPage.clickLink("Frequently Asked Questions (FAQ)");
