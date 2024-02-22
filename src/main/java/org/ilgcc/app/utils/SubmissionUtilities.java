@@ -9,7 +9,7 @@ import java.util.Map;
 import static java.util.Collections.emptyList;
 
 public class SubmissionUtilities {
-
+  public static final DateTimeFormatter MM_DD_YYYY = DateTimeFormatter.ofPattern("M/d/uuuu");
   public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyy");
   public static final String PROGRAM_SCHEDULE = "programSchedule";
 
