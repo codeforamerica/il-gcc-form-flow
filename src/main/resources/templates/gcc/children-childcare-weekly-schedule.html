@@ -1,10 +1,10 @@
 <th:block
-  th:replace="~{fragments/inputs/overrides/screenWithOneInput ::
+  th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
     title=#{children-childcare-weekly-schedule.title},
     header=#{children-childcare-weekly-schedule.header(${fieldData.get('childFirstName')})},
     buttonLabel='Continue',
-    iconName='scheduleChildcare',
+    iconFragment=~{fragments/gcc-icons :: scheduleChildcare},
     formAction=${formAction},
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
