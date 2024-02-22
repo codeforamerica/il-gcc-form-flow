@@ -1,7 +1,8 @@
 <th:block
     th:fragment="screenWithOneInput"
     th:with="
-      hasIconName=${!#strings.isEmpty(iconFragment)}"
+      hasIconFragment=${!#strings.isEmpty(iconFragment)},
+      hasIconName=${!#strings.isEmpty(iconName)}"
     th:assert="
       ${!#strings.isEmpty(title)},
       ${!#strings.isEmpty(header)},
@@ -17,7 +18,8 @@
       <div class="grid">
         <div th:replace="~{fragments/goBack :: goBackLink}"></div>
         <main id="content" role="main" class="form-card spacing-above-35">
-          <th:block th:replace="${hasIconName} ? ${iconFragment} : _" />
+          <th:block th:replace="${hasIconName} ? ~{'fragments/icons' :: ${iconName}} : _"/>
+          <th:block th:replace="${hasIconFragment} ? ${iconFragment} : _" />
           <th:block
               th:replace="~{fragments/cardHeader :: cardHeader(header=${header}, subtext=${subtext})}"/>
           <th:block
