@@ -48,7 +48,6 @@ form-flow:
       domain: 'mail.forms-starter.cfa-platforms.org'
       sender-email: 'UBI Demo <demo@mail.forms-starter.cfa-platforms.org>'
   error:
-    show-stack-trace: true
     pretty-print-packages: formflow,ilgcc
 spring:
   profiles:
