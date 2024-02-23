@@ -12,12 +12,15 @@
         <th:block
             th:replace="~{fragments/cardHeader :: cardHeader(header=#{children-ccap-info.header(${fieldData.get('childFirstName')})}, subtext=#{children-ccap-info.subheader})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent" th:with="options=${T(org.ilgcc.app.utils.Gender).values()}">
+          <th:block th:ref="formContent"
+                    th:with="
+                      genderOptions=${T(org.ilgcc.app.utils.GenderOption).values()},
+                      raceEthnicityOptions=${T(org.ilgcc.app.utils.RaceEthnicityOption).values()}">
             <div class="form-card__content">
               <th:block th:replace="~{fragments/inputs/checkboxes ::
                   checkboxes(inputName='childGender',
                     label=#{children-ccap-info.gender-question},
-                    options=${options})}">
+                    options=${genderOptions})}">
               </th:block>
 
               <th:block th:replace="~{fragments/inputs/radioFieldset ::
@@ -52,21 +55,10 @@
                 </th:block>
               </th:block>
 
-              <th:block th:replace="~{'fragments/inputs/checkboxFieldset' ::
-                  checkboxFieldset(inputName='childRaceEthnicity',
-                  label=#{children-ccap-info.race-ethnicity-question},
-                  fieldsetHelpText=#{children-ccap-info.race-ethnicity-help-text},
-                  content=~{::raceEthnicityContent})}">
-                <th:block th:ref="raceEthnicityContent">
-                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='ASIAN', label=#{general.inputs.race-ethnicity.asian})}"/>
-                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='BLACK', label=#{general.inputs.race-ethnicity.black-or-african-american})}"/>
-                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='HISPANIC', label=#{general.inputs.race-ethnicity.hispanic-latino-or-spanish})}"/>
-                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='MIDDLE_EASTERN', label=#{general.inputs.race-ethnicity.middle-eastern-or-north-african})}"/>
-                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='NATIVE_AMERICAN', label=#{general.inputs.race-ethnicity.native-american-or-alaska-native})}"/>
-                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='NATIVE_HAWAIIAN', label=#{general.inputs.race-ethnicity.native-hawaiian-or-pacific-islander})}"/>
-                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='WHITE', label=#{general.inputs.race-ethnicity.white})}"/>
-                  <th:block th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childRaceEthnicity', value='other', label=#{general.inputs.race-ethnicity.other})}"/>
-                </th:block>
+              <th:block th:replace="~{fragments/inputs/checkboxes ::
+                  checkboxes(inputName='childRaceEthnicity',
+                    label=#{children-ccap-info.race-ethnicity-question},
+                    options=${raceEthnicityOptions})}">
               </th:block>
             </div>
             <div class="form-card__footer">

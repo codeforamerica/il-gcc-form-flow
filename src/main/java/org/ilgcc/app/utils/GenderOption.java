@@ -3,7 +3,7 @@ package org.ilgcc.app.utils;
 import lombok.Getter;
 
 @Getter
-public enum Gender implements InputOption {
+public enum GenderOption implements InputOption {
 
   MALE("general.inputs.male"),
   FEMALE("general.inputs.female"),
@@ -13,7 +13,7 @@ public enum Gender implements InputOption {
 
   private final String displayName;
 
-  Gender(String displayName) {
+  GenderOption(String displayName) {
     this.displayName = displayName;
   }
 
