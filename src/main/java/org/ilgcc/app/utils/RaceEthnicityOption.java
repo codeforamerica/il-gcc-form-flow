@@ -14,14 +14,20 @@ public enum RaceEthnicityOption implements InputOption {
   WHITE("general.inputs.race-ethnicity.white"),
   OTHER("general.inputs.race-ethnicity.other");
 
-  private final String displayName;
+  private final String label;
 
-  RaceEthnicityOption(String displayName) {
-    this.displayName = displayName;
+  RaceEthnicityOption(String label) {
+    this.label = label;
   }
 
   @Override
   public String getValue() {
     return this.name();
   }
+
+  @Override
+  public String getHelpText() {
+    return null;
+  }
+
 }

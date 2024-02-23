@@ -17,8 +17,8 @@
                       genderOptions=${T(org.ilgcc.app.utils.GenderOption).values()},
                       raceEthnicityOptions=${T(org.ilgcc.app.utils.RaceEthnicityOption).values()}">
             <div class="form-card__content">
-              <th:block th:replace="~{fragments/inputs/checkboxes ::
-                  checkboxes(inputName='childGender',
+              <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='childGender',
                     label=#{children-ccap-info.gender-question},
                     options=${genderOptions})}">
               </th:block>
@@ -55,8 +55,8 @@
                 </th:block>
               </th:block>
 
-              <th:block th:replace="~{fragments/inputs/checkboxes ::
-                  checkboxes(inputName='childRaceEthnicity',
+              <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='childRaceEthnicity',
                     label=#{children-ccap-info.race-ethnicity-question},
                     options=${raceEthnicityOptions})}">
               </th:block>

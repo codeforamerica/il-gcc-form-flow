@@ -3,6 +3,9 @@ package org.ilgcc.app.utils;
 
 public interface InputOption {
 
-  String getDisplayName();
+  String getLabel();
+
   String getValue();
+
+  String getHelpText();
 }

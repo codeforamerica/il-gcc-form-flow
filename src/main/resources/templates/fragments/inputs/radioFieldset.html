@@ -1,0 +1,45 @@
+<th:block
+    th:fragment="radioFieldset"
+    th:with="
+      hasHelpText=${!#strings.isEmpty(fieldsetHelpText)},
+      hasLabel=${!#strings.isEmpty(label)},
+      hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
+      hasOptions=${options != null},
+      hasContent=${!hasOptions},
+      hasError=${
+        errorMessages != null &&
+        errorMessages.get(inputName) != null &&
+        (#arrays.length(errorMessages.get(inputName)) > 0) }"
+    th:assert="
+      ${!#strings.isEmpty(inputName)},
+      ${hasLabel || hasAriaLabel},
+      ${content != null || hasOptions}">
+  <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
+    <fieldset th:attr="
+      aria-describedby=${hasHelpText ? inputName + '-help-text' : ''},
+      aria-labelledby=${hasAriaLabel ? ariaLabel : ''}">
+      <legend class="form-question"
+              th:id="${inputName + '-legend'}"
+              th:inline="text">
+        [[${label}]]
+        <p class="text--help spacing-below-0 text--normal"
+           th:if="${hasHelpText}"
+           th:id="${inputName + '-help-text'}"
+           th:text="${fieldsetHelpText}"></p>
+      </legend>
+      <input type="hidden" th:id="${inputName} + 'Hidden'" th:name="${inputName}" value="">
+      <th:block th:if="${hasContent}" th:replace="${content}"/>
+      <th:block th:if="${hasOptions}">
+        <th:block th:each="option : ${options}">
+          <th:block th:replace="~{fragments/inputs/radio ::
+            radio(inputName=${inputName},
+              value=${option.getValue()},
+              label=#{${option.getLabel()}},
+              radioHelpText=#{${option.getHelpText()}})}"/>
+        </th:block>
+      </th:block>
+    </fieldset>
+    <th:block
+        th:replace="~{fragments/inputError :: validationError(inputName=${inputName})}"></th:block>
+  </div>
+</th:block>

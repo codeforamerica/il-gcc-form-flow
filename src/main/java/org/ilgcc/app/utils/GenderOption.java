@@ -11,14 +11,19 @@ public enum GenderOption implements InputOption {
   TRANSGENDER("general.inputs.transgender"),
   NO_ANSWER("general.inputs.prefer-not-to-answer");
 
-  private final String displayName;
+  private final String label;
 
-  GenderOption(String displayName) {
-    this.displayName = displayName;
+  GenderOption(String label) {
+    this.label = label;
   }
 
   @Override
   public String getValue() {
     return this.name();
+  }
+
+  @Override
+  public String getHelpText() {
+    return null;
   }
 }
