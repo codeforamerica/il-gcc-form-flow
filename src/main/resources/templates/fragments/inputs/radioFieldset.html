@@ -13,7 +13,7 @@
     th:assert="
       ${!#strings.isEmpty(inputName)},
       ${hasLabel || hasAriaLabel},
-      ${content != null || hasOptions}">
+      ${hasContent || hasOptions}">
   <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
     <fieldset th:attr="
       aria-describedby=${hasHelpText ? inputName + '-help-text' : ''},
@@ -28,7 +28,9 @@
            th:text="${fieldsetHelpText}"></p>
       </legend>
       <input type="hidden" th:id="${inputName} + 'Hidden'" th:name="${inputName}" value="">
-      <th:block th:if="${hasContent}" th:replace="${content}"/>
+      <th:block th:if="${hasContent}">
+        <th:block th:replace="${content}"/>
+      </th:block>
       <th:block th:if="${hasOptions}">
         <th:block th:each="option : ${options}">
           <th:block th:replace="~{fragments/inputs/radio ::

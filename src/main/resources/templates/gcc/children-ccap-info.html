@@ -20,8 +20,7 @@
               <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
                   checkboxFieldset(inputName='childGender',
                     label=#{children-ccap-info.gender-question},
-                    options=${genderOptions})}">
-              </th:block>
+                    options=${genderOptions})}"/>
 
               <th:block th:replace="~{fragments/inputs/radioFieldset ::
                   radioFieldset(inputName='childHasDisability',
@@ -58,8 +57,7 @@
               <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
                   checkboxFieldset(inputName='childRaceEthnicity',
                     label=#{children-ccap-info.race-ethnicity-question},
-                    options=${raceEthnicityOptions})}">
-              </th:block>
+                    options=${raceEthnicityOptions})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
