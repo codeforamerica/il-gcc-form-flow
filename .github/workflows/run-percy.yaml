@@ -37,6 +37,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Run journey test and send to Percy
-        run: npx percy exec -- ./gradlew test
+        run: npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.GccFlowJourneyTest.fullGccFlow
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
