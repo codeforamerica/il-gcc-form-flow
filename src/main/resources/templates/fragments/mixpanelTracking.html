@@ -8,7 +8,7 @@
   const pageName = window.location.pathname;
   const htmlLang = document.documentElement.lang || "undefined";
 
-  const tracking_params = {
+  let tracking_params = {
     'page_name': pageName,
     'language': htmlLang,
     'pref_written_language': '[[ ${inputData != null && inputData.containsKey("languageRead") ? inputData.get("languageRead") : "not_set"} ]]',
@@ -40,11 +40,8 @@
 
   function buttonClickEvent() {
     const elementId = $(this).attr("id");
-    mixpanel.track('button_click', {
-      'page_name': pageName,
-      'element_id': elementId,
-      'language': htmlLang
-    });
+    tracking_params['element_id'] = elementId
+    mixpanel.track('button_click', tracking_params);
 
     if(elementId === 'language-menu') {
       mixpanel.track('language_picker_click', {
@@ -71,11 +68,8 @@
 
   function linkClickEvent() {
     const elementId = $(this).attr("id");
-    mixpanel.track('link_click', {
-      'page_name': pageName,
-      'element_id': elementId,
-      'language': htmlLang
-    });
+    tracking_params['element_id'] = elementId
+    mixpanel.track('link_click', tracking_params);
 
     if(elementId === 'confirm-provider') {
       const provider_name = $("#provider-name")[0].innerText;
