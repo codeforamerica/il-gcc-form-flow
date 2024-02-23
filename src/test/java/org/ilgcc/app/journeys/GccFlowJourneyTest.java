@@ -41,7 +41,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("childLastName", "mcchild");
     testPage.enter("childDateOfBirthMonth", "12");
     testPage.enter("childDateOfBirthDay", "25");
-    testPage.enter("childDateOfBirthYear", "2020");
+    testPage.enter("childDateOfBirthYear", "2018");
     testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
     testPage.clickButton("Continue");
     //children-ccap-info
