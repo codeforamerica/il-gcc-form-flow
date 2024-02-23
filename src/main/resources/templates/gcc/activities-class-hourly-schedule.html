@@ -22,11 +22,9 @@
                           th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='classHoursSameEveryDay', value='Yes',  label=#{activities-class-hourly-schedule.class.hours.same.every.day})}" />
                 </th:block>
               </th:block>
-              <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='startTimeMonday', endInputName='endTimeMonday', label=#{general.week.monday})}" />
-              <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='startTimeTuesday', endInputName='endTimeTuesday', label=#{general.week.tuesday})}" />
-              <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='startTimeWednesday', endInputName='endTimeWednesday', label=#{general.week.wednesday})}" />
-              <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='startTimeThursday', endInputName='endTimeThursday', label=#{general.week.thursday})}" />
-              <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='startTimeFriday', endInputName='endTimeFriday', label=#{general.week.friday})}" />
+              <th:block th:each="day: ${fieldData['weeklySchedule[]']}">
+                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='startTime' + ${day}, endInputName='endTime' + ${day}, label=#{${'general.week.' + day}})}" />
+              </th:block>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
