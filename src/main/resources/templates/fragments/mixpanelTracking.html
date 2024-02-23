@@ -13,6 +13,7 @@
     'language': htmlLang,
     'pref_written_language': '[[ ${inputData != null && inputData.containsKey("languageRead") ? inputData.get("languageRead") : "not_set"} ]]',
     'pref_spoken_language': '[[ ${inputData != null && inputData.containsKey("languageSpeak") ? inputData.get("languageSpeak") : "not_set"} ]]',
+    'number_of_children': '[[ ${inputData != null && inputData.containsKey("children") ? T(org.ilgcc.app.utils.SubmissionUtilities).getCompleteIterations(submission, "children").size() : "not_set"} ]]',
   }
 
   const intercepted_param = window.location.href.includes("?intercepted=") ? window.location.href.split("?intercepted=")[1].split('&')[0] : null

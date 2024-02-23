@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class GccFlowJourneyTest extends AbstractBasePageTest {
 
   @Test
@@ -30,6 +32,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-info-intro
     assertThat(testPage.getTitle()).isEqualTo("Your Children");
     testPage.clickContinue();
+    // children-add
+    assertThat(testPage.getTitle()).isEqualTo("Children add");
+    testPage.clickButton("Add child");
     //children-info-basic
     assertThat(testPage.getTitle()).isEqualTo("Children Info");
     testPage.enter("childFirstName", "child");
@@ -70,6 +75,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-ccap-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Weekly Schedule");
     testPage.clickContinue();
+    // children-add (with children listed)
+    assertThat(testPage.getTitle()).isEqualTo("Children add");
+    List<String> li = testPage.getTextBySelector(".child-name");
+    assertThat(li).containsExactly("child mcchild");
+    testPage.clickButton("That is all my children");
+
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
