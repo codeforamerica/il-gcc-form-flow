@@ -19,6 +19,9 @@ abstract class VerifyDate implements Action {
   }
 
  protected boolean isDateNotWithinSupportedRange (DateTime date, DateTime earliestSupportedDate, DateTime latestSupportedDate){
-   return (date.isBefore(earliestSupportedDate) || date.isAfter(latestSupportedDate));
+   if(latestSupportedDate == null){
+     return (date.withTimeAtStartOfDay().isBefore(earliestSupportedDate.withTimeAtStartOfDay()) );
+   }
+    return (date.withTimeAtStartOfDay().isBefore(earliestSupportedDate.withTimeAtStartOfDay()) || date.withTimeAtStartOfDay().isAfter(earliestSupportedDate.withTimeAtStartOfDay()));
  }
 }
