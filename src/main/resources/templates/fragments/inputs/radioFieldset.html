@@ -36,8 +36,8 @@
           <th:block th:replace="~{fragments/inputs/radio ::
             radio(inputName=${inputName},
               value=${option.getValue()},
-              label=#{${option.getLabel()}},
-              radioHelpText=#{${option.getHelpText()}})}"/>
+              label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg(option.getLabel())},
+              radioHelpText=${#strings.isEmpty(option.getHelpText()) ? null : #messages.msg(option.getHelpText())})}"/>
         </th:block>
       </th:block>
     </fieldset>
