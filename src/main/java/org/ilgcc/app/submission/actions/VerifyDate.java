@@ -22,6 +22,6 @@ abstract class VerifyDate implements Action {
    if(latestSupportedDate == null){
      return (date.withTimeAtStartOfDay().isBefore(earliestSupportedDate.withTimeAtStartOfDay()) );
    }
-    return (date.withTimeAtStartOfDay().isBefore(earliestSupportedDate.withTimeAtStartOfDay()) || date.withTimeAtStartOfDay().isAfter(earliestSupportedDate.withTimeAtStartOfDay()));
+    return (date.withTimeAtStartOfDay().isBefore(earliestSupportedDate.withTimeAtStartOfDay()) || date.withTimeAtStartOfDay().isAfter(latestSupportedDate.withTimeAtStartOfDay()));
  }
 }
