@@ -1,8 +1,5 @@
 package org.ilgcc.app.utils;
 
-import lombok.Getter;
-
-@Getter
 public enum RaceEthnicityOption implements InputOption {
 
   ASIAN("general.inputs.race-ethnicity.asian"),
@@ -18,6 +15,11 @@ public enum RaceEthnicityOption implements InputOption {
 
   RaceEthnicityOption(String label) {
     this.label = label;
+  }
+
+  @Override
+  public String getLabel() {
+    return label;
   }
 
   @Override

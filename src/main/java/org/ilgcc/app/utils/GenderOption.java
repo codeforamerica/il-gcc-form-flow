@@ -1,8 +1,5 @@
 package org.ilgcc.app.utils;
 
-import lombok.Getter;
-
-@Getter
 public enum GenderOption implements InputOption {
 
   MALE("general.inputs.male"),
@@ -15,6 +12,11 @@ public enum GenderOption implements InputOption {
 
   GenderOption(String label) {
     this.label = label;
+  }
+
+  @Override
+  public String getLabel() {
+    return label;
   }
 
   @Override
