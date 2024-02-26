@@ -1,3 +1,4 @@
+
 <div th:with="childHasProvider=${fieldData.get('childInCare').equals('true')},
               hasProviderHeader=#{children-ccap-start-date.when-did-header(${fieldData.get('childFirstName')})},
               noCurrentProviderHeader=#{children-ccap-start-date.when-will-header(${fieldData.get('childFirstName')})}">
@@ -7,8 +8,8 @@
     title=#{children-ccap-start-date.when-did-title},
     header=${childHasProvider ? hasProviderHeader : noCurrentProviderHeader},
     buttonLabel=#{general.button.continue},
-    iconFragment=~{fragments/gcc-icons :: baby},
     formAction=${formAction},
+    iconFragment=~{fragments/gcc-icons :: baby},
     inputContent=~{::inputContent})}">
     <th:block th:ref="inputContent">
       <input type="hidden" th:name="current_uuid" th:value="${fieldData.get('uuid')}">

@@ -41,7 +41,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("childLastName", "mcchild");
     testPage.enter("childDateOfBirthMonth", "12");
     testPage.enter("childDateOfBirthDay", "25");
-    testPage.enter("childDateOfBirthYear", "2020");
+    testPage.enter("childDateOfBirthYear", "2018");
     testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
     testPage.clickButton("Continue");
     //children-ccap-info
@@ -96,6 +96,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-ccap-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Weekly Schedule");
     testPage.clickContinue();
+    //children-ccap-child-other-ed
+    assertThat(testPage.getTitle()).isEqualTo("CCAP Child Other");
+    testPage.clickButton("Yes");
     // children-add (with children listed)
     assertThat(testPage.getTitle()).isEqualTo("Children add");
     List<String> li = testPage.getTextBySelector(".child-name");
