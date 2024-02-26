@@ -1,6 +1,8 @@
 name: Run Percy visual diff testing
 
 on:
+  schedule:
+    - cron: '0 10 * * 1'
   workflow_dispatch:
     inputs: { }
 
