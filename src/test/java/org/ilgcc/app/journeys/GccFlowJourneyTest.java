@@ -51,7 +51,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
     testPage.clickButton("No");
     //children-ccap-start-date (Test No logic)
-    assertThat(testPage.getTitle()).isEqualTo("Future CCAP Start Date");
+    assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
     assertThat((testPage.getHeader())).isEqualTo("When will child start care at your chosen provider?");
     testPage.enter("ccapStartMonth", "*1");
     testPage.enter("ccapStartDay", "1");
@@ -76,7 +76,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
     testPage.clickButton("Yes");
     //children-ccap-start-date (Test Yes Logic)
-    assertThat(testPage.getTitle()).isEqualTo("Previous CCAP Start Date");
+    assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
     assertThat((testPage.getHeader())).isEqualTo("When did child start care at your chosen provider?");
 
     testPage.enter("ccapStartMonth", "11");

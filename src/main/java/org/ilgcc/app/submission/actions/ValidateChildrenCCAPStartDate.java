@@ -1,5 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
+import static java.util.Collections.emptyList;
+
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import java.util.HashMap;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ValidateChildrenCCAPStartDateWhenChildIsInChildCareWithProvider extends VerifyDate {
+public class ValidateChildrenCCAPStartDate extends VerifyDate {
   @Autowired
   MessageSource messageSource;
 
@@ -31,21 +33,38 @@ public class ValidateChildrenCCAPStartDateWhenChildIsInChildCareWithProvider ext
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> inputData = formSubmission.getFormData();
     String ccapStartingDate = String.format("%s/%s/%s",
-                    (String) inputData.get("ccapStartMonth"),
-                    (String) inputData.get("ccapStartDay"),
-                    (String) inputData.get("ccapStartYear"));
-
+        (String) inputData.get("ccapStartMonth"),
+        (String) inputData.get("ccapStartDay"),
+        (String) inputData.get("ccapStartYear"));
+    String current_uuid = (String) inputData.get("current_uuid");
+    DateTime present = DateTime.now();
     if (this.isDateInvalid(ccapStartingDate)) {
       errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-date-entered", null, locale)));
-    }else{
+    } else if (isChildInChildcare(submission, current_uuid)) {
       DateTime dateCCAPStart = dtf.parseDateTime(ccapStartingDate);
-      DateTime present = DateTime.now();
       DateTime earliest_supported_date = dtf.parseDateTime(EARLIEST_DATE_SUPPORTED);
 
-        if(this.isDateNotWithinSupportedRange(dateCCAPStart, earliest_supported_date, present)){
-          errorMessages.put(INPUT_NAME, List.of((messageSource.getMessage("errors.date-outside-of-supported-range", List.of(ccapStartingDate).toArray(), locale))));
-        }
+      if (this.isDateNotWithinSupportedRange(dateCCAPStart, earliest_supported_date, present)) {
+        errorMessages.put(INPUT_NAME, List.of(
+            (messageSource.getMessage("errors.date-outside-of-supported-range", List.of(ccapStartingDate).toArray(), locale))));
       }
+    }else{
+      DateTime dateCCAPStart = dtf.parseDateTime(ccapStartingDate);
+      if(this.isDateNotWithinSupportedRange(dateCCAPStart, present, null)){
+        errorMessages.put(INPUT_NAME, List.of((messageSource.getMessage("errors.date-outside-of-supported-range", List.of(ccapStartingDate).toArray(), locale))));
+      }
+    }
     return errorMessages;
   }
+
+  public Boolean isChildInChildcare(Submission submission, String uuid){
+    var children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+    for(var child : children) {
+      if(child.get("uuid").equals(uuid)) {
+        return child.getOrDefault("childInCare", "false").equals("true");
+      }
+    }
+    return false;
+  }
+
 }

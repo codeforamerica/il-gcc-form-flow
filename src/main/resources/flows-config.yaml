@@ -99,17 +99,10 @@ flow:
   children-ccap-in-care:
     subflow: children
     nextScreens:
-      - name: children-ccap-start-date-previous
-        condition: ChildInChildCareWithProvider
-      - name: children-ccap-start-date-future
-  children-ccap-start-date-previous:
+      - name: children-ccap-start-date
+  children-ccap-start-date:
     subflow: children
-    crossFieldValidationAction: ValidateChildrenCCAPStartDateWhenChildIsInChildCareWithProvider
-    nextScreens:
-      - name: children-childcare-weekly-schedule
-  children-ccap-start-date-future:
-    subflow: children
-    crossFieldValidationAction: ValidateChildrenCCAPStartDateWhenChildNotInChildCareWithProvider
+    crossFieldValidationAction: ValidateChildrenCCAPStartDate
     nextScreens:
       - name: children-childcare-weekly-schedule
   children-childcare-weekly-schedule:
