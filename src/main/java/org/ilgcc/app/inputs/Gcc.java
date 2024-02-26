@@ -56,8 +56,7 @@ public class Gcc extends FlowInputs {
 
     private List<String> childcareWeeklySchedule;
 
-
-    private String current_uuid;
     private String childAttendsOtherEd;
 
+    private String current_uuid;
 }
