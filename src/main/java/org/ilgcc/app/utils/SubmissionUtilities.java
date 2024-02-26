@@ -5,8 +5,8 @@ import formflow.library.data.Submission;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-
 import static java.util.Collections.emptyList;
+
 
 public class SubmissionUtilities {
   public static final DateTimeFormatter MM_DD_YYYY = DateTimeFormatter.ofPattern("M/d/uuuu");

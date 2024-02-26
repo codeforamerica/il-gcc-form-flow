@@ -49,9 +49,36 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //children-ccap-in-care
     assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
-    testPage.clickButton("Yes");
-    //children-ccap-start-date
+    testPage.clickButton("No");
+    //children-ccap-start-date (Test No logic)
     assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
+    assertThat((testPage.getHeader())).isEqualTo("When will child start care at your chosen provider?");
+    testPage.enter("ccapStartMonth", "*1");
+    testPage.enter("ccapStartDay", "1");
+    testPage.enter("ccapStartYear", "1889");
+    testPage.clickContinue();
+    assertThat(testPage.hasErrorText("Please check the date entered. It is not a valid date.")).isTrue();
+    testPage.enter("ccapStartMonth", "1");
+    testPage.enter("ccapStartDay", "1");
+    testPage.enter("ccapStartYear", "1989");
+    testPage.clickContinue();
+    assertThat(testPage.hasErrorText("Please check the date entered. " + "1/1/1989" + " is not a supported start date.")).isTrue();
+    testPage.enter("ccapStartMonth", "1");
+    testPage.enter("ccapStartDay", "1");
+    testPage.enter("ccapStartYear", "2089");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Weekly Schedule");
+    testPage.goBack();
+    testPage.goBack();
+    testPage.goBack();
+    testPage.goBack();
+    //children-ccap-in-care
+    assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
+    testPage.clickButton("Yes");
+    //children-ccap-start-date (Test Yes Logic)
+    assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
+    assertThat((testPage.getHeader())).isEqualTo("When did child start care at your chosen provider?");
+
     testPage.enter("ccapStartMonth", "11");
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "1889");

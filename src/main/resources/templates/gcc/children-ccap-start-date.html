@@ -1,18 +1,26 @@
-<th:block
-  th:replace="~{fragments/screens/screenWithOneInput ::
+
+<div th:with="childHasProvider=${fieldData.get('childInCare').equals('true')},
+              hasProviderHeader=#{children-ccap-start-date.when-did-header(${fieldData.get('childFirstName')})},
+              noCurrentProviderHeader=#{children-ccap-start-date.when-will-header(${fieldData.get('childFirstName')})}">
+  <th:block
+      th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
-    title=#{children-ccap-start-date.title},
-    header=#{children-ccap-start-date.header(${fieldData.get('childFirstName')})},
-    buttonLabel='Continue',
+    title=#{children-ccap-start-date.when-did-title},
+    header=${childHasProvider ? hasProviderHeader : noCurrentProviderHeader},
+    buttonLabel=#{general.button.continue},
     formAction=${formAction},
     iconFragment=~{fragments/gcc-icons :: baby},
     inputContent=~{::inputContent})}">
-  <th:block th:ref="inputContent">
-    <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
-    <th:block th:replace="~{fragments/inputs/date ::
-      date(inputName='ccapStart',
-      label='',
-      ariaLabel='header',
-      groupName='ccapStartDate')}"/>
+    <th:block th:ref="inputContent">
+      <input type="hidden" th:name="current_uuid" th:value="${fieldData.get('uuid')}">
+      <th:block th:replace="~{fragments/inputs/date ::
+    date(inputName='ccapStart',
+    label='',
+    ariaLabel='header',
+    groupName='ccapStartDate')}"/>
+    </th:block>
   </th:block>
-</th:block>
+</div>
+
+
+
