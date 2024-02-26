@@ -109,7 +109,9 @@ flow:
     subflow: children
     nextScreens:
 #      - name: children-childcare-hourly-schedule
-      - name: children-add # skipping WIP screens
+      - name: children-ccap-child-other-ed # Skip WIP screens
+        condition: IsFiveOrOlder
+      - name: children-add
   children-childcare-hourly-schedule:
     subflow: children
     nextScreens:
