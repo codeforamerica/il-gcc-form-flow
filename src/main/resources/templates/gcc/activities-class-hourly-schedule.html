@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head(title=#{activities-class-hourly-schedule.title})}"></head>
+<script th:inline="javascript">
+  function changeVisibiliryActivitiesWeekly() {
+    let locale = $('#activitiesClassHoursSameEveryDay')[0].value
+    let locale = $('#activitiesWeekly')[0].value
+    if
+
+
+    let formAction = [[ ${formAction} ]] + "?lang=" + ("Spanish" === locale ? 'es' : 'en');
+    let form = $('form')[0]
+    form.setAttribute('action', formAction);
+  }
+</script>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -16,24 +28,24 @@
               <div class="question-with-follow-up">
                 <div class="question-with-follow-up__question">
                   <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
-                                  checkboxFieldset(inputName='classHoursSameEveryDay',
+                                  checkboxFieldset(inputName='activitiesClassHoursSameEveryDay',
                                   ariaLabel='header',
                                   content=~{::checkboxOptions})}">
                     <th:block th:ref="checkboxOptions">
                       <th:block
-                              th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='classHoursSameEveryDay', value='Yes', label=#{activities-class-hourly-schedule.class.hours.same.every.day}, followUpId='#same-hours-class-up')}" />
+                              th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesClassHoursSameEveryDay', value='Yes', label=#{activities-class-hourly-schedule.class.hours.same.every.day},toggleVisibility='#activitiesWeekly', followUpId='#same-hours-class-up')}" />
                     </th:block>
                   </th:block>
                 </div>
                 <div class="question-with-follow-up__follow-up" id="same-hours-class-up">
-                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='startTimeAllDays', endInputName='endTimeAllDays', label=#{general.week.all})}" />
+                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesClassStartTimeAllDays', endInputName='activitiesClassEndTimeAllDays', label=#{general.week.All})}" />
                 </div>
               </div>
-
-
-              <th:block th:each="day: ${fieldData['weeklySchedule[]']}">
-                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='startTime' + ${day}, endInputName='endTime' + ${day}, label=#{${'general.week.' + day}})}" />
-              </th:block>
+              <div id="activitiesWeekly">
+                <th:block th:each="day: ${fieldData['weeklySchedule[]']}">
+                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesClassStartTime' + ${day}, endInputName='activitiesClassEndTime' + ${day}, label=#{${'general.week.' + day}})}" />
+                </th:block>
+              </div>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
