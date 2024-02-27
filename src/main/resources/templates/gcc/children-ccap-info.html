@@ -35,13 +35,13 @@
               </th:block>
 
               <th:block th:replace="~{fragments/inputs/radioFieldset ::
-                  radioFieldset(inputName='childIsUScitizen',
+                  radioFieldset(inputName='childIsUsCitizen',
                   label=#{children-ccap-info.us-citizen-question},
                   fieldsetHelpText=#{children-ccap-info.us-citizen-help-text},
                   content=~{::radioOptions2})}">
                 <th:block th:ref="radioOptions2">
-                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childIsUScitizen', value='Yes', label=#{general.inputs.yes})}"/>
-                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childIsUScitizen', value='No', label=#{general.inputs.no})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childIsUsCitizen', value='Yes', label=#{general.inputs.yes})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childIsUsCitizen', value='No', label=#{general.inputs.no})}"/>
                 </th:block>
               </th:block>
 
