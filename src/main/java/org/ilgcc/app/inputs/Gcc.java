@@ -40,7 +40,7 @@ public class Gcc extends FlowInputs {
     private String childGender;
     private String childRaceEthnicity;
     private String childHasDisability;
-    private String childIsUScitizen;
+    private String childIsUsCitizen;
     private String childInIntactFamily;
 
     private String childInCare;
