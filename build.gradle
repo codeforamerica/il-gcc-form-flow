@@ -235,6 +235,13 @@ processResources {
     }
 }
 
+sentry {
+    includeSourceContext = true
+
+    org = "codeforamerica"
+    projectName = "il-gcc"
+    authToken = System.getenv("SENTRY_AUTH_TOKEN")
+}
 
 jar {
     enabled false

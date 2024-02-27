@@ -81,7 +81,9 @@ logging:
   level:
     root: INFO
     org.springframework.web: ERROR
-
+sentry:
+  dsn: ${SENTRY_DSN}
+  traces-sample-rate: 0.6
 server:
   tomcat:
     max-http-form-post-size: ${form-flow.uploads.max-file-size}MB
