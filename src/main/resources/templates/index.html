@@ -41,7 +41,7 @@
         </div>
         <div class="width-two-thirds">
           <h2 th:text="#{index.child-care.title}"></h2>
-          <h2 class="normal" th:text="#{index.child-care.paragraph}"></h2>
+          <p class="h2 normal" th:text="#{index.child-care.paragraph}"></p>
           <a
               target="_blank" rel="noopener noreferrer"
               href="https://www.inccrra.org/about/sdasearch">
@@ -74,24 +74,26 @@
     </section>
     <section class="slab slab--white">
       <div class="grid">
-        <div class="width-one-half">
+        <div class="width-one-whole">
           <h2 th:text="#{index.gather-docs.title}"></h2>
+        </div>
+        <div class="width-one-half">
           <div class="width-one-half is-desktop-hidden">
-            <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
+            <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-left">
           </div>
-          <h2 class="normal" th:text="#{index.gather-docs.first-paragraph}"></h2>
-          <h2 class="normal" th:text="#{index.gather-docs.second-paragraph}"></h2>
+          <p class="paragraph-large normal" th:text="#{index.gather-docs.first-paragraph}"></p>
+          <p class="paragraph-large normal" th:text="#{index.gather-docs.second-paragraph}"></p>
           <div class="index-icon-list spacing-below-15">
             <th:block th:replace="~{fragments/gcc-icons :: blobWithPayStub}"></th:block>
-            <h2 class="normal" th:text="#{index.gather-docs.icon-list.1}"></h2>
+            <p class="h2 normal spacing-above-0" th:text="#{index.gather-docs.icon-list.1}"></p>
           </div>
           <div class="index-icon-list spacing-below-15">
             <th:block th:replace="~{fragments/gcc-icons :: blobWithW2}"></th:block>
-            <h2 class="normal" th:text="#{index.gather-docs.icon-list.2}"></h2>
+            <p class="h2 normal spacing-above-0" th:text="#{index.gather-docs.icon-list.2}"></p>
           </div>
           <div class="index-icon-list">
             <th:block th:replace="~{fragments/gcc-icons :: blobWithSchedule}"></th:block>
-            <h2 class="normal" th:text="#{index.gather-docs.icon-list.3}"></h2>
+            <p class="h2 normal spacing-above-0" th:text="#{index.gather-docs.icon-list.3}"></p>
           </div>
         </div>
         <div class="width-one-half is-tablet-hidden">
