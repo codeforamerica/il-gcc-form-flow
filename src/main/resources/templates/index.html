@@ -39,9 +39,9 @@
             <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 141px; height: 141px;">
             <img src="/assets/images/IDHS-logo.png" alt="" style="width: 168px; height: auto">
         </div>
-        <div class="width-one-half">
+        <div class="width-two-thirds">
           <h2 th:text="#{index.child-care.title}"></h2>
-          <p th:text="#{index.child-care.paragraph}"></p>
+          <h2 class="normal" th:text="#{index.child-care.paragraph}"></h2>
           <a
               target="_blank" rel="noopener noreferrer"
               href="https://www.inccrra.org/about/sdasearch">
@@ -79,19 +79,19 @@
           <div class="width-one-half is-desktop-hidden">
             <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
           </div>
-          <p th:text="#{index.gather-docs.first-paragraph}"></p>
-          <p th:text="#{index.gather-docs.second-paragraph}"></p>
+          <h2 class="normal" th:text="#{index.gather-docs.first-paragraph}"></h2>
+          <h2 class="normal" th:text="#{index.gather-docs.second-paragraph}"></h2>
           <div class="index-icon-list spacing-below-15">
             <th:block th:replace="~{fragments/gcc-icons :: blobWithPayStub}"></th:block>
-            <p th:text="#{index.gather-docs.icon-list.1}"></p>
+            <h2 class="normal" th:text="#{index.gather-docs.icon-list.1}"></h2>
           </div>
           <div class="index-icon-list spacing-below-15">
             <th:block th:replace="~{fragments/gcc-icons :: blobWithW2}"></th:block>
-            <p th:text="#{index.gather-docs.icon-list.2}"></p>
+            <h2 class="normal" th:text="#{index.gather-docs.icon-list.2}"></h2>
           </div>
           <div class="index-icon-list">
             <th:block th:replace="~{fragments/gcc-icons :: blobWithSchedule}"></th:block>
-            <p th:text="#{index.gather-docs.icon-list.3}"></p>
+            <h2 class="normal" th:text="#{index.gather-docs.icon-list.3}"></h2>
           </div>
         </div>
         <div class="width-one-half is-tablet-hidden">

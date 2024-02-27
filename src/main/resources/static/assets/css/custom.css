@@ -139,6 +139,11 @@ a, .button--link {
   padding-bottom: 1rem;
 }
 
+h2.normal {
+  font-weight: normal;
+  font-size: 2.5rem;
+}
+
 .eligibility-table th.bold {
   font-weight: bold;
 }
