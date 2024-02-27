@@ -298,6 +298,10 @@ a, .button--link {
   margin-left: 0;
 }
 
+.spacing-right-25 {
+  margin-right: 25px;
+}
+
 .icon-person {
   font-size: 3.2rem;
 }
