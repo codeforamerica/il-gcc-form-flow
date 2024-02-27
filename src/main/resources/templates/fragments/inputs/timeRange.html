@@ -10,29 +10,39 @@
             (#arrays.length(errorMessages.get(inputName)) > 0) }"
         th:assert="${!#strings.isEmpty(startInputName)},${!#strings.isEmpty(endInputName)}, ${hasLabel || hasAriaLabel}">
     <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
-        <label th:if="${hasLabel}" th:for="${startInputName}" th:text="${label}" class="form-question"/>
-        <p class="text--help"
-           th:if="${hasHelpText}"
-           th:id="${startInputName + '-help-text'}"
-           th:text="${helpText}"></p>
+        <legend class="form-question"
+                th:id="${startInputName + '-legend'}"
+                th:inline="text">
+            [[${label}]]
+        </legend>
         <div class="form-width--long">
-        <input type="time" class="time-input form-width--short"
-               th:id="${startInputName}"
-               th:name="${startInputName}"
-               th:attr="
-            aria-describedby=${hasHelpText ? startInputName + '-help-text' : ''},
-            aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
-            aria-invalid=${hasError}"
-               th:value="${fieldData.getOrDefault(startInputName, '')}">
-            <label th:for="${inputName}" th:text="TO" class="form-question"/>
-            <input type="time" class="time-input form-width--short"
-                   th:id="${endInputName}"
-                   th:name="${endInputName}"
-                   th:attr="
-            aria-describedby=${hasHelpText ? endInputName + '-help-text' : ''},
-            aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
-            aria-invalid=${hasError}"
-                   th:value="${fieldData.getOrDefault(endInputName, '')}">
+            <div class="form-width--short">
+                <p class="spacing-below-5"
+                   th:id="${startInputName + '-help-text'}"
+                   th:text="#{general.inputs.time.range.start}"></p>
+                <input type="time" class="time-input form-width--short"
+                       th:id="${startInputName}"
+                       th:name="${startInputName}"
+                       th:attr="
+                    aria-describedby=${hasHelpText ? startInputName + '-help-text' : ''},
+                    aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
+                    aria-invalid=${hasError}"
+                       th:value="${fieldData.getOrDefault(startInputName, '')}">
+            </div>
+            <label th:for="${inputName}" th:text="to" class="form-question spacing-above-35"/>
+            <div class="form-width--short">
+                <p class="spacing-below-5"
+                   th:id="${startInputName + '-help-text'}"
+                   th:text="#{general.inputs.time.range.end}"></p>
+                <input type="time" class="time-input form-width--short"
+                       th:id="${endInputName}"
+                       th:name="${endInputName}"
+                       th:attr="
+                aria-describedby=${hasHelpText ? endInputName + '-help-text' : ''},
+                aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
+                aria-invalid=${hasError}"
+                       th:value="${fieldData.getOrDefault(endInputName, '')}">
+            </div>
         </div>
         <th:block
                 th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
