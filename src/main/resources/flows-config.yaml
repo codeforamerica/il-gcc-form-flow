@@ -249,6 +249,8 @@ flow:
       - name: doc-upload-confirm
   doc-upload-confirm:
     nextScreens: null
+  children-delete:
+    nextScreens: null
 subflows:
   children:
     entryScreen: children-add
