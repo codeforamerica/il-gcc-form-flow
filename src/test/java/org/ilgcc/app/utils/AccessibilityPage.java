@@ -37,12 +37,6 @@ public class AccessibilityPage extends Page {
     testAccessibility();
   }
 
-  @Override
-  public void clickContinue() {
-    super.clickContinue();
-    testAccessibility();
-  }
-
   public void testAccessibility() {
     AxeBuilder builder = new AxeBuilder();
     builder.setOptions("""
@@ -57,6 +51,6 @@ public class AccessibilityPage extends Page {
     List<Rule> violations = results.getViolations();
     violations.forEach(rule -> rule.setUrl(getTitle()));
     resultsList.addAll(violations);
-    log.info("Testing a11y on page %s, found %s violations".formatted(getTitle(), violations.size()));
+    log.info("Testing a11y on page %s, found %s violations".formatted(driver.getTitle(), violations.size()));
   }
 }
