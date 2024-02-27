@@ -1,6 +1,5 @@
 # script for generating html files based on flow-config yaml.
 # $ brew install yq
-# $ chmod u+x scripts/create-templates.sh
 # $ ./scripts/create-templates.sh
 flowName='gcc'
 templates=`ls -1 src/main/resources/templates/${flowName}/*.html | cut -d'/' -f6-`

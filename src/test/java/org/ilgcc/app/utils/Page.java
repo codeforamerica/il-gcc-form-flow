@@ -5,6 +5,8 @@ import static org.awaitility.Awaitility.await;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import io.percy.selenium.Percy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -13,13 +15,17 @@ public class Page {
 
   protected final RemoteWebDriver driver;
 
+  protected final Percy percy;
+
 
   public Page(RemoteWebDriver driver) {
     this.driver = driver;
+    this.percy = new Percy(driver);
   }
 
   public String getTitle() {
     checkForBadMessageKeys();
+    percy.snapshot(driver.getTitle());
     return driver.getTitle();
   }
 
@@ -128,7 +134,6 @@ public class Page {
   }
 
   public void enterInputById(String inputId, String value) {
-    String id = By.id(inputId).toString();
     WebElement we = driver.findElement(By.id(inputId));
     enterInput(we, value);
   }
@@ -169,6 +174,15 @@ public class Page {
     WebElement optionToSelect = webElement
         .findElements(By.tagName("option")).stream()
         .filter(option -> option.getText().equals(optionText))
+        .findFirst()
+        .orElseThrow();
+    optionToSelect.click();
+  }
+
+  public void selectRadio(String inputName, String optionText) {
+    List<WebElement> webElements = driver.findElements(By.name(inputName));
+    WebElement optionToSelect = webElements.stream()
+        .filter(option -> option.getAttribute("value").equals(optionText))
         .findFirst()
         .orElseThrow();
     optionToSelect.click();
@@ -221,6 +235,13 @@ public class Page {
         .stream()
         .filter(WebElement::isSelected)
         .map(input -> input.findElement(By.xpath("./..")).getText().split("\n")[0])
+        .collect(Collectors.toList());
+  }
+
+  public List<String> getTextBySelector(String cssSelector) {
+    List<WebElement> elements = driver.findElements(By.cssSelector(cssSelector));
+    return elements.stream()
+        .map(WebElement::getText)
         .collect(Collectors.toList());
   }
 

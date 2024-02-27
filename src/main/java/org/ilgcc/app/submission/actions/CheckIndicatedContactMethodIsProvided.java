@@ -18,6 +18,7 @@ public class CheckIndicatedContactMethodIsProvided implements Action {
   @Autowired
   MessageSource messageSource;
 
+  @Override
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
     log.info("Running CheckIndicatedContactMethodIsProvided");
     String HOW_TO_CONTACT_YOU_INPUT = "howToContactYou[]";

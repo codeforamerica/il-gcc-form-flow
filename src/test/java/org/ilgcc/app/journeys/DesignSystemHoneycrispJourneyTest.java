@@ -20,10 +20,6 @@ import org.springframework.test.context.TestPropertySource;
 })
 public class DesignSystemHoneycrispJourneyTest extends AbstractBasePageTest {
 
-  protected void initTestPage() {
-    testPage = new Page(driver);
-  }
-
   @Autowired
   Environment environment;
 

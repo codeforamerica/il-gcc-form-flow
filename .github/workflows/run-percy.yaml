@@ -1,0 +1,44 @@
+name: Run Percy visual diff testing
+
+on:
+  schedule:
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+    inputs: { }
+
+jobs:
+  percy:
+    name: Run Percy
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: il-gcc-test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: il-gcc-test
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up ChromeDriver
+        uses: nanasess/setup-chromedriver@v2.2.1
+      - name: Set up JDK
+        uses: actions/setup-java@v4.0.0
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+          cache: 'gradle'
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Install percy from npm
+        run: npm install -g @percy/cli
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run journey test and send to Percy
+        run: npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.GccFlowJourneyTest.fullGccFlow
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}

@@ -1,0 +1,13 @@
+name: 'Auto Assignee'
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+jobs:
+  add-assignee:
+    name: Add author as assignee in GitHub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: kentaro-m/auto-assign-action@v2.0.0
+        with:
+          configuration-path: '.github/auto_assign.yml'

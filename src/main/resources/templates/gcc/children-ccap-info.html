@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{children-ccap-info.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,11 +8,58 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: baby}"></th:block>
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{children-ccap-info.header(${fieldData.get('childFirstName')})}, subtext=#{children-ccap-info.subheader})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
+          <th:block th:ref="formContent"
+                    th:with="
+                      genderOptions=${T(org.ilgcc.app.utils.GenderOption).values()},
+                      raceEthnicityOptions=${T(org.ilgcc.app.utils.RaceEthnicityOption).values()}">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='childGender',
+                    label=#{children-ccap-info.gender-question},
+                    options=${genderOptions},
+                    noneOfTheAboveLabel=#{general.inputs.prefer-not-to-answer})}"/>
+
+              <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName='childHasDisability',
+                  label=#{children-ccap-info.disability-question},
+                  fieldsetHelpText=#{children-ccap-info.disability-help-text},
+                  content=~{::radioOptions1})}">
+                <th:block th:ref="radioOptions1">
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childHasDisability', value='Yes', label=#{general.inputs.yes})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childHasDisability', value='No', label=#{general.inputs.no})}"/>
+                </th:block>
+              </th:block>
+
+              <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName='childIsUsCitizen',
+                  label=#{children-ccap-info.us-citizen-question},
+                  fieldsetHelpText=#{children-ccap-info.us-citizen-help-text},
+                  content=~{::radioOptions2})}">
+                <th:block th:ref="radioOptions2">
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childIsUsCitizen', value='Yes', label=#{general.inputs.yes})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childIsUsCitizen', value='No', label=#{general.inputs.no})}"/>
+                </th:block>
+              </th:block>
+
+              <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName='childInIntactFamily',
+                  label=#{children-ccap-info.foster-question},
+                  content=~{::radioOptions3})}">
+                <th:block th:ref="radioOptions3">
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childInIntactFamily', value='Yes', label=#{general.inputs.yes})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='childInIntactFamily', value='No', label=#{general.inputs.no})}"/>
+                </th:block>
+              </th:block>
+
+              <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='childRaceEthnicity',
+                    label=#{children-ccap-info.race-ethnicity-question},
+                    fieldsetHelpText=#{children-ccap-info.race-ethnicity-help-text},
+                    options=${raceEthnicityOptions})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>

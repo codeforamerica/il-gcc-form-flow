@@ -5,7 +5,9 @@ flow:
       - name: onboarding-choose-provider
   onboarding-choose-provider:
     nextScreens:
-      - name: onboarding-language-pref
+      - name: pilot-offboard
+        condition: NoProviderChosen
+      - name: onboarding-confirm-provider
   pilot-offboard:
     nextScreens: null
   onboarding-confirm-provider:
@@ -14,11 +16,12 @@ flow:
   onboarding-language-pref:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
-      - name: activities-add-ed-program
+      - name: parent-info-intro
 
   parent-info-intro:
     nextScreens:
-      - name: parent-info-basic-1
+#      - name: parent-info-basic-1
+      - name: children-info-intro
   parent-info-basic-1:
     nextScreens:
       - name: parent-info-basic-2
@@ -82,28 +85,41 @@ flow:
       - name: children-add
   children-add:
     nextScreens:
-      - name: children-info-basic
+#      - name: activities-parent-intro
+      - name: activities-add-ed-program # skipping WIP
   children-info-basic:
+    subflow: children
     nextScreens:
       - name: children-ccap-info
+        condition: NeedsFinancialAssistanceForChild
+      - name: children-add
   children-ccap-info:
+    subflow: children
     nextScreens:
       - name: children-ccap-in-care
   children-ccap-in-care:
+    subflow: children
     nextScreens:
       - name: children-ccap-start-date
   children-ccap-start-date:
+    subflow: children
+    crossFieldValidationAction: ValidateChildrenCCAPStartDate
     nextScreens:
       - name: children-childcare-weekly-schedule
   children-childcare-weekly-schedule:
+    subflow: children
     nextScreens:
-      - name: children-childcare-hourly-schedule
+      - name: children-ccap-child-other-ed # Skip WIP screens
+        condition: IsFiveOrOlder
+      - name: children-add
   children-childcare-hourly-schedule:
+    subflow: children
     nextScreens:
       - name: children-ccap-child-other-ed
   children-ccap-child-other-ed:
+    subflow: children
     nextScreens:
-      - name: activities-parent-intro
+      - name: children-add
 
   activities-parent-intro:
     nextScreens:
@@ -161,19 +177,21 @@ flow:
       - name: activities-add-ed-program
   activities-add-ed-program:
     nextScreens:
-      - name: activities-ed-program-name
+      - name: activities-ed-program-type
   activities-ed-program-type:
     nextScreens:
       - name: activities-ed-program-name
   activities-ed-program-name:
     nextScreens:
-      - name: activities-ed-program-type
+      - name: activities-ed-program-info
   activities-ed-program-info:
     nextScreens:
       - name: activities-ed-program-method
   activities-ed-program-method:
     nextScreens:
       - name: activities-next-class-schedule
+        condition: ClassesTaughtSchedule
+      - name: activities-class-weekly-schedule
   activities-next-class-schedule:
     nextScreens:
       - name: activities-class-weekly-schedule
@@ -232,6 +250,11 @@ flow:
       - name: doc-upload-confirm
   doc-upload-confirm:
     nextScreens: null
-
+subflows:
+  children:
+    entryScreen: children-add
+    iterationStartScreen: children-info-basic
+    reviewScreen: children-add
+    deleteConfirmationScreen: children-delete
 landmarks:
   firstScreen: onboarding-getting-started

@@ -17,10 +17,12 @@ public class SetLanguagePreferences implements Action {
 
   public static final Map<String, String> LOCALE_TO_LANG = Map.of("es", "Spanish", "en", "English");
 
+  @Override
   public void run(Submission submission) {
     Locale locale = LocaleContextHolder.getLocale();
 
     String languageToSet = LOCALE_TO_LANG.getOrDefault(locale.getLanguage(), "English");
     submission.getInputData().putIfAbsent("languageRead", languageToSet);
+    submission.getInputData().putIfAbsent("languageSpeak", languageToSet);
   }
 }

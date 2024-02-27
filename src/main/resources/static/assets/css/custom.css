@@ -49,13 +49,6 @@ html, body {
     background-image: none;
   }
 }
-.slab--paperwork {
-  position: relative;
-  background-image: url('/assets/images/woman-with-paperwork.svg');
-  background-repeat: no-repeat;
-  background-position: bottom right 5rem;
-  background-size: 25rem;
-}
 
 .toolbar__wrapper {
   background-color: var(--idhs-base-blue);
@@ -317,6 +310,18 @@ p.normal {
   margin-top: -35px;
 }
 
+.spacing-left-0 {
+  margin-left: 0;
+}
+
+.spacing-right-25 {
+  margin-right: 25px;
+}
+
 .icon-person {
   font-size: 3.2rem;
+}
+
+.phone-input {
+  max-width: 25em;
 }

@@ -1,0 +1,30 @@
+<th:block
+    th:fragment="yesOrNo(inputName, ariaDescribe)"
+    th:with="
+      hasHelpText=${!#strings.isEmpty(helpText)},
+      hasAriaDescribe=${!#strings.isEmpty(ariaDescribe)}"
+    th:assert="${!#strings.isEmpty(inputName)}, ${hasAriaDescribe}">
+  <div th:if="${hasHelpText}">
+    <p th:id="${inputName + '-help-text'}"
+       th:text="${helpText}"
+       class="text--help spacing-below-25"></p>
+  </div>
+  <button
+      th:name="${inputName}"
+      th:aria-describedby="${hasHelpText ? ariaDescribe + ' ' + inputName + '-help-text' : ariaDescribe}"
+      type="submit"
+      value="true"
+      class="button">
+    <span class="button__icon--left emoji emoji--inline emoji--checkmark"></span>
+    <span th:text="#{general.inputs.yes}"></span>
+  </button>
+  <button
+      th:name="${inputName}"
+      th:aria-describedby="${hasHelpText ? ariaDescribe + ' ' + inputName + '-help-text' : ariaDescribe}"
+      type="submit"
+      value="false"
+      class="button">
+    <span class="button__icon--left emoji emoji--inline emoji--crossmark"></span>
+    <span th:text="#{general.inputs.no}"></span>
+  </button>
+</th:block>
