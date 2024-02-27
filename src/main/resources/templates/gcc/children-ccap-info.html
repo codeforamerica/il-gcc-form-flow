@@ -20,7 +20,8 @@
               <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
                   checkboxFieldset(inputName='childGender',
                     label=#{children-ccap-info.gender-question},
-                    options=${genderOptions})}"/>
+                    options=${genderOptions},
+                    noneOfTheAboveLabel=#{general.inputs.prefer-not-to-answer})}"/>
 
               <th:block th:replace="~{fragments/inputs/radioFieldset ::
                   radioFieldset(inputName='childHasDisability',

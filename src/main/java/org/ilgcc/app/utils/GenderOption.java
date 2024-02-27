@@ -5,8 +5,7 @@ public enum GenderOption implements InputOption {
   MALE("general.inputs.male"),
   FEMALE("general.inputs.female"),
   NONBINARY("general.inputs.non-binary"),
-  TRANSGENDER("general.inputs.transgender"),
-  NO_ANSWER("general.inputs.prefer-not-to-answer");
+  TRANSGENDER("general.inputs.transgender");
 
   private final String label;
 
