@@ -16,11 +16,12 @@ flow:
   onboarding-language-pref:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
-      - name: children-info-intro
+      - name: parent-info-intro
 
   parent-info-intro:
     nextScreens:
-      - name: parent-info-basic-1
+#      - name: parent-info-basic-1
+      - name: children-info-intro
   parent-info-basic-1:
     nextScreens:
       - name: parent-info-basic-2
