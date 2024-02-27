@@ -42,6 +42,8 @@ jobs:
           'SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}' \
           'SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}' \
           'SPRING_PROFILES_ACTIVE=staging' \
+          'SENTRY_DSN=${{ secrets.SENTRY_DSN }}' \
+          'SENTRY_ENVIRONMENT=staging' \
           'CLAMAV_URL=${{ vars.CLAMAV_URL }}'
       - name: Announce on Slack when deploy fails
         uses: ravsamhq/notify-slack-action@v2
