@@ -82,7 +82,7 @@ logging:
     root: INFO
     org.springframework.web: ERROR
 sentry:
-  dsn: ${SENTRY_DNS}
+  dsn: ${SENTRY_DSN}
   traces-sample-rate: 0.6
 server:
   tomcat:
