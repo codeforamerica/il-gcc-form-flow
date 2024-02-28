@@ -296,6 +296,8 @@ flow:
   doc-upload-confirm:
     condition: SkipTemplate
     nextScreens: null
+  children-delete:
+    nextScreens: null
 subflows:
   children:
     entryScreen: children-add
