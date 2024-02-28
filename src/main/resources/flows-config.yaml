@@ -38,45 +38,59 @@ flow:
     nextScreens:
       - name: parent-home-address
   parent-home-address:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-mailing-address
   parent-mailing-address:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-confirm-address
   parent-confirm-address:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-contact
   parent-contact:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-info-review
   parent-info-review:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-have-a-partner
   parent-have-a-partner:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-qualifying-partner
   parent-qualifying-partner:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-basic
   parent-partner-info-basic:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-contact
   parent-partner-contact:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-service
   parent-partner-info-service:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-disability
   parent-partner-info-disability:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-other-family
   parent-other-family:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-add-adults
   parent-add-adults:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-intro-family-info
   parent-intro-family-info:
+    condition: SkipTemplate
     nextScreens:
       - name: children-info-intro
 
@@ -85,8 +99,7 @@ flow:
       - name: children-add
   children-add:
     nextScreens:
-#      - name: activities-parent-intro
-      - name: activities-add-ed-program # skipping WIP
+      - name: activities-parent-intro
   children-info-basic:
     subflow: children
     nextScreens:
@@ -109,70 +122,88 @@ flow:
   children-childcare-weekly-schedule:
     subflow: children
     nextScreens:
-      - name: children-ccap-child-other-ed # Skip WIP screens
-        condition: IsFiveOrOlder
-      - name: children-add
+      - name: children-childcare-hourly-schedule
   children-childcare-hourly-schedule:
+    condition: SkipTemplate
     subflow: children
     nextScreens:
       - name: children-ccap-child-other-ed
   children-ccap-child-other-ed:
+    condition: IsFiveOrOlder
     subflow: children
     nextScreens:
       - name: children-add
 
   activities-parent-intro:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-parent-type
   activities-parent-type:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-add-jobs
   activities-add-jobs:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-employer-name
   activities-employer-name:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-employer-address
   activities-employer-address:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-self-employment
   activities-self-employment:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-pay-by-hour
   activities-pay-by-hour:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-hourly-wage
   activities-hourly-wage:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-pay-period
   activities-pay-period:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-pay-rate
   activities-pay-rate:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-pay-last-month
   activities-pay-last-month:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-work-schedule-vary
   activities-work-schedule-vary:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-next-work-schedule
   activities-next-work-schedule:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-job-weekly-schedule
   activities-job-weekly-schedule:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-job-hourly-schedule
   activities-job-hourly-schedule:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-work-commute
   activities-work-commute:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-work-commute-time
   activities-work-commute-time:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-add-jobs-list
   activities-add-jobs-list:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-add-ed-program
   activities-add-ed-program:
@@ -205,50 +236,65 @@ flow:
     nextScreens:
       - name: activities-partner-add-job
   activities-partner-add-job:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-partner-add-ed-program
   activities-partner-add-ed-program:
+    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-intro
 
   unearned-income-intro:
+    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-source
   unearned-income-source:
+    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-amount
   unearned-income-amount:
+    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-assets
   unearned-income-assets:
+    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-programs
   unearned-income-programs:
+    condition: SkipTemplate
     nextScreens:
       - name: submit-intro
 
   submit-intro:
+    condition: SkipTemplate
     nextScreens:
       - name: submit-ccap-terms
   submit-ccap-terms:
+    condition: SkipTemplate
     nextScreens:
       - name: submit-sign-name
   submit-sign-name:
+    condition: SkipTemplate
     nextScreens:
       - name: submit-complete
   submit-complete:
+    condition: SkipTemplate
     nextScreens:
       - name: submit-next-steps
   submit-next-steps:
+    condition: SkipTemplate
     nextScreens:
       - name: submit-confirmation
   submit-confirmation:
+    condition: SkipTemplate
     nextScreens:
       - name: doc-upload-list
   doc-upload-list:
+    condition: SkipTemplate
     nextScreens:
       - name: doc-upload-confirm
   doc-upload-confirm:
+    condition: SkipTemplate
     nextScreens: null
 subflows:
   children:
