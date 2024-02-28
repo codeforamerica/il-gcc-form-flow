@@ -2,16 +2,12 @@
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head(title=#{activities-class-hourly-schedule.title})}"></head>
 <script th:inline="javascript">
-  function changeVisibiliryActivitiesWeekly() {
-    let locale = $('#activitiesClassHoursSameEveryDay')[0].value
-    let locale = $('#activitiesWeekly')[0].value
-    if
-
-
-    let formAction = [[ ${formAction} ]] + "?lang=" + ("Spanish" === locale ? 'es' : 'en');
-    let form = $('form')[0]
-    form.setAttribute('action', formAction);
-  }
+    $(document).ready(function () {
+        $('#activitiesClassHoursSameEveryDay-true').change(function () {
+            $('#grouped-days').toggleClass('hidden');
+            $('#individual-days').toggleClass('hidden');
+        });
+    });
 </script>
 <body>
 <div class="page-wrapper">
