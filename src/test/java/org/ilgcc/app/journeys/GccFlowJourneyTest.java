@@ -57,16 +57,24 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-ccap-start-date (Test No logic)
     assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
     assertThat((testPage.getHeader())).isEqualTo("When will child start care at your chosen provider?");
+    //verify that empty date field passes
+    testPage.enter("ccapStartMonth", "");
+    testPage.enter("ccapStartDay", "");
+    testPage.enter("ccapStartYear", "");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Weekly Schedule");
+    testPage.goBack();
+
     testPage.enter("ccapStartMonth", "*1");
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "1889");
     testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please check the date entered. It is not a valid date.")).isTrue();
+    assertThat(testPage.hasErrorText("Invalid future start date: Please enter the date your child will start care in this format: mm/dd/yyyy")).isTrue();
     testPage.enter("ccapStartMonth", "1");
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "1989");
     testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please check the date entered. " + "1/1/1989" + " is not a supported start date.")).isTrue();
+    assertThat(testPage.hasErrorText("Past date entered for future child care start date: Please choose a future start date")).isTrue();
     testPage.enter("ccapStartMonth", "1");
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "2089");
@@ -87,12 +95,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "1889");
     testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please check the date entered. " + "11/1/1889" + " is not a supported start date.")).isTrue();
+    assertThat(testPage.hasErrorText("Past child care start date outside range 01/01/1901 - today: Please choose a start date between 01/01/1901 and today")).isTrue();
     testPage.enter("ccapStartMonth", "*1");
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "1889");
     testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please check the date entered. It is not a valid date.")).isTrue();
+    assertThat(testPage.hasErrorText("Invalid past child care start date: Please enter the date your child started care in this format: mm/dd/yyyy")).isTrue();
     testPage.enter("ccapStartMonth", "11");
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "2010");
