@@ -7,7 +7,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 abstract class VerifyDate implements Action {
   public static final DateTimeFormatter DTF = DateTimeFormat.forPattern("MM/dd/yyyy");
-  public static final DateTime MIN_BIRTHDATE = DTF.parseDateTime("01/01/1901");
+  public static final DateTime MIN_DATE = DTF.parseDateTime("01/01/1901");
 
   protected boolean isDateInvalid(String date) {
     try {
@@ -18,10 +18,10 @@ abstract class VerifyDate implements Action {
     return false;
   }
 
-  protected boolean isValidBirthdate(String date) {
+  protected boolean isBetweenNowAndMinDate(String dateAsString) {
     try {
-      DateTime birthday = DTF.parseDateTime(date);
-      return MIN_BIRTHDATE.isBefore(birthday.getMillis()) && birthday.isBeforeNow();
+      DateTime date = DTF.parseDateTime(dateAsString);
+      return MIN_DATE.isBefore(date.getMillis()) && date.isBeforeNow();
     } catch (Exception e) {
       return false;
     }

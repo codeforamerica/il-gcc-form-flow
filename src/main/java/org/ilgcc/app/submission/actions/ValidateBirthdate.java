@@ -6,7 +6,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Component
 public class ValidateBirthdate extends VerifyDate {
@@ -41,7 +44,7 @@ public class ValidateBirthdate extends VerifyDate {
     if (isDateInvalid(birthdate)) {
       return Map.of(dateInputName, List.of(messageSource.getMessage("errors.invalid-birthdate-format", null, locale)));
     }
-    if (!isValidBirthdate(birthdate)) {
+    if (!isBetweenNowAndMinDate(birthdate)) {
       return Map.of(dateInputName, List.of(messageSource.getMessage("errors.invalid-birthdate-range", null, locale)));
     }
     return Collections.emptyMap();
