@@ -27,6 +27,24 @@ public class Gcc extends FlowInputs {
     private String state;
     @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
     private String zipCode;
+    private String activitiesClassHoursSameEveryDay;
+    private String activitiesClassStartTimeAllDays;
+    private String activitiesClassEndTimeAllDays;
+    private String activitiesClassStartTimeMonday;
+    private String activitiesClassEndTimeMonday;
+
+    private String activitiesClassStartTimeTuesday;
+    private String activitiesClassEndTimeTuesday;
+    private String activitiesClassStartTimeWednesday;
+    private String activitiesClassEndTimeWednesday;
+
+    private String activitiesClassStartTimeThursday;
+    private String activitiesClassEndTimeThursday;
+
+    private String activitiesClassStartTimeFriday;
+
+    private String activitiesClassEndTimeFriday;
+
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
@@ -35,12 +53,13 @@ public class Gcc extends FlowInputs {
     private String childDateOfBirthDay;
     private String childDateOfBirthMonth;
     private String childDateOfBirthYear;
+    @NotBlank(message = "{errors.required-financial-assistance}")
     private String needFinancialAssistanceForChild;
 
     private String childGender;
     private String childRaceEthnicity;
     private String childHasDisability;
-    private String childIsUScitizen;
+    private String childIsUsCitizen;
     private String childInIntactFamily;
 
     private String childInCare;

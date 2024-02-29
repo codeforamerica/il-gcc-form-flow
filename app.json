@@ -1,0 +1,29 @@
+{
+  "name": "IL GCC review app",
+  "description": "Heroku review apps from GitHub PRs",
+  "formation": {
+    "web": {
+      "quantity": 1
+    },
+    "worker": {
+      "quantity": 1
+    }
+  },
+  "stack": "heroku-22",
+  "buildpacks": [
+    {
+      "url": "heroku/gradle"
+    }
+  ],
+  "env": {
+    "LOG_LEVEL": {
+      "value": "info"
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ]
+}

@@ -23,7 +23,7 @@
                     <span class="space-between">
                       <span class="child-name" th:text="|${child.childFirstName} ${child.childLastName}|"/>
                       <span class="text--small spacing-below-0 spacing-right-25">
-                        <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/child-delete-confirmation'"
+                        <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/deleteConfirmation'"
                            th:text="#{general.delete}"
                            class="subflow-delete"
                            th:id="'delete-iteration-' + ${child.uuid}"></a>
