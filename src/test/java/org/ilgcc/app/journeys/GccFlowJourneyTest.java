@@ -140,7 +140,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-class-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
-    assertThat(testPage.getElementText("weeklySchedule-Monday-label")).isEqualTo("Monday");
+    testPage.clickElementById("weeklySchedule-Monday");
     testPage.clickContinue();
 
     //activities-class-hourly-schedule
