@@ -101,6 +101,7 @@ flow:
     nextScreens:
       - name: activities-parent-intro
   children-info-basic:
+    crossFieldValidationAction: ValidateBirthdate
     subflow: children
     nextScreens:
       - name: children-ccap-info

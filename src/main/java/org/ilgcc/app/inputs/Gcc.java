@@ -53,6 +53,7 @@ public class Gcc extends FlowInputs {
     private String childDateOfBirthDay;
     private String childDateOfBirthMonth;
     private String childDateOfBirthYear;
+    @NotBlank(message = "{errors.required-financial-assistance}")
     private String needFinancialAssistanceForChild;
 
     private String childGender;

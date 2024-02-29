@@ -1,22 +1,20 @@
 package org.ilgcc.app.submission.actions;
 
-import static java.util.Collections.emptyList;
-
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
-import io.netty.channel.AbstractEventLoop;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import static java.util.Collections.emptyList;
 
 @Slf4j
 @Component
@@ -25,8 +23,6 @@ public class ValidateChildrenCCAPStartDate extends VerifyDate {
   MessageSource messageSource;
 
   private final String INPUT_NAME = "ccapStartDate";
-  private static final String EARLIEST_DATE_SUPPORTED = "01/01/1901";
-  private static final DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
   @Override
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
     log.info("Running ValidateCCAPStartDate");
@@ -51,15 +47,12 @@ public class ValidateChildrenCCAPStartDate extends VerifyDate {
         errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-future-date-entered", null, locale)));
       }
     } else if (inChildCare) {
-      DateTime dateCCAPStart = dtf.parseDateTime(ccapStartingDate);
-      DateTime earliest_supported_date = dtf.parseDateTime(EARLIEST_DATE_SUPPORTED);
-
-      if (this.isDateNotWithinSupportedRange(dateCCAPStart, earliest_supported_date, present)) {
+      if (!isBetweenNowAndMinDate(ccapStartingDate)) {
         errorMessages.put(INPUT_NAME, List.of(
             (messageSource.getMessage("errors.past-childcare-date-out-of-range", List.of(ccapStartingDate).toArray(), locale))));
       }
     }else{
-      DateTime dateCCAPStart = dtf.parseDateTime(ccapStartingDate);
+      DateTime dateCCAPStart = DTF.parseDateTime(ccapStartingDate);
       if(this.isDateNotWithinSupportedRange(dateCCAPStart, present, null)){
         errorMessages.put(INPUT_NAME, List.of((messageSource.getMessage("errors.future-childcare-date-outside-of-range", List.of(ccapStartingDate).toArray(), locale))));
       }
