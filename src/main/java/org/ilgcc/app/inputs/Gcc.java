@@ -45,6 +45,11 @@ public class Gcc extends FlowInputs {
 
     private String activitiesClassEndTimeFriday;
 
+    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
+    private String parentSsn;
+    private List<String> parentGender;
+    private List<String> parentRaceEthnicity;
+
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
@@ -55,8 +60,8 @@ public class Gcc extends FlowInputs {
     private String childDateOfBirthYear;
     private String needFinancialAssistanceForChild;
 
-    private String childGender;
-    private String childRaceEthnicity;
+    private List<String> childGender;
+    private List<String> childRaceEthnicity;
     private String childHasDisability;
     private String childIsUsCitizen;
     private String childInIntactFamily;
