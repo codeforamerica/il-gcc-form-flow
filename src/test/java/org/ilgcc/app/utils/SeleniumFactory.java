@@ -40,7 +40,7 @@ public class SeleniumFactory implements FactoryBean<RemoteWebDriver> {
     options.setExperimentalOption("prefs", chromePrefs);
     options.setBinary(WebDriverManager.chromedriver().getBrowserPath().get().toString());
     options.addArguments("--window-size=1280,1600");
-//    options.addArguments("--headless=new");
+    options.addArguments("--headless=new");
     options.addArguments("--remote-allow-origins=*");
     driver = new ChromeDriver(options);
   }

@@ -25,26 +25,21 @@ public class ValidateParentBirth extends VerifyDate {
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
     log.info(String.format("Running %s", this.getClass().getName()));
     Locale locale = LocaleContextHolder.getLocale();
-    String INPUT_NAME = "parentBirth";
-    String EARLIEST_DATE_SUPPORTED = "01/01/1901";
+    String inputNamePrefix = "parentBirth";
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> inputData = formSubmission.getFormData();
-    DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
     String parentDate = String.format("%s/%s/%s",
-        (String) inputData.get(INPUT_NAME + "Month"),
-        (String) inputData.get(INPUT_NAME + "Day"),
-        (String) inputData.get(INPUT_NAME + "Year"));
+        (String) inputData.get(inputNamePrefix + "Month"),
+        (String) inputData.get(inputNamePrefix + "Day"),
+        (String) inputData.get(inputNamePrefix + "Year"));
 
-    if (this.isDateInvalid(parentDate)) {
-      errorMessages.put(INPUT_NAME + "Date", List.of(messageSource.getMessage("errors.invalid-date-entered", null, locale)));
+    if (isDateInvalid(parentDate)) {
+      errorMessages.put(inputNamePrefix + "Date", List.of(messageSource.getMessage("errors.provide-birthday", null, locale)));
       return errorMessages;
     }
 
-    if (this.isDateNotWithinSupportedRange(dtf.parseDateTime(parentDate), dtf.parseDateTime(EARLIEST_DATE_SUPPORTED), null)) {
-      errorMessages.put(INPUT_NAME + "Date", List.of(
-          (messageSource.getMessage("errors.date-outside-of-supported-range", List.of(EARLIEST_DATE_SUPPORTED).toArray(),
-              locale))));
-      return errorMessages;
+    if (!isBetweenNowAndMinDate(parentDate)) {
+      return Map.of(inputNamePrefix + "Date", List.of(messageSource.getMessage("errors.invalid-birthdate-range", null, locale)));
     }
 
     return errorMessages;
