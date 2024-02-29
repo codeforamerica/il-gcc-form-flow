@@ -32,6 +32,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     // parent-info-intro
     assertThat(testPage.getTitle()).isEqualTo("Parent and Guardian Information");
     testPage.clickContinue();
+    // parent-info-basic-1
+    assertThat(testPage.getTitle()).isEqualTo("Tell us about yourself");
+    testPage.enter("parentFirstName", "parent first");
+    testPage.enter("parentLastName", "parent last");
+    testPage.enter("parentBirthMonth", "12");
+    testPage.enter("parentBirthDay", "25");
+    testPage.enter("parentBirthYear", "1985");
+    testPage.clickContinue();
 
     //children-info-intro
     assertThat(testPage.getTitle()).isEqualTo("Your Children");
