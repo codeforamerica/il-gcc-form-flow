@@ -1,10 +1,11 @@
 package org.ilgcc.app.journeys;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GccFlowJourneyTest extends AbstractBasePageTest {
 
@@ -39,6 +40,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("parentBirthMonth", "12");
     testPage.enter("parentBirthDay", "25");
     testPage.enter("parentBirthYear", "1985");
+    testPage.clickContinue();
+    // parent-info-basic-2
+    assertThat(testPage.getTitle()).isEqualTo("Parent info basic");
     testPage.clickContinue();
 
     //children-info-intro
