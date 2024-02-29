@@ -25,18 +25,20 @@ flow:
     onPostAction: CreateParentBirthDate
     crossFieldValidationAction: ValidateParentBirth
     nextScreens:
-#      - name: parent-info-basic-2
-      - name: children-info-intro
+      - name: parent-info-basic-2
   parent-info-basic-2:
     nextScreens:
       - name: parent-info-service
   parent-info-service:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-info-dv
   parent-info-dv:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-info-disability
   parent-info-disability:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-home-address
   parent-home-address:
