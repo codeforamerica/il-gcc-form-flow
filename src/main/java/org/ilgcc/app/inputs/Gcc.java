@@ -21,6 +21,16 @@ public class Gcc extends FlowInputs {
     private String programSchedule;
     private String languageRead;
     private String languageSpeak;
+    @NotBlank(message = "{errors.provide-first-name}")
+    private String parentFirstName;
+    @NotBlank(message = "{errors.provide-last-name}")
+    private String parentLastName;
+    private String parentPreferredName;
+    private String parentOtherLegalName;
+    private String parentBirthDay;
+    private String parentBirthMonth;
+    private String parentBirthYear;
+    private String parentBirthDate;
     private String phoneNumber;
     private String streetAddress;
     private String city;

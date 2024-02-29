@@ -20,11 +20,13 @@ flow:
 
   parent-info-intro:
     nextScreens:
-#      - name: parent-info-basic-1
-      - name: children-info-intro
+      - name: parent-info-basic-1
   parent-info-basic-1:
+    onPostAction: CreateParentBirthDate
+    crossFieldValidationAction: ValidateParentBirth
     nextScreens:
-      - name: parent-info-basic-2
+#      - name: parent-info-basic-2
+      - name: children-info-intro
   parent-info-basic-2:
     nextScreens:
       - name: parent-info-service

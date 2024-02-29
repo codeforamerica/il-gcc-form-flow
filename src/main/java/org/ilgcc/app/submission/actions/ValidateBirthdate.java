@@ -24,6 +24,7 @@ public class ValidateBirthdate extends VerifyDate {
     Map<String, Object> inputData = formSubmission.getFormData();
     String month = null, day = null, year = null;
     String dateInputName = null;
+    Locale locale = LocaleContextHolder.getLocale();
     for (String inputName : inputData.keySet()) {
       if (inputName.endsWith("Month")) {
         month = (String) inputData.get(inputName);
@@ -36,17 +37,18 @@ public class ValidateBirthdate extends VerifyDate {
     }
 
     if (month == null || day == null || year == null) {
-      throw new IllegalArgumentException("Not all birthdate fields are present");
+      return Map.of(dateInputName, List.of(messageSource.getMessage("errors.provide-birthday", null, locale)));
     }
 
-    Locale locale = LocaleContextHolder.getLocale();
     String birthdate = String.format("%s/%s/%s", month, day, year);
     if (isDateInvalid(birthdate)) {
       return Map.of(dateInputName, List.of(messageSource.getMessage("errors.invalid-birthdate-format", null, locale)));
     }
+
     if (!isBetweenNowAndMinDate(birthdate)) {
       return Map.of(dateInputName, List.of(messageSource.getMessage("errors.invalid-birthdate-range", null, locale)));
     }
+
     return Collections.emptyMap();
   }
 }
