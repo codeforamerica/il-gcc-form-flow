@@ -74,7 +74,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "1989");
     testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Past date entered for future child care start date: Please choose a future start date")).isTrue();
+    assertThat(testPage.hasErrorText("Please choose a future start date.")).isTrue();
     testPage.enter("ccapStartMonth", "1");
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "2089");
@@ -95,7 +95,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "1889");
     testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Past child care start date outside range 01/01/1901 - today: Please choose a start date between 01/01/1901 and today")).isTrue();
+    assertThat(testPage.hasErrorText("Please enter a start date between 01/01/1901 and today.")).isTrue();
     testPage.enter("ccapStartMonth", "*1");
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "1889");
