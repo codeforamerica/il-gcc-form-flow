@@ -230,6 +230,7 @@ flow:
     nextScreens:
       - name: activities-class-hourly-schedule
   activities-class-hourly-schedule:
+    beforeDisplayAction: SetWeeklyScheduleGroup
     nextScreens:
       - name: activities-ed-program-dates
   activities-ed-program-dates:
