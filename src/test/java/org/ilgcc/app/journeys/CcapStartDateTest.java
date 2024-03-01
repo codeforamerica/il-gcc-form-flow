@@ -39,8 +39,8 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
 
   private static Stream<Arguments> invalidDates() {
     return Stream.of(
-        Arguments.of("*", "1", "1889", "Please enter the date your child will start care in this format: mm/dd/yyyy"),
-        Arguments.of("*1", "1", "1989", "Please enter the date your child will start care in this format: mm/dd/yyyy")
+        Arguments.of("*", "1", "1889", "Please enter the date your child started care in this format: mm/dd/yyyy"),
+        Arguments.of("*1", "1", "1989", "Please enter the date your child started care in this format: mm/dd/yyyy")
     );
   }
 
