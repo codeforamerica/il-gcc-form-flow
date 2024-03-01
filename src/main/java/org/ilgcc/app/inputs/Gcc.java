@@ -31,7 +31,10 @@ public class Gcc extends FlowInputs {
     private String parentBirthMonth;
     private String parentBirthYear;
     private String parentBirthDate;
-    private String phoneNumber;
+  private String parentIsServing;
+  private String parentInMilitaryReserveOrNationalGuard;
+
+  private String phoneNumber;
     private String streetAddress;
     private String city;
     private String state;
