@@ -18,6 +18,7 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
 
   private String uuid;
 
+  @Override
   @BeforeEach
   protected void setUp() {
     super.setUp();
@@ -44,72 +45,84 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
     );
   }
 
-  private static Stream<Arguments> datesOutSideOfCurrentRange() {
-    return Stream.of(
-        Arguments.of("1", "1", "1889", "Please enter a start date between 01/01/1901 and today."),
-        Arguments.of("1", "1", "2030", "Please enter a start date between 01/01/1901 and today.")
-    );
-  }
-
   @ParameterizedTest
   @MethodSource("org.ilgcc.app.journeys.CcapStartDateTest#invalidDates")
   void testInvalidDates(String month, String day, String year, String expectedErrorMessage) throws Exception {
-    postToUrlExpectingSuccess(formatUrl("children-ccap-in-care"), formatRedirectUrl("children-ccap-in-care"),
-        Map.of("childInCare", List.of("true")));
+    postToIsInChildcarePage("true");
 
-    Map<String, List<String>> params = Map.of(
-        "current_uuid", List.of(uuid),
-        "ccapStartMonth", List.of(month),
-        "ccapStartDay", List.of(day),
-        "ccapStartYear", List.of(year)
-    );
-    postExpectingFailure("children-ccap-start-date", params, "children-ccap-start-date");
+    Map<String, List<String>> params = buildParams(month, day, year);
+    postToUrl("children-ccap-start-date", params);
 
-    FormScreen get = new FormScreen(getUrl(formatUrl("children-ccap-start-date")));
-    assertThat(get.getInputError("ccapStartDate").text()).isEqualTo(expectedErrorMessage);
-  }
-
-  @ParameterizedTest
-  @MethodSource("org.ilgcc.app.journeys.CcapStartDateTest#datesOutSideOfCurrentRange")
-  void testDatesOutOfRangeForCurrentCare(String month, String day, String year, String expectedErrorMessage) throws Exception {
-    postToUrlExpectingSuccess(formatUrl("children-ccap-in-care"), formatRedirectUrl("children-ccap-in-care"),
-        Map.of("childInCare", List.of("true")));
-
-    Map<String, List<String>> params = Map.of(
-        "current_uuid", List.of(uuid),
-        "ccapStartMonth", List.of(month),
-        "ccapStartDay", List.of(day),
-        "ccapStartYear", List.of(year)
-    );
-    postToUrlExpectingFailure(formatUrl("children-ccap-start-date"), params);
-
-    FormScreen get = new FormScreen(getUrl(formatUrl("children-ccap-start-date")));
+    FormScreen get = getPage("children-ccap-start-date");
     assertThat(get.getInputError("ccapStartDate").text()).isEqualTo(expectedErrorMessage);
   }
 
   @Test
+  void testDateTooEarlyForCurrentCare() throws Exception {
+    postToIsInChildcarePage("true");
+
+    Map<String, List<String>> params = buildParams("1", "1", "1889");
+    postToUrl(formatUrl("children-ccap-start-date"), params);
+
+    FormScreen get = getPage("children-ccap-start-date");
+    assertThat(get.getInputError("ccapStartDate").text()).isEqualTo("Please enter a start date between 01/01/1901 and today.");
+  }
+
+  @Test
+  void testFutureDateFailsForCurrentCare() throws Exception {
+    postToIsInChildcarePage("true");
+
+    Map<String, List<String>> params = buildParams("1", "1", "2030");
+    postToUrl(formatUrl("children-ccap-start-date"), params);
+
+    FormScreen get = getPage("children-ccap-start-date");
+    assertThat(get.getInputError("ccapStartDate").text()).isEqualTo("Please enter a start date between 01/01/1901 and today.");
+  }
+
+  @Test
   void testDatesOutOfRangeForFutureCare() throws Exception {
-    postToUrlExpectingSuccess(formatUrl("children-ccap-in-care"), "/flow/gcc/children-ccap-in-care/navigation?uuid=" + uuid,
-        Map.of("childInCare", List.of("false")));
+    postToIsInChildcarePage("false");
 
-    Map<String, List<String>> params = Map.of(
-        "current_uuid", List.of(uuid),
-        "ccapStartMonth", List.of("1"),
-        "ccapStartDay", List.of("1"),
-        "ccapStartYear", List.of("2024")
-    );
-    postExpectingFailure("children-ccap-start-date", params, "children-ccap-start-date");
+    Map<String, List<String>> params = buildParams("1", "1", "2024");
+    postToUrl("children-ccap-start-date", params);
 
-    FormScreen get = new FormScreen(getUrl(formatUrl("children-ccap-start-date")));
+    FormScreen get = getPage("children-ccap-start-date");
     assertThat(get.getInputError("ccapStartDate").text()).isEqualTo("Please choose a future start date.");
+  }
+
+  @Test
+  void testEmptyDateIsValid() throws Exception {
+    postToIsInChildcarePage("true");
+
+    String postUrl = formatUrl("children-ccap-start-date");
+    Map<String, List<String>> params = buildParams("", "", "");
+    postToUrl(postUrl, params);
+
+    FormScreen get = getPage("children-ccap-start-date");
+    assertThat(get.getInputError("ccapStartDate")).isNull();
+  }
+
+  private Map<String, List<String>> buildParams(String month, String day, String year) {
+    return Map.of(
+        "current_uuid", List.of(uuid),
+        "ccapStartMonth", List.of(month),
+        "ccapStartDay", List.of(day),
+        "ccapStartYear", List.of(year)
+    );
+  }
+
+  private void postToIsInChildcarePage(String value) throws Exception {
+    String postUrl = formatUrl("children-ccap-in-care");
+    Map<String, List<String>> params = Map.of("childInCare", List.of(value));
+    postToUrl(postUrl, params);
+  }
+
+  private FormScreen getPage(String page) throws Exception {
+    return new FormScreen(getFromUrl(formatUrl(page)));
   }
 
   private String formatUrl(String pageName) {
     return "/flow/gcc/%s/%s".formatted(pageName, uuid);
-  }
-
-  private String formatRedirectUrl(String pageName) {
-    return "/flow/gcc/%s/navigation?uuid=%s".formatted(pageName, uuid);
   }
 
 }
