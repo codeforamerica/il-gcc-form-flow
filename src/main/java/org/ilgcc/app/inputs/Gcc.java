@@ -78,8 +78,6 @@ public class Gcc extends FlowInputs {
     private List<String> childRaceEthnicity;
     private String childHasDisability;
     private String childIsUsCitizen;
-    private String childInIntactFamily;
-
     private String childInCare;
 
     private List<String> weeklySchedule;

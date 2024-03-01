@@ -37,6 +37,10 @@ public class ValidateBirthdate extends VerifyDate {
     }
 
     if (month == null || day == null || year == null) {
+      throw new IllegalStateException("Missing date fields to run validation");
+    }
+
+    if (month.isBlank() || day.isBlank() || year.isBlank()) {
       return Map.of(dateInputName, List.of(messageSource.getMessage("errors.provide-birthday", null, locale)));
     }
 
