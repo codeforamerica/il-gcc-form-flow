@@ -40,6 +40,8 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
 
   private static Stream<Arguments> invalidDates() {
     return Stream.of(
+        Arguments.of("1", "1", "2050", "Please enter a start date between 01/01/1901 and today."),
+        Arguments.of("1", "1", "1889", "Please enter a start date between 01/01/1901 and today."),
         Arguments.of("*", "1", "1889", "Please enter the date your child started care in this format: mm/dd/yyyy"),
         Arguments.of("*1", "1", "1989", "Please enter the date your child started care in this format: mm/dd/yyyy")
     );
@@ -51,32 +53,10 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
     postToIsInChildcarePage("true");
 
     Map<String, List<String>> params = buildParams(month, day, year);
-    postToUrl("children-ccap-start-date", params);
+    postToUrl(formatUrl("children-ccap-start-date"), params);
 
-    FormScreen get = getPage("children-ccap-start-date");
+    FormScreen get = getCcapStartDatePage();
     assertThat(get.getInputError("ccapStartDate").text()).isEqualTo(expectedErrorMessage);
-  }
-
-  @Test
-  void testDateTooEarlyForCurrentCare() throws Exception {
-    postToIsInChildcarePage("true");
-
-    Map<String, List<String>> params = buildParams("1", "1", "1889");
-    postToUrl(formatUrl("children-ccap-start-date"), params);
-
-    FormScreen get = getPage("children-ccap-start-date");
-    assertThat(get.getInputError("ccapStartDate").text()).isEqualTo("Please enter a start date between 01/01/1901 and today.");
-  }
-
-  @Test
-  void testFutureDateFailsForCurrentCare() throws Exception {
-    postToIsInChildcarePage("true");
-
-    Map<String, List<String>> params = buildParams("1", "1", "2030");
-    postToUrl(formatUrl("children-ccap-start-date"), params);
-
-    FormScreen get = getPage("children-ccap-start-date");
-    assertThat(get.getInputError("ccapStartDate").text()).isEqualTo("Please enter a start date between 01/01/1901 and today.");
   }
 
   @Test
@@ -84,9 +64,9 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
     postToIsInChildcarePage("false");
 
     Map<String, List<String>> params = buildParams("1", "1", "2024");
-    postToUrl("children-ccap-start-date", params);
+    postToUrl(formatUrl("children-ccap-start-date"), params);
 
-    FormScreen get = getPage("children-ccap-start-date");
+    FormScreen get = getCcapStartDatePage();
     assertThat(get.getInputError("ccapStartDate").text()).isEqualTo("Please choose a future start date.");
   }
 
@@ -94,11 +74,10 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
   void testEmptyDateIsValid() throws Exception {
     postToIsInChildcarePage("true");
 
-    String postUrl = formatUrl("children-ccap-start-date");
     Map<String, List<String>> params = buildParams("", "", "");
-    postToUrl(postUrl, params);
+    postToUrl(formatUrl("children-ccap-start-date"), params);
 
-    FormScreen get = getPage("children-ccap-start-date");
+    FormScreen get = getCcapStartDatePage();
     assertThat(get.getInputError("ccapStartDate")).isNull();
   }
 
@@ -117,8 +96,8 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
     postToUrl(postUrl, params);
   }
 
-  private FormScreen getPage(String page) throws Exception {
-    return new FormScreen(getFromUrl(formatUrl(page)));
+  private FormScreen getCcapStartDatePage() throws Exception {
+    return new FormScreen(getFromUrl(formatUrl("children-ccap-start-date")));
   }
 
   private String formatUrl(String pageName) {
