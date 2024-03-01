@@ -44,6 +44,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     // parent-info-basic-2
     assertThat(testPage.getTitle()).isEqualTo("Parent info basic");
     testPage.clickContinue();
+    // parent-info-service
+    assertThat(testPage.getTitle()).isEqualTo("Parent info service");
+    testPage.clickContinue();
 
     //children-info-intro
     assertThat(testPage.getTitle()).isEqualTo("Your Children");
