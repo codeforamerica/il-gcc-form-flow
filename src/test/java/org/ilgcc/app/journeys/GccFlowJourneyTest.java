@@ -167,5 +167,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
     assertThat(testPage.getElementText("activitiesClassHoursSameEveryDay-Yes-label")).isEqualTo("My class hours are the same every day.");
     testPage.clickContinue();
+
+    //activities-ed-program-dates
+    assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+    testPage.clickContinue();
   }
 }
