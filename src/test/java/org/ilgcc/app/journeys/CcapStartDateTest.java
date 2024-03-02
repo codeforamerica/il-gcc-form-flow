@@ -2,6 +2,7 @@ package org.ilgcc.app.journeys;
 
 import org.ilgcc.app.utils.AbstractMockMvcTest;
 import org.ilgcc.app.utils.FormScreen;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -52,42 +53,43 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
   void testInvalidDates(String month, String day, String year, String expectedErrorMessage) throws Exception {
     postToIsInChildcarePage("true");
 
-    Map<String, List<String>> params = buildParams(month, day, year);
-    postToUrl(formatUrl("children-ccap-start-date"), params);
+    postToChildCareStartDate(month, day, year);
 
-    FormScreen get = getCcapStartDatePage();
-    assertThat(get.getInputError("ccapStartDate").text()).isEqualTo(expectedErrorMessage);
+    assertThat(getCcapStartDateError()).isEqualTo(expectedErrorMessage);
+  }
+
+  @NotNull
+  private String getCcapStartDateError() throws Exception {
+    return getCcapStartDatePage().getInputError("ccapStartDate").text();
   }
 
   @Test
   void testDatesOutOfRangeForFutureCare() throws Exception {
     postToIsInChildcarePage("false");
 
-    Map<String, List<String>> params = buildParams("1", "1", "2024");
-    postToUrl(formatUrl("children-ccap-start-date"), params);
+    postToChildCareStartDate("1", "1", "2024");
 
-    FormScreen get = getCcapStartDatePage();
-    assertThat(get.getInputError("ccapStartDate").text()).isEqualTo("Please choose a future start date.");
+    assertThat(getCcapStartDateError()).isEqualTo("Please choose a future start date.");
   }
 
   @Test
   void testEmptyDateIsValid() throws Exception {
     postToIsInChildcarePage("true");
 
-    Map<String, List<String>> params = buildParams("", "", "");
-    postToUrl(formatUrl("children-ccap-start-date"), params);
+    postToChildCareStartDate("", "", "");
 
     FormScreen get = getCcapStartDatePage();
     assertThat(get.getInputError("ccapStartDate")).isNull();
   }
 
-  private Map<String, List<String>> buildParams(String month, String day, String year) {
-    return Map.of(
+  private void postToChildCareStartDate(String month, String day, String year) throws Exception {
+    Map<String, List<String>> params = Map.of(
         "current_uuid", List.of(uuid),
         "ccapStartMonth", List.of(month),
         "ccapStartDay", List.of(day),
         "ccapStartYear", List.of(year)
     );
+    postToUrl(formatUrl("children-ccap-start-date"), params);
   }
 
   private void postToIsInChildcarePage(String value) throws Exception {
@@ -103,5 +105,4 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
   private String formatUrl(String pageName) {
     return "/flow/gcc/%s/%s".formatted(pageName, uuid);
   }
-
 }
