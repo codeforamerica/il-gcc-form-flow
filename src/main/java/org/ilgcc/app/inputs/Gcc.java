@@ -1,8 +1,11 @@
 package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -33,6 +36,11 @@ public class Gcc extends FlowInputs {
     private String parentBirthDate;
     private String parentIsServing;
     private String parentInMilitaryReserveOrNationalGuard;
+
+    private String parentContactPhoneNumber;
+    private String parentContactEmail;
+    @Size(min = 1, message = "{general.indicates-required}")
+    private List<String> parentContactPreferCommunicate;
 
     private String phoneNumber;
     private String streetAddress;
