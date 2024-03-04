@@ -39,7 +39,7 @@ public class Gcc extends FlowInputs {
 
     private String parentContactPhoneNumber;
     private String parentContactEmail;
-    @Size(min = 1, message = "{general.indicates-required}")
+
     private List<String> parentContactPreferCommunicate;
 
     private String phoneNumber;
