@@ -49,7 +49,8 @@
                   checkboxFieldset(inputName='childRaceEthnicity',
                     label=#{children-ccap-info.race-ethnicity-question},
                     fieldsetHelpText=#{general.race-ethnicity-help-text},
-                    options=${raceEthnicityOptions})}"/>
+                    options=${raceEthnicityOptions},
+                    noneOfTheAboveLabel=#{general.inputs.prefer-not-to-answer})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
