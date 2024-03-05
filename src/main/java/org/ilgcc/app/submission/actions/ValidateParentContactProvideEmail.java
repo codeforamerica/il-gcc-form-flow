@@ -24,7 +24,8 @@ public class ValidateParentContactProvideEmail implements Action {
   @Autowired
   MessageSource messageSource;
 
-  private final String INPUT_NAME = "parentContactEmail";
+  private final String INPUT_NAME_EMAIL = "parentContactEmail";
+  private final String INPUT_NAME_PREFERENCE = "parentContactPreferCommunicate";
 
   @Override
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
@@ -32,13 +33,15 @@ public class ValidateParentContactProvideEmail implements Action {
     Locale locale = LocaleContextHolder.getLocale();
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> inputData = formSubmission.getFormData();
-    if (!inputData.containsKey("parentContactPreferCommunicate")) {
+    if (!inputData.containsKey(INPUT_NAME_PREFERENCE)) {
       return errorMessages;
     }
 
-    String paperless = submission.getInputData().get("parentContactPreferCommunicate").toString();
-    if (paperless.equals("paperless") && inputData.containsKey("parentContactEmail")) {
-      errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.require", null, locale)));
+    String paperless = inputData.get(INPUT_NAME_PREFERENCE).toString();
+    if (paperless.isBlank()){
+      errorMessages.put(INPUT_NAME_PREFERENCE, List.of(messageSource.getMessage("general.indicates-required", null, locale)));
+    } else if (paperless.equals("paperless") && inputData.getOrDefault(INPUT_NAME_EMAIL, "").toString().isBlank()) {
+      errorMessages.put(INPUT_NAME_EMAIL, List.of(messageSource.getMessage("errors.require-email", null, locale)));
     }
 
     return errorMessages;
