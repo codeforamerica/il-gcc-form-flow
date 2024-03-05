@@ -20,9 +20,10 @@ flow:
 
   parent-info-intro:
     nextScreens:
-#      - name: parent-info-basic-1
-      - name: children-info-intro
+      - name: parent-info-basic-1
   parent-info-basic-1:
+    onPostAction: CreateParentBirthDate
+    crossFieldValidationAction: ValidateParentBirth
     nextScreens:
       - name: parent-info-basic-2
   parent-info-basic-2:
@@ -32,9 +33,11 @@ flow:
     nextScreens:
       - name: parent-info-dv
   parent-info-dv:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-info-disability
   parent-info-disability:
+    condition: SkipTemplate
     nextScreens:
       - name: parent-home-address
   parent-home-address:
@@ -50,7 +53,7 @@ flow:
     nextScreens:
       - name: parent-contact
   parent-contact:
-    condition: SkipTemplate
+    crossFieldValidationAction: ValidateParentContactProvideEmail
     nextScreens:
       - name: parent-info-review
   parent-info-review:

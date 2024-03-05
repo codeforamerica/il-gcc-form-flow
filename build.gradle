@@ -70,14 +70,20 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.5'
-    testImplementation 'org.springframework.security:spring-security-test:6.1.5'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.2'
+    testImplementation 'org.springframework.security:spring-security-test:6.2.1'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.8.3'
     testImplementation 'io.percy:percy-java-selenium:2.0.2'
+    testImplementation 'org.jsoup:jsoup:1.17.2'
     testImplementation 'org.awaitility:awaitility:4.2.0'
     testImplementation 'org.apache.httpcomponents.client5:httpclient5:5.3'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.6.4'
     testImplementation 'com.h2database:h2:2.1.214'
+    testImplementation 'com.deque.html.axe-core:selenium:4.8.2'
+    testImplementation 'org.projectlombok:lombok:1.18.30'
+
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
 
     runtimeOnly 'org.postgresql:postgresql:42.6.0'
 }
@@ -158,6 +164,13 @@ test {
     }
 }
 
+tasks.register("accessibilityTest", Test) {
+    Test task ->
+        task.useJUnitPlatform {
+            JUnitPlatformOptions options ->
+                options.includeTags 'a11y'
+        }
+}
 
 tasks.withType(Test).configureEach {
     environment("SENTRY_DSN", "")
