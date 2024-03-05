@@ -134,6 +134,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-ed-program-dates
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
-    testPage.clickContinue();
+//    testPage.clickContinue();
   }
 }

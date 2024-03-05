@@ -16,6 +16,7 @@
             [[${label}]]
         </legend>
         <div class="form-width--long">
+            <label th:for="${startInputName}" th:text="to" class="form-question spacing-above-35"/>
             <div class="form-width--short">
                 <p class="spacing-below-5"
                    th:id="${startInputName + '-help-text'}"
@@ -29,10 +30,10 @@
                     aria-invalid=${hasError}"
                        th:value="${fieldData.getOrDefault(startInputName, '')}">
             </div>
-            <label th:for="${inputName}" th:text="to" class="form-question spacing-above-35"/>
+            <label th:for="${endInputName}" th:text="to" class="form-question spacing-above-35"/>
             <div class="form-width--short">
                 <p class="spacing-below-5"
-                   th:id="${startInputName + '-help-text'}"
+                   th:id="${endInputName + '-help-text'}"
                    th:text="#{general.inputs.time.range.end}"></p>
                 <input type="time" class="time-input form-width--short"
                        th:id="${endInputName}"
