@@ -53,6 +53,7 @@ flow:
     nextScreens:
       - name: parent-contact
   parent-contact:
+    crossFieldValidationAction: ValidateParentContactProvideEmail
     nextScreens:
       - name: parent-info-review
   parent-info-review:
