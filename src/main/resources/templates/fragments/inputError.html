@@ -1,0 +1,11 @@
+<p th:if="${null != errorMessages}" th:fragment="validationError(inputName)" class="text--error"
+   th:assert="${!#strings.isEmpty(inputName)}"
+   th:title="#{error.error}"
+   th:id="${inputName} + '-error-p'">
+  <th:block th:each="error, iter: ${errorMessages.get(inputName)}">
+    <i class="icon-warning" th:id="${inputName + '-error-icon'} + ${iter.index + 1}"></i>
+    <span th:id="${inputName} + '-error-message-' + ${iter.index + 1}"
+          th:class="${inputName + '-error'}" th:text="${error}"></span>
+    <br>
+  </th:block>
+</p>
