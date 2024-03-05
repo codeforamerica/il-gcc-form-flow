@@ -349,3 +349,7 @@ p.normal {
 .time-input.form-width--short {
   flex: 1;
 }
+
+#ccapStartDate .text--help {
+  display: none;
+}
