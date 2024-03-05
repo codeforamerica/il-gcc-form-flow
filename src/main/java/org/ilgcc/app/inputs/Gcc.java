@@ -36,6 +36,16 @@ public class Gcc extends FlowInputs {
     private String parentBirthDate;
     private String parentIsServing;
     private String parentInMilitaryReserveOrNationalGuard;
+    private Boolean parentHomeExperiencingHomelessness;
+    @NotBlank(message = "{errors.provide-street}")
+    private String parentHomeStreetAddress1;
+    private String parentHomeStreetAddress2;
+    @NotBlank(message = "{errors.provide-city}")
+    private String parentHomeCity;
+    @NotBlank(message = "{errors.provide-state}")
+    private String parentHomeState;
+    @NotBlank(message = "{errors.provide-zip}")
+    private String parentHomeZipCode;
     @Length(min = 9, message = "{errors.invalid-phone-number}")
     private String parentContactPhoneNumber;
     @Email(message = "{errors.invalid-email}", regexp = RegexUtils.EMAIL_REGEX)
