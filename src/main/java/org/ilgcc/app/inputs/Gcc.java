@@ -1,8 +1,10 @@
 package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import formflow.library.utils.RegexUtils;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
@@ -33,6 +35,12 @@ public class Gcc extends FlowInputs {
     private String parentBirthDate;
     private String parentIsServing;
     private String parentInMilitaryReserveOrNationalGuard;
+    @Length(min = 9, message = "{errors.invalid-phone-number}")
+    private String parentContactPhoneNumber;
+    @Email(message = "{errors.invalid-email}", regexp = RegexUtils.EMAIL_REGEX)
+    private String parentContactEmail;
+
+    private List<String> parentContactPreferCommunicate;
 
     private String phoneNumber;
     private String streetAddress;
