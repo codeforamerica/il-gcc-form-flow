@@ -39,7 +39,7 @@ public class ValidateParentContactProvideEmail implements Action {
 
     String paperless = inputData.get(INPUT_NAME_PREFERENCE).toString();
     if (paperless.isBlank()){
-      errorMessages.put(INPUT_NAME_PREFERENCE, List.of(messageSource.getMessage("general.indicates-required", null, locale)));
+      errorMessages.put(INPUT_NAME_PREFERENCE, List.of(messageSource.getMessage("errors.required", null, locale)));
     } else if (paperless.equals("paperless") && inputData.getOrDefault(INPUT_NAME_EMAIL, "").toString().isBlank()) {
       errorMessages.put(INPUT_NAME_EMAIL, List.of(messageSource.getMessage("errors.require-email", null, locale)));
     }
