@@ -44,8 +44,27 @@
 <th:block th:replace="~{fragments/footer :: footer}"/>
 <script th:inline="javascript">
   $(document).ready(function () {
-    $('parentHomeExperiencingHomelessness-yes').change(function () {
-      $('#address-fields').toggleClass('hidden');
+    const $homelessnessCheckbox = $('#parentHomeExperiencingHomelessness-yes')
+
+    function toggleFields() {
+      const $addressFieldsContainer = $('#address-fields');
+      $addressFieldsContainer.toggleClass('hidden');
+
+      if ($addressFieldsContainer.hasClass('hidden')) {
+        $('#address-fields :input').prop('disabled', true);
+      } else {
+        $('#address-fields :input').prop('disabled', false);
+      }
+    }
+
+    // On page load
+    if ($homelessnessCheckbox.is(':checked')) {
+      toggleFields();
+    }
+
+    // On checkbox change
+    $homelessnessCheckbox.change(function () {
+      toggleFields();
     });
   });
 </script>
