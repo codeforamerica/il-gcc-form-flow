@@ -105,9 +105,17 @@ a, .button--link {
 }
 
 .img-center {
+  display: flex;
+  margin: 0;
+}
+
+img.img-center{
+  width: 462px;
+}
+.img-left {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin-right: 0;
+  margin-bottom: 66px;
 }
 
 /* Same as .slab--grey, named to be used more generically */
@@ -131,12 +139,20 @@ a, .button--link {
   width: 100%;
   border-collapse: collapse;
 }
-
 .eligibility-table th {
   font-weight: normal;
   font-size: 1.6rem;
   color: var(--idhs-dark-blue);
   padding-bottom: 1rem;
+}
+.paragraph-large {
+  font-size: 2.5rem;
+  margin-bottom: 25px;
+}
+
+p.normal {
+  font-weight: normal;
+  font-size: 2.5rem;
 }
 
 .eligibility-table th.bold {
@@ -332,4 +348,8 @@ a, .button--link {
 
 .time-input.form-width--short {
   flex: 1;
+}
+
+#ccapStartDate .text--help {
+  display: none;
 }

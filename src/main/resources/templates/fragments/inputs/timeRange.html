@@ -10,16 +10,14 @@
             (#arrays.length(errorMessages.get(inputName)) > 0) }"
         th:assert="${!#strings.isEmpty(startInputName)},${!#strings.isEmpty(endInputName)}, ${hasLabel || hasAriaLabel}">
     <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
-        <legend class="form-question"
+        <legend class="form-question spacing-below-15"
                 th:id="${startInputName + '-legend'}"
                 th:inline="text">
             [[${label}]]
         </legend>
         <div class="form-width--long">
             <div class="form-width--short">
-                <p class="spacing-below-5"
-                   th:id="${startInputName + '-help-text'}"
-                   th:text="#{general.inputs.time.range.start}"></p>
+                <label th:for="${startInputName}" th:text="#{general.inputs.time.range.start}" class="text--help spacing-above-15 spacing-below-5"/>
                 <input type="time" class="time-input form-width--short"
                        th:id="${startInputName}"
                        th:name="${startInputName}"
@@ -29,11 +27,9 @@
                     aria-invalid=${hasError}"
                        th:value="${fieldData.getOrDefault(startInputName, '')}">
             </div>
-            <label th:for="${inputName}" th:text="to" class="form-question spacing-above-35"/>
+            <strong th:text="#{general.to}"></strong>
             <div class="form-width--short">
-                <p class="spacing-below-5"
-                   th:id="${startInputName + '-help-text'}"
-                   th:text="#{general.inputs.time.range.end}"></p>
+                <label th:for="${endInputName}" th:text="#{general.inputs.time.range.end}" class="text--help spacing-above-15 spacing-below-5"/>
                 <input type="time" class="time-input form-width--short"
                        th:id="${endInputName}"
                        th:name="${endInputName}"

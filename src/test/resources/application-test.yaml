@@ -1,4 +1,6 @@
 form-flow:
+  session-continuity-interceptor:
+    enabled: false
   uploads:
     accepted-file-types: '.jpeg,.jpg,.png,.pdf,.bmp,.gif,.doc,.docx,.odt,.ods,.odp'
     thumbnail-width: '54'

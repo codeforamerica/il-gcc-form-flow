@@ -39,9 +39,10 @@
             <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 141px; height: 141px;">
             <img src="/assets/images/IDHS-logo.png" alt="" style="width: 168px; height: auto">
         </div>
-        <div class="width-one-half">
+
+        <div class="width-two-thirds">
           <h2 th:text="#{index.child-care.title}"></h2>
-          <p th:text="#{index.child-care.paragraph}"></p>
+          <p class="h2 normal" th:text="#{index.child-care.paragraph}"></p>
           <a
               target="_blank" rel="noopener noreferrer"
               href="https://www.inccrra.org/about/sdasearch">
@@ -74,24 +75,26 @@
     </section>
     <section class="slab slab--white">
       <div class="grid">
-        <div class="width-one-half">
+        <div class="width-one-whole">
           <h2 th:text="#{index.gather-docs.title}"></h2>
+        </div>
+        <div class="width-one-half">
           <div class="width-one-half is-desktop-hidden">
-            <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
+            <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-left">
           </div>
-          <p th:text="#{index.gather-docs.first-paragraph}"></p>
-          <p th:text="#{index.gather-docs.second-paragraph}"></p>
+          <p class="paragraph-large normal" th:text="#{index.gather-docs.first-paragraph}"></p>
+          <p class="paragraph-large normal" th:text="#{index.gather-docs.second-paragraph}"></p>
           <div class="index-icon-list spacing-below-15">
             <th:block th:replace="~{fragments/gcc-icons :: blobWithPayStub}"></th:block>
-            <p th:text="#{index.gather-docs.icon-list.1}"></p>
+            <p class="h2 normal spacing-above-0" th:text="#{index.gather-docs.icon-list.1}"></p>
           </div>
           <div class="index-icon-list spacing-below-15">
             <th:block th:replace="~{fragments/gcc-icons :: blobWithW2}"></th:block>
-            <p th:text="#{index.gather-docs.icon-list.2}"></p>
+            <p class="h2 normal spacing-above-0" th:text="#{index.gather-docs.icon-list.2}"></p>
           </div>
           <div class="index-icon-list">
             <th:block th:replace="~{fragments/gcc-icons :: blobWithSchedule}"></th:block>
-            <p th:text="#{index.gather-docs.icon-list.3}"></p>
+            <p class="h2 normal spacing-above-0" th:text="#{index.gather-docs.icon-list.3}"></p>
           </div>
         </div>
         <div class="width-one-half is-tablet-hidden">

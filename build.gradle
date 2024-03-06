@@ -11,13 +11,14 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '3.1.5'
+    id 'org.springframework.boot' version '3.2.2'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'java'
     id 'com.adarshr.test-logger' version '4.0.0'
     id 'jacoco'
     id "org.flywaydb.flyway" version "[9.+,10.0["
     id 'io.miret.etienne.sass' version '1.5.0'
+    id "io.sentry.jvm.gradle" version "4.3.0"
 }
 
 jacoco {
@@ -47,7 +48,7 @@ repositories {
 }
 
 def profile = props.getProperty('SPRING_PROFILES_ACTIVE')
-def formFlowLibraryVersion = '1.1.1'
+def formFlowLibraryVersion = '1.2.0'
 def useLocalLibrary = System.getenv('USE_LOCAL_LIBRARY')
 
 dependencies {
@@ -69,14 +70,20 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.5'
-    testImplementation 'org.springframework.security:spring-security-test:6.1.5'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.2'
+    testImplementation 'org.springframework.security:spring-security-test:6.2.1'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.8.3'
     testImplementation 'io.percy:percy-java-selenium:2.0.2'
+    testImplementation 'org.jsoup:jsoup:1.17.2'
     testImplementation 'org.awaitility:awaitility:4.2.0'
     testImplementation 'org.apache.httpcomponents.client5:httpclient5:5.3'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.6.4'
     testImplementation 'com.h2database:h2:2.1.214'
+    testImplementation 'com.deque.html.axe-core:selenium:4.8.2'
+    testImplementation 'org.projectlombok:lombok:1.18.30'
+
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
 
     runtimeOnly 'org.postgresql:postgresql:42.6.0'
 }
@@ -150,6 +157,26 @@ def sassConfiguration = { CompileSass task ->
     task.outputDir = project.file("${projectDir}/generated/main/resources/static/assets/css")
 }
 
+test {
+    useJUnitPlatform {
+        JUnitPlatformOptions options ->
+            options.excludeTags("a11y")
+    }
+}
+
+tasks.register("accessibilityTest", Test) {
+    Test task ->
+        task.useJUnitPlatform {
+            JUnitPlatformOptions options ->
+                options.includeTags 'a11y'
+        }
+}
+
+tasks.withType(Test).configureEach {
+    environment("SENTRY_DSN", "")
+    environment("MIXPANEL_API_KEY", "this-is-a-dummy-key-for-tests")
+}
+
 tasks.named('compileSass', CompileSass).configure { task ->
     group 'cfa-uswds'
     description = 'Compile Sass files into CSS.'
@@ -220,6 +247,7 @@ processResources {
         dependsOn compileJs
     }
 }
+
 
 jar {
     enabled false

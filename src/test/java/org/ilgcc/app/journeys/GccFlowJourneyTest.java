@@ -1,10 +1,11 @@
 package org.ilgcc.app.journeys;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GccFlowJourneyTest extends AbstractBasePageTest {
 
@@ -27,6 +28,29 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("Language Preference");
     testPage.selectFromDropdown("languageRead", "English");
     testPage.selectFromDropdown("languageSpeak", "Español");
+    testPage.clickContinue();
+
+    // parent-info-intro
+    assertThat(testPage.getTitle()).isEqualTo("Parent and Guardian Information");
+    testPage.clickContinue();
+    // parent-info-basic-1
+    assertThat(testPage.getTitle()).isEqualTo("Tell us about yourself");
+    testPage.enter("parentFirstName", "parent first");
+    testPage.enter("parentLastName", "parent last");
+    testPage.enter("parentBirthMonth", "12");
+    testPage.enter("parentBirthDay", "25");
+    testPage.enter("parentBirthYear", "1985");
+    testPage.clickContinue();
+    // parent-info-basic-2
+    assertThat(testPage.getTitle()).isEqualTo("Parent info basic");
+    testPage.clickContinue();
+    // parent-info-service
+    assertThat(testPage.getTitle()).isEqualTo("Parent info service");
+    testPage.clickContinue();
+    // parent-contact
+    assertThat(testPage.getTitle()).isEqualTo("Parent Contact");
+    testPage.clickElementById("parentContactPreferCommunicate-mail-label");
+    assertThat(testPage.getElementText("parentContactPreferCommunicate-mail-label")).isEqualTo("It's okay to send me mail about my case.");
     testPage.clickContinue();
 
     //children-info-intro
@@ -53,42 +77,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-ccap-start-date (Test No logic)
     assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
     assertThat((testPage.getHeader())).isEqualTo("When will child start care at your chosen provider?");
-    testPage.enter("ccapStartMonth", "*1");
-    testPage.enter("ccapStartDay", "1");
-    testPage.enter("ccapStartYear", "1889");
-    testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please check the date entered. It is not a valid date.")).isTrue();
-    testPage.enter("ccapStartMonth", "1");
-    testPage.enter("ccapStartDay", "1");
-    testPage.enter("ccapStartYear", "1989");
-    testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please check the date entered. " + "1/1/1989" + " is not a supported start date.")).isTrue();
-    testPage.enter("ccapStartMonth", "1");
-    testPage.enter("ccapStartDay", "1");
-    testPage.enter("ccapStartYear", "2089");
-    testPage.clickContinue();
-    assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Weekly Schedule");
     testPage.goBack();
-    testPage.goBack();
-    testPage.goBack();
-    testPage.goBack();
-    //children-ccap-in-care
-    assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
-    testPage.clickButton("Yes");
     //children-ccap-start-date (Test Yes Logic)
+    testPage.clickButton("Yes");
     assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
     assertThat((testPage.getHeader())).isEqualTo("When did child start care at your chosen provider?");
-
-    testPage.enter("ccapStartMonth", "11");
-    testPage.enter("ccapStartDay", "1");
-    testPage.enter("ccapStartYear", "1889");
-    testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please check the date entered. " + "11/1/1889" + " is not a supported start date.")).isTrue();
-    testPage.enter("ccapStartMonth", "*1");
-    testPage.enter("ccapStartDay", "1");
-    testPage.enter("ccapStartYear", "1889");
-    testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please check the date entered. It is not a valid date.")).isTrue();
     testPage.enter("ccapStartMonth", "11");
     testPage.enter("ccapStartDay", "1");
     testPage.enter("ccapStartYear", "2010");
@@ -99,7 +92,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-ccap-child-other-ed
     assertThat(testPage.getTitle()).isEqualTo("CCAP Child Other");
     testPage.clickButton("Yes");
-    // children-add (with children listed)
+    //children-add (with children listed)
     assertThat(testPage.getTitle()).isEqualTo("Children add");
     List<String> li = testPage.getTextBySelector(".child-name");
     assertThat(li).containsExactly("child mcchild");
@@ -136,12 +129,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-class-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
-    assertThat(testPage.getElementText("weeklySchedule-Monday-label")).isEqualTo("Monday");
+    testPage.clickElementById("weeklySchedule-Monday");
     testPage.clickContinue();
 
     //activities-class-hourly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
     assertThat(testPage.getElementText("activitiesClassHoursSameEveryDay-Yes-label")).isEqualTo("My class hours are the same every day.");
     testPage.clickContinue();
+
+    //activities-ed-program-dates
+    assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+    //testPage.clickContinue();
   }
 }

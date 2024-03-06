@@ -23,7 +23,7 @@
                     <span class="space-between">
                       <span class="child-name" th:text="|${child.childFirstName} ${child.childLastName}|"/>
                       <span class="text--small spacing-below-0 spacing-right-25">
-                        <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/child-delete-confirmation'"
+                        <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/deleteConfirmation'"
                            th:text="#{general.delete}"
                            class="subflow-delete"
                            th:id="'delete-iteration-' + ${child.uuid}"></a>
@@ -35,16 +35,20 @@
               </th:block>
             </div>
             <div class="form-card__footer">
-              <a th:href="'/flow/' + ${flow} + '/children-info-basic'"
-                 class="button button--primary spacing-above-15">
-                <i class="icon-add"></i>
-                <span th:text="#{children-add.add-button}"></span>
-              </a>
-              <a th:if="${inputData.containsKey('children') && inputData.get('children').size() > 0}"
-                 th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
-                 th:text="#{children-add.thats-all}"
-                 class="button spacing-left-0"
-                 id="continue-link"></a>
+              <div class="spacing-below-15">
+                <a th:href="'/flow/' + ${flow} + '/children-info-basic'"
+                   class="button button--primary spacing-above-15">
+                  <i class="icon-add"></i>
+                  <span th:text="#{children-add.add-button}"></span>
+                </a>
+              </div>
+              <div>
+                <a th:if="${inputData.containsKey('children') && inputData.get('children').size() > 0}"
+                   th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+                   th:text="#{children-add.thats-all}"
+                   class="button spacing-left-0"
+                   id="continue-link"></a>
+              </div>
             </div>
           </th:block>
         </th:block>

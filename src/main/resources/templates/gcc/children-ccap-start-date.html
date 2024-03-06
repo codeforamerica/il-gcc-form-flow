@@ -15,7 +15,7 @@
       <input type="hidden" th:name="current_uuid" th:value="${fieldData.get('uuid')}">
       <th:block th:replace="~{fragments/inputs/date ::
     date(inputName='ccapStart',
-    label='',
+    label=#{general.date.label},
     ariaLabel='header',
     groupName='ccapStartDate')}"/>
     </th:block>
