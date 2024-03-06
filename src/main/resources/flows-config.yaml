@@ -40,6 +40,8 @@ flow:
     condition: SkipTemplate
     nextScreens:
       - name: parent-home-address
+  parent-no-permanent-address:
+    nextScreens: null
   parent-home-address:
     condition: SkipTemplate
     nextScreens:
