@@ -43,7 +43,11 @@ flow:
 #      - name: parent-home-address
   parent-home-address:
     nextScreens:
+      - name: parent-no-permanent-address
+        condition: ParentIsExperiencingHomelessness
       - name: parent-mailing-address
+  parent-no-permanent-address:
+    nextScreens: null
   parent-mailing-address:
     condition: SkipTemplate
     nextScreens:

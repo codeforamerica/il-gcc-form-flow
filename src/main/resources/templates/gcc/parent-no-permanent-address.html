@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{parent-no-permanent-address.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-no-permanent-address.header}, subtext=#{parent-no-permanent-address.subtext})}"/>
+        <div class="form-card__footer">
+          <div>
+            <a th:href="'/flow/' + ${flow} + '/parent-mailing-address'"
+               th:text="#{parent-no-permanent-address.has-place-to-get-mail}"
+               class="button button--primary spacing-below-35" id="place-to-get-mail-link"></a>
+          </div>
+          <div>
+            <a th:href="'/flow/' + ${flow} + '/parent-contact'"
+               th:text="#{parent-no-permanent-address.contact-by-email}"
+               id="contact-by-email"></a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>
