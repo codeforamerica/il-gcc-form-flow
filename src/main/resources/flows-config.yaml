@@ -43,7 +43,7 @@ flow:
 #      - name: parent-home-address
   parent-home-address:
     nextScreens:
-      - name: children-info-intro
+      - name: parent-contact
   parent-mailing-address:
     condition: SkipTemplate
     nextScreens:
