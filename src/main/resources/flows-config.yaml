@@ -49,7 +49,7 @@ flow:
     nextScreens:
       - name: parent-confirm-address
   parent-confirm-address:
-    condition: SkipTemplate
+    beforeDisplayAction: FormatParentConfirmationAddress
     nextScreens:
       - name: parent-contact
   parent-contact:

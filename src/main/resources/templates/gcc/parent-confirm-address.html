@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{parent-confirm-address.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,14 +8,43 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-confirm-address.header})}"/>
+        <div class="notice--warning spacing-below-60" th:text="#{parent-confirm-address.note-addr-not-found}"></div>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                    radioFieldset(inputName='parentConfirmSuggestedAddress',
+                    ariaLabel='header',
+                    content=~{::addressOptions})}">
+                <th:block th:ref="addressOptions">
+                  <div class="grid__item address-validation">
+                    <label th:for="original-address"
+                           class="radio-button"
+                           id="original-address-label">
+                      <p class="spacing-below-15"
+                         th:text="#{parent-confirm-address.address-you-entered}"></p>
+                      <th:block th:each="addressLine : ${inputData.get('addressLines')}">
+                        <div th:text="${addressLine}"></div>
+                      </th:block>
+                      <input type="radio"
+                             th:name="${inputName}" id="original-address"
+                             th:value="false"
+                             th:checked="true">
+                    </label>
+                  </div>
+                </th:block>
+              </th:block>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <div>
+                <a th:href="'/flow/gcc/' + ${inputData.get('redirectPage')}"
+                   th:text="#{parent-confirm-address.edit-address}"
+                   class="button button--primary spacing-below-25"
+                   id="edit-address-link"></a>
+              </div>
+              <th:block
+                  th:replace="~{fragments/inputs/submitButtonSecondary :: submitButton(text=#{parent-confirm-address.use-address})}"/>
             </div>
           </th:block>
         </th:block>
