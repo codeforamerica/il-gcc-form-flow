@@ -29,13 +29,16 @@ public class Page {
     return driver.getTitle();
   }
 
+  public String getHeader() {
+    checkForBadMessageKeys();
+    String header = driver.findElement(By.id("header")).getText();
+    percy.snapshot(header);
+    return header;
+  }
+
   private void checkForBadMessageKeys() {
     assertThat(driver.getTitle()).doesNotContain("??");
     assertThat(driver.findElement(By.xpath("/html")).getText()).doesNotContain("??");
-  }
-
-  public String getHeader() {
-    return driver.findElement(By.tagName("h1")).getText();
   }
 
   public void goBack() {

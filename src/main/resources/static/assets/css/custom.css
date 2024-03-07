@@ -353,3 +353,7 @@ p.normal {
 #ccapStartDate .text--help {
   display: none;
 }
+
+input[name$="Address2"] {
+  max-width: 6em;
+}

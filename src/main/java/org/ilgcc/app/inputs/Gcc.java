@@ -2,8 +2,9 @@ package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
 import formflow.library.utils.RegexUtils;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -36,6 +37,16 @@ public class Gcc extends FlowInputs {
     private String parentBirthDate;
     private String parentIsServing;
     private String parentInMilitaryReserveOrNationalGuard;
+    private Boolean parentHomeExperiencingHomelessness;
+    @NotBlank(message = "{errors.provide-street}")
+    private String parentHomeStreetAddress1;
+    private String parentHomeStreetAddress2;
+    @NotBlank(message = "{errors.provide-city}")
+    private String parentHomeCity;
+    @NotBlank(message = "{errors.provide-state}")
+    private String parentHomeState;
+    @NotBlank(message = "{errors.provide-zip}")
+    private String parentHomeZipCode;
     @Length(min = 9, message = "{errors.invalid-phone-number}")
     private String parentContactPhoneNumber;
     @Email(message = "{errors.invalid-email}", regexp = RegexUtils.EMAIL_REGEX)
@@ -72,6 +83,8 @@ public class Gcc extends FlowInputs {
     private List<String> parentGender;
     private List<String> parentRaceEthnicity;
 
+    private String parentConfirmSuggestedAddress;
+    
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
