@@ -10,15 +10,27 @@
       <main id="content" role="main" class="form-card spacing-above-35">
         <th:block th:replace="~{fragments/gcc-icons :: mail}"></th:block>
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-mailing-address.header})}"/>
-        
+
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <th:block th:replace="~{fragments/inputs/address ::
-                                  address(
-                                    validate=,
-                                    inputName=''
-                                  )}"/>
+              <th:block th:replace="~{fragments/inputs/checkbox ::
+                 checkbox(inputName='parentMailingAddressSameAsHomeAddress',
+                   label=#{parent-home-address.homelessness},
+                   value='yes'
+                 )}"/>
+              <div id="address-fields" th:insert="~{fragments/inputs/address ::
+                                address(
+                                  streetAddressLabel=#{general.street-address},
+                                  streetAddress2Label=#{general.street-address-2},
+                                  cityLabel=#{general.city},
+                                  stateLabel=#{general.state},
+                                  zipCodeLabel=#{general.zip-code},
+                                  validate='false',
+                                  inputName='parentMailing'
+                                )}">
+
+              </div>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
@@ -30,5 +42,44 @@
   </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
+<script th:inline="javascript">
+  $(document).ready(function () {
+    const $parentMailingAddressSameAsHomeCheckbox = $('#parentMailingAddressSameAsHomeAddress-yes')
+
+    //Mailing Address input fields
+    const $parentMailingStreetAddress1 = $('#parentMailingStreetAddress1')
+    const $parentMailingStreetAddress2 = $('#parentMailingStreetAddress2')
+    const $parentMailingCity = $('#parentMailingCity')
+    const $parentMailingState = $('#parentMailingState')
+    const $parentMailingZipCode = $('#parentMailingZipCode')
+
+    function toggleMailingAddress() {
+      const $mailingAddressFields = $('#address-fields');
+      $mailingAddressFields.toggleClass('hidden');
+      if ($mailingAddressFields.is(':hidden')){
+        copyMailingAddressFromHomeAddress();
+      }else {
+        setMailingAddressFieldsToBlankOrIgnoreCurrentValues();
+      }
+    }
+    //On page load
+    //We want to hide inputs if the
+    if($parentMailingAddressSameAsHomeCheckbox.is(':checked')){
+      toggleMailingAddress();
+    }
+    //On checkbox state change
+    $parentMailingAddressSameAsHomeCheckbox.change(function (){
+      toggleMailingAddress();
+
+    });
+    function copyMailingAddressFromHomeAddress () {
+      $parentMailingStreetAddress1.val('');
+    }
+    //get current values and
+    function setMailingAddressFieldsToBlankOrIgnoreCurrentValues(){
+      $parentMailingStreetAddress1.text()
+    }
+  });
+</script>
 </body>
 </html>
