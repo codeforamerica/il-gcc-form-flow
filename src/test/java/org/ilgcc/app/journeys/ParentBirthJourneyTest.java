@@ -24,12 +24,12 @@ public class ParentBirthJourneyTest extends AbstractBasePageTest {
     testPage.enter("parentBirthDay", "1");
     testPage.enter("parentBirthYear", "1889");
     testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please provide a birthdate.")).isTrue();
+    assertThat(testPage.hasErrorText("Make sure the birthdate you entered is in this format: mm/dd/yyyy")).isTrue();
     testPage.enter("parentBirthMonth", "*1");
     testPage.enter("parentBirthDay", "1");
     testPage.enter("parentBirthYear", "1989");
     testPage.clickContinue();
-    assertThat(testPage.hasErrorText("Please provide a birthdate.")).isTrue();
+    assertThat(testPage.hasErrorText("Make sure the birthdate you entered is in this format: mm/dd/yyyy")).isTrue();
     testPage.enter("parentBirthMonth", "1");
     testPage.enter("parentBirthDay", "1");
     testPage.enter("parentBirthYear", "1700");
