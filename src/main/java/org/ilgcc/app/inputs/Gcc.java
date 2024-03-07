@@ -2,10 +2,10 @@ package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
 import formflow.library.utils.RegexUtils;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.NumberFormat;
 
 import java.util.List;
 
@@ -82,6 +82,8 @@ public class Gcc extends FlowInputs {
     private List<String> parentGender;
     private List<String> parentRaceEthnicity;
 
+    private String parentConfirmSuggestedAddress;
+    
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
