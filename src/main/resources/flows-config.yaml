@@ -31,17 +31,17 @@ flow:
       - name: parent-info-service
   parent-info-service:
     nextScreens:
-      - name: parent-info-dv
-  parent-info-dv:
-    condition: SkipTemplate
-    nextScreens:
-      - name: parent-info-disability
-  parent-info-disability:
-    condition: SkipTemplate
-    nextScreens:
       - name: parent-home-address
+# I think these screens were removed from the Figma designs
+#  parent-info-dv:
+#    condition: SkipTemplate
+#    nextScreens:
+#      - name: parent-info-disability
+#  parent-info-disability:
+#    condition: SkipTemplate
+#    nextScreens:
+#      - name: parent-home-address
   parent-home-address:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-mailing-address
   parent-mailing-address:
