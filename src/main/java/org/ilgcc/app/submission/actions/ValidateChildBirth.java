@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ValidateParentBirth extends ValidateBirthdate {
+public class ValidateChildBirth extends ValidateBirthdate {
 
-  public ValidateParentBirth(MessageSource messageSource) {
-    super(messageSource, "parentBirth", "parentBirthDate");
+  public ValidateChildBirth(MessageSource messageSource) {
+    super(messageSource, "childDateOfBirth", "childDateOfBirth");
   }
 }
