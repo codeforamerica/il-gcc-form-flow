@@ -4,9 +4,6 @@
   "formation": {
     "web": {
       "quantity": 1
-    },
-    "worker": {
-      "quantity": 1
     }
   },
   "stack": "heroku-22",
