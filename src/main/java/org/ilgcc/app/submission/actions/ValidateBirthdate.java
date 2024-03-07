@@ -33,7 +33,7 @@ public class ValidateBirthdate extends VerifyDate {
     }
 
     Locale locale = LocaleContextHolder.getLocale();
-    if (month.isBlank() || day.isBlank() || year.isBlank()) {
+    if (month.isBlank() && day.isBlank() && year.isBlank()) {
       return Map.of(groupName, List.of(messageSource.getMessage("errors.provide-birthday", null, locale)));
     }
 
