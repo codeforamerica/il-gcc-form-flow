@@ -33,7 +33,7 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
               "childDateOfBirthMonth", List.of("10"),
               "childDateOfBirthDay", List.of("10"),
               "childDateOfBirthYear", List.of("2015")))
-          .getResponse().getRedirectedUrl().split("=")[1];
+          .split("=")[1];
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }

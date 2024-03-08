@@ -14,7 +14,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
@@ -29,6 +28,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
 @ActiveProfiles("test")
@@ -66,13 +66,26 @@ public abstract class AbstractMockMvcTest {
         .build();
   }
 
-  protected MvcResult postAndGetRedirectUrl(String postUrl, Map<String, List<String>> params) throws Exception {
+  protected String postAndGetRedirectUrl(String postUrl, Map<String, List<String>> params) throws Exception {
     return mockMvc.perform(post(postUrl)
         .with(csrf())
         .session(session)
         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
         .params(new LinkedMultiValueMap<>(params))
-    ).andReturn();
+    ).andReturn().getResponse().getRedirectedUrl();
+  }
+
+  protected ResultActions postAndGetRedirect(String postUrl, Map<String, List<String>> params) throws Exception {
+    postToUrl(postUrl, params);
+    String nextPage = postUrl + "/navigation";
+    while (nextPage.contains("/navigation")) {
+      // follow redirects
+      nextPage = mockMvc.perform(get(nextPage).session(session))
+          .andExpect(status().is3xxRedirection()).andReturn()
+          .getResponse()
+          .getRedirectedUrl();
+    }
+    return mockMvc.perform(get(nextPage));
   }
 
   protected ResultActions postToUrl(String postUrl, Map<String, List<String>> params) throws Exception {
