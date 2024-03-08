@@ -104,13 +104,13 @@ public class Gcc extends FlowInputs {
     private List<String> weeklySchedule;
     @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])$", message = "{general.day.validation}")
     private String activitiesProgramStartDay;
-    @Pattern(regexp = "^(1[0-2]|[1-9])$", message = "{general.month.validation}")
+    @Pattern(regexp = "^(0?[1-9]|1[0-2])$", message = "{general.month.validation}")
     private String activitiesProgramStartMonth;
     @Pattern(regexp = "^(19|20)\\d{2}$", message = "{general.year.validation}")
     private String activitiesProgramStartYear;
     @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])$", message = "{general.day.validation}")
     private String activitiesProgramEndDay;
-    @Pattern(regexp = "^(1[0-2]|[1-9])$", message = "{general.month.validation}")
+    @Pattern(regexp = "^(0?[1-9]|1[0-2])$", message = "{general.month.validation}")
     private String activitiesProgramEndMonth;
     @Pattern(regexp = "^(19|20)\\d{2}$", message = "{general.year.validation}")
     private String activitiesProgramEndYear;
