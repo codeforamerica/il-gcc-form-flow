@@ -49,7 +49,6 @@ flow:
   parent-no-permanent-address:
     nextScreens: null
   parent-mailing-address:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-confirm-address
   parent-confirm-address:

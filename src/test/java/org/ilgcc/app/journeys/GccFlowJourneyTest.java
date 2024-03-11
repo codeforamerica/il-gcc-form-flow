@@ -55,6 +55,24 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.selectFromDropdown("parentHomeState", "CA - California");
     testPage.enter("parentHomeZipCode", "94103");
     testPage.clickContinue();
+    // parent-mailing-address
+    assertThat(testPage.getTitle()).isEqualTo("Parent Mailing Address");
+    testPage.goBack();
+    //parent-home-address
+    assertThat(testPage.getTitle()).isEqualTo("What is your home address?");
+    testPage.clickElementById("parentHomeExperiencingHomelessness-yes");
+    testPage.clickContinue();
+    //parent-home-address
+    assertThat(testPage.getTitle()).isEqualTo("Parent");
+    testPage.clickButton("I have a place to get mail");
+    // parent-mailing-address
+    assertThat(testPage.getTitle()).isEqualTo("Parent Mailing Address");
+    testPage.enter("parentMailingStreetAddress1", "972 Mission St");
+    testPage.enter("parentMailingStreetAddress2", "5th floor");
+    testPage.enter("parentMailingCity", "San Francisco");
+    testPage.selectFromDropdown("parentMailingState", "CA - California");
+    testPage.enter("parentMailingZipCode", "94103");
+    testPage.clickContinue();
     // parent-confirm-address
     assertThat(testPage.getHeader()).isEqualTo("Confirm your address");
     testPage.clickButton("Use this address");

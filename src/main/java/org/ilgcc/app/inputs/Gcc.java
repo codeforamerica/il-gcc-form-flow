@@ -50,7 +50,16 @@ public class Gcc extends FlowInputs {
     private String parentContactPhoneNumber;
     @Email(message = "{errors.invalid-email}", regexp = RegexUtils.EMAIL_REGEX)
     private String parentContactEmail;
-
+    private Boolean parentMailingAddressSameAsHomeAddress;
+    @NotBlank(message = "{errors.provide-street}")
+    private String parentMailingStreetAddress1;
+    private String parentMailingStreetAddress2;
+    @NotBlank(message = "{errors.provide-city}")
+    private String parentMailingCity;
+    @NotBlank(message = "{errors.provide-state}")
+    private String parentMailingState;
+    @NotBlank(message = "{errors.provide-zip}")
+    private String parentMailingZipCode;
     private List<String> parentContactPreferCommunicate;
 
     private String phoneNumber;
