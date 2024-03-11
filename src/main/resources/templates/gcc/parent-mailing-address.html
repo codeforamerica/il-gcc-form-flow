@@ -64,18 +64,12 @@
     const $parentHomeState = inputData['parentHomeState']
     const $parentHomeZipCode = inputData['parentHomeZipCode']
 
-    //  homelessness [true] -> blank fields... add to fields
-
-
-    //  home address -> fields -> fields should be copied
     function toggleMailingAddress() {
       const $mailingAddressFields = $('#address-fields');
       console.log(inputData['parentFirstName']);
       $mailingAddressFields.toggleClass('hidden');
       if ($mailingAddressFields.is(':hidden')){
         copyMailingAddressFromHomeAddress(inputData);
-      }else {
-        setMailingAddressFieldsToBlankOrIgnoreCurrentValues(inputData);
       }
     }
     //On page load
@@ -94,7 +88,6 @@
       const $parentHomeCity = inputData['parentHomeCity']
       const $parentHomeState = inputData['parentHomeState']
       const $parentHomeZipCode = inputData['parentHomeZipCode']
-      console.log($parentHomeCity);
 
       //verify Street Address1 is present in the home address, then copy the values to
       if ($.trim($parentHomeStreetAddress1) !== ''){
@@ -104,10 +97,6 @@
         $parentMailingState.val($parentHomeState);
         $parentMailingZipCode.val($parentHomeZipCode);
       }
-    }
-    //get current values and
-    function setMailingAddressFieldsToBlankOrIgnoreCurrentValues(inputData){
-
     }
   });
 </script>
