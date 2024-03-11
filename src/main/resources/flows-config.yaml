@@ -76,7 +76,6 @@ flow:
     nextScreens:
       - name: parent-partner-contact
   parent-partner-contact:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-service
   parent-partner-info-service:
