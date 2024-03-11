@@ -242,6 +242,7 @@ flow:
     nextScreens:
       - name: activities-ed-program-dates
   activities-ed-program-dates:
+    crossFieldValidationAction: ValidateMonthYearActivitiesProgram
     nextScreens:
       - name: activities-partner-add-job
   activities-partner-add-job:
