@@ -43,7 +43,6 @@ public class ValidateMonthYearTest extends AbstractMockMvcTest {
   @ParameterizedTest
   @MethodSource("org.ilgcc.app.journeys.ValidateMonthYearTest#invalidDates")
   void testInvalidDates(String month, String day, String year, String expectedErrorMessage, String field) throws Exception {
-    postToIsInActivitiesPartnerAddJobPage();
 
     postToActivitiesProgramDatesStartDate(month, day, year);
 
@@ -62,12 +61,6 @@ public class ValidateMonthYearTest extends AbstractMockMvcTest {
             "activitiesProgramStartYear", List.of(year)
     );
     postToUrl(formatUrl("activities-partner-add-job"), params);
-  }
-
-  private void postToIsInActivitiesPartnerAddJobPage() throws Exception {
-    String postUrl = formatUrl("activities-partner-add-job");
-    Map<String, List<String>> params = Map.of();
-    postToUrl(postUrl, params);
   }
 
   private FormScreen getActivitiesProgramStartDatePage() throws Exception {
