@@ -63,6 +63,10 @@ public class FormScreen {
     return html.title();
   }
 
+  public String getHeader() {
+    return html.getElementById("header").text();
+  }
+
   public String getInputValue(String inputName) {
     return html.select("input[name='%s']".formatted(inputName)).attr("value");
   }

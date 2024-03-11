@@ -327,7 +327,7 @@ p.normal {
 }
 
 .time-input{
-  display:block;
+  display:flex;
   width:100%;
   font-size:1.9rem;
   font-weight:700;
@@ -340,13 +340,12 @@ p.normal {
   background-color:#F7F5F4
 }
 
-.form-width--long {
+.form-width--long-time {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-.time-input.form-width--short {
+.flex-one {
   flex: 1;
 }
 
@@ -356,4 +355,8 @@ p.normal {
 
 input[name$="Address2"] {
   max-width: 6em;
+}
+
+.grey-darkest {
+  color: var(--gray-darkest)
 }
