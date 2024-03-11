@@ -14,11 +14,14 @@
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-              <th:block th:replace="~{fragments/inputs/checkbox ::
+              <div th:unless="${T(org.ilgcc.app.utils.SubmissionUtilities).parentIsExperiencingHomelessness(fieldData)}">
+                <th:block th:replace="~{fragments/inputs/checkbox ::
                  checkbox(inputName='parentMailingAddressSameAsHomeAddress',
-                   label=#{parent-home-address.homelessness},
+                   label=#{parent-mailing-address.same-as-home-address},
                    value='yes'
                  )}"/>
+              </div>
+
               <div id="address-fields" th:insert="~{fragments/inputs/address ::
                                 address(
                                   streetAddressLabel=#{general.street-address},
@@ -26,7 +29,7 @@
                                   cityLabel=#{general.city},
                                   stateLabel=#{general.state},
                                   zipCodeLabel=#{general.zip-code},
-                                  validate='false',
+                                  validate='true',
                                   inputName='parentMailing'
                                 )}">
 
@@ -53,13 +56,26 @@
     const $parentMailingState = $('#parentMailingState')
     const $parentMailingZipCode = $('#parentMailingZipCode')
 
+    //Get Home Address
+    let inputData = [[${inputData}]];
+    const $parentHomeStreetAddress1 = inputData['parentHomeStreetAddress1']
+    const $parentHomeStreetAddress2 = inputData['parentHomeStreetAddress2']
+    const $parentHomeCity = inputData['parentHomeCity']
+    const $parentHomeState = inputData['parentHomeState']
+    const $parentHomeZipCode = inputData['parentHomeZipCode']
+
+    //  homelessness [true] -> blank fields... add to fields
+
+
+    //  home address -> fields -> fields should be copied
     function toggleMailingAddress() {
       const $mailingAddressFields = $('#address-fields');
+      console.log(inputData['parentFirstName']);
       $mailingAddressFields.toggleClass('hidden');
       if ($mailingAddressFields.is(':hidden')){
-        copyMailingAddressFromHomeAddress();
+        copyMailingAddressFromHomeAddress(inputData);
       }else {
-        setMailingAddressFieldsToBlankOrIgnoreCurrentValues();
+        setMailingAddressFieldsToBlankOrIgnoreCurrentValues(inputData);
       }
     }
     //On page load
@@ -70,14 +86,28 @@
     //On checkbox state change
     $parentMailingAddressSameAsHomeCheckbox.change(function (){
       toggleMailingAddress();
-
     });
-    function copyMailingAddressFromHomeAddress () {
-      $parentMailingStreetAddress1.val('');
+    function copyMailingAddressFromHomeAddress (inputData) {
+      //Get Home Address
+      const $parentHomeStreetAddress1 = inputData['parentHomeStreetAddress1']
+      const $parentHomeStreetAddress2 = inputData['parentHomeStreetAddress2']
+      const $parentHomeCity = inputData['parentHomeCity']
+      const $parentHomeState = inputData['parentHomeState']
+      const $parentHomeZipCode = inputData['parentHomeZipCode']
+      console.log($parentHomeCity);
+
+      //verify Street Address1 is present in the home address, then copy the values to
+      if ($.trim($parentHomeStreetAddress1) !== ''){
+        $parentMailingStreetAddress1.val($parentHomeStreetAddress1);
+        $parentMailingStreetAddress2.val($parentHomeStreetAddress2);
+        $parentMailingCity.val($parentHomeCity);
+        $parentMailingState.val($parentHomeState);
+        $parentMailingZipCode.val($parentHomeZipCode);
+      }
     }
     //get current values and
-    function setMailingAddressFieldsToBlankOrIgnoreCurrentValues(){
-      $parentMailingStreetAddress1.text()
+    function setMailingAddressFieldsToBlankOrIgnoreCurrentValues(inputData){
+
     }
   });
 </script>

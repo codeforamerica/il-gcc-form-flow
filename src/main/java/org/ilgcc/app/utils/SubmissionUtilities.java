@@ -31,6 +31,15 @@ public class SubmissionUtilities {
     return submission.getInputData().get(PROGRAM_SCHEDULE).toString();
   }
 
+  /**
+   *
+   * @param inputData a JSON object of user inputs
+   * @return true or false
+   */
+  public static boolean parentIsExperiencingHomelessness(Map<String, Object> inputData) {
+    return inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(List.of("yes"));
+  }
+
   public static List<Map<String, Object>> getCompleteIterations(Submission submission, String subflow) {
     var iterations = (List<Map<String, Object>>) submission.getInputData().getOrDefault(subflow, emptyList());
     return iterations.stream()
