@@ -81,6 +81,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickElementById("parentContactPreferCommunicate-mail-label");
     assertThat(testPage.getElementText("parentContactPreferCommunicate-mail-label")).isEqualTo("It's okay to send me mail about my case.");
     testPage.clickContinue();
+    assertThat(testPage.getHeader()).isEqualTo("Do you have a partner or spouse?");
+    testPage.clickButton("Yes");
     // parent-partner-contact
     assertThat(testPage.getTitle()).isEqualTo("How can we contact them?");
     testPage.clickContinue();

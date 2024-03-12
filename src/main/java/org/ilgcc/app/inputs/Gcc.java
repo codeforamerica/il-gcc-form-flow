@@ -61,6 +61,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String parentMailingZipCode;
     private List<String> parentContactPreferCommunicate;
+    private String parentHasPartner;
     @Length(min = 9, message = "{errors.invalid-phone-number}")
     private String parentPartnerPhoneNumber;
     @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
