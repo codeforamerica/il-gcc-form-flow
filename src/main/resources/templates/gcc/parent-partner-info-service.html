@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{parent-partner-info-service.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,11 +8,29 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: shield}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-partner-info-service.title}, subtext=#{parent-partner-info-service.subtext})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName='parentPartnerIsServing',
+                  label=#{parent-partner-info-service.serving-question},
+                  content=~{::radioOptions1})}">
+                <th:block th:ref="radioOptions1">
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='parentPartnerIsServing', value='Yes', label=#{general.inputs.yes})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='parentPartnerIsServing', value='No', label=#{general.inputs.no})}"/>
+                </th:block>
+              </th:block>
+              <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName='parentPartnerInMilitaryReserveOrNationalGuard',
+                  label=#{parent-partner-info-service.reserves-or-guard-question},
+                  content=~{::radioOptions2})}">
+                <th:block th:ref="radioOptions2">
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='parentPartnerInMilitaryReserveOrNationalGuard', value='Yes', label=#{general.inputs.yes})}"/>
+                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='parentPartnerInMilitaryReserveOrNationalGuard', value='No', label=#{general.inputs.no})}"/>
+                </th:block>
+              </th:block>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>

@@ -65,6 +65,8 @@ public class Gcc extends FlowInputs {
     private String parentPartnerPhoneNumber;
     @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
     private String parentPartnerEmail;
+    private String parentPartnerIsServing;
+    private String parentPartnerInMilitaryReserveOrNationalGuard;
     private String phoneNumber;
     private String streetAddress;
     private String city;
