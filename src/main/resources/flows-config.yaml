@@ -79,7 +79,6 @@ flow:
     nextScreens:
       - name: parent-partner-info-service
   parent-partner-info-service:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-disability
   parent-partner-info-disability:
