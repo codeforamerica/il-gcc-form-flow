@@ -19,7 +19,9 @@
                  inputName='parentPartnerHasDisability',
                  ariaDescribe='header')}"/>
               <div class="spacing-above-60">
-                <th:block th:replace="~{fragments/skip :: skip}"/>
+                <button name="parentPartnerHasDisability" type="submit" value="skip"
+                        class="button--link" th:text="#{general.skip}">
+                </button>
               </div>
             </div>
           </th:block>
