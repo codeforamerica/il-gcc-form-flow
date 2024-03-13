@@ -1,0 +1,6 @@
+<a th:fragment="skip"
+   th:with="uuidQueryParam=${fieldData != null && fieldData.get('uuid') != null ? '?uuid=' + fieldData.get('uuid') : ''}"
+   th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation' + ${uuidQueryParam}"
+   th:text="${text} ? ${text} : #{general.skip}"
+   th:classappend="${class}"
+   id="skip-link"></a>

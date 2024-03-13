@@ -67,6 +67,7 @@ public class Gcc extends FlowInputs {
     private String parentPartnerEmail;
     private String parentPartnerIsServing;
     private String parentPartnerInMilitaryReserveOrNationalGuard;
+    private String parentPartnerHasDisability;
     private String phoneNumber;
     private String streetAddress;
     private String city;

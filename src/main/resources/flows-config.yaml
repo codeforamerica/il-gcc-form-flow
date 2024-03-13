@@ -82,7 +82,6 @@ flow:
     nextScreens:
       - name: parent-partner-info-disability
   parent-partner-info-disability:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-other-family
   parent-other-family:
