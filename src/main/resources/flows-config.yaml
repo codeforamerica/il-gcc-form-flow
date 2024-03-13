@@ -131,7 +131,6 @@ flow:
     nextScreens:
       - name: children-childcare-hourly-schedule
   children-childcare-hourly-schedule:
-    condition: SkipTemplate
     subflow: children
     nextScreens:
       - name: children-ccap-child-other-ed

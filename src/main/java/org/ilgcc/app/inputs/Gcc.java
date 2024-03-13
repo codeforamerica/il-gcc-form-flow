@@ -130,7 +130,23 @@ public class Gcc extends FlowInputs {
     private String ccapStartDate;
 
     private List<String> childcareWeeklySchedule;
+    private Boolean childcareHoursSameEveryDay;
+    private String childcareStartTimeAllDays;
+    private String childcareEndTimeAllDays;
+    private String childcareStartTimeMonday;
+    private String childcareEndTimeMonday;
 
+    private String childcareStartTimeTuesday;
+    private String childcareEndTimeTuesday;
+    private String childcareStartTimeWednesday;
+    private String childcareEndTimeWednesday;
+
+    private String childcareStartTimeThursday;
+    private String childcareEndTimeThursday;
+
+    private String childcareStartTimeFriday;
+
+    private String childcareEndTimeFriday;
     private String childAttendsOtherEd;
 
     private String current_uuid;
