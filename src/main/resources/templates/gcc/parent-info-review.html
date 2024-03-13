@@ -20,7 +20,7 @@
             <hr class="spacing-below-15 spacing-above-15">
 
             <p class="text--left"><strong th:text="#{parent-info-review.home.address}"></strong></p>
-            <div th:if="${inputData.containsKey('homeAddressLines') and !inputData.get('homeAddressLines').isEmpty()}">
+            <div th:unless="${T(org.ilgcc.app.utils.SubmissionUtilities).parentIsExperiencingHomelessness(fieldData)}">
               <th:block th:each="addressLine : ${inputData.get('homeAddressLines')}">
                 <div th:text="${addressLine}"></div>
               </th:block>
