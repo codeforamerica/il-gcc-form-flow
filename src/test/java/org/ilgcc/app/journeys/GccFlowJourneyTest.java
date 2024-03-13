@@ -79,7 +79,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     // parent-contact
     assertThat(testPage.getTitle()).isEqualTo("Parent Contact");
     testPage.clickElementById("parentContactPreferCommunicate-mail-label");
-    assertThat(testPage.getElementText("parentContactPreferCommunicate-mail-label")).isEqualTo("It's okay to send me mail about my case.");
+    assertThat(testPage.getElementText("parentContactPreferCommunicate-mail-label")).isEqualTo(
+        "It's okay to send me mail about my case.");
     testPage.clickContinue();
     // parent-partner-contact
     assertThat(testPage.getTitle()).isEqualTo("How can we contact them?");
@@ -87,6 +88,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     // parent-partner-info-service
     assertThat(testPage.getTitle()).isEqualTo("Are they a service member?");
     testPage.clickContinue();
+    // parent-partner-info-disability
+    assertThat(testPage.getTitle()).isEqualTo("Do they have a disability?");
+    testPage.clickButton("Yes");
 
     //children-info-intro
     assertThat(testPage.getTitle()).isEqualTo("Your Children");
@@ -169,7 +173,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-class-hourly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
-    assertThat(testPage.getElementText("activitiesClassHoursSameEveryDay-Yes-label")).isEqualTo("My class hours are the same every day.");
+    assertThat(testPage.getElementText("activitiesClassHoursSameEveryDay-Yes-label")).isEqualTo(
+        "My class hours are the same every day.");
     testPage.clickContinue();
 
     //activities-ed-program-dates
