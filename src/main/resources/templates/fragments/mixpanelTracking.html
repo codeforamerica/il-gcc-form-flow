@@ -11,8 +11,9 @@
   let tracking_params = {
     'page_name': pageName,
     'language': htmlLang,
-    'pref_written_language': '[[ ${inputData != null && inputData.containsKey("languageRead") ? inputData.get("languageRead") : "not_set"} ]]',
-    'pref_spoken_language': '[[ ${inputData != null && inputData.containsKey("languageSpeak") ? inputData.get("languageSpeak") : "not_set"} ]]',
+    'pref_written_language': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "languageRead")} ]]`,
+    'pref_spoken_language': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "languageSpeak")} ]]`,
+    'household_lead': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "parentHasPartner")} ]]`,
     'number_of_children': '[[ ${inputData != null && inputData.containsKey("children") ? T(org.ilgcc.app.utils.SubmissionUtilities).getCompleteIterations(submission, "children").size() : "not_set"} ]]',
   }
 

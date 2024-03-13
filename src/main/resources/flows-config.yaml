@@ -64,9 +64,10 @@ flow:
     nextScreens:
       - name: parent-have-a-partner
   parent-have-a-partner:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-qualifying-partner
+        condition: ParentHasPartner
+      - name: parent-other-family
   parent-qualifying-partner:
     condition: SkipTemplate
     nextScreens:

@@ -79,6 +79,14 @@ main.slab {
   background-color: rgba(118, 155, 243, 0.35);
 }
 
+.button {
+  margin-left: 0;
+}
+
+.button:first-of-type {
+  margin-right: 25px;
+}
+
 /* Links and buttons */
 a, .button--link {
   color: var(--idhs-base-blue);
