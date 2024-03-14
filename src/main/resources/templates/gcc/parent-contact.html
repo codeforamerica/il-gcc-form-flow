@@ -12,7 +12,7 @@
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-contact.header})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
-            <div class="form-card__content">
+            <div class="form-card__content" th:with="isExperiencingHomelessness=${T(org.ilgcc.app.utils.SubmissionUtilities).parentIsExperiencingHomelessness(fieldData)}">
               <th:block th:replace="~{fragments/inputs/phone :: phone(inputName='parentContactPhoneNumber', label=#{parent-contact.phone.number}, placeholder='(999) 999-9999', helpText=#{parent-contact.phone.number.description})}"/>
               <th:block th:replace="~{fragments/inputs/text :: text(inputName='parentContactEmail', label=#{parent-contact.email})}" />
               <th:block th:replace="~{fragments/inputs/radioFieldset ::
@@ -21,7 +21,8 @@
                             content=~{::radioContent})}">
                 <th:block th:ref="radioContent">
                   <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='parentContactPreferCommunicate', value='mail', label=#{parent-contact.prefer.communicate.mail})}"/>
-                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='parentContactPreferCommunicate', value='paperless', label=#{parent-contact.prefer.communicate.paperless})}"/>
+                  <th:block th:replace="~{fragments/inputs/overrides/radio :: radio(inputName='parentContactPreferCommunicate', value='paperless',
+                  label=#{parent-contact.prefer.communicate.paperless}, isChecked=${isExperiencingHomelessness && inputData.get('parentMailingStreetAddress1') == null })}"/>
                 </th:block>
               </th:block>
             </div>
