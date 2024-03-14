@@ -79,16 +79,25 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     // parent-contact
     assertThat(testPage.getTitle()).isEqualTo("Parent Contact");
     testPage.clickElementById("parentContactPreferCommunicate-mail-label");
-    assertThat(testPage.getElementText("parentContactPreferCommunicate-mail-label")).isEqualTo("It's okay to send me mail about my case.");
+    assertThat(testPage.getElementText("parentContactPreferCommunicate-mail-label")).isEqualTo(
+        "It's okay to send me mail about my case.");
     testPage.clickContinue();
 
     //parent-info-review
     assertThat(testPage.getTitle()).isEqualTo("Review Info");
     testPage.clickContinue();
 
+    assertThat(testPage.getHeader()).isEqualTo("Do you have a partner or spouse?");
+    testPage.clickButton("Yes");
     // parent-partner-contact
     assertThat(testPage.getTitle()).isEqualTo("How can we contact them?");
     testPage.clickContinue();
+    // parent-partner-info-service
+    assertThat(testPage.getTitle()).isEqualTo("Are they a service member?");
+    testPage.clickContinue();
+    // parent-partner-info-disability
+    assertThat(testPage.getTitle()).isEqualTo("Do they have a disability?");
+    testPage.clickButton("Yes");
 
     //children-info-intro
     assertThat(testPage.getTitle()).isEqualTo("Your Children");
