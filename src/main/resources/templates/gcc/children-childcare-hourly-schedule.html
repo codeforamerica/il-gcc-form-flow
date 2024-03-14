@@ -19,6 +19,8 @@
                    label=#{children-childcare-hourly-schedule.same-every-day},
                    value='yes'
                  )}"/>
+              <div id="same-each-day"></div>]
+              <div id="days-of-the-week"></div>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
@@ -30,11 +32,14 @@
   </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
-<!--<script th:inline="javascipt">-->
-<!--  $(document).ready(function () {-->
-<!--    const $childcareHours-->
-<!--    $('#')-->
-<!--  });-->
-<!--</script>-->
+<script th:inline="javascript">
+  $(document).ready(function () {
+    const $childcareHoursSameEveryDay = $('#childcareHoursSameEveryDay-yes')
+    // const $sameEachDay = $()
+    // Display every day of the week when a user does Not select childcareHoursSameEveryDay
+
+
+  });
+</script>
 </body>
 </html>
