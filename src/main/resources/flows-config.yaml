@@ -52,7 +52,6 @@ flow:
     nextScreens:
       - name: parent-confirm-address
   parent-confirm-address:
-    beforeDisplayAction: FormatParentConfirmationAddress
     nextScreens:
       - name: parent-contact
   parent-contact:

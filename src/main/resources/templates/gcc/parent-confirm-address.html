@@ -8,43 +8,26 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-confirm-address.header})}"/>
-        <div class="notice--warning spacing-below-60" th:text="#{parent-confirm-address.note-addr-not-found}"></div>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
+          <th:block th:ref="formContent" th:with="hasSuggestion=${T(org.ilgcc.app.utils.SubmissionUtilities).hasAddressSuggestion(submission)}">
             <div class="form-card__content">
-              <th:block th:replace="~{fragments/inputs/radioFieldset ::
-                    radioFieldset(inputName='parentConfirmSuggestedAddress',
-                    ariaLabel='header',
-                    content=~{::addressOptions})}">
-                <th:block th:ref="addressOptions">
-                  <div class="grid__item address-validation">
-                    <label th:for="original-address"
-                           class="radio-button"
-                           id="original-address-label">
-                      <p class="spacing-below-15"
-                         th:text="#{parent-confirm-address.address-you-entered}"></p>
-                      <th:block th:each="addressLine : ${inputData.get('addressLines')}">
-                        <div th:text="${addressLine}"></div>
-                      </th:block>
-                      <input type="radio"
-                             th:name="${inputName}" id="original-address"
-                             th:value="false"
-                             th:checked="true">
-                    </label>
-                  </div>
-                </th:block>
+              <th:block th:if=${hasSuggestion}>
+                <th:block th:replace="~{fragments/inputs/overrides/addressSuggestionFound ::
+                  addressSuggestionFound(
+                    header=#{parent-confirm-address.header},
+                    notice=#{parent-confirm-address.note-suggested-addr},
+                    addressInputToCheck='parentMailing',
+                    inputName='useSuggestedParentAddress')}"/>
               </th:block>
-            </div>
-            <div class="form-card__footer">
-              <div>
-                <a th:href="'/flow/gcc/' + ${inputData.get('redirectPage')}"
-                   th:text="#{parent-confirm-address.edit-address}"
-                   class="button button--primary spacing-below-25"
-                   id="edit-address-link"></a>
-              </div>
-              <th:block
-                  th:replace="~{fragments/inputs/submitButtonSecondary :: submitButton(text=#{parent-confirm-address.use-address})}"/>
+              <th:block th:unless=${hasSuggestion}>
+                <th:block th:replace="~{fragments/inputs/overrides/addressSuggestionNotFound ::
+                  addressSuggestionNotFound(
+                    header=#{parent-confirm-address.header},
+                    notice=#{parent-confirm-address.note-addr-not-found},
+                    addressInputToCheck='parentMailing',
+                    inputName='useSuggestedParentAddress',
+                    editAddressURL='/flow/gcc/' + ${inputData.get('redirectPage')})}"/>
+              </th:block>
             </div>
           </th:block>
         </th:block>
