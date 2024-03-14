@@ -22,7 +22,7 @@ public class DayCareProviderPreparer implements SubmissionFieldPreparer {
 
     results.put("dayCareName", new SingleField("PROVIDER_NAME_CORPORATE", provider.getDisplayName(), null));
     results.put("dayCareIdNumber", new SingleField("PROVIDER_ID_NUMBER", provider.getIdNumber(), null));
-    results.put("dayCareAddressStreet", new SingleField("PROVIDER_ADDRESSS_STREET", provider.getStreet(), null));
+    results.put("dayCareAddressStreet", new SingleField("PROVIDER_ADDRESS_STREET", provider.getStreet(), null));
     results.put("dayCareAddressApt", new SingleField("PROVIDER_ADDRESS_APT", provider.getApt(), null));
     results.put("dayCareAddressCity", new SingleField("PROVIDER_ADDRESS_CITY", provider.getCity(), null));
     results.put("dayCareAddressState", new SingleField("PROVIDER_ADDRESS_STATE", provider.getState(), null));
