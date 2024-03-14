@@ -1,0 +1,28 @@
+<th:block
+        th:fragment="radio"
+        th:with="hasHelpText=${!#strings.isEmpty(radioHelpText)}"
+        th:assert="
+      ${!#strings.isEmpty(inputName)},
+      ${!#strings.isEmpty(value)},
+      ${!#strings.isEmpty(label)}">
+    <label th:for="${inputName} + '-' + ${value}"
+           th:id="${inputName} + '-' + ${value} + '-label'"
+           th:classappend="${#bools.isTrue(disabled) ? 'disabled' : ''}"
+           class="radio-button">
+        <input type="radio"
+               th:id="${inputName} + '-' + ${value}"
+               th:value="${value}"
+               th:name="${inputName}"
+               th:checked="${fieldData.getOrDefault(inputName, '').equals(value) || isChecked}"
+               th:disabled="${disabled}"
+               th:aria-disabled="${disabled}"
+               th:attr="
+            aria-invalid=${hasError},
+            data-follow-up=${followUpId}">
+        <span th:text="${label}"></span>
+        <p th:if="${hasHelpText}"
+           th:id="${inputName} + '-' + ${value} + '-help-text'"
+           th:utext="${radioHelpText}"
+           class="text--help with-no-padding"></p>
+    </label>
+</th:block>
