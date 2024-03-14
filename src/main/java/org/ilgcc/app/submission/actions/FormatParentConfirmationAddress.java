@@ -26,8 +26,7 @@ public class FormatParentConfirmationAddress implements Action {
     var parentMailingSuggestedState = (String) inputData.get("parentMailingState_validated");
     var parentMailingSuggestedZipCode = (String) inputData.get("parentMailingZipCode_validated");
 
-    if (!parentMailingStreetAddress1.isEmpty() && !parentMailingCity.isEmpty() && !parentMailingState.isEmpty()
-        && !parentMailingZipCode.isEmpty()) {
+    if (parentAddressFieldsAreNotEmpty(parentMailingStreetAddress1, parentMailingCity, parentMailingState, parentMailingZipCode)) {
       List<String> addressLines = new ArrayList<>();
 
       if (parentMailingUsingSmartySuggestion.equals("true")) {
@@ -50,10 +49,7 @@ public class FormatParentConfirmationAddress implements Action {
     var parentHomeState = (String) inputData.get("parentHomeState");
     var parentHomeZipCode = (String) inputData.get("parentHomeZipCode");
 
-    if (!parentHomeStreetAddress1.isEmpty() &&
-        !parentHomeCity.isEmpty() &&
-        !parentHomeState.isEmpty() &&
-        !parentHomeZipCode.isEmpty()) {
+    if (parentAddressFieldsAreNotEmpty(parentHomeStreetAddress1, parentHomeCity, parentHomeState, parentHomeZipCode) && !parentExperiencingHomelessnessIsSelected(inputData)) {
       List<String> homeAddressLines = new ArrayList<>();
       homeAddressLines.add(parentHomeStreetAddress1);
       homeAddressLines.add(parentHomeStreetAddress2);
@@ -62,5 +58,13 @@ public class FormatParentConfirmationAddress implements Action {
 
       inputData.put("homeAddressLines", homeAddressLines);
     }
+
+  }
+  private boolean parentAddressFieldsAreNotEmpty(String streetAddress1, String city, String state, String zipCode){
+    return (!streetAddress1.isBlank() && !city.isBlank() && !state.isBlank() && !zipCode.isBlank());
+  }
+
+  private boolean parentExperiencingHomelessnessIsSelected(Map<String, Object> inputData){
+    return ((Boolean) inputData.get("parentHomeExperiencingHomelessness"));
   }
 }
