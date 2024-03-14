@@ -17,8 +17,5 @@
     <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='staging')}"/>
     <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='demo')}"/>
     <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='dev')}"/>
-    <div class="hidden">
-      <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='test')}"/>
-    </div>
   </header>
 </th:block>
