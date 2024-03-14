@@ -20,13 +20,13 @@ public class DayCareProviderPreparer implements SubmissionFieldPreparer {
 
     var provider = ChildCareProvider.valueOf((String) submission.getInputData().get("dayCareChoice"));
 
-    results.put("dayCareName", new SingleField("PROVIDER_NAME_CORPORATE", provider.getDisplayName(), null));
-    results.put("dayCareIdNumber", new SingleField("PROVIDER_ID_NUMBER", provider.getIdNumber(), null));
-    results.put("dayCareAddressStreet", new SingleField("PROVIDER_ADDRESS_STREET", provider.getStreet(), null));
-    results.put("dayCareAddressApt", new SingleField("PROVIDER_ADDRESS_APT", provider.getApt(), null));
-    results.put("dayCareAddressCity", new SingleField("PROVIDER_ADDRESS_CITY", provider.getCity(), null));
-    results.put("dayCareAddressState", new SingleField("PROVIDER_ADDRESS_STATE", provider.getState(), null));
-    results.put("dayCareAddressZip", new SingleField("PROVIDER_ADDRESS_ZIP", provider.getZipcode(), null));
+    results.put("PROVIDER_NAME_CORPORATE", new SingleField("dayCareName", provider.getDisplayName(), null));
+    results.put("PROVIDER_ID_NUMBER", new SingleField("dayCareIdNumber", provider.getIdNumber(), null));
+    results.put("PROVIDER_ADDRESSS_STREET", new SingleField("dayCareAddressStreet", provider.getStreet(), null));
+    results.put("PROVIDER_ADDRESS_APT", new SingleField("dayCareAddressApt", provider.getApt(), null));
+    results.put("PROVIDER_ADDRESS_CITY", new SingleField("dayCareAddressCity", provider.getCity(), null));
+    results.put("PROVIDER_ADDRESS_STATE", new SingleField("dayCareAddressState", provider.getState(), null));
+    results.put("PROVIDER_ADDRESS_ZIP", new SingleField("dayCareAddressZip", provider.getZipcode(), null));
 
     return results;
   }

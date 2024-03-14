@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static org.assertj.core.api.Fail.fail;
 import static org.awaitility.Awaitility.await;
 
 public class GccFlowJourneyTest extends AbstractBasePageTest {
 
   @Test
-  void fullGccFlow() {
+  void fullGccFlow() throws IOException {
     // Home page
     assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
     testPage.clickButton("Apply now");
@@ -198,12 +198,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     verifyPDF();
   }
 
-  private void verifyPDF() {
+  private void verifyPDF() throws IOException {
     testPage.clickLink("Download PDF");
     await().until(pdfDownloadCompletes());
-    File pdfFile = path.toFile().listFiles()[0];
-    try (PdfReader actualReader = new PdfReader(new FileInputStream(pdfFile));
-         PdfReader expectedReader = new PdfReader(new FileInputStream("src/test/resources/output/test_filled_ccap.pdf"))) {
+    File pdfFile = getLatestDownloadedFile(path);
+    try (FileInputStream actualIn = new FileInputStream(pdfFile);
+         PdfReader actualReader = new PdfReader(actualIn);
+         FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
+         PdfReader expectedReader = new PdfReader(expectedIn)) {
       AcroFields actualAcroFields = actualReader.getAcroFields();
       AcroFields expectedAcroFields = expectedReader.getAcroFields();
 
