@@ -14,8 +14,9 @@
         <th:block th:replace="~{fragments/languageSelector :: languageSelector}"></th:block>
       </div>
     </div>
-    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=#{demo.banner-text(linkText)}, profile='staging')}"/>
-    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=#{demo.banner-text(linkText)}, profile='demo')}"/>
+    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='staging')}"/>
+    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='demo')}"/>
     <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='dev')}"/>
+    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='test')}"/>
   </header>
 </th:block>

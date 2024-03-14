@@ -1,11 +1,18 @@
 package org.ilgcc.app.journeys;
 
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.awaitility.Awaitility.await;
 
 public class GccFlowJourneyTest extends AbstractBasePageTest {
 
@@ -186,5 +193,27 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-ed-program-dates
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
     //testPage.clickContinue();
+
+    // Download PDF and verify fields
+    verifyPDF();
+  }
+
+  private void verifyPDF() {
+    testPage.clickLink("Download PDF");
+    await().until(pdfDownloadCompletes());
+    File pdfFile = path.toFile().listFiles()[0];
+    try (PdfReader actualReader = new PdfReader(new FileInputStream(pdfFile));
+         PdfReader expectedReader = new PdfReader(new FileInputStream("src/test/resources/output/test_filled_ccap.pdf"))) {
+      AcroFields actualAcroFields = actualReader.getAcroFields();
+      AcroFields expectedAcroFields = expectedReader.getAcroFields();
+
+      assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
+      for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
+        assertThat(actualAcroFields.getField(expectedField)).isEqualTo(expectedAcroFields.getField(expectedField));
+      }
+    } catch (IOException e) {
+      fail("Failed to generate PDF: %s", e);
+      throw new RuntimeException(e);
+    }
   }
 }

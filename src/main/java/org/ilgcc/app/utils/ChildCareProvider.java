@@ -33,7 +33,11 @@ public enum ChildCareProvider {
   }
 
   public List<String> getAddressComponents() {
-    var addressComponents = new ArrayList<>(List.of(street, apt, "%s, %s %s".formatted(city, state, zipcode)));
+    var addressComponents = new ArrayList<>(List.of(street));
+    if (apt != null) {
+      addressComponents.add(apt);
+    }
+    addressComponents.add("%s, %s %s".formatted(city, state, zipcode));
     if (phone != null) {
       addressComponents.add(phone);
     }
