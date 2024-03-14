@@ -60,7 +60,7 @@ flow:
     nextScreens:
       - name: parent-info-review
   parent-info-review:
-    condition: SkipTemplate
+    beforeDisplayAction: FormatParentConfirmationAddress
     nextScreens:
       - name: parent-have-a-partner
   parent-have-a-partner:
