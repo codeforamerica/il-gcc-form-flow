@@ -1,6 +1,7 @@
 <th:block th:fragment="addressSuggestionFound(addressInputToCheck, inputName)">
   <div class="grid__item spacing-above-35 spacing-below-35">
     <h1 class="h2"
+        id="header"
         th:text="${header != null ? header : #messages.msg('address-validation.check-your-address')}"></h1>
     <p th:text="${notice != null ? notice : #messages.msg('address-validation.warning.we-updated-the-address-you-entered')}"
        class="notice--warning spacing-below-60"></p>

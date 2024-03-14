@@ -15,20 +15,31 @@ public class FormatParentConfirmationAddress implements Action {
   @Override
   public void run(Submission submission) {
     Map<String, Object> inputData = submission.getInputData();
-    // TODO check if mailing addr is different than home addr
     var parentMailingStreetAddress1 = (String) inputData.get("parentMailingStreetAddress1");
     var parentMailingStreetAddress2 = (String) inputData.get("parentMailingStreetAddress2");
     var parentMailingCity = (String) inputData.get("parentMailingCity");
     var parentMailingState = (String) inputData.get("parentMailingState");
     var parentMailingZipCode = (String) inputData.get("parentMailingZipCode");
+    var parentMailingUsingSmartySuggestion = (String) inputData.get("useSuggestedParentAddress");
+    var parentMailingSuggestedStreetAddress1 = (String) inputData.get("parentMailingStreetAddress1_validated");
+    var parentMailingSuggestedCity = (String) inputData.get("parentMailingCity_validated");
+    var parentMailingSuggestedState = (String) inputData.get("parentMailingState_validated");
+    var parentMailingSuggestedZipCode = (String) inputData.get("parentMailingZipCode_validated");
 
-    if (!parentMailingStreetAddress1.isEmpty() && !parentMailingCity.isEmpty() && !parentMailingState.isEmpty() && !parentMailingZipCode.isEmpty()){
-
+    if (!parentMailingStreetAddress1.isEmpty() && !parentMailingCity.isEmpty() && !parentMailingState.isEmpty()
+        && !parentMailingZipCode.isEmpty()) {
       List<String> addressLines = new ArrayList<>();
-      addressLines.add(parentMailingStreetAddress1);
-      addressLines.add(parentMailingStreetAddress2);
-      addressLines.add("%s, %s".formatted(parentMailingCity, parentMailingState));
-      addressLines.add(parentMailingZipCode);
+
+      if (parentMailingUsingSmartySuggestion.equals("true")) {
+        addressLines.add(parentMailingSuggestedStreetAddress1);
+        addressLines.add("%s, %s".formatted(parentMailingSuggestedCity, parentMailingSuggestedState));
+        addressLines.add(parentMailingSuggestedZipCode);
+      } else {
+        addressLines.add(parentMailingStreetAddress1);
+        addressLines.add(parentMailingStreetAddress2);
+        addressLines.add("%s, %s".formatted(parentMailingCity, parentMailingState));
+        addressLines.add(parentMailingZipCode);
+      }
 
       inputData.put("addressLines", addressLines);
     }
@@ -39,7 +50,10 @@ public class FormatParentConfirmationAddress implements Action {
     var parentHomeState = (String) inputData.get("parentHomeState");
     var parentHomeZipCode = (String) inputData.get("parentHomeZipCode");
 
-    if (!parentHomeStreetAddress1.isEmpty() && !parentHomeCity.isEmpty() && !parentHomeState.isEmpty() && !parentHomeZipCode.isEmpty()){
+    if (!parentHomeStreetAddress1.isEmpty() &&
+        !parentHomeCity.isEmpty() &&
+        !parentHomeState.isEmpty() &&
+        !parentHomeZipCode.isEmpty()) {
       List<String> homeAddressLines = new ArrayList<>();
       homeAddressLines.add(parentHomeStreetAddress1);
       homeAddressLines.add(parentHomeStreetAddress2);
@@ -47,13 +61,6 @@ public class FormatParentConfirmationAddress implements Action {
       homeAddressLines.add(parentHomeZipCode);
 
       inputData.put("homeAddressLines", homeAddressLines);
-    }
-
-    // TODO redirect based on - selected homeless (mailing), mailing address different than home (mailing), mailing is the same as home (home)
-    if(SubmissionUtilities.parentIsExperiencingHomelessness(inputData)){
-      inputData.put("redirectPage", "parent-mailing-address");
-    }else{
-      inputData.put("redirectPage", "parent-home-address");
     }
   }
 }

@@ -42,6 +42,14 @@ public class SubmissionUtilities {
     return inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(List.of("yes"));
   }
 
+  /**
+   * @param inputData a JSON object of user inputs
+   * @return true or false
+   */
+  public static boolean parentMailingAddressIsHomeAddress(Map<String, Object> inputData) {
+    return inputData.getOrDefault("parentMailingAddressSameAsHomeAddress[]", "no").equals(List.of("yes"));
+  }
+
   public static boolean hasAddressSuggestion(Submission submission) {
     return submission.getInputData().get(FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATE_ADDRESS + "parentMailing")
         .equals("true") && submission.getInputData()
