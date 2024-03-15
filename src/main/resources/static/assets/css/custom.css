@@ -31,8 +31,14 @@ html, body {
 .demo-banner {
   background-color: var(--idhs-base-red);
   color: #ffffff;
-  font-size: 14px;
 }
+
+@media only screen and (max-width: 600px) {
+  .demo-banner {
+    font-size: 12px;
+  }
+}
+
 
 .page-wrapper {
   padding-bottom: 17.8rem;
