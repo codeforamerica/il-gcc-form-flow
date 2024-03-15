@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
@@ -224,8 +223,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
   }
 
   private File getDownloadedPDF() throws IOException {
-    UUID id = repository.findAll().get(0).getId();
-    driver.get("%s/download/gcc/%s".formatted(baseUrl, id));
+    // There should only be one
+    String downloadUrl = repository.findAll().stream()
+        .findFirst()
+        .map(submission -> "%s/download/gcc/%s".formatted(baseUrl, submission.getId()))
+        .orElseThrow(() -> new RuntimeException("Couldn't get url for pdf download"));
+    driver.get(downloadUrl);
     await().until(pdfDownloadCompletes());
     return getLatestDownloadedFile(path);
   }
