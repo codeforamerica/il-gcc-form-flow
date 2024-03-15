@@ -30,9 +30,8 @@ html, body {
 
 .demo-banner {
   background-color: var(--idhs-base-red);
-}
-.demo-banner > a:visited {
   color: #ffffff;
+  font-size: 14px;
 }
 
 .page-wrapper {
