@@ -1,16 +1,23 @@
 package org.ilgcc.app.journeys;
 
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
+import static org.awaitility.Awaitility.await;
 
 public class GccFlowJourneyTest extends AbstractBasePageTest {
 
   @Test
-  void fullGccFlow() {
+  void fullGccFlow() throws IOException {
     // Home page
     assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
     testPage.clickButton("Apply now");
@@ -186,5 +193,30 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-ed-program-dates
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
     //testPage.clickContinue();
+
+    // Download PDF and verify fields
+//    verifyPDF();
+  }
+
+  private void verifyPDF() throws IOException {
+    testPage.clickLink("Download PDF");
+
+    await().until(pdfDownloadCompletes());
+    File pdfFile = getLatestDownloadedFile(path);
+    try (FileInputStream actualIn = new FileInputStream(pdfFile);
+         PdfReader actualReader = new PdfReader(actualIn);
+         FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
+         PdfReader expectedReader = new PdfReader(expectedIn)) {
+      AcroFields actualAcroFields = actualReader.getAcroFields();
+      AcroFields expectedAcroFields = expectedReader.getAcroFields();
+
+      assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
+      for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
+        assertThat(actualAcroFields.getField(expectedField)).isEqualTo(expectedAcroFields.getField(expectedField));
+      }
+    } catch (IOException e) {
+      fail("Failed to generate PDF: %s", e);
+      throw new RuntimeException(e);
+    }
   }
 }

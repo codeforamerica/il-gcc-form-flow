@@ -1,4 +1,6 @@
 form-flow:
+  pdf:
+    generate-flattened: false
   session-continuity-interceptor:
     enabled: false
   uploads:
