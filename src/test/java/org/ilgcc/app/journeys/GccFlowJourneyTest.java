@@ -2,8 +2,10 @@ package org.ilgcc.app.journeys;
 
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
+import formflow.library.data.SubmissionRepository;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +17,9 @@ import static org.assertj.core.api.Fail.fail;
 import static org.awaitility.Awaitility.await;
 
 public class GccFlowJourneyTest extends AbstractBasePageTest {
+
+  @Autowired
+  SubmissionRepository repository;
 
   @Test
   void fullGccFlow() throws IOException {
@@ -195,14 +200,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //testPage.clickContinue();
 
     // Download PDF and verify fields
-//    verifyPDF();
+    verifyPDF();
   }
 
   private void verifyPDF() throws IOException {
-    testPage.clickLink("Download PDF");
-
-    await().until(pdfDownloadCompletes());
-    File pdfFile = getLatestDownloadedFile(path);
+    File pdfFile = getDownloadedPDF();
     try (FileInputStream actualIn = new FileInputStream(pdfFile);
          PdfReader actualReader = new PdfReader(actualIn);
          FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
@@ -218,5 +220,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
       fail("Failed to generate PDF: %s", e);
       throw new RuntimeException(e);
     }
+  }
+
+  private File getDownloadedPDF() throws IOException {
+    // There should only be one
+    String downloadUrl = repository.findAll().stream()
+        .findFirst()
+        .map(submission -> "%s/download/gcc/%s".formatted(baseUrl, submission.getId()))
+        .orElseThrow(() -> new RuntimeException("Couldn't get url for pdf download"));
+    driver.get(downloadUrl);
+    await().until(pdfDownloadCompletes());
+    return getLatestDownloadedFile(path);
   }
 }
