@@ -22,13 +22,32 @@ public class FormatParentConfirmationAddress implements Action {
     var parentMailingState = (String) inputData.get("parentMailingState");
     var parentMailingZipCode = (String) inputData.get("parentMailingZipCode");
 
-    List<String> addressLines = new ArrayList<>();
-    addressLines.add(parentMailingStreetAddress1);
-    addressLines.add(parentMailingStreetAddress2);
-    addressLines.add("%s, %s".formatted(parentMailingCity, parentMailingState));
-    addressLines.add(parentMailingZipCode);
+    if (!parentMailingStreetAddress1.isEmpty() && !parentMailingCity.isEmpty() && !parentMailingState.isEmpty() && !parentMailingZipCode.isEmpty()){
 
-    inputData.put("addressLines", addressLines);
+      List<String> addressLines = new ArrayList<>();
+      addressLines.add(parentMailingStreetAddress1);
+      addressLines.add(parentMailingStreetAddress2);
+      addressLines.add("%s, %s".formatted(parentMailingCity, parentMailingState));
+      addressLines.add(parentMailingZipCode);
+
+      inputData.put("addressLines", addressLines);
+    }
+
+    var parentHomeStreetAddress1 = (String) inputData.get("parentHomeStreetAddress1");
+    var parentHomeStreetAddress2 = (String) inputData.get("parentHomeStreetAddress2");
+    var parentHomeCity = (String) inputData.get("parentHomeCity");
+    var parentHomeState = (String) inputData.get("parentHomeState");
+    var parentHomeZipCode = (String) inputData.get("parentHomeZipCode");
+
+    if (!parentHomeStreetAddress1.isEmpty() && !parentHomeCity.isEmpty() && !parentHomeState.isEmpty() && !parentHomeZipCode.isEmpty()){
+      List<String> homeAddressLines = new ArrayList<>();
+      homeAddressLines.add(parentHomeStreetAddress1);
+      homeAddressLines.add(parentHomeStreetAddress2);
+      homeAddressLines.add("%s, %s".formatted(parentHomeCity, parentHomeState));
+      homeAddressLines.add(parentHomeZipCode);
+
+      inputData.put("homeAddressLines", homeAddressLines);
+    }
 
     // TODO redirect based on - selected homeless (mailing), mailing address different than home (mailing), mailing is the same as home (home)
     if(SubmissionUtilities.parentIsExperiencingHomelessness(inputData)){

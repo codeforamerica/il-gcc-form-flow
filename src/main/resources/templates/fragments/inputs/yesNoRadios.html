@@ -1,0 +1,11 @@
+<th:block th:fragment="yesNoRadios">
+  <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName=${inputName},
+                  label=${label},
+                  content=~{::radioOptions})}">
+    <th:block th:ref="radioOptions">
+      <th:block th:replace="~{fragments/inputs/radio :: radio(inputName=${inputName}, value='Yes', label=#{general.inputs.yes})}"/>
+      <th:block th:replace="~{fragments/inputs/radio :: radio(inputName=${inputName}, value='No', label=#{general.inputs.no})}"/>
+    </th:block>
+  </th:block>
+</th:block>

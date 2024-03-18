@@ -60,31 +60,30 @@ flow:
     nextScreens:
       - name: parent-info-review
   parent-info-review:
-    condition: SkipTemplate
+    beforeDisplayAction: FormatParentConfirmationAddress
     nextScreens:
       - name: parent-have-a-partner
   parent-have-a-partner:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-qualifying-partner
+        condition: ParentHasPartner
+      - name: parent-other-family
   parent-qualifying-partner:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-basic
+        condition: ParentPartnerQualifies
+      - name: parent-other-family
   parent-partner-info-basic:
     condition: SkipTemplate
     nextScreens:
       - name: parent-partner-contact
   parent-partner-contact:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-service
   parent-partner-info-service:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-disability
   parent-partner-info-disability:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-other-family
   parent-other-family:

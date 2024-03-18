@@ -1,16 +1,5 @@
 package org.ilgcc.app.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Comparator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
@@ -22,6 +11,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Callable;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import({WebDriverConfiguration.class})
@@ -87,5 +91,16 @@ public abstract class AbstractBasePageTest {
         .filter(f -> !Files.isDirectory(f))
         .max(Comparator.comparingLong(f -> f.toFile().lastModified())).get()
         .toFile();
+  }
+
+
+  protected List<File> getAllFiles() {
+    return Arrays.stream(Objects.requireNonNull(path.toFile().listFiles()))
+        .filter(file -> file.getName().endsWith(".pdf"))
+        .toList();
+  }
+
+  protected Callable<Boolean> pdfDownloadCompletes() {
+    return () -> getAllFiles().size() > 0;
   }
 }

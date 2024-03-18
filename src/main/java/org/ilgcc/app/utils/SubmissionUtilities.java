@@ -40,6 +40,19 @@ public class SubmissionUtilities {
     return inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(List.of("yes"));
   }
 
+  /**
+   * Mixpanel helper method
+   */
+  public static String getMixpanelValue(Map<String, Object> inputData, String inputName) {
+    String value = inputData == null ? "not_set" : (String) inputData.getOrDefault(inputName, "not_set");
+
+    if (inputName.equals("parentHasPartner"))
+      if (!"not_set".equals(value)) {
+        value = "true".equals(value) ? "dual_parent" : "single_parent";
+      }
+    return value;
+  }
+
   public static List<Map<String, Object>> getCompleteIterations(Submission submission, String subflow) {
     var iterations = (List<Map<String, Object>>) submission.getInputData().getOrDefault(subflow, emptyList());
     return iterations.stream()

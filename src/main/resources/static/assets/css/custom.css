@@ -30,7 +30,15 @@ html, body {
 
 .demo-banner {
   background-color: var(--idhs-base-red);
+  color: #ffffff;
 }
+
+@media only screen and (max-width: 600px) {
+  .demo-banner {
+    font-size: 12px;
+  }
+}
+
 
 .page-wrapper {
   padding-bottom: 17.8rem;
@@ -77,6 +85,14 @@ main.slab {
 .slab--light-purple {
   /* idhs-light-purple + opacity */
   background-color: rgba(118, 155, 243, 0.35);
+}
+
+.button {
+  margin-left: 0;
+}
+
+.button:first-of-type {
+  margin-right: 25px;
 }
 
 /* Links and buttons */

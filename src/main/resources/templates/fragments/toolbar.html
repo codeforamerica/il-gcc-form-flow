@@ -1,5 +1,5 @@
 <th:block th:fragment="toolbar">
-  <header class="main-header toolbar__wrapper">
+  <header class="main-header toolbar__wrapper" th:with="linkText=${submission == null ? '#' : ('/download/gcc/' + submission.getId())}">
     <div class="toolbar">
       <div class="toolbar__left spacing-above-0">
         <a href="#content" id="skip-to-content" class="button button--small" th:text="#{general.skip-to-content}"></a>
@@ -14,7 +14,8 @@
         <th:block th:replace="~{fragments/languageSelector :: languageSelector}"></th:block>
       </div>
     </div>
-    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=#{demo.banner-text}, profile='staging')}"/>
-    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=#{demo.banner-text}, profile='demo')}"/>
+    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='staging')}"/>
+    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='demo')}"/>
+    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='dev')}"/>
   </header>
 </th:block>
