@@ -1,4 +1,4 @@
-name: 'Auto Assignee'
+name: 'Set Assignee and Reviewer'
 on:
   pull_request:
     types: [opened, ready_for_review]
@@ -11,3 +11,12 @@ jobs:
       - uses: kentaro-m/auto-assign-action@v2.0.0
         with:
           configuration-path: '.github/auto_assign.yml'
+  add-reviewers:
+    if: ${{ github.event.pull_request.ready_for_review }}
+    name: Randomly select code-reviewers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: uesteibar/reviewer-lottery@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
