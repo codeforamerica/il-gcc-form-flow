@@ -62,7 +62,7 @@ flow:
   parent-info-review:
     beforeDisplayAction: FormatParentConfirmationAddress
     nextScreens:
-      - name: parent-have-a-partner
+      - name: parent-partner-info-basic
   parent-have-a-partner:
     nextScreens:
       - name: parent-qualifying-partner
@@ -73,7 +73,7 @@ flow:
     nextScreens:
       - name: parent-partner-info-basic
   parent-partner-info-basic:
-    condition: SkipTemplate
+    crossFieldValidationAction: ValidateParentBirth
     nextScreens:
       - name: parent-partner-contact
   parent-partner-contact:

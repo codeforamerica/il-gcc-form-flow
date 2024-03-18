@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{parent-partner-info-basic.tittle})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,11 +8,21 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: person}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-partner-info-basic.header})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
+          <th:block th:ref="formContent" th:with="genderOptions=${T(org.ilgcc.app.utils.GenderOption).values()}">
+
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='parentPartnerFirstName', label=#{parent-partner-info-basic.first.name})}"/>
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='parentPartnerLastName', label=#{parent-partner-info-basic.last.name})}"/>
+              <th:block th:replace="~{fragments/inputs/date :: date(inputName='parentPartnerBirth', groupName='parentPartnerBirth', label=#{parent-partner-info-basic.birth.date})}"/>
+              <th:block th:replace="~{fragments/inputs/ssn :: ssn(inputName='parentPartnerSSN', label=#{parent-partner-info-basic.ssn})}"/>
+              <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='parentPartnerGender',
+                    label=#{parent-partner-info-basic.gender},
+                    options=${genderOptions},
+                    noneOfTheAboveLabel=#{general.inputs.prefer-not-to-answer})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
