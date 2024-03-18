@@ -6,3 +6,5 @@ spring:
 form-flow:
   aws:
     s3_bucket_name: 'get-child-care-illinois-demo'
+  address-validation:
+    disabled: true

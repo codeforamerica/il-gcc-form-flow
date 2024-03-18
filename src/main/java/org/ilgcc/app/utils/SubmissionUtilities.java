@@ -1,10 +1,12 @@
 package org.ilgcc.app.utils;
 
 import formflow.library.data.Submission;
+import formflow.library.inputs.FieldNameMarkers;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+
 import static java.util.Collections.emptyList;
 
 
@@ -38,6 +40,20 @@ public class SubmissionUtilities {
    */
   public static boolean parentIsExperiencingHomelessness(Map<String, Object> inputData) {
     return inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(List.of("yes"));
+  }
+
+  /**
+   * @param inputData a JSON object of user inputs
+   * @return true or false
+   */
+  public static boolean parentMailingAddressIsHomeAddress(Map<String, Object> inputData) {
+    return inputData.getOrDefault("parentMailingAddressSameAsHomeAddress[]", "no").equals(List.of("yes"));
+  }
+
+  public static boolean hasAddressSuggestion(Submission submission) {
+    return submission.getInputData().get(FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATE_ADDRESS + "parentMailing")
+        .equals("true") && submission.getInputData()
+        .containsKey("parentMailingStreetAddress1" + FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATED);
   }
 
   /**

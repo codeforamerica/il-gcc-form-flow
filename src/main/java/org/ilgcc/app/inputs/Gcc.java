@@ -60,6 +60,7 @@ public class Gcc extends FlowInputs {
     private String parentMailingState;
     @NotBlank(message = "{errors.provide-zip}")
     private String parentMailingZipCode;
+    private String useSuggestedParentAddress;
     private List<String> parentContactPreferCommunicate;
     private String parentHasPartner;
     @NotBlank(message = "{errors.require-yes-no}")
