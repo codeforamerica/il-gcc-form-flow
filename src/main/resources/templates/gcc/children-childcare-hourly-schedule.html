@@ -14,13 +14,21 @@
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-              <th:block th:replace="~{fragments/inputs/checkbox ::
+              <div>
+                <th:block th:replace="~{fragments/inputs/checkbox ::
                  checkbox(inputName='childcareHoursSameEveryDay',
                    label=#{children-childcare-hourly-schedule.same-every-day},
                    value='yes'
                  )}"/>
-              <div id="same-each-day"></div>]
-              <div id="days-of-the-week"></div>
+              </div>
+              <div id="same-each-day">
+                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTimeAllDays', endInputName='childcareEndTimeAllDays', label='test')}" />
+              </div>
+              <div id="days-of-the-week">
+                <th:block th:each="day: ${fieldData['childcareWeeklySchedule[]']}">
+                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTime' + ${day}, endInputName='childcareEndTime' + ${day}, label=#{${'general.week.' + day}})}" />
+                </th:block>
+              </div>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
@@ -35,10 +43,24 @@
 <script th:inline="javascript">
   $(document).ready(function () {
     const $childcareHoursSameEveryDay = $('#childcareHoursSameEveryDay-yes')
-    // const $sameEachDay = $()
-    // Display every day of the week when a user does Not select childcareHoursSameEveryDay
+    const $sameEveryDay = $('#same-each-day')
+    const $individualDays = $('#days-of-the-week')
 
+    //On page load
+    if($childcareHoursSameEveryDay.is(':checked')){
+      $individualDays.toggleClass('hidden')
+    }else{
+      $sameEveryDay.toggleClass('hidden')
+    }
 
+    //On checkbox selection
+    $childcareHoursSameEveryDay.change(function () {
+      toggleSameTimeEveryDay();
+    })
+    function toggleSameTimeEveryDay() {
+        $sameEveryDay.toggleClass('hidden')
+        $individualDays.toggleClass('hidden')
+    }
   });
 </script>
 </body>

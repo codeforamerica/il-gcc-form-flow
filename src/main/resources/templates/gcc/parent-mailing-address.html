@@ -61,7 +61,6 @@
 
     function toggleMailingAddress() {
       const $mailingAddressFields = $('#address-fields');
-      console.log(inputData['parentFirstName']);
       $mailingAddressFields.toggleClass('hidden');
       if ($mailingAddressFields.is(':hidden')){
         copyMailingAddressFromHomeAddress(inputData);

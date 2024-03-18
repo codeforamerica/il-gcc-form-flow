@@ -63,6 +63,16 @@ class SetWeeklyScheduleGroupTest {
     assertThat(submission.getInputData().get("displayWeeklySchedule")).isEqualTo(expected);
   }
 
+  @ParameterizedTest
+  @MethodSource("org.ilgcc.app.submission.actions.SetWeeklyScheduleGroupTest#unsortedDays")
+  void shouldSortChildcareWeekdays(List<String> weeklySchedule, String expected) {
+    Submission submission = new SubmissionTestBuilder()
+        .with("childcareWeeklySchedule[]", weeklySchedule)
+        .build();
+    action.run(submission);
+
+    assertThat(submission.getInputData().get("displayWeeklySchedule")).isEqualTo(expected);
+  }
   private static Stream<Arguments> consecutiveDaysArgs() {
     return Stream.of(
         Arguments.of(List.of("Monday", "Tuesday", "Wednesday"), "Monday-Wednesday"),

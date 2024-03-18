@@ -27,11 +27,12 @@ public class SetWeeklyScheduleGroup implements Action {
   @Override
   public void run(Submission submission) {
     Map<String, Object> inputData = submission.getInputData();
-    if (!inputData.containsKey("weeklySchedule[]")) {
+    if (!inputData.containsKey("weeklySchedule[]") && !inputData.containsKey("childcareWeeklySchedule[]")) {
       return;
     }
+    String weeklyScheduleType = inputData.containsKey("weeklySchedule[]") ? "weeklySchedule[]" : "childcareWeeklySchedule[]";
 
-    var weeklySchedule = new ArrayList<>((List<String>) inputData.get("weeklySchedule[]"));
+    var weeklySchedule = new ArrayList<>((List<String>) inputData.get(weeklyScheduleType));
     var sortedDays = WEEKDAYS.stream().filter(weeklySchedule::contains).toList();
     String firstDay = null, lastDay = null;
     Locale locale = LocaleContextHolder.getLocale();
@@ -53,6 +54,7 @@ public class SetWeeklyScheduleGroup implements Action {
     }
 
     inputData.put(DISPLAY_LABEL, lastDay == null ? firstDay : "%s-%s".formatted(firstDay, lastDay));
+
   }
 
   private String formatWeekdaysSeparated(List<String> sortedDays, Locale locale) {
