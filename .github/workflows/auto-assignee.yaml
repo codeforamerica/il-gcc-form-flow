@@ -1,9 +1,7 @@
 name: 'Set Assignee and Reviewer'
 on:
   pull_request:
-    types: [opened]
-  pull_request_target:
-    types: [ready_for_review]
+    types: [opened, ready_for_review]
 
 jobs:
   add-assignee:
