@@ -52,7 +52,7 @@ flow:
     nextScreens:
       - name: parent-confirm-address
   parent-confirm-address:
-    beforeDisplayAction: FormatParentConfirmationAddress
+    beforeDisplayAction: SetEditAddressRedirect
     nextScreens:
       - name: parent-contact
   parent-contact:
@@ -69,9 +69,10 @@ flow:
         condition: ParentHasPartner
       - name: parent-other-family
   parent-qualifying-partner:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-basic
+        condition: ParentPartnerQualifies
+      - name: parent-other-family
   parent-partner-info-basic:
     crossFieldValidationAction: ValidateParentBirth
     nextScreens:

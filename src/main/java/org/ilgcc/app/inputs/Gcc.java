@@ -60,8 +60,15 @@ public class Gcc extends FlowInputs {
     private String parentMailingState;
     @NotBlank(message = "{errors.provide-zip}")
     private String parentMailingZipCode;
+    private String useSuggestedParentAddress;
     private List<String> parentContactPreferCommunicate;
     private String parentHasPartner;
+    @NotBlank(message = "{errors.require-yes-no}")
+    private String parentSpouseIsStepParent;
+    @NotBlank(message = "{errors.require-yes-no}")
+    private String parentSpouseShareChildren;
+    @NotBlank(message = "{errors.require-yes-no}")
+    private String parentSpouseLiveTogether;
     @Length(min = 9, message = "{errors.invalid-phone-number}")
     private String parentPartnerPhoneNumber;
     @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
