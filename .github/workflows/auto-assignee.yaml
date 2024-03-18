@@ -14,7 +14,7 @@ jobs:
         with:
           configuration-path: '.github/auto_assign.yml'
   add-reviewers:
-    if: ${{ github.event.pull_request_target.ready_for_review == true }}
+#    if: ${{ github.event.pull_request_target.ready_for_review == true }}
     name: Randomly select code-reviewers
     runs-on: ubuntu-latest
     steps:
