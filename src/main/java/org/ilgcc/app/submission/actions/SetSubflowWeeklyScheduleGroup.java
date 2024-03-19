@@ -2,17 +2,20 @@ package org.ilgcc.app.submission.actions;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 @Slf4j
 @Component
-public class SetWeeklyScheduleGroup implements Action {
+public class SetSubflowWeeklyScheduleGroup implements Action {
 
   private final MessageSource messageSource;
 
@@ -20,17 +23,19 @@ public class SetWeeklyScheduleGroup implements Action {
 
   public static final String DISPLAY_LABEL = "displayWeeklySchedule";
 
-  public SetWeeklyScheduleGroup(MessageSource messageSource) {
+  public SetSubflowWeeklyScheduleGroup(MessageSource messageSource) {
     this.messageSource = messageSource;
   }
 
   @Override
-  public void run(Submission submission) {
-    Map<String, Object> inputData = submission.getInputData();
-    if (!inputData.containsKey("weeklySchedule[]")) {
+  public void run(Submission submission, String id) {
+
+    Map<String, Object> subflowEntry = submission.getSubflowEntryByUuid("children", id);
+    if (!subflowEntry.containsKey("childcareWeeklySchedule[]")) {
       return;
     }
-    var weeklySchedule = new ArrayList<>((List<String>) inputData.get("weeklySchedule[]"));
+
+    var weeklySchedule = new ArrayList<>((List<String>) subflowEntry.get("childcareWeeklySchedule[]"));
     var sortedDays = WEEKDAYS.stream().filter(weeklySchedule::contains).toList();
     String firstDay = null, lastDay = null;
     Locale locale = LocaleContextHolder.getLocale();
@@ -46,12 +51,13 @@ public class SetWeeklyScheduleGroup implements Action {
         }
       } else if (firstDay != null) {
         var displayDays = formatWeekdaysSeparated(sortedDays, locale);
-        inputData.put(DISPLAY_LABEL, displayDays);
+        subflowEntry.put(DISPLAY_LABEL, displayDays);
         return;
       }
     }
 
-    inputData.put(DISPLAY_LABEL, lastDay == null ? firstDay : "%s-%s".formatted(firstDay, lastDay));
+    subflowEntry.put(DISPLAY_LABEL, lastDay == null ? firstDay : "%s-%s".formatted(firstDay, lastDay));
+
   }
 
   private String formatWeekdaysSeparated(List<String> sortedDays, Locale locale) {
