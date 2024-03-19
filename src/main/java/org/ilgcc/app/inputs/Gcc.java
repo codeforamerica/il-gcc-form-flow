@@ -116,7 +116,9 @@ public class Gcc extends FlowInputs {
     private List<String> parentRaceEthnicity;
 
     private String parentConfirmSuggestedAddress;
-    
+
+    private String hasAdultDependents;
+
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")

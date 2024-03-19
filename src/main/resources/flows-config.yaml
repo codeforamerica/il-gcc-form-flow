@@ -87,9 +87,10 @@ flow:
     nextScreens:
       - name: parent-other-family
   parent-other-family:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-add-adults
+        condition: HasAdultDependents
+      - name: children-info-intro
   parent-add-adults:
     condition: SkipTemplate
     nextScreens:
