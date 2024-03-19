@@ -250,9 +250,7 @@ flow:
     condition: SkipTemplate
     nextScreens:
       - name: unearned-income-intro
-
   unearned-income-intro:
-    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-source
   unearned-income-source:
