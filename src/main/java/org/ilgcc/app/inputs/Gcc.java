@@ -160,6 +160,12 @@ public class Gcc extends FlowInputs {
     private String childcareStartTimeFriday;
 
     private String childcareEndTimeFriday;
+    private String childcareStartTimeSaturday;
+
+    private String childcareEndTimeSaturday;
+    private String childcareStartTimeSunday;
+
+    private String childcareEndTimeSunday;
     private String childAttendsOtherEd;
 
     private String current_uuid;

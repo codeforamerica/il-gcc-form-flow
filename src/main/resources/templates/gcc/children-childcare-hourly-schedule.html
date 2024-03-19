@@ -9,7 +9,7 @@
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
         <th:block th:replace="~{fragments/gcc-icons :: clock}"></th:block>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{children-childcare-hourly-schedule.header})}"/>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{children-childcare-hourly-schedule.header(${fieldData.get('childFirstName')})})}"/>
 
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
@@ -22,7 +22,7 @@
                  )}"/>
               </div>
               <div id="same-each-day">
-                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTimeAllDays', endInputName='childcareEndTimeAllDays', label='test')}" />
+                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTimeAllDays', endInputName='childcareEndTimeAllDays', label=${fieldData.get('displayWeeklySchedule')})}" />
               </div>
               <div id="days-of-the-week">
                 <th:block th:each="day: ${fieldData['childcareWeeklySchedule[]']}">
