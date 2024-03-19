@@ -29,12 +29,13 @@ public class SetSubflowWeeklyScheduleGroup implements Action {
 
   @Override
   public void run(Submission submission, String id) {
-//    Map<String, Object> inputData = submission.getInputData();
-    if (!submission.getSubflowEntryByUuid("children", id).containsKey("childcareWeeklySchedule[]")) {
+
+    Map<String, Object> subflowEntry = submission.getSubflowEntryByUuid("children", id);
+    if (!subflowEntry.containsKey("childcareWeeklySchedule[]")) {
       return;
     }
 
-    var weeklySchedule = new ArrayList<>((List<String>) submission.getSubflowEntryByUuid("children", id).get("childcareWeeklySchedule[]"));
+    var weeklySchedule = new ArrayList<>((List<String>) subflowEntry.get("childcareWeeklySchedule[]"));
     var sortedDays = WEEKDAYS.stream().filter(weeklySchedule::contains).toList();
     String firstDay = null, lastDay = null;
     Locale locale = LocaleContextHolder.getLocale();
@@ -50,12 +51,12 @@ public class SetSubflowWeeklyScheduleGroup implements Action {
         }
       } else if (firstDay != null) {
         var displayDays = formatWeekdaysSeparated(sortedDays, locale);
-        submission.getSubflowEntryByUuid("children", id).put(DISPLAY_LABEL, displayDays);
+        subflowEntry.put(DISPLAY_LABEL, displayDays);
         return;
       }
     }
 
-    submission.getSubflowEntryByUuid("children", id).put(DISPLAY_LABEL, lastDay == null ? firstDay : "%s-%s".formatted(firstDay, lastDay));
+    subflowEntry.put(DISPLAY_LABEL, lastDay == null ? firstDay : "%s-%s".formatted(firstDay, lastDay));
 
   }
 

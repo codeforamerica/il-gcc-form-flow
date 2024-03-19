@@ -46,14 +46,12 @@
     const $sameEveryDay = $('#same-each-day')
     const $individualDays = $('#days-of-the-week')
 
-    //On page load
     if($childcareHoursSameEveryDay.is(':checked')){
       $individualDays.toggleClass('hidden')
     }else{
       $sameEveryDay.toggleClass('hidden')
     }
 
-    //On checkbox selection
     $childcareHoursSameEveryDay.change(function () {
       toggleSameTimeEveryDay();
     })
