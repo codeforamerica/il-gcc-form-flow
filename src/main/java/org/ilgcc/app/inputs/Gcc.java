@@ -76,6 +76,16 @@ public class Gcc extends FlowInputs {
     private String parentPartnerIsServing;
     private String parentPartnerInMilitaryReserveOrNationalGuard;
     private String parentPartnerHasDisability;
+    @NotBlank(message = "{general.indicates-required}")
+    private String parentPartnerFirstName;
+    @NotBlank(message = "{general.indicates-required}")
+    private String parentPartnerLastName;
+
+    private String parentPartnerSSN;
+    private String parentPartnerBirthDay;
+    private String parentPartnerBirthMonth;
+    private String parentPartnerBirthYear;
+    private List<String> parentPartnerGender;
     private String phoneNumber;
     private String streetAddress;
     private String city;

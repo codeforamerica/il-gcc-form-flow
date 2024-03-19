@@ -107,6 +107,15 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.selectRadio("parentSpouseShareChildren", "Yes");
     testPage.selectRadio("parentSpouseLiveTogether", "Yes");
     testPage.clickContinue();
+    //parent-partner-info-basic
+    assertThat(testPage.getHeader()).isEqualTo("Tell us about your partner");
+    testPage.enter("parentPartnerFirstName", "partner");
+    testPage.enter("parentPartnerLastName", "parent");
+    testPage.enter("parentPartnerBirthMonth", "12");
+    testPage.enter("parentPartnerBirthDay", "25");
+    testPage.enter("parentPartnerBirthYear", "2018");
+    testPage.clickContinue();
+
     // parent-partner-contact
     assertThat(testPage.getTitle()).isEqualTo("How can we contact them?");
     testPage.clickContinue();

@@ -74,7 +74,7 @@ flow:
         condition: ParentPartnerQualifies
       - name: parent-other-family
   parent-partner-info-basic:
-    condition: SkipTemplate
+    crossFieldValidationAction: ValidateParentPartnerBirth
     nextScreens:
       - name: parent-partner-contact
   parent-partner-contact:
