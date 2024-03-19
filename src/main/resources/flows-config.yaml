@@ -85,7 +85,7 @@ flow:
       - name: parent-partner-info-disability
   parent-partner-info-disability:
     nextScreens:
-      - name: parent-other-family
+      - name: parent-intro-family-info
   parent-other-family:
     nextScreens:
       - name: parent-add-adults

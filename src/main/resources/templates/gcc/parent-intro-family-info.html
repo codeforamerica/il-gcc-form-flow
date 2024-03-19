@@ -7,7 +7,7 @@
   <section class="slab">
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
+      <main id="content" role="main" class="form-card spacing-above-35 text--centered">
         <th:block th:replace="~{fragments/gcc-icons :: successCheck}"></th:block>
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-intro-family-info.header})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
@@ -16,7 +16,6 @@
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/continueButton :: continue(text=#{parent-intro-family-info.continue})}" />
-
             </div>
           </th:block>
         </th:block>
