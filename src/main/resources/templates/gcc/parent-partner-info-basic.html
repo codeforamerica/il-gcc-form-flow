@@ -14,8 +14,8 @@
           <th:block th:ref="formContent" th:with="genderOptions=${T(org.ilgcc.app.utils.GenderOption).values()}">
 
             <div class="form-card__content">
-              <th:block th:replace="~{fragments/inputs/text :: text(inputName='parentPartnerFirstName', helpText=#{parent-partner-info-basic.first.name.help}, label=#{parent-partner-info-basic.first.name})}"/>
-              <th:block th:replace="~{fragments/inputs/text :: text(inputName='parentPartnerLastName', helpText=#{parent-partner-info-basic.last.name.help}, label=#{parent-partner-info-basic.last.name})}"/>
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='parentPartnerFirstName', helpText=#{parent-partner-info-basic.first.name.help}, label=#{general.question.their-first-name})}"/>
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='parentPartnerLastName', helpText=#{parent-partner-info-basic.last.name.help}, label=#{general.question.their-last-name})}"/>
               <th:block th:replace="~{fragments/inputs/date :: date(inputName='parentPartnerBirth', groupName='parentPartnerBirth', label=#{parent-partner-info-basic.birth.date})}"/>
               <th:block th:replace="~{fragments/inputs/ssn :: ssn(inputName='parentPartnerSSN', helpText=#{parent-partner-info-basic.ssn.help}, label=#{parent-partner-info-basic.ssn})}"/>
               <th:block th:replace="~{fragments/inputs/checkboxFieldset ::

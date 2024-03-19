@@ -16,14 +16,14 @@
             <div class="form-card__content">
               <th:block th:replace="~{fragments/inputs/text ::
                 text(inputName='childFirstName',
-                label=#{children-info-basic.first-name-question})}"/>
+                label=#{general.question.their-first-name})}"/>
               <th:block th:replace="~{fragments/inputs/text ::
                 text(inputName='childLastName',
-                label=#{children-info-basic.last-name-question})}"/>
+                label=#{general.question.their-last-name)}"/>
               <th:block th:replace="~{fragments/inputs/date ::
                 date(inputName='childDateOfBirth',
                 groupName='childDateOfBirth',
-                label=#{children-info-basic.dob-question})}"/>
+                label=#{general.question.their-date-of-birth})}"/>
               <th:block th:replace="~{fragments/inputs/radioFieldset ::
                   radioFieldset(inputName='needFinancialAssistanceForChild',
                   label=#{children-info-basic.financial-assistance-question},
