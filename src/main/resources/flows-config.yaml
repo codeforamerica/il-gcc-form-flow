@@ -92,6 +92,9 @@ flow:
         condition: HasAdultDependents
       - name: children-info-intro
   parent-add-adults:
+    nextScreens:
+      - name: parent-add-adults-detail
+  parent-add-adults-detail:
     condition: SkipTemplate
     nextScreens:
       - name: parent-intro-family-info

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{parent-add-adults.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,14 +8,46 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: householdOtherAdults}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-add-adults.header}, subtext=#{parent-add-adults.subtext})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
+          <th:block th:ref="formContent" th:with="addedAdultDependents=${inputData.containsKey('adultDependents') && inputData.get('adultDependents').size() > 0}">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:if="${addedAdultDependents}">
+                <div class="boxed-content text--centered">
+                  <strong th:text="#{parent-add-adults.your-adult-dependents}"></strong>
+                  <ul class="subflow-list list--bulleted">
+                    <li th:each="adultDependent, iter: ${inputData.adultDependents}"
+                        class="spacing-below-10">
+                    <span class="space-between">
+                      <span class="adultDependent-name" th:text="|${adultDependent.adultDependentFirstName} ${adultDependent.adultDependentLastName}|"/>
+                      <span class="text--small spacing-below-0 spacing-right-25">
+                        <a th:href="'/flow/' + ${flow} + '/adultDependent/' + ${adultDependent.uuid} + '/deleteConfirmation'"
+                           th:text="#{general.delete}"
+                           class="subflow-delete"
+                           th:id="'delete-iteration-' + ${adultDependent.uuid}"></a>
+                      </span>
+                    </span>
+                    </li>
+                  </ul>
+                </div>
+              </th:block>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <div class="spacing-below-15">
+                <a th:href="'/flow/' + ${flow} + '/parent-add-adults-detail'"
+                   class="button button--primary spacing-above-15">
+                  <i class="icon-add"></i>
+                  <span th:text="#{parent-add-adults.add-member}"></span>
+                </a>
+              </div>
+              <div>
+                <a th:if="${addedAdultDependents}"
+                   th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+                   th:text="#{parent-add-adults.im-done}"
+                   class="button spacing-left-0"
+                   id="continue-link"></a>
+              </div>
             </div>
           </th:block>
         </th:block>
