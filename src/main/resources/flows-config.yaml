@@ -96,10 +96,8 @@ flow:
     nextScreens:
       - name: parent-intro-family-info
   parent-intro-family-info:
-    condition: SkipTemplate
     nextScreens:
       - name: children-info-intro
-
   children-info-intro:
     nextScreens:
       - name: children-add
