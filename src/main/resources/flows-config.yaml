@@ -241,7 +241,7 @@ flow:
   activities-ed-program-dates:
     crossFieldValidationAction: ValidateMonthYearActivitiesProgram
     nextScreens:
-      - name: activities-partner-add-job
+      - name: unearned-income-source
   activities-partner-add-job:
     condition: SkipTemplate
     nextScreens:
@@ -256,8 +256,10 @@ flow:
     nextScreens:
       - name: unearned-income-source
   unearned-income-source:
-    condition: SkipTemplate
+    crossFieldValidationAction: ValidateUnearnedIncomeSource
     nextScreens:
+      - name: unearned-income-assets
+        condition: UnearnedIncomeSourceIsNone
       - name: unearned-income-amount
   unearned-income-amount:
     condition: SkipTemplate

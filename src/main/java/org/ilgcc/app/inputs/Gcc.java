@@ -182,4 +182,6 @@ public class Gcc extends FlowInputs {
     private String childAttendsOtherEd;
 
     private String current_uuid;
+
+    private List<String> unearnedIncomeSource;
 }
