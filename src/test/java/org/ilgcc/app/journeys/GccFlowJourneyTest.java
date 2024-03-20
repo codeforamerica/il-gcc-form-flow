@@ -222,7 +222,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-ed-program-dates
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
-    //testPage.clickContinue();
+    testPage.clickContinue();
+
+    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Assets");
 
     // Download PDF and verify fields
     verifyPDF();

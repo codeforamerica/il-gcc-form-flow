@@ -264,7 +264,6 @@ flow:
     nextScreens:
       - name: unearned-income-assets
   unearned-income-assets:
-    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-programs
   unearned-income-programs:
