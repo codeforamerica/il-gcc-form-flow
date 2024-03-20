@@ -120,6 +120,16 @@ public class Gcc extends FlowInputs {
     private String hasAdultDependents;
 
     @NotBlank(message = "{errors.provide-first-name}")
+    private String adultDependentFirstName;
+
+    @NotBlank(message = "{errors.provide-last-name}")
+    private String adultDependentLastName;
+
+    private String adultDependentBirthdateDay;
+    private String adultDependentBirthdateMonth;
+    private String adultDependentBirthdateYear;
+
+    @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
     private String childLastName;

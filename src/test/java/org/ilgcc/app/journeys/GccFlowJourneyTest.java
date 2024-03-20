@@ -128,6 +128,18 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     // parent-other-family
     assertThat(testPage.getHeader()).isEqualTo("Do you live with any other adult family members who you financially support?");
     testPage.clickButton("Yes");
+    // parent-add-adults
+    assertThat(testPage.getHeader()).isEqualTo("Add adult family members who you financially support.");
+    testPage.clickButton("Add family member");
+    // parent-add-adult-details
+    assertThat(testPage.getHeader()).isEqualTo("Add family member");
+    testPage.enter("adultDependentFirstName", "ada");
+    testPage.enter("adultDependentLastName", "dolt");
+    testPage.enter("adultDependentBirthdateMonth", "1");
+    testPage.enter("adultDependentBirthdateDay", "13");
+    testPage.enter("adultDependentBirthdateYear", "2010");
+    testPage.clickContinue();
+    testPage.clickButton("I'm done");
     // parent-intro-family-info
     assertThat(testPage.getTitle()).isEqualTo("Parent Intro Family Info");
     testPage.clickButton("Continue to next section");

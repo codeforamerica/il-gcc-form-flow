@@ -92,9 +92,13 @@ flow:
         condition: HasAdultDependents
       - name: children-info-intro
   parent-add-adults:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-intro-family-info
+  parent-add-adults-detail:
+    subflow: adultDependents
+    crossFieldValidationAction: ValidateAdultDependentBirthdate
+    nextScreens:
+      - name: parent-add-adults
   parent-intro-family-info:
     nextScreens:
       - name: children-info-intro
@@ -303,11 +307,18 @@ flow:
     nextScreens: null
   children-delete:
     nextScreens: null
+  delete-person:
+    nextScreens: null
 subflows:
   children:
     entryScreen: children-add
     iterationStartScreen: children-info-basic
     reviewScreen: children-add
     deleteConfirmationScreen: children-delete
+  adultDependents:
+    entryScreen: parent-add-adults
+    iterationStartScreen: parent-add-adults-detail
+    reviewScreen: parent-add-adults
+    deleteConfirmationScreen: delete-person
 landmarks:
   firstScreen: onboarding-getting-started
