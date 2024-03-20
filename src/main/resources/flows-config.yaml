@@ -254,11 +254,12 @@ flow:
     nextScreens:
       - name: unearned-income-source
   unearned-income-source:
-    condition: SkipTemplate
+    crossFieldValidationAction: ValidateUnearnedIncomeSource
     nextScreens:
+      - name: unearned-income-assets
+        condition: UnearnedIncomeSourceIsNone
       - name: unearned-income-amount
   unearned-income-amount:
-    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-assets
   unearned-income-assets:
