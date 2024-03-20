@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{parent-add-adults-detail.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,11 +8,20 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-add-adults.add-member})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:replace="~{fragments/inputs/text ::
+                text(inputName='adultDependentFirstName',
+                label=#{general.question.their-first-name})}"/>
+              <th:block th:replace="~{fragments/inputs/text ::
+                text(inputName='adultDependentLastName',
+                label=#{general.question.their-last-name})}"/>
+              <th:block th:replace="~{fragments/inputs/date ::
+                date(inputName='adultDependentBirthdate',
+                groupName='adultDependentBirthdate',
+                label=#{general.question.their-date-of-birth})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
