@@ -230,8 +230,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //unearned-income-source
     assertThat(testPage.getTitle()).isEqualTo("Income Source");
+    testPage.clickContinue();
 
-
+    //unearned-income-assets
+    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Assets");
 
     // Download PDF and verify fields
     verifyPDF();
