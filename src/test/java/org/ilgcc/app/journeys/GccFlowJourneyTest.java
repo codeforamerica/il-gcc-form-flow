@@ -135,9 +135,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getHeader()).isEqualTo("Add family member");
     testPage.enter("adultDependentFirstName", "ada");
     testPage.enter("adultDependentLastName", "dolt");
-    testPage.enter("adultDependentBirthdateMonth", "1");
-    testPage.enter("adultDependentBirthdateDay", "13");
-    testPage.enter("adultDependentBirthdateYear", "2010");
+    testPage.clickContinue();
+    // delete-person
+    testPage.clickLink("delete");
+    assertThat(testPage.getTitle()).isEqualTo("Delete person");
+    testPage.clickButton("Yes, delete");
+    testPage.clickButton("Add family member");
+    testPage.enter("adultDependentFirstName", "adaa");
+    testPage.enter("adultDependentLastName", "doltt");
     testPage.clickContinue();
     testPage.clickButton("I'm done");
     // parent-intro-family-info

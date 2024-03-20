@@ -14,7 +14,8 @@
     'pref_written_language': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "languageRead")} ]]`,
     'pref_spoken_language': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "languageSpeak")} ]]`,
     'household_lead': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "parentHasPartner")} ]]`,
-    'number_of_children': '[[ ${inputData != null && inputData.containsKey("children") ? T(org.ilgcc.app.utils.SubmissionUtilities).getCompleteIterations(submission, "children").size() : "not_set"} ]]',
+    'number_of_children': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(submission, "children")} ]]`,
+    'number_of_adult': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(submission, "adultDependents")} ]]`,
   }
 
   const intercepted_param = window.location.href.includes("?intercepted=") ? window.location.href.split("?intercepted=")[1].split('&')[0] : null

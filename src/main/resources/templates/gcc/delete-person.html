@@ -20,7 +20,7 @@
       </th:block>
       <th:block th:if="${noEntryToDelete == null}">
         <main
-            th:with="name=${session.entryToDelete.get('childFirstName') + ' ' + session.entryToDelete.get('childLastName')}"
+            th:with="name=${session.entryToDelete.get('adultDependentFirstName') + ' ' + session.entryToDelete.get('adultDependentLastName')}"
             id="content" role="main" class="form-card spacing-above-35">
           <div class="form-card__content">
             <th:block th:replace="~{fragments/gcc-icons :: delete}"></th:block>
@@ -29,10 +29,9 @@
           <div class="form-card__footer">
             <form method="post"
                   th:action="'/flow/' + ${flow} + '/' + ${subflow} + '/' + ${param.uuid} + '/delete'">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
-                  text=#{delete-confirmation.yes})}"/>
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton( text=#{delete-confirmation.yes})}"/>
             </form>
-            <a class="button spacing-above-35" th:href="'/flow/' + ${flow} + '/children-add'"
+            <a class="button spacing-above-35" th:href="'/flow/' + ${flow} + '/parent-add-adults'"
                th:text="#{delete-confirmation.no}"></a>
           </div>
         </main>

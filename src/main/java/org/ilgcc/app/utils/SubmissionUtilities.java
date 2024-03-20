@@ -7,8 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Collections.emptyList;
-
 
 public class SubmissionUtilities {
   public static final DateTimeFormatter MM_DD_YYYY = DateTimeFormatter.ofPattern("M/d/uuuu");
@@ -34,7 +32,6 @@ public class SubmissionUtilities {
   }
 
   /**
-   *
    * @param inputData a JSON object of user inputs
    * @return true or false
    */
@@ -69,10 +66,13 @@ public class SubmissionUtilities {
     return value;
   }
 
-  public static List<Map<String, Object>> getCompleteIterations(Submission submission, String subflow) {
-    var iterations = (List<Map<String, Object>>) submission.getInputData().getOrDefault(subflow, emptyList());
-    return iterations.stream()
+  public static String getMixpanelValue(Submission submission, String subflow) {
+    if (submission == null || !submission.getInputData().containsKey(subflow)) {
+      return "not_set";
+    }
+
+    return String.valueOf(((List<Map<String, Object>>) submission.getInputData().get(subflow)).stream()
         .filter(iter -> (boolean) iter.getOrDefault("iterationIsComplete", false))
-        .toList();
+        .toList().size());
   }
 }
