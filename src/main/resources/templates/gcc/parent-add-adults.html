@@ -22,7 +22,7 @@
                     <span class="space-between">
                       <span class="adultDependent-name" th:text="|${adultDependent.adultDependentFirstName} ${adultDependent.adultDependentLastName}|"/>
                       <span class="text--small spacing-below-0 spacing-right-25">
-                        <a th:href="'/flow/' + ${flow} + '/adultDependent/' + ${adultDependent.uuid} + '/deleteConfirmation'"
+                        <a th:href="'/flow/' + ${flow} + '/adultDependents/' + ${adultDependent.uuid} + '/deleteConfirmation'"
                            th:text="#{general.delete}"
                            class="subflow-delete"
                            th:id="'delete-iteration-' + ${adultDependent.uuid}"></a>
