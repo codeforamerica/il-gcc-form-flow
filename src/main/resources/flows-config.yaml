@@ -270,7 +270,6 @@ flow:
     nextScreens:
       - name: unearned-income-programs
   unearned-income-programs:
-    condition: SkipTemplate
     nextScreens:
       - name: submit-intro
 
