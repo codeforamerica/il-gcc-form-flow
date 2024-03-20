@@ -1,0 +1,35 @@
+<th:block th:fragment="addressSuggestionNotFound(addressInputToCheck, inputName)">
+  <div class="grid__item spacing-above-35 spacing-below-35">
+    <h1 class="h2"
+        id="header"
+        th:text="${header != null ? header : #messages.msg('address-validation.header.make-sure-your-address-is-correct')}"></h1>
+    <p th:text="${notice != null ? notice : #messages.msg('address-validation.warning.we-couldnt-find-your-address')}"
+       class="notice--warning spacing-below-60"></p>
+  </div>
+  <div class="grid__item address-validation spacing-below-60">
+    <label th:for="original-address"
+           class="radio-button"
+           id="original-address-label">
+      <p class="spacing-below-15"
+         th:text="#{address-validation.address-entered}"></p>
+      <div th:text="${fieldData.get(addressInputToCheck + 'StreetAddress1')}"></div>
+      <div th:text="${fieldData.getOrDefault(addressInputToCheck + 'StreetAddress2', '')}"></div>
+      <div
+          th:text="${fieldData.get(addressInputToCheck + 'City')} + ', ' + ${fieldData.get(addressInputToCheck + 'State')}"></div>
+      <div th:text="${fieldData.get(addressInputToCheck + 'ZipCode')}"></div>
+      <input type="radio"
+             class="hide-radio-circle"
+             th:name="${inputName}" id="original-address"
+             th:value="false"
+             th:checked="true">
+    </label>
+  </div>
+  <div>
+    <a th:href="${editAddressURL}"
+       class="button button--primary" th:text="#{address-validation.button.edit-my-address}"></a>
+  </div>
+  <div>
+    <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+      text=#{address-validation.button.use-this-address}, classes='button')}"/>
+  </div>
+</th:block>

@@ -3,32 +3,35 @@
 <head th:replace="~{fragments/head :: head(title=#{parent-partner-info-disability.title})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: wheelchair}"></th:block>
-        <th:block
-            th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-partner-info-disability.title}, subtext=#{parent-partner-info-disability.subtext})}"/>
-        <th:block
-            th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(
-                 inputName='parentPartnerHasDisability',
-                 ariaDescribe='header')}"/>
-              <div class="spacing-above-60">
-                <button name="parentPartnerHasDisability" type="submit" value="skip"
-                        class="button--link" th:text="#{general.skip}">
-                </button>
-              </div>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: wheelchair}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(
+                            header=#{parent-partner-info-disability.title},
+                            subtext=#{parent-partner-info-disability.subtext})}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="form-card__footer">
+                            <th:block th:replace="~{fragments/inputs/overrides/yesOrNo :: yesOrNo(
+                                inputName='parentPartnerHasDisability',
+                                ariaDescribe='header')}"/>
+                            <div class="spacing-above-60">
+                                <button name="parentPartnerHasDisability" type="submit" value="skip"
+                                        id="parentPartnerHasDisability-skip"
+                                        class="button--link" th:text="#{general.skip}">
+                                </button>
+                            </div>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>

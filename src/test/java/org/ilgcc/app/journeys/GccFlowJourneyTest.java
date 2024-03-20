@@ -2,8 +2,10 @@ package org.ilgcc.app.journeys;
 
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
+import formflow.library.data.SubmissionRepository;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +17,9 @@ import static org.assertj.core.api.Fail.fail;
 import static org.awaitility.Awaitility.await;
 
 public class GccFlowJourneyTest extends AbstractBasePageTest {
+
+  @Autowired
+  SubmissionRepository repository;
 
   @Test
   void fullGccFlow() throws IOException {
@@ -96,6 +101,21 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     assertThat(testPage.getHeader()).isEqualTo("Do you have a partner or spouse?");
     testPage.clickButton("Yes");
+    // parent-qualifying-partner
+    assertThat(testPage.getHeader()).isEqualTo("Your partner or spouse");
+    testPage.selectRadio("parentSpouseIsStepParent", "Yes");
+    testPage.selectRadio("parentSpouseShareChildren", "Yes");
+    testPage.selectRadio("parentSpouseLiveTogether", "Yes");
+    testPage.clickContinue();
+    //parent-partner-info-basic
+    assertThat(testPage.getHeader()).isEqualTo("Tell us about your partner");
+    testPage.enter("parentPartnerFirstName", "partner");
+    testPage.enter("parentPartnerLastName", "parent");
+    testPage.enter("parentPartnerBirthMonth", "12");
+    testPage.enter("parentPartnerBirthDay", "25");
+    testPage.enter("parentPartnerBirthYear", "2018");
+    testPage.clickContinue();
+
     // parent-partner-contact
     assertThat(testPage.getTitle()).isEqualTo("How can we contact them?");
     testPage.clickContinue();
@@ -105,7 +125,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     // parent-partner-info-disability
     assertThat(testPage.getTitle()).isEqualTo("Do they have a disability?");
     testPage.clickButton("Yes");
-
+    // parent-other-family
+    assertThat(testPage.getHeader()).isEqualTo("Do you live with any other adult family members who you financially support?");
+    testPage.clickButton("Yes");
+    // parent-intro-family-info
+    assertThat(testPage.getTitle()).isEqualTo("Parent Intro Family Info");
+    testPage.clickButton("Continue to next section");
     //children-info-intro
     assertThat(testPage.getTitle()).isEqualTo("Your Children");
     testPage.clickContinue();
@@ -141,6 +166,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //children-ccap-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Weekly Schedule");
+    testPage.clickElementById("childcareWeeklySchedule-Thursday");
+    testPage.clickElementById("childcareWeeklySchedule-Friday");
+    testPage.clickContinue();
+    //children-childcare-hourly-schedule
+    assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Hourly Schedule");
     testPage.clickContinue();
     //children-ccap-child-other-ed
     assertThat(testPage.getTitle()).isEqualTo("CCAP Child Other");
@@ -199,14 +229,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
 
     // Download PDF and verify fields
-//    verifyPDF();
+    verifyPDF();
   }
 
   private void verifyPDF() throws IOException {
-    testPage.clickLink("Download PDF");
-
-    await().until(pdfDownloadCompletes());
-    File pdfFile = getLatestDownloadedFile(path);
+    File pdfFile = getDownloadedPDF();
     try (FileInputStream actualIn = new FileInputStream(pdfFile);
          PdfReader actualReader = new PdfReader(actualIn);
          FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
@@ -222,5 +249,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
       fail("Failed to generate PDF: %s", e);
       throw new RuntimeException(e);
     }
+  }
+
+  private File getDownloadedPDF() throws IOException {
+    // There should only be one
+    String downloadUrl = repository.findAll().stream()
+        .findFirst()
+        .map(submission -> "%s/download/gcc/%s".formatted(baseUrl, submission.getId()))
+        .orElseThrow(() -> new RuntimeException("Couldn't get url for pdf download"));
+    driver.get(downloadUrl);
+    await().until(pdfDownloadCompletes());
+    return getLatestDownloadedFile(path);
   }
 }

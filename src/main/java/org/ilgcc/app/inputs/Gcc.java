@@ -60,8 +60,15 @@ public class Gcc extends FlowInputs {
     private String parentMailingState;
     @NotBlank(message = "{errors.provide-zip}")
     private String parentMailingZipCode;
+    private String useSuggestedParentAddress;
     private List<String> parentContactPreferCommunicate;
     private String parentHasPartner;
+    @NotBlank(message = "{errors.require-yes-no}")
+    private String parentSpouseIsStepParent;
+    @NotBlank(message = "{errors.require-yes-no}")
+    private String parentSpouseShareChildren;
+    @NotBlank(message = "{errors.require-yes-no}")
+    private String parentSpouseLiveTogether;
     @Length(min = 9, message = "{errors.invalid-phone-number}")
     private String parentPartnerPhoneNumber;
     @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
@@ -69,6 +76,16 @@ public class Gcc extends FlowInputs {
     private String parentPartnerIsServing;
     private String parentPartnerInMilitaryReserveOrNationalGuard;
     private String parentPartnerHasDisability;
+    @NotBlank(message = "{general.indicates-required}")
+    private String parentPartnerFirstName;
+    @NotBlank(message = "{general.indicates-required}")
+    private String parentPartnerLastName;
+
+    private String parentPartnerSSN;
+    private String parentPartnerBirthDay;
+    private String parentPartnerBirthMonth;
+    private String parentPartnerBirthYear;
+    private List<String> parentPartnerGender;
     private String phoneNumber;
     private String streetAddress;
     private String city;
@@ -99,7 +116,9 @@ public class Gcc extends FlowInputs {
     private List<String> parentRaceEthnicity;
 
     private String parentConfirmSuggestedAddress;
-    
+
+    private String hasAdultDependents;
+
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
@@ -137,7 +156,29 @@ public class Gcc extends FlowInputs {
     private String ccapStartDate;
 
     private List<String> childcareWeeklySchedule;
+    private Boolean childcareHoursSameEveryDay;
+    private String childcareStartTimeAllDays;
+    private String childcareEndTimeAllDays;
+    private String childcareStartTimeMonday;
+    private String childcareEndTimeMonday;
 
+    private String childcareStartTimeTuesday;
+    private String childcareEndTimeTuesday;
+    private String childcareStartTimeWednesday;
+    private String childcareEndTimeWednesday;
+
+    private String childcareStartTimeThursday;
+    private String childcareEndTimeThursday;
+
+    private String childcareStartTimeFriday;
+
+    private String childcareEndTimeFriday;
+    private String childcareStartTimeSaturday;
+
+    private String childcareEndTimeSaturday;
+    private String childcareStartTimeSunday;
+
+    private String childcareEndTimeSunday;
     private String childAttendsOtherEd;
 
     private String current_uuid;

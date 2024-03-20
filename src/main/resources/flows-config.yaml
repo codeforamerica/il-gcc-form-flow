@@ -52,7 +52,7 @@ flow:
     nextScreens:
       - name: parent-confirm-address
   parent-confirm-address:
-    beforeDisplayAction: FormatParentConfirmationAddress
+    beforeDisplayAction: SetEditAddressRedirect
     nextScreens:
       - name: parent-contact
   parent-contact:
@@ -69,11 +69,12 @@ flow:
         condition: ParentHasPartner
       - name: parent-other-family
   parent-qualifying-partner:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-partner-info-basic
+        condition: ParentPartnerQualifies
+      - name: parent-other-family
   parent-partner-info-basic:
-    condition: SkipTemplate
+    crossFieldValidationAction: ValidateParentPartnerBirth
     nextScreens:
       - name: parent-partner-contact
   parent-partner-contact:
@@ -86,18 +87,17 @@ flow:
     nextScreens:
       - name: parent-other-family
   parent-other-family:
-    condition: SkipTemplate
     nextScreens:
       - name: parent-add-adults
+        condition: HasAdultDependents
+      - name: children-info-intro
   parent-add-adults:
     condition: SkipTemplate
     nextScreens:
       - name: parent-intro-family-info
   parent-intro-family-info:
-    condition: SkipTemplate
     nextScreens:
       - name: children-info-intro
-
   children-info-intro:
     nextScreens:
       - name: children-add
@@ -129,7 +129,7 @@ flow:
     nextScreens:
       - name: children-childcare-hourly-schedule
   children-childcare-hourly-schedule:
-    condition: SkipTemplate
+    beforeDisplayAction: SetSubflowWeeklyScheduleGroup
     subflow: children
     nextScreens:
       - name: children-ccap-child-other-ed
