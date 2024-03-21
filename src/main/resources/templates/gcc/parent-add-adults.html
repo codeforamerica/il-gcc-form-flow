@@ -35,7 +35,7 @@
             </div>
             <div class="form-card__footer">
               <div class="spacing-below-15">
-                <a th:href="'/flow/' + ${flow} + '/parent-add-adults-detail'"
+                <a id="add-adult-dependent" th:href="'/flow/' + ${flow} + '/parent-add-adults-detail'"
                    class="button button--primary spacing-above-15">
                   <i class="icon-add"></i>
                   <span th:text="#{parent-add-adults.add-member}"></span>
@@ -46,7 +46,7 @@
                    th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
                    th:text="#{parent-add-adults.im-done}"
                    class="button spacing-left-0"
-                   id="continue-link"></a>
+                   id="done-adding-adult-dependent"></a>
               </div>
             </div>
           </th:block>
