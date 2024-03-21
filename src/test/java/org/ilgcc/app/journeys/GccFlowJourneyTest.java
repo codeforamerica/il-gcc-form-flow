@@ -210,7 +210,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-ed-program-name
     testPage.enter("schoolName", "World");
-    assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?");
+    assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?*");
     testPage.clickContinue();
 
     //activities-ed-program-info
