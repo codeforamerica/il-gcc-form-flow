@@ -1,48 +1,48 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{activities-add-ed-program-type.header})}"></head>
-<body>
-<div class="page-wrapper">
-    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-    <section class="slab">
-        <div class="grid">
-            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-            <main id="content" role="main" class="form-card spacing-above-35">
-                <th:block th:replace="~{fragments/gcc-icons :: mortarboard}"/>
-                <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-                    <th:block th:ref="formContent">
-                        <div class="form-card__content">
-                            <th:block th:replace="~{fragments/inputs/radioFieldset ::
+<th:block
+        th:replace="~{fragments/screens/screenWithOneInput ::
+  screenWithOneInput(
+    title=#{activities-add-ed-program-type.header},
+    iconFragment=~{fragments/gcc-icons :: mortarboard},
+    header=#{activities-add-ed-program-type.header},
+    buttonLabel=#{general.button.continue},
+    formAction=${formAction},
+    inputContent=~{::inputContent})}">
+    <th:block th:ref="inputContent">
+        <th:block th:replace="~{fragments/inputs/radioFieldset ::
                               radioFieldset(inputName='educationType',
-                              label=#{activities-add-ed-program-type.header},
+                              ariaLabel='header',
                               content=~{::radioOptions})}">
-                                <th:block th:ref="radioOptions">
-                                    <th:block
-                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='belowPostSecondary', label=#{activities-add-ed-program-type.belowPostSecondary}, radioHelpText=#{activities-add-ed-program-type.belowPostSecondary.secondPart})}" />
-                                    <th:block
-                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='highSchool', label=#{activities-add-ed-program-type.highSchool})}"/>
-                                    <th:block
-                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='vocational', label=#{activities-add-ed-program-type.vocational})}"/>
-                                    <th:block
-                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='college', label=#{activities-add-ed-program-type.college})}"/>
-                                    <th:block
-                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='graduateSchool', label=#{activities-add-ed-program-type.graduate})}"/>
-                                    <th:block
-                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='tanf', label=#{activities-add-ed-program-type.tanf})}"/>
-                                    <th:block
-                                            th:replace="~{fragments/inputs/radio :: radio(inputName='educationType', value='other', label=#{activities-add-ed-program-type.other})}"/>
-                                </th:block>
-                            </th:block>
-                        </div>
-                        <div class="form-card__footer">
-                            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-                        </div>
-                    </th:block>
-                </th:block>
-            </main>
-        </div>
-    </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+            <th:block th:ref="radioOptions">
+                <th:block
+                        th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
+                        value='belowPostSecondary',
+                        label=#{activities-add-ed-program-type.belowPostSecondary},
+                        radioHelpText=#{activities-add-ed-program-type.belowPostSecondary.secondPart})}"/>
+                <th:block
+                        th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
+                        value='highSchool',
+                        label=#{activities-add-ed-program-type.highSchool})}"/>
+                <th:block
+                        th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
+                        value='vocational',
+                        label=#{activities-add-ed-program-type.vocational})}"/>
+                <th:block
+                        th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
+                        value='college',
+                        label=#{activities-add-ed-program-type.college})}"/>
+                <th:block
+                        th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
+                        value='graduateSchool',
+                        label=#{activities-add-ed-program-type.graduate})}"/>
+                <th:block
+                        th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
+                        value='tanf',
+                        label=#{activities-add-ed-program-type.tanf})}"/>
+                <th:block
+                        th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
+                        value='other',
+                        label=#{activities-add-ed-program-type.other})}"/>
+            </th:block>
+        </th:block>
+    </th:block>
+</th:block>
