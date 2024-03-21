@@ -240,7 +240,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-ed-program-dates
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
     testPage.clickContinue();
-
     //unearned-income-intro
     assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
     testPage.clickContinue();
@@ -251,8 +250,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
 
     //unearned-income-assets
-    //Commented until finish previous screen - Gui
-    //assertThat(testPage.getTitle()).isEqualTo("Unearned Income Assets");
+    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Assets");
+    testPage.clickElementById("unearnedIncomeAssetsMoreThanOneMillionDollars-true");
+    //unearned-income-programs
+    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Programs");
+    assertThat(testPage.getHeader()).isEqualTo("Does anyone in your household participate in any of these programs?");
+    testPage.clickElementById("unearnedIncomePrograms-CASH_ASSISTANCE");
+    testPage.clickElementById("unearnedIncomePrograms-SNAP");
+
     // Download PDF and verify fields
     verifyPDF();
   }
