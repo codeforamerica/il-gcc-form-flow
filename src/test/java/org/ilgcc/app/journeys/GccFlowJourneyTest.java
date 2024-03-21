@@ -271,10 +271,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
       AcroFields actualAcroFields = actualReader.getAcroFields();
       AcroFields expectedAcroFields = expectedReader.getAcroFields();
 
-      assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
       for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
         assertThat(actualAcroFields.getField(expectedField)).isEqualTo(expectedAcroFields.getField(expectedField));
       }
+      assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
     } catch (IOException e) {
       fail("Failed to generate PDF: %s", e);
       throw new RuntimeException(e);
