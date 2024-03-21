@@ -144,7 +144,6 @@ flow:
       - name: children-add
 
   activities-parent-intro:
-    condition: SkipTemplate
     nextScreens:
       - name: activities-parent-type
   activities-parent-type:

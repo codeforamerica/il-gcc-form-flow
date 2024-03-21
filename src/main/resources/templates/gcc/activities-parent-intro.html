@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{activities-parent-intro.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,17 +8,24 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
+        <div class="text--centered">
+          <th:block th:replace="~{fragments/gcc-icons :: income}"></th:block>
+          <p class="text--grey-dark" th:text="#{activities-parent-intro.step}"></p>
+          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-parent-intro.header})}"/>
+        </div>
+        <div class="form-card__content">
+            <div class="boxed-content">
+              <p class="text--centered"><strong th:text="#{activities-parent-intro.box.header}"></strong></p>
+              <ol class="list--numbered">
+                <li th:text="#{activities-parent-intro.box.one}"></li>
+                <li th:text="#{activities-parent-intro.box.two}"></li>
+                <li th:text="#{activities-parent-intro.box.three}"></li>
+              </ol>
             </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
+        </div>
+        <div class="form-card__footer text--centered">
+          <th:block th:replace="~{fragments/continueButton :: continue}" />
+        </div>
       </main>
     </div>
   </section>

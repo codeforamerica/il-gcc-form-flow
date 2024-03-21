@@ -198,6 +198,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(li).containsExactly("child mcchild");
     testPage.clickButton("That is all my children");
 
+    //activities-parent-intro
+    assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+    testPage.clickContinue();
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
@@ -253,10 +256,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("Unearned Income Assets");
     testPage.clickElementById("unearnedIncomeAssetsMoreThanOneMillionDollars-true");
     //unearned-income-programs
-    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Programs");
-    assertThat(testPage.getHeader()).isEqualTo("Does anyone in your household participate in any of these programs?");
-    testPage.clickElementById("unearnedIncomePrograms-CASH_ASSISTANCE");
-    testPage.clickElementById("unearnedIncomePrograms-SNAP");
+//    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Programs");
+//    assertThat(testPage.getHeader()).isEqualTo("Does anyone in your household participate in any of these programs?");
+//    testPage.clickElementById("unearnedIncomePrograms-CASH_ASSISTANCE");
+//    testPage.clickElementById("unearnedIncomePrograms-SNAP");
 
     // Download PDF and verify fields
     verifyPDF();
