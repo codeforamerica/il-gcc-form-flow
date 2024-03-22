@@ -265,6 +265,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     verifyPDF();
   }
 
+  /**
+   * This compares the pdf fields in the generated pdf and our expected test pdf, "test_filled_ccap.pdf".
+   * If there are updates to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and values.
+   */
   private void verifyPDF() throws IOException {
     File pdfFile = getDownloadedPDF();
     try (FileInputStream actualIn = new FileInputStream(pdfFile);
@@ -275,7 +279,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
       AcroFields expectedAcroFields = expectedReader.getAcroFields();
 
       for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
-        assertThat(actualAcroFields.getField(expectedField)).isEqualTo(expectedAcroFields.getField(expectedField));
+        var actual = actualAcroFields.getField(expectedField);
+        var expected = expectedAcroFields.getField(expectedField);
+        assertThat(actual)
+            .withFailMessage("Expected %s to be %s but was %s".formatted(expectedField, expected, actual))
+            .isEqualTo(expected);
       }
       assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
     } catch (IOException e) {
