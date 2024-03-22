@@ -78,7 +78,7 @@ dependencies {
     testImplementation 'org.awaitility:awaitility:4.2.0'
     testImplementation 'org.apache.httpcomponents.client5:httpclient5:5.3'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.6.4'
-    testImplementation 'com.h2database:h2:2.1.214'
+    testImplementation 'com.h2database:h2:2.2.224'
     testImplementation 'com.deque.html.axe-core:selenium:4.8.2'
     testImplementation 'org.projectlombok:lombok:1.18.30'
 
