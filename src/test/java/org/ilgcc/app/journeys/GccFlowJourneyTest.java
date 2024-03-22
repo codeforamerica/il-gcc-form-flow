@@ -3,19 +3,23 @@ package org.ilgcc.app.journeys;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import formflow.library.data.SubmissionRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.awaitility.Awaitility.await;
 
+@Slf4j
 public class GccFlowJourneyTest extends AbstractBasePageTest {
 
   @Autowired
@@ -278,7 +282,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
       AcroFields actualAcroFields = actualReader.getAcroFields();
       AcroFields expectedAcroFields = expectedReader.getAcroFields();
 
-      for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
+      // Get all failures at once and log them
+      List<String> missMatches = getMissMatches(expectedAcroFields, actualAcroFields);
+
+      // Do actual assertions
+      for (String expectedField : missMatches) {
         var actual = actualAcroFields.getField(expectedField);
         var expected = expectedAcroFields.getField(expectedField);
         assertThat(actual)
@@ -290,6 +298,20 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
       fail("Failed to generate PDF: %s", e);
       throw new RuntimeException(e);
     }
+  }
+
+  @NotNull
+  private static List<String> getMissMatches(AcroFields expectedAcroFields, AcroFields actualAcroFields) {
+    List<String> missMatches = new ArrayList<>();
+    for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
+      var actual = actualAcroFields.getField(expectedField);
+      var expected = expectedAcroFields.getField(expectedField);
+      if (!expected.equals(actual)) {
+        missMatches.add(expectedField);
+        log.info("Expected %s to be %s but was %s".formatted(expectedField, expected, actual));
+      }
+    }
+    return missMatches;
   }
 
   private File getDownloadedPDF() throws IOException {
