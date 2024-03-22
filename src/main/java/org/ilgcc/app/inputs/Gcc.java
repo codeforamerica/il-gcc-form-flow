@@ -194,6 +194,7 @@ public class Gcc extends FlowInputs {
     private List<String> unearnedIncomePrograms;
     private String unearnedIncomeAssetsMoreThanOneMillionDollars;
     private String current_uuid;
-
     private List<String> unearnedIncomeSource;
+    private String unearnedIncomeRental;
+    private String unearnedIncomeUnemployment;
 }
