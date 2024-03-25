@@ -196,4 +196,7 @@ public class Gcc extends FlowInputs {
     private String current_uuid;
 
     private List<String> unearnedIncomeSource;
+
+    private List<String> activitiesParentChildcareReason;
+    private List<String> activitiesParentPartnerChildcareReason;
 }

@@ -147,7 +147,6 @@ flow:
     nextScreens:
       - name: activities-parent-type
   activities-parent-type:
-    condition: SkipTemplate
     nextScreens:
       - name: activities-add-jobs
   activities-add-jobs:
