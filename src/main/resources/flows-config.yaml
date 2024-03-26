@@ -27,6 +27,7 @@ flow:
     nextScreens:
       - name: parent-info-basic-2
   parent-info-basic-2:
+    onPostAction: UploadSubmissionToS3
     nextScreens:
       - name: parent-info-service
   parent-info-service:
