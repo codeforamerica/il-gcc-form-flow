@@ -14,21 +14,73 @@
           <th:block th:ref="formContent">
             <div class="form-card__content">
 <!--              Display parent name here-->
-              <p><strong th:utext=></strong></p>
               <div
-                  th:with="childcareReasons=${T(org.ilgcc.app .utils.ChildcareReasonOption).values()}">
-                <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  th:with="childcareReasons=${T(org.ilgcc.app .utils.ChildcareReasonOption).values()},
+                           parentHasPartner=${fieldData.get('parentHasPartner')}">
+                <div>
+                  <div class="spacing-below-25">
+                    <th:block th:utext="${fieldData.get('parentFirstName')}"></th:block>
+                  </div>
+                  <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
                   checkboxFieldset(inputName='activitiesParentChildcareReason',
                   label=#{activities-parent-type.doing-while-in-care},
-                  options=${childcareReasons},
                   content=~{::parentReasonForChildcareContent})}">
                     <th:block th:ref="parentReasonForChildcareContent">
                       <!-- Copy the below input if you want to add more -->
-                      <th:block
-                        th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesParentChildcareReason',value='Options', label='Options')}"/>
-
+                      <th:block th:each="option : ${childcareReasons}">
+                        <th:block th:replace="~{fragments/inputs/checkboxInSet ::
+                          checkboxInSet(inputName=${inputName},
+                          value=${option.getValue()},
+                          label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg(option.getLabel())},
+                          checkboxHelpText=${#strings.isEmpty(option.getHelpText()) ? null : #messages.msg(option.getHelpText())})}"/>
+                      </th:block>
+                      <div class="question-with-follow-up">
+                        <div class="question-with-follow-up__question">
+                          <th:block
+                              th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesParentChildcareReason',value='other', label=#{activities-parent-type.other}, followUpId='#other-followUp')}"/>
+                        </div>
+                        <div class="question-with-follow-up__follow-up" id="other-followUp">
+                          <th:block th:replace="~{fragments/inputs/text ::
+                            text(inputName='activitiesParentChildcareReason_other',
+                            label=#{activities-parent-type.other-follow-up})}" />
+                        </div>
+                      </div>
                     </th:block>
-                </th:block>
+                  </th:block>
+                </div>
+                <!--              Display Parent PartnerInfo here-->
+                <div class="spacing-below-0" th:if="${parentHasPartner.equals('true')}">
+                  <div class="spacing-below-25">
+                    <th:block th:utext="${fieldData.get('parentPartnerFirstName')}"></th:block>
+                  </div>
+                  <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='activitiesParentPartnerChildcareReason',
+                  label=#{activities-parent-type.doing-while-in-care},
+                  content=~{::parentPartnerReasonForChildcareContent})}">
+                    <th:block th:ref="parentPartnerReasonForChildcareContent">
+                      <!-- Copy the below input if you want to add more -->
+                      <th:block th:each="option : ${childcareReasons}">
+                        <th:block th:replace="~{fragments/inputs/checkboxInSet ::
+                          checkboxInSet(inputName=${inputName},
+                          value=${option.getValue()},
+                          label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg(option.getLabel())},
+                          checkboxHelpText=${#strings.isEmpty(option.getHelpText()) ? null : #messages.msg(option.getHelpText())})}"/>
+                      </th:block>
+                      <div class="question-with-follow-up">
+                        <div class="question-with-follow-up__question">
+                          <th:block
+                              th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesParentPartnerChildcareReason',value='other', label=#{activities-parent-type.other}, followUpId='#partner-other-followUp')}"/>
+                        </div>
+                        <div class="question-with-follow-up__follow-up" id="partner-other-followUp">
+                          <th:block th:replace="~{fragments/inputs/text ::
+                            text(inputName='activitiesParentPartnerChildcareReason_other',
+                            label=#{activities-parent-type.other-follow-up})}" />
+                        </div>
+                      </div>
+                    </th:block>
+                  </th:block>
+
+                </div>
               </div>
             </div>
             <div class="form-card__footer">

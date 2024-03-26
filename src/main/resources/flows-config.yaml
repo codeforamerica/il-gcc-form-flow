@@ -142,7 +142,6 @@ flow:
     subflow: children
     nextScreens:
       - name: children-add
-
   activities-parent-intro:
     nextScreens:
       - name: activities-parent-type

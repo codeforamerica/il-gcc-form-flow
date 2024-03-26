@@ -205,6 +205,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-parent-intro
     assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
     testPage.clickContinue();
+    //activities-parent-type
+    assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+    testPage.clickElementById("activitiesParentChildcareReason-WORKING");
+    testPage.clickElementById("activitiesParentChildcareReason-other");
+    testPage.enter("activitiesParentChildcareReason_other", "test");
+    testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
+    testPage.clickElementById("activitiesParentPartnerChildcareReason-LOOKING_FOR_WORK");
+    testPage.clickContinue();
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
