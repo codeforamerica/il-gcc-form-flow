@@ -21,7 +21,7 @@
                   <div class="spacing-below-25">
                     <th:block th:utext="${fieldData.get('parentFirstName')}"></th:block>
                   </div>
-                  <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  <div th:replace="~{fragments/inputs/checkboxFieldset ::
                   checkboxFieldset(inputName='activitiesParentChildcareReason',
                   label=#{activities-parent-type.doing-while-in-care},
                   content=~{::parentReasonForChildcareContent})}">
@@ -46,7 +46,7 @@
                         </div>
                       </div>
                     </th:block>
-                  </th:block>
+                  </div>
                 </div>
                 <!--              Display Parent PartnerInfo here-->
                 <div class="spacing-below-0" th:if="${parentHasPartner.equals('true')}">
