@@ -64,11 +64,11 @@ dependencies {
         println "📚Using form flow library ${formFlowLibraryVersion}"
     }
 
-    compileOnly 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.32'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools:3.2.4'
 
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.4'
     testImplementation 'org.springframework.security:spring-security-test:6.2.3'
@@ -80,7 +80,7 @@ dependencies {
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.6.4'
     testImplementation 'com.h2database:h2:2.2.224'
     testImplementation 'com.deque.html.axe-core:selenium:4.8.2'
-    testImplementation 'org.projectlombok:lombok:1.18.30'
+    testImplementation 'org.projectlombok:lombok:1.18.32'
 
     testAnnotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
