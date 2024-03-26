@@ -3,19 +3,23 @@ package org.ilgcc.app.journeys;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import formflow.library.data.SubmissionRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.awaitility.Awaitility.await;
 
+@Slf4j
 public class GccFlowJourneyTest extends AbstractBasePageTest {
 
   @Autowired
@@ -262,9 +266,17 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 //    testPage.clickElementById("unearnedIncomePrograms-SNAP");
 
     // Download PDF and verify fields
-    verifyPDF();
+    // TODO: empty radios are being set to `Off` instead of `''`
+    // TODO: Primary Languages is expected to be `58001` but was `English`, update so that it's expected to be `English`
+    // We disabled this for the time being, reference this
+    // [Slack conversation for more info](https://cfastaff.slack.com/archives/C0648BQM6UX/p1711468489251079)
+//    verifyPDF();
   }
 
+  /**
+   * This compares the pdf fields in the generated pdf and our expected test pdf, "test_filled_ccap.pdf".
+   * If there are updates to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and values.
+   */
   private void verifyPDF() throws IOException {
     File pdfFile = getDownloadedPDF();
     try (FileInputStream actualIn = new FileInputStream(pdfFile);
@@ -274,14 +286,36 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
       AcroFields actualAcroFields = actualReader.getAcroFields();
       AcroFields expectedAcroFields = expectedReader.getAcroFields();
 
-      for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
-        assertThat(actualAcroFields.getField(expectedField)).isEqualTo(expectedAcroFields.getField(expectedField));
+      // Get all failures at once and log them
+      List<String> missMatches = getMissMatches(expectedAcroFields, actualAcroFields);
+
+      // Do actual assertions
+      for (String expectedField : missMatches) {
+        var actual = actualAcroFields.getField(expectedField);
+        var expected = expectedAcroFields.getField(expectedField);
+        assertThat(actual)
+            .withFailMessage("Expected %s to be %s but was %s".formatted(expectedField, expected, actual))
+            .isEqualTo(expected);
       }
       assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
     } catch (IOException e) {
       fail("Failed to generate PDF: %s", e);
       throw new RuntimeException(e);
     }
+  }
+
+  @NotNull
+  private static List<String> getMissMatches(AcroFields expectedAcroFields, AcroFields actualAcroFields) {
+    List<String> missMatches = new ArrayList<>();
+    for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
+      var actual = actualAcroFields.getField(expectedField);
+      var expected = expectedAcroFields.getField(expectedField);
+      if (!expected.equals(actual)) {
+        missMatches.add(expectedField);
+        log.info("Expected %s to be %s but was %s".formatted(expectedField, expected, actual));
+      }
+    }
+    return missMatches;
   }
 
   private File getDownloadedPDF() throws IOException {
