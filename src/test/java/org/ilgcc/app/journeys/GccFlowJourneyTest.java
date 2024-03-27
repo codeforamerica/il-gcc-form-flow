@@ -255,6 +255,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-ed-program-dates
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
     testPage.clickContinue();
+
     //unearned-income-intro
     assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
     testPage.clickContinue();
@@ -262,6 +263,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //unearned-income-source
     assertThat(testPage.getTitle()).isEqualTo("Income Source");
     testPage.clickElementById("unearnedIncomeSource-ROYALTIES-label");
+    testPage.clickContinue();
+
+    //unearned-income-amount
+    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Amount");
     testPage.clickContinue();
 
     //unearned-income-assets

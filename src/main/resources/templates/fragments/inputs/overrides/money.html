@@ -1,0 +1,34 @@
+<th:block
+        th:fragment="money"
+        th:with="
+      hasHelpText=${!#strings.isEmpty(helpText)},
+      hasLabel=${!#strings.isEmpty(label)},
+      hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
+      hasError=${
+        errorMessages != null &&
+        errorMessages.get(inputName) != null &&
+        (#arrays.length(errorMessages.get(inputName)) > 0) }"
+        th:assert="${!#strings.isEmpty(inputName)}, ${hasLabel || hasAriaLabel}">
+  <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
+    <label th:if="${hasLabel}" th:for="${inputName}" th:text="${label}" class="form-question"/>
+    <p class="text--help"
+       th:if="${hasHelpText}"
+       th:id="${inputName + '-help-text'}"
+       th:text="${helpText}"></p>
+    <div class="text-input-group form-width--large">
+      <div class="text-input-group__prefix">$</div>
+      <input type="text" class="text-input"
+             th:id="${inputName}"
+             th:name="${inputName}"
+             th:placeholder="${placeholder}"
+             th:attr="
+              aria-describedby=${hasHelpText ? inputName + '-help-text' : ''},
+              aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
+              aria-invalid=${hasError}"
+             th:value="${fieldData.getOrDefault(inputName, '')}">
+      <div th:if="${postfix != null}" th:text="${postfix}" class="postfix-width-third-percent"></div>
+    </div>
+    <th:block
+            th:replace="~{fragments/inputError :: validationError(inputName=${inputName})}"></th:block>
+  </div>
+</th:block>
