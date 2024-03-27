@@ -4,7 +4,7 @@ inputFields:
   languageRead: APPLICANT_PRIMARY_LANGUAGE
   dayCareName: PROVIDER_NAME_CORPORATE
   dayCareIdNumber: PROVIDER_ID_NUMBER
-  dayCareAddressStreet: PROVIDER_ADDRESSS_STREET
+  dayCareAddressStreet: PROVIDER_ADDRESS_STREET
   dayCareAddressApt: PROVIDER_ADDRESS_APT
   dayCareAddressCity: PROVIDER_ADDRESS_CITY
   dayCareAddressState: PROVIDER_ADDRESS_STATE
