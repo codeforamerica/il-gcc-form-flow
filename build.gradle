@@ -75,7 +75,7 @@ dependencies {
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.18.1'
     testImplementation 'io.percy:percy-java-selenium:2.0.5'
     testImplementation 'org.jsoup:jsoup:1.17.2'
-    testImplementation 'org.awaitility:awaitility:4.2.0'
+    testImplementation 'org.awaitility:awaitility:4.2.1'
     testImplementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
     testImplementation 'com.h2database:h2:2.2.224'
