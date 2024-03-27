@@ -13,8 +13,9 @@
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-              <th:block th:replace="~{fragments/inputs/overrides/money :: money(inputName='unearnedIncomeRental', label=#{unearned-income-amount.rental.income}, postfix=#{unearned-income-amount.posfix})}"/>
-              <th:block th:replace="~{fragments/inputs/overrides/money :: money(inputName='unearnedIncomeUnemployment', label=#{unearned-income-amount.unemployment}, postfix=#{unearned-income-amount.posfix})}"/>
+              <th:block th:each="source: ${fieldData['unearnedIncomeSource[]']}">
+                <th:block th:replace="~{fragments/inputs/overrides/money :: money(inputName='unearnedIncome' + ${#strings.capitalize(source.toLowerCase())}, label=#{${'unearned-income-amount.' + source.toLowerCase()}}, postfix=#{unearned-income-amount.posfix})}"/>
+              </th:block>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
