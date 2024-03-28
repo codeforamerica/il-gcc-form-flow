@@ -205,6 +205,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-parent-intro
     assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
     testPage.clickContinue();
+    //activities-parent-type
+    assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+    testPage.clickElementById("activitiesParentChildcareReason-WORKING");
+    testPage.clickElementById("activitiesParentChildcareReason-other");
+    testPage.enter("activitiesParentChildcareReason_other", "test");
+    testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
+    testPage.clickElementById("activitiesParentPartnerChildcareReason-LOOKING_FOR_WORK");
+    testPage.clickContinue();
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
@@ -247,6 +255,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-ed-program-dates
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
     testPage.clickContinue();
+
     //unearned-income-intro
     assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
     testPage.clickContinue();
@@ -254,6 +263,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //unearned-income-source
     assertThat(testPage.getTitle()).isEqualTo("Income Source");
     testPage.clickElementById("unearnedIncomeSource-ROYALTIES-label");
+    testPage.clickContinue();
+
+    //unearned-income-amount
+    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Amount");
     testPage.clickContinue();
 
     //unearned-income-assets

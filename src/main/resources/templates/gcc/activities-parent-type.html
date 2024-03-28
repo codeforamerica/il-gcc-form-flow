@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{activities-parent-type.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,14 +8,88 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+        <th:block th:replace="~{fragments/gcc-icons :: careFinancial}"></th:block>
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-parent-type.header})}"/>
+        <th:block
+            th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <!--              Display parent name here-->
+              <div
+                  th:with="childcareReasons=${T(org.ilgcc.app .utils.ChildcareReasonOption).values()},
+                           parentHasPartner=${fieldData.get('parentHasPartner')}">
+                <div>
+                  <div class="spacing-below-25">
+                    <th:block th:utext="${fieldData.get('parentFirstName')}"></th:block>
+                  </div>
+                  <div th:id="parentActivties">
+                    <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='activitiesParentChildcareReason',
+                  label=#{activities-parent-type.doing-while-in-care},
+                  content=~{::parentReasonForChildcareContent})}">
+                      <th:block th:ref="parentReasonForChildcareContent">
+                        <!-- Copy the below input if you want to add more -->
+                        <th:block th:each="option : ${childcareReasons}">
+                          <th:block th:replace="~{fragments/inputs/checkboxInSet ::
+                          checkboxInSet(inputName=${inputName},
+                          value=${option.getValue()},
+                          label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg(option.getLabel())},
+                          checkboxHelpText=${#strings.isEmpty(option.getHelpText()) ? null : #messages.msg(option.getHelpText())})}"/>
+                        </th:block>
+                        <div class="question-with-follow-up spacing-below-0">
+                          <div class="question-with-follow-up__question">
+                            <th:block
+                                th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesParentChildcareReason',value='other', label=#{activities-parent-type.other}, followUpId='#other-followUp')}"/>
+                          </div>
+                          <div class="question-with-follow-up__follow-up" id="other-followUp">
+                            <th:block th:replace="~{fragments/inputs/text ::
+                            text(inputName='activitiesParentChildcareReason_other',
+                            label=#{activities-parent-type.other-follow-up})}"/>
+                          </div>
+                        </div>
+                      </th:block>
+                    </th:block>
+                  </div>
+                </div>
+                <!--              Display Parent PartnerInfo here-->
+                <div class="spacing-below-0" th:if="${parentHasPartner.equals('true')}">
+                  <div class="spacing-below-25">
+                    <th:block th:utext="${fieldData.get('parentPartnerFirstName')}"></th:block>
+                  </div>
+                  <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='activitiesParentPartnerChildcareReason',
+                  label=#{activities-parent-type.doing-while-in-care},
+                  content=~{::parentPartnerReasonForChildcareContent})}">
+                    <th:block th:ref="parentPartnerReasonForChildcareContent">
+                      <!-- Copy the below input if you want to add more -->
+                      <th:block th:each="option : ${childcareReasons}">
+                        <th:block th:replace="~{fragments/inputs/checkboxInSet ::
+                          checkboxInSet(inputName=${inputName},
+                          value=${option.getValue()},
+                          label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg(option.getLabel())},
+                          checkboxHelpText=${#strings.isEmpty(option.getHelpText()) ? null : #messages.msg(option.getHelpText())})}"/>
+                      </th:block>
+                      <div class="question-with-follow-up">
+                        <div class="question-with-follow-up__question">
+                          <th:block
+                              th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesParentPartnerChildcareReason',value='other', label=#{activities-parent-type.other}, followUpId='#partner-other-followUp')}"/>
+                        </div>
+                        <div class="question-with-follow-up__follow-up" id="partner-other-followUp">
+                          <th:block th:replace="~{fragments/inputs/text ::
+                            text(inputName='activitiesParentPartnerChildcareReason_other',
+                            label=#{activities-parent-type.other-follow-up})}"/>
+                        </div>
+                      </div>
+                    </th:block>
+                  </th:block>
+
+                </div>
+              </div>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <th:block
+                  th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
             </div>
           </th:block>
         </th:block>

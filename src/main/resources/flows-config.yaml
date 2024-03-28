@@ -143,12 +143,10 @@ flow:
     subflow: children
     nextScreens:
       - name: children-add
-
   activities-parent-intro:
     nextScreens:
       - name: activities-parent-type
   activities-parent-type:
-    condition: SkipTemplate
     nextScreens:
       - name: activities-add-jobs
   activities-add-jobs:
@@ -264,7 +262,6 @@ flow:
         condition: UnearnedIncomeSourceIsNone
       - name: unearned-income-amount
   unearned-income-amount:
-    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-assets
   unearned-income-assets:
