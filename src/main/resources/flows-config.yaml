@@ -25,9 +25,6 @@ flow:
     onPostAction: CreateParentBirthDate
     crossFieldValidationAction: ValidateParentBirth
     nextScreens:
-      - name: inline-pdf
-  inline-pdf:
-    nextScreens:
       - name: parent-info-basic-2
   parent-info-basic-2:
     nextScreens:
@@ -322,3 +319,13 @@ subflows:
     deleteConfirmationScreen: delete-person
 landmarks:
   firstScreen: onboarding-getting-started
+---
+name: inlinePdf
+flow:
+  inline-pdf:
+    nextScreens:
+      - name: pdf-js
+  pdf-js:
+    nextScreens: null
+landmarks:
+  firstScreen: inline-pdf
