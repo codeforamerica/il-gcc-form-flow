@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title='🧪 Spike - PDF.js')}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <div class="text--centered">
+                    <th:block th:replace="~{fragments/gcc-icons :: person}"></th:block>
+                    <th:block
+                            th:replace="~{fragments/cardHeader :: cardHeader(header='🧪 Spike - PDF.js')}"/>
+                </div>
+                <div class="form-card__content">
+                    <script src="/assets/js/pdf.mjs" type="module"></script>
+
+                    <script type="module">
+                        // If absolute URL from the remote server is provided, configure the CORS
+                        // header on that server.
+                        // var url = 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/examples/learning/helloworld.pdf';
+                        var url = '/inline.pdf'
+                        var scale = 1;
+
+                        // Loaded via <script> tag, create shortcut to access PDF.js exports.
+                        var {pdfjsLib} = globalThis;
+
+                        // The workerSrc property shall be specified.
+                        pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/js/pdf.worker.mjs';
+
+                        // Asynchronous download of PDF
+                        var loadingTask = pdfjsLib.getDocument(url);
+                        loadingTask.promise.then(function (pdf) {
+                            console.log('PDF loaded');
+
+                            // Fetch the first page
+                            var pageNumber = 1;
+                            pdf.getPage(pageNumber).then(function (page) {
+                                console.log('Page loaded');
+
+                                // var scale = 1;
+                                var viewport = page.getViewport({scale: scale});
+
+                                // Prepare canvas using PDF page dimensions
+                                var canvas = document.getElementById('the-canvas');
+                                var context = canvas.getContext('2d');
+                                canvas.height = viewport.height;
+                                canvas.width = viewport.width;
+
+                                // Render PDF page into canvas context
+                                var renderContext = {
+                                    canvasContext: context,
+                                    viewport: viewport
+                                };
+                                var renderTask = page.render(renderContext);
+                                renderTask.promise.then(function () {
+                                    console.log('Page rendered');
+                                });
+                            });
+                        }, function (reason) {
+                            // PDF loading error
+                            console.error(reason);
+                        });
+
+
+                        function renderPage() {
+                            // Using promise to fetch the page
+                            pdfDoc.getPage(1).then(function(page) {
+                                var viewport = page.getViewport({scale: scale});
+                                canvas.height = viewport.height;
+                                canvas.width = viewport.width;
+
+                                // Render PDF page into canvas context
+                                var renderContext = {
+                                    canvasContext: ctx,
+                                    viewport: viewport
+                                };
+                                var renderTask = page.render(renderContext);
+
+                                renderTask.promise.then(function() {
+                                    if (pageNumPending !== null) {
+                                        // New page rendering is pending
+                                        renderPage(pageNumPending);
+                                        pageNumPending = null;
+                                    }
+                                });
+                            });
+                        }
+
+                        /**
+                         * Zoom in and zoom out controls
+                         */
+                        // Didn't get to this
+                        // document.getElementById('zoomIn').addEventListener('click', function() {
+                        //     if (scale < 2.0) { // Set a max scale limit
+                        //         scale += 0.1;
+                        //         renderPage();
+                        //     }
+                        // });
+
+                        // document.getElementById('zoomOut').addEventListener('click', function() {
+                        //     if (scale > 0.5) { // Set a min scale limit
+                        //         scale -= 0.1;
+                        //         renderPage();
+                        //     }
+                        // });
+                    </script>
+
+                    <h1>PDF.js 'Hello, world!' example</h1>
+
+                    <p>Please use <a href="https://mozilla.github.io/pdf.js/getting_started/#download"><i>official
+                        releases</i></a> in production environments.</p>
+
+<!--                    <button class="button" id="zoomIn">Zoom In</button>-->
+<!--                    <button class="button" id="zoomOut">Zoom Out</button>-->
+                    <canvas id="the-canvas" style="width: 100%;"></canvas>
+                </div>
+                <div class="form-card__footer text--centered">
+                    <th:block th:replace="~{fragments/continueButton :: continue}"/>
+                </div>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

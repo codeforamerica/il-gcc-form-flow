@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title='🧪 Spike - Inline PDF')}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <div class="text--centered">
+                    <th:block th:replace="~{fragments/gcc-icons :: person}"></th:block>
+                    <th:block
+                            th:replace="~{fragments/cardHeader :: cardHeader(header='🧪 Spike - Inline PDF')}"/>
+                </div>
+                <div class="form-card__content">
+                    <th:block th:if="${submission != null}">
+                        <iframe
+                                src="/inline.pdf"
+                                style="width: 100%; height: 40vh;"
+                                title="PDF document of this form"></iframe>
+                    </th:block>
+                    <th:block th:unless="${submission != null}">
+                        <h1>No submission 🤷‍♀️</h1>
+                    </th:block>
+                </div>
+                <div class="form-card__footer text--centered">
+                    <th:block th:replace="~{fragments/continueButton :: continue}"/>
+                </div>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

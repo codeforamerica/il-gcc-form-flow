@@ -318,3 +318,13 @@ subflows:
     deleteConfirmationScreen: delete-person
 landmarks:
   firstScreen: onboarding-getting-started
+---
+name: inlinePdf
+flow:
+  inline-pdf:
+    nextScreens:
+      - name: pdf-js
+  pdf-js:
+    nextScreens: null
+landmarks:
+  firstScreen: inline-pdf
