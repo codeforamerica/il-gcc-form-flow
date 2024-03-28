@@ -21,7 +21,7 @@
                       <li th:each="job, iter: ${inputData.jobs}"
                           class="spacing-below-10">
                     <span class="space-between">
-                      <span class="job-name" th:text="${jobs.companyName}"/>
+                      <span class="job-name" th:text="${job.companyName}"/>
                       <span class="text--small spacing-below-0 spacing-right-25">
                         <a th:href="'/flow/' + ${flow} + '/jobs/' + ${job.uuid} + '/deleteConfirmation'"
                            th:text="#{general.delete}"
@@ -36,7 +36,7 @@
             </div>
             <div class="form-card__footer">
               <div class="spacing-below-15">
-                <a th:id="add-parent-job" th:href="'/flow/' + ${flow} + '/add-employer-name'"
+                <a th:id="add-parent-job" th:href="'/flow/' + ${flow} + '/activities-employer-name'"
                   class="button button--primary spacing-above-15">
                   <i class="icon-add"></i>
                   <span th:text="#{activities-add-jobs.add-a-job}"></span>
