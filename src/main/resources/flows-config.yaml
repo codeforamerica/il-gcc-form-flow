@@ -27,7 +27,6 @@ flow:
     nextScreens:
       - name: parent-info-basic-2
   parent-info-basic-2:
-    onPostAction: UploadSubmissionToS3
     nextScreens:
       - name: parent-info-service
   parent-info-service:
@@ -301,11 +300,20 @@ flow:
       - name: doc-upload-confirm
   doc-upload-confirm:
     condition: SkipTemplate
-    nextScreens: null
+    nextScreens:
+      - name: children-delete
   children-delete:
-    nextScreens: null
+    condition: SkipTemplate
+    nextScreens:
+      - name: delete-person
   delete-person:
-    nextScreens: null
+    condition: SkipTemplate
+    nextScreens:
+      - name: doc-upload-submit-confirmation
+  doc-upload-submit-confirmation:
+    onPostAction: UploadSubmissionToS3
+    nextScreens:
+      - name: doc-upload-submit-confirmation
 subflows:
   children:
     entryScreen: children-add
