@@ -12,7 +12,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Slf4j
 @Component
@@ -31,19 +34,33 @@ public class UploadSubmissionToS3 implements Action {
 
   @Override
   public void run(FormSubmission formSubmission, Submission submission) {
-
     try {
-      var file = pdfService.getFilledOutPDF(submission);
-      MultipartFile multipartFile = new ByteArrayMultipartFile(file, String.format("%s.pdf", submission.getId()), CONTENT_TYPE);
-      s3CloudFileRepository.upload(generatePdfPath(submission), multipartFile);
 
+      byte[] pdfFile = pdfService.getFilledOutPDF(submission);
+      String pdfFileName = String.format("%s.pdf", submission.getId());
+
+      try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+           ZipOutputStream zos = new ZipOutputStream(baos)) {
+
+
+        ZipEntry zipEntry = new ZipEntry(pdfFileName);
+        zos.putNextEntry(zipEntry);
+        zos.write(pdfFile);
+        zos.closeEntry();
+
+        zos.finish();
+
+        byte[] zipBytes = baos.toByteArray();
+        MultipartFile multipartFile = new ByteArrayMultipartFile(zipBytes, String.format("%s.zip", submission.getId()), "application/zip");
+
+        s3CloudFileRepository.upload(generateZipPath(submission), multipartFile);
+      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
   }
 
-  public String generatePdfPath(Submission submission) {
-    return String.format("%s/%s.pdf", submission.getId(), submission.getId());
+  public String generateZipPath(Submission submission) {
+    return String.format("%s/%s.zip", submission.getId(), submission.getId());
   }
 }
