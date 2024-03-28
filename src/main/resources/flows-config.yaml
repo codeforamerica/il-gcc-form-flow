@@ -300,11 +300,18 @@ flow:
       - name: doc-upload-confirm
   doc-upload-confirm:
     condition: SkipTemplate
-    nextScreens: null
+    nextScreens:
+      - name: children-delete
   children-delete:
-    nextScreens: null
+    condition: SkipTemplate
+    nextScreens:
+      - name: delete-person
   delete-person:
-    nextScreens: null
+    condition: SkipTemplate
+    nextScreens:
+      - name: doc-upload-submit-confirmation
+  doc-upload-submit-confirmation:
+    nextScreens: nul
 subflows:
   children:
     entryScreen: children-add

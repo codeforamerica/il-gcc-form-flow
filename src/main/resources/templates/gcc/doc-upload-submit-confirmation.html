@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{doc-upload-submit-confirmation.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: docValidation}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{doc-upload-submit-confirmation.header})}"/>
+        <div class="form-card__footer">
+          <a class="button button--primary" th:text="#{doc-upload-submit-confirmation.yes}"
+             th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+             id="confirm-provider"></a>
+          <a class="button spacing-left-0" th:text="#{doc-upload-submit-confirmation.no}"
+             href="#" onclick="window.history.back(); return false;"></a>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>
