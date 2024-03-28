@@ -149,13 +149,13 @@ flow:
     nextScreens:
       - name: activities-add-jobs
   activities-add-jobs:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
-      - name: activities-employer-name
+      - name: activities-add-ed-program
   activities-employer-name:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
-      - name: activities-employer-address
+      - name: activities-add-jobs
   activities-employer-address:
     condition: SkipTemplate
     nextScreens:
@@ -317,5 +317,10 @@ subflows:
     iterationStartScreen: parent-add-adults-detail
     reviewScreen: parent-add-adults
     deleteConfirmationScreen: delete-person
+  jobs:
+    entryScreen: activities-add-jobs
+    iterationStartScreen: activities-employer-name
+    reviewScreen: activities-add-jobs
+    deleteConfirmationScreen: delete-job
 landmarks:
   firstScreen: onboarding-getting-started
