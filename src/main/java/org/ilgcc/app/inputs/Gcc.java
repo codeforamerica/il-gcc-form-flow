@@ -216,4 +216,6 @@ public class Gcc extends FlowInputs {
     private String employerState;
     @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
     private String employerZipCode;
+
+    private String isSelfEmployed;
 }
