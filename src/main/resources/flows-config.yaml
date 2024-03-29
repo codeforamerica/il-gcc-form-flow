@@ -155,11 +155,11 @@ flow:
   activities-employer-name:
     subflow: jobs
     nextScreens:
-      - name: activities-add-jobs
+      - name: activities-employer-address
   activities-employer-address:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
-      - name: activities-self-employment
+      - name: activities-add-jobs
   activities-self-employment:
     condition: SkipTemplate
     nextScreens:

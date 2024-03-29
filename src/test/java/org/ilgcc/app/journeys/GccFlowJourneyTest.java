@@ -220,6 +220,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("Activities Employer Name");
     testPage.enter("companyName", "testCompany");
     testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Activities Employer Address");
+    testPage.enter("employerPhoneNumber", "333333333");
+    testPage.enter("employerCity", "Chicago");
+    testPage.enter("employerStreetAddress", "123 Test Me");
+    testPage.enter("employerZipCode", "60423");
+    testPage.clickContinue();
     assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
     testPage.clickButton("That is all my jobs");
     //activities-add-ed-program
