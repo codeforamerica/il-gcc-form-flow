@@ -1,11 +1,21 @@
 flow: gcc
 pdf: /pdfs/IL-CCAP-Form.pdf
 inputFields:
+  parentFirstName: APPLICANT_NAME_FIRST
+  parentLastName: APPLICANT_NAME_LAST
+  parentHomeStreetAddress1: APPLICANT_ADDRESS_HOME_STREET
+  parentHomeStreetAddress2: APPLICANT_ADDRESS_HOME_APT
+  parentHomeCity: APPLICANT_ADDRESS_HOME_CITY
+  parentHomeState: APPLICANT_ADDRESS_HOME_STATE
+  parentHomeZipCode: APPLICANT_ADDRESS_HOME_ZIP
+  parentContactEmail: APPLICANT_EMAIL
+  parentPartnerFirstName: PARTNER_NAME_FIRST
+  parentPartnerLastName: PARTNER_NAME_LAST
   languageRead: APPLICANT_PRIMARY_LANGUAGE
   dayCareName: PROVIDER_NAME_CORPORATE
   dayCareIdNumber: PROVIDER_ID_NUMBER
-  dayCareAddressStreet: PROVIDER_ADDRESS_STREET
-  dayCareAddressApt: PROVIDER_ADDRESS_APT
-  dayCareAddressCity: PROVIDER_ADDRESS_CITY
-  dayCareAddressState: PROVIDER_ADDRESS_STATE
-  dayCareAddressZip: PROVIDER_ADDRESS_ZIP
+  dayCareAddressStreet: PROVIDER_ADDRESS_SERVICE_STREET
+  dayCareAddressApt: PROVIDER_ADDRESS_SERVICE_APT
+  dayCareAddressCity: PROVIDER_ADDRESS_SERVICE_CITY
+  dayCareAddressState: PROVIDER_ADDRESS_SERVICE_STATE
+  dayCareAddressZip: PROVIDER_ADDRESS_SERVICE_ZIP
