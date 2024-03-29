@@ -10,6 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,13 +22,14 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
+@SpringBootTest
 class UploadSubmissionToS3Test {
 
-  @Mock
+  @MockBean
   private PdfService pdfService;
 
-  @Mock
+  @MockBean
   private S3CloudFileRepository s3CloudFileRepository;
 
   @InjectMocks
@@ -44,8 +48,8 @@ class UploadSubmissionToS3Test {
   @Test
   void whenRun_thenPdfIsZippedAndUploadedToS3() throws IOException {
 
-    byte[] pdfBytes = new byte[]{1, 2, 3, 4};
-    when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfBytes);
+    byte[] pdfFiles = new byte[]{1, 2, 3, 4};
+    when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
 
     uploadSubmissionToS3.run(formSubmission, submission);
 

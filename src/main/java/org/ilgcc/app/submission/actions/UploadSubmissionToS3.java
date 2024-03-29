@@ -26,7 +26,6 @@ public class UploadSubmissionToS3 implements Action {
   private final String CONTENT_TYPE = "application/zip";
 
 
-
   public UploadSubmissionToS3(PdfService pdfService, S3CloudFileRepository s3CloudFileRepository) {
     this.pdfService = pdfService;
     this.s3CloudFileRepository = s3CloudFileRepository;
@@ -39,18 +38,18 @@ public class UploadSubmissionToS3 implements Action {
       byte[] pdfFile = pdfService.getFilledOutPDF(submission);
       String pdfFileName = String.format("%s.pdf", submission.getId());
 
-      try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-           ZipOutputStream zos = new ZipOutputStream(baos)) {
+      try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+           ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
 
 
         ZipEntry zipEntry = new ZipEntry(pdfFileName);
-        zos.putNextEntry(zipEntry);
-        zos.write(pdfFile);
-        zos.closeEntry();
+        zipOutputStream.putNextEntry(zipEntry);
+        zipOutputStream.write(pdfFile);
+        zipOutputStream.closeEntry();
 
-        zos.finish();
+        zipOutputStream.finish();
 
-        byte[] zipBytes = baos.toByteArray();
+        byte[] zipBytes = byteArrayOutputStream.toByteArray();
         MultipartFile multipartFile = new ByteArrayMultipartFile(zipBytes, String.format("%s.zip", submission.getId()), CONTENT_TYPE);
 
         s3CloudFileRepository.upload(generateZipPath(submission), multipartFile);

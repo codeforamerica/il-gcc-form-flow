@@ -16,6 +16,11 @@ form-flow:
     smarty:
       auth-id: 'test-id'
       auth-token: 'test-token'
+  aws:
+    region: 'us-east-1'
+    s3_bucket_name: 'get-child-care-illinois-dev'
+    access_key: 'test'
+    secret_key: 'test'
   email-client:
     mailgun:
       sender-email: 'Testing <test@mail.forms-starter.cfa-platforms.org>'
