@@ -23,7 +23,7 @@ public class UploadSubmissionToS3 implements Action {
 
   private final PdfService pdfService;
   private final S3CloudFileRepository s3CloudFileRepository;
-  private final String CONTENT_TYPE = "application/pdf";
+  private final String CONTENT_TYPE = "application/zip";
 
 
 
@@ -51,7 +51,7 @@ public class UploadSubmissionToS3 implements Action {
         zos.finish();
 
         byte[] zipBytes = baos.toByteArray();
-        MultipartFile multipartFile = new ByteArrayMultipartFile(zipBytes, String.format("%s.zip", submission.getId()), "application/zip");
+        MultipartFile multipartFile = new ByteArrayMultipartFile(zipBytes, String.format("%s.zip", submission.getId()), CONTENT_TYPE);
 
         s3CloudFileRepository.upload(generateZipPath(submission), multipartFile);
       }
