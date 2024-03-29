@@ -159,11 +159,11 @@ flow:
   activities-employer-address:
     subflow: jobs
     nextScreens:
-      - name: activities-add-jobs
+      - name: activities-self-employment
   activities-self-employment:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
-      - name: activities-pay-by-hour
+      - name: activities-add-jobs
   activities-pay-by-hour:
     condition: SkipTemplate
     nextScreens:
