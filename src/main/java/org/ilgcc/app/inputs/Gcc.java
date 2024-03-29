@@ -209,4 +209,11 @@ public class Gcc extends FlowInputs {
     private String activitiesParentPartnerChildcareReason_other;
 
     private String companyName;
+
+    private String employerPhoneNumber;
+    private String employerStreetAddress;
+    private String employerCity;
+    private String employerState;
+    @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
+    private String employerZipCode;
 }
