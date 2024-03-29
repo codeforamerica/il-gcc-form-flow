@@ -11,8 +11,8 @@
       th:with="parentName=${inputData.get('parentFirstName')},
                addedJobs=${inputData.containsKey('jobs') && inputData.get('jobs').size() > 0}">
         <th:block th:replace="~{fragments/gcc-icons :: income}"></th:block>
-        <th:block th:with="addJobsHeader=#{activities-add-jobs.header(${parentName})},
-                           addMoreJobsHeader=#{activities-add-jobs.header.any-other-jobs(${parentName})},
+        <th:block th:with="addJobsHeader=|#{activities-add-jobs.header} ${fieldData.get('parentFirstName')}.|,
+                           addMoreJobsHeader=#{activities-add-jobs.header.any-other-jobs(${inputData.get('parentFirstName')})},
                            jobsSubtext=#{activities-add-jobs.subtext},
                            addMoreJobsSubtext=#{activities-add-jobs.subtext.add-jobs-list}">
           <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${addedJobs ? addMoreJobsHeader : addJobsHeader},
