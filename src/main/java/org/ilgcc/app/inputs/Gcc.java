@@ -201,7 +201,7 @@ public class Gcc extends FlowInputs {
     private String activitiesParentChildcareReason_other;
     private List<String> activitiesParentPartnerChildcareReason;
     private String activitiesParentPartnerChildcareReason_other;
-
+    @NotBlank(message = "{errors.require-company-name}")
     private String companyName;
 
     private String employerPhoneNumber;

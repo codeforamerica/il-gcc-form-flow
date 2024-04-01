@@ -306,6 +306,8 @@ flow:
     nextScreens: null
   delete-person:
     nextScreens: null
+  delete-job:
+    nextScreens: null
 subflows:
   children:
     entryScreen: children-add
