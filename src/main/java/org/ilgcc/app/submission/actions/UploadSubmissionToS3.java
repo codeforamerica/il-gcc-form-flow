@@ -4,11 +4,10 @@ package org.ilgcc.app.submission.actions;
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
-import formflow.library.file.S3CloudFileRepository;
+import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,25 +21,22 @@ import java.util.zip.ZipOutputStream;
 public class UploadSubmissionToS3 implements Action {
 
   private final PdfService pdfService;
-  private final S3CloudFileRepository s3CloudFileRepository;
+  private final CloudFileRepository cloudFileRepository;
   private final String CONTENT_TYPE = "application/zip";
 
 
-  public UploadSubmissionToS3(PdfService pdfService, S3CloudFileRepository s3CloudFileRepository) {
+  public UploadSubmissionToS3(PdfService pdfService, CloudFileRepository cloudFileRepository) {
     this.pdfService = pdfService;
-    this.s3CloudFileRepository = s3CloudFileRepository;
+    this.cloudFileRepository = cloudFileRepository;
   }
 
   @Override
   public void run(FormSubmission formSubmission, Submission submission) {
-    try {
 
-      byte[] pdfFile = pdfService.getFilledOutPDF(submission);
-      String pdfFileName = String.format("%s.pdf", submission.getId());
-
-      try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-           ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
-
+    try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+      ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
+        byte[] pdfFile = pdfService.getFilledOutPDF(submission);
+        String pdfFileName = String.format("%s.pdf", submission.getId());
 
         ZipEntry zipEntry = new ZipEntry(pdfFileName);
         zipOutputStream.putNextEntry(zipEntry);
@@ -52,9 +48,8 @@ public class UploadSubmissionToS3 implements Action {
         byte[] zipBytes = byteArrayOutputStream.toByteArray();
         MultipartFile multipartFile = new ByteArrayMultipartFile(zipBytes, String.format("%s.zip", submission.getId()), CONTENT_TYPE);
 
-        s3CloudFileRepository.upload(generateZipPath(submission), multipartFile);
-      }
-    } catch (IOException e) {
+        cloudFileRepository.upload(generateZipPath(submission), multipartFile);
+    } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
   }

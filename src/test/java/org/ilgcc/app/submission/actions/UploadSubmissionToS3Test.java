@@ -2,6 +2,7 @@ package org.ilgcc.app.submission.actions;
 
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
+import formflow.library.file.CloudFileRepository;
 import formflow.library.file.S3CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
@@ -30,9 +32,9 @@ class UploadSubmissionToS3Test {
   private PdfService pdfService;
 
   @MockBean
-  private S3CloudFileRepository s3CloudFileRepository;
+  private CloudFileRepository cloudFileRepository;
 
-  @InjectMocks
+  @Autowired
   private UploadSubmissionToS3 uploadSubmissionToS3;
 
   private Submission submission;
@@ -46,7 +48,7 @@ class UploadSubmissionToS3Test {
   }
 
   @Test
-  void whenRun_thenPdfIsZippedAndUploadedToS3() throws IOException {
+  void whenRun_thenPdfIsZippedAndUploadedToS3() throws IOException, InterruptedException {
 
     byte[] pdfFiles = new byte[]{1, 2, 3, 4};
     when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
@@ -54,7 +56,7 @@ class UploadSubmissionToS3Test {
     uploadSubmissionToS3.run(formSubmission, submission);
 
     verify(pdfService).getFilledOutPDF(submission);
-    verify(s3CloudFileRepository).upload(eq(generateExpectedZipPath(submission)), any(MultipartFile.class));
+    verify(cloudFileRepository).upload(eq(generateExpectedZipPath(submission)), any(MultipartFile.class));
   }
 
   private String generateExpectedZipPath(Submission submission) {
