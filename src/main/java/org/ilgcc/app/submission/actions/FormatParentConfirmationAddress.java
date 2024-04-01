@@ -2,12 +2,13 @@ package org.ilgcc.app.submission.actions;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
-import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.ilgcc.app.utils.SubmissionUtilities.parentIsExperiencingHomelessness;
 
 @Component
 public class FormatParentConfirmationAddress implements Action {
@@ -49,7 +50,7 @@ public class FormatParentConfirmationAddress implements Action {
     var parentHomeState = (String) inputData.get("parentHomeState");
     var parentHomeZipCode = (String) inputData.get("parentHomeZipCode");
 
-    if (parentAddressFieldsAreNotEmpty(parentHomeStreetAddress1, parentHomeCity, parentHomeState, parentHomeZipCode) && !parentExperiencingHomelessnessIsSelected(inputData)) {
+    if (parentAddressFieldsAreNotEmpty(parentHomeStreetAddress1, parentHomeCity, parentHomeState, parentHomeZipCode) && !parentIsExperiencingHomelessness(inputData)) {
       List<String> homeAddressLines = new ArrayList<>();
       homeAddressLines.add(parentHomeStreetAddress1);
       homeAddressLines.add(parentHomeStreetAddress2);
@@ -58,13 +59,9 @@ public class FormatParentConfirmationAddress implements Action {
 
       inputData.put("homeAddressLines", homeAddressLines);
     }
-
   }
+
   private boolean parentAddressFieldsAreNotEmpty(String streetAddress1, String city, String state, String zipCode){
     return (!streetAddress1.isBlank() && !city.isBlank() && !state.isBlank() && !zipCode.isBlank());
-  }
-
-  private boolean parentExperiencingHomelessnessIsSelected(Map<String, Object> inputData){
-    return ((Boolean) inputData.get("parentHomeExperiencingHomelessness"));
   }
 }
