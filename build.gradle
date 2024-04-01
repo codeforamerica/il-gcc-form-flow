@@ -72,7 +72,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.4'
     testImplementation 'org.springframework.security:spring-security-test:6.2.3'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.19.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.19.1'
     testImplementation 'io.percy:percy-java-selenium:2.0.5'
     testImplementation 'org.jsoup:jsoup:1.17.2'
     testImplementation 'org.awaitility:awaitility:4.2.1'
