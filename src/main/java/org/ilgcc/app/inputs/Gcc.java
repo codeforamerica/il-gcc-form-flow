@@ -207,4 +207,15 @@ public class Gcc extends FlowInputs {
     private String activitiesParentChildcareReason_other;
     private List<String> activitiesParentPartnerChildcareReason;
     private String activitiesParentPartnerChildcareReason_other;
+    @NotBlank(message = "{errors.require-company-name}")
+    private String companyName;
+
+    private String employerPhoneNumber;
+    private String employerStreetAddress;
+    private String employerCity;
+    private String employerState;
+    @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
+    private String employerZipCode;
+
+    private String isSelfEmployed;
 }

@@ -149,21 +149,21 @@ flow:
     nextScreens:
       - name: activities-add-jobs
   activities-add-jobs:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
-      - name: activities-employer-name
+      - name: activities-add-ed-program
   activities-employer-name:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
       - name: activities-employer-address
   activities-employer-address:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
       - name: activities-self-employment
   activities-self-employment:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
-      - name: activities-pay-by-hour
+      - name: activities-add-jobs
   activities-pay-by-hour:
     condition: SkipTemplate
     nextScreens:
@@ -305,6 +305,8 @@ flow:
     nextScreens: null
   delete-person:
     nextScreens: null
+  delete-job:
+    nextScreens: null
   doc-upload-submit-confirmation:
     onPostAction: UploadSubmissionToS3
     nextScreens:
@@ -320,5 +322,10 @@ subflows:
     iterationStartScreen: parent-add-adults-detail
     reviewScreen: parent-add-adults
     deleteConfirmationScreen: delete-person
+  jobs:
+    entryScreen: activities-add-jobs
+    iterationStartScreen: activities-employer-name
+    reviewScreen: activities-add-jobs
+    deleteConfirmationScreen: delete-job
 landmarks:
   firstScreen: onboarding-getting-started

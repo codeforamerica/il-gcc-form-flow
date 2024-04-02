@@ -214,6 +214,26 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
     testPage.clickElementById("activitiesParentPartnerChildcareReason-LOOKING_FOR_WORK");
     testPage.clickContinue();
+    //activities-add-jobs
+    assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
+    testPage.clickButton("Add a job");
+    //activities-employer-name
+    assertThat(testPage.getTitle()).isEqualTo("Activities Employer Name");
+    testPage.enter("companyName", "testCompany");
+    testPage.clickContinue();
+    //activities-employer-address
+    assertThat(testPage.getTitle()).isEqualTo("Activities Employer Address");
+    testPage.enter("employerPhoneNumber", "333333333");
+    testPage.enter("employerCity", "Chicago");
+    testPage.enter("employerStreetAddress", "123 Test Me");
+    testPage.enter("employerZipCode", "60423");
+    testPage.clickContinue();
+    //activities-self-employment
+    assertThat(testPage.getTitle()).isEqualTo("Activities Self Employment");
+    testPage.clickButton("Yes");
+    //activities-add-jobs (list)
+    assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
+    testPage.clickButton("That is all my jobs");
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
