@@ -208,4 +208,25 @@ public class Gcc extends FlowInputs {
     private List<String> activitiesParentPartnerChildcareReason;
     private String activitiesParentPartnerChildcareReason_other;
 
+    private String activitiesVary;
+    private String activitiesEmployerName;
+    private List<String> activitiesJobWeeklySchedule;
+    private String activitiesJobHoursSameEveryDay;
+    private String activitiesJobStartTimeAllDays;
+    private String activitiesJobEndTimeAllDays;
+    private String activitiesJobStartTimeMonday;
+    private String activitiesJobEndTimeMonday;
+
+    private String activitiesJobStartTimeTuesday;
+    private String activitiesJobEndTimeTuesday;
+    private String activitiesJobStartTimeWednesday;
+    private String activitiesJobEndTimeWednesday;
+
+    private String activitiesJobStartTimeThursday;
+    private String activitiesJobEndTimeThursday;
+
+    private String activitiesJobStartTimeFriday;
+
+    private String activitiesJobEndTimeFriday;
+
 }

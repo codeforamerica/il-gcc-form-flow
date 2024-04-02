@@ -185,18 +185,15 @@ flow:
     nextScreens:
       - name: activities-work-schedule-vary
   activities-work-schedule-vary:
-    condition: SkipTemplate
     nextScreens:
       - name: activities-next-work-schedule
   activities-next-work-schedule:
     nextScreens:
       - name: activities-job-weekly-schedule
   activities-job-weekly-schedule:
-    condition: SkipTemplate
     nextScreens:
       - name: activities-job-hourly-schedule
   activities-job-hourly-schedule:
-    condition: SkipTemplate
     nextScreens:
       - name: activities-work-commute
   activities-work-commute:
