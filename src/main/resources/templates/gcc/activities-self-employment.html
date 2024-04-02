@@ -1,13 +1,30 @@
-<th:block
-  th:replace="~{fragments/screens/screenWithYesAndNoButtons ::
-  screenWithYesAndNoButtons(
-    title=#{activities-self-employment.title},
-    header=#{activities-self-employment.header},
-    subtext=#{activities-self-employment.subtext},
-    iconFragment=~{fragments/gcc-icons :: baby},
-    formAction=${formAction},
-    inputName='isSelfEmployed',
-    ariaLabel='header',
-    inputContent=~{::inputContent})}">
-  <th:block th:ref="inputContent"/>
-</th:block>
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{activities-self-employment.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.companyName})}"></th:block>
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-self-employment.header}, subtext=#{activities-employer-name.subtext})}"/>
+        <th:block
+            th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+          <th:block th:ref="formContent">
+            <div class="form-card__footer">
+              <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(
+                 inputName='isSelfEmployed',
+                 ariaDescribe='header')}"/>
+            </div>
+          </th:block>
+        </th:block>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>
