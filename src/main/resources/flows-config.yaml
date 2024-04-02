@@ -189,7 +189,6 @@ flow:
     nextScreens:
       - name: activities-next-work-schedule
   activities-next-work-schedule:
-    condition: SkipTemplate
     nextScreens:
       - name: activities-job-weekly-schedule
   activities-job-weekly-schedule:
