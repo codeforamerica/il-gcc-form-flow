@@ -19,3 +19,11 @@ inputFields:
   dayCareAddressCity: PROVIDER_ADDRESS_SERVICE_CITY
   dayCareAddressState: PROVIDER_ADDRESS_SERVICE_STATE
   dayCareAddressZip: PROVIDER_ADDRESS_SERVICE_ZIP
+
+subflowInfo:
+  otherFamilyMembers:
+    totalIterations: 5
+    inputFields:
+      familyMemberFirstName: FAMILY_MEMBER_NAME_FIRST
+      familyMemberLastName: FAMILY_MEMBER_NAME_LAST
+      familyMemberDateOfBirth: FAMILY_MEMBER_NAME_DOB

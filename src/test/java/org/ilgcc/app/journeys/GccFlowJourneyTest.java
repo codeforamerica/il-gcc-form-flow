@@ -161,6 +161,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickButton("Add child");
     //children-info-basic
     assertThat(testPage.getTitle()).isEqualTo("Children Info");
+    testPage.enter("childFirstName", "mugully");
+    testPage.enter("childLastName", "glopklin");
+    testPage.enter("childDateOfBirthMonth", "1");
+    testPage.enter("childDateOfBirthDay", "1");
+    testPage.enter("childDateOfBirthYear", "2022");
+    testPage.selectRadio("needFinancialAssistanceForChild", "No");
+    testPage.clickButton("Continue");
+    testPage.clickButton("Add child");
     testPage.enter("childFirstName", "child");
     testPage.enter("childLastName", "mcchild");
     testPage.enter("childDateOfBirthMonth", "12");
@@ -200,7 +208,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-add (with children listed)
     assertThat(testPage.getTitle()).isEqualTo("Children add");
     List<String> li = testPage.getTextBySelector(".child-name");
-    assertThat(li).containsExactly("child mcchild");
+    assertThat(li).containsExactly("mugully glopklin", "child mcchild");
     testPage.clickButton("That is all my children");
 
     //activities-parent-intro
