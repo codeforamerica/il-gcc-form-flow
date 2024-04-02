@@ -53,9 +53,14 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
   }
 
   private String formatAdultDependentDateOfBirth(Map<String, Object> adult) {
+    var year = (String) adult.getOrDefault("adultDependentBirthdateYear", "");
+    if (year.isBlank()) {
+      return "";
+    }
+    
     return String.format("%s/%s/%s",
-        adult.get("adultDependentDateOfBirthMonth"),
-        adult.get("adultDependentDateOfBirthDay"),
-        adult.get("adultDependentDateOfBirthYear"));
+        adult.get("adultDependentBirthdateMonth"),
+        adult.get("adultDependentBirthdateDay"),
+        year);
   }
 }

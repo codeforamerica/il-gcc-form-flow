@@ -26,4 +26,4 @@ subflowInfo:
     inputFields:
       familyMemberFirstName: FAMILY_MEMBER_NAME_FIRST
       familyMemberLastName: FAMILY_MEMBER_NAME_LAST
-      familyMemberDateOfBirth: FAMILY_MEMBER_NAME_DOB
+      familyMemberDateOfBirth: FAMILY_MEMBER_DOB
