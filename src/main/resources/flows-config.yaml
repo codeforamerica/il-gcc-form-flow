@@ -261,7 +261,6 @@ flow:
         condition: UnearnedIncomeSourceIsNone
       - name: unearned-income-amount
   unearned-income-amount:
-    condition: SkipTemplate
     nextScreens:
       - name: unearned-income-assets
   unearned-income-assets:
@@ -308,6 +307,10 @@ flow:
     nextScreens: null
   delete-job:
     nextScreens: null
+  doc-upload-submit-confirmation:
+    onPostAction: UploadSubmissionToS3
+    nextScreens:
+      - name: doc-upload-submit-confirmation
 subflows:
   children:
     entryScreen: children-add

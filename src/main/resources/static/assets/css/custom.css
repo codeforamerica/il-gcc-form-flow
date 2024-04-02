@@ -376,3 +376,13 @@ input[name$="Address2"] {
 .grey-darkest {
   color: var(--gray-darkest)
 }
+
+.postfix-width-third-percent {
+  width: 30%;
+  display: table-cell;
+  font-weight: 700;
+  padding: 0 2.5rem 0 1rem;
+  vertical-align: middle;
+  background-color: #F7F5F4;
+  box-shadow: inset 0px 2px 0px rgba(0, 0, 0, 0.15)
+}

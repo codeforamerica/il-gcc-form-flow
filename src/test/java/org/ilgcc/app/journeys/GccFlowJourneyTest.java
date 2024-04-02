@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -275,6 +276,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-ed-program-dates
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
     testPage.clickContinue();
+
     //unearned-income-intro
     assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
     testPage.clickContinue();
@@ -282,6 +284,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //unearned-income-source
     assertThat(testPage.getTitle()).isEqualTo("Income Source");
     testPage.clickElementById("unearnedIncomeSource-ROYALTIES-label");
+    testPage.clickContinue();
+
+    //unearned-income-amount
+    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Amount");
     testPage.clickContinue();
 
     //unearned-income-assets
@@ -294,11 +300,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 //    testPage.clickElementById("unearnedIncomePrograms-SNAP");
 
     // Download PDF and verify fields
-    // TODO: empty radios are being set to `Off` instead of `''`
     // TODO: Primary Languages is expected to be `58001` but was `English`, update so that it's expected to be `English`
-    // We disabled this for the time being, reference this
-    // [Slack conversation for more info](https://cfastaff.slack.com/archives/C0648BQM6UX/p1711468489251079)
-//    verifyPDF();
+    verifyPDF();
   }
 
   /**
@@ -307,6 +310,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
    */
   private void verifyPDF() throws IOException {
     File pdfFile = getDownloadedPDF();
+
+    // regenerateExpectedPDF(pdfFile); // uncomment and run test to regenerate the test pdf
+
     try (FileInputStream actualIn = new FileInputStream(pdfFile);
          PdfReader actualReader = new PdfReader(actualIn);
          FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
@@ -329,6 +335,18 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     } catch (IOException e) {
       fail("Failed to generate PDF: %s", e);
       throw new RuntimeException(e);
+    }
+  }
+
+  /**
+   * If there are changes to the expected PDF, it can be regenerated with this method.
+   */
+  private static void regenerateExpectedPDF(File pdfFile) {
+    try (FileInputStream regeneratedPDF = new FileInputStream(pdfFile);
+         FileOutputStream testPDF = new FileOutputStream("src/test/resources/output/test_filled_ccap.pdf")) {
+      testPDF.write(regeneratedPDF.readAllBytes());
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
     }
   }
 
