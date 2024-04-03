@@ -239,6 +239,26 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-self-employment
     assertThat(testPage.getTitle()).isEqualTo("Activities Self Employment");
     testPage.clickButton("Yes");
+
+    //activities-work-schedule-vary
+    assertThat(testPage.getTitle()).isEqualTo("Work schedule vary");
+    testPage.clickButton("Yes");
+
+    //activities-partner-next-work-schedule
+    assertThat(testPage.getTitle()).isEqualTo("Work Schedule");
+    testPage.clickContinue();
+
+    //activities-job-weekly-schedule
+    assertThat(testPage.getTitle()).isEqualTo("Weekly Schedule");
+    testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+    testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
+    testPage.clickContinue();
+
+    //activities-job-weekly-schedule
+    assertThat(testPage.getTitle()).isEqualTo("Job hourly schedule");
+    assertThat(testPage.getElementText("activitiesJobHoursSameEveryDay-Yes-label")).isEqualTo("My work hours are the same every day.");
+    testPage.clickContinue();
+
     //activities-add-jobs (list)
     assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
     testPage.clickButton("That is all my jobs");

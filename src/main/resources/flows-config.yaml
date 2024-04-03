@@ -163,39 +163,26 @@ flow:
   activities-self-employment:
     subflow: jobs
     nextScreens:
-      - name: activities-add-jobs
-  activities-pay-by-hour:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-hourly-wage
-  activities-hourly-wage:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-pay-period
-  activities-pay-period:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-pay-rate
-  activities-pay-rate:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-pay-last-month
-  activities-pay-last-month:
-    condition: SkipTemplate
-    nextScreens:
       - name: activities-work-schedule-vary
   activities-work-schedule-vary:
+    subflow: jobs
     nextScreens:
+      - name: activities-job-weekly-schedule
+        condition: IsWorkDaysOrHoursVary
       - name: activities-next-work-schedule
   activities-next-work-schedule:
+    subflow: jobs
     nextScreens:
       - name: activities-job-weekly-schedule
   activities-job-weekly-schedule:
+    subflow: jobs
     nextScreens:
       - name: activities-job-hourly-schedule
   activities-job-hourly-schedule:
+    beforeDisplayAction: SetJobWeeklyScheduleGroup
+    subflow: jobs
     nextScreens:
-      - name: activities-work-commute
+      - name: activities-add-jobs
   activities-work-commute:
     condition: SkipTemplate
     nextScreens:

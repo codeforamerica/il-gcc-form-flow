@@ -5,6 +5,7 @@ import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
@@ -224,7 +225,8 @@ public class Gcc extends FlowInputs {
 
     private String isSelfEmployed;
 
-    private String activitiesVary;
+    private String activitiesWorkVary;
+    @Size(min = 1, message = "{activities-job-weekly-schedule.validation}")
     private List<String> activitiesJobWeeklySchedule;
     private String activitiesJobHoursSameEveryDay;
     private String activitiesJobStartTimeAllDays;
@@ -239,5 +241,11 @@ public class Gcc extends FlowInputs {
     private String activitiesJobEndTimeThursday;
     private String activitiesJobStartTimeFriday;
     private String activitiesJobEndTimeFriday;
+
+    private String activitiesJobStartTimeSaturday;
+    private String activitiesJobEndTimeSaturday;
+
+    private String activitiesJobStartTimeSunday;
+    private String activitiesJobEndTimeSunday;
 
 }

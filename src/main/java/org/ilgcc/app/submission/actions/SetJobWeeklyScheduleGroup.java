@@ -25,12 +25,14 @@ public class SetJobWeeklyScheduleGroup implements Action {
   }
 
   @Override
-  public void run(Submission submission) {
-    Map<String, Object> inputData = submission.getInputData();
-    if (!inputData.containsKey("activitiesJobWeeklySchedule[]")) {
+  public void run(Submission submission, String id) {
+
+    Map<String, Object> subflowEntry = submission.getSubflowEntryByUuid("jobs", id);
+    if (!subflowEntry.containsKey("activitiesJobWeeklySchedule[]")) {
       return;
     }
-    var weeklySchedule = new ArrayList<>((List<String>) inputData.get("activitiesJobWeeklySchedule[]"));
+
+    var weeklySchedule = new ArrayList<>((List<String>) subflowEntry.get("activitiesJobWeeklySchedule[]"));
     var sortedDays = WEEKDAYS.stream().filter(weeklySchedule::contains).toList();
     String firstDay = null, lastDay = null;
     Locale locale = LocaleContextHolder.getLocale();
@@ -46,12 +48,13 @@ public class SetJobWeeklyScheduleGroup implements Action {
         }
       } else if (firstDay != null) {
         var displayDays = formatWeekdaysSeparated(sortedDays, locale);
-        inputData.put(DISPLAY_LABEL, displayDays);
+        subflowEntry.put(DISPLAY_LABEL, displayDays);
         return;
       }
     }
 
-    inputData.put(DISPLAY_LABEL, lastDay == null ? firstDay : "%s-%s".formatted(firstDay, lastDay));
+    subflowEntry.put(DISPLAY_LABEL, lastDay == null ? firstDay : "%s-%s".formatted(firstDay, lastDay));
+
   }
 
   private String formatWeekdaysSeparated(List<String> sortedDays, Locale locale) {
