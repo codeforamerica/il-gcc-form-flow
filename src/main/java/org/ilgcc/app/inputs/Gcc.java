@@ -13,18 +13,10 @@ import java.util.List;
 public class Gcc extends FlowInputs {
 
     private String lang;
-    @NotBlank
-    private String schoolName;
-    @NotBlank(message = "{activities-ed-program-type.validationMessage}")
-    private String educationType;
-    @NotBlank
-    private String dayCareChoice;
-    @NotBlank(message = "{activities-ed-program-method.validationMessage}")
-    private String programTaught;
-    @NotBlank(message = "{activities-ed-program-method.validationMessage}")
-    private String programSchedule;
     private String languageRead;
     private String languageSpeak;
+    @NotBlank
+    private String dayCareChoice;
     @NotBlank(message = "{errors.provide-first-name}")
     private String parentFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
@@ -87,6 +79,14 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
     private List<String> parentPartnerGender;
+    @NotBlank
+    private String schoolName;
+    @NotBlank(message = "{errors.please-select-one-option}")
+    private String educationType;
+    @NotBlank(message = "{errors.please-select-one-option}")
+    private String programTaught;
+    @NotBlank(message = "{errors.please-select-one-option}")
+    private String programSchedule;
     private String phoneNumber;
     private String streetAddress;
     private String city;
@@ -112,8 +112,8 @@ public class Gcc extends FlowInputs {
     private String activitiesClassEndTimeSaturday;
     private String activitiesClassStartTimeSunday;
     private String activitiesClassEndTimeSunday;
-
-
+    @NotBlank(message = "{errors.please-select-one-option}")
+    private String partnerEducationType;
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     private String parentSsn;
     private List<String> parentGender;
