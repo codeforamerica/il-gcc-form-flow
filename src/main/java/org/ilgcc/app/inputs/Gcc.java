@@ -105,10 +105,13 @@ public class Gcc extends FlowInputs {
 
     private String activitiesClassStartTimeThursday;
     private String activitiesClassEndTimeThursday;
-
     private String activitiesClassStartTimeFriday;
-
     private String activitiesClassEndTimeFriday;
+    private String activitiesClassStartTimeSaturday;
+    private String activitiesClassEndTimeSaturday;
+    private String activitiesClassStartTimeSunday;
+    private String activitiesClassEndTimeSunday;
+
 
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     private String parentSsn;
