@@ -109,6 +109,11 @@ public class Gcc extends FlowInputs {
     private String activitiesClassStartTimeFriday;
 
     private String activitiesClassEndTimeFriday;
+    private String activitiesClassStartTimeSaturday;
+    private String activitiesClassEndTimeSaturday;
+    private String activitiesClassStartTimeSunday;
+    private String activitiesClassEndTimeSunday;
+
 
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     private String parentSsn;
@@ -207,26 +212,32 @@ public class Gcc extends FlowInputs {
     private String activitiesParentChildcareReason_other;
     private List<String> activitiesParentPartnerChildcareReason;
     private String activitiesParentPartnerChildcareReason_other;
+    @NotBlank(message = "{errors.require-company-name}")
+    private String companyName;
+
+    private String employerPhoneNumber;
+    private String employerStreetAddress;
+    private String employerCity;
+    private String employerState;
+    @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
+    private String employerZipCode;
+
+    private String isSelfEmployed;
 
     private String activitiesVary;
-    private String activitiesEmployerName;
     private List<String> activitiesJobWeeklySchedule;
     private String activitiesJobHoursSameEveryDay;
     private String activitiesJobStartTimeAllDays;
     private String activitiesJobEndTimeAllDays;
     private String activitiesJobStartTimeMonday;
     private String activitiesJobEndTimeMonday;
-
     private String activitiesJobStartTimeTuesday;
     private String activitiesJobEndTimeTuesday;
     private String activitiesJobStartTimeWednesday;
     private String activitiesJobEndTimeWednesday;
-
     private String activitiesJobStartTimeThursday;
     private String activitiesJobEndTimeThursday;
-
     private String activitiesJobStartTimeFriday;
-
     private String activitiesJobEndTimeFriday;
 
 }

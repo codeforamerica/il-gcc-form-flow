@@ -161,6 +161,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickButton("Add child");
     //children-info-basic
     assertThat(testPage.getTitle()).isEqualTo("Children Info");
+    testPage.enter("childFirstName", "mugully");
+    testPage.enter("childLastName", "glopklin");
+    testPage.enter("childDateOfBirthMonth", "1");
+    testPage.enter("childDateOfBirthDay", "1");
+    testPage.enter("childDateOfBirthYear", "2022");
+    testPage.selectRadio("needFinancialAssistanceForChild", "No");
+    testPage.clickButton("Continue");
+    testPage.clickButton("Add child");
     testPage.enter("childFirstName", "child");
     testPage.enter("childLastName", "mcchild");
     testPage.enter("childDateOfBirthMonth", "12");
@@ -200,7 +208,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //children-add (with children listed)
     assertThat(testPage.getTitle()).isEqualTo("Children add");
     List<String> li = testPage.getTextBySelector(".child-name");
-    assertThat(li).containsExactly("child mcchild");
+    assertThat(li).containsExactly("mugully glopklin", "child mcchild");
     testPage.clickButton("That is all my children");
 
     //activities-parent-intro
@@ -214,6 +222,26 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
     testPage.clickElementById("activitiesParentPartnerChildcareReason-LOOKING_FOR_WORK");
     testPage.clickContinue();
+    //activities-add-jobs
+    assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
+    testPage.clickButton("Add a job");
+    //activities-employer-name
+    assertThat(testPage.getTitle()).isEqualTo("Activities Employer Name");
+    testPage.enter("companyName", "testCompany");
+    testPage.clickContinue();
+    //activities-employer-address
+    assertThat(testPage.getTitle()).isEqualTo("Activities Employer Address");
+    testPage.enter("employerPhoneNumber", "333333333");
+    testPage.enter("employerCity", "Chicago");
+    testPage.enter("employerStreetAddress", "123 Test Me");
+    testPage.enter("employerZipCode", "60423");
+    testPage.clickContinue();
+    //activities-self-employment
+    assertThat(testPage.getTitle()).isEqualTo("Activities Self Employment");
+    testPage.clickButton("Yes");
+    //activities-add-jobs (list)
+    assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
+    testPage.clickButton("That is all my jobs");
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
@@ -246,6 +274,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-class-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
     testPage.clickElementById("weeklySchedule-Monday");
+    testPage.clickElementById("weeklySchedule-Sunday");
     testPage.clickContinue();
 
     //activities-class-hourly-schedule
