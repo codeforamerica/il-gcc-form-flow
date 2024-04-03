@@ -30,7 +30,8 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
       results.put(getUniqueKey(), new SingleField("childLastName", (String) child.get("childLastName"), iteration));
       results.put(getUniqueKey(), new SingleField("childDateOfBirth", formatChildDateOfBirth(child), iteration));
       results.put(getUniqueKey(), new SingleField("childSpecialNeeds", formatYesNo((String) child.get("childHasDisability")), iteration));
-      results.put(getUniqueKey(), new SingleField("childUSCitizen", formatYesNo((String) child.get("childIsUsCitizen")), iteration++));
+      results.put(getUniqueKey(), new SingleField("childUSCitizen", formatYesNo((String) child.get("childIsUsCitizen")), iteration));
+      iteration++;
     }
 
     return results;

@@ -28,14 +28,16 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
     for (var child : children) {
       results.put(getUniqueKey(), new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
       results.put(getUniqueKey(), new SingleField("familyMemberLastName", (String) child.get("childLastName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberDateOfBirth", formatChildDateOfBirth(child), iteration++));
+      results.put(getUniqueKey(), new SingleField("familyMemberDateOfBirth", formatChildDateOfBirth(child), iteration));
+      iteration++;
     }
 
     var adultDependents = (List<Map<String, Object>>) submission.getInputData().getOrDefault("adultDependents", emptyList());
     for (var adult : adultDependents) {
       results.put(getUniqueKey(), new SingleField("familyMemberFirstName", (String) adult.get("adultDependentFirstName"), iteration));
       results.put(getUniqueKey(), new SingleField("familyMemberLastName", (String) adult.get("adultDependentLastName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberDateOfBirth", formatAdultDependentDateOfBirth(adult), iteration++));
+      results.put(getUniqueKey(), new SingleField("familyMemberDateOfBirth", formatAdultDependentDateOfBirth(adult), iteration));
+      iteration++;
     }
 
     return results;
@@ -57,7 +59,7 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
     if (year.isBlank()) {
       return "";
     }
-    
+
     return String.format("%s/%s/%s",
         adult.get("adultDependentBirthdateMonth"),
         adult.get("adultDependentBirthdateDay"),
