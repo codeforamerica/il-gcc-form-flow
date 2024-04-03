@@ -91,7 +91,7 @@ public class Gcc extends FlowInputs {
     private String streetAddress;
     private String city;
     private String state;
-    @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
+    @Pattern(regexp = "^\\d{5,}$", message = "{errors.invalid-zipcode}")
     private String zipCode;
     private String activitiesClassHoursSameEveryDay;
     private String activitiesClassStartTimeAllDays;
@@ -116,6 +116,12 @@ public class Gcc extends FlowInputs {
     private String partnerEducationType;
     @NotBlank(message = "{errors.provide-program-name}")
     private String partnerSchoolName;
+    private String partnerEdPhoneNumber;
+    private String partnerEdStreetAddress;
+    private String partnerEdCity;
+    private String partnerEdState;
+    @Pattern(regexp = "^\\d{5,}$", message = "{errors.invalid-zipcode}")
+    private String partnerEdZipCode;
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     private String parentSsn;
     private List<String> parentGender;

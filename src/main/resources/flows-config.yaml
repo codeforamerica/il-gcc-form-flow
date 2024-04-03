@@ -259,7 +259,6 @@ flow:
     nextScreens:
       - name: activities-partner-ed-program-info
   activities-partner-ed-program-info:
-    condition: SkipTemplate
     nextScreens:
       - name: activities-partner-ed-program-method
   activities-partner-ed-program-method:

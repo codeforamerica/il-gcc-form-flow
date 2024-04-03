@@ -268,7 +268,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
 
     //activities-ed-program-info
-    assertThat(testPage.getTitle()).isEqualTo("Program information");
+    assertThat(testPage.getTitle()).isEqualTo("School or training program");
     testPage.clickContinue();
 
     //activities-ed-program-method
@@ -304,6 +304,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     testPage.enter("partnerSchoolName", "World University");
     assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("School or training program");
     testPage.clickContinue();
 
     //unearned-income-intro
