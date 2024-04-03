@@ -248,4 +248,6 @@ public class Gcc extends FlowInputs {
     private String activitiesJobStartTimeSunday;
     private String activitiesJobEndTimeSunday;
 
+    private String activitiesJobCommuteTime;
+
 }

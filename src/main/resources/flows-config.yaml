@@ -182,19 +182,11 @@ flow:
     beforeDisplayAction: SetJobWeeklyScheduleGroup
     subflow: jobs
     nextScreens:
-      - name: activities-add-jobs
-  activities-work-commute:
-    condition: SkipTemplate
-    nextScreens:
       - name: activities-work-commute-time
   activities-work-commute-time:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
-      - name: activities-add-jobs-list
-  activities-add-jobs-list:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-add-ed-program
+      - name: activities-add-jobs
   activities-add-ed-program:
     nextScreens:
       - name: activities-ed-program-type
