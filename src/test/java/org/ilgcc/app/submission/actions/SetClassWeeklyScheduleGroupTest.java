@@ -17,21 +17,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-class SetWeeklyScheduleGroupTest {
+class SetClassWeeklyScheduleGroupTest {
 
-  private SetWeeklyScheduleGroup action;
+  private SetClassWeeklyScheduleGroup action;
 
   @BeforeEach
   void setup() {
     MessageSource messageSource = Mockito.mock(MessageSource.class);
-    action = new SetWeeklyScheduleGroup(messageSource);
+    action = new SetClassWeeklyScheduleGroup(messageSource);
 
     Stream.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
         .forEach(d -> when(messageSource.getMessage(eq("general.week." + d), any(), any())).thenReturn(d));
   }
 
   @ParameterizedTest
-  @MethodSource("org.ilgcc.app.submission.actions.SetWeeklyScheduleGroupTest#consecutiveDaysArgs")
+  @MethodSource("org.ilgcc.app.submission.actions.SetClassWeeklyScheduleGroupTest#consecutiveDaysArgs")
   void shouldShortenConsecutiveDays(List<String> weeklySchedule, String expected) {
     Submission submission = new SubmissionTestBuilder()
         .with("weeklySchedule[]", weeklySchedule)
@@ -42,7 +42,7 @@ class SetWeeklyScheduleGroupTest {
   }
 
   @ParameterizedTest
-  @MethodSource("org.ilgcc.app.submission.actions.SetWeeklyScheduleGroupTest#dispersedDaysArgs")
+  @MethodSource("org.ilgcc.app.submission.actions.SetClassWeeklyScheduleGroupTest#dispersedDaysArgs")
   void shouldListDispersedDays(List<String> weeklySchedule, String expected) {
     Submission submission = new SubmissionTestBuilder()
         .with("weeklySchedule[]", weeklySchedule)
@@ -53,7 +53,7 @@ class SetWeeklyScheduleGroupTest {
   }
 
   @ParameterizedTest
-  @MethodSource("org.ilgcc.app.submission.actions.SetWeeklyScheduleGroupTest#unsortedDays")
+  @MethodSource("org.ilgcc.app.submission.actions.SetClassWeeklyScheduleGroupTest#unsortedDays")
   void shouldSortWeekdays(List<String> weeklySchedule, String expected) {
     Submission submission = new SubmissionTestBuilder()
         .with("weeklySchedule[]", weeklySchedule)

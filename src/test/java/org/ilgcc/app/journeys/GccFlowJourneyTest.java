@@ -114,8 +114,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //parent-partner-info-basic
     assertThat(testPage.getHeader()).isEqualTo("Tell us about your partner");
-    testPage.enter("parentPartnerFirstName", "partner");
-    testPage.enter("parentPartnerLastName", "parent");
+    testPage.enter("parentPartnerFirstName", "Pardnur");
+    testPage.enter("parentPartnerLastName", "Parent");
     testPage.enter("parentPartnerBirthMonth", "12");
     testPage.enter("parentPartnerBirthDay", "25");
     testPage.enter("parentPartnerBirthYear", "2018");
@@ -219,10 +219,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickElementById("activitiesParentChildcareReason-other");
     testPage.enter("activitiesParentChildcareReason_other", "test");
     testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
-    testPage.clickElementById("activitiesParentPartnerChildcareReason-LOOKING_FOR_WORK");
+    testPage.clickElementById("activitiesParentPartnerChildcareReason-WORKING");
+    testPage.clickElementById("activitiesParentPartnerChildcareReason-SCHOOL");
     testPage.clickContinue();
     //activities-add-ed-program (client should be directed to this page if working is not checked)
-    assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
+    assertThat(testPage.getTitle()).isEqualTo("School or training program");
     testPage.goBack();
     assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
     testPage.clickElementById("activitiesParentChildcareReason-WORKING");
@@ -266,11 +267,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-job-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Job hourly schedule");
-    assertThat(testPage.getElementText("activitiesJobHoursSameEveryDay-Yes-label")).isEqualTo("My work hours are the same every day.");
-    testPage.enter("activitiesJobStartTimeMonday", "12:00");
-    testPage.enter("activitiesJobEndTimeMonday", "12:00");
-    testPage.enter("activitiesJobStartTimeSunday", "12:00");
-    testPage.enter("activitiesJobEndTimeSunday", "12:00");
+    testPage.enter("activitiesJobStartTimeMonday", "1200PM");
+    testPage.enter("activitiesJobEndTimeMonday", "0100PM");
+    testPage.enter("activitiesJobStartTimeSunday", "0200PM");
+    testPage.enter("activitiesJobEndTimeSunday", "0300PM");
     testPage.clickContinue();
 
     //activities-work-commute-time
@@ -283,32 +283,32 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickButton("That is all my jobs");
 
     //activities-add-ed-program
-    assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
+    assertThat(testPage.getHeader()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
 
     //activities-ed-program-type
     assertThat(testPage.getElementText("educationType-highSchool-label")).isEqualTo("High School or GED");
     testPage.clickElementById("educationType-highSchool-label");
-    assertThat(testPage.getTitle()).isEqualTo("What type of school or training are you enrolled in?");
+    assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
     testPage.clickContinue();
 
     //activities-ed-program-name
     testPage.enter("schoolName", "World");
-    assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?*");
+    assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
     testPage.clickContinue();
 
     //activities-ed-program-info
-    assertThat(testPage.getTitle()).isEqualTo("Program information");
+    assertThat(testPage.getTitle()).isEqualTo("School or training program");
     testPage.clickContinue();
 
     //activities-ed-program-method
-    assertThat(testPage.getTitle()).isEqualTo("How is the program taught?");
+    assertThat(testPage.getTitle()).isEqualTo("Learning style");
     testPage.clickElementById("programTaught-Online-label");
     testPage.clickElementById("programSchedule-No-label");
     testPage.clickContinue();
 
     //activities-next-class-schedule
-    assertThat(testPage.getTitle()).isEqualTo("Next, we'll ask about your class schedule.");
+    assertThat(testPage.getHeader()).isEqualTo("Next, we'll ask about your class schedule.");
     testPage.clickContinue();
 
     //activities-class-weekly-schedule
@@ -319,10 +319,40 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-class-hourly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
-    assertThat(testPage.getElementText("activitiesClassHoursSameEveryDay-Yes-label")).isEqualTo("My class hours are the same every day.");
+    testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
+    testPage.enter("activitiesClassStartTimeAllDays", "0900AM");
+    testPage.enter("activitiesClassEndTimeAllDays", "13:00");
     testPage.clickContinue();
 
     //activities-ed-program-dates
+    assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+    testPage.clickContinue();
+
+    // activities-partner-ed
+    assertThat(testPage.getHeader()).isEqualTo("Now tell us about Pardnur's school or training program.");
+    testPage.clickContinue();
+    testPage.clickElementById("partnerEducationType-college-label");
+    assertThat(testPage.getHeader()).isEqualTo("What type of school or training is Pardnur enrolled in?");
+    testPage.clickContinue();
+    testPage.enter("partnerProgramName", "World University");
+    assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("School or training program");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Learning style");
+    testPage.clickElementById("partnerProgramTaught-In-Person-label");
+    testPage.clickElementById("partnerProgramSchedule-Yes-label");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
+    testPage.clickElementById("partnerClassWeeklySchedule-Monday");
+    testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
+    testPage.enter("partnerClassStartTimeMonday", "0900AM");
+    testPage.enter("partnerClassEndTimeMonday", "1100AM");
+    testPage.enter("partnerClassStartTimeTuesday", "14:00");
+    testPage.enter("partnerClassEndTimeTuesday", "15:00");
+    testPage.clickContinue();
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
     testPage.clickContinue();
 
@@ -349,7 +379,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 //    testPage.clickElementById("unearnedIncomePrograms-SNAP");
 
     // Download PDF and verify fields
-    // TODO: Primary Languages is expected to be `58001` but was `English`, update so that it's expected to be `English`
     verifyPDF();
   }
 

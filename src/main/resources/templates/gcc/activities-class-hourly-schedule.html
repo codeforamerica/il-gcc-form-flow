@@ -1,45 +1,13 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{activities-class-hourly-schedule.title})}"></head>
-<script th:inline="javascript">
-    $(document).ready(function () {
-        $('#activitiesClassHoursSameEveryDay-Yes').change(function () {
-            $('#grouped-days').toggleClass('hidden');
-            $('#individual-days').toggleClass('hidden');
-        });
-    });
-</script>
-<body>
-<div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.schoolName})}"></th:block>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-class-hourly-schedule.header}, subtext=#{activities-class-hourly-schedule.description})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content" th:with="isSameEveryDay=${!#lists.isEmpty(fieldData.get('activitiesClassHoursSameEveryDay[]'))}">
-              <th:block th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='activitiesClassHoursSameEveryDay', value='Yes', label=#{activities-class-hourly-schedule.class.hours.same.every.day}, toggleVisibility='#activitiesWeekly')}" />
-              <div id="grouped-days" th:class="${isSameEveryDay ? '' : 'hidden'}">
-                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesClassStartTimeAllDays', endInputName='activitiesClassEndTimeAllDays', label=${fieldData.get('displayWeeklySchedule')})}" />
-              </div>
-              <div id="individual-days" th:class="${isSameEveryDay ? 'hidden' : ''}">
-                <th:block th:each="day: ${fieldData['weeklySchedule[]']}">
-                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesClassStartTime' + ${day}, endInputName='activitiesClassEndTime' + ${day}, label=#{${'general.week.' + day}})}" />
-                </th:block>
-              </div>
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+<th:block
+    th:replace="~{fragments/screens/activities-class-hourly-schedule ::
+      screen(
+        header=#{activities-class-hourly-schedule.header},
+        subtext=#{activities-class-hourly-schedule.subtext},
+        programName=${fieldData.schoolName},
+        isSameEveryDay=${!#lists.isEmpty(fieldData.get('activitiesClassHoursSameEveryDay[]'))},
+        sameHoursLabel=#{activities-class-hourly-schedule.hours-are-the-same},
+        selectedDays=${fieldData['weeklySchedule[]']},
+        inputName='activitiesClassHoursSameEveryDay',
+        inputNamePrefix='activitiesClass'
+      )}">
+</th:block>

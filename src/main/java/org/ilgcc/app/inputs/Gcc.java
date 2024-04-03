@@ -3,10 +3,7 @@ package org.ilgcc.app.inputs;
 import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Phone;
 import formflow.library.utils.RegexUtils;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
@@ -14,18 +11,17 @@ import java.util.List;
 public class Gcc extends FlowInputs {
 
     private String lang;
-    @NotBlank
-    private String schoolName;
-    @NotBlank(message = "{activities-ed-program-type.validationMessage}")
-    private String educationType;
-    @NotBlank
-    private String dayCareChoice;
-    @NotBlank(message = "{activities-ed-program-method.validationMessage}")
-    private String programTaught;
-    @NotBlank(message = "{activities-ed-program-method.validationMessage}")
-    private String programSchedule;
-    private String languageRead;
-    private String languageSpeak;
+  @NotBlank(message = "{errors.provide-program-name}")
+  private String schoolName;
+  @NotBlank(message = "{errors.select-one-option}")
+  private String educationType;
+  @NotBlank
+  private String dayCareChoice;
+  private String programTaught;
+  @NotBlank(message = "{errors.select-yes-or-no}")
+  private String programSchedule;
+  private String languageRead;
+  private String languageSpeak;
     @NotBlank(message = "{errors.provide-first-name}")
     private String parentFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
@@ -116,7 +112,6 @@ public class Gcc extends FlowInputs {
     private String activitiesClassStartTimeSunday;
     private String activitiesClassEndTimeSunday;
 
-
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     private String parentSsn;
     private List<String> parentGender;
@@ -152,7 +147,7 @@ public class Gcc extends FlowInputs {
     private String childHasDisability;
     private String childIsUsCitizen;
     private String childInCare;
-
+  @NotEmpty(message = "{errors.select-at-least-one-day}")
     private List<String> weeklySchedule;
     @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])$", message = "{general.day.validation}")
     private String activitiesProgramStartDay;
@@ -200,8 +195,70 @@ public class Gcc extends FlowInputs {
 
     private List<String> unearnedIncomePrograms;
     private String unearnedIncomeAssetsMoreThanOneMillionDollars;
-    private String current_uuid;
+  private String current_uuid;
 
+  @NotBlank(message = "{errors.select-one-option}")
+  private String partnerEducationType;
+  @NotBlank(message = "{errors.provide-program-name}")
+  private String partnerProgramName;
+  @Phone(message = "{errors.invalid-phone-number}")
+  private String partnerEdPhoneNumber;
+  private String partnerEdStreetAddress;
+  private String partnerEdCity;
+  private String partnerEdState;
+  @Pattern(regexp = "^\\d{5,}$", message = "{errors.invalid-zipcode}")
+  private String partnerEdZipCode;
+  private String partnerProgramTaught;
+  @NotBlank(message = "{errors.select-yes-or-no}")
+  private String partnerProgramSchedule;
+
+  @NotEmpty(message = "{errors.select-at-least-one-day}")
+  private List<String> partnerClassWeeklySchedule;
+  private String partnerClassHoursSameEveryDay;
+  @NotBlank(message = "{errors.validate.start.time}")
+  private String partnerClassStartTimeAllDays;
+  @NotBlank(message = "{errors.validate.end.time}")
+  private String partnerClassEndTimeAllDays;
+  @NotBlank(message = "{errors.validate.start.time}")
+  private String partnerClassStartTimeMonday;
+  @NotBlank(message = "{errors.validate.end.time}")
+  private String partnerClassEndTimeMonday;
+  @NotBlank(message = "{errors.validate.start.time}")
+  private String partnerClassStartTimeTuesday;
+  @NotBlank(message = "{errors.validate.end.time}")
+  private String partnerClassEndTimeTuesday;
+  @NotBlank(message = "{errors.validate.start.time}")
+  private String partnerClassStartTimeWednesday;
+  @NotBlank(message = "{errors.validate.end.time}")
+  private String partnerClassEndTimeWednesday;
+  @NotBlank(message = "{errors.validate.start.time}")
+  private String partnerClassStartTimeThursday;
+  @NotBlank(message = "{errors.validate.end.time}")
+  private String partnerClassEndTimeThursday;
+  @NotBlank(message = "{errors.validate.start.time}")
+  private String partnerClassStartTimeFriday;
+  @NotBlank(message = "{errors.validate.end.time}")
+  private String partnerClassEndTimeFriday;
+  @NotBlank(message = "{errors.validate.start.time}")
+  private String partnerClassStartTimeSaturday;
+  @NotBlank(message = "{errors.validate.end.time}")
+  private String partnerClassEndTimeSaturday;
+  @NotBlank(message = "{errors.validate.start.time}")
+  private String partnerClassStartTimeSunday;
+  @NotBlank(message = "{errors.validate.end.time}")
+  private String partnerClassEndTimeSunday;
+  @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])$", message = "{general.day.validation}")
+  private String partnerProgramStartDay;
+  @Pattern(regexp = "^(0?[1-9]|1[0-2])$", message = "{general.month.validation}")
+  private String partnerProgramStartMonth;
+  @Pattern(regexp = "^(19|20)\\d{2}$", message = "{general.year.validation}")
+  private String partnerProgramStartYear;
+  @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])$", message = "{general.day.validation}")
+  private String partnerProgramEndDay;
+  @Pattern(regexp = "^(0?[1-9]|1[0-2])$", message = "{general.month.validation}")
+  private String partnerProgramEndMonth;
+  @Pattern(regexp = "^(19|20)\\d{2}$", message = "{general.year.validation}")
+  private String partnerProgramEndYear;
     private List<String> unearnedIncomeSource;
     private String unearnedIncomeRental;
     private String unearnedIncomeDividends;

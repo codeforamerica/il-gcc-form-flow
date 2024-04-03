@@ -1,29 +1,8 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{activities-next-class-schedule.header})}"></head>
-<body>
-<div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: linedDocument}"></th:block>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-next-class-schedule.header})}"/>
-            <div class="notice--warning">
-              <p class="notice-text" th:utext="#{activities-next-class-schedule.description}"></p>
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/continueButton :: continue}"/></br>
-              <a id="skip-coverage-during-classtime" th:href="'/flow/' + ${flow} + '/activities-ed-program-dates'"
-                 th:text="#{activities-next-class-schedule.skip}"></a>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+<th:block
+    th:replace="~{fragments/screens/activities-next-class-schedule ::
+      screen(
+        header=#{activities-next-class-schedule.header},
+        notice=#{activities-next-class-schedule.description},
+        skipLink='/flow/gcc/activities-ed-program-dates'
+      )}">
+</th:block>

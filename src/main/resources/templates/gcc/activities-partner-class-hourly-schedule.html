@@ -1,0 +1,13 @@
+<th:block
+    th:replace="~{fragments/screens/activities-class-hourly-schedule ::
+      screen(
+        header=${#messages.msg('activities-partner-class-hourly-schedule.header', inputData.get('parentPartnerFirstName'))},
+        subtext=${#messages.msg('activities-partner-class-hourly-schedule.subtext', inputData.get('parentPartnerFirstName'))},
+        programName=${fieldData.partnerProgramName},
+        isSameEveryDay=${!#lists.isEmpty(fieldData.get('partnerClassHoursSameEveryDay[]'))},
+        sameHoursLabel=#{activities-partner-class-hourly-schedule.hours-are-the-same},
+        selectedDays=${fieldData['partnerClassWeeklySchedule[]']},
+        inputName='partnerClassHoursSameEveryDay',
+        inputNamePrefix='partnerClass'
+      )}">
+</th:block>
