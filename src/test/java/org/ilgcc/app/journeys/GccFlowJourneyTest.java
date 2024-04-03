@@ -272,7 +272,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
 
     //activities-ed-program-method
-    assertThat(testPage.getTitle()).isEqualTo("How is the program taught?");
+    assertThat(testPage.getTitle()).isEqualTo("Learning style");
     testPage.clickElementById("programTaught-Online-label");
     testPage.clickElementById("programSchedule-No-label");
     testPage.clickContinue();
@@ -302,10 +302,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickElementById("partnerEducationType-college-label");
     assertThat(testPage.getHeader()).isEqualTo("What type of school or training is Pardnur enrolled in?");
     testPage.clickContinue();
-    testPage.enter("partnerSchoolName", "World University");
+    testPage.enter("partnerProgramName", "World University");
     assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
     testPage.clickContinue();
     assertThat(testPage.getTitle()).isEqualTo("School or training program");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Learning style");
+    testPage.clickElementById("partnerProgramTaught-In-Person-label");
+    testPage.clickElementById("partnerProgramSchedule-Yes-label");
     testPage.clickContinue();
 
     //unearned-income-intro
