@@ -27,3 +27,11 @@ subflowInfo:
       familyMemberFirstName: FAMILY_MEMBER_NAME_FIRST
       familyMemberLastName: FAMILY_MEMBER_NAME_LAST
       familyMemberDateOfBirth: FAMILY_MEMBER_DOB
+  needChildcareForChildren:
+    totalIterations: 4
+    inputFields:
+      childFirstName: CHILD_NAME_FIRST
+      childLastName: CHILD_NAME_LAST
+      childDateOfBirth: CHILD_DOB
+      childSpecialNeeds: CHILD_SPECIAL_NEEDS
+      childUSCitizen: CHILD_US_CITIZEN
