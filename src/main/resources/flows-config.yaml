@@ -267,7 +267,6 @@ flow:
         condition: PartnersClassesAreTaughtOnSchedule
       - name: activities-partner-class-weekly-schedule
   activities-partner-next-class-schedule:
-    condition: SkipTemplate
     nextScreens:
       - name: activities-partner-class-weekly-schedule
   activities-partner-class-weekly-schedule:
