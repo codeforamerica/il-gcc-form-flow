@@ -1,17 +1,4 @@
 <th:block
-        th:replace="~{fragments/screens/screenWithOneInput ::
-  screenWithOneInput(
-    title=#{activities-add-ed-program-name.header},
-    iconFragment=~{fragments/gcc-icons :: mortarboard},
-    header=#{activities-add-ed-program-name.header},
-    buttonLabel=#{general.button.continue},
-    formAction=${formAction},
-    inputContent=~{::inputContent})}">
-    <th:block th:ref="inputContent">
-        <th:block th:replace="~{fragments/inputs/text :: text(
-        inputName='schoolName',
-        ariaLabel='header',
-        placeholder=#{activities-add-ed-program-name.schoolNamePlaceholder})}"/>
-    </th:block>
-</th:block>
+    th:replace="~{fragments/screens/activities-ed-program-name ::
+      screen(inputName='schoolName')}">
 </th:block>

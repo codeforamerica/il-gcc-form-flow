@@ -114,8 +114,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //parent-partner-info-basic
     assertThat(testPage.getHeader()).isEqualTo("Tell us about your partner");
-    testPage.enter("parentPartnerFirstName", "partner");
-    testPage.enter("parentPartnerLastName", "parent");
+    testPage.enter("parentPartnerFirstName", "Pardnur");
+    testPage.enter("parentPartnerLastName", "Parent");
     testPage.enter("parentPartnerBirthMonth", "12");
     testPage.enter("parentPartnerBirthDay", "25");
     testPage.enter("parentPartnerBirthYear", "2018");
@@ -253,18 +253,18 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
     testPage.clickButton("That is all my jobs");
     //activities-add-ed-program
-    assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
+    assertThat(testPage.getHeader()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();
 
     //activities-ed-program-type
     assertThat(testPage.getElementText("educationType-highSchool-label")).isEqualTo("High School or GED");
     testPage.clickElementById("educationType-highSchool-label");
-    assertThat(testPage.getTitle()).isEqualTo("What type of school or training are you enrolled in?");
+    assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
     testPage.clickContinue();
 
     //activities-ed-program-name
     testPage.enter("schoolName", "World");
-    assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?*");
+    assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
     testPage.clickContinue();
 
     //activities-ed-program-info
@@ -296,6 +296,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("Time of Program");
     testPage.clickContinue();
 
+    // activities-partner-ed
+    assertThat(testPage.getHeader()).isEqualTo("Now tell us about Pardnur's school or training program.");
+    testPage.clickContinue();
+    testPage.clickElementById("partnerEducationType-college-label");
+    assertThat(testPage.getHeader()).isEqualTo("What type of school or training is Pardnur enrolled in?");
+    testPage.clickContinue();
+    testPage.enter("partnerSchoolName", "World University");
+    assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+    testPage.clickContinue();
+
     //unearned-income-intro
     assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
     testPage.clickContinue();
@@ -319,7 +329,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 //    testPage.clickElementById("unearnedIncomePrograms-SNAP");
 
     // Download PDF and verify fields
-    // TODO: Primary Languages is expected to be `58001` but was `English`, update so that it's expected to be `English`
     verifyPDF();
   }
 

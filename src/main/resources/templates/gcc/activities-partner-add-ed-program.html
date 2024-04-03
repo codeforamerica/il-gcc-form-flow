@@ -1,7 +1,7 @@
 <th:block
     th:replace="~{fragments/screens/activities-add-ed-program ::
       screen(
-        header=#{activities-partner-add-ed-program.header},
+        header=${#messages.msg('activities-partner-add-ed-program.header', inputData.get('parentPartnerFirstName'))},
         subtext=#{activities-partner-add-ed-program.subtext}
       )}">
 </th:block>

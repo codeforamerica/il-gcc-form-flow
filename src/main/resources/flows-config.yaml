@@ -251,7 +251,7 @@ flow:
       - name: activities-partner-add-ed-program
   activities-partner-add-ed-program:
     nextScreens:
-      - name: activities-ed-program-type
+      - name: activities-partner-ed-program-type
   activities-partner-ed-program-type:
     nextScreens:
       - name: activities-partner-ed-program-name
@@ -259,27 +259,33 @@ flow:
     nextScreens:
       - name: activities-partner-ed-program-info
   activities-partner-ed-program-info:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-partner-ed-program-method
   activities-partner-ed-program-method:
+    condition: SkipTemplate
     nextScreens:
-      - name: activities-next-class-schedule
+      - name: activities-partner-next-class-schedule
         condition: ClassesTaughtSchedule
-      - name: activities-class-weekly-schedule
+      - name: activities-partner-class-weekly-schedule
   activities-partner-next-class-schedule:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-partner-class-weekly-schedule
   activities-partner-class-weekly-schedule:
+    condition: SkipTemplate
     nextScreens:
       - name: activities-partner-class-hourly-schedule
   activities-partner-class-hourly-schedule:
+    condition: SkipTemplate
     beforeDisplayAction: SetWeeklyScheduleGroup
     nextScreens:
       - name: activities-partner-ed-program-dates
   activities-partner-ed-program-dates:
+    condition: SkipTemplate
     crossFieldValidationAction: ValidateMonthYearActivitiesProgram
     nextScreens:
-      - name: activities-partner-add-job
+      - name: unearned-income-intro
   unearned-income-intro:
     nextScreens:
       - name: unearned-income-source

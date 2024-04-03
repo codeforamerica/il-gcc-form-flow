@@ -1,7 +1,7 @@
 <th:block
     th:replace="~{fragments/screens/activities-ed-program-type ::
       screen(
-        header=#{activities-partner-ed-program-type.header},
+        header=${#messages.msg('activities-partner-ed-program-type.header', inputData.get('parentPartnerFirstName'))},
         inputName='partnerEducationType'
       )}">
 </th:block>

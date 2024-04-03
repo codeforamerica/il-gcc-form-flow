@@ -79,7 +79,7 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
     private List<String> parentPartnerGender;
-    @NotBlank
+    @NotBlank(message = "{errors.provide-program-name}")
     private String schoolName;
     @NotBlank(message = "{errors.please-select-one-option}")
     private String educationType;
@@ -114,6 +114,8 @@ public class Gcc extends FlowInputs {
     private String activitiesClassEndTimeSunday;
     @NotBlank(message = "{errors.please-select-one-option}")
     private String partnerEducationType;
+    @NotBlank(message = "{errors.provide-program-name}")
+    private String partnerSchoolName;
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     private String parentSsn;
     private List<String> parentGender;
