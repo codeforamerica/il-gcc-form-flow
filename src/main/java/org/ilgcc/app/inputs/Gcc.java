@@ -229,23 +229,37 @@ public class Gcc extends FlowInputs {
     @Size(min = 1, message = "{activities-job-weekly-schedule.validation}")
     private List<String> activitiesJobWeeklySchedule;
     private String activitiesJobHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesJobStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesJobEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesJobStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesJobEndTimeMonday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesJobStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesJobEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesJobStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesJobEndTimeWednesday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesJobStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesJobEndTimeThursday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesJobStartTimeFriday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesJobEndTimeFriday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesJobStartTimeSaturday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesJobEndTimeSaturday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesJobStartTimeSunday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesJobEndTimeSunday;
 
     private String activitiesJobCommuteTime;
