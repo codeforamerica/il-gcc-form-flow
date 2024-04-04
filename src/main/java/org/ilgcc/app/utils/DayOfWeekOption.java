@@ -2,13 +2,13 @@ package org.ilgcc.app.utils;
 
 public enum DayOfWeekOption implements InputOption {
 
-  MONDAY("general.week.Monday"),
-  TUESDAY("general.week.Tuesday"),
-  WEDNESDAY("general.week.Wednesday"),
-  THURSDAY("general.week.Thursday"),
-  FRIDAY("general.week.Friday"),
-  SATURDAY("general.week.Saturday"),
-  SUNDAY("general.week.Sunday");
+  Monday("general.week.Monday"),
+  Tuesday("general.week.Tuesday"),
+  Wednesday("general.week.Wednesday"),
+  Thursday("general.week.Thursday"),
+  Friday("general.week.Friday"),
+  Saturday("general.week.Saturday"),
+  Sunday("general.week.Sunday");
 
   private final String label;
 

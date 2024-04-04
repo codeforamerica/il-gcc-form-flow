@@ -5,32 +5,50 @@ import formflow.library.data.Submission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Component
-public class SetWeeklyScheduleGroup implements Action {
-
-  private final MessageSource messageSource;
+public abstract class SetWeeklyScheduleGroup implements Action {
 
   public static final List<String> WEEKDAYS = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-
   public static final String DISPLAY_LABEL = "displayWeeklySchedule";
+  private final MessageSource messageSource;
 
   public SetWeeklyScheduleGroup(MessageSource messageSource) {
     this.messageSource = messageSource;
   }
 
+  protected abstract List<String> getWeeklySchedule(Submission submission);
+
+  protected abstract List<String> getWeeklySchedule(Submission submission, String id);
+
   @Override
   public void run(Submission submission) {
-    Map<String, Object> inputData = submission.getInputData();
-    if (!inputData.containsKey("weeklySchedule[]")) {
+    var weeklySchedule = getWeeklySchedule(submission);
+    if (weeklySchedule == null) {
       return;
     }
-    var weeklySchedule = new ArrayList<>((List<String>) inputData.get("weeklySchedule[]"));
+
+    setFormattedDisplayGroup(submission, weeklySchedule);
+  }
+
+  @Override
+  public void run(Submission submission, String id) {
+    var weeklySchedule = getWeeklySchedule(submission, id);
+    if (weeklySchedule == null) {
+      return;
+    }
+
+    setFormattedDisplayGroup(submission, weeklySchedule);
+  }
+
+  private void setFormattedDisplayGroup(Submission submission, List<String> weeklySchedule) {
+    Map<String, Object> inputData = submission.getInputData();
     var sortedDays = WEEKDAYS.stream().filter(weeklySchedule::contains).toList();
     String firstDay = null, lastDay = null;
     Locale locale = LocaleContextHolder.getLocale();

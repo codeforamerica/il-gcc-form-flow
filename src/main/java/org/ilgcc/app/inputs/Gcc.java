@@ -129,21 +129,37 @@ public class Gcc extends FlowInputs {
   @NotEmpty(message = "{errors.please-select-day}")
   private List<String> partnerClassWeeklySchedule;
   private String partnerClassHoursSameEveryDay;
+  @NotBlank(message = "{errors.provide-start-time}")
   private String partnerClassStartTimeAllDays;
+  @NotBlank(message = "{errors.provide-end-time}")
   private String partnerClassEndTimeAllDays;
+  @NotBlank(message = "{errors.provide-start-time}")
   private String partnerClassStartTimeMonday;
+  @NotBlank(message = "{errors.provide-end-time}")
   private String partnerClassEndTimeMonday;
+  @NotBlank(message = "{errors.provide-start-time}")
   private String partnerClassStartTimeTuesday;
+  @NotBlank(message = "{errors.provide-end-time}")
   private String partnerClassEndTimeTuesday;
+  @NotBlank(message = "{errors.provide-start-time}")
   private String partnerClassStartTimeWednesday;
+  @NotBlank(message = "{errors.provide-end-time}")
   private String partnerClassEndTimeWednesday;
+  @NotBlank(message = "{errors.provide-start-time}")
   private String partnerClassStartTimeThursday;
+  @NotBlank(message = "{errors.provide-end-time}")
   private String partnerClassEndTimeThursday;
+  @NotBlank(message = "{errors.provide-start-time}")
   private String partnerClassStartTimeFriday;
+  @NotBlank(message = "{errors.provide-end-time}")
   private String partnerClassEndTimeFriday;
+  @NotBlank(message = "{errors.provide-start-time}")
   private String partnerClassStartTimeSaturday;
+  @NotBlank(message = "{errors.provide-end-time}")
   private String partnerClassEndTimeSaturday;
+  @NotBlank(message = "{errors.provide-start-time}")
   private String partnerClassStartTimeSunday;
+  @NotBlank(message = "{errors.provide-end-time}")
   private String partnerClassEndTimeSunday;
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     private String parentSsn;

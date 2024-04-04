@@ -283,12 +283,15 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     //activities-class-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
-    testPage.clickElementById("weeklySchedule-MONDAY");
-    testPage.clickElementById("weeklySchedule-SUNDAY");
+    testPage.clickElementById("weeklySchedule-Monday");
+    testPage.clickElementById("weeklySchedule-Sunday");
     testPage.clickContinue();
 
     //activities-class-hourly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
+    testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
+    testPage.enter("activitiesClassStartTimeAllDays", "0900AM");
+    testPage.enter("activitiesClassEndTimeAllDays", "13:00");
     testPage.clickContinue();
 
     //activities-ed-program-dates
@@ -311,8 +314,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickElementById("partnerProgramSchedule-Yes-label");
     testPage.clickContinue();
     assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
-    testPage.clickElementById("partnerClassWeeklySchedule-MONDAY");
-    testPage.clickElementById("partnerClassWeeklySchedule-TUESDAY");
+    testPage.clickElementById("partnerClassWeeklySchedule-Monday");
+    testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
+    testPage.enter("partnerClassStartTimeMonday", "0900AM");
+    testPage.enter("partnerClassEndTimeMonday", "1100AM");
+    testPage.enter("partnerClassStartTimeTuesday", "14:00");
+    testPage.enter("partnerClassEndTimeTuesday", "15:00");
     testPage.clickContinue();
 
     //unearned-income-intro

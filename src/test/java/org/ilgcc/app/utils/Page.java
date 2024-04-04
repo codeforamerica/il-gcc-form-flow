@@ -1,15 +1,15 @@
 package org.ilgcc.app.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import io.percy.selenium.Percy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 public class Page {
 
@@ -44,9 +44,7 @@ public class Page {
   public void goBack() {
     driver.findElement(By.partialLinkText("Go Back")).click();
 
-    await().until(
-        () -> !driver.findElements(By.className("main-footer")).get(0).getAttribute("innerHTML")
-            .isBlank());
+    waitForFooterToLoad();
   }
 
   public void clickLink(String linkText) {
@@ -62,9 +60,7 @@ public class Page {
         .orElseThrow(() -> new RuntimeException("No button found containing text: " + buttonText));
     buttonToClick.click();
 
-    await().until(
-        () -> !driver.findElements(By.className("main-footer")).get(0).getAttribute("innerHTML")
-            .isBlank());
+    waitForFooterToLoad();
   }
 
   public void clickButtonLink(String buttonLinkText) {
@@ -76,16 +72,12 @@ public class Page {
             () -> new RuntimeException("No button link found containing text: " + buttonLinkText));
     buttonToClick.click();
 
-    await().until(
-        () -> !driver.findElements(By.className("main-footer")).get(0).getAttribute("innerHTML")
-            .isBlank());
+    waitForFooterToLoad();
   }
 
   public void clickContinue() {
     clickButton("Continue");
-    await().until(
-        () -> !driver.findElements(By.className("main-footer")).get(0).getAttribute("innerHTML")
-            .isBlank());
+    waitForFooterToLoad();
   }
 
   public void enter(String inputName, String value) {
@@ -99,7 +91,7 @@ public class Page {
       case textarea -> enterInput(firstElement, value);
       case input -> {
         switch (InputTypeHtmlAttribute.valueOf(firstElement.getAttribute("type"))) {
-          case text -> {
+          case text, time -> {
             enterInput(firstElement, value);
           }
           case radio, checkbox -> selectEnumeratedInput(formInputElements, value);
@@ -162,6 +154,10 @@ public class Page {
         .orElseThrow();
     buttonToClick.click();
 
+    waitForFooterToLoad();
+  }
+
+  private void waitForFooterToLoad() {
     await().until(
         () -> !driver.findElements(By.className("main-footer")).get(0).getAttribute("innerHTML")
             .isBlank());
@@ -353,6 +349,7 @@ public class Page {
 
   enum InputTypeHtmlAttribute {
     text,
+    time,
     number,
     radio,
     checkbox,
