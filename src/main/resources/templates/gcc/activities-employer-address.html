@@ -19,16 +19,16 @@
                 label=#{activities-employer-address.phone-number})}"/>
               <th:block th:replace="~{fragments/inputs/text ::
                 text(inputName='employerStreetAddress',
-                label=#{activities-employer-address.street-address})}"/>
+                label=#{general.street-address})}"/>
               <th:block th:replace="~{fragments/inputs/text ::
                 text(inputName='employerCity',
-                label=#{activities-employer-address.city})}" />
+                label=#{general.city})}" />
               <th:block th:replace="~{fragments/inputs/state ::
                   state(inputName='employerState',
-                  label=#{activities-employer-address.state})}"/>
+                  label=#{general.state})}"/>
               <th:block th:replace="~{fragments/inputs/text ::
                   text(inputName='employerZipCode',
-                  label=#{activities-employer-address.zipcode})}"/>
+                  label=#{general.zip-code})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
