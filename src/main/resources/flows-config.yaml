@@ -148,6 +148,8 @@ flow:
   activities-parent-type:
     nextScreens:
       - name: activities-add-jobs
+        condition: WorkingIsOneReasonForChildcareNeed
+      - name: activities-add-ed-program
   activities-add-jobs:
     subflow: jobs
     nextScreens:

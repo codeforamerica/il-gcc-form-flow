@@ -1,6 +1,7 @@
 package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
+import formflow.library.data.annotations.Phone;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -212,12 +213,12 @@ public class Gcc extends FlowInputs {
     private String activitiesParentPartnerChildcareReason_other;
     @NotBlank(message = "{errors.require-company-name}")
     private String companyName;
-
+    @Phone(message = "{errors.invalid-phone-number}")
     private String employerPhoneNumber;
     private String employerStreetAddress;
     private String employerCity;
     private String employerState;
-    @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
+    @Pattern(regexp = "^\\d{5,}$", message = "{errors.invalid-zipcode}")
     private String employerZipCode;
 
     private String isSelfEmployed;
