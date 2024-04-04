@@ -216,11 +216,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //activities-parent-type
     assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
-    testPage.clickElementById("activitiesParentChildcareReason-WORKING");
     testPage.clickElementById("activitiesParentChildcareReason-other");
     testPage.enter("activitiesParentChildcareReason_other", "test");
     testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
     testPage.clickElementById("activitiesParentPartnerChildcareReason-LOOKING_FOR_WORK");
+    testPage.clickContinue();
+    //activities-add-ed-program (client should be directed to this page if working is not checked)
+    assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
+    testPage.goBack();
+    assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+    testPage.clickElementById("activitiesParentChildcareReason-WORKING");
     testPage.clickContinue();
     //activities-add-jobs
     assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
@@ -231,9 +236,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //activities-employer-address
     assertThat(testPage.getTitle()).isEqualTo("Activities Employer Address");
-    testPage.enter("employerPhoneNumber", "333333333");
+    testPage.enter("employerPhoneNumber", "3333333");
+    testPage.clickContinue();
+    //activities-employer-address page should have an error for invalid phone number
+    assertThat(testPage.getFirstInputError()).isEqualTo("Make sure the phone number you entered includes 9 digits.");
+    testPage.enter("employerPhoneNumber", "3333333333");
     testPage.enter("employerCity", "Chicago");
     testPage.enter("employerStreetAddress", "123 Test Me");
+    testPage.enter("employerZipCode", "6042");
+    testPage.clickContinue();
+    assertThat(testPage.getFirstInputError()).isEqualTo("Make sure the zip code you entered follows the right format.");//
     testPage.enter("employerZipCode", "60423");
     testPage.clickContinue();
     //activities-self-employment
