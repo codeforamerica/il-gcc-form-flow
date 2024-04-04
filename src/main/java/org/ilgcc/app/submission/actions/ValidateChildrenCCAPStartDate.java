@@ -71,8 +71,8 @@ public class ValidateChildrenCCAPStartDate extends VerifyDate {
   }
   public Boolean isDateEnteredBlank(Map<String, Object> inputData){
     boolean blankCCAPMonth = inputData.get("ccapStartMonth").toString().isBlank();
-    boolean blankCCAPDay  = inputData.get("ccapStartMonth").toString().isBlank();
-    boolean blankCCAPYear  = inputData.get("ccapStartMonth").toString().isBlank();
+    boolean blankCCAPDay  = inputData.get("ccapStartDay").toString().isBlank();
+    boolean blankCCAPYear  = inputData.get("ccapStartYear").toString().isBlank();
 
     return blankCCAPMonth && blankCCAPDay && blankCCAPYear;
   }
