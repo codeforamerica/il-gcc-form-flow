@@ -278,18 +278,17 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
 
     //activities-next-class-schedule
-    assertThat(testPage.getTitle()).isEqualTo("Next, we'll ask about your class schedule.");
+    assertThat(testPage.getHeader()).isEqualTo("Next, we'll ask about your class schedule.");
     testPage.clickContinue();
 
     //activities-class-weekly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
-    testPage.clickElementById("weeklySchedule-Monday");
-    testPage.clickElementById("weeklySchedule-Sunday");
+    testPage.clickElementById("weeklySchedule-MONDAY");
+    testPage.clickElementById("weeklySchedule-SUNDAY");
     testPage.clickContinue();
 
     //activities-class-hourly-schedule
     assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
-    assertThat(testPage.getElementText("activitiesClassHoursSameEveryDay-Yes-label")).isEqualTo("My class hours are the same every day.");
     testPage.clickContinue();
 
     //activities-ed-program-dates
@@ -310,6 +309,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo("Learning style");
     testPage.clickElementById("partnerProgramTaught-In-Person-label");
     testPage.clickElementById("partnerProgramSchedule-Yes-label");
+    testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
+    testPage.clickElementById("partnerClassWeeklySchedule-MONDAY");
+    testPage.clickElementById("partnerClassWeeklySchedule-TUESDAY");
     testPage.clickContinue();
 
     //unearned-income-intro

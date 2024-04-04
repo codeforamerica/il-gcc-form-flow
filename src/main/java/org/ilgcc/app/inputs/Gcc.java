@@ -5,6 +5,7 @@ import formflow.library.data.annotations.Phone;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
@@ -124,6 +125,26 @@ public class Gcc extends FlowInputs {
     private String partnerEdZipCode;
     private String partnerProgramTaught;
     private String partnerProgramSchedule;
+
+  @NotEmpty(message = "{errors.please-select-day}")
+  private List<String> partnerClassWeeklySchedule;
+  private String partnerClassHoursSameEveryDay;
+  private String partnerClassStartTimeAllDays;
+  private String partnerClassEndTimeAllDays;
+  private String partnerClassStartTimeMonday;
+  private String partnerClassEndTimeMonday;
+  private String partnerClassStartTimeTuesday;
+  private String partnerClassEndTimeTuesday;
+  private String partnerClassStartTimeWednesday;
+  private String partnerClassEndTimeWednesday;
+  private String partnerClassStartTimeThursday;
+  private String partnerClassEndTimeThursday;
+  private String partnerClassStartTimeFriday;
+  private String partnerClassEndTimeFriday;
+  private String partnerClassStartTimeSaturday;
+  private String partnerClassEndTimeSaturday;
+  private String partnerClassStartTimeSunday;
+  private String partnerClassEndTimeSunday;
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     private String parentSsn;
     private List<String> parentGender;
@@ -159,7 +180,7 @@ public class Gcc extends FlowInputs {
     private String childHasDisability;
     private String childIsUsCitizen;
     private String childInCare;
-
+  @NotEmpty(message = "{errors.please-select-day}")
     private List<String> weeklySchedule;
     @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])$", message = "{general.day.validation}")
     private String activitiesProgramStartDay;
