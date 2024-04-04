@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{activities-job-hourly-schedule.title})}"></head>
+<script th:inline="javascript">
+  $(document).ready(function () {
+    const $everyDayCheckbox = $('#activitiesJobHoursSameEveryDay-Yes')
+
+    function toggleFields() {
+        $('#grouped-days').toggleClass('hidden');
+        $('#individual-days').toggleClass('hidden');
+        disableFields()
+      }
+
+      function disableFields(){
+        if ($('#grouped-days').hasClass('hidden')) {
+          $('#grouped-days :input').prop('disabled', true);
+          $('#individual-days :input').prop('disabled', false);
+        } else {
+          $('#grouped-days :input').prop('disabled', false);
+          $('#individual-days :input').prop('disabled', true);
+        }
+      }
+
+      // on load
+      disableFields()
+
+      // On checkbox change
+      $everyDayCheckbox.change(function () {
+        toggleFields();
+      });
+  });
+</script>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,11 +37,21 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.companyName})}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-job-hourly-schedule.header}, subtext=#{activities-job-hourly-schedule.subtitle})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
+            <input type="hidden" th:name="current_uuid" th:value="${fieldData.get('uuid')}">
+            <div class="form-card__content" th:with="isSameEveryDay=${!#lists.isEmpty(fieldData.get('activitiesJobHoursSameEveryDay[]'))}">
+              <th:block th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='activitiesJobHoursSameEveryDay', value='Yes', label=#{activities-job-hourly-schedule.job.hours.same.every.day}, toggleVisibility='#activitiesWeekly')}" />
+              <div id="grouped-days" th:class="${isSameEveryDay ? '' : 'hidden'}">
+                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesJobStartTimeAllDays', endInputName='activitiesJobEndTimeAllDays', label=${fieldData.get('displayWeeklySchedule')})}" />
+              </div>
+              <div id="individual-days" th:class="${isSameEveryDay ? 'hidden' : ''}">
+                <th:block th:each="day: ${fieldData['activitiesJobWeeklySchedule[]']}">
+                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesJobStartTime' + ${day}, endInputName='activitiesJobEndTime' + ${day}, label=#{${'general.week.' + day}})}" />
+                </th:block>
+              </div>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>

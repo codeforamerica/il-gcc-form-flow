@@ -6,6 +6,7 @@ import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
@@ -106,7 +107,9 @@ public class Gcc extends FlowInputs {
 
     private String activitiesClassStartTimeThursday;
     private String activitiesClassEndTimeThursday;
+
     private String activitiesClassStartTimeFriday;
+
     private String activitiesClassEndTimeFriday;
     private String activitiesClassStartTimeSaturday;
     private String activitiesClassEndTimeSaturday;
@@ -222,4 +225,44 @@ public class Gcc extends FlowInputs {
     private String employerZipCode;
 
     private String isSelfEmployed;
+
+    private String activitiesWorkVary;
+    @Size(min = 1, message = "{activities-job-weekly-schedule.validation}")
+    private List<String> activitiesJobWeeklySchedule;
+    private String activitiesJobHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeMonday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeWednesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeThursday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeFriday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeFriday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeSaturday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeSaturday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeSunday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeSunday;
+
+    private String activitiesJobCommuteTime;
+
 }
