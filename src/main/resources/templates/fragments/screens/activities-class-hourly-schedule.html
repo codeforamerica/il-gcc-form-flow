@@ -5,13 +5,21 @@
   <script th:inline="javascript">
       $(document).ready(function () {
           const $allDaysCheckbox = $('#' + [[ ${inputName}]] + '-Yes')
+          const $individualFields = $('#individual-days');
+          const $groupedField = $('#grouped-days');
 
-          function toggleFields() {
-              const $individualFields = $('#individual-days');
+          // On page load
+          if ($allDaysCheckbox.is(':checked')) {
               $individualFields.toggleClass('hidden');
               $('#individual-days :input').prop('disabled', $individualFields.hasClass('hidden'));
+          } else {
+              $groupedField.toggleClass('hidden');
+              $('#grouped-days :input').prop('disabled', true);
+          }
 
-              const $groupedField = $('#grouped-days');
+          function toggleFields() {
+              $individualFields.toggleClass('hidden');
+              $('#individual-days :input').prop('disabled', $individualFields.hasClass('hidden'));
               $groupedField.toggleClass('hidden');
               $('#grouped-days :input').prop('disabled', $groupedField.hasClass('hidden'));
           }
@@ -36,11 +44,11 @@
               <div class="form-card__content">
                 <th:block
                     th:replace="~{fragments/inputs/checkbox :: checkbox(value='Yes', label=${sameHoursLabel})}"/>
-                <div id="grouped-days" th:class="${isSameEveryDay ? '' : 'hidden'}">
+                <div id="grouped-days">
                   <th:block
                       th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName=${inputNamePrefix} + 'StartTimeAllDays', endInputName=${inputNamePrefix} + 'EndTimeAllDays', label=${fieldData.get('displayWeeklySchedule')})}"/>
                 </div>
-                <div id="individual-days" th:class="${isSameEveryDay ? 'hidden' : ''}">
+                <div id="individual-days">
                   <th:block th:each="day: ${selectedDays}">
                     <th:block
                         th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName=${inputNamePrefix} + 'StartTime' + ${day}, endInputName=${inputNamePrefix} + 'EndTime' + ${day}, label=#{${'general.week.' + day}})}"/>

@@ -4,10 +4,10 @@
   <head th:replace="~{fragments/head :: head(title=#{activities-ed-program-method.header})}"></head>
   <body>
   <div class="page-wrapper">
-    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
     <section class="slab">
       <div class="grid">
-        <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+        <th:block th:replace="~{fragments/goBack :: goBackLink}"/>
         <main id="content" role="main" class="form-card spacing-above-35">
           <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${programName})}"/>
           <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-ed-program-method.header})}"/>
@@ -16,7 +16,7 @@
               <div class="form-card__content">
                 <th:block th:replace="~{fragments/inputs/radioFieldset ::
                               radioFieldset(inputName=${programTaughtInputName},
-                              label=#{activities-ed-program-method.program.header},
+                              label=${programTaughtLabel},
                               ariaLabel='header',
                               content=~{::radioOptionsProgramTaught},
                               )}">
@@ -31,7 +31,7 @@
                 </th:block>
                 <th:block th:replace="~{fragments/inputs/radioFieldset ::
                               radioFieldset(inputName=${programScheduleInputName},
-                              label=#{activities-ed-program-method.schedule.header},
+                              label=${programScheduleLabel},
                               content=~{::radioOptionsProgramSchedule})}">
                   <th:block th:ref="radioOptionsProgramSchedule">
                     <th:block

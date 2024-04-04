@@ -323,6 +323,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("partnerClassStartTimeTuesday", "14:00");
     testPage.enter("partnerClassEndTimeTuesday", "15:00");
     testPage.clickContinue();
+    assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+    testPage.clickContinue();
 
     //unearned-income-intro
     assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");

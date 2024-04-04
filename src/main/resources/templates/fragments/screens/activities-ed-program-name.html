@@ -1,13 +1,13 @@
 <th:block th:fragment="screen">
   <th:block
       th:replace="~{fragments/screens/screenWithOneInput ::
-      screenWithOneInput(
-        title=#{activities-ed-program.title},
-        header=#{activities-add-ed-program-name.header},
-        iconFragment=~{fragments/gcc-icons :: mortarboard},
-        buttonLabel=#{general.button.continue},
-        formAction=${formAction},
-        inputContent=~{::inputContent})}">
+        screenWithOneInput(
+          title=#{activities-ed-program.title},
+          header=#{activities-add-ed-program-name.header},
+          iconFragment=~{fragments/gcc-icons :: mortarboard},
+          buttonLabel=#{general.button.continue},
+          formAction=${formAction},
+          inputContent=~{::inputContent})}">
     <th:block th:ref="inputContent">
       <th:block th:replace="~{fragments/inputs/text ::
         text(

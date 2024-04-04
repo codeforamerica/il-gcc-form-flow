@@ -9,7 +9,7 @@
           inputContent=~{::inputContent})}">
     <th:block th:ref="inputContent">
       <th:block
-          th:replace="~{fragments/inputs/radioFieldset :: radioFieldset( ariaLabel='header', content=~{::radioOptions})}">
+          th:replace="~{fragments/inputs/radioFieldset :: radioFieldset(ariaLabel='header', content=~{::radioOptions})}">
         <th:block th:ref="radioOptions">
           <th:block th:replace="~{fragments/inputs/radio :: radio(value='belowPostSecondary', label=#{activities-ed-program-type.belowPostSecondary},
                         radioHelpText=#{activities-ed-program-type.belowPostSecondary.secondPart})}"/>

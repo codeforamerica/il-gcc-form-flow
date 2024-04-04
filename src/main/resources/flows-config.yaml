@@ -245,6 +245,8 @@ flow:
     crossFieldValidationAction: ValidateMonthYearActivitiesProgram
     nextScreens:
       - name: activities-partner-add-job
+        condition: ParentPartnerQualifies
+      - name: unearned-income-intro
   activities-partner-add-job:
     condition: SkipTemplate
     nextScreens:
@@ -277,8 +279,7 @@ flow:
     nextScreens:
       - name: activities-partner-ed-program-dates
   activities-partner-ed-program-dates:
-    condition: SkipTemplate
-    crossFieldValidationAction: ValidateMonthYearActivitiesProgram
+    crossFieldValidationAction: ValidateProgramDates
     nextScreens:
       - name: unearned-income-intro
   unearned-income-intro:

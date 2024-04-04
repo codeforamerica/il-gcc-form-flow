@@ -30,24 +30,20 @@ public abstract class SetWeeklyScheduleGroup implements Action {
   @Override
   public void run(Submission submission) {
     var weeklySchedule = getWeeklySchedule(submission);
-    if (weeklySchedule == null) {
-      return;
-    }
-
     setFormattedDisplayGroup(submission, weeklySchedule);
   }
 
   @Override
   public void run(Submission submission, String id) {
     var weeklySchedule = getWeeklySchedule(submission, id);
-    if (weeklySchedule == null) {
-      return;
-    }
-
     setFormattedDisplayGroup(submission, weeklySchedule);
   }
 
   private void setFormattedDisplayGroup(Submission submission, List<String> weeklySchedule) {
+    if (weeklySchedule == null) {
+      return;
+    }
+
     Map<String, Object> inputData = submission.getInputData();
     var sortedDays = WEEKDAYS.stream().filter(weeklySchedule::contains).toList();
     String firstDay = null, lastDay = null;

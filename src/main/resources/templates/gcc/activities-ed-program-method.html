@@ -1,8 +1,10 @@
 <th:block
     th:replace="~{fragments/screens/activities-ed-program-method ::
       screen(
-        subtext=#{activities-ed-program-info.description},
+        subtext=#{activities-ed-program-method.description},
         programName=${fieldData.schoolName},
+        programTaughtLabel=#{activities-ed-program-method.program.header},
+        programScheduleLabel=#{activities-ed-program-method.program.header},
         programTaughtInputName='programTaught',
         programScheduleInputName='programSchedule'
       )}">
