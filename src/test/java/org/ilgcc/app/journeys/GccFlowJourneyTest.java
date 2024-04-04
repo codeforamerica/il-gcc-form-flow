@@ -237,15 +237,13 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     //activities-employer-address
     assertThat(testPage.getTitle()).isEqualTo("Activities Employer Address");
     testPage.enter("employerPhoneNumber", "3333333");
-    testPage.clickContinue();
-    //activities-employer-address page should have an error for invalid phone number
-    assertThat(testPage.getFirstInputError()).isEqualTo("Make sure the phone number you entered includes 9 digits.");
-    testPage.enter("employerPhoneNumber", "3333333333");
     testPage.enter("employerCity", "Chicago");
     testPage.enter("employerStreetAddress", "123 Test Me");
     testPage.enter("employerZipCode", "6042");
     testPage.clickContinue();
-    assertThat(testPage.getFirstInputError()).isEqualTo("Make sure the zip code you entered follows the right format.");//
+    assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 9 digits.")).isTrue();
+    assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
+    testPage.enter("employerPhoneNumber", "3333333333");
     testPage.enter("employerZipCode", "60423");
     testPage.clickContinue();
     //activities-self-employment
