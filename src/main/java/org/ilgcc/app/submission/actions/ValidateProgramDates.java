@@ -33,17 +33,17 @@ public class ValidateProgramDates extends VerifyDate {
     var startDay = (String) inputData.get(INPUT_NAME_START + "Day");
     var startMonth = (String) inputData.get(INPUT_NAME_START + "Month");
     var startYear = (String) inputData.get(INPUT_NAME_START + "Year");
-    Map<String, List<String>> errorMessages = validateProgramDates(startMonth, startDay, startYear);
+    Map<String, List<String>> errorMessages = validateProgramDates(INPUT_NAME_START, startMonth, startDay, startYear);
 
     var endDay = (String) inputData.get(INPUT_NAME_END + "Day");
     var endMonth = (String) inputData.get(INPUT_NAME_END + "Month");
     var endYear = (String) inputData.get(INPUT_NAME_END + "Year");
-    errorMessages.putAll(validateProgramDates(endMonth, endDay, endYear));
+    errorMessages.putAll(validateProgramDates(INPUT_NAME_END, endMonth, endDay, endYear));
 
     return errorMessages;
   }
 
-  private Map<String, List<String>> validateProgramDates(String month, String day, String year) {
+  private Map<String, List<String>> validateProgramDates(String prefix, String month, String day, String year) {
     Map<String, List<String>> errorMessages = new HashMap<>();
     var dateString = String.format("%s/%s/%s", month, day, year);
     if (!dateString.equals("//")) {
@@ -54,15 +54,15 @@ public class ValidateProgramDates extends VerifyDate {
 
       Locale locale = LocaleContextHolder.getLocale();
       if (month.isBlank()) {
-        errorMessages.put(INPUT_NAME_START + "Month", List.of(messageSource.getMessage("general.month.validation", null, locale)));
+        errorMessages.put(prefix + "Month", List.of(messageSource.getMessage("general.month.validation", null, locale)));
       }
 
       if (year.isBlank()) {
-        errorMessages.put(INPUT_NAME_START + "Year", List.of(messageSource.getMessage("general.year.validation", null, locale)));
+        errorMessages.put(prefix + "Year", List.of(messageSource.getMessage("general.year.validation", null, locale)));
       }
 
       if (errorMessages.isEmpty() && isDateInvalid(dateString)) {
-        errorMessages.put(INPUT_NAME_START + "Date", List.of(messageSource.getMessage("errors.invalid-date-format", null, locale)));
+        errorMessages.put(prefix, List.of(messageSource.getMessage("errors.invalid-date-format", null, locale)));
       }
     }
     return errorMessages;
