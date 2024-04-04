@@ -1,9 +1,9 @@
 <th:block
         th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
-    title=#{activities-add-ed-program-name.header},
+    title=#{activities-ed-program-name.header},
     iconFragment=~{fragments/gcc-icons :: mortarboard},
-    header=#{activities-add-ed-program-name.header},
+    header=#{activities-ed-program-name.header},
     buttonLabel=#{general.button.continue},
     formAction=${formAction},
     inputContent=~{::inputContent})}">
@@ -11,7 +11,7 @@
         <th:block th:replace="~{fragments/inputs/text :: text(
         inputName='schoolName',
         ariaLabel='header',
-        placeholder=#{activities-add-ed-program-name.schoolNamePlaceholder})}"/>
+        placeholder=#{activities-ed-program-name.schoolNamePlaceholder})}"/>
     </th:block>
 </th:block>
 </th:block>

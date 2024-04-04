@@ -14,12 +14,12 @@
           <th:block th:ref="formContent">
             <div class="form-card__content">
               <th:block th:replace="~{fragments/inputs/phone :: phone(inputName='phoneNumber', label=#{activities-ed-program-info.phone-number})}"/>
-               <th:block th:replace="~{fragments/inputs/text :: text(inputName='streetAddress', label=#{activities-ed-program-info.street-address})}" />
-              <th:block th:replace="~{fragments/inputs/text :: text(inputName='city', label=#{activities-ed-program-info.city})}" />
+               <th:block th:replace="~{fragments/inputs/text :: text(inputName='streetAddress', label=#{general.street-address})}" />
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='city', label=#{general.city})}" />
               <th:block th:replace="~{fragments/inputs/state ::
                   state(inputName='state',
-                  label=#{activities-ed-program-info.state})}"/>
-              <th:block th:replace="~{fragments/inputs/text :: text(inputName='zipCode', label=#{activities-ed-program-info.zip-code})}" />
+                  label=#{general.state})}"/>
+              <th:block th:replace="~{fragments/inputs/text :: text(inputName='zipCode', label=#{general.zip-code})}" />
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
