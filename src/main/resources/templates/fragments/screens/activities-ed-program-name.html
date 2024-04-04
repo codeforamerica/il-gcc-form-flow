@@ -3,7 +3,7 @@
       th:replace="~{fragments/screens/screenWithOneInput ::
         screenWithOneInput(
           title=#{activities-ed-program.title},
-          header=#{activities-add-ed-program-name.header},
+          header=#{activities-ed-program-name.header},
           iconFragment=~{fragments/gcc-icons :: mortarboard},
           buttonLabel=#{general.button.continue},
           formAction=${formAction},
@@ -12,7 +12,7 @@
       <th:block th:replace="~{fragments/inputs/text ::
         text(
           ariaLabel='header',
-          placeholder=#{activities-add-ed-program-name.schoolNamePlaceholder})}"/>
+          placeholder=#{activities-ed-program-name.schoolNamePlaceholder})}"/>
     </th:block>
   </th:block>
 </th:block>

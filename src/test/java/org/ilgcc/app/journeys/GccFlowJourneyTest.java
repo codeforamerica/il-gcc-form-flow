@@ -222,7 +222,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickElementById("activitiesParentPartnerChildcareReason-LOOKING_FOR_WORK");
     testPage.clickContinue();
     //activities-add-ed-program (client should be directed to this page if working is not checked)
-    assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
+    assertThat(testPage.getTitle()).isEqualTo("School or training program");
     testPage.goBack();
     assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
     testPage.clickElementById("activitiesParentChildcareReason-WORKING");
