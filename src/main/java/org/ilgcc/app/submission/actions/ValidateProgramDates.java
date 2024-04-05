@@ -64,6 +64,10 @@ public class ValidateProgramDates extends VerifyDate {
       if (errorMessages.isEmpty() && isDateInvalid(dateString)) {
         errorMessages.put(prefix, List.of(messageSource.getMessage("errors.invalid-date-format", null, locale)));
       }
+
+      if (errorMessages.isEmpty() && isBetweenNowAndMinDate(dateString)) {
+        errorMessages.put(prefix, List.of(messageSource.getMessage("errors.invalid-birthdate-range", null, locale)));
+      }
     }
     return errorMessages;
   }
