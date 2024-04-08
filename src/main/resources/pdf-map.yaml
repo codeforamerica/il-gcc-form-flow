@@ -22,7 +22,7 @@ inputFields:
   parentIsServing: APPLICANT_MILITARY_ACTIVE_DUTY
   parentInMilitaryReserveOrNationalGuard: APPLICANT_MILITARY_NATIONAL_GUARD
   parentSsn: APPLICANT_SSN
-  parentDateOfBirth: APPLICANT_DOB
+  parentBirthDate: APPLICANT_DOB
 subflowInfo:
   otherFamilyMembers:
     totalIterations: 5
