@@ -19,7 +19,10 @@ inputFields:
   dayCareAddressCity: PROVIDER_ADDRESS_SERVICE_CITY
   dayCareAddressState: PROVIDER_ADDRESS_SERVICE_STATE
   dayCareAddressZip: PROVIDER_ADDRESS_SERVICE_ZIP
-
+  parentIsServing: APPLICANT_MILITARY_ACTIVE_DUTY
+  parentInMilitaryReserveOrNationalGuard: APPLICANT_MILITARY_NATIONAL_GUARD
+  parentSsn: APPLICANT_SSN
+  parentBirthDate: APPLICANT_DOB
 subflowInfo:
   otherFamilyMembers:
     totalIterations: 5
