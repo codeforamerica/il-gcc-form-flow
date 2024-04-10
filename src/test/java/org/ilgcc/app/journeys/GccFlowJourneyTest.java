@@ -114,8 +114,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //parent-partner-info-basic
     assertThat(testPage.getHeader()).isEqualTo("Tell us about your partner");
-    testPage.enter("parentPartnerFirstName", "Pardnur");
-    testPage.enter("parentPartnerLastName", "Parent");
+    testPage.enter("parentPartnerFirstName", "partner");
+    testPage.enter("parentPartnerLastName", "parent");
     testPage.enter("parentPartnerBirthMonth", "12");
     testPage.enter("parentPartnerBirthDay", "25");
     testPage.enter("parentPartnerBirthYear", "2018");
@@ -329,10 +329,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
 
     // activities-partner-ed
-    assertThat(testPage.getHeader()).isEqualTo("Now tell us about Pardnur's school or training program.");
+    assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
     testPage.clickContinue();
     testPage.clickElementById("partnerEducationType-college-label");
-    assertThat(testPage.getHeader()).isEqualTo("What type of school or training is Pardnur enrolled in?");
+    assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in?");
     testPage.clickContinue();
     testPage.enter("partnerProgramName", "World University");
     assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
