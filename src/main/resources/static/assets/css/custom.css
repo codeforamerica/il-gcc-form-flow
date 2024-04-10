@@ -386,3 +386,7 @@ input[name$="Address2"] {
   background-color: #F7F5F4;
   box-shadow: inset 0px 2px 0px rgba(0, 0, 0, 0.15)
 }
+
+.demo-banner a[href="#"] {
+  display: none;
+}
