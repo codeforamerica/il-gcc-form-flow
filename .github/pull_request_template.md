@@ -1,5 +1,5 @@
-#### 🔗 Pivotal Tracker ticket
-<!-- Add link to the issue ex. PT#1234 -->
+#### 🔗 Jira ticket
+<!-- Add link to the issue -->
 
 #### ✍️ Description
 <!-- Brief summary of changes  -->
