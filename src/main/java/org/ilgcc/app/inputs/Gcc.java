@@ -84,6 +84,7 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
     private List<String> parentPartnerGender;
+    @Phone(message = "{errors.invalid-phone-number}")
     private String phoneNumber;
     private String streetAddress;
     private String city;
