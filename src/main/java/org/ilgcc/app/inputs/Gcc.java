@@ -1,10 +1,12 @@
 package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
+import formflow.library.data.annotations.Phone;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public class Gcc extends FlowInputs {
     private String lang;
     @NotBlank
     private String schoolName;
-    @NotBlank(message = "{activities-add-ed-program-type.validationMessage}")
+    @NotBlank(message = "{activities-ed-program-type.validationMessage}")
     private String educationType;
     @NotBlank
     private String dayCareChoice;
@@ -90,7 +92,7 @@ public class Gcc extends FlowInputs {
     private String streetAddress;
     private String city;
     private String state;
-    @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
+    @Pattern(regexp = "^\\d{5,}$", message = "{errors.invalid-zipcode}")
     private String zipCode;
     private String activitiesClassHoursSameEveryDay;
     private String activitiesClassStartTimeAllDays;
@@ -105,7 +107,9 @@ public class Gcc extends FlowInputs {
 
     private String activitiesClassStartTimeThursday;
     private String activitiesClassEndTimeThursday;
+
     private String activitiesClassStartTimeFriday;
+
     private String activitiesClassEndTimeFriday;
     private String activitiesClassStartTimeSaturday;
     private String activitiesClassEndTimeSaturday;
@@ -212,13 +216,53 @@ public class Gcc extends FlowInputs {
     private String activitiesParentPartnerChildcareReason_other;
     @NotBlank(message = "{errors.require-company-name}")
     private String companyName;
-
+    @Phone(message = "{errors.invalid-phone-number}")
     private String employerPhoneNumber;
     private String employerStreetAddress;
     private String employerCity;
     private String employerState;
-    @Pattern(regexp = "^\\d{5,}$", message = "{activities-ed-program-info.validationMessage}")
+    @Pattern(regexp = "^\\d{5,}$", message = "{errors.invalid-zipcode}")
     private String employerZipCode;
 
     private String isSelfEmployed;
+
+    private String activitiesWorkVary;
+    @Size(min = 1, message = "{activities-job-weekly-schedule.validation}")
+    private List<String> activitiesJobWeeklySchedule;
+    private String activitiesJobHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeMonday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeWednesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeThursday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeFriday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeFriday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeSaturday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeSaturday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeSunday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeSunday;
+
+    private String activitiesJobCommuteTime;
+
 }

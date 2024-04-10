@@ -1,9 +1,9 @@
 <th:block
         th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
-    title=#{activities-add-ed-program-type.header},
+    title=#{activities-ed-program-type.header},
     iconFragment=~{fragments/gcc-icons :: mortarboard},
-    header=#{activities-add-ed-program-type.header},
+    header=#{activities-ed-program-type.header},
     buttonLabel=#{general.button.continue},
     formAction=${formAction},
     inputContent=~{::inputContent})}">
@@ -16,32 +16,32 @@
                 <th:block
                         th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
                         value='belowPostSecondary',
-                        label=#{activities-add-ed-program-type.belowPostSecondary},
-                        radioHelpText=#{activities-add-ed-program-type.belowPostSecondary.secondPart})}"/>
+                        label=#{activities-ed-program-type.belowPostSecondary},
+                        radioHelpText=#{activities-ed-program-type.belowPostSecondary.secondPart})}"/>
                 <th:block
                         th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
                         value='highSchool',
-                        label=#{activities-add-ed-program-type.highSchool})}"/>
+                        label=#{activities-ed-program-type.highSchool})}"/>
                 <th:block
                         th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
                         value='vocational',
-                        label=#{activities-add-ed-program-type.vocational})}"/>
+                        label=#{activities-ed-program-type.vocational})}"/>
                 <th:block
                         th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
                         value='college',
-                        label=#{activities-add-ed-program-type.college})}"/>
+                        label=#{activities-ed-program-type.college})}"/>
                 <th:block
                         th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
                         value='graduateSchool',
-                        label=#{activities-add-ed-program-type.graduate})}"/>
+                        label=#{activities-ed-program-type.graduate})}"/>
                 <th:block
                         th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
                         value='tanf',
-                        label=#{activities-add-ed-program-type.tanf})}"/>
+                        label=#{activities-ed-program-type.tanf})}"/>
                 <th:block
                         th:replace="~{fragments/inputs/radio :: radio(inputName='educationType',
                         value='other',
-                        label=#{activities-add-ed-program-type.other})}"/>
+                        label=#{activities-ed-program-type.other})}"/>
             </th:block>
         </th:block>
     </th:block>

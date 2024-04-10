@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import io.percy.selenium.Percy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -99,7 +100,7 @@ public class Page {
       case textarea -> enterInput(firstElement, value);
       case input -> {
         switch (InputTypeHtmlAttribute.valueOf(firstElement.getAttribute("type"))) {
-          case text -> {
+          case text, time -> {
             enterInput(firstElement, value);
           }
           case radio, checkbox -> selectEnumeratedInput(formInputElements, value);
@@ -130,11 +131,19 @@ public class Page {
   }
 
   private void enterInput(WebElement webElement, String input) {
-    if (!webElement.getAttribute("type").equals(InputTypeHtmlAttribute.radio.toString())) {
-      webElement.clear();
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    String inputType = webElement.getAttribute("type");
+
+    if (!"radio".equals(inputType)) {
+      if ("time".equals(inputType)) {
+        js.executeScript("arguments[0].value = arguments[1];", webElement, input);
+      } else {
+        webElement.clear();
+        webElement.sendKeys(input);
+      }
     }
-    webElement.sendKeys(input);
   }
+
 
   public void enterInputById(String inputId, String value) {
     WebElement we = driver.findElement(By.id(inputId));
@@ -357,6 +366,7 @@ public class Page {
     radio,
     checkbox,
     tel,
-    hidden
+    hidden,
+    time
   }
 }

@@ -216,11 +216,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //activities-parent-type
     assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
-    testPage.clickElementById("activitiesParentChildcareReason-WORKING");
     testPage.clickElementById("activitiesParentChildcareReason-other");
     testPage.enter("activitiesParentChildcareReason_other", "test");
     testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
     testPage.clickElementById("activitiesParentPartnerChildcareReason-LOOKING_FOR_WORK");
+    testPage.clickContinue();
+    //activities-add-ed-program (client should be directed to this page if working is not checked)
+    assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
+    testPage.goBack();
+    assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+    testPage.clickElementById("activitiesParentChildcareReason-WORKING");
     testPage.clickContinue();
     //activities-add-jobs
     assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
@@ -231,17 +236,52 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     testPage.clickContinue();
     //activities-employer-address
     assertThat(testPage.getTitle()).isEqualTo("Activities Employer Address");
-    testPage.enter("employerPhoneNumber", "333333333");
+    testPage.enter("employerPhoneNumber", "3333333");
     testPage.enter("employerCity", "Chicago");
     testPage.enter("employerStreetAddress", "123 Test Me");
+    testPage.enter("employerZipCode", "6042");
+    testPage.clickContinue();
+    assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 9 digits.")).isTrue();
+    assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
+    testPage.enter("employerPhoneNumber", "3333333333");
     testPage.enter("employerZipCode", "60423");
     testPage.clickContinue();
     //activities-self-employment
     assertThat(testPage.getTitle()).isEqualTo("Activities Self Employment");
     testPage.clickButton("Yes");
+
+    //activities-work-schedule-vary
+    assertThat(testPage.getTitle()).isEqualTo("Work schedule vary");
+    testPage.clickButton("Yes");
+
+    //activities-partner-next-work-schedule
+    assertThat(testPage.getTitle()).isEqualTo("Work Schedule");
+    testPage.clickContinue();
+
+    //activities-job-weekly-schedule
+    assertThat(testPage.getTitle()).isEqualTo("Weekly Schedule");
+    testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+    testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
+    testPage.clickContinue();
+
+    //activities-job-weekly-schedule
+    assertThat(testPage.getTitle()).isEqualTo("Job hourly schedule");
+    assertThat(testPage.getElementText("activitiesJobHoursSameEveryDay-Yes-label")).isEqualTo("My work hours are the same every day.");
+    testPage.enter("activitiesJobStartTimeMonday", "12:00");
+    testPage.enter("activitiesJobEndTimeMonday", "12:00");
+    testPage.enter("activitiesJobStartTimeSunday", "12:00");
+    testPage.enter("activitiesJobEndTimeSunday", "12:00");
+    testPage.clickContinue();
+
+    //activities-work-commute-time
+    assertThat(testPage.getTitle()).isEqualTo("Work commute time");
+    testPage.selectFromDropdown("activitiesJobCommuteTime", "1 hour");
+    testPage.clickContinue();
+
     //activities-add-jobs (list)
     assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
     testPage.clickButton("That is all my jobs");
+
     //activities-add-ed-program
     assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
     testPage.clickContinue();

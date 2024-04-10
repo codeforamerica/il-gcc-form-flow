@@ -148,6 +148,8 @@ flow:
   activities-parent-type:
     nextScreens:
       - name: activities-add-jobs
+        condition: WorkingIsOneReasonForChildcareNeed
+      - name: activities-add-ed-program
   activities-add-jobs:
     subflow: jobs
     nextScreens:
@@ -163,55 +165,30 @@ flow:
   activities-self-employment:
     subflow: jobs
     nextScreens:
-      - name: activities-add-jobs
-  activities-pay-by-hour:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-hourly-wage
-  activities-hourly-wage:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-pay-period
-  activities-pay-period:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-pay-rate
-  activities-pay-rate:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-pay-last-month
-  activities-pay-last-month:
-    condition: SkipTemplate
-    nextScreens:
       - name: activities-work-schedule-vary
   activities-work-schedule-vary:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
+      - name: activities-job-weekly-schedule
+        condition: IsWorkDaysOrHoursVary
       - name: activities-next-work-schedule
   activities-next-work-schedule:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
       - name: activities-job-weekly-schedule
   activities-job-weekly-schedule:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
       - name: activities-job-hourly-schedule
   activities-job-hourly-schedule:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-work-commute
-  activities-work-commute:
-    condition: SkipTemplate
+    beforeDisplayAction: SetJobWeeklyScheduleGroup
+    subflow: jobs
     nextScreens:
       - name: activities-work-commute-time
   activities-work-commute-time:
-    condition: SkipTemplate
+    subflow: jobs
     nextScreens:
-      - name: activities-add-jobs-list
-  activities-add-jobs-list:
-    condition: SkipTemplate
-    nextScreens:
-      - name: activities-add-ed-program
+      - name: activities-add-jobs
   activities-add-ed-program:
     nextScreens:
       - name: activities-ed-program-type
