@@ -91,25 +91,37 @@ public class Gcc extends FlowInputs {
     @Pattern(regexp = "^\\d{5,}$", message = "{errors.invalid-zipcode}")
     private String zipCode;
     private String activitiesClassHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeMonday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeWednesday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeThursday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeFriday;
-
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeFriday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeSaturday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeSaturday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeSunday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeSunday;
 
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
