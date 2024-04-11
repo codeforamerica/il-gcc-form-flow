@@ -3,10 +3,7 @@ package org.ilgcc.app.inputs;
 import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Phone;
 import formflow.library.utils.RegexUtils;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
@@ -14,15 +11,14 @@ import java.util.List;
 public class Gcc extends FlowInputs {
 
     private String lang;
-    @NotBlank
+    @NotBlank(message = "{errors.provide-program-name}")
     private String schoolName;
-    @NotBlank(message = "{activities-ed-program-type.validationMessage}")
+    @NotBlank(message = "{errors.select-one-option}")
     private String educationType;
-    @NotBlank
+    @NotBlank(message = "{errors.choose-provider}")
     private String dayCareChoice;
-    @NotBlank(message = "{activities-ed-program-method.validationMessage}")
     private String programTaught;
-    @NotBlank(message = "{activities-ed-program-method.validationMessage}")
+    @NotBlank(message = "{errors.select-yes-or-no}")
     private String programSchedule;
     private String languageRead;
     private String languageSpeak;
@@ -88,6 +84,7 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
     private List<String> parentPartnerGender;
+    @Phone(message = "{errors.invalid-phone-number}")
     private String phoneNumber;
     private String streetAddress;
     private String city;
@@ -95,27 +92,38 @@ public class Gcc extends FlowInputs {
     @Pattern(regexp = "^\\d{5,}$", message = "{errors.invalid-zipcode}")
     private String zipCode;
     private String activitiesClassHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeMonday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeWednesday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeThursday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeFriday;
-
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeFriday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeSaturday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeSaturday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeSunday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeSunday;
-
 
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     private String parentSsn;
@@ -152,7 +160,7 @@ public class Gcc extends FlowInputs {
     private String childHasDisability;
     private String childIsUsCitizen;
     private String childInCare;
-
+    @NotEmpty(message = "{errors.select-at-least-one-day}")
     private List<String> weeklySchedule;
     @Pattern(regexp = "^(0[1-9]|[12][0-9]|3[01])$", message = "{general.day.validation}")
     private String activitiesProgramStartDay;
@@ -202,6 +210,62 @@ public class Gcc extends FlowInputs {
     private String unearnedIncomeAssetsMoreThanOneMillionDollars;
     private String current_uuid;
 
+    @NotBlank(message = "{errors.select-one-option}")
+    private String partnerEducationType;
+    @NotBlank(message = "{errors.provide-program-name}")
+    private String partnerProgramName;
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String partnerEdPhoneNumber;
+    private String partnerEdStreetAddress;
+    private String partnerEdCity;
+    private String partnerEdState;
+    @Pattern(regexp = "^\\d{5,}$", message = "{errors.invalid-zipcode}")
+    private String partnerEdZipCode;
+    private String partnerProgramTaught;
+    @NotBlank(message = "{errors.select-yes-or-no}")
+    private String partnerProgramSchedule;
+
+    @NotEmpty(message = "{errors.select-at-least-one-day}")
+    private List<String> partnerClassWeeklySchedule;
+    private String partnerClassHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeMonday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeWednesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeThursday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeFriday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeFriday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeSaturday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeSaturday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeSunday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeSunday;
+    private String partnerProgramStartDay;
+    private String partnerProgramStartMonth;
+    private String partnerProgramStartYear;
+    private String partnerProgramEndDay;
+    private String partnerProgramEndMonth;
+    private String partnerProgramEndYear;
     private List<String> unearnedIncomeSource;
     private String unearnedIncomeRental;
     private String unearnedIncomeDividends;

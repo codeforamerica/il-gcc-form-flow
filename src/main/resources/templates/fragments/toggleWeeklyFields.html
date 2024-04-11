@@ -1,0 +1,23 @@
+<script th:fragment="toggleWeeklyFields" type="text/javascript">
+    $(document).ready(function () {
+        function toggleFields() {
+            $('#grouped-days').toggleClass('hidden');
+            $('#individual-days').toggleClass('hidden');
+            disableFields()
+        }
+
+        function disableFields() {
+            const isGrouped = $('#individual-days').hasClass('hidden')
+            $('#grouped-days :input').prop('disabled', !isGrouped);
+            $('#individual-days :input').prop('disabled', isGrouped);
+        }
+
+        // on load
+        disableFields()
+
+        // On checkbox change
+        $('input[type=checkbox]').change(function () {
+            toggleFields();
+        });
+    });
+</script>

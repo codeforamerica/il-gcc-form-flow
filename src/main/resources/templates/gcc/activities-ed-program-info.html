@@ -1,35 +1,12 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{activities-ed-program-info.header})}"></head>
-<body>
-<div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.schoolName})}"></th:block>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-ed-program-info.header}, subtext=#{activities-ed-program-info.description})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-              <th:block th:replace="~{fragments/inputs/phone :: phone(inputName='phoneNumber', label=#{activities-ed-program-info.phone-number})}"/>
-               <th:block th:replace="~{fragments/inputs/text :: text(inputName='streetAddress', label=#{general.street-address})}" />
-              <th:block th:replace="~{fragments/inputs/text :: text(inputName='city', label=#{general.city})}" />
-              <th:block th:replace="~{fragments/inputs/state ::
-                  state(inputName='state',
-                  label=#{general.state})}"/>
-              <th:block th:replace="~{fragments/inputs/text :: text(inputName='zipCode', label=#{general.zip-code})}" />
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+<th:block
+    th:replace="~{fragments/screens/activities-ed-program-info ::
+      screen(
+        subtext=#{activities-ed-program-info.description},
+        programName=${fieldData.schoolName},
+        phoneNumberInputName='phoneNumber',
+        streetAddressInputName='streetAddress',
+        cityInputName='city',
+        stateInputName='state',
+        zipCodeInputName='zipCode'
+      )}">
+</th:block>

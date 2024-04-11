@@ -1,0 +1,9 @@
+<th:block
+    th:replace="~{fragments/screens/activities-class-weekly-schedule ::
+      screen(
+        header=${#messages.msg('activities-partner-class-weekly-schedule.header', inputData.get('parentPartnerFirstName'))},
+        subtext=${#messages.msg('activities-partner-class-weekly-schedule.subtext', inputData.get('parentPartnerFirstName'))},
+        programName=${fieldData.partnerProgramName},
+        inputName='partnerClassWeeklySchedule'
+      )}">
+</th:block>
