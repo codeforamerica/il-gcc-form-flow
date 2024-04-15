@@ -7,6 +7,7 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,10 @@ public class ParentPreparer implements SubmissionFieldPreparer {
       results.put("parentInMilitaryReserveOrNationalGuard", new SingleField("parentInMilitaryReserveOrNationalGuard", selectedYes(parentIsReserveOrNationalGuard),null));
 
     }
+
+    Boolean experiencingHomelessness = (Boolean) submission.getInputData().getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
+        List.of("yes"));
+    results.put("parentExperiencingHomelessness", new SingleField("parentExperiencingHomelessness", experiencingHomelessness.toString(), null));
     return results;
   }
 

@@ -23,6 +23,7 @@ inputFields:
   parentInMilitaryReserveOrNationalGuard: APPLICANT_MILITARY_NATIONAL_GUARD
   parentSsn: APPLICANT_SSN
   parentBirthDate: APPLICANT_DOB
+  parentExperiencingHomelessness: APPLICANT_HOMELESSNESS
 subflowInfo:
   otherFamilyMembers:
     totalIterations: 5
