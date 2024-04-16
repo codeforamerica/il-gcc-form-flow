@@ -3,6 +3,7 @@
       screen(
         header=${#messages.msg('activities-partner-next-class-schedule.header', inputData.get('parentPartnerFirstName'))},
         notice=${#messages.msg('activities-partner-next-class-schedule.description', inputData.get('parentPartnerFirstName'))},
+        skipText=#{activities-partner-next-class-schedule.skip},
         skipLink='/flow/gcc/activities-partner-ed-program-dates'
       )}">
 </th:block>

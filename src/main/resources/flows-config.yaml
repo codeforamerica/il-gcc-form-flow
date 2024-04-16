@@ -256,7 +256,7 @@ flow:
     nextScreens:
       - name: activities-partner-ed-program-dates
   activities-partner-ed-program-dates:
-    crossFieldValidationAction: ValidateProgramDates
+    crossFieldValidationAction: ValidateMonthYearPartnerActivitiesProgram
     nextScreens:
       - name: unearned-income-intro
   unearned-income-intro:
