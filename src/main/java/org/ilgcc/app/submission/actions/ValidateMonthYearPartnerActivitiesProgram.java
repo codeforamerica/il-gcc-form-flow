@@ -1,6 +1,5 @@
 package org.ilgcc.app.submission.actions;
 
-
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
@@ -17,15 +16,15 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class ValidateMonthYearActivitiesProgram implements Action {
+public class ValidateMonthYearPartnerActivitiesProgram implements Action {
 
     @Autowired
     MessageSource messageSource;
 
-    private final String INPUT_NAME_START_MONTH = "activitiesProgramStartMonth";
-    private final String INPUT_NAME_START_YEAR = "activitiesProgramStartYear";
-    private final String INPUT_NAME_END_MONTH = "activitiesProgramEndMonth";
-    private final String INPUT_NAME_END_YEAR = "activitiesProgramEndYear";
+    private final String INPUT_NAME_START_MONTH = "partnerProgramStartMonth";
+    private final String INPUT_NAME_START_YEAR = "partnerProgramStartYear";
+    private final String INPUT_NAME_END_MONTH = "partnerProgramEndMonth";
+    private final String INPUT_NAME_END_YEAR = "partnerProgramEndYear";
 
     @Override
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
@@ -57,3 +56,4 @@ public class ValidateMonthYearActivitiesProgram implements Action {
         return errorMessages;
     }
 }
+

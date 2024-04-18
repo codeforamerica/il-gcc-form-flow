@@ -18,7 +18,7 @@
             <th:block th:replace="~{fragments/continueButton :: continue}"/>
             </br>
             <a id="skip-coverage-during-classtime" th:href="${skipLink}"
-               th:text="#{activities-next-class-schedule.skip}"></a>
+               th:text="${skipText}"></a>
           </div>
         </main>
       </div>
