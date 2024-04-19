@@ -279,15 +279,12 @@ flow:
       - name: submit-intro
 
   submit-intro:
-    condition: SkipTemplate
     nextScreens:
       - name: submit-ccap-terms
   submit-ccap-terms:
-    condition: SkipTemplate
     nextScreens:
       - name: submit-sign-name
   submit-sign-name:
-    condition: SkipTemplate
     nextScreens:
       - name: submit-complete
   submit-complete:

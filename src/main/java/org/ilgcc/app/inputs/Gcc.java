@@ -329,4 +329,10 @@ public class Gcc extends FlowInputs {
 
     private String activitiesJobCommuteTime;
 
+    @NotEmpty(message = "{errors.validate.legal-terms}")
+    private List<String> agreesToLegalTerms;
+    @NotBlank(message = "{errors.validate.signed-name}")
+    private String signedName;
+    @NotBlank(message = "{errors.validate.signed-name}")
+    private String partnerSignedName;
 }
