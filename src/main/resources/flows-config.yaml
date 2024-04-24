@@ -42,6 +42,7 @@ flow:
 #    nextScreens:
 #      - name: parent-home-address
   parent-home-address:
+    onPostAction: ClearHomeAddressWhenExperiencingHomelessnessIsSelected
     nextScreens:
       - name: parent-no-permanent-address
         condition: ParentIsExperiencingHomelessness
