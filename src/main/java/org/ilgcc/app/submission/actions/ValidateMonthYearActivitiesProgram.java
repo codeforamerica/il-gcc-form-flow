@@ -1,10 +1,10 @@
 package org.ilgcc.app.submission.actions;
 
 
-import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -17,41 +17,89 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class ValidateMonthYearActivitiesProgram implements Action {
+public class ValidateMonthYearActivitiesProgram extends VerifyDate {
 
     @Autowired
     MessageSource messageSource;
-
-    private final String INPUT_NAME_START_MONTH = "activitiesProgramStartMonth";
-    private final String INPUT_NAME_START_YEAR = "activitiesProgramStartYear";
-    private final String INPUT_NAME_END_MONTH = "activitiesProgramEndMonth";
-    private final String INPUT_NAME_END_YEAR = "activitiesProgramEndYear";
 
     @Override
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
 
         Locale locale = LocaleContextHolder.getLocale();
+        DateTime minDate = DTF.parseDateTime("01/01/1901");
         Map<String, List<String>> errorMessages = new HashMap<>();
         Map<String, Object> inputData = formSubmission.getFormData();
 
-        String startMonth = inputData.get(INPUT_NAME_START_MONTH).toString();
-        String startYear = inputData.get(INPUT_NAME_START_YEAR).toString();
+        String startGroup = "activitiesProgramStart";
+        String startMonthField = startGroup.concat("Month");
+        String startDayField = startGroup.concat("Day");
+        String startYearField = startGroup.concat("Year");
+        String startMonth = inputData.get(startMonthField).toString();
+        String startDay = inputData.getOrDefault(startDayField, "01").toString();
+        String startYear = inputData.get(startYearField).toString();
+        String startDateString = String.format("%s/%s/%s", startMonth, startDay, startYear);
 
-        String endMonth = inputData.get(INPUT_NAME_END_MONTH).toString();
-        String endYear = inputData.get(INPUT_NAME_END_YEAR).toString();
+        String endGroup = "activitiesProgramEnd";
+        String endMonthField = endGroup.concat("Month");
+        String endDayField = endGroup.concat("Day");
+        String endYearField = endGroup.concat("Year");
+        String endMonth = inputData.get(endMonthField).toString();
+        String endDay = inputData.getOrDefault(endDayField, "01").toString();
+        String endYear = inputData.get(endYearField).toString();
+        String endDateString = String.format("%s/%s/%s", endMonth, endDay, endYear);
 
+        // If a month or year is provided, both must be included
         if (startMonth.isBlank() && !startYear.isBlank()) {
-            errorMessages.put(INPUT_NAME_START_MONTH,
+            errorMessages.put(startMonthField,
                     List.of(messageSource.getMessage("general.month.validation", null, locale)));
-        } else if (!startMonth.isBlank() && startYear.isBlank()) {
-            errorMessages.put(INPUT_NAME_START_YEAR,
+        }
+
+        if (!startMonth.isBlank() && startYear.isBlank()) {
+            errorMessages.put(startYearField,
                     List.of(messageSource.getMessage("general.year.validation", null, locale)));
-        } else if (endMonth.isBlank() && !endYear.isBlank()) {
-            errorMessages.put(INPUT_NAME_END_MONTH,
+        }
+
+        if (endMonth.isBlank() && !endYear.isBlank()) {
+            errorMessages.put(endMonthField,
                     List.of(messageSource.getMessage("general.month.validation", null, locale)));
-        } else if (!endMonth.isBlank() && endYear.isBlank()) {
-            errorMessages.put(INPUT_NAME_END_YEAR,
+        }
+
+        if (!endMonth.isBlank() && endYear.isBlank()) {
+            errorMessages.put(endYearField,
                     List.of(messageSource.getMessage("general.year.validation", null, locale)));
+        }
+
+        // TODO: add check to stop if either month or year are blank
+        if (!errorMessages.isEmpty()) {
+            return errorMessages;
+        }
+
+        // Ensure months and years create a valid date
+        if (isDateInvalid(startDateString)) {
+            errorMessages.put(startGroup,
+                    List.of(messageSource.getMessage("errors.invalid-date-format", null, locale)));
+        }
+
+        if (isDateInvalid(endDateString)) {
+            errorMessages.put(endGroup,
+                    List.of(messageSource.getMessage("errors.invalid-date-format", null, locale)));
+        }
+
+        if (!errorMessages.isEmpty()) {
+            return errorMessages;
+        }
+
+        // Ensure dates are before 1901
+        DateTime startDate = DTF.parseDateTime(startDateString);
+        if (this.isDateNotWithinSupportedRange(startDate, minDate, null)) {
+            errorMessages.put(startGroup,
+                    List.of(messageSource.getMessage("errors.invalid-date-range", null, locale)));
+        }
+
+        DateTime endDate = DTF.parseDateTime(endDateString);
+        if (this.isDateNotWithinSupportedRange(endDate, minDate, null)) {
+            errorMessages.put(endGroup,
+                    List.of(messageSource.getMessage("errors.invalid-date-range", null, locale)));
         }
 
         return errorMessages;
