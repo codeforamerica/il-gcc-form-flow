@@ -16,15 +16,10 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class ValidateMonthYearPartnerActivitiesProgram implements Action {
+public class ValidateMonthYearPartnerActivitiesProgram extends VerifyDate {
 
     @Autowired
     MessageSource messageSource;
-
-    private final String INPUT_NAME_START_MONTH = "partnerProgramStartMonth";
-    private final String INPUT_NAME_START_YEAR = "partnerProgramStartYear";
-    private final String INPUT_NAME_END_MONTH = "partnerProgramEndMonth";
-    private final String INPUT_NAME_END_YEAR = "partnerProgramEndYear";
 
     @Override
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
@@ -33,24 +28,68 @@ public class ValidateMonthYearPartnerActivitiesProgram implements Action {
         Map<String, List<String>> errorMessages = new HashMap<>();
         Map<String, Object> inputData = formSubmission.getFormData();
 
-        String startMonth = inputData.get(INPUT_NAME_START_MONTH).toString();
-        String startYear = inputData.get(INPUT_NAME_START_YEAR).toString();
+        String startGroup = "partnerProgramStart";
+        String startMonthField = startGroup.concat("Month");
+        String startDayField = startGroup.concat("Day");
+        String startYearField = startGroup.concat("Year");
+        String startMonth = inputData.get(startMonthField).toString();
+        String startDay = inputData.get(startDayField).toString().isEmpty() ? "01" : inputData.get(startDayField).toString();
+        String startYear = inputData.get(startYearField).toString();
+        String startDate = String.format("%s/%s/%s", startMonth, startDay, startYear);
 
-        String endMonth = inputData.get(INPUT_NAME_END_MONTH).toString();
-        String endYear = inputData.get(INPUT_NAME_END_YEAR).toString();
+        String endGroup = "partnerProgramEnd";
+        String endMonthField = endGroup.concat("Month");
+        String endDayField = endGroup.concat("Day");
+        String endYearField = endGroup.concat("Year");
+        String endMonth = inputData.get(endMonthField).toString();
+        String endDay = inputData.get(endDayField).toString().isEmpty() ? "01" : inputData.get(endDayField).toString();
+        String endYear = inputData.get(endYearField).toString();
+        String endDate = String.format("%s/%s/%s", endMonth, endDay, endYear);
 
+        // Error checks for only months or only years present
         if (startMonth.isBlank() && !startYear.isBlank()) {
-            errorMessages.put(INPUT_NAME_START_MONTH,
+            errorMessages.put(startMonthField,
                     List.of(messageSource.getMessage("general.month.validation", null, locale)));
-        } else if (!startMonth.isBlank() && startYear.isBlank()) {
-            errorMessages.put(INPUT_NAME_START_YEAR,
+        }
+
+        if (!startMonth.isBlank() && startYear.isBlank()) {
+            errorMessages.put(startYearField,
                     List.of(messageSource.getMessage("general.year.validation", null, locale)));
-        } else if (endMonth.isBlank() && !endYear.isBlank()) {
-            errorMessages.put(INPUT_NAME_END_MONTH,
+        }
+
+        if (endMonth.isBlank() && !endYear.isBlank()) {
+            errorMessages.put(endMonthField,
                     List.of(messageSource.getMessage("general.month.validation", null, locale)));
-        } else if (!endMonth.isBlank() && endYear.isBlank()) {
-            errorMessages.put(INPUT_NAME_END_YEAR,
+        }
+
+        if (!endMonth.isBlank() && endYear.isBlank()) {
+            errorMessages.put(endYearField,
                     List.of(messageSource.getMessage("general.year.validation", null, locale)));
+        }
+
+        // Error checks for valid dates when present
+        if (!(startMonth.isEmpty() && startYear.isEmpty())) {
+            if (isDateInvalid(startDate)) {
+                errorMessages.put(startGroup,
+                        List.of(messageSource.getMessage("errors.invalid-date-format", null, locale)));
+            } else {
+                if (!isBetweenNowAndMinDate(startDate)) {
+                    errorMessages.put(startGroup,
+                            List.of(messageSource.getMessage("errors.invalid-date-range", null, locale)));
+                }
+            }
+        }
+
+        if (!(endMonth.isEmpty() && endYear.isEmpty())) {
+            if (isDateInvalid(endDate)) {
+                errorMessages.put(endGroup,
+                        List.of(messageSource.getMessage("errors.invalid-date-format", null, locale)));
+            } else {
+                if (!isBetweenNowAndMinDate(endDate)) {
+                    errorMessages.put(endGroup,
+                            List.of(messageSource.getMessage("errors.invalid-date-range", null, locale)));
+                }
+            }
         }
 
         return errorMessages;
