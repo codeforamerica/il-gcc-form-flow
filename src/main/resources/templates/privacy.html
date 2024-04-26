@@ -4,55 +4,71 @@
 <body>
 <div class="page-wrapper">
   <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
-  <section class="slab slab--grey">
-    <div class="grid">
-      <div class="grid__item">
-        <h1 class="spacing-below-35" th:text="#{privacy.title}"></h1>
-        <p th:text="#{privacy.sub-title}"></p>
-        <a href="/flow/ubi/howThisWorks" th:text="#{privacy.apply-now}"
-           class="button--primary button"></a>
+  <main id="content" role="main" class="slab slab--white padding-top-0 spacing-below-0">
+    <section class="slab slab--light-purple slab--hero">
+      <div class="grid">
+        <div class="grid__item">
+          <h1 class="spacing-below-35" th:text="#{privacy.title}"></h1>
+          <p th:text="#{privacy.sub-title}"></p>
+          <a href="/flow/ubi/howThisWorks" th:text="#{privacy.apply-now}"
+             class="button--primary button"></a>
+        </div>
       </div>
-    </div>
-  </section>
-  <main id="content" role="main" class="slab slab--white">
-    <div class="grid">
-      <nav class="grid__item width-one-third">
-        <p class="h3" th:text="#{privacy.toc}"></p>
-        <div class="spacing-below-35">
-          <a href="#overview" th:text="#{privacy.overview.title}"></a>
-        </div>
-        <div class="spacing-below-35">
-          <a href="#info" th:text="#{privacy.info.title}"></a>
-        </div>
-        <div class="spacing-below-35">
-          <a href="#how-we-use" th:text="#{privacy.how-we-use.title}"></a>
-        </div>
-      </nav>
-      <div class="grid__item shift-one-twelfth width-seven-twelfths">
-        <div class="grid">
-          <div class="grid__item">
-            <div class="grid__item spacing-below-35">
-              <h2 id="overview" class="h3" th:text="#{privacy.overview.title}"></h2>
-              <p th:text="#{privacy.overview.content.p1}"></p>
-              <h2 id="info" class="h3 spacing-above-60" th:text="#{privacy.info.title}"></h2>
-              <p th:text="#{privacy.info.content.p1}"></p>
-              <ul class="list--bulleted padding-left-25">
-                <li th:text="#{privacy.info.content.li1}"></li>
-                <li th:text="#{privacy.info.content.li2}"></li>
-                <li th:text="#{privacy.info.content.li3}"></li>
-                <li th:text="#{privacy.info.content.li4}"></li>
-              </ul>
-              <h2 id="how-we-use" class="h3 spacing-above-60"
-                  th:text="#{privacy.how-we-use.title}"></h2>
-              <p th:text="#{privacy.how-we-use.content.p1}"></p>
-              <p th:text="#{privacy.how-we-use.content.p2}"></p>
-              <p th:text="#{privacy.how-we-use.content.p3}"></p>
-              <p th:text="#{privacy.how-we-use.content.p4}"></p>
+    </section>
+    <section class="slab slab--white">
+      <div class="grid">
+        <nav class="grid__item width-one-third">
+          <div class="spacing-below-10">
+            <a href="#overview" th:text="#{privacy.overview.title}"></a>
+          </div>
+          <div class="spacing-below-10">
+            <a href="#info-collected" th:text="#{privacy.info-collected.title}"></a>
+          </div>
+
+        </nav>
+        <div class="grid__item shift-one-twelfth width-seven-twelfths">
+          <div class="grid">
+            <div class="grid__item">
+              <div class="grid__item spacing-below-35">
+
+                <!-- Overview -->
+                <h2 id="overview" class="h3" th:text="#{privacy.overview.title}"></h2>
+                <p th:text="#{privacy.overview.content.1}"></p>
+                <ol class="list--numbered padding-left-25">
+                  <li th:text="#{privacy.overview.content.purpose.1}"></li>
+                  <li th:text="#{privacy.overview.content.purpose.2}"></li>
+                </ol>
+                <p th:text="#{privacy.overview.content.2}"></p>
+                <p th:utext="#{privacy.overview.content.3}"></p>
+
+
+                <!-- Info collected -->
+                <h2 id="info-collected" class="h3 spacing-above-60"
+                    th:text="#{privacy.info-collected.title}"></h2>
+                <p th:text="#{privacy.info-collected.content.1}"></p>
+                <ul class="list--bulleted padding-left-25">
+                  <li th:text="#{privacy.info-collected.content.pii-collected.1}"></li>
+                  <li th:text="#{privacy.info-collected.content.pii-collected.2}"></li>
+                  <li th:text="#{privacy.info-collected.content.pii-collected.3}"></li>
+                </ul>
+
+                <p th:text="#{privacy.info-collected.content.2}"></p>
+                <ul class="list--bulleted padding-left-25">
+                <li th:text="#{privacy.info-collected.content.addl-items.1}"></li>
+                <li th:text="#{privacy.info-collected.content.addl-items.2}"></li>
+                <li th:text="#{privacy.info-collected.content.addl-items.3}"></li>
+                <li th:text="#{privacy.info-collected.content.addl-items.4}"></li>
+                <li th:text="#{privacy.info-collected.content.addl-items.5}"></li>
+                <li th:text="#{privacy.info-collected.content.addl-items.6}"></li>
+                </ul>
+                <p th:text="#{privacy.info-collected.content.3}"></p>
+
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
