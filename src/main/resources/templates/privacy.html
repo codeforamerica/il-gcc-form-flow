@@ -20,8 +20,8 @@
 
         <!-- Table of Contents -->
         <nav class="grid__item width-one-third" th:with="sections = ${ {
-          'overview', 'info-collected', 'how-we-collect', 'how-we-use', 'how-we-share',
-          'how-we-protect', 'date-retention', 'childrens-privacy', 'access-request',
+          'overview', 'info-collected', 'how-we-collect', 'how-we-use', 'how-we-share', 'choices',
+          'how-we-protect', 'data-retention', 'childrens-privacy', 'access-request',
           'changes', 'effective-date', 'questions'} }">
           <div class="spacing-below-10" th:each="section : ${sections}">
             <a th:href="'#' + ${section}" th:text="#{'privacy.' + __${section}__ + '.title'}"></a>
@@ -139,6 +139,39 @@
                 <p th:text="#{privacy.how-we-share.content-3}"></p>
                 <p th:text="#{privacy.how-we-share.content-4}"></p>
 
+                <!-- Your choices regarding your information -->
+                <h2 id="choices" class="h3 spacing-above-60"
+                    th:text="#{privacy.choices.title}"></h2>
+                <p th:text="#{privacy.choices.content-1}"></p>
+                <h3 class="h4 spacing-above-35" th:text="#{privacy.choices.email.title}"></h3>
+                <p th:text="#{privacy.choices.email.content-1}"></p>
+                <p th:text="#{privacy.choices.email.content-2}"></p>
+                <p th:text="#{privacy.choices.email.content-3}"></p>
+
+                <h3 class="h4 spacing-above-35" th:text="#{privacy.choices.cookies.title}"></h3>
+                <p th:text="#{privacy.choices.cookies.content-1}"></p>
+                <ul class="list--bulleted padding-left-25">
+                  <li th:text="#{privacy.choices.cookies.content.purpose-item-1}"></li>
+                  <li th:text="#{privacy.choices.cookies.content.purpose-item-2}"></li>
+                </ul>
+                <p th:utext="#{privacy.choices.cookies.content-2}"></p>
+
+                <h3 class="h4 spacing-above-35"
+                    th:text="#{privacy.choices.sms.title}"></h3>
+                <p th:text="#{privacy.choices.sms.content}"></p>
+
+                <h3 class="h4 spacing-above-35"
+                    th:text="#{privacy.choices.analytics.title}"></h3>
+                <p th:utext="#{privacy.choices.analytics.content}"></p>
+
+                <h3 class="h4 spacing-above-35"
+                    th:text="#{privacy.choices.other.title}"></h3>
+                <p th:text="#{privacy.choices.other.content}"></p>
+
+                <h3 class="h4 spacing-above-35"
+                    th:text="#{privacy.choices.additional.title}"></h3>
+                <p th:text="#{privacy.choices.additional.content}"></p>
+
                 <!-- How we protect your information -->
                 <h2 id="how-we-protect" class="h3 spacing-above-60"
                     th:text="#{privacy.how-we-protect.title}"></h2>
@@ -174,7 +207,7 @@
                 <!-- Questions -->
                 <h2 id="questions" class="h3 spacing-above-60"
                     th:text="#{privacy.questions.title}"></h2>
-                <p th:text="#{privacy.questions.content-1}"></p>
+                <p th:utext="#{privacy.questions.content-1}"></p>
                 <p th:utext="#{privacy.questions.content-2}"></p>
               </div>
             </div>
