@@ -47,7 +47,7 @@ public class ValidateChildrenCCAPStartDate extends VerifyDate {
         errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-future-date-entered", null, locale)));
       }
     } else if (inChildCare) {
-      if (!isBetweenNowAndMinDate(ccapStartingDate)) {
+      if (isNotBetweenNowAndMinDate(ccapStartingDate)) {
         errorMessages.put(INPUT_NAME, List.of(
             (messageSource.getMessage("errors.past-childcare-date-out-of-range", List.of(ccapStartingDate).toArray(), locale))));
       }
