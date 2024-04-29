@@ -306,15 +306,12 @@ flow:
     nextScreens:
       - name: submit-complete
   submit-complete:
-    condition: SkipTemplate
     nextScreens:
       - name: submit-next-steps
   submit-next-steps:
-    condition: SkipTemplate
     nextScreens:
       - name: submit-confirmation
   submit-confirmation:
-    condition: SkipTemplate
     nextScreens:
       - name: doc-upload-recommended-docs
   doc-upload-recommended-docs:
@@ -353,3 +350,5 @@ subflows:
     deleteConfirmationScreen: delete-job
 landmarks:
   firstScreen: onboarding-getting-started
+  afterSubmitPages:
+    - submit-confirmation
