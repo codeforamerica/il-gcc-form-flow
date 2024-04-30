@@ -21,7 +21,7 @@ abstract class VerifyDate implements Action {
   protected boolean isNotBetweenNowAndMinDate(String dateAsString) {
     try {
       DateTime date = DTF.parseDateTime(dateAsString);
-      return !MIN_DATE.isBefore(date.getMillis()) || !date.isBeforeNow();
+      return date.isBefore(MIN_DATE.getMillis()) || !date.isBeforeNow();
     } catch (Exception e) {
       return true;
     }
