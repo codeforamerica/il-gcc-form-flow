@@ -36,7 +36,6 @@ public class ParentPreparer implements SubmissionFieldPreparer {
     return results;
   }
 
-
   private static String selectedYes(String selected){
     if (selected.equals("Yes")){
       return "true";
