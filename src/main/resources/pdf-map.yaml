@@ -3,11 +3,16 @@ pdf: /pdfs/IL-CCAP-Form.pdf
 inputFields:
   parentFirstName: APPLICANT_NAME_FIRST
   parentLastName: APPLICANT_NAME_LAST
-  parentMailingStreetAddress1: APPLICANT_ADDRESS_HOME_STREET
-  parentMailingStreetAddress2: APPLICANT_ADDRESS_HOME_APT
-  parentMailingCity: APPLICANT_ADDRESS_HOME_CITY
-  parentMailingState: APPLICANT_ADDRESS_HOME_STATE
-  parentMailingZipCode: APPLICANT_ADDRESS_HOME_ZIP
+  parentHomeStreetAddress1: APPLICANT_ADDRESS_HOME_STREET
+  parentHomeStreetAddress2: APPLICANT_ADDRESS_HOME_APT
+  parentHomeCity: APPLICANT_ADDRESS_HOME_CITY
+  parentHomeState: APPLICANT_ADDRESS_HOME_STATE
+  parentHomeZipCode: APPLICANT_ADDRESS_HOME_ZIP
+  parentMailingAddressForPDFStreet: APPLICANT_ADDRESS_MAILING_STREET
+  parentMailingAddressForPDFApt: APPLICANT_ADDRESS_MAILING_APT
+  parentMailingAddressForPDFCity: APPLICANT_ADDRESS_MAILING_CITY
+  parentMailingAddressForPDFState: APPLICANT_ADDRESS_MAILING_STATE
+  parentMailingAddressForPDFZipCode: APPLICANT_ADDRESS_MAILING_ZIP
   parentContactEmail: APPLICANT_EMAIL
   parentContactPhoneNumber: APPLICANT_PHONE_NUM_HOME
   parentPartnerFirstName: PARTNER_NAME_FIRST
