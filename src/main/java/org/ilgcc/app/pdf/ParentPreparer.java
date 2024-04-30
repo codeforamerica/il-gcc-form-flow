@@ -36,10 +36,6 @@ public class ParentPreparer implements SubmissionFieldPreparer {
     return results;
   }
 
-//  String preferredCommunicationMethod = (String) submission.getInputData().getOrDefault("");
-
-
-
   private static String selectedYes(String selected){
     if (selected.equals("Yes")){
       return "true";
