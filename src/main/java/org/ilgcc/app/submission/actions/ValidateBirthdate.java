@@ -42,8 +42,8 @@ public class ValidateBirthdate extends VerifyDate {
       return Map.of(groupName, List.of(messageSource.getMessage("errors.invalid-birthdate-format", null, locale)));
     }
 
-    if (!isBetweenNowAndMinDate(birthdate)) {
-      return Map.of(groupName, List.of(messageSource.getMessage("errors.invalid-birthdate-range", null, locale)));
+    if (isNotBetweenNowAndMinDate(birthdate)) {
+      return Map.of(groupName, List.of(messageSource.getMessage("errors.invalid-date-range", null, locale)));
     }
 
     return Collections.emptyMap();
