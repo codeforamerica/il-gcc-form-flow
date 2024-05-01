@@ -17,6 +17,11 @@ inputFields:
   parentContactPhoneNumber: APPLICANT_PHONE_NUM_HOME
   parentPartnerFirstName: PARTNER_NAME_FIRST
   parentPartnerLastName: PARTNER_NAME_LAST
+  parentPartnerSSN: PARTNER_SSN
+  parentPartnerDateOfBirth: PARTNER_DOB
+  parentPartnerPhoneNumber: PARTNER_PHONE_NUMBER
+  parentPartnerIsServing: PARTNER_MILITARY_ACTIVE_DUTY
+  parentPartnerInMilitaryReserveOrNationalGuard: PARTNER_MILITARY_NATIONAL_GUARD
   languageRead: APPLICANT_PRIMARY_LANGUAGE
   dayCareName: PROVIDER_NAME_CORPORATE
   dayCareIdNumber: PROVIDER_ID_NUMBER

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
+import static org.ilgcc.app.utils.SubmissionUtilities.selectedYes;
+
 @Component
 public class ParentPreparer implements SubmissionFieldPreparer {
 
@@ -35,13 +37,4 @@ public class ParentPreparer implements SubmissionFieldPreparer {
     results.put("parentExperiencingHomelessness", new SingleField("parentExperiencingHomelessness", experiencingHomelessness.toString(), null));
     return results;
   }
-
-  private static String selectedYes(String selected){
-    if (selected.equals("Yes")){
-      return "true";
-    }else
-      return "false";
-  }
-
-
 }

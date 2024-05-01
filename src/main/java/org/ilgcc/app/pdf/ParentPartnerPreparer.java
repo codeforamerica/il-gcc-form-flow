@@ -5,10 +5,16 @@ import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+
+import java.util.Map;
+import java.util.Optional;
+import static org.ilgcc.app.utils.SubmissionUtilities.getDateInput;
+import static org.ilgcc.app.utils.SubmissionUtilities.selectedYes;
 
 @Component
 public class ParentPartnerPreparer implements SubmissionFieldPreparer {
@@ -16,31 +22,31 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
   @Override
   public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
     var results= new HashMap<String, SubmissionField>();
+    //partner dob
+    Optional<LocalDate> parentPartnerDateOfBirth = getDateInput(submission, "parentPartnerBirth");
+    if (parentPartnerDateOfBirth.isPresent()){
+      LocalDate dob = parentPartnerDateOfBirth.get();
+      results.put(
+              "parentPartnerDateOfBirth",
+              new SingleField(
+                      "parentPartnerDateOfBirth",
+                      dob.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                      null
+              )
+      );
+    }
+
     //active duty military
-    String parentIsActiveDutyMilitary = (String) submission.getInputData().getOrDefault("parentIsServing", "");
-    if (!parentIsActiveDutyMilitary.isBlank()){
-      results.put("parentIsServing", new SingleField("parentIsServing", selectedYes(parentIsActiveDutyMilitary),null));
+    String parentPartnerIsActiveDutyMilitary = (String) submission.getInputData().getOrDefault("parentPartnerIsServing", "");
+    if (!parentPartnerIsActiveDutyMilitary.isBlank()){
+      results.put("parentPartnerIsServing", new SingleField("parentPartnerIsServing", selectedYes(parentPartnerIsActiveDutyMilitary),null));
     }
 
     //applicant is reserve or national guard
-    String parentIsReserveOrNationalGuard = (String) submission.getInputData().getOrDefault("parentInMilitaryReserveOrNationalGuard", "");
-    if(!parentIsReserveOrNationalGuard.isBlank()){
-      results.put("parentInMilitaryReserveOrNationalGuard", new SingleField("parentInMilitaryReserveOrNationalGuard", selectedYes(parentIsReserveOrNationalGuard),null));
-
+    String parentPartnerIsReserveOrNationalGuard = (String) submission.getInputData().getOrDefault("parentPartnerInMilitaryReserveOrNationalGuard", "");
+    if(!parentPartnerIsReserveOrNationalGuard.isBlank()){
+      results.put("parentPartnerInMilitaryReserveOrNationalGuard", new SingleField("parentPartnerInMilitaryReserveOrNationalGuard", selectedYes(parentPartnerIsReserveOrNationalGuard),null));
     }
-
-    Boolean experiencingHomelessness = (Boolean) submission.getInputData().getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
-        List.of("yes"));
-    results.put("parentExperiencingHomelessness", new SingleField("parentExperiencingHomelessness", experiencingHomelessness.toString(), null));
     return results;
   }
-
-  private static String selectedYes(String selected){
-    if (selected.equals("Yes")){
-      return "true";
-    }else
-      return "false";
-  }
-
-
 }

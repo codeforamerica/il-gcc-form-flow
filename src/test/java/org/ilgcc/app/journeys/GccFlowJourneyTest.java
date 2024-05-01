@@ -119,13 +119,17 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentPartnerBirthMonth", "12");
         testPage.enter("parentPartnerBirthDay", "25");
         testPage.enter("parentPartnerBirthYear", "2018");
+        testPage.enter("parentPartnerSSN", "123-456-7890");
         testPage.clickContinue();
 
         // parent-partner-contact
         assertThat(testPage.getTitle()).isEqualTo("How can we contact them?");
+        testPage.enter("parentPartnerPhoneNumber", "3333333333");
         testPage.clickContinue();
         // parent-partner-info-service
         assertThat(testPage.getTitle()).isEqualTo("Are they a service member?");
+        testPage.selectRadio("parentPartnerIsServing", "No");
+        testPage.selectRadio("parentPartnerInMilitaryReserveOrNationalGuard", "Yes");
         testPage.clickContinue();
         // parent-partner-info-disability
         assertThat(testPage.getTitle()).isEqualTo("Do they have a disability?");
@@ -405,7 +409,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     private void verifyPDF() throws IOException {
         File pdfFile = getDownloadedPDF();
 
-         regenerateExpectedPDF(pdfFile); // uncomment and run test to regenerate the test pdf
+//         regenerateExpectedPDF(pdfFile); // uncomment and run test to regenerate the test pdf
 
         try (FileInputStream actualIn = new FileInputStream(pdfFile);
              PdfReader actualReader = new PdfReader(actualIn);
