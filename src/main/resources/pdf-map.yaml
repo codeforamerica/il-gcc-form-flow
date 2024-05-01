@@ -12,6 +12,8 @@ inputFields:
   parentContactPhoneNumber: APPLICANT_PHONE_NUM_HOME
   parentPartnerFirstName: PARTNER_NAME_FIRST
   parentPartnerLastName: PARTNER_NAME_LAST
+  parentPartnerSSN: PARTNER_SSN
+  parentPartnerPhoneNumber: PARTNER_PHONE_NUMBER
   languageRead: APPLICANT_PRIMARY_LANGUAGE
   dayCareName: PROVIDER_NAME_CORPORATE
   dayCareIdNumber: PROVIDER_ID_NUMBER
