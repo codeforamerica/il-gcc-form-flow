@@ -3,9 +3,13 @@ package org.ilgcc.app.utils;
 import formflow.library.data.Submission;
 import formflow.library.inputs.FieldNameMarkers;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import static java.lang.Integer.parseInt;
 
 
 public class SubmissionUtilities {
@@ -74,5 +78,26 @@ public class SubmissionUtilities {
     return String.valueOf(((List<Map<String, Object>>) submission.getInputData().get(subflow)).stream()
         .filter(iter -> (boolean) iter.getOrDefault("iterationIsComplete", false))
         .toList().size());
+  }
+
+  public static Optional<LocalDate> getDateInput(Submission submission, String inputName) {
+    String year = (String) submission.getInputData().get("%sYear".formatted(inputName));
+    String month = (String) submission.getInputData().get("%sMonth".formatted(inputName));
+    String day = (String) submission.getInputData().get("%sDay".formatted(inputName));
+    if (year == null && month == null && day == null) {
+      return Optional.empty();
+    } else if (year == null || month == null || day == null) {
+      throw new IllegalArgumentException("Date must be complete if specified");
+    }
+    return Optional.of(LocalDate.of(parseInt(year), parseInt(month), parseInt(day)));
+  }
+
+
+  public static String selectedYes(String selected){
+    if (selected.equals("Yes")){
+      return "true";
+    } else {
+      return "false";
+    }
   }
 }
