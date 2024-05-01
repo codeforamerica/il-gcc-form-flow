@@ -34,7 +34,7 @@ abstract class VerifyActivityDate extends VerifyDate {
                 errorMessages.put(date.getGroup(),
                         List.of(messageSource.getMessage("errors.invalid-date-format", null, locale)));
             } else {
-                if (isNotBetweenNowAndMinDate(date.getValueDate())) {
+                if (isBeforeMinDate(date.getValueDate())) {
                     errorMessages.put(date.getGroup(),
                             List.of(messageSource.getMessage("errors.invalid-date-range", null, locale)));
                 }
