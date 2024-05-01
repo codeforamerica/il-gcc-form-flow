@@ -1,20 +1,19 @@
 package org.ilgcc.app.submission.conditions;
 
-import formflow.library.config.submission.Condition;
-import formflow.library.data.Submission;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-
 import static java.util.Collections.emptyList;
 
+import formflow.library.config.submission.Condition;
+import formflow.library.data.Submission;
+import java.util.List;
+import org.springframework.stereotype.Component;
+
 @Component
-public class PartnerInSchool implements Condition {
+public class LearningIsOneReasonForChildcareNeed implements Condition {
 
   @Override
   public Boolean run(Submission submission) {
     List<String> reasonsForChildcareNeed = (List<String>) submission.getInputData()
-        .getOrDefault("activitiesParentPartnerChildcareReason[]", emptyList());
+        .getOrDefault("activitiesParentChildcareReason[]", emptyList());
     return reasonsForChildcareNeed.contains("SCHOOL");
   }
 
