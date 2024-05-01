@@ -5,14 +5,17 @@ import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static java.lang.Integer.parseInt;
 import static org.ilgcc.app.utils.SubmissionUtilities.getDateInput;
 import static org.ilgcc.app.utils.SubmissionUtilities.selectedYes;
 
