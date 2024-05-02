@@ -89,7 +89,7 @@ public class Gcc extends FlowInputs {
     private String streetAddress;
     private String city;
     private String state;
-    @Pattern(regexp = "^[0-9]{5}(?:-[0-9]{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String zipCode;
     private String activitiesClassHoursSameEveryDay;
     @NotBlank(message = "{errors.validate.start.time}")
@@ -213,7 +213,7 @@ public class Gcc extends FlowInputs {
     private String partnerEdStreetAddress;
     private String partnerEdCity;
     private String partnerEdState;
-    @Pattern(regexp = "^[0-9]{5}(?:-[0-9]{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String partnerEdZipCode;
     private String partnerProgramTaught;
     @NotBlank(message = "{errors.select-yes-or-no}")
@@ -279,7 +279,7 @@ public class Gcc extends FlowInputs {
     private String employerStreetAddress;
     private String employerCity;
     private String employerState;
-    @Pattern(regexp = "^[0-9]{5}(?:-[0-9]{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String employerZipCode;
 
     private String isSelfEmployed;
