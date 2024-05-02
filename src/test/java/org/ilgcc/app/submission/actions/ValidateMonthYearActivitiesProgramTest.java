@@ -35,8 +35,8 @@ class ValidateMonthYearActivitiesProgramTest {
                 .thenReturn("Year is required when month is provided.");
         when(messageSource.getMessage("errors.invalid-date-format", null, Locale.getDefault()))
                 .thenReturn("Make sure the date you entered is in this format: mm/dd/yyyy");
-        when(messageSource.getMessage("errors.invalid-date-range", null, Locale.getDefault()))
-                .thenReturn("Make sure the date you entered is after 01/01/1901 and before today.");
+        when(messageSource.getMessage("errors.invalid-min-date", null, Locale.getDefault()))
+                .thenReturn("Make sure the date you entered is after 01/01/1901.");
     }
 
     @AfterEach
@@ -179,7 +179,7 @@ class ValidateMonthYearActivitiesProgramTest {
         FormSubmission submission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
         assertThat(errors).containsKey("activitiesProgramStart");
-        assertThat(errors.get("activitiesProgramStart")).contains("Make sure the date you entered is after 01/01/1901 and before today.");
+        assertThat(errors.get("activitiesProgramStart")).contains("Make sure the date you entered is after 01/01/1901.");
     }
 
     @Test
@@ -195,11 +195,11 @@ class ValidateMonthYearActivitiesProgramTest {
         FormSubmission submission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
         assertThat(errors).containsKey("activitiesProgramEnd");
-        assertThat(errors.get("activitiesProgramEnd")).contains("Make sure the date you entered is after 01/01/1901 and before today.");
+        assertThat(errors.get("activitiesProgramEnd")).contains("Make sure the date you entered is after 01/01/1901.");
     }
 
     @Test
-    void shouldErrorWhenStartDateIsAfterCurrentDay() {
+    void shouldAllowStartDateToBeInTheFuture() {
         DateTime present = DateTime.now();
         Map<String, Object> formData = Map.of(
                 "activitiesProgramStartMonth", "01",
@@ -211,12 +211,11 @@ class ValidateMonthYearActivitiesProgramTest {
         );
         FormSubmission submission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
-        assertThat(errors).containsKey("activitiesProgramStart");
-        assertThat(errors.get("activitiesProgramStart")).contains("Make sure the date you entered is after 01/01/1901 and before today.");
+        assertThat(errors).doesNotContainKey("activitiesProgramStart");
     }
 
     @Test
-    void shouldErrorWhenEndDateIsAfterCurrentDay() {
+    void shouldAllowEndDateToBeInTheFuture() {
         DateTime present = DateTime.now();
         Map<String, Object> formData = Map.of(
                 "activitiesProgramStartMonth", "01",
@@ -228,7 +227,6 @@ class ValidateMonthYearActivitiesProgramTest {
         );
         FormSubmission submission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
-        assertThat(errors).containsKey("activitiesProgramEnd");
-        assertThat(errors.get("activitiesProgramEnd")).contains("Make sure the date you entered is after 01/01/1901 and before today.");
+        assertThat(errors).doesNotContainKey("activitiesProgramEnd");
     }
 }

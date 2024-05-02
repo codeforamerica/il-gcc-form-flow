@@ -18,6 +18,15 @@ abstract class VerifyDate implements Action {
     return false;
   }
 
+  protected boolean isBeforeMinDate(String dateAsString) {
+    try {
+      DateTime date = DTF.parseDateTime(dateAsString);
+      return date.isBefore(MIN_DATE.getMillis());
+    } catch (Exception e) {
+      return true;
+    }
+  }
+
   protected boolean isNotBetweenNowAndMinDate(String dateAsString) {
     try {
       DateTime date = DTF.parseDateTime(dateAsString);
