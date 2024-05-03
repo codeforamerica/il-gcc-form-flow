@@ -55,7 +55,10 @@ flow:
   parent-confirm-address:
     beforeDisplayAction: SetEditAddressRedirect
     nextScreens:
-      - name: parent-contact
+      - name: parent-comm-preference
+  parent-comm-preference:
+    nextScreens:
+      - name: parent
   parent-contact:
     crossFieldValidationAction: ValidateParentContactProvideEmail
     nextScreens:
