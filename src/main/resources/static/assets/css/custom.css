@@ -116,6 +116,10 @@ a, .button--link {
   padding-top: 0;
 }
 
+.padding-top-10 {
+  padding-top: 1rem;
+}
+
 .color--idhs-base-blue {
   color: var(--idhs-base-blue);
 }
@@ -389,4 +393,9 @@ input[name$="Address2"] {
 
 .demo-banner a[href="#"] {
   display: none;
+}
+
+/* Sub item styling */
+ul.list--bulleted ul.list--bulleted li {
+  list-style-type: circle;
 }
