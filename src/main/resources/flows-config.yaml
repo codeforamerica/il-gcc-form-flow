@@ -58,9 +58,9 @@ flow:
       - name: parent-comm-preference
   parent-comm-preference:
     nextScreens:
-      - name: parent
-  parent-contact:
-    crossFieldValidationAction: ValidateParentContactProvideEmail
+      - name: parent-contact-info
+  parent-contact-info:
+#    crossFieldValidationAction: ValidateParentContactProvideEmail
     nextScreens:
       - name: parent-info-review
   parent-info-review:
