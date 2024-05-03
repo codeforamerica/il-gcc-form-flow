@@ -396,6 +396,6 @@ input[name$="Address2"] {
 }
 
 /* Sub item styling */
-ul.list--bulleted ul.list--bulleted li {
+ul.list--bulleted ul.list--bulleted.list--sublist li {
   list-style-type: circle;
 }
