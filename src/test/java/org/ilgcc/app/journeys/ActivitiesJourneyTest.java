@@ -272,7 +272,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
     }
 
     @Test
-    void ParentOnlyWithNoJobOrWorkTest() {
+    void ParentOnlyWithNoJobOrSchoolTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
