@@ -8,12 +8,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ParentBirthJourneyTest extends AbstractBasePageTest {
 
   @Test
-  void fullGccFlow() {
+  void ParentJourneyTest() {
     // Home page
     assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
     testPage.clickButton("Apply now");
     // parent-info-basic-1
-    driver.navigate().to(baseUrl + "/flow/gcc/parent-info-basic-1");
+    testPage.navigateToFlowScreen("gcc/parent-info-basic-1");
     assertThat(testPage.getTitle()).isEqualTo("Tell us about yourself");
     testPage.enter("parentFirstName", "parent first");
     testPage.enter("parentLastName", "parent last");

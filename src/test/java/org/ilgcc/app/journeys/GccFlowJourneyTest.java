@@ -221,6 +221,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         //activities-parent-type
         assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
         testPage.clickElementById("activitiesParentChildcareReason-other");
+        testPage.clickElementById("activitiesParentChildcareReason-SCHOOL");
         testPage.enter("activitiesParentChildcareReason_other", "test");
         testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
         testPage.clickElementById("activitiesParentPartnerChildcareReason-WORKING");

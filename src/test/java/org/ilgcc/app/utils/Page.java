@@ -17,16 +17,27 @@ public class Page {
 
   protected final Percy percy;
 
+  protected final String localServerPort;
 
   public Page(RemoteWebDriver driver) {
     this.driver = driver;
     this.percy = new Percy(driver);
+    this.localServerPort= "";
+  }
+  public Page(RemoteWebDriver driver, String localServerPort) {
+    this.driver = driver;
+    this.percy = new Percy(driver);
+    this.localServerPort = localServerPort;
   }
 
   public String getTitle() {
     checkForBadMessageKeys();
     percy.snapshot(driver.getTitle());
     return driver.getTitle();
+  }
+
+  public void navigateToFlowScreen(String flowScreen) {
+    driver.navigate().to("http://localhost:%s/flow/%s".formatted(localServerPort, flowScreen));
   }
 
   public String getHeader() {

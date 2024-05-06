@@ -17,4 +17,9 @@ public class PartnerIsWorking implements Condition {
         .getOrDefault("activitiesParentPartnerChildcareReason[]", emptyList());
     return reasonsForChildcareNeed.contains("WORKING");
   }
+
+  @Override
+  public Boolean run(Submission submission, String uuid) {
+    return run(submission);
+  }
 }

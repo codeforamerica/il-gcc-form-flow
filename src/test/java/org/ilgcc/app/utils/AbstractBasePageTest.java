@@ -1,5 +1,9 @@
 package org.ilgcc.app.utils;
 
+import com.google.common.collect.Iterables;
+import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
@@ -38,6 +42,9 @@ public abstract class AbstractBasePageTest {
   protected RemoteWebDriver driver;
 
   @Autowired
+  SubmissionRepository repo;
+
+  @Autowired
   protected Path path;
 
   protected String baseUrl;
@@ -47,6 +54,19 @@ public abstract class AbstractBasePageTest {
 
   protected Page testPage;
 
+  public Submission getSessionSubmission() {
+    // We're hoping that there's only one submission per session
+    // If 0 or >1, an error will be thrown
+    return Iterables.getOnlyElement(repo.findAll());
+  }
+  public SubmissionTestBuilder getSessionSubmissionTestBuilder() {
+    return new SubmissionTestBuilder(getSessionSubmission());
+  }
+
+  public void saveSubmission(Submission submission) {
+    repo.save(submission);
+  }
+
   @BeforeEach
   protected void setUp() throws IOException {
     initTestPage();
@@ -55,8 +75,13 @@ public abstract class AbstractBasePageTest {
     driver.navigate().to(baseUrl);
   }
 
+  @AfterEach
+  protected void clearSubmissions() {
+    repo.deleteAll();
+  }
+
   protected void initTestPage() {
-    testPage = new Page(driver);
+    testPage = new Page(driver, localServerPort);
   }
 
   @SuppressWarnings("unused")
