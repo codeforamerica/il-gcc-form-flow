@@ -154,10 +154,22 @@ flow:
       - name: activities-add-jobs
         condition: WorkingIsOneReasonForChildcareNeed
       - name: activities-add-ed-program
+        condition: LearningIsOneReasonForChildcareNeed
+      - name: activities-partner-add-job
+        condition: PartnerIsWorking
+      - name: activities-partner-add-ed-program
+        condition: PartnerInSchool
+      - name: unearned-income-intro
   activities-add-jobs:
     subflow: jobs
     nextScreens:
       - name: activities-add-ed-program
+        condition: LearningIsOneReasonForChildcareNeed
+      - name: activities-partner-add-job
+        condition: PartnerIsWorking
+      - name: activities-partner-add-ed-program
+        condition: PartnerInSchool
+      - name: unearned-income-intro
   activities-employer-name:
     subflow: jobs
     nextScreens:
@@ -232,6 +244,8 @@ flow:
     condition: SkipTemplate
     nextScreens:
       - name: activities-partner-add-ed-program
+        condition: PartnerInSchool
+      - name: unearned-income-intro
   activities-partner-add-ed-program:
     nextScreens:
       - name: activities-partner-ed-program-type
