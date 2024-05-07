@@ -44,9 +44,10 @@ public class Gcc extends FlowInputs {
     private String parentHomeState;
     @NotBlank(message = "{errors.provide-zip}")
     private String parentHomeZipCode;
+
     @Phone(message = "{errors.invalid-phone-number}")
     private String parentContactPhoneNumber;
-    @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
+
     private String parentContactEmail;
     private Boolean parentMailingAddressSameAsHomeAddress;
     @NotBlank(message = "{errors.provide-street}")
@@ -59,7 +60,8 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String parentMailingZipCode;
     private String useSuggestedParentAddress;
-    private List<String> parentContactPreferCommunicate;
+    @NotBlank(message = "{errors.invalid-communication-preference}")
+    private String parentContactPreferredCommunicationMethod;
     private String parentHasPartner;
     @NotBlank(message = "{errors.require-yes-no}")
     private String parentSpouseIsStepParent;

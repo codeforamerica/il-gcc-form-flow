@@ -93,11 +93,13 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // parent-confirm-address
         assertThat(testPage.getHeader()).isEqualTo("Confirm your address");
         testPage.clickButton("Use this address");
-        // parent-contact
-        assertThat(testPage.getTitle()).isEqualTo("Parent Contact");
-        testPage.clickElementById("parentContactPreferCommunicate-mail-label");
-        assertThat(testPage.getElementText("parentContactPreferCommunicate-mail-label")).isEqualTo(
-                "It's okay to send me mail about my case.");
+        // parent-comm-preference
+        assertThat(testPage.getHeader()).isEqualTo("How do you prefer to get updates about your application?");
+        testPage.selectRadio("parentContactPreferredCommunicationMethod", "email");
+        testPage.clickContinue();
+        // parent-contact-info
+        assertThat(testPage.getTitle()).isEqualTo("Parent Contact Info");
+        testPage.enter("parentContactEmail", "test@email.org");
         testPage.clickContinue();
 
         //parent-info-review

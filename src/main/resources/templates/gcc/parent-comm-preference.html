@@ -1,0 +1,26 @@
+<th:block
+  th:replace="~{fragments/screens/screenWithOneInput ::
+  screenWithOneInput(
+    title=#{parent-comm-preference.title},
+    header=#{parent-comm-preference.header},
+    subtext=#{parent-comm-preference.subtext},
+    buttonLabel=#{general.button.continue},
+    iconFragment=~{fragments/gcc-icons :: typing},
+    formAction=${formAction},
+    inputContent=~{::inputContent})}">
+  <th:block th:ref="inputContent">
+    <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
+  <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                radioFieldset(inputName='parentContactPreferredCommunicationMethod',
+                ariaLabel='header',
+                content=~{::radioContent})}">
+                <th:block th:ref="radioContent">
+                  <!-- Copy the below input if you want to add more -->
+                  <th:block
+                      th:replace="~{fragments/inputs/radio :: radio(inputName='parentContactPreferredCommunicationMethod',value='mail', label=#{parent-comm-preference.mail})}"/>
+                  <th:block
+                      th:replace="~{fragments/inputs/radio :: radio(inputName='parentContactPreferredCommunicationMethod',value='email', label=#{parent-comm-preference.email})}"/>
+                </th:block>
+              </th:block>
+    </th:block>
+</th:block>
