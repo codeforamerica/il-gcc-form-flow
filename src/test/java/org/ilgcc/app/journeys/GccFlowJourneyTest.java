@@ -3,6 +3,7 @@ package org.ilgcc.app.journeys;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import formflow.library.data.SubmissionRepository;
+import formflow.library.pdf.SingleField;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.jetbrains.annotations.NotNull;
@@ -300,12 +301,17 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-name
-        testPage.enter("schoolName", "World");
+        testPage.enter("schoolName", "World Training Program");
         assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
         testPage.clickContinue();
 
         //activities-ed-program-info
         assertThat(testPage.getTitle()).isEqualTo("School or training program");
+        testPage.enter("phoneNumber", "(217) 123-1233");
+        testPage.enter("streetAddress", "123 Main St");
+        testPage.enter("city", "Springfield");
+        testPage.enter("state", "IL - Illinois");
+        testPage.enter("zipCode", "62629");
         testPage.clickContinue();
 
         //activities-ed-program-method
@@ -333,6 +339,13 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-ed-program-dates
         assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+        testPage.enter("activitiesProgramStartYear", "2024");
+        testPage.enter("activitiesProgramStartMonth", "12");
+        testPage.enter("activitiesProgramStartDay", "10");
+
+        testPage.enter("activitiesProgramEndYear", "2025");
+        testPage.enter("activitiesProgramEndMonth", "02");
+        testPage.enter("activitiesProgramEndDay", "12");
         testPage.clickContinue();
 
         // activities-partner-ed

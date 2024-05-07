@@ -1,7 +1,6 @@
 package org.ilgcc.app.pdf;
 
 import formflow.library.data.Submission;
-import formflow.library.pdf.CheckboxField;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
@@ -11,12 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import org.ilgcc.app.utils.ChildcareReasonOption;
 import org.springframework.stereotype.Component;
 
-import static java.util.Collections.emptyList;
-import static org.ilgcc.app.utils.SubmissionUtilities.getDateInput;
 import static org.ilgcc.app.utils.SubmissionUtilities.selectedYes;
 
 @Component
@@ -46,26 +41,15 @@ public class ParentPreparer implements SubmissionFieldPreparer {
         results.put("parentExperiencingHomelessness",
             new SingleField("parentExperiencingHomelessness", experiencingHomelessness.toString(), null));
 
-        List parentActivities = (List) inputData.getOrDefault("activitiesParentChildcareReason", emptyList());
-        Boolean parentAttendingSchool = parentActivities.contains(ChildcareReasonOption.SCHOOL);
-        if (parentAttendingSchool) {
-            results.put("schoolName", new SingleField("schoolName", inputData.get("schoolName").toString(), null));
-            results.put("streetAddress",
-                new SingleField("streetAddress", inputData.getOrDefault("streetAddress", "").toString(), null));
-            results.put("city", new SingleField("city", inputData.getOrDefault("city", "").toString(), null));
-            results.put("state", new SingleField("state", inputData.getOrDefault("state", "").toString(), null));
-            results.put("zipCode", new SingleField("zipCode", inputData.getOrDefault("zipCode", "").toString(), null));
-            results.put("phoneNumber",
-                new SingleField("phoneNumber", inputData.getOrDefault("phoneNumber", "").toString(), null));
+        var applicantSchoolStartDate = generateLocalDate(submission, "activitiesProgramStartYear", "activitiesProgramStartMonth",
+            "activitiesProgramStartDay");
+        results.put("applicantSchoolStartDate",
+            new SingleField("applicantSchoolStartDate", applicantSchoolStartDate, null));
 
-            var applicantSchoolStartDate = generateLocalDate(submission,  "activitiesProgramStartYear", "activitiesProgramStartMonth", "activitiesProgramStartDay");
-            results.put("applicantSchoolStartDate",
-                new SingleField("applicantSchoolStartDate",applicantSchoolStartDate, null));
-
-            var applicantSchoolEndDate = generateLocalDate(submission,  "activitiesProgramEndYear", "activitiesProgramEndMonth", "activitiesProgramEndDay");
-            results.put("applicantSchoolEndDate",
-                new SingleField("applicantSchoolEndDate",applicantSchoolEndDate, null));
-        }
+        var applicantSchoolEndDate = generateLocalDate(submission, "activitiesProgramEndYear", "activitiesProgramEndMonth",
+            "activitiesProgramEndDay");
+        results.put("applicantSchoolEndDate",
+            new SingleField("applicantSchoolEndDate", applicantSchoolEndDate, null));
 
         return results;
     }
@@ -75,7 +59,7 @@ public class ParentPreparer implements SubmissionFieldPreparer {
         String month = (String) submission.getInputData().getOrDefault(monthKey, "");
         String year = (String) submission.getInputData().getOrDefault(yearKey, "");
 
-        if(!day.isBlank() && !month.isBlank() && !year.isBlank()){
+        if (!day.isBlank() && !month.isBlank() && !year.isBlank()) {
             int intYear = Integer.parseInt(year);
             int intMonth = Integer.parseInt(month);
             int intDay = Integer.parseInt(day);
