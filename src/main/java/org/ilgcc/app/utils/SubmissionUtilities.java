@@ -92,6 +92,13 @@ public class SubmissionUtilities {
     return Optional.of(LocalDate.of(parseInt(year), parseInt(month), parseInt(day)));
   }
 
+  public static String formatToStringFromLocalDate(Optional<LocalDate> date){
+    if(date.isPresent()){
+      return date.get().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+    }
+    return "";
+  }
+
 
   public static String selectedYes(String selected){
     if (selected.equals("Yes")){
