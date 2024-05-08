@@ -320,9 +320,11 @@ flow:
   doc-upload-list:
     condition: SkipTemplate
     nextScreens:
+      - name: doc-upload-add-files
+  doc-upload-add-files:
+    nextScreens:
       - name: doc-upload-confirm
   doc-upload-confirm:
-    condition: SkipTemplate
     nextScreens: null
   children-delete:
     nextScreens: null

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{doc-upload-add-files.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{doc-upload-add-files.header})}"/>
+          <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::documentUpload})}">
+            <th:block th:ref="documentUpload">
+              <div class="form-card__content">
+                <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(
+                                buttonLabel=#{doc-upload-add-files.accordion-1.title},
+                                content=~{::recommendedDocs})}">
+                  <th:block th:ref="recommendedDocs">
+                    <p th:text="#{doc-upload-add-files.accordion-1.p1}"></p>
+                    <p th:utext="#{doc-upload-add-files.accordion-1.body1}"></p>
+                    <p th:utext="#{doc-upload-add-files.accordion-1.body2}"></p>
+                    <p th:utext="#{doc-upload-add-files.accordion-1.body3}"></p>
+                    <p th:utext="#{doc-upload-add-files.accordion-1.body4}"></p>
+                    <p th:utext="#{doc-upload-add-files.accordion-1.body5}"></p>
+                  </th:block>
+                </th:block>
+                <th:block th:replace="~{fragments/fileUploader :: fileUploader(inputName='uploadDocuments')}"></th:block>
+                
+              </div>
+            <div class="form-card__footer">
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{doc-upload-add-files.confirmation}, classes='button', isHidden=true)}"/>
+            </div>
+          </th:block>
+        </th:block>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}" />
+<script>FormFlowDZ.hideContinueIfNoFiles("uploadDocuments", "form-submit-button")</script>
+</body>
+</html>

@@ -74,8 +74,6 @@ public abstract class AbstractBasePageTest {
 
     driver.navigate().to(baseUrl);
   }
-
-  @AfterEach
   protected void clearSubmissions() {
     repo.deleteAll();
   }
@@ -105,10 +103,28 @@ public abstract class AbstractBasePageTest {
             .isBlank());
   }
 
+  protected void uploadFile(String filepath) {
+    WebElement upload = driver.findElement(By.className("dz-hidden-input"));
+    upload.sendKeys(TestUtils.getAbsoluteFilepathString(filepath));
+    waitUntilFileIsUploaded();
+  }
+
+  protected void uploadJpgFile(){
+    uploadFile(UPLOADED_JPG_FILE_NAME);
+    assertThat(driver.findElement(By.id("file-preview-template-uploadDocuments")).getText().replace("\n", ""))
+        .contains(UPLOADED_JPG_FILE_NAME);
+  }
+
   protected void uploadJpgFile(String dzName) {
     uploadFile(UPLOADED_JPG_FILE_NAME, dzName);
     assertThat(driver.findElement(By.id("dropzone-" + dzName)).getText().replace("\n", ""))
         .contains(UPLOADED_JPG_FILE_NAME);
+  }
+
+  private void waitUntilFileIsUploaded() {
+    await().until(
+        () -> !driver.findElements(By.className("file-details")).get(0).getAttribute("innerHTML")
+            .isBlank());
   }
 
   protected File getLatestDownloadedFile(Path path) throws IOException {
