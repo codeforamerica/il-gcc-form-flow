@@ -414,6 +414,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("partnerSignedName", "partner parent");
         testPage.clickContinue();
 
+        // submit-next-steps
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo("Recommended documents");
+        testPage.clickButton("Submit documents now");
+
         // doc-upload-recommended docs
         assertThat(testPage.getTitle()).isEqualTo("Recommended documents");
         testPage.clickButton("Submit documents now");
