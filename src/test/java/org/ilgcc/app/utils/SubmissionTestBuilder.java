@@ -1,8 +1,6 @@
 package org.ilgcc.app.utils;
 
 import formflow.library.data.Submission;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.websocket.OnClose;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +47,14 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("parentHasPartner", "false");
         return this;
     }
-
+    public SubmissionTestBuilder withHomelessDetails(){
+        submission.getInputData().put("parentFirstName", "HP_first");
+        submission.getInputData().put("parentLastName", "HP_last");
+        submission.getInputData().put("parentBirthMonth", "10");
+        submission.getInputData().put("parentBirthDay", "20");
+        submission.getInputData().put("parentBirthYear", "1922");
+        return this;
+    }
     public SubmissionTestBuilder withParentPartnerDetails() {
         submission.getInputData().put("parentSpouseIsStepParent", "Yes");
         submission.getInputData().put("parentSpouseShareChildren", "Yes");
