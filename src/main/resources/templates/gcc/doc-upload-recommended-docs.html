@@ -33,7 +33,7 @@
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/continueButton :: continue(text=#{doc-upload-recommended-docs.submit})}" />
               <div>
-                <a th:href="'/flow/' + ${flow} + '/submit-sign-name'"
+                <a th:href="'/flow/' + ${flow} + '/submit-next-steps'"
                    th:text="#{doc-upload-recommended-docs.skip}"
                    class='button'></a>
               </div>

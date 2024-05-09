@@ -310,7 +310,6 @@ flow:
     nextScreens:
       - name: submit-next-steps
   submit-next-steps:
-    condition: SkipTemplate
     nextScreens:
       - name: submit-confirmation
   submit-confirmation:
