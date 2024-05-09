@@ -1,13 +1,16 @@
 package org.ilgcc.app.utils;
 
+import com.google.common.collect.ImmutableMap;
 import formflow.library.data.Submission;
 import formflow.library.inputs.FieldNameMarkers;
+import formflow.library.pdf.SingleField;
+import formflow.library.pdf.SubmissionField;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 
 import static java.lang.Integer.parseInt;
 
@@ -92,6 +95,26 @@ public class SubmissionUtilities {
     return Optional.of(LocalDate.of(parseInt(year), parseInt(month), parseInt(day)));
   }
 
+  public static Optional<LocalTime> getTimeInput(Submission submission, String inputName) {
+    String rawValue = (String) submission.getInputData().getOrDefault(inputName, "");
+    if (rawValue.isBlank()) {
+      return Optional.empty();
+    } else {
+      LocalTime time = LocalTime.parse((String) submission.getInputData().get(inputName));
+      return Optional.of(time);
+    }
+  }
+
+  public static Optional<LocalTimeRange> getTimeRangeInput(Submission submission, String inputName, String suffix) {
+    Optional<LocalTime> start = getTimeInput(submission, "%sStartTime%s".formatted(inputName, suffix));
+    Optional<LocalTime> end = getTimeInput(submission, "%sEndTime%s".formatted(inputName, suffix));
+     if (start.isEmpty() && end.isEmpty()) {
+       return Optional.empty();
+     } else {
+      return Optional.of(new LocalTimeRange(start.orElseThrow(), end.orElseThrow()));
+     }
+  }
+
   public static String formatToStringFromLocalDate(Optional<LocalDate> date){
     if(date.isPresent()){
       return date.get().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
@@ -106,5 +129,89 @@ public class SubmissionUtilities {
     } else {
       return "false";
     }
+  }
+
+  public record LocalTimeRange(LocalTime startTime, LocalTime endTime) { }
+
+  public interface HourlySchedule {
+    ImmutableMap<DayOfWeekOption, LocalTimeRange> toDayMap();
+  }
+
+  public record ConsistentHourlySchedule(List<DayOfWeekOption> weekdays, LocalTimeRange allDays) implements HourlySchedule {
+    @Override
+    public ImmutableMap<DayOfWeekOption, LocalTimeRange> toDayMap() {
+      ImmutableMap.Builder<DayOfWeekOption, LocalTimeRange> map = ImmutableMap.builder();
+      for (DayOfWeekOption day : weekdays) {
+        map.put(day, allDays);
+      }
+      return map.build();
+    }
+  }
+
+  public record PerDayHourlySchedule(
+          ImmutableMap<DayOfWeekOption, LocalTimeRange> dayMap
+  ) implements HourlySchedule {
+    public static PerDayHourlySchedule fromEntries(Iterable<ImmutableMap.Entry<DayOfWeekOption, LocalTimeRange>> dayEntries) {
+      ImmutableMap.Builder<DayOfWeekOption, LocalTimeRange> map = ImmutableMap.builder();
+      for (var entry : dayEntries) {
+        map.put(entry.getKey(), entry.getValue());
+      }
+      return new PerDayHourlySchedule(map.build());
+    }
+    @Override
+    public ImmutableMap<DayOfWeekOption, LocalTimeRange> toDayMap() {
+      return dayMap;
+    }
+  }
+
+  public static Optional<List<DayOfWeekOption>> getDaysOfWeekField(Submission submission, String inputName) {
+    Object value = submission.getInputData().get(inputName);
+    if (value == null) {
+      return Optional.empty();
+    } else if (value instanceof List<?> valueList) {
+      return Optional.of(valueList.stream().map(d -> DayOfWeekOption.valueOf(d.toString())).toList());
+    } else {
+      throw new IllegalArgumentException("Weekdays field does not contain a list");
+    }
+  }
+
+  public static Optional<HourlySchedule> getHourlySchedule(
+          Submission submission, String inputName, String weeklyScheduleInputName) {
+    Optional<List<DayOfWeekOption>> days = getDaysOfWeekField(submission, weeklyScheduleInputName);
+    if (days.isEmpty()) {
+      return Optional.empty();
+    }
+
+    List<String> sameEveryDayField = getOptionalListField(
+            submission, "%sHoursSameEveryDay[]".formatted(inputName), Object::toString).orElse(List.of());
+    boolean sameEveryDay = !sameEveryDayField.isEmpty() && sameEveryDayField.get(0).equalsIgnoreCase("Yes");
+
+    if (sameEveryDay) {
+      LocalTimeRange allDays = getTimeRangeInput(submission, inputName, "AllDays").orElseThrow();
+      return Optional.of(new ConsistentHourlySchedule(days.get(), allDays));
+    } else {
+      List<ImmutableMap.Entry<DayOfWeekOption, LocalTimeRange>> ranges = new ArrayList<>();
+      for (var day : days.get()) {
+        LocalTimeRange range = getTimeRangeInput(submission, inputName, day.name()).orElseThrow();
+        ranges.add(Map.entry(day, range));
+      }
+      return Optional.of(PerDayHourlySchedule.fromEntries(ranges));
+    }
+  }
+
+  public static <T> Optional<List<T>> getOptionalListField(
+          Submission submission, String fieldName, Function<Object, T> converter) {
+    Object value = submission.getInputData().get(fieldName);
+    if (value== null) {
+      return Optional.empty();
+    } else if (value instanceof List<?> valueList) {
+      return Optional.of(valueList.stream().map(converter).toList());
+    } else {
+      throw new IllegalArgumentException("List field does not contain a list");
+    }
+  }
+
+  public static void putSingleFieldResult(Map<String, SubmissionField> results, String fieldName, String value) {
+    results.put(fieldName, new SingleField(fieldName, value, null));
   }
 }
