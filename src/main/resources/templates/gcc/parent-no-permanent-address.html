@@ -17,7 +17,7 @@
                class="button button--primary spacing-below-35" id="place-to-get-mail-link"></a>
           </div>
           <div>
-            <a th:href="'/flow/' + ${flow} + '/parent-contact'"
+            <a th:href="'/flow/' + ${flow} + '/parent-comm-preference?homelessPrefersEmail=true'"
                th:text="#{parent-no-permanent-address.contact-by-email}"
                id="contact-by-email"></a>
           </div>

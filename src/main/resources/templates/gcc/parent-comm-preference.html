@@ -24,3 +24,17 @@
               </th:block>
     </th:block>
 </th:block>
+<script defer>
+  let url = new URL(document.URL)
+  let contactByEmail = url.searchParams.get("homelessPrefersEmail")
+
+  let mailIsNotPreferredCommunicationMethod = document.getElementById("parentContactPreferredCommunicationMethod-mail").checked===false;
+  //checks that homelessPrefersEmail is in the query params and is set to true, also checks that mail is not a field that is passed by submission
+
+  if((contactByEmail!==null) && mailIsNotPreferredCommunicationMethod){
+    let email = document.getElementById('parentContactPreferredCommunicationMethod-email');
+    if(contactByEmail){
+      email.checked=true;
+    }
+  }
+</script>

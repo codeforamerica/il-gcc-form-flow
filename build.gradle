@@ -56,7 +56,7 @@ dependencies {
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
 
-    if (profile == 'dev' || useLocalLibrary == 'true') {
+    if (useLocalLibrary == 'true') {
         implementation fileTree(dir: "$rootDir/../form-flow/build/libs", include: '*.jar')
         println "📦 Using local library"
     } else {
@@ -228,10 +228,10 @@ enum DesignSystem {
     static DesignSystem fromString(String value) {
         for (DesignSystem designSystem : values()) {
             if (designSystem.name().replaceAll('_', '-').equalsIgnoreCase(value)) {
-                return designSystem;
+                return designSystem
             }
         }
-        throw new IllegalArgumentException("Unknown design system: " + value);
+        throw new IllegalArgumentException("Unknown design system: " + value)
     }
 }
 
