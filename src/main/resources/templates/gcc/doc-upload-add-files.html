@@ -10,24 +10,32 @@
       <main id="content" role="main" class="form-card spacing-above-35">
         <th:block
             th:replace="~{fragments/cardHeader :: cardHeader(header=#{doc-upload-add-files.header})}"/>
-          <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::documentUpload})}">
-            <th:block th:ref="documentUpload">
-              <div class="form-card__content">
-                <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(
-                                buttonLabel=#{doc-upload-add-files.accordion-1.title},
-                                content=~{::recommendedDocs})}">
-                  <th:block th:ref="recommendedDocs">
-                    <p th:text="#{doc-upload-add-files.accordion-1.p1}"></p>
-                    <p th:utext="#{doc-upload-add-files.accordion-1.body1}"></p>
-                    <p th:utext="#{doc-upload-add-files.accordion-1.body2}"></p>
-                    <p th:utext="#{doc-upload-add-files.accordion-1.body3}"></p>
-                    <p th:utext="#{doc-upload-add-files.accordion-1.body4}"></p>
-                    <p th:utext="#{doc-upload-add-files.accordion-1.body5}"></p>
-                  </th:block>
+        <th:block
+            th:replace="~{fragments/form :: form(action=${formAction}, content=~{::documentUpload})}">
+          <th:block th:ref="documentUpload">
+            <div class="form-card__content">
+              <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
+                controlId='r1',
+                linkLabel=~{::revealLabel1},
+                content=~{::revealContent1},
+                forceShowContent='true')}">
+                <th:block th:ref="revealLabel1">
+                  <i class="icon-">&#xE862;</i>
+                  <th:span th:text="#{doc-upload-add-files.accordion-1.title}"></th:span>
                 </th:block>
-                <th:block th:replace="~{fragments/fileUploader :: fileUploader(inputName='uploadDocuments')}"></th:block>
-                
-              </div>
+                <th:block th:ref="revealContent1">
+                  <p th:text="#{doc-upload-add-files.accordion-1.p1}"></p>
+                  <p th:utext="#{doc-upload-add-files.accordion-1.body1}"></p>
+                  <p th:utext="#{doc-upload-add-files.accordion-1.body2}"></p>
+                  <p th:utext="#{doc-upload-add-files.accordion-1.body3}"></p>
+                  <p th:utext="#{doc-upload-add-files.accordion-1.body4}"></p>
+                  <p th:utext="#{doc-upload-add-files.accordion-1.body5}"></p>
+                </th:block>
+              </th:block>
+              <th:block
+                  th:replace="~{fragments/fileUploader :: fileUploader(inputName='uploadDocuments')}"></th:block>
+
+            </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
                   text=#{doc-upload-add-files.confirmation}, classes='button', isHidden=true)}"/>
@@ -38,7 +46,7 @@
     </div>
   </section>
 </div>
-<th:block th:replace="~{fragments/footer :: footer}" />
+<th:block th:replace="~{fragments/footer :: footer}"/>
 <script>FormFlowDZ.hideContinueIfNoFiles("uploadDocuments", "form-submit-button")</script>
 </body>
 </html>
