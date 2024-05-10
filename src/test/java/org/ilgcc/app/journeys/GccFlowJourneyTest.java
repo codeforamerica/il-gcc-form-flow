@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,11 +26,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     @Autowired
     SubmissionRepository repository;
-
-    @AfterEach
-    void tearDown() {
-        clearSubmissions();
-    }
     @Test
     void fullGccFlow() throws IOException {
         // Home page

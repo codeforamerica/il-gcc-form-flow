@@ -3,15 +3,9 @@ package org.ilgcc.app.journeys;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.ilgcc.app.utils.AbstractBasePageTest;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 public class ActivitiesJourneyTest extends AbstractBasePageTest {
-
-    @AfterEach
-    void tearDown() {
-        clearSubmissions();
-    }
     @Test
     void ParentOnlyWithJobAndWorkTest() {
         // Activities Screen

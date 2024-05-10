@@ -3,6 +3,7 @@ package org.ilgcc.app.utils;
 import com.google.common.collect.Iterables;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
+import formflow.library.data.UserFileRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
@@ -45,6 +46,9 @@ public abstract class AbstractBasePageTest {
   SubmissionRepository repo;
 
   @Autowired
+  UserFileRepository userFileRepository;
+
+  @Autowired
   protected Path path;
 
   protected String baseUrl;
@@ -74,7 +78,9 @@ public abstract class AbstractBasePageTest {
 
     driver.navigate().to(baseUrl);
   }
+  @AfterEach
   protected void clearSubmissions() {
+    userFileRepository.deleteAll();
     repo.deleteAll();
   }
 
