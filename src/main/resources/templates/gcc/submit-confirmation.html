@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<!--TODO: add provider name-->
+<head th:replace="~{fragments/head :: head(title=#{submit-confirmation.title('☠️ REPLACE')})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,14 +9,25 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: documentsSent}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(
+            header=#{submit-confirmation.title('☠️ REPLACE')},
+            subtext=#{submit-confirmation.subtext('☠️ xx/xx/xxxx', '☠️ 10:00am')})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <hr>
+              <ul class="list--bulleted">
+                <li><a href="" th:text="#{submit-confirmation.download-text}"></a> <span th:text="#{submit-confirmation.rest-of-paragraph}"></span></li>
+              </ul>
+              <hr>
+              <p th:text="#{submit-confirmation.experience}"></p>
+<!--              TODO: add select-->
+
+<!--              TODO: add textarea-->
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{submit-confirmation.button.label})}"/>
             </div>
           </th:block>
         </th:block>
