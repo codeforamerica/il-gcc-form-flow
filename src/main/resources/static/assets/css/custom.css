@@ -20,12 +20,12 @@
 }
 
 html, body {
-  background: var(--light-grey);
-  color: var(--gray-darkest);
+  background: Canvas;
+  color: CanvasText;
 }
 
 .template--index {
-  background: var(--white);
+  background: Canvas;
 }
 
 .demo-banner {
@@ -80,6 +80,14 @@ html, body {
 main.slab {
   padding-top: 0;
   padding-bottom: 0;
+}
+
+.slab--white {
+  background-color: Canvas;
+}
+
+.slab--grey {
+  background-color: color-mix(in srgb, Canvas, #F7F5F4);
 }
 
 .slab--light-purple {
@@ -358,6 +366,11 @@ p.normal {
   border:2px solid #121111;
   border-radius:0;
   background-color:#F7F5F4
+}
+
+.form-card {
+  background-color: Canvas;
+  color: CanvasText;
 }
 
 .form-width--long-time {
