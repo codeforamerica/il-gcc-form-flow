@@ -432,11 +432,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo("Next Steps");
-        testPage.clickButton("Skip and finish");
+        testPage.clickButton("Finish application");
 
         // submit-confirmation
         assertThat(testPage.getTitle()).startsWith("Your application has been sent to");
-        testPage.clickButton("Skip and finish");
+        testPage.clickElementById("surveyDifficulty-very-easy");
+        testPage.clickButton("Submit feedback");
+        assertThat(testPage.getTitle()).startsWith("Your application has been sent to");
+        assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo("Thank you for your feedback.");
 
         // Download PDF and verify fields
         verifyPDF();
