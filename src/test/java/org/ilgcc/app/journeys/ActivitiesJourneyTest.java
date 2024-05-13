@@ -6,7 +6,6 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 public class ActivitiesJourneyTest extends AbstractBasePageTest {
-
     @Test
     void ParentOnlyWithJobAndWorkTest() {
         // Activities Screen
