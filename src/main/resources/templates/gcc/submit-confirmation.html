@@ -1,39 +1,95 @@
 <!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<!--TODO: add provider name-->
-<head th:replace="~{fragments/head :: head(title=#{submit-confirmation.title('☠️ REPLACE')})}"></head>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
+      th:with="
+            provider=${T(org.ilgcc.app.utils.ChildCareProvider).valueOf(inputData.get('dayCareChoice'))},
+            submittedDate=${inputData.getOrDefault('formattedSubmittedAtDate', 'No Date')},
+            submittedTime=${inputData.getOrDefault('formattedSubmittedAtTime', 'No time')},
+            hasSubmittedSurvey=${
+                inputData.containsKey('surveyDifficulty') ||
+                inputData.containsKey('surveyAdditionalComments')}">
+<head th:replace="~{fragments/head :: head(title=#{submit-confirmation.title(${provider.getDisplayName()})})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: documentsSent}"></th:block>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(
-            header=#{submit-confirmation.title('☠️ REPLACE')},
-            subtext=#{submit-confirmation.subtext('☠️ xx/xx/xxxx', '☠️ 10:00am')})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-              <hr>
-              <ul class="list--bulleted">
-                <li><a href="" th:text="#{submit-confirmation.download-text}"></a> <span th:text="#{submit-confirmation.rest-of-paragraph}"></span></li>
-              </ul>
-              <hr>
-              <p th:text="#{submit-confirmation.experience}"></p>
-<!--              TODO: add select-->
-
-<!--              TODO: add textarea-->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{submit-confirmation.button.label})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <div th:if="${lockedSubmissionMessage}" class="notice--warning">
+                    <p th:text="${lockedSubmissionMessage}"></p>
+                </div>
+                <th:block th:replace="~{fragments/gcc-icons :: documentsSent}"></th:block>
+                <th:block th:replace="~{fragments/cardHeader :: cardHeader(
+                    header=#{submit-confirmation.title(${provider.getDisplayName()})},
+                    subtext=#{submit-confirmation.subtext(${submittedDate}, ${submittedTime})})}"/>
+                <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="form-card__content">
+                            <hr>
+                            <ul class="list--bulleted">
+                                <li><a th:href="'/download/gcc/' + ${submission.getId()}" data-mixpanel="download-pdf"
+                                       th:text="#{submit-confirmation.download-text}"></a> <span
+                                        th:text="#{submit-confirmation.rest-of-paragraph}"></span></li>
+                            </ul>
+                            <hr>
+                            <th:block th:if="${hasSubmittedSurvey}">
+                                <div class="notice--success">
+                                    <ul class="list--checkmark list--material-checkmark spacing-above-0">
+                                        <li th:text="#{submit-confirmation.survey.complete}"></li>
+                                    </ul>
+                                </div>
+                            </th:block>
+                            <th:block th:unless="${hasSubmittedSurvey}">
+                                <p th:text="#{submit-confirmation.experience}"></p>
+                                <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                                radioFieldset(inputName='surveyDifficulty',
+                                label=#{submit-confirmation.survey.label},
+                                content=~{::radioContent})}">
+                                    <th:block th:ref="radioContent">
+                                        <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName='surveyDifficulty',
+                                      value='very-easy',
+                                      label=#{submit-confirmation.survey.very-easy})}"/>
+                                        <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName='surveyDifficulty',
+                                      value='easy',
+                                      label=#{submit-confirmation.survey.easy})}"/>
+                                        <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName='surveyDifficulty',
+                                      value='neither',
+                                      label=#{submit-confirmation.survey.neither})}"/>
+                                        <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName='surveyDifficulty',
+                                      value='difficult',
+                                      label=#{submit-confirmation.survey.difficult})}"/>
+                                        <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName='surveyDifficulty',
+                                      value='very-difficult',
+                                      label=#{submit-confirmation.survey.very-difficult})}"/>
+                                    </th:block>
+                                </th:block>
+                                <th:block th:replace="~{fragments/inputs/textArea ::
+                                  textArea(inputName='surveyAdditionalComments',
+                                  label=#{submit-confirmation.comments.label},
+                                  rows='2',
+                                  maxLength='1000')}"/>
+                            </th:block>
+                        </div>
+                        <div class="form-card__footer">
+                            <th:block th:if="${hasSubmittedSurvey}">
+                                <a th:text="#{submit-confirmation.button.return}" href="/" id="return-to-home"
+                                   class="button--primary button"></a>
+                            </th:block>
+                            <th:block th:unless="${hasSubmittedSurvey}">
+                                <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                                    text=#{submit-confirmation.button.feedback})}"/>
+                            </th:block>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>

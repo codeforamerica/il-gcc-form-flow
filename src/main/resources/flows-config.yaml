@@ -312,8 +312,9 @@ flow:
     nextScreens:
       - name: submit-confirmation
   submit-confirmation:
+    beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
-      - name: doc-upload-recommended-docs
+      - name: submit-confirmation
   doc-upload-recommended-docs:
     nextScreens:
       - name: doc-upload-add-files
@@ -352,3 +353,6 @@ landmarks:
   firstScreen: onboarding-getting-started
   afterSubmitPages:
     - submit-confirmation
+    - doc-upload-recommended-docs
+    - doc-upload-add-files
+    - doc-upload-submit-confirmation

@@ -14,14 +14,20 @@
                     <p id="header-help-message"
                        th:utext="#{submit-next-steps.subtext}"></p>
                 </header>
-                <div class="form-card__content">
-                    <div class="notice--success">
-                        <th:block th:utext="#{submit-next-steps.notice}"></th:block>
-                    </div>
-                </div>
-                <div class="form-card__footer">
-                    <th:block th:replace="~{fragments/continueButton :: continue(text=#{submit-next-steps.button})}"/>
-                </div>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=|/flow/${flow}/${screen}/submit|, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="form-card__content">
+                            <div class="notice--success">
+                                <th:block th:utext="#{submit-next-steps.notice}"></th:block>
+                            </div>
+                        </div>
+                        <div class="form-card__footer">
+                            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                                text=#{submit-next-steps.button})}"/>
+                        </div>
+                    </th:block>
+                </th:block>
             </main>
         </div>
     </section>
