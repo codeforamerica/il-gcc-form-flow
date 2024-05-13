@@ -415,7 +415,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo("Your application has been submitted!");
-        // TODO: change to "Submit documents now" once we stand up document section
+        testPage.clickButton("Submit documents now");
+
         // doc-upload-recommended docs
         assertThat(testPage.getTitle()).isEqualTo("Recommended documents");
         testPage.clickButton("Submit documents now");
@@ -428,6 +429,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         await().atMost(5, TimeUnit.SECONDS).until(
                 () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
         );
+        testPage.goBack();
         testPage.clickButton("Skip and finish");
 
         // submit-next-steps
