@@ -4,12 +4,12 @@ import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Phone;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 public class Gcc extends FlowInputs {
-
+    MultipartFile uploadDocuments;
     private String lang;
     @NotBlank(message = "{errors.provide-program-name}")
     private String schoolName;

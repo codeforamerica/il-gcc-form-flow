@@ -316,13 +316,14 @@ flow:
   submit-confirmation:
     condition: SkipTemplate
     nextScreens:
-      - name: doc-upload-list
-  doc-upload-list:
-    condition: SkipTemplate
+      - name: doc-upload-recommended-docs
+  doc-upload-recommended-docs:
+    nextScreens:
+      - name: doc-upload-add-files
+  doc-upload-add-files:
     nextScreens:
       - name: doc-upload-confirm
   doc-upload-confirm:
-    condition: SkipTemplate
     nextScreens: null
   children-delete:
     nextScreens: null

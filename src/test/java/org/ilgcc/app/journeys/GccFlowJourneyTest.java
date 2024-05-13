@@ -3,7 +3,7 @@ package org.ilgcc.app.journeys;
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
 import formflow.library.data.SubmissionRepository;
-import formflow.library.pdf.SingleField;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     @Autowired
     SubmissionRepository repository;
-
     @Test
     void fullGccFlow() throws IOException {
         // Home page
@@ -413,6 +412,19 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("signedName", "parent first parent last");
         testPage.enter("partnerSignedName", "partner parent");
         testPage.clickContinue();
+
+        // doc-upload-recommended docs
+        assertThat(testPage.getTitle()).isEqualTo("Recommended documents");
+        testPage.clickButton("Submit documents now");
+
+        // doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo("Add Files");
+        assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
+        uploadJpgFile();
+        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
+        await().atMost(5, TimeUnit.SECONDS).until(
+            () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
+        );
 
         // Download PDF and verify fields
         verifyPDF();

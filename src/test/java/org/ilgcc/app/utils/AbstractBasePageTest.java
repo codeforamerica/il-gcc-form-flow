@@ -3,6 +3,7 @@ package org.ilgcc.app.utils;
 import com.google.common.collect.Iterables;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
+import formflow.library.data.UserFileRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
@@ -45,6 +46,9 @@ public abstract class AbstractBasePageTest {
   SubmissionRepository repo;
 
   @Autowired
+  UserFileRepository userFileRepository;
+
+  @Autowired
   protected Path path;
 
   protected String baseUrl;
@@ -74,9 +78,9 @@ public abstract class AbstractBasePageTest {
 
     driver.navigate().to(baseUrl);
   }
-
   @AfterEach
   protected void clearSubmissions() {
+    userFileRepository.deleteAll();
     repo.deleteAll();
   }
 
@@ -105,10 +109,28 @@ public abstract class AbstractBasePageTest {
             .isBlank());
   }
 
+  protected void uploadFile(String filepath) {
+    WebElement upload = driver.findElement(By.className("dz-hidden-input"));
+    upload.sendKeys(TestUtils.getAbsoluteFilepathString(filepath));
+    waitUntilFileIsUploaded();
+  }
+
+  protected void uploadJpgFile(){
+    uploadFile(UPLOADED_JPG_FILE_NAME);
+    assertThat(driver.findElement(By.id("file-preview-template-uploadDocuments")).getText().replace("\n", ""))
+        .contains(UPLOADED_JPG_FILE_NAME);
+  }
+
   protected void uploadJpgFile(String dzName) {
     uploadFile(UPLOADED_JPG_FILE_NAME, dzName);
     assertThat(driver.findElement(By.id("dropzone-" + dzName)).getText().replace("\n", ""))
         .contains(UPLOADED_JPG_FILE_NAME);
+  }
+
+  private void waitUntilFileIsUploaded() {
+    await().until(
+        () -> !driver.findElements(By.className("file-details")).get(0).getAttribute("innerHTML")
+            .isBlank());
   }
 
   protected File getLatestDownloadedFile(Path path) throws IOException {
