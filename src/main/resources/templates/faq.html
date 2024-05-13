@@ -16,122 +16,124 @@
         </div>
       </div>
     </section>
-    <div class="grid">
-      <nav class="grid__item width-one-third" th:with="sections = ${ {
+    <section class="slab slab--white">
+      <div class="grid">
+        <nav class="grid__item width-one-third" th:with="sections = ${ {
         'what-is-ccap', 'what-is-a-ccrr', 'what-is-a-child-care-provider', 'do-i-qualify-for-ccap',
         'can-i-apply', 'do-have-to-be-a-us-resident-or-citizen', 'do-i-have-to-be-working',
         'will-my-child-care-be-free-if-approved', 'how-do-i-know-if-the-child-care-provider-will-accept-ccap',
         'how-do-i-find-child-care-provider-that-accepts-ccap'} }">
-        <p class="h3" th:text="#{faq.toc.header}"></p>
-        <div class="spacing-below-15" th:each="section : ${sections}">
-          <a th:href="'#' + ${section}" th:text="#{'faq.' + ${section} + '.header'}"></a>
-        </div>
-      </nav>
-      <div class="grid__item shift-one-twelfth width-seven-twelfths">
-        <div class="grid">
-          <div class="grid__item">
-            <div class="grid__item spacing-below-35">
-              <!-- Answers Section -->
-              <h2 id="general-questions-header" class="h2" th:text="#{faq.general-questions.header}"></h2>
+          <p class="h3" th:text="#{faq.toc.header}"></p>
+          <div class="spacing-below-15" th:each="section : ${sections}">
+            <a th:href="'#' + ${section}" th:text="#{'faq.' + ${section} + '.header'}"></a>
+          </div>
+        </nav>
+        <div class="grid__item shift-one-twelfth width-seven-twelfths">
+          <div class="grid">
+            <div class="grid__item">
+              <div class="grid__item spacing-below-35">
+                <!-- Answers Section -->
+                <h2 id="general-questions-header" class="h2" th:text="#{faq.general-questions.header}"></h2>
 
-              <!-- What is CCAP -->
-              <h3 id="what-is-ccap" class="h3" th:text="#{faq.what-is-ccap.header}"></h3>
-              <p th:text="#{faq.what-is-ccap.ccap-stands-for}"></p>
-              <!-- What is a CCR&R -->
-              <h3 id="what-is-a-ccrr" class="h3" th:text="#{faq.what-is-a-ccrr.header}"></h3>
-              <p th:text="#{faq.what-is-a-ccrr.ccrr-stands-for}"></p>
-              <p th:utext="#{faq.what-is-a-crrr.in-illinois-there-are-16}"></p>
-              <!-- What is a Child Care Provider -->
-              <h3 id="what-is-a-child-care-provider" class="h3" th:text="#{faq.what-is-a-child-care-provider.header}"></h3>
-              <p th:text="#{faq.what-is-a-child-care-provider.a-child-care-provider}"></p>
-              <!-- Do I Qualify for CCAP -->
-              <h3 id="do-i-qualify-for-ccap" class="h3" th:text="#{faq.do-i-qualify-for-ccap.header}"></h3>
-              <p th:text="#{faq.do-i-qualify-for-ccap.to-qualify}"></p>
-              <p class="h3" th:text="#{faq.do-i-qualify-for-ccap.activities.header}"></p>
-              <p th:text="#{faq.do-i-qualify-for-ccap.activities.to-be-eligible}"></p>
-              <ul class="list--bulleted">
-                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.working}"></li>
-                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.enrolling}"></li>
-                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.experiencing-homelessness}"></li>
-                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.deployed}"></li>
-                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.participating}"></li>
-                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.caring}"></li>
-                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.when-you-are-working}"></li>
-                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.looking}"></li>
-              </ul>
+                <!-- What is CCAP -->
+                <h3 id="what-is-ccap" class="h3" th:text="#{faq.what-is-ccap.header}"></h3>
+                <p th:text="#{faq.what-is-ccap.ccap-stands-for}"></p>
+                <!-- What is a CCR&R -->
+                <h3 id="what-is-a-ccrr" class="h3" th:text="#{faq.what-is-a-ccrr.header}"></h3>
+                <p th:text="#{faq.what-is-a-ccrr.ccrr-stands-for}"></p>
+                <p th:utext="#{faq.what-is-a-crrr.in-illinois-there-are-16}"></p>
+                <!-- What is a Child Care Provider -->
+                <h3 id="what-is-a-child-care-provider" class="h3" th:text="#{faq.what-is-a-child-care-provider.header}"></h3>
+                <p th:text="#{faq.what-is-a-child-care-provider.a-child-care-provider}"></p>
+                <!-- Do I Qualify for CCAP -->
+                <h3 id="do-i-qualify-for-ccap" class="h3" th:text="#{faq.do-i-qualify-for-ccap.header}"></h3>
+                <p th:text="#{faq.do-i-qualify-for-ccap.to-qualify}"></p>
+                <p class="h3" th:text="#{faq.do-i-qualify-for-ccap.activities.header}"></p>
+                <p th:text="#{faq.do-i-qualify-for-ccap.activities.to-be-eligible}"></p>
+                <ul class="list--bulleted">
+                  <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.working}"></li>
+                  <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.enrolling}"></li>
+                  <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.experiencing-homelessness}"></li>
+                  <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.deployed}"></li>
+                  <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.participating}"></li>
+                  <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.caring}"></li>
+                  <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.when-you-are-working}"></li>
+                  <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.looking}"></li>
+                </ul>
 
-              <p class="h3" th:text="#{faq.do-i-qualify-for-ccap.age-of-children.header}"></p>
-              <p th:text="#{faq.do-i-qualify-for-ccap.age-of-children.the-age-of-children}"></p>
+                <p class="h3" th:text="#{faq.do-i-qualify-for-ccap.age-of-children.header}"></p>
+                <p th:text="#{faq.do-i-qualify-for-ccap.age-of-children.the-age-of-children}"></p>
 
-              <p class="h3" th:text="#{faq.do-i-qualify-for-ccap.familiy-income.header}"></p>
-              <p th:text="#{faq.family-income.familiy-income}"></p>
-              <table class="family-income-table" >
-                <thead>
-                <tr>
-                  <th scope="col" th:text="#{faq.do-i-qualify-for-ccap.table-header.family-size}"></th>
-                  <th scope="col" th:text="#{faq.do-i-qualify-for-ccap.table-header.maximum-monthly-income}"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="i: ${#numbers.sequence(1, 9)}">
-                  <td th:text="#{'faq.family-income.table.row-' + ${i} + '.family'}"></td>
-                  <td th:text="#{'faq.family-income.table.row-' + ${i} + '.income'}"></td>
-                </tr>
-                </tbody>
-              </table>
+                <p class="h3" th:text="#{faq.do-i-qualify-for-ccap.familiy-income.header}"></p>
+                <p th:text="#{faq.family-income.familiy-income}"></p>
+                <table class="family-income-table" >
+                  <thead>
+                  <tr>
+                    <th scope="col" th:text="#{faq.do-i-qualify-for-ccap.table-header.family-size}"></th>
+                    <th scope="col" th:text="#{faq.do-i-qualify-for-ccap.table-header.maximum-monthly-income}"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="i: ${#numbers.sequence(1, 9)}">
+                    <td th:text="#{'faq.family-income.table.row-' + ${i} + '.family'}"></td>
+                    <td th:text="#{'faq.family-income.table.row-' + ${i} + '.income'}"></td>
+                  </tr>
+                  </tbody>
+                </table>
 
-              <!-- Can I Apply If I Am A Foster Parent -->
-              <h3 id="can-i-apply" class="h3" th:text="#{faq.can-i-apply.header}"></h3>
-              <p th:text="#{faq.can-i-apply.dcfs-assists-foster-parents}"></p>
-              <p th:text="#{faq.can-i-apply.if-you-are-a-foster-parent}"></p>
-              <!-- Do I have to be a US Resident -->
-              <h3 id="do-have-to-be-a-us-resident-or-citizen" class="h3" th:text="#{faq.do-have-to-be-a-us-resident-or-citizen.header}"></h3>
-              <p th:text="#{faq.do-have-to-be-a-us-resident-or-citizen.no}"></p>
-              <p th:text="#{faq.do-have-to-be-a-us-resident-or-citizen.applying-for-or-receiving}"></p>
-              <p th:text="#{faq.do-have-to-be-a-us-resident-or-citizen.on-the-application}"></p>
-              <!-- Do I have to be working -->
-              <h3 id="do-i-have-to-be-working" class="h3" th:text="#{faq.do-i-have-to-be-working.header}"></h3>
-              <p th:text="#{faq.do-i-have-to-be-working.no}"></p>
-              <ul class="list--bulleted">
-                <li th:text="#{faq.do-i-have-to-be-working.li.enrolling}"></li>
-                <li th:text="#{faq.do-i-have-to-be-working.li.experiencing-homelessness}"></li>
-                <li th:text="#{faq.do-i-have-to-be-working.li.deployed}"></li>
-                <li th:text="#{faq.do-i-have-to-be-working.li.participating}"></li>
-              </ul>
-              <!-- Will my child care be free if approved -->
-              <h3 id="will-my-child-care-be-free-if-approved" class="h3" th:text="#{faq.will-my-child-care-be-free-if-approved.header}"></h3>
-              <p th:text="#{faq.will-my-child-care-be-free-if-approved.it-depends}"></p>
-              <p th:text="#{faq.will-my-child-care-be-free-if-approved.most-families}"></p>
-              <ul class="list--bulleted">
-                <li th:utext="#{faq.will-my-child-care-be-free-if-approved.li.you-can-use-the-eligibility-calculator}"></li>
-                <li th:text="#{faq.will-my-child-care-be-free-if-approved.li.please-keep-in-mind}"></li>
-              </ul>
-              <!-- How do i know if the child care provider will accept CCAP -->
-              <h3 id="how-do-i-know-if-the-child-care-provider-will-accept-ccap" class="h3" th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.header}"></h3>
-              <p th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.you-should-ask}"></p>
-              <p th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.child-care}"></p>
-              <ul class="list--bulleted">
-                <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.can-be-licensed}"></li>
-                <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.can-b-a-child-care-center}"></li>
-                <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.can-be-a-relative}"></li>
-                <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.must-be-at-least-18}"></li>
-                <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.may-not-be-the-parent}"></li>
-                <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.may-not-be-on-the-same-TANF}"></li>
-                <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.must-authorize}"></li>
-                <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.must-complete}"></li>
-                <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.must-be-visited}"></li>
-              </ul>
-              <p th:utext="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.if-you-have-a-friend}"></p>
+                <!-- Can I Apply If I Am A Foster Parent -->
+                <h3 id="can-i-apply" class="h3" th:text="#{faq.can-i-apply.header}"></h3>
+                <p th:text="#{faq.can-i-apply.dcfs-assists-foster-parents}"></p>
+                <p th:text="#{faq.can-i-apply.if-you-are-a-foster-parent}"></p>
+                <!-- Do I have to be a US Resident -->
+                <h3 id="do-have-to-be-a-us-resident-or-citizen" class="h3" th:text="#{faq.do-have-to-be-a-us-resident-or-citizen.header}"></h3>
+                <p th:text="#{faq.do-have-to-be-a-us-resident-or-citizen.no}"></p>
+                <p th:text="#{faq.do-have-to-be-a-us-resident-or-citizen.applying-for-or-receiving}"></p>
+                <p th:text="#{faq.do-have-to-be-a-us-resident-or-citizen.on-the-application}"></p>
+                <!-- Do I have to be working -->
+                <h3 id="do-i-have-to-be-working" class="h3" th:text="#{faq.do-i-have-to-be-working.header}"></h3>
+                <p th:text="#{faq.do-i-have-to-be-working.no}"></p>
+                <ul class="list--bulleted">
+                  <li th:text="#{faq.do-i-have-to-be-working.li.enrolling}"></li>
+                  <li th:text="#{faq.do-i-have-to-be-working.li.experiencing-homelessness}"></li>
+                  <li th:text="#{faq.do-i-have-to-be-working.li.deployed}"></li>
+                  <li th:text="#{faq.do-i-have-to-be-working.li.participating}"></li>
+                </ul>
+                <!-- Will my child care be free if approved -->
+                <h3 id="will-my-child-care-be-free-if-approved" class="h3" th:text="#{faq.will-my-child-care-be-free-if-approved.header}"></h3>
+                <p th:text="#{faq.will-my-child-care-be-free-if-approved.it-depends}"></p>
+                <p th:text="#{faq.will-my-child-care-be-free-if-approved.most-families}"></p>
+                <ul class="list--bulleted">
+                  <li th:utext="#{faq.will-my-child-care-be-free-if-approved.li.you-can-use-the-eligibility-calculator}"></li>
+                  <li th:text="#{faq.will-my-child-care-be-free-if-approved.li.please-keep-in-mind}"></li>
+                </ul>
+                <!-- How do i know if the child care provider will accept CCAP -->
+                <h3 id="how-do-i-know-if-the-child-care-provider-will-accept-ccap" class="h3" th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.header}"></h3>
+                <p th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.you-should-ask}"></p>
+                <p th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.child-care}"></p>
+                <ul class="list--bulleted">
+                  <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.can-be-licensed}"></li>
+                  <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.can-b-a-child-care-center}"></li>
+                  <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.can-be-a-relative}"></li>
+                  <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.must-be-at-least-18}"></li>
+                  <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.may-not-be-the-parent}"></li>
+                  <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.may-not-be-on-the-same-TANF}"></li>
+                  <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.must-authorize}"></li>
+                  <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.must-complete}"></li>
+                  <li th:text="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.li.must-be-visited}"></li>
+                </ul>
+                <p th:utext="#{faq.how-do-i-know-if-the-child-care-provider-will-accept-ccap.if-you-have-a-friend}"></p>
 
-              <!-- How do I find child care provider that accepts CCAP -->
-              <h3 id="how-do-i-find-child-care-provider-that-accepts-ccap" class="h3" th:text="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.header}"></h3>
-              <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-are-looking-for-a-child-care-provider}"></p>
-              <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-have-a-friend-relative}"></p>
+                <!-- How do I find child care provider that accepts CCAP -->
+                <h3 id="how-do-i-find-child-care-provider-that-accepts-ccap" class="h3" th:text="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.header}"></h3>
+                <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-are-looking-for-a-child-care-provider}"></p>
+                <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-have-a-friend-relative}"></p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
