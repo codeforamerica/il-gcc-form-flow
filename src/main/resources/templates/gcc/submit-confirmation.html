@@ -26,21 +26,23 @@
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
                             <hr>
-                            <ul class="list--bulleted">
+                            <ul class="list--checkmark list--material-get-app">
                                 <li><a th:href="'/download/gcc/' + ${submission.getId()}" data-mixpanel="download-pdf"
                                        th:text="#{submit-confirmation.download-text}"></a> <span
                                         th:text="#{submit-confirmation.rest-of-paragraph}"></span></li>
                             </ul>
                             <hr>
+                            <p th:text="#{submit-confirmation.experience}"></p>
                             <th:block th:if="${hasSubmittedSurvey}">
                                 <div class="notice--success">
                                     <ul class="list--checkmark list--material-checkmark spacing-above-0">
-                                        <li th:text="#{submit-confirmation.survey.complete}"></li>
+                                        <li>
+                                            <span th:text="#{submit-confirmation.survey.complete}"></span>
+                                        </li>
                                     </ul>
                                 </div>
                             </th:block>
                             <th:block th:unless="${hasSubmittedSurvey}">
-                                <p th:text="#{submit-confirmation.experience}"></p>
                                 <th:block th:replace="~{fragments/inputs/radioFieldset ::
                                 radioFieldset(inputName='surveyDifficulty',
                                 label=#{submit-confirmation.survey.label},
