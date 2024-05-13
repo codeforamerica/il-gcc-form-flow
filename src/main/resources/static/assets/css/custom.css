@@ -446,6 +446,10 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   color: var(--hc-green);
 }
 
+.list--material-checkmark span {
+  color: var(--black);
+}
+
 .list--material-checkmark li {
   margin-left: 0;
 }
@@ -456,4 +460,17 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   content: "check_circle";
   top: 0;
   color: currentColor;
+}
+
+.list--material-get-app li:before {
+      background-image: none;
+      font-family: 'Material Icons';
+      content: "get_app";
+      top: 1rem;
+      color: currentColor;
+      font-size: 3rem;
+}
+
+.list--material-get-app li {
+    padding-left: 4rem;
 }
