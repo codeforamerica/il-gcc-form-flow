@@ -14,7 +14,7 @@
           <th:block th:ref="formContent">
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{doc-upload-submit-confirmation.yes})}"/>
-              <a class="button spacing-left-0" th:text="#{doc-upload-submit-confirmation.no}"
+              <a class="button spacing-left-0" id="add-more-documents" th:text="#{doc-upload-submit-confirmation.no}"
                  href="#" onclick="window.history.back(); return false;"></a>
             </div>
           </th:block>
