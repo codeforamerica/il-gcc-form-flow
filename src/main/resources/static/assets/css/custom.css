@@ -4,6 +4,7 @@
   --idhs-dark-purple: #1d3fa8;
   --idhs-base-purple: #3262d4;
   --idhs-light-purple: #769bf3;
+  --hc-green: #00891B;
   --idhs-dark-green: #005e59;
   --idhs-base-green: #048e85;
   --idhs-light-green: #42c9b0;
@@ -430,4 +431,46 @@ input[name$="Address2"] {
 /* Sub item styling */
 ul.list--bulleted ul.list--bulleted.list--sublist li {
   list-style-type: circle;
+}
+
+.notice--gray {
+  background-color: #F7F5F4;
+  border-color: #CFC5BF;
+}
+
+.notice--gray p + p {
+  margin-top: 2.5rem;
+}
+
+.list--material-checkmark {
+  color: var(--hc-green);
+}
+
+.list--material-checkmark span {
+  color: var(--black);
+}
+
+.list--material-checkmark li {
+  margin-left: 0;
+}
+
+.list--material-checkmark li:before {
+  background-image: none;
+  font-family: 'Material Icons';
+  content: "check_circle";
+  top: 0;
+  color: currentColor;
+}
+
+.list--material-get-app li:before {
+      background-image: none;
+      font-family: 'Material Icons';
+      content: "get_app";
+      top: 1rem;
+      color: currentColor;
+      font-size: 3rem;
+}
+
+.list--material-get-app li {
+    padding-left: 4rem;
 }

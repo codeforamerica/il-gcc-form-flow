@@ -413,6 +413,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("partnerSignedName", "partner parent");
         testPage.clickContinue();
 
+        // submit-complete
+        assertThat(testPage.getTitle()).isEqualTo("Your application has been submitted!");
+        testPage.clickButton("Submit documents now");
+
         // doc-upload-recommended docs
         assertThat(testPage.getTitle()).isEqualTo("Recommended documents");
         testPage.clickButton("Submit documents now");
@@ -423,8 +427,21 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         uploadJpgFile();
         // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
         await().atMost(5, TimeUnit.SECONDS).until(
-            () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
+                () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
         );
+        testPage.goBack();
+        testPage.clickButton("Skip and finish");
+
+        // submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo("Next Steps");
+        testPage.clickButton("Finish application");
+
+        // submit-confirmation
+        assertThat(testPage.getTitle()).startsWith("Your application has been sent to");
+        testPage.clickElementById("surveyDifficulty-very-easy");
+        testPage.clickButton("Submit feedback");
+        assertThat(testPage.getTitle()).startsWith("Your application has been sent to");
+        assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo("Thank you for your feedback.");
 
         // Download PDF and verify fields
         verifyPDF();

@@ -331,4 +331,6 @@ public class Gcc extends FlowInputs {
     private String signedName;
     @NotBlank(message = "{errors.validate.signed-name}")
     private String partnerSignedName;
+    private String surveyDifficulty;
+    private String surveyAdditionalComments;
 }
