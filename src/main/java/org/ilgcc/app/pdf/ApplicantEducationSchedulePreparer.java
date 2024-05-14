@@ -4,6 +4,8 @@ import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
+import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
+import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.ilgcc.app.utils.DayOfWeekOption;
 import org.springframework.stereotype.Component;
 
@@ -19,35 +21,34 @@ public class ApplicantEducationSchedulePreparer implements SubmissionFieldPrepar
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
-        var results = new HashMap<String, SubmissionField>();
-
         Optional<HourlySchedule> activitiesClassSchedule =
                 getHourlySchedule(submission, "activitiesClass", "weeklySchedule[]");
-        if (activitiesClassSchedule.isPresent()) {
-            var dayMap = activitiesClassSchedule.get().toDayMap();
-            for (var day : DayOfWeekOption.values()) {
-                var schedule = dayMap.get(day);
-                if (schedule == null) {
-                    continue;
-                }
-                String fieldPrefix = "applicantEducationSchedule" + day.name();
-                putSingleFieldResult(
-                        results,
-                        fieldPrefix + "Start",
-                        schedule.startTime().format(CLOCK_TIME_OF_AM_PM));
-                putSingleFieldResult(
-                        results,
-                        fieldPrefix + "StartAmPm",
-                        schedule.startTime().format(AM_PM_OF_DAY));
-                putSingleFieldResult(
-                        results,
-                        fieldPrefix + "End",
-                        schedule.endTime().format(CLOCK_TIME_OF_AM_PM));
-                putSingleFieldResult(
-                        results,
-                        fieldPrefix + "EndAmPm",
-                        schedule.endTime().format(AM_PM_OF_DAY));
-            }
+        var results = new HashMap<String, SubmissionField>();
+        if (activitiesClassSchedule.isEmpty()) {
+            return results;
+        }
+
+        Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = activitiesClassSchedule.get().toDailyScheduleMap();
+        for (var scheduleEntry : dailyScheduleMap.entrySet()) {
+            DayOfWeekOption day = scheduleEntry.getKey();
+            LocalTimeRange schedule = scheduleEntry.getValue();
+            String fieldPrefix = "applicantEducationSchedule" + day.name();
+            putSingleFieldResult(
+                    results,
+                    fieldPrefix + "Start",
+                    schedule.startTime().format(CLOCK_TIME_OF_AM_PM));
+            putSingleFieldResult(
+                    results,
+                    fieldPrefix + "StartAmPm",
+                    schedule.startTime().format(AM_PM_OF_DAY));
+            putSingleFieldResult(
+                    results,
+                    fieldPrefix + "End",
+                    schedule.endTime().format(CLOCK_TIME_OF_AM_PM));
+            putSingleFieldResult(
+                    results,
+                    fieldPrefix + "EndAmPm",
+                    schedule.endTime().format(AM_PM_OF_DAY));
         }
         return results;
     }

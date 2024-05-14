@@ -1,6 +1,5 @@
 package org.ilgcc.app.utils;
 
-import com.google.common.collect.ImmutableMap;
 import formflow.library.data.Submission;
 import formflow.library.inputs.FieldNameMarkers;
 import formflow.library.pdf.SingleField;
@@ -11,8 +10,14 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
+import org.ilgcc.app.utils.ActivitySchedules.ConsistentHourlySchedule;
+import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
+import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
+import org.ilgcc.app.utils.ActivitySchedules.PerDayHourlySchedule;
 
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static java.lang.Integer.parseInt;
+import static java.util.function.Function.identity;
 
 
 public class SubmissionUtilities {
@@ -131,39 +136,6 @@ public class SubmissionUtilities {
     }
   }
 
-  public record LocalTimeRange(LocalTime startTime, LocalTime endTime) { }
-
-  public interface HourlySchedule {
-    ImmutableMap<DayOfWeekOption, LocalTimeRange> toDayMap();
-  }
-
-  public record ConsistentHourlySchedule(List<DayOfWeekOption> weekdays, LocalTimeRange allDays) implements HourlySchedule {
-    @Override
-    public ImmutableMap<DayOfWeekOption, LocalTimeRange> toDayMap() {
-      ImmutableMap.Builder<DayOfWeekOption, LocalTimeRange> map = ImmutableMap.builder();
-      for (DayOfWeekOption day : weekdays) {
-        map.put(day, allDays);
-      }
-      return map.build();
-    }
-  }
-
-  public record PerDayHourlySchedule(
-          ImmutableMap<DayOfWeekOption, LocalTimeRange> dayMap
-  ) implements HourlySchedule {
-    public static PerDayHourlySchedule fromEntries(Iterable<ImmutableMap.Entry<DayOfWeekOption, LocalTimeRange>> dayEntries) {
-      ImmutableMap.Builder<DayOfWeekOption, LocalTimeRange> map = ImmutableMap.builder();
-      for (var entry : dayEntries) {
-        map.put(entry.getKey(), entry.getValue());
-      }
-      return new PerDayHourlySchedule(map.build());
-    }
-    @Override
-    public ImmutableMap<DayOfWeekOption, LocalTimeRange> toDayMap() {
-      return dayMap;
-    }
-  }
-
   public static Optional<List<DayOfWeekOption>> getDaysOfWeekField(Submission submission, String inputName) {
     Object value = submission.getInputData().get(inputName);
     if (value == null) {
@@ -177,8 +149,8 @@ public class SubmissionUtilities {
 
   public static Optional<HourlySchedule> getHourlySchedule(
           Submission submission, String inputName, String weeklyScheduleInputName) {
-    Optional<List<DayOfWeekOption>> days = getDaysOfWeekField(submission, weeklyScheduleInputName);
-    if (days.isEmpty()) {
+    Optional<List<DayOfWeekOption>> daysActive = getDaysOfWeekField(submission, weeklyScheduleInputName);
+    if (daysActive.isEmpty()) {
       return Optional.empty();
     }
 
@@ -187,15 +159,14 @@ public class SubmissionUtilities {
     boolean sameEveryDay = !sameEveryDayField.isEmpty() && sameEveryDayField.get(0).equalsIgnoreCase("Yes");
 
     if (sameEveryDay) {
-      LocalTimeRange allDays = getTimeRangeInput(submission, inputName, "AllDays").orElseThrow();
-      return Optional.of(new ConsistentHourlySchedule(days.get(), allDays));
+      LocalTimeRange scheduleEveryDay = getTimeRangeInput(submission, inputName, "AllDays").orElseThrow();
+      return Optional.of(new ConsistentHourlySchedule(daysActive.get(), scheduleEveryDay));
     } else {
-      List<ImmutableMap.Entry<DayOfWeekOption, LocalTimeRange>> ranges = new ArrayList<>();
-      for (var day : days.get()) {
-        LocalTimeRange range = getTimeRangeInput(submission, inputName, day.name()).orElseThrow();
-        ranges.add(Map.entry(day, range));
-      }
-      return Optional.of(PerDayHourlySchedule.fromEntries(ranges));
+      var dailyScheduleMap = daysActive.get().stream().collect(
+              toImmutableMap(
+                      identity(),
+                      day -> getTimeRangeInput(submission, inputName, day.name()).orElseThrow()));
+      return Optional.of(new PerDayHourlySchedule(dailyScheduleMap));
     }
   }
 
