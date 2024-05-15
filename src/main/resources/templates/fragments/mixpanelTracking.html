@@ -87,8 +87,6 @@
         }
 
         if (elementDataMixpanel === 'download-pdf') {
-            console.log("Mixpanel!");
-            console.log($(this));
             mixpanel.track('download_application_pdf', {
                 'app_language': htmlLang,
                 'submission_id': submissionId,
