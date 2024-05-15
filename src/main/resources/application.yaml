@@ -16,7 +16,7 @@ form-flow:
   encryption-key: '{"primaryKeyId":2135185311,"key":[{"keyData":{"typeUrl":"type.googleapis.com/google.crypto.tink.AesGcmKey","value":"GiCRKaXiJ/zlDHAZfRQf1rCIbIY4fFmLqLWYIPLNXpOx4A==","keyMaterialType":"SYMMETRIC"},"status":"ENABLED","keyId":2135185311,"outputPrefixType":"TINK"}]}"'
   inputs: 'org.ilgcc.app.inputs.'
   uploads:
-    accepted-file-types: '.jpeg,.jpg,.png,.pdf,.bmp,.gif,.doc,.docx,.odt,.ods,.odp'
+    accepted-file-types: '.pdf, .jpg, .png, .avif, .heic, .docx, .pptx, .xlsx'
     thumbnail-width: '64'
     thumbnail-height: '60'
     # 20 files maximum
@@ -24,7 +24,7 @@ form-flow:
     # 20 MB file size limit
     # If this is not set then the server values below for servlet max-file-size and tomcat max POST size will not be set
     # which will cause the server to use the default values of 1MB preventing uploads larger than that.
-    max-file-size: '20'
+    max-file-size: '10'
     virus-scanning:
       enabled: false
       service-url: ${CLAMAV_URL}
