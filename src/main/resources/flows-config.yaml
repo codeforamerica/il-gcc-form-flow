@@ -332,7 +332,7 @@ flow:
   doc-upload-submit-confirmation:
     onPostAction: UploadSubmissionToS3
     nextScreens:
-      - name: doc-upload-submit-confirmation
+      - name: submit-next-steps
 subflows:
   children:
     entryScreen: children-add
