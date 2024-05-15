@@ -320,7 +320,7 @@ flow:
       - name: doc-upload-add-files
   doc-upload-add-files:
     nextScreens:
-      - name: doc-upload-confirm
+      - name: doc-upload-submit-confirmation
   doc-upload-confirm:
     nextScreens: null
   children-delete:
