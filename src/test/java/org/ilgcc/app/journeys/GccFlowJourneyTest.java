@@ -429,6 +429,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         await().atMost(5, TimeUnit.SECONDS).until(
                 () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
         );
+
+        testPage.clickButton("I'm finished uploading");
+        assertThat(testPage.getTitle()).isEqualTo("Submit Confirmation");
+
+        testPage.goBack();
         testPage.goBack();
         testPage.clickButton("Skip and finish");
 

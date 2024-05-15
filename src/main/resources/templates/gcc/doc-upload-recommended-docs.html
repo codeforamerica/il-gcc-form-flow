@@ -12,20 +12,26 @@
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-              <th:block th:replace="~{fragments/gcc-icons :: incomeFamily}"></th:block>
-              <p th:utext="#{doc-upload-recommended-docs.jobs.body}"></p>
-
-              <th:block th:replace="~{fragments/gcc-icons :: income}"></th:block>
-              <p th:utext="#{doc-upload-recommended-docs.self-employment.body}"></p>
-
-              <th:block th:replace="~{fragments/gcc-icons :: education}"></th:block>
-              <p th:utext="#{doc-upload-recommended-docs.school.body}"></p>
-
-              <th:block th:replace="~{fragments/gcc-icons :: job}"></th:block>
-              <p th:utext="#{doc-upload-recommended-docs.training.body}"></p>
-
-              <th:block th:replace="~{fragments/gcc-icons :: homelessness}"></th:block>
-              <p th:utext="#{doc-upload-recommended-docs.homelessness.body}"></p>
+              <div class="spacing-below-60">
+                <th:block th:replace="~{fragments/gcc-icons :: incomeFamily}"></th:block>
+                <p th:utext="#{doc-upload-recommended-docs.jobs.body}"></p>
+              </div>
+              <div class="spacing-below-60">
+                <th:block th:replace="~{fragments/gcc-icons :: income}"></th:block>
+                <p th:utext="#{doc-upload-recommended-docs.self-employment.body}"></p>
+              </div>
+              <div class="spacing-below-60">
+                <th:block th:replace="~{fragments/gcc-icons :: education}"></th:block>
+                <p th:utext="#{doc-upload-recommended-docs.school.body}"></p>
+              </div>
+              <div class="spacing-below-60">
+                <th:block th:replace="~{fragments/gcc-icons :: job}"></th:block>
+                <p th:utext="#{doc-upload-recommended-docs.training.body}"></p>
+              </div>
+              <div class="spacing-below-60">
+                <th:block th:replace="~{fragments/gcc-icons :: homelessness}"></th:block>
+                <p th:utext="#{doc-upload-recommended-docs.homelessness.body}"></p>
+              </div>
             </div>
             <div class="notice-grey">
               <p th:text="#{doc-upload-recommended-docs.jobs.allowed-documents}"></p>
