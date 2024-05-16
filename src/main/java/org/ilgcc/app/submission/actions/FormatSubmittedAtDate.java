@@ -4,7 +4,8 @@ import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import org.springframework.stereotype.Component;
 
-import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
@@ -15,7 +16,8 @@ public class FormatSubmittedAtDate implements Action {
 
     @Override
     public void run(Submission submission) {
-        OffsetDateTime submittedAt = submission.getSubmittedAt();
+        ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
+        ZonedDateTime submittedAt = submission.getSubmittedAt().atZoneSameInstant(chicagoTimeZone);
 
         if (submittedAt != null) {
             String formattedSubmittedAtDate = submittedAt.format(DATE_FORMAT);
