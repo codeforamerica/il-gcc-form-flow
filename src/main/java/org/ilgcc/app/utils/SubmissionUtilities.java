@@ -17,6 +17,7 @@ import org.ilgcc.app.utils.ActivitySchedules.PerDayHourlySchedule;
 
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static java.lang.Integer.parseInt;
+import static java.util.Collections.emptyList;
 import static java.util.function.Function.identity;
 
 
@@ -100,19 +101,19 @@ public class SubmissionUtilities {
     return Optional.of(LocalDate.of(parseInt(year), parseInt(month), parseInt(day)));
   }
 
-  public static Optional<LocalTime> getTimeInput(Submission submission, String inputName) {
-    String rawValue = (String) submission.getInputData().getOrDefault(inputName, "");
+  public static Optional<LocalTime> getTimeInput(Map<String, Object> inputData, String inputName) {
+    String rawValue = (String) inputData.getOrDefault(inputName, "");
     if (rawValue.isBlank()) {
       return Optional.empty();
     } else {
-      LocalTime time = LocalTime.parse((String) submission.getInputData().get(inputName));
+      LocalTime time = LocalTime.parse((String) inputData.get(inputName));
       return Optional.of(time);
     }
   }
 
-  public static Optional<LocalTimeRange> getTimeRangeInput(Submission submission, String inputName, String suffix) {
-    Optional<LocalTime> start = getTimeInput(submission, "%sStartTime%s".formatted(inputName, suffix));
-    Optional<LocalTime> end = getTimeInput(submission, "%sEndTime%s".formatted(inputName, suffix));
+  public static Optional<LocalTimeRange> getTimeRangeInput(Map<String, Object> inputData, String inputName, String suffix) {
+    Optional<LocalTime> start = getTimeInput(inputData, "%sStartTime%s".formatted(inputName, suffix));
+    Optional<LocalTime> end = getTimeInput(inputData, "%sEndTime%s".formatted(inputName, suffix));
      if (start.isEmpty() && end.isEmpty()) {
        return Optional.empty();
      } else {
@@ -136,8 +137,18 @@ public class SubmissionUtilities {
     }
   }
 
-  public static Optional<List<DayOfWeekOption>> getDaysOfWeekField(Submission submission, String inputName) {
-    Object value = submission.getInputData().get(inputName);
+  public static List<Map<String, Object>> getChildren(Submission submission) {
+    return (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+  }
+
+  public static List<Map<String, Object>> getChildrenNeedingAssistance(Submission submission) {
+    return getChildren(submission).stream().filter(
+                    child -> child.getOrDefault("needFinancialAssistanceForChild", "No").equals("Yes"))
+            .toList();
+  }
+
+  public static Optional<List<DayOfWeekOption>> getDaysOfWeekField(Map<String, Object> inputData, String inputName) {
+    Object value = inputData.get(inputName);
     if (value == null) {
       return Optional.empty();
     } else if (value instanceof List<?> valueList) {
@@ -149,30 +160,35 @@ public class SubmissionUtilities {
 
   public static Optional<HourlySchedule> getHourlySchedule(
           Submission submission, String inputName, String weeklyScheduleInputName) {
-    Optional<List<DayOfWeekOption>> daysActive = getDaysOfWeekField(submission, weeklyScheduleInputName);
+    return getHourlySchedule(submission.getInputData(), inputName, weeklyScheduleInputName);
+  }
+
+  public static Optional<HourlySchedule> getHourlySchedule(
+          Map<String, Object> inputData, String inputName, String weeklyScheduleInputName) {
+    Optional<List<DayOfWeekOption>> daysActive = getDaysOfWeekField(inputData, weeklyScheduleInputName);
     if (daysActive.isEmpty()) {
       return Optional.empty();
     }
 
     List<String> sameEveryDayField = getOptionalListField(
-            submission, "%sHoursSameEveryDay[]".formatted(inputName), Object::toString).orElse(List.of());
+            inputData, "%sHoursSameEveryDay[]".formatted(inputName), Object::toString).orElse(List.of());
     boolean sameEveryDay = !sameEveryDayField.isEmpty() && sameEveryDayField.get(0).equalsIgnoreCase("Yes");
 
     if (sameEveryDay) {
-      LocalTimeRange scheduleEveryDay = getTimeRangeInput(submission, inputName, "AllDays").orElseThrow();
+      LocalTimeRange scheduleEveryDay = getTimeRangeInput(inputData, inputName, "AllDays").orElseThrow();
       return Optional.of(new ConsistentHourlySchedule(daysActive.get(), scheduleEveryDay));
     } else {
       var dailyScheduleMap = daysActive.get().stream().collect(
               toImmutableMap(
                       identity(),
-                      day -> getTimeRangeInput(submission, inputName, day.name()).orElseThrow()));
+                      day -> getTimeRangeInput(inputData, inputName, day.name()).orElseThrow()));
       return Optional.of(new PerDayHourlySchedule(dailyScheduleMap));
     }
   }
 
   public static <T> Optional<List<T>> getOptionalListField(
-          Submission submission, String fieldName, Function<Object, T> converter) {
-    Object value = submission.getInputData().get(fieldName);
+          Map<String, Object> inputData, String fieldName, Function<Object, T> converter) {
+    Object value = inputData.get(fieldName);
     if (value== null) {
       return Optional.empty();
     } else if (value instanceof List<?> valueList) {
@@ -183,6 +199,9 @@ public class SubmissionUtilities {
   }
 
   public static void putSingleFieldResult(Map<String, SubmissionField> results, String fieldName, String value) {
-    results.put(fieldName, new SingleField(fieldName, value, null));
+    putSingleFieldResult(results, fieldName, value, null);
+  }
+  public static void putSingleFieldResult(Map<String, SubmissionField> results, String fieldName, String value, Integer iteration) {
+    results.put(fieldName, new SingleField(fieldName, value, iteration));
   }
 }
