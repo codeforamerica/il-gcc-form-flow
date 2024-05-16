@@ -1,5 +1,5 @@
 flow: gcc
-pdf: /pdfs/IL-CCAP-Form.pdf
+pdf: /pdfs/MYNEWPDF.pdf
 inputFields:
   parentFirstName: APPLICANT_NAME_FIRST
   parentLastName: APPLICANT_NAME_LAST
