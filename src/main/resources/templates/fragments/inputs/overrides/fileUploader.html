@@ -205,6 +205,11 @@
       filesToDelete.forEach(fTD => {
         if (fTD.name === file.name) {
           removeFileFromDropzone(file, id);
+          mixpanel.track('delete_file_when_cancel_is_clicked', {
+            'page_name': window.location.pathname,
+            'file_size': file.size,
+            'file_format': file.type
+          });
           sendDeleteXhrRequest(id);
           window['cancelledFiles' + [[${inputName}]]] =
               window['cancelledFiles' + [[${inputName}]]]
@@ -290,6 +295,11 @@
               + fileNameComponents[0] + "</span>" +
               "<span class='filename-text-ext' aria-hidden='true'>" + fileNameComponents[1]
               + "</span>";
+          mixpanel.track('initiate_file_upload', {
+            'page_name': window.location.pathname,
+            'file_format': file.type,
+            'file_size': file.size
+          });
 
           removeLink.onclick = destroyerCreator(file);
           removeLink.innerText = [[#{general.cancel}]].toLowerCase();
@@ -353,12 +363,23 @@
           window['userFileIds' + [[${inputName}]]].push(id);
           updateFileInputValue();
 
+          mixpanel.track('file_upload_success', {
+            'page_name': window.location.pathname,
+            'file_size': file.size,
+            'file_format': file.type
+          });
+
           removeLink.onclick = function () {
             let confirmation = confirm(
                 [[#{general.files.confirm-delete}]] + fileName + '. '
                 + [[#{general.files.confirm-delete-ok}]])
             if (confirmation) {
               sendDeleteXhrRequest(id, [[${flow}]]);
+              mixpanel.track('delete_file_when_delete_clicked', {
+                'page_name': window.location.pathname,
+                'file_size': file.size,
+                'file_format': file.type
+              });
               removeFileFromDropzone(file, id);
             }
           }
@@ -423,7 +444,12 @@
         }
 
         showNumberOfAddedFiles();
-
+        mixpanel.track('file_upload_fail', {
+          'page_name': window.location.pathname,
+          'file_size': file.size,
+          'file_format': file.type,
+          'reason': errorMessage
+        });
         file.previewElement.classList.add("form-group--error");
 
         var removeLink = file.previewElement.getElementsByClassName("dz-remove")[0];
