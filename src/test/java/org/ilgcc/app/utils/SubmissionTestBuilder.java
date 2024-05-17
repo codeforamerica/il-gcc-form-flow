@@ -111,4 +111,25 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withJob(String companyName, String employerStreetAddress, String employerCity, String employerState, String employerZipCode, String employerPhoneNumber) {
+        List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
+        if (jobs == null) {
+            jobs = new ArrayList<>();
+        }
+
+        Map<String, Object> job = new HashMap<>();
+        String uuid = companyName.toLowerCase();
+        job.put("uuid", uuid);
+        job.put("companyName", companyName);
+        job.put("employerStreetAddress", employerStreetAddress);
+        job.put("employerCity", employerCity);
+        job.put("employerState", employerState);
+        job.put("employerZipCode", employerZipCode);
+        job.put("employerPhoneNumber", employerPhoneNumber);
+        job.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
+        jobs.add(job);
+        submission.getInputData().put("jobs", jobs);
+        return this;
+    }
+
 }
