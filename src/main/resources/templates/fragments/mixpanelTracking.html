@@ -74,8 +74,7 @@
     function linkClickEvent() {
         const elementId = $(this).attr("id");
         const elementDataMixpanel = $(this).attr("data-mixpanel");
-        tracking_params['element_id'] = elementId
-        mixpanel.track('link_click', tracking_params);
+        tracking_params['element_id'] = elementId;
 
         if (elementId === 'confirm-provider') {
             const provider_name = $("#provider-name")[0].innerText;
@@ -84,14 +83,15 @@
                 'provider_name': provider_name,
                 'provider_address': provider_addr
             });
-        }
-
-        if (elementDataMixpanel === 'download-pdf') {
+        } else if (elementDataMixpanel === 'download-pdf') {
             mixpanel.track('download_application_pdf', {
+                'page_name': window.location.pathname,
                 'app_language': htmlLang,
                 'submission_id': submissionId,
                 'screen_name': screenName,
             });
+        } else {
+            mixpanel.track('link_click', tracking_params);
         }
     }
 
