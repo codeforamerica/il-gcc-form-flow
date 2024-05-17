@@ -199,9 +199,9 @@ public class SubmissionUtilities {
   }
 
   public static void putSingleFieldResult(Map<String, SubmissionField> results, String fieldName, String value) {
-    putSingleFieldResult(results, fieldName, value, null);
+    results.put(fieldName, new SingleField(fieldName, value, null));
   }
   public static void putSingleFieldResult(Map<String, SubmissionField> results, String fieldName, String value, Integer iteration) {
-    results.put(fieldName, new SingleField(fieldName, value, iteration));
+    results.put(fieldName+"_"+iteration, new SingleField(fieldName, value, iteration));
   }
 }

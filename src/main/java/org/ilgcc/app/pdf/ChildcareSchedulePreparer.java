@@ -29,7 +29,7 @@ public class ChildcareSchedulePreparer implements SubmissionFieldPreparer {
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
 
-        int iteration = 0;
+        int iteration = 1;
 
         for (var child : SubmissionUtilities.getChildrenNeedingAssistance(submission)) {
             Optional<HourlySchedule> careSchedule =
@@ -40,7 +40,6 @@ public class ChildcareSchedulePreparer implements SubmissionFieldPreparer {
             if (careSchedule.isEmpty()) {
                 continue;
             }
-            iteration++;
 
             Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = careSchedule.get().toDailyScheduleMap();
             for (var scheduleEntry : dailyScheduleMap.entrySet()) {
@@ -68,6 +67,7 @@ public class ChildcareSchedulePreparer implements SubmissionFieldPreparer {
                         schedule.endTime().format(AM_PM_OF_DAY),
                         iteration);
             }
+            iteration++;
         }
         return results;
     }
