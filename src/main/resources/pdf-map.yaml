@@ -89,6 +89,35 @@ subflowInfo:
       childDateOfBirth: CHILD_DOB
       childSpecialNeeds: CHILD_SPECIAL_NEEDS
       childUSCitizen: CHILD_US_CITIZEN
+      childCareScheduleMondayStart: CHILD_CARE_SCHEDULE_MONDAY_START
+      childCareScheduleMondayStartAmPm: CHILD_CARE_SCHEDULE_MONDAY_START_AM_PM
+      childCareScheduleTuesdayStart: CHILD_CARE_SCHEDULE_TUESDAY_START
+      childCareScheduleTuesdayStartAmPm: CHILD_CARE_SCHEDULE_TUESDAY_START_AM_PM
+      childCareScheduleWednesdayStart: CHILD_CARE_SCHEDULE_WEDNESDAY_START
+      childCareScheduleWednesdayStartAmPm: CHILD_CARE_SCHEDULE_WEDNESDAY_START_AM_PM
+      childCareScheduleThursdayStart: CHILD_CARE_SCHEDULE_THURSDAY_START
+      childCareScheduleThursdayStartAmPm: CHILD_CARE_SCHEDULE_THURSDAY_START_AM_PM
+      childCareScheduleFridayStart: CHILD_CARE_SCHEDULE_FRIDAY_START
+      childCareScheduleFridayStartAmPm: CHILD_CARE_SCHEDULE_FRIDAY_START_AM_PM
+      childCareScheduleSaturdayStart: CHILD_CARE_SCHEDULE_SATURDAY_START
+      childCareScheduleSaturdayStartAmPm: CHILD_CARE_SCHEDULE_SATURDAY_START_AM_PM
+      childCareScheduleSundayStart: CHILD_CARE_SCHEDULE_SUNDAY_START
+      childCareScheduleSundayStartAmPm: CHILD_CARE_SCHEDULE_SUNDAY_START_AM_PM
+
+      childCareScheduleMondayEnd: CHILD_CARE_SCHEDULE_MONDAY_END
+      childCareScheduleMondayEndAmPm: CHILD_CARE_SCHEDULE_MONDAY_END_AM_PM
+      childCareScheduleTuesdayEnd: CHILD_CARE_SCHEDULE_TUESDAY_END
+      childCareScheduleTuesdayEndAmPm: CHILD_CARE_SCHEDULE_TUESDAY_END_AM_PM
+      childCareScheduleWednesdayEnd: CHILD_CARE_SCHEDULE_WEDNESDAY_END
+      childCareScheduleWednesdayEndAmPm: CHILD_CARE_SCHEDULE_WEDNESDAY_END_AM_PM
+      childCareScheduleThursdayEnd: CHILD_CARE_SCHEDULE_THURSDAY_END
+      childCareScheduleThursdayEndAmPm: CHILD_CARE_SCHEDULE_THURSDAY_END_AM_PM
+      childCareScheduleFridayEnd: CHILD_CARE_SCHEDULE_FRIDAY_END
+      childCareScheduleFridayEndAmPm: CHILD_CARE_SCHEDULE_FRIDAY_END_AM_PM
+      childCareScheduleSaturdayEnd: CHILD_CARE_SCHEDULE_SATURDAY_END
+      childCareScheduleSaturdayEndAmPm: CHILD_CARE_SCHEDULE_SATURDAY_END_AM_PM
+      childCareScheduleSundayEnd: CHILD_CARE_SCHEDULE_SUNDAY_END
+      childCareScheduleSundayEndAmPm: CHILD_CARE_SCHEDULE_SUNDAY_END_AM_PM
   primaryParentJobs:
     totalIterations: 2
     inputFields:

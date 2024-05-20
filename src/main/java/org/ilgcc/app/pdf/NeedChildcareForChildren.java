@@ -5,6 +5,7 @@ import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -22,10 +23,7 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
     var results = new HashMap<String, SubmissionField>();
     int iteration = 1;
 
-    var children = ((List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList())).stream()
-        .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "No").equals("Yes"))
-        .toList();
-    for (var child : children) {
+    for (var child : SubmissionUtilities.getChildrenNeedingAssistance(submission)) {
       results.put(getUniqueKey(), new SingleField("childFirstName", (String) child.get("childFirstName"), iteration));
       results.put(getUniqueKey(), new SingleField("childLastName", (String) child.get("childLastName"), iteration));
       results.put(getUniqueKey(), new SingleField("childDateOfBirth", formatChildDateOfBirth(child), iteration));
