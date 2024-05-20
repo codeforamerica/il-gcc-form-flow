@@ -132,4 +132,54 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withConstantChildcareSchedule(int childPosition) {
+
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().get("children");
+        if (children == null) {
+            return this;
+        }
+
+        Map<String, Object> child = children.get(childPosition);
+
+        child.put("childcareEndTimeFriday", "");
+        child.put("childcareEndTimeMonday", "");
+        child.put("childcareEndTimeAllDays", "17:00");
+        child.put("childcareStartTimeFriday", "");
+        child.put("childcareStartTimeMonday", "");
+        child.put("childcareEndTimeWednesday", "");
+        child.put("childcareStartTimeAllDays", "09:00");
+        child.put("childcareWeeklySchedule[]", List.of("Monday", "Wednesday", "Friday"));
+        child.put("childcareStartTimeWednesday", "");
+        child.put("childcareHoursSameEveryDay[]", List.of("yes"));
+
+        children.set(childPosition, child);
+
+        return this;
+    }
+
+    public SubmissionTestBuilder withVaryingChildcareSchedule(int childPosition) {
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().get("children");
+        if (children == null) {
+            return this;
+        }
+
+        Map<String, Object> child = children.get(childPosition);
+
+        child.put("childcareEndTimeAllDays", "");
+        child.put("childcareEndTimeTuesday", "12:00");
+        child.put("childcareEndTimeSaturday", "15:00");
+        child.put("childcareEndTimeWednesday", "15:00");
+        child.put("childcareStartTimeAllDays", "");
+        child.put("childcareStartTimeTuesday", "09:00");
+        child.put("childcareWeeklySchedule[]", List.of("Tuesday", "Wednesday", "Saturday"));
+        child.put("childcareStartTimeSaturday", "13:00");
+        child.put("childcareStartTimeWednesday", "13:00");
+        child.put("childcareHoursSameEveryDay[]", List.of());
+
+        children.set(childPosition, child);
+
+        return this;
+    }
+
+
 }
