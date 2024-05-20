@@ -247,6 +247,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("employerPhoneNumber", "3333333");
         testPage.enter("employerCity", "Chicago");
         testPage.enter("employerStreetAddress", "123 Test Me");
+        testPage.enter("employerState", "IL - Illinois");
         testPage.enter("employerZipCode", "6042");
         testPage.clickContinue();
         assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 10 digits.")).isTrue();

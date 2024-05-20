@@ -89,3 +89,12 @@ subflowInfo:
       childDateOfBirth: CHILD_DOB
       childSpecialNeeds: CHILD_SPECIAL_NEEDS
       childUSCitizen: CHILD_US_CITIZEN
+  primaryParentJobs:
+    totalIterations: 2
+    inputFields:
+      companyName: APPLICANT_EMPLOYER_NAME
+      employerStreetAddress: APPLICANT_EMPLOYER_ADDRESS
+      employerCity: APPLICANT_EMPLOYER_CITY
+      employerState: APPLICANT_EMPLOYER_STATE
+      employerZipCode: APPLICANT_EMPLOYER_ZIP
+      employerPhoneNumber: APPLICANT_EMPLOYER_PHONE
