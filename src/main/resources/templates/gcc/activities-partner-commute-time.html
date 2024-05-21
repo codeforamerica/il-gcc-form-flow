@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{activities-work-commute-time.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.companyName})}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-work-commute-time.header}, subtext=#{activities-work-commute-time.subheader})}"/>
+        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+          <th:block th:ref="formContent">
+            <div class="form-card__content">
+              <th:block th:replace="~{fragments/inputs/select :: select(label='', ariaLabel='header', inputName='activitiesJobCommuteTime', content=~{::options})}">
+                <th:block th:ref="options">
+                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='', optionText=#{activities-work-commute-time.default.option})}"/>
+                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='0 minutes', optionText=#{general.hours.0.minutes})}"/>
+                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='30 minutes', optionText=#{general.hours.30.minutes})}"/>
+                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='1 hour', optionText=#{general.hours.1.hour})}"/>
+                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='1.5 hours', optionText=#{general.hours.1.5.hours})}"/>
+                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='2 hours', optionText=#{general.hours.2.hours})}"/>
+                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='2.5 hours', optionText=#{general.hours.2.5.hours})}"/>
+                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='3 hours', optionText=#{general.hours.3.hours})}"/>
+                </th:block>
+              </th:block>
+            </div>
+            <div class="form-card__footer">
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+            </div>
+          </th:block>
+        </th:block>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

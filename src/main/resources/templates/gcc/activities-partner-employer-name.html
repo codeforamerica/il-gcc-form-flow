@@ -1,0 +1,17 @@
+<th:block
+  th:replace="~{fragments/screens/screenWithOneInput ::
+  screenWithOneInput(
+    title=#{activities-employer-name.title},
+    header=#{activities-employer-name.header},
+    buttonLabel=#{general.button.continue},
+    subtext=#{activities-employer-name.subtext},
+    formAction=${formAction},
+    iconFragment=~{fragments/gcc-icons :: job},
+    inputContent=~{::inputContent})}">
+  <th:block th:ref="inputContent">
+    <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
+    <th:block th:replace="~{fragments/inputs/text ::
+      text(inputName='companyName',
+      ariaLabel='header')}"/>
+  </th:block>
+</th:block>
