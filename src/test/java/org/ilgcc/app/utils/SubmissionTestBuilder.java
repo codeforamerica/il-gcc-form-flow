@@ -197,6 +197,4 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("activitiesClassEndTime"+day, endTime);
         return this;
     }
-
-
 }

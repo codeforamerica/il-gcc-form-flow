@@ -63,6 +63,7 @@ public class ApplicantEducationSchedulePreparerTest {
             .withSchoolScheduleByDay("Monday","10:00", "15:45")
             .withSchoolScheduleByDay("Wednesday","08:00", "12:45")
             .withSchoolScheduleByDay("Friday","12:00", "19:00")
+            .with("weeklySchedule[]", List.of("Monday", "Wednesday", "Friday"))
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
@@ -81,21 +82,21 @@ public class ApplicantEducationSchedulePreparerTest {
         assertThat(result.get("applicantEducationScheduleTuesdayEnd")).isEqualTo(null);
         assertThat(result.get("applicantEducationScheduleTuesdayEndAmPm")).isEqualTo(null);
 
-        assertThat(result.get("applicantEducationScheduleThursdayStart")).isEqualTo(
-            new SingleField("applicantEducationScheduleThursdayStart", "08:00", null));
-        assertThat(result.get("applicantEducationScheduleThursdayStartAmPm")).isEqualTo(
-            new SingleField("applicantEducationScheduleThursdayStartAmPm", "AM", null));
-        assertThat(result.get("applicantEducationScheduleThursdayEnd")).isEqualTo(
-            new SingleField("applicantEducationScheduleThursdayEnd", "12:45", null));
-        assertThat(result.get("applicantEducationScheduleThursdayEndAmPm")).isEqualTo(
-            new SingleField("applicantEducationScheduleThursdayEndAmPm", "PM", null));
+        assertThat(result.get("applicantEducationScheduleWednesdayStart")).isEqualTo(
+            new SingleField("applicantEducationScheduleWednesdayStart", "08:00", null));
+        assertThat(result.get("applicantEducationScheduleWednesdayStartAmPm")).isEqualTo(
+            new SingleField("applicantEducationScheduleWednesdayStartAmPm", "AM", null));
+        assertThat(result.get("applicantEducationScheduleWednesdayEnd")).isEqualTo(
+            new SingleField("applicantEducationScheduleWednesdayEnd", "12:45", null));
+        assertThat(result.get("applicantEducationScheduleWednesdayEndAmPm")).isEqualTo(
+            new SingleField("applicantEducationScheduleWednesdayEndAmPm", "PM", null));
 
         assertThat(result.get("applicantEducationScheduleFridayStart")).isEqualTo(
             new SingleField("applicantEducationScheduleFridayStart", "12:00", null));
         assertThat(result.get("applicantEducationScheduleFridayStartAmPm")).isEqualTo(
             new SingleField("applicantEducationScheduleFridayStartAmPm", "PM", null));
         assertThat(result.get("applicantEducationScheduleFridayEnd")).isEqualTo(
-            new SingleField("applicantEducationScheduleFridayEnd", "19:00", null));
+            new SingleField("applicantEducationScheduleFridayEnd", "07:00", null));
         assertThat(result.get("applicantEducationScheduleFridayEndAmPm")).isEqualTo(
             new SingleField("applicantEducationScheduleFridayEndAmPm", "PM", null));
     }
