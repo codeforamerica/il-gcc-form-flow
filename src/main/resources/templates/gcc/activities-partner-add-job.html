@@ -1,21 +1,62 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{activities-partner-add-jobs.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
   <section class="slab">
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+      <main id="content" role="main" class="form-card spacing-above-35"
+            th:with="parentName=${inputData.get('parentPartnerFirstName')},
+               addedJobs=${inputData.containsKey('partnerJobs') && inputData.get('partnerJobs').size() > 0}">
+        <th:block th:replace="~{fragments/gcc-icons :: income}"></th:block>
+        <th:block th:with="addJobsHeader=|#{activities-add-jobs.header} ${fieldData.get('parentPartnerFirstName')}.|,
+                           addMoreJobsHeader=#{activities-partner-add-job.header.any-other-jobs(${inputData.get('parentPartnerFirstName')})},
+                           jobsSubtext=#{activities-add-jobs.subtext},
+                           addMoreJobsSubtext=#{activities-partner-add-job.subtext.add-jobs-list}">
+          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${addedJobs ? addMoreJobsHeader : addJobsHeader},
+                                                                     subtext=${addedJobs ? addMoreJobsSubtext : jobsSubtext})}"/>
+        </th:block>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:if="${addedJobs}">
+                <div class="boxed-content text--centered">
+                  <strong th:text="#{activities-add-jobs.your-jobs}"></strong>
+                  <ul class="subflow-list list--bulleted">
+                    <li th:each="job, iter: ${inputData.partnerJobs}"
+                        class="spacing-below-10">
+                    <span class="space-between">
+                      <span class="job-name" th:text="${job.companyName}"/>
+                      <span class="text--small spacing-below-0 spacing-right-25">
+                        <a th:href="'/flow/' + ${flow} + '/partnerJobs/' + ${job.uuid} + '/deleteConfirmation'"
+                           th:text="#{general.delete}"
+                           class="subflow-delete"
+                           th:id="'delete-iteration-' + ${job.uuid}"></a>
+                      </span>
+                    </span>
+                    </li>
+                  </ul>
+                </div>
+              </th:block>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <div class="spacing-below-15">
+                <a th:id="add-parent-job" th:href="'/flow/' + ${flow} + '/activities-partner-employer-name'"
+                   class="button button--primary spacing-above-15">
+                  <i class="icon-add"></i>
+                  <span th:text="#{activities-add-jobs.add-a-job}"></span>
+                </a>
+              </div>
+              <div>
+                <a th:if="${addedJobs}"
+                   th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+                   th:text="#{activities-add-jobs.this-is-all-my-jobs}"
+                   class="button spacing-left-0"
+                   id="done-adding-jobs"></a>
+              </div>
+
             </div>
           </th:block>
         </th:block>
@@ -24,5 +65,6 @@
   </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
+
 </body>
 </html>

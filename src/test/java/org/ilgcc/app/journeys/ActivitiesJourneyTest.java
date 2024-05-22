@@ -313,6 +313,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("activitiesParentPartnerChildcareReason-SCHOOL");
         testPage.clickContinue();
 
+        //Add Parent Jobs
         //activities-add-jobs
         assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
         testPage.clickButton("Add a job");
@@ -412,8 +413,36 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         //activities-ed-program-dates
         assertThat(testPage.getTitle()).isEqualTo("Time of Program");
         testPage.clickContinue();
-
-        // Note that currently, we are skipping the parent partner job questions
+        //activities-partner-add-job
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Add Jobs");
+        testPage.clickButton("Add a job");
+        //activities-partner-employer-name
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Name");
+        testPage.enter("companyName", "testPartnerCompany");
+        testPage.clickContinue();
+        //activities--partner-employer-address
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Address");
+        testPage.enter("employerPhoneNumber", "4444");
+        testPage.enter("employerCity", "Oakland");
+        testPage.enter("employerStreetAddress", "123 Partner Employer Address");
+        testPage.enter("employerZipCode", "6042");
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 10 digits.")).isTrue();
+        assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
+        testPage.enter("employerPhoneNumber", "4333333333");
+        testPage.enter("employerZipCode", "92453");
+        testPage.clickContinue();
+        //activities-partner-self-employment
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Self Employment");
+        testPage.clickButton("No");
+        //activities-partner-commute-time
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Commute Time");
+        testPage.selectFromDropdown("activitiesJobCommuteTime", "1.5 hours");
+        testPage.clickContinue();
+        //activities-partner-add-job
+        assertThat(testPage.getHeader()).isEqualTo("Does partner have any other jobs?");
+        testPage.clickButton("That is all my jobs");
+        //activities-partner-add-ed-program
         assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
         testPage.clickContinue();
         testPage.clickElementById("partnerEducationType-college-label");
@@ -517,10 +546,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("activitiesParentPartnerChildcareReason-WORKING");
         testPage.clickContinue();
 
-        // Note that currently, we are skipping the parent partner job questions
-
-        //unearned-income-intro
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+        //activities-partner-add-job
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Add Jobs");
     }
 
     @Test

@@ -241,11 +241,27 @@ flow:
         condition: PartnerInSchool
       - name: unearned-income-intro
   activities-partner-add-job:
-    condition: SkipTemplate
+    subflow: partnerJobs
     nextScreens:
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
       - name: unearned-income-intro
+  activities-partner-employer-name:
+    subflow: partnerJobs
+    nextScreens:
+      - name: activities-partner-employer-address
+  activities-partner-employer-address:
+    subflow: partnerJobs
+    nextScreens:
+      - name: activities-partner-self-employment
+  activities-partner-self-employment:
+    subflow: partnerJobs
+    nextScreens:
+      - name: activities-partner-commute-time
+  activities-partner-commute-time:
+    subflow: partnerJobs
+    nextScreens:
+      - name: activities-partner-add-job
   activities-partner-add-ed-program:
     nextScreens:
       - name: activities-partner-ed-program-type
@@ -329,6 +345,8 @@ flow:
     nextScreens: null
   delete-job:
     nextScreens: null
+  delete-partner-job:
+    nextScreens: null
   doc-upload-submit-confirmation:
     onPostAction: UploadSubmissionToS3
     nextScreens:
@@ -349,6 +367,11 @@ subflows:
     iterationStartScreen: activities-employer-name
     reviewScreen: activities-add-jobs
     deleteConfirmationScreen: delete-job
+  partnerJobs:
+    entryScreen: activities-partner-add-job
+    iterationStartScreen: activities-partner-employer-name
+    reviewScreen: activities-partner-add-job
+    deleteConfirmationScreen: delete-partner-job
 landmarks:
   firstScreen: onboarding-getting-started
   afterSubmitPages:

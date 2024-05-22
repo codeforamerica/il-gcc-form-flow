@@ -351,7 +351,35 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("activitiesProgramEndMonth", "02");
         testPage.enter("activitiesProgramEndDay", "12");
         testPage.clickContinue();
-
+        //activities-partner-add-job
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Add Jobs");
+        testPage.clickButton("Add a job");
+        //activities-partner-employer-name
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Name");
+        testPage.enter("companyName", "testPartnerCompany");
+        testPage.clickContinue();
+        //activities--partner-employer-address
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Address");
+        testPage.enter("employerPhoneNumber", "4444");
+        testPage.enter("employerCity", "Oakland");
+        testPage.enter("employerStreetAddress", "123 Partner Employer Address");
+        testPage.enter("employerZipCode", "6042");
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 10 digits.")).isTrue();
+        assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
+        testPage.enter("employerPhoneNumber", "4333333333");
+        testPage.enter("employerZipCode", "92453");
+        testPage.clickContinue();
+        //activities-partner-self-employment
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Self Employment");
+        testPage.clickButton("No");
+        //activities-partner-commute-time
+        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Commute Time");
+        testPage.selectFromDropdown("activitiesJobCommuteTime", "1.5 hours");
+        testPage.clickContinue();
+        //activities-partner-add-job
+        assertThat(testPage.getHeader()).isEqualTo("Does partner have any other jobs?");
+        testPage.clickButton("That is all my jobs");
         // activities-partner-ed
         assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
         testPage.clickContinue();
