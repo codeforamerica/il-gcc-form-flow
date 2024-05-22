@@ -373,7 +373,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("activitiesJobCommuteTime", "1.5 hours");
         testPage.clickContinue();
         //activities-partner-add-job
-        assertThat(testPage.getHeader()).isEqualTo("Do you have any other jobs, partner?");
+        assertThat(testPage.getHeader()).isEqualTo("Does partner have any other jobs?");
         testPage.clickButton("That is all my jobs");
         // activities-partner-ed
         assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");

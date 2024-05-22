@@ -12,9 +12,9 @@
                addedJobs=${inputData.containsKey('partnerJobs') && inputData.get('partnerJobs').size() > 0}">
         <th:block th:replace="~{fragments/gcc-icons :: income}"></th:block>
         <th:block th:with="addJobsHeader=|#{activities-add-jobs.header} ${fieldData.get('parentPartnerFirstName')}.|,
-                           addMoreJobsHeader=#{activities-add-jobs.header.any-other-jobs(${inputData.get('parentPartnerFirstName')})},
+                           addMoreJobsHeader=#{activities-partner-add-job.header.any-other-jobs(${inputData.get('parentPartnerFirstName')})},
                            jobsSubtext=#{activities-add-jobs.subtext},
-                           addMoreJobsSubtext=#{activities-add-jobs.subtext.add-jobs-list}">
+                           addMoreJobsSubtext=#{activities-partner-add-job.subtext.add-jobs-list}">
           <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${addedJobs ? addMoreJobsHeader : addJobsHeader},
                                                                      subtext=${addedJobs ? addMoreJobsSubtext : jobsSubtext})}"/>
         </th:block>
