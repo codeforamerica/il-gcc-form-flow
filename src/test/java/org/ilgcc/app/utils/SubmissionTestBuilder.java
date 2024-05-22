@@ -181,5 +181,20 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withRegularSchoolSchedule(List days, String startTime, String endTime){
+        submission.getInputData().put("activitiesClassEndTimeAllDays", endTime);
+        submission.getInputData().put("activitiesClassStartTimeAllDays", startTime);
+        submission.getInputData().put("activitiesParentChildcareReason[]", List.of("SCHOOL"));
+        submission.getInputData().put("activitiesClassHoursSameEveryDay[]", List.of("Yes"));
+        submission.getInputData().put("weeklySchedule[]", days);
+        return this;
+    }
 
+    public SubmissionTestBuilder withSchoolScheduleByDay(String day, String startTime, String endTime){
+        submission.getInputData().put("activitiesParentChildcareReason[]", List.of("SCHOOL"));
+        submission.getInputData().put("activitiesClassHoursSameEveryDay[]", List.of());
+        submission.getInputData().put("activitiesClassStartTime"+day, startTime);
+        submission.getInputData().put("activitiesClassEndTime"+day, endTime);
+        return this;
+    }
 }
