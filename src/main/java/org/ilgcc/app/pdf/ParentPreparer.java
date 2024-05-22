@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
+import static org.ilgcc.app.utils.PreparerUtilities.flowIteratorPreparer;
 import static org.ilgcc.app.utils.SubmissionUtilities.getDateInput;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.selectedYes;
@@ -48,6 +49,13 @@ public class ParentPreparer implements SubmissionFieldPreparer {
         var applicantSchoolEndDate =  formatToStringFromLocalDate(getDateInput(submission, "activitiesProgramEnd"));
         results.put("applicantSchoolEndDate",
             new SingleField("applicantSchoolEndDate", applicantSchoolEndDate, null));
+
+        var jobsCompanyFields = List.of("companyName", "employerStreetAddress","employerCity", "employerState", "employerZipCode", "employerPhoneNumber");
+        Map jobsData = flowIteratorPreparer(submission, "jobs", jobsCompanyFields);
+
+        if(!jobsData.isEmpty()){
+            results.putAll(jobsData);
+        }
 
         return results;
     }
