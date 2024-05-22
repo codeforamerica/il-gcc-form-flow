@@ -345,6 +345,8 @@ flow:
     nextScreens: null
   delete-job:
     nextScreens: null
+  delete-partner-job:
+    nextScreens: null
   doc-upload-submit-confirmation:
     onPostAction: UploadSubmissionToS3
     nextScreens:
@@ -366,9 +368,9 @@ subflows:
     reviewScreen: activities-add-jobs
     deleteConfirmationScreen: delete-job
   partnerJobs:
-    entryScreen: activities-partner-add-jobs
+    entryScreen: activities-partner-add-job
     iterationStartScreen: activities-partner-employer-name
-    reviewScreen: activities-partner-add-jobs
+    reviewScreen: activities-partner-add-job
     deleteConfirmationScreen: delete-partner-job
 landmarks:
   firstScreen: onboarding-getting-started
