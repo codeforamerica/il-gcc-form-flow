@@ -2,28 +2,19 @@ package org.ilgcc.app.pdf;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
-import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
-import formflow.library.pdf.SubmissionFieldPreparer;
 import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.ilgcc.app.utils.DayOfWeekOption;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
-
-import static org.ilgcc.app.utils.SubmissionUtilities.getHourlySchedule;
-import static org.ilgcc.app.utils.SubmissionUtilities.putSingleFieldResult;
 
 @Component
-public class ChildcareSchedulePreparer implements SubmissionFieldPreparer {
-    private final DateTimeFormatter CLOCK_TIME_OF_AM_PM = DateTimeFormatter.ofPattern("hh:mm");
-    private final DateTimeFormatter AM_PM_OF_DAY = DateTimeFormatter.ofPattern("a");
+public class ChildcareSchedulePreparer extends SchedulePreparer {
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
