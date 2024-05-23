@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
 
+    @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
 
