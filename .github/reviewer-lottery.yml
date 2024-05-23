@@ -4,6 +4,6 @@ groups:
     usernames: # github usernames of the reviewers
       - coltborg
       - enyia21
-      - stabai
       - rapicastillo
       - analoo
+#      - cram-cfa
