@@ -205,7 +205,7 @@ public class SubmissionTestBuilder {
             return this;
         }
 
-        Map<String, Object> job = jobs.get(0);
+        Map<String, Object> job = jobs.get(jobs.size()-1);
 
         job.put("activitiesJobEndTimeAllDays", endTime);
         job.put("activitiesJobStartTimeAllDays", startTime);
@@ -226,13 +226,14 @@ public class SubmissionTestBuilder {
         job.put("activitiesJobHoursSameEveryDay[]", List.of());
         job.put("activitiesJobStartTime"+day, startTime);
         job.put("activitiesJobEndTime"+day, endTime);
+        ArrayList<String> jobList = new ArrayList<>();
         if(job.containsKey("activitiesJobWeeklySchedule[]")){
-            Object jobSchedule = job.get("activitiesJobWeeklySchedule[]");
-            jobSchedule.add(day);
-            job.put("activitiesJobWeeklySchedule[]", jobSchedule);
-        } else {
-            job.put("activitiesJobWeeklySchedule[]", List.of(day));
+            List jobSchedule = (List) job.getOrDefault("activitiesJobWeeklySchedule[]", List.of());
+            jobList.addAll(jobSchedule);
         }
+        jobList.add(day);
+        job.put("activitiesJobWeeklySchedule[]", jobList);
+
 
         submission.getInputData().put("activitiesParentChildcareReason[]", List.of("WORKING"));
         return this;

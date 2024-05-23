@@ -76,10 +76,10 @@ public class ApplicantJobSchedulePreparerTest {
         assertThat(result.get("applicantEmployerScheduleMondayEndAmPm_1")).isEqualTo(
             new SingleField("applicantEmployerScheduleMondayEndAmPm", "PM", 1));
 
-        assertThat(result.get("applicantEmployerScheduleTuesdayStart_1")).isEqualTo(1);
-        assertThat(result.get("applicantEmployerScheduleTuesdayStartAmPm_1")).isEqualTo(1);
-        assertThat(result.get("applicantEmployerScheduleTuesdayEnd_1")).isEqualTo(1);
-        assertThat(result.get("applicantEmployerScheduleTuesdayEndAmPm_1")).isEqualTo(1);
+        assertThat(result.get("applicantEmployerScheduleTuesdayStart_1")).isEqualTo(null);
+        assertThat(result.get("applicantEmployerScheduleTuesdayStartAmPm_1")).isEqualTo(null);
+        assertThat(result.get("applicantEmployerScheduleTuesdayEnd_1")).isEqualTo(null);
+        assertThat(result.get("applicantEmployerScheduleTuesdayEndAmPm_1")).isEqualTo(null);
 
         assertThat(result.get("applicantEmployerScheduleWednesdayStart_1")).isEqualTo(
             new SingleField("applicantEmployerScheduleWednesdayStart", "08:00", 1));
@@ -98,5 +98,47 @@ public class ApplicantJobSchedulePreparerTest {
             new SingleField("applicantEmployerScheduleFridayEnd", "07:00", 1));
         assertThat(result.get("applicantEmployerScheduleFridayEndAmPm_1")).isEqualTo(
             new SingleField("applicantEmployerScheduleFridayEndAmPm", "PM", 1));
+    }
+
+    @Test
+    public void withTwoJobs() {
+        submission = new SubmissionTestBuilder()
+            .withRegularWorkSchedule(List.of("Monday"),"10:00", "15:45")
+            .withRegularWorkSchedule(List.of("Monday", "Wednesday"),"08:00", "12:45")
+            .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        assertThat(result.get("applicantEmployerScheduleMondayStart_1")).isEqualTo(
+            new SingleField("applicantEmployerScheduleMondayStart", "10:00", 1));
+        assertThat(result.get("applicantEmployerScheduleMondayStartAmPm_1")).isEqualTo(
+            new SingleField("applicantEmployerScheduleMondayStartAmPm", "AM", 1));
+        assertThat(result.get("applicantEmployerScheduleMondayEnd_1")).isEqualTo(
+            new SingleField("applicantEmployerScheduleMondayEnd", "03:45", 1));
+        assertThat(result.get("applicantEmployerScheduleMondayEndAmPm_1")).isEqualTo(
+            new SingleField("applicantEmployerScheduleMondayEndAmPm", "PM", 1));
+
+        assertThat(result.get("applicantEmployerScheduleMondayStart_2")).isEqualTo(
+            new SingleField("applicantEmployerScheduleMondayStart", "08:00", 2));
+        assertThat(result.get("applicantEmployerScheduleMondayStartAmPm_2")).isEqualTo(
+            new SingleField("applicantEmployerScheduleMondayStartAmPm", "AM", 2));
+        assertThat(result.get("applicantEmployerScheduleMondayEnd_2")).isEqualTo(
+            new SingleField("applicantEmployerScheduleMondayEnd", "12:45", 2));
+        assertThat(result.get("applicantEmployerScheduleMondayEndAmPm_2")).isEqualTo(
+            new SingleField("applicantEmployerScheduleMondayEndAmPm", "PM", 2));
+
+        assertThat(result.get("applicantEmployerScheduleWednesdayStart_1")).isEqualTo(null);
+        assertThat(result.get("applicantEmployerScheduleWednesdayStartAmPm_1")).isEqualTo(null);
+        assertThat(result.get("applicantEmployerScheduleWednesdayEnd_1")).isEqualTo(null);
+        assertThat(result.get("applicantEmployerScheduleWednesdayEndAmPm_1")).isEqualTo(null);
+
+        assertThat(result.get("applicantEmployerScheduleWednesdayStart_2")).isEqualTo(
+            new SingleField("applicantEmployerScheduleWednesdayStart", "08:00", 2));
+        assertThat(result.get("applicantEmployerScheduleWednesdayStartAmPm_2")).isEqualTo(
+            new SingleField("applicantEmployerScheduleWednesdayStartAmPm", "AM", 2));
+        assertThat(result.get("applicantEmployerScheduleWednesdayEnd_2")).isEqualTo(
+            new SingleField("applicantEmployerScheduleWednesdayEnd", "12:45", 2));
+        assertThat(result.get("applicantEmployerScheduleWednesdayEndAmPm_2")).isEqualTo(
+            new SingleField("applicantEmployerScheduleWednesdayEndAmPm", "PM", 2));
     }
 }
