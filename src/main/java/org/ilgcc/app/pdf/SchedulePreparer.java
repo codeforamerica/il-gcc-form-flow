@@ -25,19 +25,19 @@ public class SchedulePreparer implements SubmissionFieldPreparer {
 
     protected static DateTimeFormatter CLOCK_TIME_OF_AM_PM = DateTimeFormatter.ofPattern("hh:mm");
     protected static DateTimeFormatter AM_PM_OF_DAY = DateTimeFormatter.ofPattern("a");
-    public static Optional<HourlySchedule> activitiesClassSchedule;
+    public static Optional<HourlySchedule> schedule;
     public static String fieldPrefixKey;
 
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
-        setActivitiesClassSchedule(submission);
-        if (this.activitiesClassSchedule.isEmpty()) {
+        setSchedule(submission);
+        if (this.schedule.isEmpty()) {
             return results;
         }
 
-        Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = activitiesClassSchedule.get().toDailyScheduleMap();
+        Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = schedule.get().toDailyScheduleMap();
         for (var scheduleEntry : dailyScheduleMap.entrySet()) {
             DayOfWeekOption day = scheduleEntry.getKey();
             LocalTimeRange schedule = scheduleEntry.getValue();
@@ -46,8 +46,8 @@ public class SchedulePreparer implements SubmissionFieldPreparer {
         return results;
     }
 
-    public void setActivitiesClassSchedule(Submission submission) {
-        activitiesClassSchedule = getHourlySchedule(submission, "", "");
+    public void setSchedule(Submission submission) {
+        schedule = getHourlySchedule(submission, "", "");
         fieldPrefixKey = "";
     }
 
