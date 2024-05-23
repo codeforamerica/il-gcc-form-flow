@@ -5,6 +5,7 @@ import static java.util.Collections.emptyList;
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SubmissionField;
+import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,8 @@ import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ApplicantJobSchedulePreparer extends SchedulePreparer {
+public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
+
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
 
@@ -26,7 +28,7 @@ public class ApplicantJobSchedulePreparer extends SchedulePreparer {
 
         for (var job : jobs) {
             Optional<HourlySchedule> workSchedule =
-                getHourlySchedule(
+                SchedulePreparer.getHourlySchedule(
                     job,
                     "activitiesJob",
                     "activitiesJobWeeklySchedule[]");
@@ -38,30 +40,14 @@ public class ApplicantJobSchedulePreparer extends SchedulePreparer {
             for (var scheduleEntry : dailyScheduleMap.entrySet()) {
                 DayOfWeekOption day = scheduleEntry.getKey();
                 LocalTimeRange schedule = scheduleEntry.getValue();
-                String fieldPrefix = "applicantEmployerSchedule" + day.name();
-                putSingleFieldResult(
-                    results,
-                    fieldPrefix + "Start",
-                    schedule.startTime().format(CLOCK_TIME_OF_AM_PM),
-                    iteration);
-                putSingleFieldResult(
-                    results,
-                    fieldPrefix + "StartAmPm",
-                    schedule.startTime().format(AM_PM_OF_DAY),
-                    iteration);
-                putSingleFieldResult(
-                    results,
-                    fieldPrefix + "End",
-                    schedule.endTime().format(CLOCK_TIME_OF_AM_PM),
-                    iteration);
-                putSingleFieldResult(
-                    results,
-                    fieldPrefix + "EndAmPm",
-                    schedule.endTime().format(AM_PM_OF_DAY),
-                    iteration);
+                results.putAll(
+                    SchedulePreparer.createSubmissionFieldsFromSchedule(schedule, day, "applicantEmployerSchedule",
+                        iteration));
             }
             iteration++;
+
         }
+
         return results;
     }
 }

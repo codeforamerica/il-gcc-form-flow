@@ -1,10 +1,8 @@
 package org.ilgcc.app.pdf;
 
 import formflow.library.data.Submission;
-import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
-import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.function.Function;
 import org.ilgcc.app.utils.ActivitySchedules.ConsistentHourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
@@ -21,37 +19,11 @@ import static java.util.function.Function.identity;
 import static org.ilgcc.app.utils.SubmissionUtilities.*;
 
 @Component
-public class SchedulePreparer implements SubmissionFieldPreparer {
-
+public class SchedulePreparer {
     protected static DateTimeFormatter CLOCK_TIME_OF_AM_PM = DateTimeFormatter.ofPattern("hh:mm");
     protected static DateTimeFormatter AM_PM_OF_DAY = DateTimeFormatter.ofPattern("a");
-    public static Optional<HourlySchedule> schedule;
-    public static String fieldPrefixKey;
 
-
-    @Override
-    public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
-        var results = new HashMap<String, SubmissionField>();
-        setSchedule(submission);
-        if (this.schedule.isEmpty()) {
-            return results;
-        }
-
-        Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = schedule.get().toDailyScheduleMap();
-        for (var scheduleEntry : dailyScheduleMap.entrySet()) {
-            DayOfWeekOption day = scheduleEntry.getKey();
-            LocalTimeRange schedule = scheduleEntry.getValue();
-            results.putAll(createSubmissionFieldsFromSchedule(schedule, day));
-        }
-        return results;
-    }
-
-    public void setSchedule(Submission submission) {
-        schedule = getHourlySchedule(submission, "", "");
-        fieldPrefixKey = "";
-    }
-
-    public static Map<String, SubmissionField> createSubmissionFieldsFromSchedule(LocalTimeRange schedule, DayOfWeekOption day) {
+    public static Map<String, SubmissionField> createSubmissionFieldsFromSchedule(LocalTimeRange schedule, DayOfWeekOption day, String fieldPrefixKey) {
         Map<String, SubmissionField> fields = new HashMap<>();
         if (!fieldPrefixKey.isBlank()) {
             String fieldPrefix = fieldPrefixKey + day.name();
@@ -63,6 +35,22 @@ public class SchedulePreparer implements SubmissionFieldPreparer {
                 new SingleField(fieldPrefix + "End", schedule.endTime().format(CLOCK_TIME_OF_AM_PM), null));
             fields.put(fieldPrefix + "EndAmPm",
                 new SingleField(fieldPrefix + "EndAmPm", schedule.endTime().format(AM_PM_OF_DAY), null));
+        }
+        return fields;
+    }
+
+    public static Map<String, SubmissionField> createSubmissionFieldsFromSchedule(LocalTimeRange schedule, DayOfWeekOption day, String fieldPrefixKey, int iterator) {
+        Map<String, SubmissionField> fields = new HashMap<>();
+        if (!fieldPrefixKey.isBlank()) {
+            String fieldPrefix = fieldPrefixKey + day.name();
+            fields.put(fieldPrefix + "Start_"+iterator,
+                new SingleField(fieldPrefix + "Start", schedule.startTime().format(CLOCK_TIME_OF_AM_PM), iterator));
+            fields.put(fieldPrefix + "StartAmPm_"+iterator,
+                new SingleField(fieldPrefix + "StartAmPm", schedule.startTime().format(AM_PM_OF_DAY), iterator));
+            fields.put(fieldPrefix + "End_"+iterator,
+                new SingleField(fieldPrefix + "End", schedule.endTime().format(CLOCK_TIME_OF_AM_PM), iterator));
+            fields.put(fieldPrefix + "EndAmPm_"+iterator,
+                new SingleField(fieldPrefix + "EndAmPm", schedule.endTime().format(AM_PM_OF_DAY), iterator));
         }
         return fields;
     }
@@ -116,14 +104,5 @@ public class SchedulePreparer implements SubmissionFieldPreparer {
         } else {
             throw new IllegalArgumentException("List field does not contain a list");
         }
-    }
-
-    public static void putSingleFieldResult(Map<String, SubmissionField> results, String fieldName, String value) {
-        results.put(fieldName, new SingleField(fieldName, value, null));
-    }
-
-    public static void putSingleFieldResult(Map<String, SubmissionField> results, String fieldName, String value,
-        Integer iteration) {
-        results.put(fieldName + "_" + iteration, new SingleField(fieldName, value, iteration));
     }
 }
