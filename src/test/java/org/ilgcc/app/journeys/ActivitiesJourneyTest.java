@@ -435,6 +435,41 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         //activities-partner-self-employment
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Self Employment");
         testPage.clickButton("No");
+
+        //check that selecting yes on activities-partner-work-schedule-vary screen send you to ...next-work-schedule
+        // and no sends you to the ...job-weekly-schedule screen
+
+        //activities-partner-work-schedule-vary
+        assertThat(testPage.getTitle()).isEqualTo("Partner Work Schedule Varies");
+        assertThat(testPage.getHeader()).isEqualTo("Do partner's work days or hours vary at this job?");
+        testPage.clickButton("No");
+
+        //activities-partner-job-weekly-schedule
+        assertThat(testPage.getTitle()).isEqualTo("Partner Weekly Schedule");
+        testPage.goBack();
+
+        //activities-partner-work-schedule-vary
+        assertThat(testPage.getTitle()).isEqualTo("Partner Work Schedule Varies");
+        testPage.clickButton("Yes");
+
+        //activities-partner-next-work-schedule
+        assertThat(testPage.getTitle()).isEqualTo("Notice Partner Work Schedule Varies");
+        assertThat(testPage.getHeader()).isEqualTo("Next, we'll ask about partner's work schedule");
+        testPage.clickContinue();
+        //activities-partner-job-weekly-schedule
+        assertThat(testPage.getTitle()).isEqualTo("Partner Weekly Schedule");
+        testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+        testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
+        testPage.clickContinue();
+
+        //activities-partner-job-hourly-schedule
+        assertThat(testPage.getTitle()).isEqualTo("Partner Hourly Schedule");
+        testPage.enter("activitiesJobStartTimeMonday", "1200PM");
+        testPage.enter("activitiesJobEndTimeMonday", "0100PM");
+        testPage.enter("activitiesJobStartTimeSunday", "0200PM");
+        testPage.enter("activitiesJobEndTimeSunday", "0300PM");
+        testPage.clickContinue();
+
         //activities-partner-commute-time
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Commute Time");
         testPage.selectFromDropdown("activitiesJobCommuteTime", "1.5 hours");
