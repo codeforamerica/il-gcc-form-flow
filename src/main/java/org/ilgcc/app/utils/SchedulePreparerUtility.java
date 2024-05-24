@@ -19,37 +19,44 @@ import static org.ilgcc.app.utils.SubmissionUtilities.*;
 
 @Component
 public class SchedulePreparerUtility {
+
     protected static DateTimeFormatter CLOCK_TIME_OF_AM_PM = DateTimeFormatter.ofPattern("hh:mm");
     protected static DateTimeFormatter AM_PM_OF_DAY = DateTimeFormatter.ofPattern("a");
 
-    public static Map<String, SubmissionField> createSubmissionFieldsFromSchedule(LocalTimeRange schedule, DayOfWeekOption day, String fieldPrefixKey) {
+    private static String START = "Start";
+    private static String END = "End";
+    private static String AM_PM = "AmPm";
+
+    public static Map<String, SubmissionField> createSubmissionFieldsFromSchedule(LocalTimeRange schedule, DayOfWeekOption day,
+        String fieldPrefixKey) {
         Map<String, SubmissionField> fields = new HashMap<>();
         if (!fieldPrefixKey.isBlank()) {
             String fieldPrefix = fieldPrefixKey + day.name();
-            fields.put(fieldPrefix + "Start",
-                new SingleField(fieldPrefix + "Start", schedule.startTime().format(CLOCK_TIME_OF_AM_PM), null));
-            fields.put(fieldPrefix + "StartAmPm",
-                new SingleField(fieldPrefix + "StartAmPm", schedule.startTime().format(AM_PM_OF_DAY), null));
-            fields.put(fieldPrefix + "End",
-                new SingleField(fieldPrefix + "End", schedule.endTime().format(CLOCK_TIME_OF_AM_PM), null));
-            fields.put(fieldPrefix + "EndAmPm",
-                new SingleField(fieldPrefix + "EndAmPm", schedule.endTime().format(AM_PM_OF_DAY), null));
+            fields.put(fieldPrefix + START,
+                new SingleField(fieldPrefix + START, schedule.startTime().format(CLOCK_TIME_OF_AM_PM), null));
+            fields.put(fieldPrefix + START + AM_PM,
+                new SingleField(fieldPrefix + START + AM_PM, schedule.startTime().format(AM_PM_OF_DAY), null));
+            fields.put(fieldPrefix + END,
+                new SingleField(fieldPrefix + END, schedule.endTime().format(CLOCK_TIME_OF_AM_PM), null));
+            fields.put(fieldPrefix + END + AM_PM,
+                new SingleField(fieldPrefix + END + AM_PM, schedule.endTime().format(AM_PM_OF_DAY), null));
         }
         return fields;
     }
 
-    public static Map<String, SubmissionField> createSubmissionFieldsFromSchedule(LocalTimeRange schedule, DayOfWeekOption day, String fieldPrefixKey, int iterator) {
+    public static Map<String, SubmissionField> createSubmissionFieldsFromSchedule(LocalTimeRange schedule, DayOfWeekOption day,
+        String fieldPrefixKey, int iterator) {
         Map<String, SubmissionField> fields = new HashMap<>();
         if (!fieldPrefixKey.isBlank()) {
             String fieldPrefix = fieldPrefixKey + day.name();
-            fields.put(fieldPrefix + "Start_"+iterator,
-                new SingleField(fieldPrefix + "Start", schedule.startTime().format(CLOCK_TIME_OF_AM_PM), iterator));
-            fields.put(fieldPrefix + "StartAmPm_"+iterator,
-                new SingleField(fieldPrefix + "StartAmPm", schedule.startTime().format(AM_PM_OF_DAY), iterator));
-            fields.put(fieldPrefix + "End_"+iterator,
-                new SingleField(fieldPrefix + "End", schedule.endTime().format(CLOCK_TIME_OF_AM_PM), iterator));
-            fields.put(fieldPrefix + "EndAmPm_"+iterator,
-                new SingleField(fieldPrefix + "EndAmPm", schedule.endTime().format(AM_PM_OF_DAY), iterator));
+            fields.put(fieldPrefix + START + "_" + iterator,
+                new SingleField(fieldPrefix + START, schedule.startTime().format(CLOCK_TIME_OF_AM_PM), iterator));
+            fields.put(fieldPrefix + START + AM_PM + "_" + iterator,
+                new SingleField(fieldPrefix + START + AM_PM, schedule.startTime().format(AM_PM_OF_DAY), iterator));
+            fields.put(fieldPrefix + END + "_" + iterator,
+                new SingleField(fieldPrefix + END, schedule.endTime().format(CLOCK_TIME_OF_AM_PM), iterator));
+            fields.put(fieldPrefix + END + AM_PM + "_" + iterator,
+                new SingleField(fieldPrefix + END + AM_PM, schedule.endTime().format(AM_PM_OF_DAY), iterator));
         }
         return fields;
     }
