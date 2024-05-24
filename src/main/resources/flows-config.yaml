@@ -257,6 +257,25 @@ flow:
   activities-partner-self-employment:
     subflow: partnerJobs
     nextScreens:
+      - name: activities-partner-work-schedule-vary
+  activities-partner-work-schedule-vary:
+    subflow: partnerJobs
+    nextScreens:
+      - name: activities-partner-job-weekly-schedule
+        condition: PartnersWorkDaysOrHoursVaryDoNotVary
+      - name: activities-partner-next-work-schedule
+  activities-partner-next-work-schedule:
+    subflow: partnerJobs
+    nextScreens:
+      - name: activities-partner-job-weekly-schedule
+  activities-partner-job-weekly-schedule:
+    subflow: partnerJobs
+    nextScreens:
+      - name: activities-partner-job-hourly-schedule
+  activities-partner-job-hourly-schedule:
+    beforeDisplayAction: PartnerSetJobWeeklyScheduleGroup
+    subflow: partnerJobs
+    nextScreens:
       - name: activities-partner-commute-time
   activities-partner-commute-time:
     subflow: partnerJobs
