@@ -7,6 +7,7 @@ import formflow.library.pdf.SubmissionFieldPreparer;
 import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.ilgcc.app.utils.DayOfWeekOption;
+import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ public class ChildcareSchedulePreparer implements SubmissionFieldPreparer {
 
         for (var child : SubmissionUtilities.getChildrenNeedingAssistance(submission)) {
             Optional<HourlySchedule> careSchedule =
-                SchedulePreparer.getHourlySchedule(
+                SchedulePreparerUtility.getHourlySchedule(
                     child,
                     "childcare",
                     "childcareWeeklySchedule[]");
@@ -38,7 +39,7 @@ public class ChildcareSchedulePreparer implements SubmissionFieldPreparer {
                 DayOfWeekOption day = scheduleEntry.getKey();
                 LocalTimeRange schedule = scheduleEntry.getValue();
                 results.putAll(
-                    SchedulePreparer.createSubmissionFieldsFromSchedule(schedule, day, "childCareSchedule", iteration));
+                    SchedulePreparerUtility.createSubmissionFieldsFromSchedule(schedule, day, "childCareSchedule", iteration));
             }
             iteration++;
         }

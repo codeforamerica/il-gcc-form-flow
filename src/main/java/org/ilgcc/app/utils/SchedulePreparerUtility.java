@@ -1,4 +1,4 @@
-package org.ilgcc.app.pdf;
+package org.ilgcc.app.utils;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.SingleField;
@@ -8,7 +8,6 @@ import org.ilgcc.app.utils.ActivitySchedules.ConsistentHourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.ilgcc.app.utils.ActivitySchedules.PerDayHourlySchedule;
-import org.ilgcc.app.utils.DayOfWeekOption;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
@@ -19,7 +18,7 @@ import static java.util.function.Function.identity;
 import static org.ilgcc.app.utils.SubmissionUtilities.*;
 
 @Component
-public class SchedulePreparer {
+public class SchedulePreparerUtility {
     protected static DateTimeFormatter CLOCK_TIME_OF_AM_PM = DateTimeFormatter.ofPattern("hh:mm");
     protected static DateTimeFormatter AM_PM_OF_DAY = DateTimeFormatter.ofPattern("a");
 

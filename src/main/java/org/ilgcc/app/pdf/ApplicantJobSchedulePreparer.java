@@ -13,7 +13,7 @@ import java.util.Optional;
 import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.ilgcc.app.utils.DayOfWeekOption;
-import org.ilgcc.app.utils.SubmissionUtilities;
+import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,7 +29,7 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
 
         for (var job : jobs) {
             Optional<HourlySchedule> workSchedule =
-                SchedulePreparer.getHourlySchedule(
+                SchedulePreparerUtility.getHourlySchedule(
                     job,
                     "activitiesJob",
                     "activitiesJobWeeklySchedule[]");
@@ -42,7 +42,7 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
                 DayOfWeekOption day = scheduleEntry.getKey();
                 LocalTimeRange schedule = scheduleEntry.getValue();
                 results.putAll(
-                    SchedulePreparer.createSubmissionFieldsFromSchedule(schedule, day, "applicantEmployerSchedule",
+                    SchedulePreparerUtility.createSubmissionFieldsFromSchedule(schedule, day, "applicantEmployerSchedule",
                         iteration));
             }
             iteration++;
