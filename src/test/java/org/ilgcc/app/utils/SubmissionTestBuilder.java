@@ -1,6 +1,8 @@
 package org.ilgcc.app.utils;
 
 import formflow.library.data.Submission;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +26,11 @@ public class SubmissionTestBuilder {
 
     public SubmissionTestBuilder with(String key, Object value) {
         submission.getInputData().put(key, value);
+        return this;
+    }
+
+    public SubmissionTestBuilder withSubmittedAtDate(OffsetDateTime date){
+        submission.setSubmittedAt(date);
         return this;
     }
 

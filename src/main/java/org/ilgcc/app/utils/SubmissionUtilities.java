@@ -123,9 +123,13 @@ public class SubmissionUtilities {
 
   public static String formatToStringFromLocalDate(Optional<LocalDate> date){
     if(date.isPresent()){
-      return date.get().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+      return formatToStringFromLocalDate(date.get());
     }
     return "";
+  }
+
+  public static String formatToStringFromLocalDate(LocalDate date){
+    return date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
   }
 
 
