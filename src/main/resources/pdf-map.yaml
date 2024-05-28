@@ -127,3 +127,32 @@ subflowInfo:
       employerState: APPLICANT_EMPLOYER_STATE
       employerZipCode: APPLICANT_EMPLOYER_ZIP
       employerPhoneNumber: APPLICANT_EMPLOYER_PHONE
+      applicantEmployerScheduleMondayStart: APPLICANT_EMPLOYER_SCHEDULE_MONDAY_START
+      applicantEmployerScheduleMondayStartAmPm: APPLICANT_EMPLOYER_SCHEDULE_MONDAY_START_AM_PM
+      applicantEmployerScheduleTuesdayStart: APPLICANT_EMPLOYER_SCHEDULE_TUESDAY_START
+      applicantEmployerScheduleTuesdayStartAmPm: APPLICANT_EMPLOYER_SCHEDULE_TUESDAY_START_AM_PM
+      applicantEmployerScheduleWednesdayStart: APPLICANT_EMPLOYER_SCHEDULE_WEDNESDAY_START
+      applicantEmployerScheduleWednesdayStartAmPm: APPLICANT_EMPLOYER_SCHEDULE_WEDNESDAY_START_AM_PM
+      applicantEmployerScheduleThursdayStart: APPLICANT_EMPLOYER_SCHEDULE_THURSDAY_START
+      applicantEmployerScheduleThursdayStartAmPm: APPLICANT_EMPLOYER_SCHEDULE_THURSDAY_START_AM_PM
+      applicantEmployerScheduleFridayStart: APPLICANT_EMPLOYER_SCHEDULE_FRIDAY_START
+      applicantEmployerScheduleFridayStartAmPm: APPLICANT_EMPLOYER_SCHEDULE_FRIDAY_START_AM_PM
+      applicantEmployerScheduleSaturdayStart: APPLICANT_EMPLOYER_SCHEDULE_SATURDAY_START
+      applicantEmployerScheduleSaturdayStartAmPm: APPLICANT_EMPLOYER_SCHEDULE_SATURDAY_START_AM_PM
+      applicantEmployerScheduleSundayStart: APPLICANT_EMPLOYER_SCHEDULE_SUNDAY_START
+      applicantEmployerScheduleSundayStartAmPm: APPLICANT_EMPLOYER_SCHEDULE_SUNDAY_START_AM_PM
+
+      applicantEmployerScheduleMondayEnd: APPLICANT_EMPLOYER_SCHEDULE_MONDAY_END
+      applicantEmployerScheduleMondayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_MONDAY_END_AM_PM
+      applicantEmployerScheduleTuesdayEnd: APPLICANT_EMPLOYER_SCHEDULE_TUESDAY_END
+      applicantEmployerScheduleTuesdayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_TUESDAY_END_AM_PM
+      applicantEmployerScheduleWednesdayEnd: APPLICANT_EMPLOYER_SCHEDULE_WEDNESDAY_END
+      applicantEmployerScheduleWednesdayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_WEDNESDAY_END_AM_PM
+      applicantEmployerScheduleThursdayEnd: APPLICANT_EMPLOYER_SCHEDULE_THURSDAY_END
+      applicantEmployerScheduleThursdayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_THURSDAY_END_AM_PM
+      applicantEmployerScheduleFridayEnd: APPLICANT_EMPLOYER_SCHEDULE_FRIDAY_END
+      applicantEmployerScheduleFridayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_FRIDAY_END_AM_PM
+      applicantEmployerScheduleSaturdayEnd: APPLICANT_EMPLOYER_SCHEDULE_SATURDAY_END
+      applicantEmployerScheduleSaturdayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_SATURDAY_END_AM_PM
+      applicantEmployerScheduleSundayEnd: APPLICANT_EMPLOYER_SCHEDULE_SUNDAY_END
+      applicantEmployerScheduleSundayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_SUNDAY_END_AM_PM
