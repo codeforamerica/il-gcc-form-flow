@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import net.bytebuddy.asm.Advice.Local;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         var partnerSignature = inputData.getOrDefault("partnerSignedName", "");
 
         if (!partnerSignature.equals("")) {
-            var partnerSignatureDate = LocalDate.from(submission.getSubmittedAt());
+            Optional<LocalDate> partnerSignatureDate = Optional.of(LocalDate.from(submission.getSubmittedAt()));
             results.put("partnerSignedAt", new SingleField("partnerSignedAt", formatToStringFromLocalDate(partnerSignatureDate), null));
         }
 

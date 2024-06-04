@@ -123,15 +123,10 @@ public class SubmissionUtilities {
 
   public static String formatToStringFromLocalDate(Optional<LocalDate> date){
     if(date.isPresent()){
-      return formatToStringFromLocalDate(date.get());
+      return date.get().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
     }
     return "";
   }
-
-  public static String formatToStringFromLocalDate(LocalDate date){
-    return date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-  }
-
 
   public static String selectedYes(String selected){
     if (selected.equals("Yes")){
