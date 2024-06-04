@@ -566,12 +566,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     @NotNull
     private static List<String> getMissMatches(AcroFields expectedAcroFields, AcroFields actualAcroFields) {
         List<String> missMatches = new ArrayList<>();
+//        These fields are dynamic and untestable with the current PDF approach
+        List<String> UNTESTABLE_FIELDS = List.of("PARTNER_SIGNATURE_DATE", "APPLICANT_SIGNATURE_DATE");
         for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
-            var actual = actualAcroFields.getField(expectedField);
-            var expected = expectedAcroFields.getField(expectedField);
-            if (!expected.equals(actual)) {
-                missMatches.add(expectedField);
-                log.info("Expected %s to be %s but was %s".formatted(expectedField, expected, actual));
+            if(!UNTESTABLE_FIELDS.contains(expectedField)){
+                var actual = actualAcroFields.getField(expectedField);
+                var expected = expectedAcroFields.getField(expectedField);
+                if (!expected.equals(actual)) {
+                    missMatches.add(expectedField);
+                    log.info("Expected %s to be %s but was %s".formatted(expectedField, expected, actual));
+                }
             }
         }
         return missMatches;
