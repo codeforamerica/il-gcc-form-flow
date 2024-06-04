@@ -415,6 +415,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         //activities-partner-add-job
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Add Jobs");
+        assertThat(testPage.getHeader()).isEqualTo("Now, let's add partner's jobs.");
+        assertThat(testPage.findElementById("header-help-message").getText()).isEqualTo("We will ask for their income and work schedule for each jobs.");
         testPage.clickButton("Add a job");
         //activities-partner-employer-name
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Name");
