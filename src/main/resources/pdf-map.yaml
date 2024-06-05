@@ -171,3 +171,35 @@ subflowInfo:
       applicantEmployerScheduleSaturdayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_SATURDAY_END_AM_PM
       applicantEmployerScheduleSundayEnd: APPLICANT_EMPLOYER_SCHEDULE_SUNDAY_END
       applicantEmployerScheduleSundayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_SUNDAY_END_AM_PM
+  parentPartnerJobs:
+    totalIterations: 2
+    inputFields:
+      partnerEmployerScheduleMondayStart: PARTNER_EMPLOYER_SCHEDULE_MONDAY_START
+      partnerEmployerScheduleMondayStartAmPm: PARTNER_EMPLOYER_SCHEDULE_MONDAY_START_AM_PM
+      partnerEmployerScheduleTuesdayStart: PARTNER_EMPLOYER_SCHEDULE_TUESDAY_START
+      partnerEmployerScheduleTuesdayStartAmPm: PARTNER_EMPLOYER_SCHEDULE_TUESDAY_START_AM_PM
+      partnerEmployerScheduleWednesdayStart: PARTNER_EMPLOYER_SCHEDULE_WEDNESDAY_START
+      partnerEmployerScheduleWednesdayStartAmPm: PARTNER_EMPLOYER_SCHEDULE_WEDNESDAY_START_AM_PM
+      partnerEmployerScheduleThursdayStart: PARTNER_EMPLOYER_SCHEDULE_THURSDAY_START
+      partnerEmployerScheduleThursdayStartAmPm: PARTNER_EMPLOYER_SCHEDULE_THURSDAY_START_AM_PM
+      partnerEmployerScheduleFridayStart: PARTNER_EMPLOYER_SCHEDULE_FRIDAY_START
+      partnerEmployerScheduleFridayStartAmPm: PARTNER_EMPLOYER_SCHEDULE_FRIDAY_START_AM_PM
+      partnerEmployerScheduleSaturdayStart: PARTNER_EMPLOYER_SCHEDULE_SATURDAY_START
+      partnerEmployerScheduleSaturdayStartAmPm: PARTNER_EMPLOYER_SCHEDULE_SATURDAY_START_AM_PM
+      partnerEmployerScheduleSundayStart: PARTNER_EMPLOYER_SCHEDULE_SUNDAY_START
+      partnerEmployerScheduleSundayStartAmPm: PARTNER_EMPLOYER_SCHEDULE_SUNDAY_START_AM_PM
+
+      partnerEmployerScheduleMondayEnd: PARTNER_EMPLOYER_SCHEDULE_MONDAY_END
+      partnerEmployerScheduleMondayEndAmPm: PARTNER_EMPLOYER_SCHEDULE_MONDAY_END_AM_PM
+      partnerEmployerScheduleTuesdayEnd: PARTNER_EMPLOYER_SCHEDULE_TUESDAY_END
+      partnerEmployerScheduleTuesdayEndAmPm: PARTNER_EMPLOYER_SCHEDULE_TUESDAY_END_AM_PM
+      partnerEmployerScheduleWednesdayEnd: PARTNER_EMPLOYER_SCHEDULE_WEDNESDAY_END
+      partnerEmployerScheduleWednesdayEndAmPm: PARTNER_EMPLOYER_SCHEDULE_WEDNESDAY_END_AM_PM
+      partnerEmployerScheduleThursdayEnd: PARTNER_EMPLOYER_SCHEDULE_THURSDAY_END
+      partnerEmployerScheduleThursdayEndAmPm: PARTNER_EMPLOYER_SCHEDULE_THURSDAY_END_AM_PM
+      partnerEmployerScheduleFridayEnd: PARTNER_EMPLOYER_SCHEDULE_FRIDAY_END
+      partnerEmployerScheduleFridayEndAmPm: PARTNER_EMPLOYER_SCHEDULE_FRIDAY_END_AM_PM
+      partnerEmployerScheduleSaturdayEnd: PARTNER_EMPLOYER_SCHEDULE_SATURDAY_END
+      partnerEmployerScheduleSaturdayEndAmPm: PARTNER_EMPLOYER_SCHEDULE_SATURDAY_END_AM_PM
+      partnerEmployerScheduleSundayEnd: PARTNER_EMPLOYER_SCHEDULE_SUNDAY_END
+      partnerEmployerScheduleSundayEndAmPm: PARTNER_EMPLOYER_SCHEDULE_SUNDAY_END_AM_PM
