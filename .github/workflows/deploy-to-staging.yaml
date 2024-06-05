@@ -2,9 +2,9 @@ name: Deploy to Aptible Staging
 
 on:
   workflow_run:
-    workflows: ["Run tests"]
-    types: [completed]
-    branches: [main]
+    workflows: [ "Run tests" ]
+    types: [ completed ]
+    branches: [ main ]
   workflow_dispatch:
     inputs: { }
 
@@ -57,7 +57,7 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: staging
-      - name: Announce on Slack when deploy fails
+      - name: Announce on Slack when deployed
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}

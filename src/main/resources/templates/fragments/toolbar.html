@@ -1,21 +1,28 @@
 <th:block th:fragment="toolbar">
-  <header class="main-header toolbar__wrapper" th:with="linkText=${submission == null ? '#' : ('/download/gcc/' + submission.getId())}">
-    <div class="toolbar">
-      <div class="toolbar__left spacing-above-0">
-        <a href="#content" id="skip-to-content" class="button button--small" th:text="#{general.skip-to-content}"></a>
-        <a class="logo" href="/">
-          <img src="/assets/images/IDHS-white.svg"
-               alt="Illinois Department of Human Services logo"
-               style="width: 118px; height: 36px;"
-               class="vertical-align-middle"/>
-        </a>
-      </div>
-      <div class="toolbar__right">
-        <th:block th:replace="~{fragments/languageSelector :: languageSelector}"></th:block>
-      </div>
-    </div>
-    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='staging')}"/>
-    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='demo')}"/>
-    <th:block th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='dev')}"/>
-  </header>
+    <header class="main-header toolbar__wrapper"
+            th:with="linkText=${submission == null ? '#' : ('/download/gcc/' + submission.getId())}">
+        <div class="toolbar">
+            <div class="toolbar__left spacing-above-0">
+                <a href="#content" id="skip-to-content" class="button button--small"
+                   th:text="#{general.skip-to-content}"></a>
+                <a class="logo" href="/">
+                    <img src="/assets/images/IDHS-white.svg"
+                         alt="Illinois Department of Human Services logo"
+                         style="width: 118px; height: 36px;"
+                         class="vertical-align-middle"/>
+                </a>
+            </div>
+            <div class="toolbar__right">
+                <th:block th:replace="~{fragments/languageSelector :: languageSelector}"></th:block>
+            </div>
+        </div>
+        <th:block
+                th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='staging')}"/>
+        <th:block
+                th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='demo')}"/>
+        <th:block
+                th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='dev')}"/>
+        <th:block
+                th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='prod')}"/>
+    </header>
 </th:block>
