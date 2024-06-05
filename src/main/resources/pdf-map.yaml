@@ -21,6 +21,12 @@ inputFields:
   parentPartnerDateOfBirth: PARTNER_DOB
   parentPartnerPhoneNumber: PARTNER_PHONE_NUMBER
   parentPartnerIsServing: PARTNER_MILITARY_ACTIVE_DUTY
+  partnerProgramName: PARTNER_EDUCATION_SCHOOL_NAME
+  partnerEdStreetAddress: PARTNER_EDUCATION_SCHOOL_ADDRESS
+  partnerEdCity: PARTNER_EDUCATION_SCHOOL_CITY
+  partnerEdState: PARTNER_EDUCATION_SCHOOL_STATE
+  partnerEdZipCode: PARTNER_EDUCATION_SCHOOL_ZIP
+  partnerEdPhoneNumber: PARTNER_EDUCATION_SCHOOL_PHONE
   parentPartnerInMilitaryReserveOrNationalGuard: PARTNER_MILITARY_NATIONAL_GUARD
   languageRead: APPLICANT_PRIMARY_LANGUAGE
   dayCareName: PROVIDER_NAME_CORPORATE
