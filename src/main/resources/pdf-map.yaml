@@ -74,6 +74,13 @@ inputFields:
   applicantEducationScheduleSundayEnd: APPLICANT_EDUCATION_SCHEDULE_SUNDAY_END
   applicantEducationScheduleSundayEndAmPm: APPLICANT_EDUCATION_SCHEDULE_SUNDAY_END_AM_PM
 
+  signedName: APPLICANT_SIGNATURE
+  partnerSignedName: PARTNER_SIGNATURE
+  partnerSignedAt: PARTNER_SIGNATURE_DATE
+
+dbFields:
+  submittedAt: APPLICANT_SIGNATURE_DATE
+
 subflowInfo:
   otherFamilyMembers:
     totalIterations: 5

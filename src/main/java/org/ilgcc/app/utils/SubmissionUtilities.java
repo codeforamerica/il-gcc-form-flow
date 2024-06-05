@@ -128,7 +128,6 @@ public class SubmissionUtilities {
     return "";
   }
 
-
   public static String selectedYes(String selected){
     if (selected.equals("Yes")){
       return "true";
