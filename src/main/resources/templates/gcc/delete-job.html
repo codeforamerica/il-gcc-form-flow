@@ -32,6 +32,7 @@
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton( text=#{delete-job.yes})}"/>
             </form>
             <a class="button spacing-above-35" th:href="'/flow/' + ${flow} + '/activities-add-jobs'"
+               id="keep-job"
                th:text="#{delete-job.no}"></a>
           </div>
         </main>

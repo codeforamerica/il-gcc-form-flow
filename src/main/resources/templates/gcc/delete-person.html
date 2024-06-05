@@ -32,6 +32,7 @@
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton( text=#{delete-confirmation.yes})}"/>
             </form>
             <a class="button spacing-above-35" th:href="'/flow/' + ${flow} + '/parent-add-adults'"
+               id="keep-person"
                th:text="#{delete-confirmation.no}"></a>
           </div>
         </main>
