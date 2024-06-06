@@ -38,6 +38,33 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
               )
       );
     }
+    //Term Start Date
+    Optional<LocalDate> partnerProgramStart = getDateInput(submission, "partnerProgramStart");
+    if (partnerProgramStart.isPresent()){
+      LocalDate date = partnerProgramStart.get();
+      results.put(
+          "partnerProgramStart",
+          new SingleField(
+              "partnerProgramStart",
+              date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+              null
+          )
+      );
+    }
+
+    //Term End Date
+    Optional<LocalDate> partnerProgramEnd = getDateInput(submission, "partnerProgramEnd");
+    if (partnerProgramEnd.isPresent()){
+      LocalDate date = partnerProgramEnd.get();
+      results.put(
+          "partnerProgramEnd",
+          new SingleField(
+              "partnerProgramEnd",
+              date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+              null
+          )
+      );
+    }
 
     //active duty military
     String parentPartnerIsActiveDutyMilitary = (String) submission.getInputData().getOrDefault("parentPartnerIsServing", "");
