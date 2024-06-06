@@ -21,7 +21,7 @@
                 <th:block
                     th:replace="~{fragments/inputs/text :: text(inputName=${cityInputName}, label=#{general.city})}"/>
                 <th:block th:replace="~{fragments/inputs/state ::
-                  state(inputName='state',
+                  state(inputName=${stateInputName},
                   label=#{general.state})}"/>
                 <th:block
                     th:replace="~{fragments/inputs/text :: text(inputName=${zipCodeInputName}, label=#{general.zip-code})}"/>
