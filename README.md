@@ -38,7 +38,7 @@ Table of Contents
 
 The starter app is a Spring Boot application that demonstrates the `form-flow` Java library. It
 can be customized to meet the needs of a web app, and is meant to be built upon. It's a plain,
-boring (but modern) Spring app that uses common, frequently-used libraries throughout.
+boring (but modern) Spring app that uses common, frequently-used libraries throughout..
 
 It contains example code for a simple, generic application for public benefits. An applicant
 can fill out screens with their basic info, upload supporting documents, then submit it all.
