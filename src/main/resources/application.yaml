@@ -31,7 +31,7 @@ form-flow:
       block-if-unreachable: true
   aws:
     region: 'us-east-1'
-    s3_bucket_name: 'get-child-care-illinois-dev'
+    s3_bucket_name: ${AWS_BUCKET}
     access_key: ${AWS_ACCESS_KEY}
     secret_key: ${AWS_SECRET_KEY}
   address-validation:

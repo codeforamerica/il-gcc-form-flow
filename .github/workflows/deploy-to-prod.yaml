@@ -31,7 +31,7 @@ jobs:
             'SPRING_DATASOURCE_URL=${{ secrets.PROD_SPRING_DATASOURCE_URL }}' \
             'SPRING_DATASOURCE_USERNAME=${{ secrets.PROD_SPRING_DATASOURCE_USERNAME }}' \
             'SPRING_DATASOURCE_PASSWORD=${{ secrets.PROD_SPRING_DATASOURCE_PASSWORD }}' \
-            'SPRING_PROFILES_ACTIVE=prod' \
+            'SPRING_PROFILES_ACTIVE=production' \
             'AWS_ACCESS_KEY=${{ secrets.PROD_AWS_ACCESS_KEY }}' \
             'AWS_BUCKET=${{ vars.PROD_AWS_BUCKET }}' \
             'AWS_CMK=${{ secrets.PROD_AWS_CMK }}' \
