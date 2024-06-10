@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
       - uses: webfactory/ssh-agent@v0.9.0
         with:
-          ssh-private-key: ${{ secrets.APTIBLE_GIT_SSH_KEY }}
+          ssh-private-key: ${{ secrets.APTIBLE_SSH_PRIVATE_KEY }}
       - name: Deploy Using Aptible CLI
         run: |
           ssh-keyscan beta.aptible.com >> ~/.ssh/known_hosts
