@@ -400,7 +400,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo("Partner Hourly Schedule");
         testPage.enter("activitiesJobStartTimeMonday", "1200PM");
         testPage.enter("activitiesJobEndTimeMonday", "0100PM");
-        testPage.enter("activitiesJobStartTimeSunday", "0200PM");
+        testPage.enter("activitiesJobStartTimeSunday", "0200AM");
         testPage.enter("activitiesJobEndTimeSunday", "0300PM");
         testPage.clickContinue();
 
