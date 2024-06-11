@@ -5,6 +5,6 @@ spring:
     url: jdbc:postgresql://host.docker.internal:5432/il-gcc
 form-flow:
   aws:
-    s3_bucket_name: 'get-child-care-illinois-demo'
+    s3_bucket_name: ${DEMO_AWS_BUCKET}
   address-validation:
     disabled: true

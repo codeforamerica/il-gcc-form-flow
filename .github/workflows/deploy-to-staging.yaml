@@ -37,7 +37,7 @@ jobs:
             --git-commitish ${GITHUB_SHA} \
           'AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}' \
           'AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}' \
-          'AWS_BUCKET=${{ vars.AWS_BUCKET }}' \
+          'AWS_BUCKET=${{ vars.STAGING_AWS_BUCKET }}' \
           'SMARTY_AUTH_ID=${{ secrets.SMARTY_AUTH_ID }}' \
           'SMARTY_AUTH_TOKEN=${{ secrets.SMARTY_AUTH_TOKEN }}' \
           'MAILGUN_KEY=${{ secrets.MAILGUN_KEY }}' \

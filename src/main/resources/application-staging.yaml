@@ -4,8 +4,6 @@ spring:
   datasource:
     url: jdbc:postgresql://host.docker.internal:5432/illinois-staging
 form-flow:
-  aws:
-    s3_bucket_name: ${AWS_BUCKET}
   error:
     show-stack-trace: false
   virus-scanning:
