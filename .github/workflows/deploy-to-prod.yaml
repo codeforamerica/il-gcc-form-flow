@@ -25,7 +25,7 @@ jobs:
             --email='${{ secrets.APTIBLE_USERNAME }}' \
             --password='${{ secrets.APTIBLE_PASSWORD }}'
           aptible deploy \
-            --app sn-il-getchildcare-prd \
+            --app illinois-prod \
             --git-commitish ${GITHUB_SHA} \
             'SPRING_DATASOURCE_URL=${{ secrets.PROD_SPRING_DATASOURCE_URL }}' \
             'SPRING_DATASOURCE_USERNAME=${{ secrets.PROD_SPRING_DATASOURCE_USERNAME }}' \
