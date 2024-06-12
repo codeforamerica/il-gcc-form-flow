@@ -24,7 +24,6 @@ jobs:
           aptible login \
             --email='${{ secrets.APTIBLE_USERNAME }}' \
             --password='${{ secrets.APTIBLE_PASSWORD }}'
-          git push --force ${{ vars.PROD_APTIBLE_REMOTE_URL }} ${GITHUB_SHA}:${{ vars.PROD_APTIBLE_REMOTE_BRANCH }}
           aptible deploy \
             --app sn-md-pilot-prod \
             --git-commitish ${GITHUB_SHA} \
