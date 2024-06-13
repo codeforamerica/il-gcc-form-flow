@@ -56,15 +56,6 @@ spring:
       test:
         - test
         - form-flow-library
-      dev:
-        - dev
-        - form-flow-library
-      demo:
-        - demo
-        - form-flow-library
-      staging:
-        - staging
-        - form-flow-library
   thymeleaf:
     template-resolver-order: 0
     check-template-location: true
