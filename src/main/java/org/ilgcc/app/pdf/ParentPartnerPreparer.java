@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.lang.Integer.parseInt;
+import static org.ilgcc.app.utils.PreparerUtilities.flowIteratorPreparer;
 import static org.ilgcc.app.utils.SubmissionUtilities.getDateInput;
 import static org.ilgcc.app.utils.SubmissionUtilities.selectedYes;
 
@@ -77,6 +78,14 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
     if(!parentPartnerIsReserveOrNationalGuard.isBlank()){
       results.put("parentPartnerInMilitaryReserveOrNationalGuard", new SingleField("parentPartnerInMilitaryReserveOrNationalGuard", selectedYes(parentPartnerIsReserveOrNationalGuard),null));
     }
+
+    var partnerJobsCompanyFields = List.of("companyName", "employerStreetAddress","employerCity", "employerState", "employerZipCode", "employerPhoneNumber");
+    Map partnerJobsData = flowIteratorPreparer(submission, "partnerJobs", partnerJobsCompanyFields);
+
+    if(!partnerJobsData.isEmpty()){
+      results.putAll(partnerJobsData);
+    }
+
     return results;
   }
 }
