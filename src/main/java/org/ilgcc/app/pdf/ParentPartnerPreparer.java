@@ -80,7 +80,7 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
     }
 
     var partnerJobsCompanyFields = List.of("companyName", "employerStreetAddress","employerCity", "employerState", "employerZipCode", "employerPhoneNumber");
-    Map partnerJobsData = flowIteratorPreparer(submission, "partnerJobs", partnerJobsCompanyFields);
+    Map<String, SubmissionField> partnerJobsData = flowIteratorPreparer(submission, "partnerJobs", partnerJobsCompanyFields);
 
     if(!partnerJobsData.isEmpty()){
       results.putAll(partnerJobsData);
