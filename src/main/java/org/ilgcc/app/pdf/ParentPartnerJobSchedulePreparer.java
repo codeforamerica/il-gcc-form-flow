@@ -30,7 +30,7 @@ public class ParentPartnerJobSchedulePreparer implements SubmissionFieldPreparer
         for (var job : jobs) {
             Optional<HourlySchedule> workSchedule =
                 SchedulePreparerUtility.getHourlySchedule(
-                    (Submission) job,
+                    (Map<String, Object>) job,
                     "activitiesJob",
                     "activitiesJobWeeklySchedule[]");
             if (workSchedule.isEmpty()) {
