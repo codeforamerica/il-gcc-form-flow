@@ -8,7 +8,7 @@
     <section class="slab slab--light-purple slab--hero">
       <div class="grid">
         <div class="notice--warning spacing-below-35">
-          <p th:utext="'👋🏼 ' + #{index.notice-html}"></p>
+          <p th:utext="'<span aria-hidden=true>👋🏼 </span>' + #{index.notice-html}"></p>
         </div>
         <div class="tracking-home-language-links width-one-half">
           <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>
@@ -36,8 +36,8 @@
     <section class="slab slab--white">
       <div class="grid">
         <div class="index-child-care-image-container width-one-fourth">
-            <img src="/assets/images/seal-of-illinois.png" alt="" style="width: 141px; height: 141px;">
-            <img src="/assets/images/IDHS-logo.png" alt="" style="width: 168px; height: auto">
+            <img src="/assets/images/seal-of-illinois.png" alt="Seal of the State of Illinois" style="width: 141px; height: 141px;">
+            <img src="/assets/images/IDHS-logo.png" alt="Illinois Department of Human Services logo" style="width: 168px; height: auto">
         </div>
 
         <div class="width-two-thirds">
