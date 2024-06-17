@@ -2,7 +2,7 @@ spring:
   thymeleaf:
     cache: true
   datasource:
-    url: jdbc:postgresql://host.docker.internal:5432/illinois-staging
+    url: jdbc:postgresql://host.docker.internal:5432/illinois-prod
 form-flow:
   error:
     show-stack-trace: false
