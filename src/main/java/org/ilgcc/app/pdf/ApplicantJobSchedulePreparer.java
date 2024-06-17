@@ -6,8 +6,9 @@ import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
-import java.util.ArrayList;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
@@ -25,12 +26,12 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
 
         int iteration = 1;
 
-        ArrayList<Map> jobs = (ArrayList<Map>) submission.getInputData().getOrDefault("jobs", emptyList());
+        List<Map> jobs = (List<Map>) submission.getInputData().getOrDefault("jobs", emptyList());
 
         for (var job : jobs) {
             Optional<HourlySchedule> workSchedule =
                 SchedulePreparerUtility.getHourlySchedule(
-                    job,
+                    (Map<String, Object>) job,
                     "activitiesJob",
                     "activitiesJobWeeklySchedule[]");
             if (workSchedule.isEmpty()) {
