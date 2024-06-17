@@ -22,7 +22,8 @@ jobs:
           environment: illinois-prod
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
-#         Looking for secrets/variables for the application? Check the configuration tab in the Aptible app GUI
+          config_variables: SPRING_DATASOURCE_URL=""
+      #         Looking for secrets/variables for the application? Check the configuration tab in the Aptible app GUI
 
       - name: Create Sentry release
         uses: getsentry/action-release@v1
