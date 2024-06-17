@@ -16,13 +16,9 @@
               <th:block th:replace="~{fragments/inputs/select :: select(label='', ariaLabel='header', inputName='activitiesJobCommuteTime', content=~{::options})}">
                 <th:block th:ref="options">
                   <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='', optionText=#{activities-work-commute-time.default.option})}"/>
-                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='0 minutes', optionText=#{general.hours.0.minutes})}"/>
-                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='30 minutes', optionText=#{general.hours.30.minutes})}"/>
-                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='1 hour', optionText=#{general.hours.1.hour})}"/>
-                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='1.5 hours', optionText=#{general.hours.1.5.hours})}"/>
-                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='2 hours', optionText=#{general.hours.2.hours})}"/>
-                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='2.5 hours', optionText=#{general.hours.2.5.hours})}"/>
-                  <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='3 hours', optionText=#{general.hours.3.hours})}"/>
+                  <th:block th:each="commuteTimeOption : ${T(org.ilgcc.app.utils.TravelTimeOption).values()}">
+                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value=${commuteTimeOption.name()}, optionText=#{${commuteTimeOption.getLabel()}})}"/>
+                  </th:block>
                 </th:block>
               </th:block>
             </div>
