@@ -65,6 +65,9 @@ spring:
       staging:
         - staging
         - form-flow-library
+      production:
+        - production
+        - form-flow-library
   thymeleaf:
     template-resolver-order: 0
     check-template-location: true
