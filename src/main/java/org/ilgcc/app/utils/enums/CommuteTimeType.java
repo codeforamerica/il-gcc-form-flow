@@ -17,8 +17,6 @@ public enum CommuteTimeType {
 
     private final String label;
     private final TimeSpan value;
-    private static final Map<String, TimeSpan> ENUM_BY_NAME = new HashMap<>();
-
 
     CommuteTimeType(String label, TimeSpan value) {
         this.label = label;
@@ -29,14 +27,8 @@ public enum CommuteTimeType {
         return label;
     }
 
-    static {
-        for (CommuteTimeType option : CommuteTimeType.values()) {
-            ENUM_BY_NAME.put(option.name(), option.getValue());
-        }
-    }
-
     public static TimeSpan getTimeSpanByName(String name) {
-        return ENUM_BY_NAME.get(name);
+        return  CommuteTimeType.valueOf(name).value;
     }
 }
 
