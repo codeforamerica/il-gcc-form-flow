@@ -30,7 +30,7 @@ form-flow:
       service-url: ${CLAMAV_URL}
       block-if-unreachable: true
   aws:
-    region: 'us-east-1'
+    region: ${AWS_REGION}
     s3_bucket_name: ${AWS_BUCKET}
     access_key: ${AWS_ACCESS_KEY}
     secret_key: ${AWS_SECRET_KEY}

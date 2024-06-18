@@ -15,7 +15,7 @@ form-flow:
       auth-id: 'test-id'
       auth-token: 'test-token'
   aws:
-    region: 'us-east-1'
+    region: 'test'
     s3_bucket_name: 'get-child-care-illinois-dev'
     access_key: 'test'
     secret_key: 'test'

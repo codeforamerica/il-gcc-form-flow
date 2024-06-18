@@ -22,7 +22,6 @@ jobs:
           environment: illinois-prod
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
-          config_variables: SPRING_DATASOURCE_URL=${{ secrets.PROD_SPRING_DATASOURCE_URL }} SPRING_DATASOURCE_USERNAME=${{ secrets.PROD_SPRING_DATASOURCE_USERNAME }} SPRING_DATASOURCE_PASSWORD=${{ secrets.PROD_SPRING_DATASOURCE_PASSWORD }} AWS_ACCESS_KEY=${{ secrets.PROD_AWS_ACCESS_KEY }} AWS_BUCKET=${{ vars.PROD_AWS_BUCKET }} AWS_SECRET_KEY=${{ secrets.PROD_AWS_SECRET_KEY }} MAILGUN_KEY=${{ secrets.PROD_MAILGUN_KEY }} MIXPANEL_API_KEY=${{ secrets.PROD_MIXPANEL_API_KEY }} SENTRY_DSN=${{ secrets.SENTRY_DSN }} SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }} SMARTY_AUTH_ID=${{ secrets.SMARTY_AUTH_ID }} SMARTY_AUTH_TOKEN=${{ secrets.SMARTY_AUTH_TOKEN }} SPRING_PROFILES_ACTIVE=production SENTRY_ENVIRONMENT=production DEFAULT_LOCALE=en demo=false FORCE_SSL=true
       #         Looking for secrets/variables for the application? Check the configuration tab in the Aptible app GUI
 
       - name: Create Sentry release
@@ -33,6 +32,7 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: production
+          version: ${{ github.ref }}
 
       - name: Announce on Slack when deployed
         uses: ravsamhq/notify-slack-action@v2
