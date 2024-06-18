@@ -8,7 +8,7 @@ import formflow.library.pdf.SubmissionField;
 import java.util.List;
 import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
-import org.ilgcc.app.utils.TravelTimeOption;
+import org.ilgcc.app.utils.enums.CommuteTimeType;
 import org.junit.jupiter.api.Test;
 
 public class ApplicantJobSchedulePreparerTest {
@@ -146,7 +146,7 @@ public class ApplicantJobSchedulePreparerTest {
     @Test
     public void withCommute(){
         submission = new SubmissionTestBuilder()
-            .regularWorkScheduleWithCommuteTime(TravelTimeOption.HOUR_THIRTY.name())
+            .regularWorkScheduleWithCommuteTime(CommuteTimeType.HOUR_THIRTY.name())
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
@@ -162,8 +162,8 @@ public class ApplicantJobSchedulePreparerTest {
     @Test
     public void withMultipleCommutes(){
         submission = new SubmissionTestBuilder()
-            .regularWorkScheduleWithCommuteTime(TravelTimeOption.TWO_HOURS.name())
-            .regularWorkScheduleWithCommuteTime(TravelTimeOption.HOUR_THIRTY.name())
+            .regularWorkScheduleWithCommuteTime(CommuteTimeType.TWO_HOURS.name())
+            .regularWorkScheduleWithCommuteTime(CommuteTimeType.HOUR_THIRTY.name())
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);

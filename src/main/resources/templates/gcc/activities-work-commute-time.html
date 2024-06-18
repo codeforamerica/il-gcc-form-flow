@@ -16,7 +16,7 @@
               <th:block th:replace="~{fragments/inputs/select :: select(label='', ariaLabel='header', inputName='activitiesJobCommuteTime', content=~{::options})}">
                 <th:block th:ref="options">
                   <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value='', optionText=#{activities-work-commute-time.default.option})}"/>
-                  <th:block th:each="commuteTimeOption : ${T(org.ilgcc.app.utils.TravelTimeOption).values()}">
+                  <th:block th:each="commuteTimeOption : ${T(org.ilgcc.app.utils.enums.CommuteTimeType).values()}">
                     <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(value=${commuteTimeOption.name()}, optionText=#{${commuteTimeOption.getLabel()}})}"/>
                   </th:block>
                 </th:block>

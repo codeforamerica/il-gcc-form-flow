@@ -16,8 +16,8 @@ import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.ilgcc.app.utils.DayOfWeekOption;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
-import org.ilgcc.app.utils.TravelTimeOption;
-import org.ilgcc.app.utils.TravelTimeOption.TimeValue;
+import org.ilgcc.app.utils.enums.CommuteTimeType;
+import org.ilgcc.app.utils.enums.TimeSpan;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -53,7 +53,7 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
             String commuteTimeKey = (String) job.getOrDefault("activitiesJobCommuteTime", "");
 
             if(!commuteTimeKey.isBlank()){
-                TimeValue commuteTimeValue = TravelTimeOption.getTimeValueByName(commuteTimeKey);
+                TimeSpan commuteTimeValue = CommuteTimeType.getTimeSpanByName(commuteTimeKey);
                 results.put("applicantEmployerTravelTimeHours_"+iteration, new SingleField("applicantEmployerTravelTimeHours", commuteTimeValue.getHours(), iteration));
                 results.put("applicantEmployerTravelTimeMins_"+iteration, new SingleField("applicantEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
             }

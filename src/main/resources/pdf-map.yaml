@@ -212,3 +212,6 @@ subflowInfo:
       partnerEmployerScheduleSaturdayEndAmPm: PARTNER_EMPLOYER_SCHEDULE_SATURDAY_END_AM_PM
       partnerEmployerScheduleSundayEnd: PARTNER_EMPLOYER_SCHEDULE_SUNDAY_END
       partnerEmployerScheduleSundayEndAmPm: PARTNER_EMPLOYER_SCHEDULE_SUNDAY_END_AM_PM
+
+      partnerEmployerTravelTimeHours: PARTNER_EMPLOYER_TRAVEL_TIME_HOURS
+      partnerEmployerTravelTimeMins: PARTNER_EMPLOYER_TRAVEL_TIME_MINS
