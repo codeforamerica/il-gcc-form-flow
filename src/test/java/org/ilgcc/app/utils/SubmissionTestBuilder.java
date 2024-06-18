@@ -205,6 +205,22 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder regularWorkScheduleWithCommuteTime(String commuteLength){
+        withRegularWorkSchedule(List.of("Monday", "Thursday","Sunday"),"10:00", "15:45");
+
+        List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
+
+        if (jobs == null) {
+            return this;
+        }
+
+        Map<String, Object> job = jobs.get(jobs.size()-1);
+
+        job.put("activitiesJobCommuteTime", commuteLength);
+
+        return this;
+    }
+
     public SubmissionTestBuilder withRegularWorkSchedule(List days, String startTime, String endTime){
         withJob("jobs", "Regular Schedule Job", "123 Main Str", "", "", "", "");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
@@ -284,6 +300,22 @@ public class SubmissionTestBuilder {
 
 
         submission.getInputData().put("activitiesParentChildcareReason[]", List.of("WORKING"));
+        return this;
+    }
+
+    public SubmissionTestBuilder regularPartnerScheduleWithCommuteTime(String commuteLength){
+        withPartnerRegularWorkSchedule(List.of("Monday", "Thursday","Sunday"),"10:00", "15:45");
+
+        List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
+
+        if (jobs == null) {
+            return this;
+        }
+
+        Map<String, Object> job = jobs.get(jobs.size()-1);
+
+        job.put("activitiesJobCommuteTime", commuteLength);
+
         return this;
     }
 }

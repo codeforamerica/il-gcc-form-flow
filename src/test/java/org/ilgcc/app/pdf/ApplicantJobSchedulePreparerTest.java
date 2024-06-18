@@ -8,6 +8,7 @@ import formflow.library.pdf.SubmissionField;
 import java.util.List;
 import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.enums.CommuteTimeType;
 import org.junit.jupiter.api.Test;
 
 public class ApplicantJobSchedulePreparerTest {
@@ -141,4 +142,40 @@ public class ApplicantJobSchedulePreparerTest {
         assertThat(result.get("applicantEmployerScheduleWednesdayEndAmPm_2")).isEqualTo(
             new SingleField("applicantEmployerScheduleWednesdayEndAmPm", "PM", 2));
     }
+
+    @Test
+    public void withCommute(){
+        submission = new SubmissionTestBuilder()
+            .regularWorkScheduleWithCommuteTime(CommuteTimeType.HOUR_THIRTY.name())
+            .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        assertThat(result.get("applicantEmployerTravelTimeHours_1")).isEqualTo(
+            new SingleField("applicantEmployerTravelTimeHours", "1", 1));
+        assertThat(result.get("applicantEmployerTravelTimeMins_1")).isEqualTo(
+            new SingleField("applicantEmployerTravelTimeMins", "30", 1));
+        assertThat(result.get("applicantEmployerTravelTimeHours_2")).isEqualTo(null);
+        assertThat(result.get("applicantEmployerTravelTimeMins_2")).isEqualTo(null);
+    }
+
+    @Test
+    public void withMultipleCommutes(){
+        submission = new SubmissionTestBuilder()
+            .regularWorkScheduleWithCommuteTime(CommuteTimeType.TWO_HOURS.name())
+            .regularWorkScheduleWithCommuteTime(CommuteTimeType.HOUR_THIRTY.name())
+            .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        assertThat(result.get("applicantEmployerTravelTimeHours_1")).isEqualTo(
+            new SingleField("applicantEmployerTravelTimeHours", "2", 1));
+        assertThat(result.get("applicantEmployerTravelTimeMins_1")).isEqualTo(
+            new SingleField("applicantEmployerTravelTimeMins", "0", 1));
+        assertThat(result.get("applicantEmployerTravelTimeHours_2")).isEqualTo(
+            new SingleField("applicantEmployerTravelTimeHours", "1", 2));
+        assertThat(result.get("applicantEmployerTravelTimeMins_2")).isEqualTo(
+            new SingleField("applicantEmployerTravelTimeMins", "30", 2));
+    }
+
 }

@@ -4,6 +4,7 @@ import static java.util.Collections.emptyList;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
+import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 
@@ -15,6 +16,8 @@ import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.ilgcc.app.utils.DayOfWeekOption;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
+import org.ilgcc.app.utils.enums.CommuteTimeType;
+import org.ilgcc.app.utils.enums.TimeSpan;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -45,6 +48,14 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
                 results.putAll(
                     SchedulePreparerUtility.createSubmissionFieldsFromSchedule(schedule, day, "applicantEmployerSchedule",
                         iteration));
+            }
+
+            String commuteTimeKey = (String) job.getOrDefault("activitiesJobCommuteTime", "");
+
+            if(!commuteTimeKey.isBlank()){
+                TimeSpan commuteTimeValue = CommuteTimeType.getTimeSpanByName(commuteTimeKey);
+                results.put("applicantEmployerTravelTimeHours_"+iteration, new SingleField("applicantEmployerTravelTimeHours", commuteTimeValue.getHours(), iteration));
+                results.put("applicantEmployerTravelTimeMins_"+iteration, new SingleField("applicantEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
             }
             iteration++;
 
