@@ -171,6 +171,9 @@ subflowInfo:
       applicantEmployerScheduleSaturdayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_SATURDAY_END_AM_PM
       applicantEmployerScheduleSundayEnd: APPLICANT_EMPLOYER_SCHEDULE_SUNDAY_END
       applicantEmployerScheduleSundayEndAmPm: APPLICANT_EMPLOYER_SCHEDULE_SUNDAY_END_AM_PM
+
+      applicantEmployerTravelTimeHours: APPLICANT_EMPLOYER_TRAVEL_TIME_HOURS
+      applicantEmployerTravelTimeMins: APPLICANT_EMPLOYER_TRAVEL_TIME_MINS
   parentPartnerJobs:
     totalIterations: 2
     inputFields:

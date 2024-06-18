@@ -7,18 +7,20 @@ import lombok.Getter;
 @Getter
 public enum TravelTimeOption {
 
-    NO_MINUTES("general.hours.0.minutes", Map.of("hours", "0", "minutes", "0")),
-    THIRTY_MINUTES("general.hours.30.minutes", Map.of("hours", "0", "minutes", "30")),
-    ONE_HOUR("general.hours.1.hour", Map.of("hours", "1", "minutes", "0")),
-    HOUR_THIRTY("general.hours.1.5.hours", Map.of("hours", "1", "minutes", "30")),
-    TWO_HOURS("general.hours.2.hours", Map.of("hours", "2", "minutes", "0")),
-    TWO_HOURS_THIRTY("general.hours.2.hours", Map.of("hours", "2", "minutes", "30")),
-    THREE_HOURS("general.hours.3.hours", Map.of("hours", "3", "minutes", "0"));
-    private final String label;
-    private final Map<String, String> value;
-    private static final Map<String, TravelTimeOption> ENUM_BY_NAME = new HashMap<>();
+    NO_MINUTES("general.hours.0.minutes", new TimeValue("0", "0")),
+    THIRTY_MINUTES("general.hours.30.minutes", new TimeValue("0", "30")),
+    ONE_HOUR("general.hours.1.hour", new TimeValue("1", "0")),
+    HOUR_THIRTY("general.hours.1.5.hours", new TimeValue("1", "30")),
+    TWO_HOURS("general.hours.2.hours", new TimeValue("2", "0")),
+    TWO_HOURS_THIRTY("general.hours.2.hours", new TimeValue("2", "30")),
+    THREE_HOURS("general.hours.3.hours", new TimeValue("3", "0"));
 
-    TravelTimeOption(String label, Map<String, String> value) {
+    private final String label;
+    private final TimeValue value;
+    private static final Map<String, TimeValue> ENUM_BY_NAME = new HashMap<>();
+
+
+    TravelTimeOption(String label, TimeValue value) {
         this.label = label;
         this.value = value;
     }
@@ -29,12 +31,23 @@ public enum TravelTimeOption {
 
     static {
         for (TravelTimeOption option : TravelTimeOption.values()) {
-            ENUM_BY_NAME.put(option.name(), option);
+            ENUM_BY_NAME.put(option.name(), option.getValue());
         }
     }
 
-    public Map<String, String> getValueByName(String name) {
-        return ENUM_BY_NAME.get(name).getValue();
+    public static TimeValue getTimeValueByName(String name) {
+        return ENUM_BY_NAME.get(name);
+    }
+
+    @Getter
+    public static class TimeValue {
+        private final String hours;
+        private final String minutes;
+
+        TimeValue(String hours, String minutes) {
+            this.hours = hours;
+            this.minutes = minutes;
+        }
     }
 }
 
