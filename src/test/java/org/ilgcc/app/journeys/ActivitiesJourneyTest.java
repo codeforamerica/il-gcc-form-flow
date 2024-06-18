@@ -2,19 +2,22 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import formflow.library.data.Submission;
+import java.io.IOException;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 public class ActivitiesJourneyTest extends AbstractBasePageTest {
     @Test
-    void ParentOnlyWithJobAndWorkTest() {
+    void ParentOnlyWithJobAndWorkTest() throws IOException {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
+        Submission submission = getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
             .withChild("First", "Child")
             .withChild("Second", "Child")
-            .build());
+            .build();
+        saveSubmission(submission);
 
         //activities-parent-intro
         assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
@@ -126,6 +129,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+
+        verifyPDF(submission, getClass().getMethod().toString());
     }
 
     @Test
