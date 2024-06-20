@@ -4,10 +4,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import formflow.library.data.Submission;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.List;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 public class ActivitiesJourneyTest extends AbstractBasePageTest {
+
+    @Test
+    void AddNameFirstNameLastName() throws IOException {
+        testPage.navigateToFlowScreen("gcc/parent-info-intro");
+        Submission submission = getSessionSubmissionTestBuilder().withDayCareProvider()
+            .with("parentFirstName", "AnaBanana")
+            .with("parentLastName", "Chibuisi")
+            .build();
+        saveSubmission(submission);
+
+        List fieldsToTest = List.of("APPLICANT_NAME_FIRST", "APPLICANT_NAME_LAST");
+        verifyMatchingFields(generatedPdfFieldsFromSubmission(submission), generateExpectedFields(Thread.currentThread().getStackTrace()[1].getMethodName()), fieldsToTest);
+
+    }
     @Test
     void ParentOnlyWithJobAndWorkTest() throws IOException {
         // Activities Screen
@@ -129,8 +145,6 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
-
-        verifyPDF(submission, Thread.currentThread().getStackTrace()[1].getMethodName());
     }
 
     @Test
