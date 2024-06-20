@@ -1,5 +1,6 @@
 package org.ilgcc.app.utils;
 
+import static java.util.Collections.emptyList;
 import formflow.library.data.Submission;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -349,6 +350,39 @@ public class SubmissionTestBuilder {
 
         job.put("activitiesJobCommuteTime", commuteLength);
 
+        return this;
+    }
+    public SubmissionTestBuilder withChildAttendsSchoolDuringTheDay(int childIterationPosition, String childAttendsOtherEd){
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+        if (children.isEmpty()) {
+            return this;
+        }
+
+        Map<String, Object> child = children.get(childIterationPosition);
+
+        child.put("childAttendsOtherEd", (childAttendsOtherEd));
+        return this;
+    }
+    public SubmissionTestBuilder withChildIsAUSCitizen(int childIterationPosition, String childUSCitizen){
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+        if (children.isEmpty()) {
+            return this;
+        }
+
+        Map<String, Object> child = children.get(childIterationPosition);
+
+        child.put("childUSCitizen", (childUSCitizen));
+        return this;
+    }
+    public SubmissionTestBuilder withChildHasSpecialNeeds(int childIterationPosition, String childHasSpecialNeeds){
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+        if (children.isEmpty()) {
+            return this;
+        }
+
+        Map<String, Object> child = children.get(childIterationPosition);
+
+        child.put("childHasSpecialNeeds", (childHasSpecialNeeds));
         return this;
     }
 
