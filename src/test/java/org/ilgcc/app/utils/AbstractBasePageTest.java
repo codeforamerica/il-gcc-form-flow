@@ -218,7 +218,7 @@ public abstract class AbstractBasePageTest {
 
   private static void regenerateExpectedPDF(File pdfFile, String testName) {
     try (FileInputStream regeneratedPDF = new FileInputStream(pdfFile);
-        FileOutputStream testPDF = new FileOutputStream("src/test/resources/output/%s_FILLED".formatted(testName))) {
+        FileOutputStream testPDF = new FileOutputStream("src/test/resources/output/%s_FILLED.pdf".formatted(testName))) {
       testPDF.write(regeneratedPDF.readAllBytes());
     } catch (Exception e) {
       throw new IllegalStateException(e);

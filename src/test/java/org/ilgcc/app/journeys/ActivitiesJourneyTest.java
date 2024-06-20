@@ -130,7 +130,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
 
         assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
 
-        verifyPDF(submission, getClass().getMethod().toString());
+        verifyPDF(submission, Thread.currentThread().getStackTrace()[1].getMethodName());
     }
 
     @Test
