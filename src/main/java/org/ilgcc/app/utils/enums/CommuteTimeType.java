@@ -12,7 +12,7 @@ public enum CommuteTimeType {
     ONE_HOUR("general.hours.1.hour", new TimeSpan("1", "0")),
     HOUR_THIRTY("general.hours.1.5.hours", new TimeSpan("1", "30")),
     TWO_HOURS("general.hours.2.hours", new TimeSpan("2", "0")),
-    TWO_HOURS_THIRTY("general.hours.2.hours", new TimeSpan("2", "30")),
+    TWO_HOURS_THIRTY("general.hours.2.5.hours", new TimeSpan("2", "30")),
     THREE_HOURS("general.hours.3.hours", new TimeSpan("3", "0"));
 
     private final String label;
