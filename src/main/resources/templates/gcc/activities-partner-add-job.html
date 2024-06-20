@@ -28,7 +28,7 @@
                     <li th:each="job, iter: ${inputData.partnerJobs}"
                         class="spacing-below-10">
                     <span class="space-between">
-                      <span class="job-name" th:text="${job.companyName}"/>
+                      <span class="job-name" th:text="${job.partnerCompanyName}"/>
                       <span class="text--small spacing-below-0 spacing-right-25">
                         <a th:href="'/flow/' + ${flow} + '/partnerJobs/' + ${job.uuid} + '/deleteConfirmation'"
                            th:text="#{general.delete}"

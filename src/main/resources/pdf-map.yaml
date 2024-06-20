@@ -177,12 +177,12 @@ subflowInfo:
   parentPartnerJobs:
     totalIterations: 2
     inputFields:
-      companyName: PARTNER_EMPLOYER_NAME
-      employerStreetAddress: PARTNER_EMPLOYER_ADDRESS
-      employerCity: PARTNER_EMPLOYER_CITY
-      employerState: PARTNER_EMPLOYER_STATE
-      employerZipCode: PARTNER_EMPLOYER_ZIP
-      employerPhoneNumber: PARTNER_EMPLOYER_PHONE
+      partnerCompanyName: PARTNER_EMPLOYER_NAME
+      partnerEmployerStreetAddress: PARTNER_EMPLOYER_ADDRESS
+      partnerEmployerCity: PARTNER_EMPLOYER_CITY
+      partnerEmployerState: PARTNER_EMPLOYER_STATE
+      partnerEmployerZipCode: PARTNER_EMPLOYER_ZIP
+      partnerEmployerPhoneNumber: PARTNER_EMPLOYER_PHONE
       partnerEmployerScheduleMondayStart: PARTNER_EMPLOYER_SCHEDULE_MONDAY_START
       partnerEmployerScheduleMondayStartAmPm: PARTNER_EMPLOYER_SCHEDULE_MONDAY_START_AM_PM
       partnerEmployerScheduleTuesdayStart: PARTNER_EMPLOYER_SCHEDULE_TUESDAY_START

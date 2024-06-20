@@ -66,25 +66,25 @@ public class ParentPartnerPreparerTest {
   @Test
   public void partnerJobsProperlyMapped(){
     submission = new SubmissionTestBuilder()
-        .withJob("partnerJobs", "Partner Company One", "123 Partner First Job St", "Chicago", "IL", "60302", "(555) 123-1234")
-        .withJob("partnerJobs", "Partner Company Two", "456 Partner Second Job St", "Chicago", "IL", "60302", "(555) 343-1235")
+        .withPartnerJob("partnerJobs", "Partner Company One", "123 Partner First Job St", "Chicago", "IL", "60302", "(555) 123-1234")
+        .withPartnerJob("partnerJobs", "Partner Company Two", "456 Partner Second Job St", "Chicago", "IL", "60302", "(555) 343-1235")
         .build();
 
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
 
-    assertThat(result.get("companyName_1")).isEqualTo(new SingleField("companyName", "Partner Company One", 1));
-    assertThat(result.get("employerStreetAddress_1")).isEqualTo(new SingleField("employerStreetAddress", "123 Partner First Job St", 1));
-    assertThat(result.get("employerCity_1")).isEqualTo(new SingleField("employerCity", "Chicago", 1));
-    assertThat(result.get("employerState_1")).isEqualTo(new SingleField("employerState", "IL", 1));
-    assertThat(result.get("employerZipCode_1")).isEqualTo(new SingleField("employerZipCode", "60302", 1));
-    assertThat(result.get("employerPhoneNumber_1")).isEqualTo(new SingleField("employerPhoneNumber", "(555) 123-1234", 1));
+    assertThat(result.get("partnerCompanyName_1")).isEqualTo(new SingleField("partnerCompanyName", "Partner Company One", 1));
+    assertThat(result.get("partnerEmployerStreetAddress_1")).isEqualTo(new SingleField("partnerEmployerStreetAddress", "123 Partner First Job St", 1));
+    assertThat(result.get("partnerEmployerCity_1")).isEqualTo(new SingleField("partnerEmployerCity", "Chicago", 1));
+    assertThat(result.get("partnerEmployerState_1")).isEqualTo(new SingleField("partnerEmployerState", "IL", 1));
+    assertThat(result.get("partnerEmployerZipCode_1")).isEqualTo(new SingleField("partnerEmployerZipCode", "60302", 1));
+    assertThat(result.get("partnerEmployerPhoneNumber_1")).isEqualTo(new SingleField("partnerEmployerPhoneNumber", "(555) 123-1234", 1));
 
-    assertThat(result.get("companyName_2")).isEqualTo(new SingleField("companyName", "Partner Company Two", 2));
-    assertThat(result.get("employerStreetAddress_2")).isEqualTo(new SingleField("employerStreetAddress", "456 Partner Second Job St", 2));
-    assertThat(result.get("employerCity_2")).isEqualTo(new SingleField("employerCity", "Chicago", 2));
-    assertThat(result.get("employerState_2")).isEqualTo(new SingleField("employerState", "IL", 2));
-    assertThat(result.get("employerZipCode_2")).isEqualTo(new SingleField("employerZipCode", "60302", 2));
-    assertThat(result.get("employerPhoneNumber_2")).isEqualTo(new SingleField("employerPhoneNumber", "(555) 343-1235", 2));
+    assertThat(result.get("partnerCompanyName_2")).isEqualTo(new SingleField("partnerCompanyName", "Partner Company Two", 2));
+    assertThat(result.get("partnerEmployerStreetAddress_2")).isEqualTo(new SingleField("partnerEmployerStreetAddress", "456 Partner Second Job St", 2));
+    assertThat(result.get("partnerEmployerCity_2")).isEqualTo(new SingleField("partnerEmployerCity", "Chicago", 2));
+    assertThat(result.get("partnerEmployerState_2")).isEqualTo(new SingleField("partnerEmployerState", "IL", 2));
+    assertThat(result.get("partnerEmployerZipCode_2")).isEqualTo(new SingleField("partnerEmployerZipCode", "60302", 2));
+    assertThat(result.get("partnerEmployerPhoneNumber_2")).isEqualTo(new SingleField("partnerEmployerPhoneNumber", "(555) 343-1235", 2));
   }
   @Test
   public void noJobsDoesNotCrash(){
@@ -93,12 +93,12 @@ public class ParentPartnerPreparerTest {
 
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
 
-    assertThat(result.get("companyName_1")).isEqualTo(null);
-    assertThat(result.get("employerStreetAddress_1")).isEqualTo(null);
-    assertThat(result.get("employerCity_1")).isEqualTo(null);
-    assertThat(result.get("employerState_1")).isEqualTo(null);
-    assertThat(result.get("employerZipCode_1")).isEqualTo(null);
-    assertThat(result.get("employerPhoneNumber_1")).isEqualTo(null);
+    assertThat(result.get("partnerCompanyName_1")).isEqualTo(null);
+    assertThat(result.get("partnerEmployerStreetAddress_1")).isEqualTo(null);
+    assertThat(result.get("partnerEmployerCity_1")).isEqualTo(null);
+    assertThat(result.get("partnerEmployerState_1")).isEqualTo(null);
+    assertThat(result.get("partnerEmployerZipCode_1")).isEqualTo(null);
+    assertThat(result.get("partnerEmployerPhoneNumber_1")).isEqualTo(null);
   }
 
 }

@@ -8,7 +8,7 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.companyName})}"></th:block>
+        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.partnerCompanyName})}"></th:block>
         <th:block
             th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-partner-self-employment.header(${inputData.get('parentPartnerFirstName')})}, subtext=#{activities-employer-name.subtext})}"/>
         <th:block
