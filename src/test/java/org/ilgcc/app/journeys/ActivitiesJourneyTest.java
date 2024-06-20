@@ -15,12 +15,13 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
     void AddNameFirstNameLastName() throws IOException {
         testPage.navigateToFlowScreen("gcc/parent-info-intro");
         Submission submission = getSessionSubmissionTestBuilder().withDayCareProvider()
-            .with("parentFirstName", "AnaBanana")
-            .with("parentLastName", "Chibuisi")
+            .with("parentFirstName", "firstName")
+            .with("parentLastName", "lastName")
             .build();
         saveSubmission(submission);
 
         List fieldsToTest = List.of("APPLICANT_NAME_FIRST", "APPLICANT_NAME_LAST");
+//        regenerateExpectedPDFfromSubmission(submission, Thread.currentThread().getStackTrace()[1].getMethodName());
         verifyMatchingFields(generatedPdfFieldsFromSubmission(submission), generateExpectedFields(Thread.currentThread().getStackTrace()[1].getMethodName()), fieldsToTest);
 
     }

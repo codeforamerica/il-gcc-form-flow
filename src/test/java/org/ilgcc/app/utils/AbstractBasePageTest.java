@@ -198,7 +198,7 @@ public abstract class AbstractBasePageTest {
                 var expected = previouslyGeneratedAcroFields.getField(field);
                 if (!expected.equals(actual)) {
                     assertThat(actual)
-                        .withFailMessage("Expected %s to be %s but was %s.pdf".formatted(field, expected, actual))
+                        .withFailMessage("Expected %s to be %s but was %s".formatted(field, expected, actual))
                         .isEqualTo(expected);
                     log.info("Expected %s to be %s but was %s".formatted(field, expected, actual));
                 }
@@ -206,6 +206,12 @@ public abstract class AbstractBasePageTest {
                 log.info("% missing from snapShot pdf. Run regenerateExpectedPDF()".formatted(field));
             }
         }
+    }
+
+    protected void regenerateExpectedPDFfromSubmission(Submission submission, String testName) throws IOException{
+        File pdfFile = getDownloadedPDF(submission);
+
+        regenerateExpectedPDF(pdfFile, testName);
     }
 
 
