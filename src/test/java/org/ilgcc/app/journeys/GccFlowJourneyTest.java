@@ -524,7 +524,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     private void verifyPDF() throws IOException {
         File pdfFile = getDownloadedPDF();
 
-         regenerateExpectedPDF(pdfFile); // uncomment and run test to regenerate the test pdf
+//         regenerateExpectedPDF(pdfFile); // uncomment and run test to regenerate the test pdf
 
         try (FileInputStream actualIn = new FileInputStream(pdfFile);
              PdfReader actualReader = new PdfReader(actualIn);
