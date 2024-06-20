@@ -180,11 +180,12 @@ public abstract class AbstractBasePageTest {
     }
 
     protected AcroFields generateExpectedFields(String testName) {
-        try (FileInputStream expectedIn = new FileInputStream("src/test/resources/output/%s_FILLED.pdf".formatted(testName));
+        String fileName = "src/test/resources/output/snapshots/%s_FILLED.pdf".formatted(testName);
+        try (FileInputStream expectedIn = new FileInputStream(fileName);
             PdfReader expectedReader = new PdfReader(expectedIn)) {
             return expectedReader.getAcroFields();
         } catch (IOException e) {
-            fail("Failed to find PDF: %s", e);
+            fail("Cannot find pdf file at %s. Run regenerateExpectedPDFfromSubmission to create snapshot".formatted(testName), e);
             throw new RuntimeException(e);
         }
     }
@@ -208,65 +209,6 @@ public abstract class AbstractBasePageTest {
         }
     }
 
-    protected void regenerateExpectedPDFfromSubmission(Submission submission, String testName) throws IOException{
-        File pdfFile = getDownloadedPDF(submission);
-
-        regenerateExpectedPDF(pdfFile, testName);
-    }
-
-
-
-
-
-    protected void verifyPDF(Submission submission, String testName) throws IOException {
-        File pdfFile = getDownloadedPDF(submission);
-
-        regenerateExpectedPDF(pdfFile, testName);
-
-        try (FileInputStream actualIn = new FileInputStream(pdfFile);
-            PdfReader actualReader = new PdfReader(actualIn);
-//        Rather than using the filled out PDF, we can consider using the name of the TEST OR Generating the list from
-            FileInputStream expectedIn = new FileInputStream("src/test/resources/output/%s_FILLED".formatted(testName));
-            PdfReader expectedReader = new PdfReader(expectedIn)) {
-            AcroFields actualAcroFields = actualReader.getAcroFields();
-            AcroFields expectedAcroFields = expectedReader.getAcroFields();
-
-            // Get all failures at once and log them
-            List<String> missMatches = getMissMatches(expectedAcroFields, actualAcroFields);
-
-            // Do actual assertions
-            for (String expectedField : missMatches) {
-                var actual = actualAcroFields.getField(expectedField);
-                var expected = expectedAcroFields.getField(expectedField);
-                assertThat(actual)
-                    .withFailMessage("Expected %s to be %s but was %s.pdf".formatted(expectedField, expected, actual))
-                    .isEqualTo(expected);
-            }
-            assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
-        } catch (IOException e) {
-            fail("Failed to generate PDF: %s", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    @NotNull
-    private static List<String> getMissMatches(AcroFields expectedAcroFields, AcroFields actualAcroFields) {
-        List<String> missMatches = new ArrayList<>();
-//        These fields are dynamic and untestable with the current PDF approach
-        List<String> UNTESTABLE_FIELDS = List.of("PARTNER_SIGNATURE_DATE", "APPLICANT_SIGNATURE_DATE");
-        for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
-            if (!UNTESTABLE_FIELDS.contains(expectedField)) {
-                var actual = actualAcroFields.getField(expectedField);
-                var expected = expectedAcroFields.getField(expectedField);
-                if (!expected.equals(actual)) {
-                    missMatches.add(expectedField);
-                    log.info("Expected %s to be %s but was %s".formatted(expectedField, expected, actual));
-                }
-            }
-        }
-        return missMatches;
-    }
-
     private File getDownloadedPDF(Submission submission) throws IOException {
         String downloadUrl = "%s/download/gcc/%s".formatted(baseUrl, submission.getId());
         driver.get(downloadUrl);
@@ -274,9 +216,11 @@ public abstract class AbstractBasePageTest {
         return getLatestDownloadedFile(path);
     }
 
-    private static void regenerateExpectedPDF(File pdfFile, String testName) {
+    protected void regenerateExpectedPDFfromSubmission(Submission submission, String testName) throws IOException{
+        File pdfFile = getDownloadedPDF(submission);
+
         try (FileInputStream regeneratedPDF = new FileInputStream(pdfFile);
-            FileOutputStream testPDF = new FileOutputStream("src/test/resources/output/%s_FILLED.pdf".formatted(testName))) {
+            FileOutputStream testPDF = new FileOutputStream("src/test/resources/output/snapshots/%s_FILLED.pdf".formatted(testName))) {
             testPDF.write(regeneratedPDF.readAllBytes());
         } catch (Exception e) {
             throw new IllegalStateException(e);

@@ -21,7 +21,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         saveSubmission(submission);
 
         List fieldsToTest = List.of("APPLICANT_NAME_FIRST", "APPLICANT_NAME_LAST");
-//        regenerateExpectedPDFfromSubmission(submission, Thread.currentThread().getStackTrace()[1].getMethodName());
+        regenerateExpectedPDFfromSubmission(submission, Thread.currentThread().getStackTrace()[1].getMethodName());
         verifyMatchingFields(generatedPdfFieldsFromSubmission(submission), generateExpectedFields(Thread.currentThread().getStackTrace()[1].getMethodName()), fieldsToTest);
 
     }
