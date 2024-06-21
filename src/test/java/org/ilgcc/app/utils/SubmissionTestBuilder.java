@@ -363,15 +363,14 @@ public class SubmissionTestBuilder {
         child.put("childAttendsOtherEd", (childAttendsOtherEd));
         return this;
     }
-    public SubmissionTestBuilder withChildIsAUSCitizen(int childIterationPosition, String childUSCitizen){
+    public SubmissionTestBuilder withChildIsAUSCitizen(int childIterationPosition, String childIsUsCitizen){
         List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
         if (children.isEmpty()) {
             return this;
         }
 
         Map<String, Object> child = children.get(childIterationPosition);
-
-        child.put("childUSCitizen", (childUSCitizen));
+        child.put("childIsUsCitizen", (childIsUsCitizen));
         return this;
     }
     public SubmissionTestBuilder withChildHasSpecialNeeds(int childIterationPosition, String childHasSpecialNeeds){
@@ -382,7 +381,7 @@ public class SubmissionTestBuilder {
 
         Map<String, Object> child = children.get(childIterationPosition);
 
-        child.put("childHasSpecialNeeds", (childHasSpecialNeeds));
+        child.put("childHasDisability", (childHasSpecialNeeds));
         return this;
     }
 
