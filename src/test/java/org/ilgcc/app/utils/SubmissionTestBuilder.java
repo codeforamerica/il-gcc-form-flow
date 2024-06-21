@@ -139,6 +139,27 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withPartnerJob(String subflow, String companyName, String employerStreetAddress, String employerCity, String employerState, String employerZipCode, String employerPhoneNumber) {
+        List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get(subflow);
+        if (jobs == null) {
+            jobs = new ArrayList<>();
+        }
+
+        Map<String, Object> job = new HashMap<>();
+        String uuid = companyName.toLowerCase();
+        job.put("uuid", uuid);
+        job.put("partnerCompanyName", companyName);
+        job.put("partnerEmployerStreetAddress", employerStreetAddress);
+        job.put("partnerEmployerCity", employerCity);
+        job.put("partnerEmployerState", employerState);
+        job.put("partnerEmployerZipCode", employerZipCode);
+        job.put("partnerEmployerPhoneNumber", employerPhoneNumber);
+        job.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
+        jobs.add(job);
+        submission.getInputData().put(subflow, jobs);
+        return this;
+    }
+
     public SubmissionTestBuilder withConstantChildcareSchedule(int childPosition) {
 
         List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().get("children");

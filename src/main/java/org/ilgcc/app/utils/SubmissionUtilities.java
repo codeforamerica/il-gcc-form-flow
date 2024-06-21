@@ -93,7 +93,7 @@ public class SubmissionUtilities {
     String year = (String) submission.getInputData().get("%sYear".formatted(inputName));
     String month = (String) submission.getInputData().get("%sMonth".formatted(inputName));
     String day = (String) submission.getInputData().get("%sDay".formatted(inputName));
-    if (year == null && month == null && day == null) {
+    if (year == null && month == null && day == null || (year + month + day).equals("")) {
       return Optional.empty();
     } else if (year == null || month == null || day == null) {
       throw new IllegalArgumentException("Date must be complete if specified");

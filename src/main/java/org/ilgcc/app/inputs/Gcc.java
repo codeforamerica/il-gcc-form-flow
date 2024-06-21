@@ -284,6 +284,14 @@ public class Gcc extends FlowInputs {
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String employerZipCode;
 
+    private String partnerCompanyName;
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String partnerEmployerPhoneNumber;
+    private String partnerEmployerStreetAddress;
+    private String partnerEmployerCity;
+    private String partnerEmployerState;
+    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    private String partnerEmployerZipCode;
     private String isSelfEmployed;
 
     private String activitiesWorkVary;

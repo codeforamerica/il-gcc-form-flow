@@ -79,7 +79,7 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
       results.put("parentPartnerInMilitaryReserveOrNationalGuard", new SingleField("parentPartnerInMilitaryReserveOrNationalGuard", selectedYes(parentPartnerIsReserveOrNationalGuard),null));
     }
 
-    var partnerJobsCompanyFields = List.of("companyName", "employerStreetAddress","employerCity", "employerState", "employerZipCode", "employerPhoneNumber");
+    var partnerJobsCompanyFields = List.of("partnerCompanyName", "partnerEmployerStreetAddress", "partnerEmployerCity", "partnerEmployerState", "partnerEmployerZipCode", "partnerEmployerPhoneNumber");
     Map<String, SubmissionField> partnerJobsData = flowIteratorPreparer(submission, "partnerJobs", partnerJobsCompanyFields);
 
     if(!partnerJobsData.isEmpty()){
