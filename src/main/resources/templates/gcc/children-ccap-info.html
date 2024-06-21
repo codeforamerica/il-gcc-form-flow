@@ -12,11 +12,31 @@
         <th:block
             th:replace="~{fragments/cardHeader :: cardHeader(header=#{children-ccap-info.header(${fieldData.get('childFirstName')})}, subtext=#{children-ccap-info.subheader})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+
           <th:block th:ref="formContent"
                     th:with="
                       genderOptions=${T(org.ilgcc.app.utils.GenderOption).values()},
                       raceEthnicityOptions=${T(org.ilgcc.app.utils.RaceEthnicityOption).values()}">
             <div class="form-card__content">
+              <th:block
+                  th:replace="~{fragments/inputs/select :: select(label=#{children-ccap-info.relationship-question}, inputName='childRelationship', helpText=#{children-ccap-info.relationship-help-text(${fieldData.get('childFirstName')})}, content=~{::childRelationship})}">
+                <th:block th:ref="childRelationship">
+                  <th:block
+                      th:replace="~{fragments/inputs/selectOption :: selectOption(value='', optionText=#{children-ccap-info.relationship-option.default})}"/>
+                  <th:block
+                      th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.child}, optionText=#{children-ccap-info.relationship-option.child})}"/>
+                  <th:block
+                      th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.stepchild}, optionText=#{children-ccap-info.relationship-option.stepchild})}"/>
+                  <th:block
+                      th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.grandchild}, optionText=#{children-ccap-info.relationship-option.grandchild})}"/>
+                  <th:block
+                      th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.fosterchild}, optionText=#{children-ccap-info.relationship-option.fosterchild})}"/>
+                  <th:block
+                      th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.niecenephew}, optionText=#{children-ccap-info.relationship-option.niece})}"/>
+                  <th:block
+                      th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.other}, optionText=#{children-ccap-info.relationship-option.other})}"/>
+                </th:block>
+              </th:block>
               <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
                   checkboxFieldset(inputName='childGender',
                     label=#{children-ccap-info.gender-question},
