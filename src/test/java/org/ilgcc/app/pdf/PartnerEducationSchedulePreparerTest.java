@@ -63,7 +63,7 @@ public class PartnerEducationSchedulePreparerTest {
             .withSchoolScheduleByDay("partnerClass","Monday","10:00", "15:45")
             .withSchoolScheduleByDay("partnerClass","Wednesday", "08:00", "12:45")
             .withSchoolScheduleByDay("partnerClass","Friday","12:00", "19:00")
-            .with("weeklySchedule[]", List.of("Monday", "Wednesday", "Friday"))
+            .with("partnerClassWeeklySchedule[]", List.of("Monday", "Wednesday", "Friday"))
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);

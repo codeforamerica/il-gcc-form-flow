@@ -429,13 +429,13 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
         testPage.clickElementById("partnerClassWeeklySchedule-Monday");
-        testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
+        testPage.clickElementById("partnerClassWeeklySchedule-Wednesday");
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
-        testPage.enter("partnerClassStartTimeMonday", "0900AM");
-        testPage.enter("partnerClassEndTimeMonday", "1100AM");
-        testPage.enter("partnerClassStartTimeTuesday", "14:00");
-        testPage.enter("partnerClassEndTimeTuesday", "15:00");
+        testPage.enter("partnerClassStartTimeMonday", "1100AM");
+        testPage.enter("partnerClassEndTimeMonday", "16:00");
+        testPage.enter("partnerClassStartTimeWednesday", "14:00");
+        testPage.enter("partnerClassEndTimeWednesday", "15:00");
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo("Time of Program");
         testPage.clickContinue();
