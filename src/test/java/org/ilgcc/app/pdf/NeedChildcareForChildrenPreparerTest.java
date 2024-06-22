@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 
 public class NeedChildcareForChildrenPreparerTest {
     NeedChildcareForChildren preparer = new NeedChildcareForChildren();
-    void setup(){
 
-}
     private Submission submission;
 
     @Test

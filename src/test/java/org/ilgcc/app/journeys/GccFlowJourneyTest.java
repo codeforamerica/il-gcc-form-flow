@@ -184,6 +184,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Continue");
         //children-ccap-info
         assertThat(testPage.getTitle()).isEqualTo("CCAP Info");
+        testPage.selectRadio("childHasDisability", "No");
+        testPage.selectRadio("childIsUsCitizen", "Yes");
         testPage.clickContinue();
         //children-ccap-in-care
         assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
