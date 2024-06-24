@@ -184,6 +184,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Continue");
         //children-ccap-info
         assertThat(testPage.getTitle()).isEqualTo("CCAP Info");
+        testPage.selectRadio("childHasDisability", "No");
+        testPage.selectRadio("childIsUsCitizen", "Yes");
         testPage.clickContinue();
         //children-ccap-in-care
         assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
@@ -356,19 +358,19 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Add a job");
         //activities-partner-employer-name
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Name");
-        testPage.enter("companyName", "testPartnerCompany");
+        testPage.enter("partnerCompanyName", "testPartnerCompany");
         testPage.clickContinue();
         //activities--partner-employer-address
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Address");
-        testPage.enter("employerPhoneNumber", "4444");
-        testPage.enter("employerCity", "Oakland");
-        testPage.enter("employerStreetAddress", "123 Partner Employer Address");
-        testPage.enter("employerZipCode", "6042");
+        testPage.enter("partnerEmployerPhoneNumber", "4444");
+        testPage.enter("partnerEmployerCity", "Oakland");
+        testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
+        testPage.enter("partnerEmployerZipCode", "6042");
         testPage.clickContinue();
         assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 10 digits.")).isTrue();
         assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
-        testPage.enter("employerPhoneNumber", "4333333333");
-        testPage.enter("employerZipCode", "92453");
+        testPage.enter("partnerEmployerPhoneNumber", "4333333333");
+        testPage.enter("partnerEmployerZipCode", "92453");
         testPage.clickContinue();
         //activities-partner-self-employment
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Self Employment");
@@ -429,13 +431,13 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
         testPage.clickElementById("partnerClassWeeklySchedule-Monday");
-        testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
+        testPage.clickElementById("partnerClassWeeklySchedule-Wednesday");
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
-        testPage.enter("partnerClassStartTimeMonday", "0900AM");
-        testPage.enter("partnerClassEndTimeMonday", "1100AM");
-        testPage.enter("partnerClassStartTimeTuesday", "14:00");
-        testPage.enter("partnerClassEndTimeTuesday", "15:00");
+        testPage.enter("partnerClassStartTimeMonday", "1100AM");
+        testPage.enter("partnerClassEndTimeMonday", "16:00");
+        testPage.enter("partnerClassStartTimeWednesday", "14:00");
+        testPage.enter("partnerClassEndTimeWednesday", "15:00");
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo("Time of Program");
         testPage.clickContinue();

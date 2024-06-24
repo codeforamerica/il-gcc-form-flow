@@ -7,13 +7,10 @@ import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.PreparerUtilities.formatYesNo;
 
 @Component
 public class NeedChildcareForChildren implements SubmissionFieldPreparer {
@@ -24,11 +21,12 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
     int iteration = 1;
 
     for (var child : SubmissionUtilities.getChildrenNeedingAssistance(submission)) {
-      results.put(getUniqueKey(), new SingleField("childFirstName", (String) child.get("childFirstName"), iteration));
-      results.put(getUniqueKey(), new SingleField("childLastName", (String) child.get("childLastName"), iteration));
+      results.put(getUniqueKey(), new SingleField("childFirstName", (String) child.getOrDefault("childFirstName", ""), iteration));
+      results.put(getUniqueKey(), new SingleField("childLastName", (String) child.getOrDefault("childLastName", ""), iteration));
       results.put(getUniqueKey(), new SingleField("childDateOfBirth", formatChildDateOfBirth(child), iteration));
-      results.put(getUniqueKey(), new SingleField("childSpecialNeeds", formatYesNo((String) child.get("childHasDisability")), iteration));
-      results.put(getUniqueKey(), new SingleField("childUSCitizen", formatYesNo((String) child.get("childIsUsCitizen")), iteration));
+      results.put("childSpecialNeeds_" + iteration, new SingleField("childSpecialNeeds", formatYesNo((String) child.getOrDefault("childHasDisability", "")), iteration));
+      results.put("childUSCitizen_" + iteration, new SingleField("childUSCitizen", formatYesNo((String) child.getOrDefault("childIsUsCitizen", "")), iteration));
+      results.put("childCareChildInSchool_" + iteration, new SingleField("childCareChildInSchool", (String) child.getOrDefault("childAttendsOtherEd", ""), iteration));
       iteration++;
     }
 
@@ -46,12 +44,5 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
         child.get("childDateOfBirthYear"));
   }
 
-  private String formatYesNo(String value) {
-    return switch (value) {
-      case "Yes" -> "true";
-      case "No" -> "false";
-      default -> "";
-    };
-  }
 
 }

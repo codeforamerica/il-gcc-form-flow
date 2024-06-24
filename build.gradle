@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '3.3.0'
+    id 'org.springframework.boot' version '3.3.1'
     id 'io.spring.dependency-management' version '1.1.5'
     id 'java'
     id 'com.adarshr.test-logger' version '4.0.0'
@@ -52,7 +52,7 @@ def formFlowLibraryVersion = '1.3.0'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.1'
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
 
@@ -66,13 +66,13 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.32'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.3.0'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.3.1'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.0'
-    testImplementation 'org.springframework.security:spring-security-test:6.3.0'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.21.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.1'
+    testImplementation 'org.springframework.security:spring-security-test:6.3.1'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.22.0'
     testImplementation 'io.percy:percy-java-selenium:2.0.5'
     testImplementation 'org.jsoup:jsoup:1.17.2'
     testImplementation 'org.awaitility:awaitility:4.2.1'

@@ -420,19 +420,19 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Add a job");
         //activities-partner-employer-name
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Name");
-        testPage.enter("companyName", "testPartnerCompany");
+        testPage.enter("partnerCompanyName", "testPartnerCompany");
         testPage.clickContinue();
         //activities--partner-employer-address
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Address");
-        testPage.enter("employerPhoneNumber", "4444");
-        testPage.enter("employerCity", "Oakland");
-        testPage.enter("employerStreetAddress", "123 Partner Employer Address");
-        testPage.enter("employerZipCode", "6042");
+        testPage.enter("partnerEmployerPhoneNumber", "4444");
+        testPage.enter("partnerEmployerCity", "Oakland");
+        testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
+        testPage.enter("partnerEmployerZipCode", "6042");
         testPage.clickContinue();
         assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 10 digits.")).isTrue();
         assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
-        testPage.enter("employerPhoneNumber", "4333333333");
-        testPage.enter("employerZipCode", "92453");
+        testPage.enter("partnerEmployerPhoneNumber", "4333333333");
+        testPage.enter("partnerEmployerZipCode", "92453");
         testPage.clickContinue();
         //activities-partner-self-employment
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Self Employment");
