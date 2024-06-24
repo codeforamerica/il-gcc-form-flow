@@ -22,20 +22,9 @@ public class UnearnedIncomeSourceIsNone implements Condition {
         var incomeSource = (List<String>) submission.getInputData().getOrDefault(UNEARNED_INCOME_SOURCE, emptyList());
 
         if (incomeSource.contains("NONE")) {
-            removeUnearnedIncomeValues(submission);
             return true;
         }
 
         return false;
-
     }
-
-    private void removeUnearnedIncomeValues(Submission submission) {
-        for (IncomeOption key : IncomeOption.values()) {
-            if (submission.getInputData().containsKey("unearnedIncome" + key)) {
-                submission.getInputData().remove("unearnedIncome" + key);
-            }
-        }
-    }
-
 }
