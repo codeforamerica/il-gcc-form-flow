@@ -40,4 +40,12 @@ public class PreparerUtilities {
       default -> "";
     };
   }
+
+  public static Integer numberValueOf(String incomeValue){
+    if(!incomeValue.isEmpty()){
+      return Integer.parseInt(incomeValue);
+    } else {
+      return 0;
+    }
+  }
 }

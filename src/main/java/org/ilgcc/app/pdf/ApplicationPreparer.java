@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import net.bytebuddy.asm.Advice.Local;
+import org.ilgcc.app.utils.PreparerUtilities;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,14 +36,14 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
                 new SingleField("partnerSignedAt", formatToStringFromLocalDate(partnerSignatureDate), null));
         }
 
-        Integer rentalIncome = Integer.parseInt(inputData.getOrDefault("unearnedIncomeRental", "0").toString());
-        Integer dividendIncome = Integer.parseInt(inputData.getOrDefault("unearnedIncomeDividends", "0").toString());
-        Integer unemploymentIncome = Integer.parseInt(inputData.getOrDefault("unearnedIncomeUnemployment", "0").toString());
-        Integer royaltiesIncome = Integer.parseInt(inputData.getOrDefault("unearnedIncomeRoyalties", "0").toString());
-        Integer pensionIncome = Integer.parseInt(inputData.getOrDefault("unearnedIncomePension", "0").toString());
-        Integer workersIncome = Integer.parseInt(inputData.getOrDefault("unearnedIncomeWorkers", "0").toString());
+        String rentalIncome = inputData.getOrDefault("unearnedIncomeRental", "").toString();
+        String dividendIncome = inputData.getOrDefault("unearnedIncomeDividends", "").toString();
+        String unemploymentIncome = inputData.getOrDefault("unearnedIncomeUnemployment", "").toString();
+        String royaltiesIncome = inputData.getOrDefault("unearnedIncomeRoyalties", "0").toString();
+        String pensionIncome = inputData.getOrDefault("unearnedIncomePension", "0").toString();
+        String workersIncome = inputData.getOrDefault("unearnedIncomeWorkers", "0").toString();
 
-        var totalExpenses = rentalIncome + dividendIncome + unemploymentIncome + royaltiesIncome + pensionIncome + workersIncome;
+        var totalExpenses = PreparerUtilities.numberValueOf(rentalIncome) + PreparerUtilities.numberValueOf(dividendIncome) + PreparerUtilities.numberValueOf(unemploymentIncome) + PreparerUtilities.numberValueOf(royaltiesIncome) + PreparerUtilities.numberValueOf(pensionIncome) + PreparerUtilities.numberValueOf(workersIncome);
 
         results.put("otherMonthlyIncomeApplicant",
             new SingleField("otherMonthlyIncomeApplicant", Integer.toString(totalExpenses), null));

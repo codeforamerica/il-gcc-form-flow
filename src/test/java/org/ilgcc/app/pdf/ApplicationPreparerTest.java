@@ -64,4 +64,20 @@ public class ApplicationPreparerTest {
 
     assertThat(result.get("otherMonthlyIncomeApplicant")).isEqualTo(new SingleField("otherMonthlyIncomeApplicant", "750", null));
   }
+
+  @Test
+  public void setsOtherMonthlyIncomeWithEmptyStringValue(){
+    submission = new SubmissionTestBuilder()
+        .with("unearnedIncomeRental", "")
+        .with("unearnedIncomeDividends", "")
+        .with("unearnedIncomeUnemployment", "124")
+        .with("unearnedIncomeRoyalties", "126")
+        .with("unearnedIncomePension", "")
+        .with("unearnedIncomeWorkers", "")
+        .build();
+
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+    assertThat(result.get("otherMonthlyIncomeApplicant")).isEqualTo(new SingleField("otherMonthlyIncomeApplicant", "250", null));
+  }
 }
