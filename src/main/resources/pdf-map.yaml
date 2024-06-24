@@ -112,6 +112,7 @@ inputFields:
   partnerEducationScheduleSundayEnd: PARTNER_EDUCATION_SCHEDULE_SUNDAY_END
   partnerEducationScheduleSundayEndAmPm: PARTNER_EDUCATION_SCHEDULE_SUNDAY_END_AM_PM
 
+  otherMonthlyIncomeApplicant: OTHER_MONTHLY_INCOME_APPLICANT
   signedName: APPLICANT_SIGNATURE
   partnerSignedName: PARTNER_SIGNATURE
   partnerSignedAt: PARTNER_SIGNATURE_DATE
