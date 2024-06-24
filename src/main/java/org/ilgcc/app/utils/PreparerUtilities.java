@@ -33,4 +33,11 @@ public class PreparerUtilities {
     }
     return fields;
   }
+  public static String formatYesNo(String value) {
+    return switch (value) {
+      case "Yes" -> "true";
+      case "No" -> "false";
+      default -> "";
+    };
+  }
 }
