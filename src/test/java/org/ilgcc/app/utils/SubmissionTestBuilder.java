@@ -353,11 +353,11 @@ public class SubmissionTestBuilder {
     }
 
     private String childcareReasonKey(String inputNamePrefix) {
-        if (inputNamePrefix == "activitiesClass") {
+        if (inputNamePrefix.equals("activitiesClass")) {
             return "activitiesParentChildcareReason[]";
         }
 
-        if (inputNamePrefix == "partnerClass") {
+        if (inputNamePrefix.equals("partnerClass")) {
             return "activitiesParentPartnerChildcareReason[]";
         }
 
