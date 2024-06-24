@@ -3,7 +3,6 @@ package org.ilgcc.app.submission.actions;
 import static java.util.Collections.emptyList;
 
 import formflow.library.config.submission.Action;
-import formflow.library.config.submission.Condition;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import java.util.List;

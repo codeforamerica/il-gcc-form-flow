@@ -1,7 +1,5 @@
 package org.ilgcc.app.pdf;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.list;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
@@ -10,12 +8,9 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import net.bytebuddy.asm.Advice.Local;
 import org.ilgcc.app.utils.PreparerUtilities;
 import org.springframework.stereotype.Component;
 
