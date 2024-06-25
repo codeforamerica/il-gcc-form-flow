@@ -304,12 +304,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         //activities-ed-program-type
         assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
         testPage.clickElementById("educationType-highSchoolOrGed-label");
-        assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
+        assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in? (required)");
         testPage.clickContinue();
 
         //activities-ed-program-name
         testPage.enter("schoolName", "World Training Program");
-        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?* (required)");
         testPage.clickContinue();
 
         //activities-ed-program-info
@@ -419,10 +419,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
         testPage.clickContinue();
         testPage.clickElementById("partnerEducationType-twoYearCollege-label");
-        assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in?");
+        assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in? (required)");
         testPage.clickContinue();
         testPage.enter("partnerProgramName", "World University");
-        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?* (required)");
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo("School or training program");
         testPage.clickContinue();
