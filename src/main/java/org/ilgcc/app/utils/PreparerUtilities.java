@@ -41,11 +41,11 @@ public class PreparerUtilities {
     };
   }
 
-  public static Integer numberValueOf(String incomeValue){
+  public static Double numberValueOf(String incomeValue){
     if(!incomeValue.isEmpty()){
-      return Integer.parseInt(incomeValue);
+      return Double.parseDouble(incomeValue);
     } else {
-      return 0;
+      return 0.0;
     }
   }
 }

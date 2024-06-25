@@ -41,7 +41,7 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         var totalExpenses = PreparerUtilities.numberValueOf(rentalIncome) + PreparerUtilities.numberValueOf(dividendIncome) + PreparerUtilities.numberValueOf(unemploymentIncome) + PreparerUtilities.numberValueOf(royaltiesIncome) + PreparerUtilities.numberValueOf(pensionIncome) + PreparerUtilities.numberValueOf(workersIncome);
 
         results.put("otherMonthlyIncomeApplicant",
-            new SingleField("otherMonthlyIncomeApplicant", Integer.toString(totalExpenses), null));
+            new SingleField("otherMonthlyIncomeApplicant", String.format("%.0f", Math.floor(totalExpenses)), null));
 
         return results;
     }
