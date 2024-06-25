@@ -37,7 +37,8 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
       earliestCCAPStart = getEarliestCCAPStartDate(earliestCCAPStart, (String) child.getOrDefault("ccapStartDate", ""), formatter);
       iteration++;
     }
-    results.put("childCareStartDate", new SingleField("childCareStartDate", earliestCCAPStart, null));
+
+results.put("childCareStartDate", new SingleField("childCareStartDate", earliestCCAPStart, null));
     return results;
   }
 
