@@ -75,12 +75,14 @@ public class NeedChildcareForChildrenPreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
         assertThat(result.get("childSpecialNeeds_1")).isEqualTo(new SingleField("childSpecialNeeds", "false", 1));
     }
-
-//    public void shouldSetCCAPStartDateToTheStartDateOfAChildInNeedOfAssistance(){
-//        submission = new SubmissionTestBuilder()
-//            .withChild("Child", "NoChildcare", "No")
-//            .withChild("Needs", "Childcare", "Yes")
-//            .build();
-//
-//    }
+    @Test
+    public void shouldSetCCAPStartDateToTheStartDateOfAChildInNeedOfAssistance(){
+        submission = new SubmissionTestBuilder()
+            .withChild("Child", "NoChildcare", "No")
+            .withChild("Needs", "Childcare", "Yes")
+            .addChildCareStartDate(1,"1/1/2019")
+            .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("childCareStartDate")).isEqualTo(new SingleField("childCareStartDate", "false", null));
+    }
 }

@@ -384,6 +384,15 @@ public class SubmissionTestBuilder {
         child.put("childHasDisability", (childHasSpecialNeeds));
         return this;
     }
+    public SubmissionTestBuilder addChildCareStartDate(int childIterationPosition, String ccapStartDate){
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+        if (children.isEmpty()) {
+            return this;
+        }
+        Map<String, Object> child = children.get(childIterationPosition);
+        child.put("ccapStartDate", (ccapStartDate));
+        return this;
+    }
 
     private String childcareReasonKey(String inputNamePrefix) {
         if (inputNamePrefix.equals("activitiesClass")) {
