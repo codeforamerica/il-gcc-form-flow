@@ -12,8 +12,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
-            .withChild("First", "Child")
-            .withChild("Second", "Child")
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
             .build());
 
         //activities-parent-intro
@@ -134,8 +134,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
-            .withChild("First", "Child")
-            .withChild("Second", "Child")
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
             .build());
 
         //activities-parent-intro
@@ -209,8 +209,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
-            .withChild("First", "Child")
-            .withChild("Second", "Child")
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
             .build());
 
         //activities-parent-intro
@@ -276,8 +276,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
-            .withChild("First", "Child")
-            .withChild("Second", "Child")
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
             .build());
 
         //activities-parent-intro
@@ -298,8 +298,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
             .withParentPartnerDetails()
-            .withChild("First", "Child")
-            .withChild("Second", "Child")
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
             .build());
 
         //activities-parent-intro
@@ -518,8 +518,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
             .withParentPartnerDetails()
-            .withChild("First", "Child")
-            .withChild("Second", "Child")
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
             .build());
 
         //activities-parent-intro
@@ -570,8 +570,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
             .withParentPartnerDetails()
-            .withChild("First", "Child")
-            .withChild("Second", "Child")
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
             .build());
 
         //activities-parent-intro
@@ -594,8 +594,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
             .withParentPartnerDetails()
-            .withChild("First", "Child")
-            .withChild("Second", "Child")
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
             .build());
 
         //activities-parent-intro

@@ -99,7 +99,7 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withChild(String firstName, String lastName) {
+    public SubmissionTestBuilder withChild(String firstName, String lastName, String needFinancialAssistanceForChild) {
         List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().get("children");
         if (children == null) {
             children = new ArrayList<>();
@@ -114,7 +114,7 @@ public class SubmissionTestBuilder {
         child.put("childBirthdateDay", "10");
         child.put("childBirthdateMonth", "11");
         child.put("childBirthdateYear", "2001");
-        child.put("needFinancialAssistanceForChild", "Yes");
+        child.put("needFinancialAssistanceForChild", needFinancialAssistanceForChild);
         child.put("childIsUsCitizen", "Yes");
         child.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
         children.add(child);

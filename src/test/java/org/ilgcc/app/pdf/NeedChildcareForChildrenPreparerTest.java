@@ -17,7 +17,7 @@ public class NeedChildcareForChildrenPreparerTest {
     @Test
     public void shouldSelectTrueOnPDFFieldWhenChildIsAttendingAnyOtherSchoolDuringDay() {
         submission = new SubmissionTestBuilder()
-                .withChild("First", "Child")
+                .withChild("First", "Child", "Yes")
                 .withChildAttendsSchoolDuringTheDay(0, "true")
                 .build();
 
@@ -27,7 +27,7 @@ public class NeedChildcareForChildrenPreparerTest {
     @Test
     public void shouldSelectFalseOnPDFFieldWhenChildIsAttendingAnyOtherSchoolDuringDay() {
         submission = new SubmissionTestBuilder()
-            .withChild("First", "Child")
+            .withChild("First", "Child", "Yes")
             .withChildAttendsSchoolDuringTheDay(0, "false")
             .build();
 
@@ -37,7 +37,7 @@ public class NeedChildcareForChildrenPreparerTest {
     @Test
     public void shouldSelectTrueOnPDFFieldWhenChildIsAUSCitizen() {
         submission = new SubmissionTestBuilder()
-            .withChild("First", "Child")
+            .withChild("First", "Child", "Yes")
             .withChildIsAUSCitizen(0, "Yes")
             .build();
 
@@ -48,7 +48,7 @@ public class NeedChildcareForChildrenPreparerTest {
     public void shouldSelectFalseOnPDFFieldWhenChildIsNotAUSCitizen() {
     
         submission = new SubmissionTestBuilder()
-            .withChild("First", "Child")
+            .withChild("First", "Child", "Yes")
             .withChildIsAUSCitizen(0, "No")
             .build();
 
@@ -58,7 +58,7 @@ public class NeedChildcareForChildrenPreparerTest {
     @Test
     public void shouldSelectTrueOnPDFFieldWhenChildHasSpecialNeeds() {
         submission = new SubmissionTestBuilder()
-            .withChild("First", "Child")
+            .withChild("First", "Child", "Yes")
             .withChildHasSpecialNeeds(0, "Yes")
             .build();
 
@@ -68,11 +68,19 @@ public class NeedChildcareForChildrenPreparerTest {
     @Test
     public void shouldSelectFalseOnPDFFieldWhenChildDoesNotHaveSpecialNeeds() {
         submission = new SubmissionTestBuilder()
-            .withChild("First", "Child")
+            .withChild("First", "Child", "Yes")
             .withChildHasSpecialNeeds(0, "No")
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
         assertThat(result.get("childSpecialNeeds_1")).isEqualTo(new SingleField("childSpecialNeeds", "false", 1));
     }
+
+//    public void shouldSetCCAPStartDateToTheStartDateOfAChildInNeedOfAssistance(){
+//        submission = new SubmissionTestBuilder()
+//            .withChild("Child", "NoChildcare", "No")
+//            .withChild("Needs", "Childcare", "Yes")
+//            .build();
+//
+//    }
 }
