@@ -5,10 +5,8 @@ import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,31 +61,25 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
     Optional<LocalDate> earliestDate = Optional.of(LocalDate.parse((addLeadingZerosToDateString(earliestCCAPStartDate)), formatter));
     Optional<LocalDate> childCareStartDate = Optional.of(LocalDate.parse(addLeadingZerosToDateString(childCCAPStartDate), formatter));
     return earliestDate.get().isBefore(childCareStartDate.get()) ? earliestCCAPStartDate : childCCAPStartDate;
-//    try {
-//      LocalDate earliestDate = LocalDate.parse(earliestCCAPStartDate, formatter);
-//      LocalDate childCareStartDate = LocalDate.parse(childCCAPStartDate, formatter);
-//      return earliestDate.isBefore(childCareStartDate) ? earliestCCAPStartDate : childCCAPStartDate;
-//
-//    }catch (DateTimeException e) {
-//      return earliestCCAPStartDate;
-//    }
   }
   private String addLeadingZerosToDateString(String dateStr){
     String pattern = "(\\d{1,2})/(\\d{1,2})/(\\d{4})";
     Pattern regex = Pattern.compile(pattern);
     Matcher matcher = regex.matcher(dateStr);
+    try {
+      if (matcher.matches()) {
+        String month = matcher.group(1);
+        String day = matcher.group(2);
+        String year = matcher.group(3);
 
-    if (matcher.matches()) {
-      String month = matcher.group(1);
-      String day = matcher.group(2);
-      String year = matcher.group(3);
+        String formattedMonth = String.format("%02d", Integer.parseInt(month));
+        String formattedDay = String.format("%02d", Integer.parseInt(day));
 
-      String formattedMonth = String.format("%02d", Integer.parseInt(month));
-      String formattedDay = String.format("%02d", Integer.parseInt(day));
-
-      return formattedMonth + "/" + formattedDay + "/" + year;
-    } else {
+        return formattedMonth + "/" + formattedDay + "/" + year;
+      }
+    }catch (Exception e) {
       return "";
     }
+    return "";
   }
 }
