@@ -83,6 +83,21 @@ public class NeedChildcareForChildrenPreparerTest {
             .addChildCareStartDate(1,"1/1/2019")
             .build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
-        assertThat(result.get("childCareStartDate")).isEqualTo(new SingleField("childCareStartDate", "false", null));
+        assertThat(result.get("childCareStartDate")).isEqualTo(new SingleField("childCareStartDate", "1/1/2019", null));
+    }
+
+    @Test
+    public void shouldSetCCAPStartDateToTheStartDateOfEarliestCCAPStartDate(){
+        submission = new SubmissionTestBuilder()
+            .withChild("Child", "NoChildcare", "No")
+            .withChild("Needs", "Childcare", "Yes")
+            .addChildCareStartDate(1,"1/1/2019")
+            .withChild("Second", "Childcare", "Yes")
+            .addChildCareStartDate(2,"11/1/2009")
+            .withChild("Third", "Childcare", "Yes")
+            .addChildCareStartDate(3,"1/12/2024")
+            .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("childCareStartDate")).isEqualTo(new SingleField("childCareStartDate", "11/1/2009", null));
     }
 }
