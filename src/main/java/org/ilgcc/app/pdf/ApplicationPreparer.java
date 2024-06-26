@@ -8,11 +8,10 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import net.bytebuddy.asm.Advice.Local;
+import org.ilgcc.app.utils.PreparerUtilities;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,8 +27,21 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
 
         if (!partnerSignature.equals("")) {
             Optional<LocalDate> partnerSignatureDate = Optional.of(LocalDate.from(submission.getSubmittedAt()));
-            results.put("partnerSignedAt", new SingleField("partnerSignedAt", formatToStringFromLocalDate(partnerSignatureDate), null));
+            results.put("partnerSignedAt",
+                new SingleField("partnerSignedAt", formatToStringFromLocalDate(partnerSignatureDate), null));
         }
+
+        String rentalIncome = inputData.getOrDefault("unearnedIncomeRental", "").toString();
+        String dividendIncome = inputData.getOrDefault("unearnedIncomeDividends", "").toString();
+        String unemploymentIncome = inputData.getOrDefault("unearnedIncomeUnemployment", "").toString();
+        String royaltiesIncome = inputData.getOrDefault("unearnedIncomeRoyalties", "0").toString();
+        String pensionIncome = inputData.getOrDefault("unearnedIncomePension", "0").toString();
+        String workersIncome = inputData.getOrDefault("unearnedIncomeWorkers", "0").toString();
+
+        var totalExpenses = PreparerUtilities.numberValueOf(rentalIncome) + PreparerUtilities.numberValueOf(dividendIncome) + PreparerUtilities.numberValueOf(unemploymentIncome) + PreparerUtilities.numberValueOf(royaltiesIncome) + PreparerUtilities.numberValueOf(pensionIncome) + PreparerUtilities.numberValueOf(workersIncome);
+
+        results.put("otherMonthlyIncomeApplicant",
+            new SingleField("otherMonthlyIncomeApplicant", String.format("%.0f", Math.floor(totalExpenses)), null));
 
         return results;
     }

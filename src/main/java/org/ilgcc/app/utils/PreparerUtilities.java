@@ -40,4 +40,12 @@ public class PreparerUtilities {
       default -> "";
     };
   }
+
+  public static Double numberValueOf(String incomeValue){
+    if(!incomeValue.isEmpty()){
+      return Double.parseDouble(incomeValue);
+    } else {
+      return 0.0;
+    }
+  }
 }

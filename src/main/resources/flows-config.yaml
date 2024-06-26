@@ -317,6 +317,7 @@ flow:
       - name: unearned-income-source
   unearned-income-source:
     crossFieldValidationAction: ValidateUnearnedIncomeSource
+    onPostAction: RemoveOutdatedIncomeSources
     nextScreens:
       - name: unearned-income-assets
         condition: UnearnedIncomeSourceIsNone

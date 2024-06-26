@@ -1,6 +1,7 @@
 package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
+import formflow.library.data.annotations.Money;
 import formflow.library.data.annotations.Phone;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.*;
@@ -263,11 +264,17 @@ public class Gcc extends FlowInputs {
     private String partnerProgramEndMonth;
     private String partnerProgramEndYear;
     private List<String> unearnedIncomeSource;
+    @Money
     private String unearnedIncomeRental;
+    @Money
     private String unearnedIncomeDividends;
+    @Money
     private String unearnedIncomeUnemployment;
+    @Money
     private String unearnedIncomeRoyalties;
+    @Money
     private String unearnedIncomePension;
+    @Money
     private String unearnedIncomeWorkers;
 
     private List<String> activitiesParentChildcareReason;
