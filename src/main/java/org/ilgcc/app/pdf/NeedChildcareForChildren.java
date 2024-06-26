@@ -21,6 +21,7 @@ import static org.ilgcc.app.utils.PreparerUtilities.formatYesNo;
 
 @Component
 public class NeedChildcareForChildren implements SubmissionFieldPreparer {
+
   @Override
   public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -37,8 +38,7 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
       earliestCCAPStart = getEarliestCCAPStartDate(earliestCCAPStart, (String) child.getOrDefault("ccapStartDate", ""), formatter);
       iteration++;
     }
-
-results.put("childCareStartDate", new SingleField("childCareStartDate", earliestCCAPStart, null));
+    results.put("childCareStartDate", new SingleField("childCareStartDate", earliestCCAPStart, null));
     return results;
   }
 
