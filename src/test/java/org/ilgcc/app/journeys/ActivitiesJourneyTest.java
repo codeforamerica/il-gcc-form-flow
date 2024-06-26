@@ -2,19 +2,39 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import formflow.library.data.Submission;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.List;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 public class ActivitiesJourneyTest extends AbstractBasePageTest {
+
     @Test
-    void ParentOnlyWithJobAndWorkTest() {
+    void AddNameFirstNameLastName() throws IOException {
+        testPage.navigateToFlowScreen("gcc/parent-info-intro");
+        Submission submission = getSessionSubmissionTestBuilder().withDayCareProvider()
+            .with("parentFirstName", "firstName")
+            .with("parentLastName", "lastName")
+            .build();
+        saveSubmission(submission);
+
+        List fieldsToTest = List.of("APPLICANT_NAME_FIRST", "APPLICANT_NAME_LAST");
+        regenerateExpectedPDFfromSubmission(submission, Thread.currentThread().getStackTrace()[1].getMethodName());
+        verifyMatchingFields(generatedPdfFieldsFromSubmission(submission), generateExpectedFields(Thread.currentThread().getStackTrace()[1].getMethodName()), fieldsToTest);
+
+    }
+    @Test
+    void ParentOnlyWithJobAndWorkTest() throws IOException {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
+        Submission submission = getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
             .withChild("First", "Child")
             .withChild("Second", "Child")
-            .build());
+            .build();
+        saveSubmission(submission);
 
         //activities-parent-intro
         assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");

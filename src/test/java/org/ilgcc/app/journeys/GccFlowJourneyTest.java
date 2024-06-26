@@ -2,6 +2,7 @@ package org.ilgcc.app.journeys;
 
 import com.lowagie.text.pdf.AcroFields;
 import com.lowagie.text.pdf.PdfReader;
+import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
