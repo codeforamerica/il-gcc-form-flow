@@ -158,6 +158,8 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.required-financial-assistance}")
     private String needFinancialAssistanceForChild;
 
+    @NotEmpty(message = "{errors.select-child-relationship}")
+    private String childRelationship;
     private List<String> childGender;
     private List<String> childRaceEthnicity;
     private String childHasDisability;

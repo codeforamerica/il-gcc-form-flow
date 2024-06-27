@@ -184,6 +184,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Continue");
         //children-ccap-info
         assertThat(testPage.getTitle()).isEqualTo("CCAP Info");
+        testPage.selectFromDropdown("childRelationship", "My child");
         testPage.selectRadio("childHasDisability", "No");
         testPage.selectRadio("childIsUsCitizen", "Yes");
         testPage.clickContinue();
@@ -533,9 +534,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 //         regenerateExpectedPDF(pdfFile); // uncomment and run test to regenerate the test pdf
 
         try (FileInputStream actualIn = new FileInputStream(pdfFile);
-             PdfReader actualReader = new PdfReader(actualIn);
-             FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
-             PdfReader expectedReader = new PdfReader(expectedIn)) {
+            PdfReader actualReader = new PdfReader(actualIn);
+            FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
+            PdfReader expectedReader = new PdfReader(expectedIn)) {
             AcroFields actualAcroFields = actualReader.getAcroFields();
             AcroFields expectedAcroFields = expectedReader.getAcroFields();
 
