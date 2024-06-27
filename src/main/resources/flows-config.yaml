@@ -130,6 +130,7 @@ flow:
   children-ccap-start-date:
     subflow: children
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
+    beforeSaveAction: SaveCCAPStartDate
     nextScreens:
       - name: children-childcare-weekly-schedule
   children-childcare-weekly-schedule:

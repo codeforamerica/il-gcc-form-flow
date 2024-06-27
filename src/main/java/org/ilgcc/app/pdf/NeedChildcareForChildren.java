@@ -36,7 +36,7 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
       earliestCCAPStart = getEarliestCCAPStartDate(earliestCCAPStart, (String) child.getOrDefault("ccapStartDate", ""), formatter);
       iteration++;
     }
-    results.put("childCareStartDate", new SingleField("childCareStartDate", earliestCCAPStart, null));
+    results.put("childcareStartDate", new SingleField("childcareStartDate", earliestCCAPStart, null));
     return results;
   }
 
@@ -57,10 +57,13 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
     if(earliestCCAPStartDate.isBlank()){
       return childCCAPStartDate;
     }
+    if(childCCAPStartDate.isBlank()){
+      return earliestCCAPStartDate;
+    }
 
     Optional<LocalDate> earliestDate = Optional.of(LocalDate.parse((addLeadingZerosToDateString(earliestCCAPStartDate)), formatter));
-    Optional<LocalDate> childCareStartDate = Optional.of(LocalDate.parse(addLeadingZerosToDateString(childCCAPStartDate), formatter));
-    return earliestDate.get().isBefore(childCareStartDate.get()) ? earliestCCAPStartDate : childCCAPStartDate;
+    Optional<LocalDate> childcareStartDate = Optional.of(LocalDate.parse(addLeadingZerosToDateString(childCCAPStartDate), formatter));
+    return earliestDate.get().isBefore(childcareStartDate.get()) ? earliestCCAPStartDate : childCCAPStartDate;
   }
   private String addLeadingZerosToDateString(String dateStr){
     String pattern = "(\\d{1,2})/(\\d{1,2})/(\\d{4})";

@@ -111,7 +111,7 @@ inputFields:
   partnerEducationScheduleSaturdayEndAmPm: PARTNER_EDUCATION_SCHEDULE_SATURDAY_END_AM_PM
   partnerEducationScheduleSundayEnd: PARTNER_EDUCATION_SCHEDULE_SUNDAY_END
   partnerEducationScheduleSundayEndAmPm: PARTNER_EDUCATION_SCHEDULE_SUNDAY_END_AM_PM
-  childCareStartDate: CHILD_CARE_START_DATE_CHILD
+  childcareStartDate: CHILD_CARE_START_DATE_CHILD
   otherMonthlyIncomeApplicant: OTHER_MONTHLY_INCOME_APPLICANT
   unearnedIncomeAssetsMoreThanOneMillionDollars: TOTAL_ASSETS_MILLION
   signedName: APPLICANT_SIGNATURE
