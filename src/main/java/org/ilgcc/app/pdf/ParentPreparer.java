@@ -8,6 +8,7 @@ import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.ilgcc.app.utils.PreparerUtilities;
 import org.springframework.stereotype.Component;
 
 import static org.ilgcc.app.utils.PreparerUtilities.flowIteratorPreparer;
@@ -57,6 +58,13 @@ public class ParentPreparer implements SubmissionFieldPreparer {
             results.putAll(jobsData);
         }
 
+        String educationTypeField = PreparerUtilities.getEducationTypeFieldValue(
+            (String) submission.getInputData().getOrDefault("educationType", ""));
+        results.put("parentEducation",
+            new SingleField("parentEducation", educationTypeField, null));
+
         return results;
     }
+
+
 }

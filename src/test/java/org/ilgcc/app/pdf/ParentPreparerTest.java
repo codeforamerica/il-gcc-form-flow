@@ -94,4 +94,16 @@ public class ParentPreparerTest {
     assertThat(result.get("employerZipCode_1")).isEqualTo(null);
     assertThat(result.get("employerPhoneNumber_1")).isEqualTo(null);
   }
+
+  @Test
+  public void shouldSelectEducationTypeWhenUserSelectsIt(){
+    //parent, educationtype, select education
+    submission = new SubmissionTestBuilder()
+        .withParentDetails()
+        .withEducationType("highSchoolOrGed")
+        .build();
+
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+    assertThat(result.get("parentEducation")).isEqualTo(new SingleField("parentEducation", "APPLICANT_EDUCATION_TYPE_HIGH_SCHOOL", null));
+  }
 }

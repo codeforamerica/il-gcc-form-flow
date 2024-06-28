@@ -48,4 +48,20 @@ public class PreparerUtilities {
       return 0.0;
     }
   }
+
+  public static String getEducationTypeFieldValue(String educationType, String prefix){
+    return switch (educationType){
+      case "belowPostSecondary" -> "APPLICANT_EDUCATION_TYPE_BELOW_POST_SECONDARY";
+      case "highSchoolOrGed" -> "APPLICANT_EDUCATION_TYPE_HIGH_SCHOOL";
+      case "occupationOrVocationCertificate" -> "APPLICANT_EDUCATION_TYPE_OCCUPATIONAL";
+      case "twoYearCollege" -> "APPLICANT_EDUCATION_TYPE_2_YEAR_COLLEGE";
+      case "fourYearCollege" -> "APPLICANT_EDUCATION_TYPE_4_YEAR_COLLEGE";
+      case "tanfWorkTraining" -> "APPLICANT_EDUCATION_TYPE_TANF";
+      case "internship" -> "APPLICANT_EDUCATION_TYPE_INTERNSHIP";
+      case "other" -> "APPLICANT_EDUCATION_TYPE_OTHER";
+      default -> "";
+    };
+  }
+
+
 }

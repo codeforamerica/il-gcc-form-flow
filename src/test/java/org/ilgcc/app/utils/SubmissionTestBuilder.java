@@ -406,4 +406,10 @@ public class SubmissionTestBuilder {
         return "";
 
     }
+
+    public SubmissionTestBuilder withEducationType(String educationType){
+        submission.getInputData().put("educationType", educationType);
+        return this;
+    }
+
 }
