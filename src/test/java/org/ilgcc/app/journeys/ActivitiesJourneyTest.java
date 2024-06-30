@@ -84,8 +84,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchool-label")).isEqualTo("High School or GED");
-        testPage.clickElementById("educationType-highSchool-label");
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
+        testPage.clickElementById("educationType-highSchoolOrGed-label");
         assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
         testPage.clickContinue();
 
@@ -226,8 +226,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchool-label")).isEqualTo("High School or GED");
-        testPage.clickElementById("educationType-highSchool-label");
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
+        testPage.clickElementById("educationType-highSchoolOrGed-label");
         assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
         testPage.clickContinue();
 
@@ -373,8 +373,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchool-label")).isEqualTo("High School or GED");
-        testPage.clickElementById("educationType-highSchool-label");
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
+        testPage.clickElementById("educationType-highSchoolOrGed-label");
         assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
         testPage.clickContinue();
 
@@ -482,7 +482,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         //activities-partner-add-ed-program
         assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
         testPage.clickContinue();
-        testPage.clickElementById("partnerEducationType-college-label");
+        testPage.clickElementById("partnerEducationType-fourYearCollege-label");
         assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in?");
         testPage.clickContinue();
         testPage.enter("partnerProgramName", "World University");
@@ -534,7 +534,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         // Note that currently, we are skipping the parent partner job questions
         assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
         testPage.clickContinue();
-        testPage.clickElementById("partnerEducationType-college-label");
+        testPage.clickElementById("partnerEducationType-fourYearCollege-label");
         assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in?");
         testPage.clickContinue();
         testPage.enter("partnerProgramName", "World University");
