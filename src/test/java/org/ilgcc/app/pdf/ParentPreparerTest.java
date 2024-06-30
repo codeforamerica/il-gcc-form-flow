@@ -96,11 +96,10 @@ public class ParentPreparerTest {
   }
 
   @Test
-  public void shouldSelectEducationTypeWhenUserSelectsIt(){
-    //parent, educationtype, select education
+  public void shouldPreparePrimaryEducationTypeCheckboxFieldWhenSelected(){
     submission = new SubmissionTestBuilder()
         .withParentDetails()
-        .withEducationType("highSchoolOrGed")
+        .withEducationType("highSchoolOrGed", "parent")
         .build();
 
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);

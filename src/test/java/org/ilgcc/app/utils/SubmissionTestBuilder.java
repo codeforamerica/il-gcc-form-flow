@@ -2,7 +2,6 @@ package org.ilgcc.app.utils;
 
 import static java.util.Collections.emptyList;
 import formflow.library.data.Submission;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -407,9 +406,13 @@ public class SubmissionTestBuilder {
 
     }
 
-    public SubmissionTestBuilder withEducationType(String educationType){
-        submission.getInputData().put("educationType", educationType);
+    public SubmissionTestBuilder withEducationType(String educationType, String parentOrPartner){
+        if (parentOrPartner.equalsIgnoreCase("parent")){
+            submission.getInputData().put("educationType", educationType);
+        }
+        if (parentOrPartner.equalsIgnoreCase("partner")){
+            submission.getInputData().put("partnerEducationType", educationType);
+        }
         return this;
     }
-
 }
