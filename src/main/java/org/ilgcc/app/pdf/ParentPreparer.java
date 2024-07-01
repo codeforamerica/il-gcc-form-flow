@@ -8,6 +8,7 @@ import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.ilgcc.app.utils.PreparerUtilities;
 import org.springframework.stereotype.Component;
 
 import static org.ilgcc.app.utils.PreparerUtilities.flowIteratorPreparer;
@@ -37,10 +38,10 @@ public class ParentPreparer implements SubmissionFieldPreparer {
 
         }
 
-        Boolean experiencingHomelessness = (Boolean) inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
+        boolean experiencingHomelessness = inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
             List.of("yes"));
         results.put("parentExperiencingHomelessness",
-            new SingleField("parentExperiencingHomelessness", experiencingHomelessness.toString(), null));
+            new SingleField("parentExperiencingHomelessness", Boolean.toString(experiencingHomelessness), null));
 
         var applicantSchoolStartDate = formatToStringFromLocalDate(getDateInput(submission, "activitiesProgramStart"));
         results.put("applicantSchoolStartDate",
@@ -57,6 +58,14 @@ public class ParentPreparer implements SubmissionFieldPreparer {
             results.putAll(jobsData);
         }
 
+        String educationTypePrefix = "APPLICANT";
+        String educationTypeField = PreparerUtilities.getEducationTypeFieldValue(
+            (String) submission.getInputData().getOrDefault("educationType", ""), educationTypePrefix);
+        results.put("parentEducation",
+            new SingleField("parentEducation", educationTypeField, null));
+
         return results;
     }
+
+
 }

@@ -302,8 +302,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchool-label")).isEqualTo("High School or GED");
-        testPage.clickElementById("educationType-highSchool-label");
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
+        testPage.clickElementById("educationType-highSchoolOrGed-label");
         assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
         testPage.clickContinue();
 
@@ -418,7 +418,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // activities-partner-ed
         assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
         testPage.clickContinue();
-        testPage.clickElementById("partnerEducationType-college-label");
+        testPage.clickElementById("partnerEducationType-twoYearCollege-label");
         assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in?");
         testPage.clickContinue();
         testPage.enter("partnerProgramName", "World University");

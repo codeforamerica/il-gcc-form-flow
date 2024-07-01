@@ -101,4 +101,15 @@ public class ParentPartnerPreparerTest {
     assertThat(result.get("partnerEmployerPhoneNumber_1")).isEqualTo(null);
   }
 
+  @Test
+  public void shouldPreparePrimaryEducationTypeCheckboxFieldWhenSelected(){
+    submission = new SubmissionTestBuilder()
+        .withParentPartnerDetails()
+        .withEducationType("internship", "partner")
+        .build();
+
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+    assertThat(result.get("partnerEducation")).isEqualTo(new SingleField("partnerEducation", "PARTNER_EDUCATION_TYPE_INTERNSHIP", null));
+  }
+
 }

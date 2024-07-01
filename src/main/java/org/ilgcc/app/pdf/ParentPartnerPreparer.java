@@ -5,7 +5,7 @@ import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
-import org.ilgcc.app.utils.SubmissionUtilities;
+import org.ilgcc.app.utils.PreparerUtilities;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static java.lang.Integer.parseInt;
 import static org.ilgcc.app.utils.PreparerUtilities.flowIteratorPreparer;
 import static org.ilgcc.app.utils.SubmissionUtilities.getDateInput;
 import static org.ilgcc.app.utils.SubmissionUtilities.selectedYes;
@@ -85,6 +84,12 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
     if(!partnerJobsData.isEmpty()){
       results.putAll(partnerJobsData);
     }
+
+    String educationTypePrefix = "PARTNER";
+    String educationTypeField = PreparerUtilities.getEducationTypeFieldValue(
+        (String) submission.getInputData().getOrDefault("partnerEducationType", ""), educationTypePrefix);
+    results.put("partnerEducation",
+        new SingleField("partnerEducation", educationTypeField, null));
 
     return results;
   }
