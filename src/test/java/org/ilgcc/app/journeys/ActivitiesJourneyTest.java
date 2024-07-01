@@ -84,8 +84,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchool-label")).isEqualTo("High School or GED");
-        testPage.clickElementById("educationType-highSchool-label");
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
+        testPage.clickElementById("educationType-highSchoolOrGed-label");
         assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in? (required)");
         testPage.clickContinue();
 
@@ -535,7 +535,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
         testPage.clickContinue();
         testPage.clickElementById("partnerEducationType-fourYearCollege-label");
-        assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in? (required) ");
+        assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in? (required)");
         testPage.clickContinue();
         testPage.enter("partnerProgramName", "World University");
         assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?* (required)");
