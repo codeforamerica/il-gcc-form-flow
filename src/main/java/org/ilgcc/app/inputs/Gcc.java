@@ -279,6 +279,9 @@ public class Gcc extends FlowInputs {
     @Money
     private String unearnedIncomeWorkers;
 
+    private String doesAnyoneInHouseholdPayChildSupport;
+    @Money
+    private String amountYourHouseholdPaysInChildSupport;
     private List<String> activitiesParentChildcareReason;
     private String activitiesParentChildcareReason_other;
     private List<String> activitiesParentPartnerChildcareReason;
