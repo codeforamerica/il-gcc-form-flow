@@ -1,5 +1,6 @@
 package org.ilgcc.jobs;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.jobs.context.JobContext;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class SampleJobProcessor implements JobProcessorInterface {
 
@@ -21,10 +23,12 @@ public class SampleJobProcessor implements JobProcessorInterface {
     System.out.println("Doing some work without arguments");
   }
 
+  @Override
   public void doSimpleJob(String anArgument) {
     System.out.println("Doing some work: " + anArgument);
   }
 
+  @Override
   public void doLongRunningJob(String anArgument) {
     try {
       for (int i = 0; i < 10; i++) {
@@ -36,17 +40,20 @@ public class SampleJobProcessor implements JobProcessorInterface {
     }
   }
 
+  @Override
   public void doLongRunningJobWithJobContext(String anArgument, JobContext jobContext) {
     try {
-      LOGGER.warn("Starting long running job...");
+      log.warn("Starting long running job...");
       final JobDashboardProgressBar progressBar = jobContext.progressBar(10);
       for (int i = 0; i < 10; i++) {
-        LOGGER.info(String.format("Processing item %d: %s", i, anArgument));
-        System.out.println(String.format("Doing work item %d: %s", i, anArgument));
+        if (anArgument.matches("\\w*")) {
+          log.info(String.format("Processing item %d: %s", i, anArgument));
+          System.out.println(String.format("Doing work item %d: %s", i, anArgument));
+        }
         Thread.sleep(15000);
         progressBar.increaseByOne();
       }
-      LOGGER.warn("Finished long running job...");
+      log.warn("Finished long running job...");
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     }
