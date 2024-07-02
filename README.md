@@ -189,7 +189,10 @@ You can view the [IncomeSelectedSelf condition here](https://github.com/codefora
 
 ## Mac and Linux
 
-After cloning the repository, run `scripts/setup.sh` from the root of the repo's directory.
+Start by cloning this repository. After cloning the repository, run `setup.sh`. In IntelliJ
+you can right click on the `setup.sh` file in the scripts directory and select `Run 'setup.sh'`.
+This will install all the necessary dependencies and create the databases and users needed for the 
+application.
 
 ## Windows
 
@@ -198,13 +201,17 @@ need to install manually.
 
 ## Setup Environment
 
-Note that you'll need to provide some environment variables specified in [sample.env](sample.env) to
-your IDE/shell to run the application. We use IntelliJ and have provided setup instructions for
-convenience.
+Note that you'll need to provide some environment variables specified in a `.env` file to run this 
+application. We use IntelliJ and have provided setup instructions for convenience.
+
+We have provided a `sample.env` file in the root directory which you can copy for your convenience.
+
+Create a new `.env` by copying the `sample.env` file in the root directory of your project. 
+You can run `cp sample.env .env` to do so. You can find the necessary environment variables in the 
+`Shared-SNLAB-IL` folder in LastPass which you can fill the blanks in with.
 
 ### IntelliJ
 
-- `cp sample.env .env` (.env is marked as ignored by git)
 - Download the [EnvFile plugin](https://plugins.jetbrains.com/plugin/7861-envfile) and follow the
   setup instructions[here](https://github.com/Ashald/EnvFile#usage) to set up Run Configurations with
   EnvFile.
@@ -228,12 +235,24 @@ Live Reload is very helpful when making many changes to HTML templates, CSS, or 
 
 > 📹 Here's a [video going step by step through these instructions](https://www.loom.com/share/74183c76d45c416e870ccf7aa06dd8ee?sid=a3bf01f9-b22d-423a-b61c-050bb0620d02).
 
+## Development Setup
+
 ### Setup Application
 
-- Use instructions from
-  the [form-flow library here.](https://github.com/codeforamerica/form-flow#intellij-setup)
-- Run the application using the `StarterApplication` configuration (found
-  in `org.ilgcc.app`)
+- If you have never set up a form flow application on your machine before start by following the
+  instructions from the [form-flow library here.](https://github.com/codeforamerica/form-flow#intellij-setup)
+
+Once you've done that, follow the steps below:
+
+1. The `setup.sh` script you ran earlier will have installed the necessary dependencies for you in
+addition to creating the databases and database users needed for the application.
+2. Run the application using the `IlGCCApplication` configuration (found in org.ilgcc.app). The run 
+will fail, but it will create a new run configuration in your IntelliJ IDE. Open this new run 
+configuration and configure it to use the `.env` file you created earlier with the EnvFile plugin.
+Run -> Edit Configurations -> IlGCCApplication. Select `Enable EnvFile` and manually add the `.env`
+file you created using the `+` button.
+3. Make sure the `SPRING_PROFILES_ACTIVE` is set to `dev` in the `.env` file.
+4. Run the application again. The application should start up successfully.
 
 ### Contributing Live Templates to Your App
 
@@ -383,47 +402,6 @@ dependencies.
 2. Associate the certificate that you created for your root domain. All other settings can remain as
    defaults.
 3. Create a Route53 Alias record for the root domain which points to your cloudfront distribution.
-
-## Development Setup
-
-1. Create a
-   [new repository from the `form-flow-starter-app` template](https://github.com/codeforamerica/form-flow-starter-app/generate).
-2. Once the repository is created, clone it on your local machine.
-3. Create a new database and user for your project. Please use descriptive names which are unique to
-   your project to avoid conflicts locally.
-   For example, for `childcare-illinois-model-app` we used `childcare-illinois` for both the
-   database name and username. Following this example, create the new database and user with the
-   following commands:
-
-- `$ createdb childcare-illinois`
-- `$ createuser -s childcare-illinois`. This assumes that you have installed postgres locally, if
-  that is not the case please refer back to [this section](#start-the-local-databases).
-
-4. Edit the [main application configuration](src/main/resources/application.yaml) as well as
-   the [demo application configuration](src/main/resources/application-demo.yaml) to reflect your
-   new database configuration. Replace the database name and username with the ones you created in
-   the last step in the datasources section of the document.
-   For example, the datasource section of your application configuration would initially contain the
-   details for the `starter-app` database as follows:
-
-```yaml
-
-datasource:
-  url: jdbc:postgresql://localhost:5432/starter-app
-  username: starter-app
-```
-
-and should be updated to this
-
-```yaml
-
-datasource:
-  url: jdbc:postgresql://localhost:5432/childcare-illinois
-  username: childcare-illinois
-```
-
-5. To load the `.env` file in IntelliJ, you'll need to install and enable
-   the [EnvFile Plugin](https://plugins.jetbrains.com/plugin/7861-envfile).
 
 # Troubleshooting IntelliJ
 
