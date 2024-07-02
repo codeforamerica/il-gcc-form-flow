@@ -463,11 +463,18 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         //unearned-income-assets
         assertThat(testPage.getTitle()).isEqualTo("Unearned Income Assets");
         testPage.clickElementById("unearnedIncomeAssetsMoreThanOneMillionDollars-true");
+        //unearned-income-child-support
+        assertThat(testPage.getTitle()).isEqualTo("Child Support");
+        testPage.clickElementById("doesAnyoneInHouseholdPayChildSupport-true");
+        //unearned-income-child-support-amount
+        assertThat(testPage.getTitle()).isEqualTo("Child Support Paid");
+        testPage.enter("amountYourHouseholdPaysInChildSupport", "1453");
+        testPage.clickContinue();
         //unearned-income-programs
-//    assertThat(testPage.getTitle()).isEqualTo("Unearned Income Programs");
-//    assertThat(testPage.getHeader()).isEqualTo("Does anyone in your household participate in any of these programs?");
-//    testPage.clickElementById("unearnedIncomePrograms-CASH_ASSISTANCE");
-//    testPage.clickElementById("unearnedIncomePrograms-SNAP");
+        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Programs");
+        assertThat(testPage.getHeader()).isEqualTo("Does anyone in your household participate in any of these programs?");
+        testPage.clickElementById("unearnedIncomePrograms-CASH_ASSISTANCE");
+        testPage.clickElementById("unearnedIncomePrograms-SNAP");
         testPage.clickContinue();
 
         // submit-intro

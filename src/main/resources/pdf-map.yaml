@@ -115,10 +115,10 @@ inputFields:
   childcareStartDate: CHILD_CARE_START_DATE_CHILD
   otherMonthlyIncomeApplicant: OTHER_MONTHLY_INCOME_APPLICANT
   unearnedIncomeAssetsMoreThanOneMillionDollars: TOTAL_ASSETS_MILLION
+  amountYourHouseholdPaysInChildSupport: APPLICANT_CHILD_SUPPORT_PAID
   signedName: APPLICANT_SIGNATURE
   partnerSignedName: PARTNER_SIGNATURE
   partnerSignedAt: PARTNER_SIGNATURE_DATE
-
 dbFields:
   submittedAt: APPLICANT_SIGNATURE_DATE
 
