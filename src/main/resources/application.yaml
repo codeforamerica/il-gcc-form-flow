@@ -93,3 +93,11 @@ server:
 management:
   endpoints:
     enabled-by-default: false
+org:
+  jobrunr:
+    job-scheduler:
+      enabled: true
+    background-job-server:
+      enabled: true
+    dashboard:
+      enabled: true
