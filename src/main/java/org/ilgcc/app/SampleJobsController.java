@@ -2,24 +2,18 @@ package org.ilgcc.app;
 
 import static java.time.Instant.now;
 
-import jakarta.servlet.http.HttpSession;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.UUID;
 import org.ilgcc.jobs.JobProcessorInterface;
 import org.ilgcc.jobs.SampleJobProcessor;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.context.JobContext;
 import org.jobrunr.scheduling.JobScheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.ilgcc.jobs.JobProcessorInterface;
-
-import static java.time.Instant.now;
 
 @RestController
 @RequestMapping("/jobs")

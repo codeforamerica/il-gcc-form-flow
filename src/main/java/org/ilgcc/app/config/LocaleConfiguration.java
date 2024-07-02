@@ -11,8 +11,6 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
-// Put this here because I just needed a ComponentScan somewhere. TBD on if this should be elsewhere
-@ComponentScan(basePackages = "org.ilgcc.jobs")
 public class LocaleConfiguration implements WebMvcConfigurer {
 
   @Bean
