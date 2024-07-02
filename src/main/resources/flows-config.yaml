@@ -325,6 +325,14 @@ flow:
       - name: unearned-income-amount
   unearned-income-amount:
     nextScreens:
+      - name: unearned-income-child-support
+  unearned-income-child-support:
+    nextScreens:
+      - name: unearned-income-child-support-amount
+        condition: HouseholdPaysChildSupport
+      - name: unearned-income-assets
+  unearned-income-child-support-amount:
+    nextScreens:
       - name: unearned-income-assets
   unearned-income-assets:
     nextScreens:
