@@ -56,6 +56,9 @@ dependencies {
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
 
+    implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.2.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4.1'
+
     if (useLocalLibrary == 'true') {
         implementation fileTree(dir: "$rootDir/../form-flow/build/libs", include: '*.jar')
         println "📦 Using local library"
