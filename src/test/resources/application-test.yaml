@@ -42,3 +42,11 @@ spring:
       ddl-auto: create-drop
   main:
     allow-circular-references: true
+org:
+  jobrunr:
+    job-scheduler:
+      enabled: true
+    background-job-server:
+      enabled: false
+    dashboard:
+      enabled: false
