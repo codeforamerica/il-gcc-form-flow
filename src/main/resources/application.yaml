@@ -13,10 +13,9 @@ form-flow:
           bcc:
   session-continuity-interceptor:
     enabled: true
-  encryption-key: '{"primaryKeyId":2135185311,"key":[{"keyData":{"typeUrl":"type.googleapis.com/google.crypto.tink.AesGcmKey","value":"GiCRKaXiJ/zlDHAZfRQf1rCIbIY4fFmLqLWYIPLNXpOx4A==","keyMaterialType":"SYMMETRIC"},"status":"ENABLED","keyId":2135185311,"outputPrefixType":"TINK"}]}"'
   inputs: 'org.ilgcc.app.inputs.'
   uploads:
-    accepted-file-types: '.pdf,.jpg,.png,.avif,.heic,.docx,.pptx,.xlsx'
+    accepted-file-types: '.jpg, .jpeg, .png, .pdf, .bmp, .gif, .doc, .docx, .odt, .ods, .odp'
     thumbnail-width: '64'
     thumbnail-height: '60'
     # 20 files maximum
