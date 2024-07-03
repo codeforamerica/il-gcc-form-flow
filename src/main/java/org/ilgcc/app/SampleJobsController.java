@@ -24,7 +24,7 @@ public class SampleJobsController {
 
   public SampleJobsController(JobScheduler jobScheduler, SampleJobProcessor jobProcessor) {
     this.jobScheduler = jobScheduler;
-    this.jobProcessor = new SampleJobProcessor();
+    this.jobProcessor = jobProcessor;
   }
 
   @GetMapping(path = "/sample-jobs", produces = {MediaType.TEXT_HTML_VALUE})
