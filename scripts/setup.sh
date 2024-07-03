@@ -9,6 +9,7 @@ install_jenv() {
 }
 
 echo '--- StarterApp Setup Script ---'
+echo '--- Make sure homebrew is installed ---'
 
 if ! brew --version; then
   curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
@@ -16,7 +17,7 @@ else
   brew update
 fi
 
-echo 'Installing brew packages'
+echo '--- Installing brew packages ---'
 brew install --cask temurin@17
 brew install jenv gradle postgresql@14 node
 
@@ -31,6 +32,9 @@ else
   exit 1
 fi
 
+echo '--- Install localhost cert ---'
+sh ./scripts/generate_localhost_cert.sh
+
 # M1 Mac install stuff
 if [[ $(uname -m) == 'arm64' ]]; then
   export PATH="$HOME/.jenv/bin:$PATH"
@@ -39,15 +43,21 @@ if [[ $(uname -m) == 'arm64' ]]; then
   eval "$(jenv init -)"
 fi
 
+echo '--- Install Java --- '
+
 # Check if jenv can find java 17
 if ! jenv versions | grep -q 17; then
   jenv add /Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home
 fi
 
+echo '--- Start postgres service --- '
+
 # If the postgres service isn't running in brew, start it
 if ! brew services list | grep postgresql@14 | grep started; then
   brew services restart postgresql@14
 fi
+
+echo '--- Create databases --- '
 
 # Create il-gcc database and user in postgres, if they don't exist
 if ! psql -lqt | cut -d \| -f 1 | tr -d ' ' | grep -qx il-gcc; then
@@ -63,7 +73,8 @@ if ! psql -lqt | cut -d \| -f 1 | tr -d ' ' | grep -qx il-gcc-test; then
   createuser -s il-gcc-test
 fi
 
-# Run tests
+echo '--- Run tests --- '
+
 ./gradlew clean test
 
 echo '--- StarterApp Setup Script Complete ---'

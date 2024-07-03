@@ -43,3 +43,6 @@ node_modules/
 
 ### Mac OS ###
 .DS_Store
+
+### Local cert ###
+*.p12
