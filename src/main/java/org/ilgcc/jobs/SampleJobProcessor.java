@@ -5,20 +5,14 @@ import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.jobs.context.JobContext;
 import org.jobrunr.jobs.context.JobDashboardProgressBar;
-import org.jobrunr.jobs.context.JobRunrDashboardLogger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 public class SampleJobProcessor implements JobProcessorInterface {
 
-  private static final Logger LOGGER = new JobRunrDashboardLogger(LoggerFactory.getLogger(SampleJobProcessor.class));
-
-  @Recurring(id = "my-recurring-job", cron = "0 0/15 * * *")
-  @Job(name = "My recurring job")
+  @Recurring(id = "sample-recurring-job", cron = "0 0/15 * * *")
+  @Job(name = "Sample recurring job")
   public void doRecurringJob() {
     System.out.println("Doing some work without arguments");
   }
@@ -32,8 +26,8 @@ public class SampleJobProcessor implements JobProcessorInterface {
   public void doLongRunningJob(String anArgument) {
     try {
       for (int i = 0; i < 10; i++) {
-        System.out.println(String.format("Doing work item %d: %s", i, anArgument));
-        Thread.sleep(20000);
+        System.out.printf("Doing work item %d: %s%n", i, anArgument);
+        Thread.sleep(2000);
       }
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
@@ -48,7 +42,7 @@ public class SampleJobProcessor implements JobProcessorInterface {
       for (int i = 0; i < 10; i++) {
         if (anArgument.matches("\\w*")) {
           log.info(String.format("Processing item %d: %s", i, anArgument));
-          System.out.println(String.format("Doing work item %d: %s", i, anArgument));
+          System.out.printf("Doing work item %d: %s%n", i, anArgument);
         }
         Thread.sleep(15000);
         progressBar.increaseByOne();
