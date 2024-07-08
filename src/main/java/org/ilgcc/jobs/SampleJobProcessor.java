@@ -27,7 +27,7 @@ public class SampleJobProcessor implements JobProcessorInterface {
     try {
       for (int i = 0; i < 10; i++) {
         System.out.printf("Doing work item %d: %s%n", i, anArgument);
-        Thread.sleep(2000);
+        Thread.sleep(1000);
       }
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
