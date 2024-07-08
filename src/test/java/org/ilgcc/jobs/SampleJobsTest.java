@@ -5,6 +5,7 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.awaitility.Awaitility.await;
 import static org.ilgcc.jobs.HttpClient.getJson;
 import static org.jobrunr.server.BackgroundJobServerConfiguration.usingStandardBackgroundJobServerConfiguration;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -30,70 +31,58 @@ public class SampleJobsTest {
   public void startJobRunr() {
     testService = new SampleJobProcessor();
 
-    JobRunr
-        .configure()
-        .useStorageProvider(storageProvider)
-        .useJobActivator(this::jobActivator)
-        .useDashboard()
-        .useBackgroundJobServer(usingStandardBackgroundJobServerConfiguration().andPollInterval(ofMillis(200)))
-        .initialize();
+    JobRunr.configure().useStorageProvider(storageProvider).useJobActivator(this::jobActivator).useDashboard()
+        .useBackgroundJobServer(usingStandardBackgroundJobServerConfiguration().andPollInterval(ofMillis(200))).initialize();
   }
 
   @AfterEach
   public void stopJobRunr() {
-    JobRunr
-        .destroy();
+    JobRunr.destroy();
   }
 
   /**
    * Tests that a simple job moves through the 3 job lifecycle states in order correctly, called via an instance
    */
-//  @Test
-//  void testSimpleJobUsingInstance() {
-//    BackgroundJob.enqueue(() -> testService.doSimpleJob(UUID.randomUUID().toString()));
-//
-//    await()
-//        .atMost(15, TimeUnit.SECONDS)
-//        .untilAsserted(
-//            () -> assertThatJson(getSucceededJobs()).inPath("$.items[0].jobHistory[*].state")
-//                .isEqualTo("['ENQUEUED', 'PROCESSING', 'SUCCEEDED']"));
-//
-//  }
+  @Test
+  void testSimpleJobUsingInstance() {
+    BackgroundJob.enqueue(() -> testService.doSimpleJob(UUID.randomUUID().toString()));
+
+    await().atMost(15, TimeUnit.SECONDS).untilAsserted(
+        () -> assertThatJson(getSucceededJobs()).inPath("$.items[0].jobHistory[*].state")
+            .isEqualTo("['ENQUEUED', 'PROCESSING', 'SUCCEEDED']"));
+
+  }
 
   /**
    * Tests that a simple job moves through the 3 job lifecycle states in order correctly, called without an instance
    */
-//  @Test
-//  void testSimpleJobWithoutInstance() {
-//    BackgroundJob.<SampleJobProcessor>enqueue(x -> x.doSimpleJob(UUID.randomUUID().toString()));
-//
-//    await()
-//        .atMost(15, TimeUnit.SECONDS)
-//        .untilAsserted(
-//            () -> assertThatJson(getSucceededJobs()).inPath("$.items[0].jobHistory[*].state")
-//                .isEqualTo("['ENQUEUED', 'PROCESSING', 'SUCCEEDED']"));
-//  }
+  @Test
+  void testSimpleJobWithoutInstance() {
+    BackgroundJob.<SampleJobProcessor>enqueue(x -> x.doSimpleJob(UUID.randomUUID().toString()));
+
+    await().atMost(15, TimeUnit.SECONDS).untilAsserted(
+        () -> assertThatJson(getSucceededJobs()).inPath("$.items[0].jobHistory[*].state")
+            .isEqualTo("['ENQUEUED', 'PROCESSING', 'SUCCEEDED']"));
+  }
 
   @Test
   void testLongRunningJobUsingInstance() {
     BackgroundJob.enqueue(() -> testService.doLongRunningJob(UUID.randomUUID().toString()));
 
+    // Get the enqueued jobs list immediately and check that there's an enqueued job
     String enqueuedJobs = getEnqueuedJobs();
+    assertThatJson(enqueuedJobs).inPath("$.items[0].jobHistory[0].state").asString().contains("ENQUEUED");
 
-    await()
-        .atMost(15, TimeUnit.SECONDS)
-        .untilAsserted(
-            () -> assertThatJson(getEnqueuedJobs()).inPath("$.items[0].jobHistory[0].state").asString().contains("ENQUEUED"));
+    // Now that job should be processing, so check that the enqueued jobs list eventually goes to zero
+    await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> assertThatJson(getEnqueuedJobs()).inPath("$.total").isEqualTo("0"));
 
-//    await()
-//        .atMost(5, TimeUnit.SECONDS)
-//        .untilAsserted(
-//            () -> assertThatJson(getProcessingJobs()).inPath("$.items[0].jobHistory[1].state").asString().contains("PROCESSING"));
-//
-//    await()
-//        .atMost(15, TimeUnit.SECONDS)
-//        .untilAsserted(
-//            () -> assertThatJson(getSucceededJobs()).inPath("$.items[0].jobHistory[2].state").asString().contains("SUCCEEDED"));
+    // Now that the job is processing, check that list
+    await().atMost(5, TimeUnit.SECONDS).untilAsserted(
+        () -> assertThatJson(getProcessingJobs()).inPath("$.items[0].jobHistory[1].state").asString().contains("PROCESSING"));
+
+    // Finally check that the entire long running job passed
+    await().atMost(15, TimeUnit.SECONDS).untilAsserted(
+        () -> assertThatJson(getSucceededJobs()).inPath("$.items[0].jobHistory[2].state").asString().contains("SUCCEEDED"));
   }
 
   private String getSucceededJobs() {
@@ -101,13 +90,13 @@ public class SampleJobsTest {
   }
 
   private String getEnqueuedJobs() {
-    log.info("\n\n" + getJson("http://localhost:8000/api/jobs?state=ENQUEUED") + "\n\n");
     return getJson("http://localhost:8000/api/jobs?state=ENQUEUED");
   }
 
   private String getProcessingJobs() {
     return getJson("http://localhost:8000/api/jobs?state=PROCESSING");
   }
+
   @SuppressWarnings("unchecked")
   private <T> T jobActivator(Class<T> clazz) {
     return (T) testService;
