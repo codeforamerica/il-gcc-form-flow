@@ -105,15 +105,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         //parent-info-review
         assertThat(testPage.getTitle()).isEqualTo("Review Info");
         testPage.clickContinue();
-
-        assertThat(testPage.getHeader()).isEqualTo("Do you have a partner or spouse?");
+        //parent-have-a-partner
+        assertThat(testPage.getHeader()).isEqualTo("Do you live with a significant other, partner, or spouse?");
         testPage.clickButton("Yes");
         // parent-qualifying-partner
-        assertThat(testPage.getHeader()).isEqualTo("Your partner or spouse");
-        testPage.selectRadio("parentSpouseIsStepParent", "Yes");
-        testPage.selectRadio("parentSpouseShareChildren", "Yes");
-        testPage.selectRadio("parentSpouseLiveTogether", "Yes");
-        testPage.clickContinue();
+        assertThat(testPage.getHeader()).isEqualTo("Is your partner a biological, adoptive, or step-parent of any of your children?");
+        testPage.clickButton("Yes");;
         //parent-partner-info-basic
         assertThat(testPage.getHeader()).isEqualTo("Tell us about your partner");
         testPage.enter("parentPartnerFirstName", "partner");
