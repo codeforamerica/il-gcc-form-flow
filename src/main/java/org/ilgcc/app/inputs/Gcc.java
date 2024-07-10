@@ -3,6 +3,7 @@ package org.ilgcc.app.inputs;
 import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Money;
 import formflow.library.data.annotations.Phone;
+import formflow.library.inputs.Encrypted;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.*;
 
@@ -77,6 +78,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-last-name}")
     private String parentPartnerLastName;
 
+    @Encrypted
     private String parentPartnerSSN;
     private String parentPartnerBirthDay;
     private String parentPartnerBirthMonth;
@@ -124,6 +126,7 @@ public class Gcc extends FlowInputs {
     private String activitiesClassEndTimeSunday;
 
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
+    @Encrypted
     private String parentSsn;
     private List<String> parentGender;
     private List<String> parentRaceEthnicity;
