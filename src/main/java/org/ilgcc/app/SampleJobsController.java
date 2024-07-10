@@ -37,6 +37,7 @@ public class SampleJobsController {
                 - <a href="/jobs/schedule-simple-job">Schedule a simple job 3 hours from now using a service instance</a><br />\
                 - <a href="/jobs/long-running-job">Enqueue a long-running job</a><br />\
                 - <a href="/jobs/long-running-job-with-job-context">Enqueue a long-running job using a JobContext to log progress</a><br />\
+                - <a href="/jobs/simple-job-via-scheduler">Enqueue a job using a JobBuilder and JobScheduler</a><br />\
                 - Learn more on <a href="https://www.jobrunr.io/">www.jobrunr.io</a><br />\
                 """
         ;
@@ -78,6 +79,12 @@ public class SampleJobsController {
   public String deleteJob(@RequestParam UUID jobId) {
     jobScheduler.delete(jobId);
     return "Job Deleted: " + jobId;
+  }
+
+  @GetMapping(value = "/simple-job-via-scheduler", produces = {MediaType.TEXT_PLAIN_VALUE})
+  public String doSimpleJobWithJobScheduler() {
+    String jobId = jobProcessor.doSimpleJobWithJobScheduler(jobScheduler, UUID.randomUUID());
+    return "Job Enqueued: " + jobId;
   }
 }
 
