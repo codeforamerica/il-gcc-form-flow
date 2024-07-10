@@ -316,7 +316,19 @@ This script will ensure that all dependencies are installed (using `Homebrew`):
 - The right `Java` version
 - `PostgreSQL`
 
+It will also create a localhost cert so that local develop can happen over `https`.
+
 Next, it will create the database needed for running tests, and then run the tests.
+
+### generate_localhost_cert.sh
+
+This script will install dependencies to create an SSL certification so that you can use `https` with `localhost`.
+
+To run this script, from the root of this project:
+
+```bash
+sh ./scripts/generate_localhost_cert.sh
+```
 
 ### generate_migration.sh
 
