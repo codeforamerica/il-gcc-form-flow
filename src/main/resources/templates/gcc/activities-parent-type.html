@@ -18,7 +18,7 @@
               <!--              Display parent name here-->
               <div
                   th:with="childcareReasons=${T(org.ilgcc.app .utils.ChildcareReasonOption).values()},
-                           parentHasPartner=${fieldData.get('parentHasPartner')}">
+                           parentHasPartner=${fieldData.getOrDefault('parentHasQualifyingPartner', 'false')}">
                 <div>
                   <div class="spacing-below-25">
                     <th:block th:utext="${fieldData.get('parentFirstName')}"></th:block>
