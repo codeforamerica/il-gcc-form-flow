@@ -64,12 +64,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.invalid-communication-preference}")
     private String parentContactPreferredCommunicationMethod;
     private String parentHasPartner;
-    @NotBlank(message = "{errors.require-yes-no}")
-    private String parentSpouseIsStepParent;
-    @NotBlank(message = "{errors.require-yes-no}")
-    private String parentSpouseShareChildren;
-    @NotBlank(message = "{errors.require-yes-no}")
-    private String parentSpouseLiveTogether;
+    private String parentHasQualifyingPartner;
     @Phone(message="{errors.invalid-phone-number}")
     private String parentPartnerPhoneNumber;
     @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")

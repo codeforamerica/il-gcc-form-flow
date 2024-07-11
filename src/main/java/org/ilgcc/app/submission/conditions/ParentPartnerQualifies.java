@@ -11,15 +11,8 @@ public class ParentPartnerQualifies implements Condition {
 
   @Override
   public Boolean run(Submission submission) {
-    var inputData = (Map<String, Object>) submission.getInputData();
-
-    var parentSpouseLiveTogether = inputData.getOrDefault("parentSpouseLiveTogether", "No").equals("Yes");
-    if (!parentSpouseLiveTogether) {
-      return false;
-    }
-
-    var parentSpouseShareChildren = inputData.getOrDefault("parentSpouseShareChildren", "No").equals("Yes");
-    var parentSpouseIsStepParent = inputData.getOrDefault("parentSpouseIsStepParent", "No").equals("Yes");
-    return parentSpouseIsStepParent || parentSpouseShareChildren;
+    Map<String, Object> inputData = submission.getInputData();
+     return inputData.getOrDefault("parentHasPartner", "false").toString().equalsIgnoreCase("true") &&
+        inputData.getOrDefault("parentHasQualifyingPartner", "false").toString().equalsIgnoreCase("true");
   }
 }

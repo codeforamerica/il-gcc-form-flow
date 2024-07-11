@@ -17,7 +17,7 @@
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">
                         <div class="form-card__footer">
-                            <th:block th:replace="~{fragments/inputs/overrides/yesOrNo :: yesOrNo(
+                            <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(
                                 inputName='parentPartnerHasDisability',
                                 ariaDescribe='header')}"/>
                             <div class="spacing-above-60">
