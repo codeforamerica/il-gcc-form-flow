@@ -1,5 +1,5 @@
 form-flow:
-  encryption-key: '{"primaryKeyId":2135185311,"key":[{"keyData":{"typeUrl":"type.googleapis.com/google.crypto.tink.AesGcmKey","value":"GiCRKaXiJ/zlDHAZfRQf1rCIbIY4fFmLqLWYIPLNXpOx4A==","keyMaterialType":"SYMMETRIC"},"status":"ENABLED","keyId":2135185311,"outputPrefixType":"TINK"}]}"'
+  encryption-key: ${ENCRYPTION_KEY}
   lock-after-submitted:
     - flow: gcc
       redirect: submit-confirmation
