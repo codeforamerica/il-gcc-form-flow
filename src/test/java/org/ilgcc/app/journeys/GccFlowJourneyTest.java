@@ -29,29 +29,29 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     @Test
     void fullGccFlow() throws IOException {
         // Home page
-        assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
-        testPage.clickButton("Apply now");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
+        testPage.clickButton(getEnMessage("index.apply-now"));
         // onboarding-getting-started
-        assertThat(testPage.getTitle()).isEqualTo("Getting started");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
         //onboarding-choose-provider
-        assertThat(testPage.getTitle()).isEqualTo("Choose Provider");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-choose-provider.title"));
         testPage.clickElementById("dayCareChoice-OPEN_SESAME-label");
         testPage.clickContinue();
         //onboarding-confirm-provider
-        assertThat(testPage.getTitle()).isEqualTo("Confirm provider");
-        testPage.clickLink("Yes, I confirm");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-confirm-provider.title"));
+        testPage.clickLink(getEnMessage("onboarding-confirm-provider.yes"));
         //onboarding-language-preference
-        assertThat(testPage.getTitle()).isEqualTo("Language Preference");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
         testPage.selectFromDropdown("languageRead", "English");
         testPage.selectFromDropdown("languageSpeak", "Español");
         testPage.clickContinue();
 
         // parent-info-intro
-        assertThat(testPage.getTitle()).isEqualTo("Parent and Guardian Information");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
         testPage.clickContinue();
         // parent-info-basic-1
-        assertThat(testPage.getTitle()).isEqualTo("Tell us about yourself");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
         testPage.enter("parentFirstName", "parent first");
         testPage.enter("parentLastName", "parent last");
         testPage.enter("parentBirthMonth", "12");
@@ -59,13 +59,13 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentBirthYear", "1985");
         testPage.clickContinue();
         // parent-info-basic-2
-        assertThat(testPage.getTitle()).isEqualTo("Parent info basic");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-2.title"));
         testPage.clickContinue();
         // parent-info-service
-        assertThat(testPage.getTitle()).isEqualTo("Parent info service");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-service.title"));
         testPage.clickContinue();
         // parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo("What is your home address?");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
         testPage.enter("parentHomeStreetAddress1", "972 Mission St");
         testPage.enter("parentHomeStreetAddress2", "5th floor");
         testPage.enter("parentHomeCity", "San Francisco");
@@ -73,17 +73,17 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentHomeZipCode", "94103");
         testPage.clickContinue();
         // parent-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo("Parent Mailing Address");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
         testPage.goBack();
         //parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo("What is your home address?");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
         testPage.clickElementById("parentHomeExperiencingHomelessness-yes");
         testPage.clickContinue();
         //parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo("Parent");
-        testPage.clickButton("I have a place to get mail");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
+        testPage.clickButton(getEnMessage("parent-no-permanent-address.has-place-to-get-mail"));
         // parent-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo("Parent Mailing Address");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
         testPage.enter("parentMailingStreetAddress1", "972 Mission St");
         testPage.enter("parentMailingStreetAddress2", "5th floor");
         testPage.enter("parentMailingCity", "San Francisco");
@@ -91,28 +91,28 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentMailingZipCode", "94103");
         testPage.clickContinue();
         // parent-confirm-address
-        assertThat(testPage.getHeader()).isEqualTo("Confirm your address");
-        testPage.clickButton("Use this address");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-address.title"));
+        testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
         // parent-comm-preference
-        assertThat(testPage.getHeader()).isEqualTo("How do you prefer to get updates about your application?");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
         testPage.selectRadio("parentContactPreferredCommunicationMethod", "email");
         testPage.clickContinue();
         // parent-contact-info
-        assertThat(testPage.getTitle()).isEqualTo("Parent Contact Info");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-contact-info.title"));
         testPage.enter("parentContactEmail", "test@email.org");
         testPage.clickContinue();
 
         //parent-info-review
-        assertThat(testPage.getTitle()).isEqualTo("Review Info");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-review.title"));
         testPage.clickContinue();
         //parent-have-a-partner
-        assertThat(testPage.getHeader()).isEqualTo("Do you live with a significant other, partner, or spouse?");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-have-a-partner.title"));
+        testPage.clickButton(getEnMessage("general.inputs.yes"));
         // parent-qualifying-partner
-        assertThat(testPage.getHeader()).isEqualTo("Is your partner a biological, adoptive, or step-parent of any of your children?");
-        testPage.clickButton("Yes");;
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-qualifying-partner.title"));
+        testPage.clickButton(getEnMessage("general.inputs.yes"));
         //parent-partner-info-basic
-        assertThat(testPage.getHeader()).isEqualTo("Tell us about your partner");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-basic.title"));
         testPage.enter("parentPartnerFirstName", "partner");
         testPage.enter("parentPartnerLastName", "parent");
         testPage.enter("parentPartnerBirthMonth", "12");
@@ -122,99 +122,98 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // parent-partner-contact
-        assertThat(testPage.getTitle()).isEqualTo("How can we contact them?");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-contact.title"));
         testPage.enter("parentPartnerPhoneNumber", "3333333333");
         testPage.clickContinue();
         // parent-partner-info-service
-        assertThat(testPage.getTitle()).isEqualTo("Are they a service member?");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-service.title"));
         testPage.selectRadio("parentPartnerIsServing", "No");
         testPage.selectRadio("parentPartnerInMilitaryReserveOrNationalGuard", "Yes");
         testPage.clickContinue();
         // parent-partner-info-disability
-        assertThat(testPage.getTitle()).isEqualTo("Do they have a disability?");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-disability.title"));
+        testPage.clickButton(getEnMessage("general.inputs.yes"));
         // parent-other-family
-        assertThat(testPage.getHeader()).isEqualTo("Do you live with any other adult family members who you financially support?");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-other-family.title"));
+        testPage.clickButton(getEnMessage("general.inputs.yes"));
         // parent-add-adults
-        assertThat(testPage.getHeader()).isEqualTo("Add adult family members who you financially support.");
-        testPage.clickButton("Add family member");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-add-adults.title"));
+        testPage.clickButton(getEnMessage("parent-add-adults.add-member"));
         // parent-add-adult-details
-        assertThat(testPage.getHeader()).isEqualTo("Add family member");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-add-adults-detail.title"));
         testPage.enter("adultDependentFirstName", "ada");
         testPage.enter("adultDependentLastName", "dolt");
         testPage.clickContinue();
         // delete-person
         testPage.clickLink("delete");
-        assertThat(testPage.getTitle()).isEqualTo("Delete person");
-        testPage.clickButton("Yes, delete");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("delete-confirmation.title"));
+        testPage.clickButton(getEnMessage("delete-confirmation.yes"));
         testPage.clickButton("Add family member");
         testPage.enter("adultDependentFirstName", "adaa");
         testPage.enter("adultDependentLastName", "doltt");
         testPage.clickContinue();
-        testPage.clickButton("I'm done");
+        testPage.clickButton(getEnMessage("parent-add-adults.im-done"));
         // parent-intro-family-info
-        assertThat(testPage.getTitle()).isEqualTo("Parent Intro Family Info");
-        testPage.clickButton("Continue to next section");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-intro-family-info.title"));
+        testPage.clickButton(getEnMessage("parent-intro-family-info.continue"));
         //children-info-intro
-        assertThat(testPage.getTitle()).isEqualTo("Your Children");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
         testPage.clickContinue();
         // children-add
-        assertThat(testPage.getTitle()).isEqualTo("Children add");
-        testPage.clickButton("Add child");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+        testPage.clickButton(getEnMessage("children-add.add-button"));
         //children-info-basic
-        assertThat(testPage.getTitle()).isEqualTo("Children Info");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-basic.title"));
         testPage.enter("childFirstName", "mugully");
         testPage.enter("childLastName", "glopklin");
         testPage.enter("childDateOfBirthMonth", "1");
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
         testPage.selectRadio("needFinancialAssistanceForChild", "No");
-        testPage.clickButton("Continue");
-        testPage.clickButton("Add child");
+        testPage.clickButton(getEnMessage("general.inputs.continue"));
+        testPage.clickButton(getEnMessage("children-add.add-button"));
         testPage.enter("childFirstName", "child");
         testPage.enter("childLastName", "mcchild");
         testPage.enter("childDateOfBirthMonth", "12");
         testPage.enter("childDateOfBirthDay", "25");
         testPage.enter("childDateOfBirthYear", "2018");
         testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
-        testPage.clickButton("Continue");
+        testPage.clickButton(getEnMessage("general.inputs.continue"));
         //children-ccap-info
-        assertThat(testPage.getTitle()).isEqualTo("CCAP Info");
-        testPage.selectFromDropdown("childRelationship", "My child");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
+        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
         testPage.selectRadio("childHasDisability", "No");
         testPage.selectRadio("childIsUsCitizen", "Yes");
         testPage.clickContinue();
         //children-ccap-in-care
-        assertThat(testPage.getTitle()).isEqualTo("CCAP in care");
-        testPage.clickButton("No");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-in-care.title"));
+        testPage.clickButton(getEnMessage("general.inputs.no"));
         //children-ccap-start-date (Test No logic)
         assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
         assertThat((testPage.getHeader())).isEqualTo("When will child start care at your chosen provider?");
         testPage.goBack();
         //children-ccap-start-date (Test Yes Logic)
-        testPage.clickButton("Yes");
-        assertThat(testPage.getTitle()).isEqualTo("CCAP Start Date");
-        assertThat((testPage.getHeader())).isEqualTo("When did child start care at your chosen provider?");
+        testPage.clickButton(getEnMessage("general.inputs.yes"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-start-date.when-did.title"));
         testPage.enter("ccapStartMonth", "11");
         testPage.enter("ccapStartDay", "1");
         testPage.enter("ccapStartYear", "2010");
         testPage.clickContinue();
         //children-ccap-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Weekly Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-weekly-schedule.title"));
         testPage.clickElementById("childcareWeeklySchedule-Thursday");
         testPage.clickElementById("childcareWeeklySchedule-Friday");
         testPage.clickContinue();
         //children-childcare-hourly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("CCAP Childcare Hourly Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-hourly-schedule.title"));
         testPage.enter("childcareStartTimeThursday", "1000AM");
         testPage.enter("childcareEndTimeThursday", "0100PM");
         testPage.enter("childcareStartTimeFriday", "0900AM");
         testPage.enter("childcareEndTimeFriday", "1200PM");
         testPage.clickContinue();
         //children-ccap-child-other-ed
-        assertThat(testPage.getTitle()).isEqualTo("CCAP Child Other");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
+        testPage.clickButton(getEnMessage("general.inputs.yes"));
         //children-add (with children listed)
         assertThat(testPage.getTitle()).isEqualTo("Children add");
         List<String> li = testPage.getTextBySelector(".child-name");
@@ -261,11 +260,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         //activities-self-employment
         assertThat(testPage.getTitle()).isEqualTo("Activities Self Employment");
-        testPage.clickButton("Yes");
+        testPage.clickButton(getEnMessage("general.inputs.yes"));
 
         //activities-work-schedule-vary
         assertThat(testPage.getTitle()).isEqualTo("Work schedule vary");
-        testPage.clickButton("Yes");
+        testPage.clickButton(getEnMessage("general.inputs.yes"));
 
         //activities-next-work-schedule
         assertThat(testPage.getTitle()).isEqualTo("Work Schedule");
@@ -287,7 +286,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-work-commute-time
         assertThat(testPage.getTitle()).isEqualTo("Work commute time");
-        testPage.selectFromDropdown("activitiesJobCommuteTime", "1 hour");
+        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.hour"));
         testPage.clickContinue();
 
         //activities-add-jobs (list)
@@ -295,18 +294,18 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("That is all my jobs");
 
         //activities-add-ed-program
-        assertThat(testPage.getHeader()).isEqualTo("Tell us about your school or training program.");
+        assertThat(testPage.getTitle()).isEqualTo("Tell us about your school or training program.");
         testPage.clickContinue();
 
         //activities-ed-program-type
         assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
         testPage.clickElementById("educationType-highSchoolOrGed-label");
-        assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
+        assertThat(testPage.getTitle()).isEqualTo("What type of school or training are you enrolled in?");
         testPage.clickContinue();
 
         //activities-ed-program-name
         testPage.enter("schoolName", "World Training Program");
-        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+        assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?*");
         testPage.clickContinue();
 
         //activities-ed-program-info
@@ -325,7 +324,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-next-class-schedule
-        assertThat(testPage.getHeader()).isEqualTo("Next, we'll ask about your class schedule.");
+        assertThat(testPage.getTitle()).isEqualTo("Next, we'll ask about your class schedule.");
         testPage.clickContinue();
 
         //activities-class-weekly-schedule
@@ -372,11 +371,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         //activities-partner-self-employment
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Self Employment");
-        testPage.clickButton("No");
+        testPage.clickButton(getEnMessage("general.inputs.no"));
         //activities-partner-work-schedule-vary
         assertThat(testPage.getTitle()).isEqualTo("Partner Work Schedule Varies");
-        assertThat(testPage.getHeader()).isEqualTo("Do partner's work days or hours vary at this job?");
-        testPage.clickButton("No");
+        assertThat(testPage.getTitle()).isEqualTo("Do partner's work days or hours vary at this job?");
+        testPage.clickButton(getEnMessage("general.inputs.no"));
 
         //activities-partner-job-weekly-schedule
         assertThat(testPage.getTitle()).isEqualTo("Partner Weekly Schedule");
@@ -384,11 +383,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-partner-work-schedule-vary
         assertThat(testPage.getTitle()).isEqualTo("Partner Work Schedule Varies");
-        testPage.clickButton("Yes");
+        testPage.clickButton(getEnMessage("general.inputs.yes"));
 
         //activities-partner-next-work-schedule
         assertThat(testPage.getTitle()).isEqualTo("Notice Partner Work Schedule Varies");
-        assertThat(testPage.getHeader()).isEqualTo("Next, we'll ask about partner's work schedule");
+        assertThat(testPage.getTitle()).isEqualTo("Next, we'll ask about partner's work schedule");
         testPage.clickContinue();
         //activities-partner-job-weekly-schedule
         assertThat(testPage.getTitle()).isEqualTo("Partner Weekly Schedule");
@@ -406,20 +405,20 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-partner-commute-time
         assertThat(testPage.getTitle()).isEqualTo("Activities Partner Commute Time");
-        testPage.selectFromDropdown("activitiesJobCommuteTime", "1.5 hours");
+        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
         testPage.clickContinue();
 
         //activities-partner-add-job
-        assertThat(testPage.getHeader()).isEqualTo("Does partner have any other jobs?");
+        assertThat(testPage.getTitle()).isEqualTo("Does partner have any other jobs?");
         testPage.clickButton("That is all my jobs");
         // activities-partner-ed
-        assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
+        assertThat(testPage.getTitle()).isEqualTo("Now tell us about partner's school or training program.");
         testPage.clickContinue();
         testPage.clickElementById("partnerEducationType-twoYearCollege-label");
-        assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in?");
+        assertThat(testPage.getTitle()).isEqualTo("What type of school or training is partner enrolled in?");
         testPage.clickContinue();
         testPage.enter("partnerProgramName", "World University");
-        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+        assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?*");
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo("School or training program");
         testPage.clickContinue();

@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import formflow.library.data.UserFileRepository;
+import java.util.Locale;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
@@ -14,6 +15,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -51,6 +53,8 @@ public abstract class AbstractBasePageTest {
   @Autowired
   protected Path path;
 
+  @Autowired
+  MessageSource messageSource;
   protected String baseUrl;
 
   @LocalServerPort
@@ -82,6 +86,10 @@ public abstract class AbstractBasePageTest {
   protected void clearSubmissions() {
     userFileRepository.deleteAll();
     repo.deleteAll();
+  }
+
+  public String getEnMessage(String key){
+    return messageSource.getMessage(key, null, Locale.ENGLISH);
   }
 
   protected void initTestPage() {
