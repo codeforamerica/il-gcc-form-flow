@@ -292,6 +292,47 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
     }
 
     @Test
+    void ParentPartnerDoesNotAppearIfIneligible() {
+        // Activities Screen
+        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
+        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
+            .withParentDetails()
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
+            .with("parentHasPartner", "true")
+            .build());
+
+        //activities-parent-intro
+        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        testPage.clickContinue();
+        //activities-parent-type
+        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.findElementById("activitiesParentChildcareReason-WORKING")).isNotNull();
+        assertThat(testPage.elementDoesNotExistById("activitiesParentPartnerChildcareReason-WORKING")).isTrue();
+    }
+
+    @Test
+    void ParentPartnerAppearsIfEligible() {
+        // Activities Screen
+        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
+        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
+            .withParentDetails()
+            .withChild("First", "Child", "Yes")
+            .withChild("Second", "Child", "Yes")
+            .with("parentHasPartner", "true")
+            .with("parentHasQualifyingPartner", "true")
+            .build());
+
+        //activities-parent-intro
+        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        testPage.clickContinue();
+        //activities-parent-type
+        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.findElementById("activitiesParentChildcareReason-WORKING")).isNotNull();
+        assertThat(testPage.findElementTextById("activitiesParentPartnerChildcareReason-WORKING")).isNotNull();
+    }
+
+    @Test
     void ParentAndPartnerWithJobAndWorkTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
