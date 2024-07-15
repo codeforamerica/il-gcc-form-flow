@@ -8,6 +8,6 @@ WORKDIR /opt/il-gcc
 RUN ./gradlew assemble && \
     cp /opt/il-gcc/build/libs/app.jar app.jar
 
-EXPOSE 8080
+EXPOSE 8080 8000
 
 ENTRYPOINT ["java", "-jar", "/opt/il-gcc/app.jar"]
