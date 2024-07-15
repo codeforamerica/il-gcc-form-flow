@@ -1,4 +1,5 @@
 form-flow:
+  encryption-key: ${ENCRYPTION_KEY}
   lock-after-submitted:
     - flow: gcc
       redirect: submit-confirmation

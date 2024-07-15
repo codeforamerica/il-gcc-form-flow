@@ -1,4 +1,5 @@
 form-flow:
+  encryption-key: ''
   session-continuity-interceptor:
     enabled: false
   uploads:
