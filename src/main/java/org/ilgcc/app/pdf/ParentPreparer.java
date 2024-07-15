@@ -64,6 +64,25 @@ public class ParentPreparer implements SubmissionFieldPreparer {
         results.put("parentEducation",
             new SingleField("parentEducation", educationTypeField, null));
 
+        List<String> parentGender = (List<String>) inputData.get("parentGender[]");
+       if (parentGender != null && !parentGender.contains("NONE")) {
+           if (parentGender.contains("MALE")) {
+               results.put("parentGenderMale", new SingleField("parentGenderMale", "Yes", null));
+           }
+           if (parentGender.contains("FEMALE")) {
+               results.put("parentGenderFemale", new SingleField("parentGenderFemale", "Yes", null));
+           }
+           if (parentGender.contains("TRANSGENDER") && parentGender.contains("NONBINARY")) {
+               results.put("parentGenderTNB", new SingleField("parentGenderTNB", "Transgender, Nonbinary", null));
+
+           } else if (parentGender.contains("TRANSGENDER")) {
+               results.put("parentGenderTNB", new SingleField("parentGenderTNB", "Transgender", null));
+           } else if (parentGender.contains("NONBINARY")){
+               results.put("parentGenderTNB", new SingleField("parentGenderTNB", "Nonbinary", null));
+           }
+
+       }
+
         return results;
     }
 
