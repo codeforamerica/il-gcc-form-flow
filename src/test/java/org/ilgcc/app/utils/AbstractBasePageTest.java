@@ -92,6 +92,10 @@ public abstract class AbstractBasePageTest {
     return messageSource.getMessage(key, null, Locale.ENGLISH);
   }
 
+  public String getEnMessageWithParams(String key, Object[] args){
+    return messageSource.getMessage(key, args, Locale.ENGLISH);
+  }
+
   protected void initTestPage() {
     testPage = new Page(driver, localServerPort);
   }
