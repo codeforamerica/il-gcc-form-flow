@@ -408,95 +408,94 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-partner-add-job
-        assertThat(testPage.getTitle()).isEqualTo("Does partner have any other jobs?");
-        testPage.clickButton("That is all my jobs");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-add-jobs.title"));
+        testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
         // activities-partner-ed
-        assertThat(testPage.getTitle()).isEqualTo("Now tell us about partner's school or training program.");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickElementById("partnerEducationType-twoYearCollege-label");
-        assertThat(testPage.getTitle()).isEqualTo("What type of school or training is partner enrolled in?");
         testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.enter("partnerProgramName", "World University");
-        assertThat(testPage.getTitle()).isEqualTo("What is the school or training program name?*");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("School or training program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Learning style");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-method.header"));
         testPage.clickElementById("partnerProgramTaught-In-Person-label");
         testPage.clickElementById("partnerProgramSchedule-Yes-label");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("partnerClassWeeklySchedule-Monday");
         testPage.clickElementById("partnerClassWeeklySchedule-Wednesday");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
         testPage.enter("partnerClassStartTimeMonday", "1100AM");
         testPage.enter("partnerClassEndTimeMonday", "16:00");
         testPage.enter("partnerClassStartTimeWednesday", "14:00");
         testPage.enter("partnerClassEndTimeWednesday", "15:00");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 
         //unearned-income-intro
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
         testPage.clickContinue();
 
         //unearned-income-source
-        assertThat(testPage.getTitle()).isEqualTo("Income Source");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-source.title"));
         testPage.clickElementById("unearnedIncomeSource-ROYALTIES-label");
         testPage.clickElementById("unearnedIncomeSource-RENTAL-label");
         testPage.clickElementById("unearnedIncomeSource-UNEMPLOYMENT-label");
         testPage.clickContinue();
 
         //unearned-income-amount
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Amount");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-amount.title"));
         testPage.enter("unearnedIncomeRoyalties", "35");
         testPage.enter("unearnedIncomeUnemployment", "175");
         testPage.clickContinue();
 
         //unearned-income-assets
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Assets");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-assets.title"));
         testPage.clickElementById("unearnedIncomeAssetsMoreThanOneMillionDollars-true");
         //unearned-income-child-support
-        assertThat(testPage.getTitle()).isEqualTo("Child Support");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-child-support.title"));
         testPage.clickElementById("doesAnyoneInHouseholdPayChildSupport-true");
         //unearned-income-child-support-amount
-        assertThat(testPage.getTitle()).isEqualTo("Child Support Paid");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-child-support-account.title"));
         testPage.enter("amountYourHouseholdPaysInChildSupport", "1453");
         testPage.clickContinue();
         //unearned-income-programs
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Programs");
-        assertThat(testPage.getTitle()).isEqualTo("Does anyone in your household participate in any of these programs?");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-programs.title"));
         testPage.clickElementById("unearnedIncomePrograms-CASH_ASSISTANCE");
         testPage.clickElementById("unearnedIncomePrograms-SNAP");
         testPage.clickContinue();
 
         // submit-intro
-        assertThat(testPage.getTitle()).isEqualTo("Sign and Submit");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-intro.title"));
         testPage.clickContinue();
 
         // submit-ccap-terms
-        assertThat(testPage.getTitle()).isEqualTo("Parent Agreement and Terms");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-ccap-terms.title"));
         testPage.clickElementById("agreesToLegalTerms-true");
         testPage.clickContinue();
 
         // submit-sign-name
-        assertThat(testPage.getTitle()).isEqualTo("Sign Application");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-sign-name.title"));
         testPage.enter("signedName", "parent first parent last");
         testPage.enter("partnerSignedName", "partner parent");
         testPage.clickContinue();
 
         // submit-complete
-        assertThat(testPage.getTitle()).isEqualTo("Your application has been submitted!");
-        testPage.clickButton("Submit documents now");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
 
         // doc-upload-recommended docs
-        assertThat(testPage.getTitle()).isEqualTo("Recommended documents");
-        testPage.clickButton("Submit documents now");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
 
         // doc-upload-add-files
-        assertThat(testPage.getTitle()).isEqualTo("Add Files");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
         assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
         uploadJpgFile();
         // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
@@ -504,23 +503,23 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
                 () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
         );
 
-        testPage.clickButton("I'm finished uploading");
-        assertThat(testPage.getTitle()).isEqualTo("Submit Confirmation");
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
 
         testPage.goBack();
         testPage.goBack();
-        testPage.clickButton("Skip and finish");
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
 
         // submit-next-steps
-        assertThat(testPage.getTitle()).isEqualTo("Next Steps");
-        testPage.clickButton("Finish application");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
+        testPage.clickButton(getEnMessage("submit-next-steps.button"));
 
         // submit-confirmation
-        assertThat(testPage.getTitle()).startsWith("Your application has been sent to");
+        assertThat(testPage.getTitle()).startsWith(getEnMessage("submit-confirmation.title"));
         testPage.clickElementById("surveyDifficulty-very-easy");
-        testPage.clickButton("Submit feedback");
-        assertThat(testPage.getTitle()).startsWith("Your application has been sent to");
-        assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo("Thank you for your feedback.");
+        testPage.clickButton(getEnMessage("submit-confirmation.button.feedback"));
+        assertThat(testPage.getTitle()).startsWith(getEnMessage("submit-confirmation.title"));
+        assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo(getEnMessage("submit-confirmation.survey.complete"));
 
         // Download PDF and verify fields
         verifyPDF();
