@@ -19,8 +19,8 @@
                                 text(inputName='signedName',
                                 label=#{submit-sign-name.legal-name.label})}"/>
                             <th:block th:if="
-                                ${inputData.containsKey('parentHasPartner') &&
-                                inputData.get('parentHasPartner')}">
+                                ${inputData.containsKey('parentHasQualifyingPartner') &&
+                                inputData.get('parentHasQualifyingPartner')}">
                                 <th:block th:replace="~{fragments/inputs/text ::
                                     text(inputName='partnerSignedName',
                                     label=#{submit-sign-name.partner-legal-name.label})}"/>

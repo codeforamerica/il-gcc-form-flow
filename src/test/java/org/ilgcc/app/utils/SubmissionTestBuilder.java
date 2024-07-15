@@ -66,14 +66,12 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withParentPartnerDetails() {
-        submission.getInputData().put("parentSpouseIsStepParent", "Yes");
-        submission.getInputData().put("parentSpouseShareChildren", "Yes");
-        submission.getInputData().put("parentSpouseLiveTogether", "Yes");
         submission.getInputData().put("parentPartnerFirstName", "partner");
         submission.getInputData().put("parentPartnerLastName", "parent");
         submission.getInputData().put("parentPartnerBirthMonth", "12");
         submission.getInputData().put("parentPartnerBirthDay", "25");
         submission.getInputData().put("parentPartnerBirthYear", "2018");
+        submission.getInputData().put("parentHasQualifyingPartner", "true");
         submission.getInputData().put("parentHasPartner", "true");
         return this;
     }
