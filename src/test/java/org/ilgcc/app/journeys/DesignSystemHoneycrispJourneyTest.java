@@ -25,7 +25,7 @@ public class DesignSystemHoneycrispJourneyTest extends AbstractBasePageTest {
 
   @Test
   void staticPagesJourney() {
-    assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
 
     WebElement customLink = driver.findElement(By.cssSelector("link[href*='custom.css']"));
     assertThat(customLink).isNotNull();

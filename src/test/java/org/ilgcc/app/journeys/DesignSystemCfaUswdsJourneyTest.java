@@ -26,7 +26,7 @@ public class DesignSystemCfaUswdsJourneyTest extends AbstractBasePageTest {
 
   @Test
   void staticPagesJourney() {
-    assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
 
     var cfaUswdsLinkName = "styles.css";
     WebElement cfaUswdsLink = driver.findElement(By.cssSelector("link[href*='" + cfaUswdsLinkName + "']"));

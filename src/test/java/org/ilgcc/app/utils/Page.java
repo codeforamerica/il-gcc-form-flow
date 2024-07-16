@@ -91,6 +91,16 @@ public class Page {
     waitForFooterToLoad();
   }
 
+  public void clickYes() {
+    clickButton("Yes");
+    waitForFooterToLoad();
+  }
+
+  public void clickNo() {
+    clickButton("No");
+    waitForFooterToLoad();
+  }
+
   public void enter(String inputName, String value) {
     checkForBadMessageKeys();
     List<WebElement> formInputElements = driver.findElements(By.name(inputName));

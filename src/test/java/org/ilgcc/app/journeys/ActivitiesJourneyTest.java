@@ -17,53 +17,53 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-WORKING");
         testPage.clickElementById("activitiesParentChildcareReason-SCHOOL");
         testPage.clickContinue();
 
         //activities-add-jobs
-        assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
-        testPage.clickButton("Add a job");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
         //activities-employer-name
-        assertThat(testPage.getTitle()).isEqualTo("Activities Employer Name");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-name.title"));
         testPage.enter("companyName", "testCompany");
         testPage.clickContinue();
         //activities-employer-address
-        assertThat(testPage.getTitle()).isEqualTo("Activities Employer Address");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-address.title"));
         testPage.enter("employerPhoneNumber", "3333333");
         testPage.enter("employerCity", "Chicago");
         testPage.enter("employerStreetAddress", "123 Test Me");
         testPage.enter("employerZipCode", "6042");
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 10 digits.")).isTrue();
-        assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-zipcode"))).isTrue();
         testPage.enter("employerPhoneNumber", "3333333333");
         testPage.enter("employerZipCode", "60423");
         testPage.clickContinue();
         //activities-self-employment
-        assertThat(testPage.getTitle()).isEqualTo("Activities Self Employment");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-self-employment.title"));
+        testPage.clickYes();
 
         //activities-work-schedule-vary
-        assertThat(testPage.getTitle()).isEqualTo("Work schedule vary");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-work-schedule-vary.title"));
+        testPage.clickYes();
 
         //activities-partner-next-work-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Work Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-next-work-schedule.title"));
         testPage.clickContinue();
 
         //activities-job-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Weekly Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
         testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-job-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Job hourly schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
         testPage.enter("activitiesJobStartTimeMonday", "1200PM");
         testPage.enter("activitiesJobEndTimeMonday", "0100PM");
         testPage.enter("activitiesJobStartTimeSunday", "0200PM");
@@ -71,61 +71,61 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-work-commute-time
-        assertThat(testPage.getTitle()).isEqualTo("Work commute time");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-work-commute-time.title"));
         testPage.selectFromDropdown("activitiesJobCommuteTime", "1 hour");
         testPage.clickContinue();
 
         //activities-add-jobs (list)
-        assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
-        testPage.clickButton("That is all my jobs");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+        testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
         //activities-add-ed-program
-        assertThat(testPage.getHeader()).isEqualTo("Tell us about your school or training program.");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-add-ed-program.header"));
         testPage.clickContinue();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(getEnMessage("activities-ed-program-type.highSchool"));
         testPage.clickElementById("educationType-highSchoolOrGed-label");
-        assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-type.header"));
         testPage.clickContinue();
 
         //activities-ed-program-name
         testPage.enter("schoolName", "World");
-        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-name.header"));
         testPage.clickContinue();
 
         //activities-ed-program-info
-        assertThat(testPage.getTitle()).isEqualTo("School or training program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
 
         //activities-ed-program-method
-        assertThat(testPage.getTitle()).isEqualTo("Learning style");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-method.header"));
         testPage.clickElementById("programTaught-Online-label");
         testPage.clickElementById("programSchedule-No-label");
         testPage.clickContinue();
 
         //activities-next-class-schedule
-        assertThat(testPage.getHeader()).isEqualTo("Next, we'll ask about your class schedule.");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-next-class-schedule.header"));
         testPage.clickContinue();
 
         //activities-class-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("weeklySchedule-Monday");
         testPage.clickElementById("weeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-class-hourly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
         testPage.enter("activitiesClassStartTimeAllDays", "0900AM");
         testPage.enter("activitiesClassEndTimeAllDays", "13:00");
         testPage.clickContinue();
 
         //activities-ed-program-dates
-        assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
     }
 
     @Test
@@ -139,46 +139,46 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-WORKING");
         testPage.clickContinue();
 
         //activities-add-jobs
-        assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
-        testPage.clickButton("Add a job");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
         //activities-employer-name
-        assertThat(testPage.getTitle()).isEqualTo("Activities Employer Name");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-name.title"));
         testPage.enter("companyName", "testCompany");
         testPage.clickContinue();
         //activities-employer-address
-        assertThat(testPage.getTitle()).isEqualTo("Activities Employer Address");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-address.title"));
         testPage.enter("employerPhoneNumber", "3333333");
         testPage.enter("employerCity", "Chicago");
         testPage.enter("employerStreetAddress", "123 Test Me");
         testPage.enter("employerZipCode", "6042");
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 10 digits.")).isTrue();
-        assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-zipcode"))).isTrue();
         testPage.enter("employerPhoneNumber", "3333333333");
         testPage.enter("employerZipCode", "60423");
         testPage.clickContinue();
         //activities-self-employment
-        assertThat(testPage.getTitle()).isEqualTo("Activities Self Employment");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-self-employment.title"));
+        testPage.clickYes();
 
         //activities-work-schedule-vary
-        assertThat(testPage.getTitle()).isEqualTo("Work schedule vary");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-work-schedule-vary.title"));
+        testPage.clickYes();
 
         //activities-partner-next-work-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Work Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-next-work-schedule.title"));
         testPage.clickContinue();
 
         //activities-job-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Weekly Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
         testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
         testPage.clickContinue();
@@ -192,15 +192,15 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-work-commute-time
-        assertThat(testPage.getTitle()).isEqualTo("Work commute time");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-work-commute-time.title"));
         testPage.selectFromDropdown("activitiesJobCommuteTime", "1 hour");
         testPage.clickContinue();
 
         //activities-add-jobs (list)
-        assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
-        testPage.clickButton("That is all my jobs");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+        testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
     }
 
     @Test
@@ -214,60 +214,60 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-SCHOOL");
         testPage.clickContinue();
 
         //activities-add-ed-program
-        assertThat(testPage.getHeader()).isEqualTo("Tell us about your school or training program.");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-add-ed-program.header"));
         testPage.clickContinue();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(getEnMessage("activities-ed-program-type.highSchool"));
         testPage.clickElementById("educationType-highSchoolOrGed-label");
-        assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-type.header"));
         testPage.clickContinue();
 
         //activities-ed-program-name
         testPage.enter("schoolName", "World");
-        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-name.header"));
         testPage.clickContinue();
 
         //activities-ed-program-info
-        assertThat(testPage.getTitle()).isEqualTo("School or training program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
 
         //activities-ed-program-method
-        assertThat(testPage.getTitle()).isEqualTo("Learning style");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-method.header"));
         testPage.clickElementById("programTaught-Online-label");
         testPage.clickElementById("programSchedule-No-label");
         testPage.clickContinue();
 
         //activities-next-class-schedule
-        assertThat(testPage.getHeader()).isEqualTo("Next, we'll ask about your class schedule.");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-next-class-schedule.header"));
         testPage.clickContinue();
 
         //activities-class-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("weeklySchedule-Monday");
         testPage.clickElementById("weeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-class-hourly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
         testPage.enter("activitiesClassStartTimeAllDays", "0900AM");
         testPage.enter("activitiesClassEndTimeAllDays", "13:00");
         testPage.clickContinue();
 
         //activities-ed-program-dates
-        assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
     }
 
     @Test
@@ -281,14 +281,14 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-TANF_TRAINING");
         testPage.clickContinue();
 
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
     }
 
     @Test
@@ -303,10 +303,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         assertThat(testPage.findElementById("activitiesParentChildcareReason-WORKING")).isNotNull();
         assertThat(testPage.elementDoesNotExistById("activitiesParentPartnerChildcareReason-WORKING")).isTrue();
     }
@@ -324,10 +324,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         assertThat(testPage.findElementById("activitiesParentChildcareReason-WORKING")).isNotNull();
         assertThat(testPage.findElementTextById("activitiesParentPartnerChildcareReason-WORKING")).isNotNull();
     }
@@ -344,10 +344,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-WORKING");
         testPage.clickElementById("activitiesParentChildcareReason-SCHOOL");
         testPage.clickElementById("activitiesParentPartnerChildcareReason-WORKING");
@@ -356,44 +356,44 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
 
         //Add Parent Jobs
         //activities-add-jobs
-        assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
-        testPage.clickButton("Add a job");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
         //activities-employer-name
-        assertThat(testPage.getTitle()).isEqualTo("Activities Employer Name");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-name.title"));
         testPage.enter("companyName", "testCompany");
         testPage.clickContinue();
         //activities-employer-address
-        assertThat(testPage.getTitle()).isEqualTo("Activities Employer Address");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-address.title"));
         testPage.enter("employerPhoneNumber", "3333333");
         testPage.enter("employerCity", "Chicago");
         testPage.enter("employerStreetAddress", "123 Test Me");
         testPage.enter("employerZipCode", "6042");
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 10 digits.")).isTrue();
-        assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-zipcode"))).isTrue();
         testPage.enter("employerPhoneNumber", "3333333333");
         testPage.enter("employerZipCode", "60423");
         testPage.clickContinue();
         //activities-self-employment
-        assertThat(testPage.getTitle()).isEqualTo("Activities Self Employment");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-self-employment.title"));
+        testPage.clickYes();
 
         //activities-work-schedule-vary
-        assertThat(testPage.getTitle()).isEqualTo("Work schedule vary");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-work-schedule-vary.title"));
+        testPage.clickYes();
 
         //activities-partner-next-work-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Work Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-next-work-schedule.title"));
         testPage.clickContinue();
 
         //activities-job-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Weekly Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
         testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-job-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Job hourly schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
         testPage.enter("activitiesJobStartTimeMonday", "1200PM");
         testPage.enter("activitiesJobEndTimeMonday", "0100PM");
         testPage.enter("activitiesJobStartTimeSunday", "0200PM");
@@ -401,112 +401,112 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-work-commute-time
-        assertThat(testPage.getTitle()).isEqualTo("Work commute time");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-work-commute-time.title"));
         testPage.selectFromDropdown("activitiesJobCommuteTime", "1 hour");
         testPage.clickContinue();
 
         //activities-add-jobs (list)
-        assertThat(testPage.getTitle()).isEqualTo("Activities Add Jobs");
-        testPage.clickButton("That is all my jobs");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+        testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
         //activities-add-ed-program
-        assertThat(testPage.getHeader()).isEqualTo("Tell us about your school or training program.");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-add-ed-program.header"));
         testPage.clickContinue();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo("High School or GED");
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(getEnMessage("activities-ed-program-type.highSchool"));
         testPage.clickElementById("educationType-highSchoolOrGed-label");
-        assertThat(testPage.getHeader()).isEqualTo("What type of school or training are you enrolled in?");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-type.header"));
         testPage.clickContinue();
 
         //activities-ed-program-name
         testPage.enter("schoolName", "World");
-        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-name.header"));
         testPage.clickContinue();
 
         //activities-ed-program-info
-        assertThat(testPage.getTitle()).isEqualTo("School or training program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
 
         //activities-ed-program-method
-        assertThat(testPage.getTitle()).isEqualTo("Learning style");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-method.header"));
         testPage.clickElementById("programTaught-Online-label");
         testPage.clickElementById("programSchedule-No-label");
         testPage.clickContinue();
 
         //activities-next-class-schedule
-        assertThat(testPage.getHeader()).isEqualTo("Next, we'll ask about your class schedule.");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-next-class-schedule.header"));
         testPage.clickContinue();
 
         //activities-class-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("weeklySchedule-Monday");
         testPage.clickElementById("weeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-class-hourly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
         testPage.enter("activitiesClassStartTimeAllDays", "0900AM");
         testPage.enter("activitiesClassEndTimeAllDays", "13:00");
         testPage.clickContinue();
 
         //activities-ed-program-dates
-        assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
         //activities-partner-add-job
-        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Add Jobs");
-        assertThat(testPage.getHeader()).isEqualTo("Now, let's add partner's jobs.");
-        assertThat(testPage.findElementById("header-help-message").getText()).isEqualTo("We will ask for their income and work schedule for each jobs.");
-        testPage.clickButton("Add a job");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-add-jobs.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-add-jobs.header", new Object[]{"partner"}));
+        assertThat(testPage.findElementById("header-help-message").getText()).isEqualTo(getEnMessage("activities-partner-add-jobs.subtext"));
+        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
         //activities-partner-employer-name
-        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Name");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-employer-name.title"));
         testPage.enter("partnerCompanyName", "testPartnerCompany");
         testPage.clickContinue();
         //activities--partner-employer-address
-        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Employer Address");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-employer-address.title"));
         testPage.enter("partnerEmployerPhoneNumber", "4444");
         testPage.enter("partnerEmployerCity", "Oakland");
         testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
         testPage.enter("partnerEmployerZipCode", "6042");
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText("Make sure the phone number you entered includes 10 digits.")).isTrue();
-        assertThat(testPage.hasErrorText("Make sure the zip code you entered follows the right format.")).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-zipcode"))).isTrue();
         testPage.enter("partnerEmployerPhoneNumber", "4333333333");
         testPage.enter("partnerEmployerZipCode", "92453");
         testPage.clickContinue();
         //activities-partner-self-employment
-        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Self Employment");
-        testPage.clickButton("No");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-self-employment.title"));
+        testPage.clickNo();
 
         //check that selecting yes on activities-partner-work-schedule-vary screen send you to ...next-work-schedule
         // and no sends you to the ...job-weekly-schedule screen
 
         //activities-partner-work-schedule-vary
-        assertThat(testPage.getTitle()).isEqualTo("Partner Work Schedule Varies");
-        assertThat(testPage.getHeader()).isEqualTo("Do partner's work days or hours vary at this job?");
-        testPage.clickButton("No");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-work-schedule-vary.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-work-schedule-vary.header", new Object[]{"partner"}));
+        testPage.clickNo();
 
         //activities-partner-job-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Partner Weekly Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-job-weekly-schedule.title"));
         testPage.goBack();
 
         //activities-partner-work-schedule-vary
-        assertThat(testPage.getTitle()).isEqualTo("Partner Work Schedule Varies");
-        testPage.clickButton("Yes");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-work-schedule-vary.title"));
+        testPage.clickYes();
 
         //activities-partner-next-work-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Notice Partner Work Schedule Varies");
-        assertThat(testPage.getHeader()).isEqualTo("Next, we'll ask about partner's work schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-next-work-schedule.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-next-work-schedule.header", new Object[]{"partner"}));
         testPage.clickContinue();
         //activities-partner-job-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Partner Weekly Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
         testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-partner-job-hourly-schedule
-        assertThat(testPage.getTitle()).isEqualTo("Partner Hourly Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-job-hourly-schedule.title"));
         testPage.enter("activitiesJobStartTimeMonday", "1200PM");
         testPage.enter("activitiesJobEndTimeMonday", "0100PM");
         testPage.enter("activitiesJobStartTimeSunday", "0200PM");
@@ -514,42 +514,42 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-partner-commute-time
-        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Commute Time");
-        testPage.selectFromDropdown("activitiesJobCommuteTime", "1.5 hours");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-commute-time.title"));
+        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
         testPage.clickContinue();
         //activities-partner-add-job
-        assertThat(testPage.getHeader()).isEqualTo("Does partner have any other jobs?");
-        testPage.clickButton("That is all my jobs");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-add-job.header.any-other-jobs", new Object[]{"partner"}));
+        testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
         //activities-partner-add-ed-program
-        assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-add-ed-program.header", new Object[]{"partner"}));
         testPage.clickContinue();
         testPage.clickElementById("partnerEducationType-fourYearCollege-label");
-        assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in?");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-ed-program-type.header", new Object[]{"partner"}));
         testPage.clickContinue();
         testPage.enter("partnerProgramName", "World University");
-        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-name.header"));
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("School or training program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Learning style");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-method.header"));
         testPage.clickElementById("partnerProgramTaught-In-Person-label");
         testPage.clickElementById("partnerProgramSchedule-Yes-label");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("partnerClassWeeklySchedule-Monday");
         testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
         testPage.enter("partnerClassStartTimeMonday", "0900AM");
         testPage.enter("partnerClassEndTimeMonday", "1100AM");
         testPage.enter("partnerClassStartTimeTuesday", "14:00");
         testPage.enter("partnerClassEndTimeTuesday", "15:00");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 
         //unearned-income-intro
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
     }
 
     @Test
@@ -564,10 +564,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-TANF_TRAINING");
         testPage.clickElementById("activitiesParentPartnerChildcareReason-SCHOOL");
         testPage.clickContinue();
@@ -579,29 +579,29 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo("What type of school or training is partner enrolled in?");
         testPage.clickContinue();
         testPage.enter("partnerProgramName", "World University");
-        assertThat(testPage.getHeader()).isEqualTo("What is the school or training program name?*");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-name.header"));
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("School or training program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Learning style");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-method.header"));
         testPage.clickElementById("partnerProgramTaught-In-Person-label");
         testPage.clickElementById("partnerProgramSchedule-Yes-label");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Weekly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("partnerClassWeeklySchedule-Monday");
         testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Hourly Class Schedule");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
         testPage.enter("partnerClassStartTimeMonday", "0900AM");
         testPage.enter("partnerClassEndTimeMonday", "1100AM");
         testPage.enter("partnerClassStartTimeTuesday", "14:00");
         testPage.enter("partnerClassEndTimeTuesday", "15:00");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo("Time of Program");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 
         //unearned-income-intro
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
     }
 
     @Test
@@ -616,16 +616,16 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-TANF_TRAINING");
         testPage.clickElementById("activitiesParentPartnerChildcareReason-WORKING");
         testPage.clickContinue();
 
         //activities-partner-add-job
-        assertThat(testPage.getTitle()).isEqualTo("Activities Partner Add Jobs");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-add-jobs.title"));
     }
 
     @Test
@@ -640,15 +640,15 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
             .build());
 
         //activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
         testPage.clickContinue();
         //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo("Activities Parent Type");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-TANF_TRAINING");
         testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
         testPage.clickContinue();
 
         //unearned-income-intro
-        assertThat(testPage.getTitle()).isEqualTo("Unearned Income Intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
     }
 }

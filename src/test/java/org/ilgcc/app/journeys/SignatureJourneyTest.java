@@ -21,7 +21,7 @@ public class SignatureJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("agreesToLegalTerms-true-label");
         testPage.clickContinue();
         //Signature Page
-        assertThat(testPage.getTitle()).isEqualTo("Sign Application");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-sign-name.title"));
         assertThat(testPage.findElementTextById("signedName")).isNotNull();
         assertThat(testPage.findElementTextById("partnerSignedName")).isNotNull();
     }
@@ -41,7 +41,7 @@ public class SignatureJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("agreesToLegalTerms-true-label");
         testPage.clickContinue();
         //Signature Page
-        assertThat(testPage.getTitle()).isEqualTo("Sign Application");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-sign-name.title"));
         assertThat(testPage.findElementTextById("signedName")).isNotNull();
         assertThat(testPage.elementDoesNotExistById("partnerSignedName")).isTrue();
     }

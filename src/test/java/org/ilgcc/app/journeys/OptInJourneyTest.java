@@ -16,14 +16,14 @@ public class OptInJourneyTest extends AbstractBasePageTest {
             .build());
 
         //parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo("What is your home address?");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
         testPage.clickElementById("parentHomeExperiencingHomelessness-yes");
         testPage.clickContinue();
         //parent-no-permanent-address
-        assertThat(testPage.getTitle()).isEqualTo("Parent");
-        testPage.clickLink("Contact me by email instead.");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
+        testPage.clickLink(getEnMessage("parent-no-permanent-address.contact-by-email"));
         //parent-comm-preference
-        assertThat(testPage.getTitle()).isEqualTo("Parent Communications Preference");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
         assertThat(testPage.findElementById("parentContactPreferredCommunicationMethod-email").getAttribute("checked")).isEqualTo("true");
         testPage.selectRadio("parentContactPreferredCommunicationMethod", "mail");
     }
@@ -35,26 +35,26 @@ public class OptInJourneyTest extends AbstractBasePageTest {
             .build());
 
         //parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo("What is your home address?");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
         testPage.clickElementById("parentHomeExperiencingHomelessness-yes");
         testPage.clickContinue();
         //parent-no-permanent-address
-        assertThat(testPage.getTitle()).isEqualTo("Parent");
-        testPage.clickLink("Contact me by email instead.");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
+        testPage.clickLink(getEnMessage("parent-no-permanent-address.contact-by-email"));
         //parent-comm-preference
-        assertThat(testPage.getTitle()).isEqualTo("Parent Communications Preference");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
         assertThat(testPage.findElementById("parentContactPreferredCommunicationMethod-email").getAttribute("checked")).isEqualTo("true");
         testPage.clickElementById("parentContactPreferredCommunicationMethod-mail");
         testPage.clickContinue();
         //parent-contact-info
-        assertThat(testPage.getTitle()).isEqualTo("Parent Contact Info");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-contact-info.title"));
         testPage.goBack();
-        assertThat(testPage.getTitle()).isEqualTo("Parent Communications Preference");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
         assertThat(testPage.findElementById("parentContactPreferredCommunicationMethod-mail").getAttribute("checked")).isEqualTo("true");
         testPage.goBack();
         //parent-no-permanent-address
-        assertThat(testPage.getTitle()).isEqualTo("Parent");
-        testPage.clickLink("Contact me by email instead.");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
+        testPage.clickLink(getEnMessage("parent-no-permanent-address.contact-by-email"));
         assertThat(testPage.findElementById("parentContactPreferredCommunicationMethod-mail").getAttribute("checked")).isEqualTo("true");
 
 
@@ -67,14 +67,14 @@ public class OptInJourneyTest extends AbstractBasePageTest {
             .withHomelessDetails()
             .build());
         //parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo("What is your home address?");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
         testPage.clickElementById("parentHomeExperiencingHomelessness-yes");
         testPage.clickContinue();
         //parent-no-permanent-address
-        assertThat(testPage.getTitle()).isEqualTo("Parent");
-        testPage.clickLink("I have a place to get mail");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
+        testPage.clickLink(getEnMessage("parent-no-permanent-address.has-place-to-get-mail"));
         //parent-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo("Parent Mailing Address");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
         testPage.enter("parentMailingStreetAddress1", "972 Mission St");
         testPage.enter("parentMailingStreetAddress2", "5th floor");
         testPage.enter("parentMailingCity", "San Francisco");
@@ -82,10 +82,10 @@ public class OptInJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentMailingZipCode", "94103");
         testPage.clickContinue();
         //parent-confirm-address
-        assertThat(testPage.getTitle()).isEqualTo("Parent Confirm Address");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-address.title"));
         testPage.clickButton("Use this address");
         //parent-comm-preference
-        assertThat(testPage.getTitle()).isEqualTo("Parent Communications Preference");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
         assertThat(testPage.findElementById("parentContactPreferredCommunicationMethod-mail").getAttribute("checked")).isEqualTo(null);
     }
 }

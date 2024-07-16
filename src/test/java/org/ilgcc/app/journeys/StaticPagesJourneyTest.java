@@ -21,7 +21,7 @@ public class StaticPagesJourneyTest extends AbstractBasePageTest {
   void staticPagesJourney() {
     assertThat(environment.getProperty("form-flow.disabled-flows")).isEqualTo(null);
     // Landing screen
-    assertThat(testPage.getTitle()).isEqualTo("Get help paying for child care.");
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
     assertThat(driver.getWindowHandles().size()).isEqualTo(1);
 //    String originalWindow = driver.getWindowHandle();
 
