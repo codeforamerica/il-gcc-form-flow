@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:17-jdk-jammy
 
 RUN mkdir /opt/il-gcc /opt/pdf-fonts
 COPY . /opt/il-gcc
@@ -10,4 +10,4 @@ RUN ./gradlew assemble && \
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/opt/il-gcc/app.jar"]
+CMD ["java", "-jar", "/opt/il-gcc/app.jar", "--debug"]
