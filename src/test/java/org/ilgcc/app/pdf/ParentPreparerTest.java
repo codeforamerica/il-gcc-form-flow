@@ -114,7 +114,7 @@ public class ParentPreparerTest {
   public void shouldSelectMaleCheckboxWhenApplicantIdentifiesAsMale(){
     submission = new SubmissionTestBuilder()
         .withParentDetails()
-        .with("parentGender", List.of("MALE"))
+        .with("parentGender[]", List.of("MALE"))
         .build();
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentGenderMale")).isEqualTo(new SingleField("parentGenderMale", "Yes", null));
@@ -124,7 +124,7 @@ public class ParentPreparerTest {
   public void shouldSelectFemaleCheckboxWhenApplicantIdentifiesAsFemale(){
     submission = new SubmissionTestBuilder()
         .withParentDetails()
-        .with("parentGender", List.of("FEMALE"))
+        .with("parentGender[]", List.of("FEMALE"))
         .build();
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentGenderFemale")).isEqualTo(new SingleField("parentGenderFemale", "Yes", null));
@@ -134,7 +134,7 @@ public class ParentPreparerTest {
   public void shouldWriteTransgenderToTextFieldWhenApplicantIdentifiesAsTransgender(){
     submission = new SubmissionTestBuilder()
         .withParentDetails()
-        .with("parentGender", List.of("TRANSGENDER"))
+        .with("parentGender[]", List.of("TRANSGENDER"))
         .build();
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentGenderTNB")).isEqualTo(new SingleField("parentGenderTNB", "Transgender", null));
@@ -144,7 +144,7 @@ public class ParentPreparerTest {
   public void shouldWriteNonBinaryToTextFieldWhenApplicantIdentifiesAsNonBinary(){
     submission = new SubmissionTestBuilder()
         .withParentDetails()
-        .with("parentGender", List.of("NONBINARY"))
+        .with("parentGender[]", List.of("NONBINARY"))
         .build();
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentGenderTNB")).isEqualTo(new SingleField("parentGenderTNB", "Nonbinary", null));
@@ -154,7 +154,7 @@ public class ParentPreparerTest {
   public void shouldWriteTransgenderAndNonBinaryAsCommaSeperatedList() {
     submission = new SubmissionTestBuilder()
         .withParentDetails()
-        .with("parentGender", List.of("TRANSGENDER", "NONBINARY"))
+        .with("parentGender[]", List.of("TRANSGENDER", "NONBINARY"))
         .build();
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentGenderTNB")).isEqualTo(new SingleField("parentGenderTNB", "Transgender, Nonbinary", null));
@@ -164,7 +164,7 @@ public class ParentPreparerTest {
   public void shouldMapEverythingIfAllGendersAreSelected() {
     submission = new SubmissionTestBuilder()
         .withParentDetails()
-        .with("parentGender", List.of("MALE", "FEMALE", "NONBINARY", "TRANSGENDER"))
+        .with("parentGender[]", List.of("MALE", "FEMALE", "NONBINARY", "TRANSGENDER"))
         .build();
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentGenderFemale")).isEqualTo(new SingleField("parentGenderFemale", "Yes", null));
@@ -176,7 +176,7 @@ public class ParentPreparerTest {
   public void shouldNotMapAnyFieldsIfClientSelectsPreferNotToAnswerToGenderQuestion(){
     submission = new SubmissionTestBuilder()
         .withParentDetails()
-        .with("parentGender", List.of("NONE", "MALE", "NONBINARY"))
+        .with("parentGender[]", List.of("NONE", "MALE", "NONBINARY"))
         .build();
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentGenderMale")).isNotEqualTo(new SingleField("parentGenderMale", "Yes", null));
