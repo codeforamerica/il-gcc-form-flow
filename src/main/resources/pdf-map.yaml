@@ -53,6 +53,9 @@ inputFields:
   applicantSchoolEndDate: APPLICANT_EDUCATION_SCHOOL_TERM_END_DATE
   parentEducation: APPLICANT_EDUCATION_TYPE
   partnerEducation: PARTNER_EDUCATION_TYPE
+  parentGenderMale: APPLICANT_GENDER_MALE
+  parentGenderFemale: APPLICANT_GENDER_FEMALE
+  parentGenderTNB: APPLICANT_GENDER_OTHER
   applicantEducationScheduleMondayStart: APPLICANT_EDUCATION_SCHEDULE_MONDAY_START
   applicantEducationScheduleMondayStartAmPm: APPLICANT_EDUCATION_SCHEDULE_MONDAY_START_AM_PM
   applicantEducationScheduleTuesdayStart: APPLICANT_EDUCATION_SCHEDULE_TUESDAY_START
