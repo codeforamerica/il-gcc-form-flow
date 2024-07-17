@@ -8,7 +8,9 @@ import formflow.library.pdf.SubmissionField;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PreparerUtilities {
 
   /**
@@ -43,7 +45,12 @@ public class PreparerUtilities {
 
   public static Double numberValueOf(String incomeValue){
     if(!incomeValue.isEmpty()){
-      return Double.parseDouble(incomeValue);
+      try {
+        return Double.parseDouble(incomeValue);
+      } catch (NumberFormatException e) {
+        log.error("incomeValue " + incomeValue + " is not a number", e);
+        return 0.0;
+      }
     } else {
       return 0.0;
     }
