@@ -129,8 +129,7 @@ public class Gcc extends FlowInputs {
     @Encrypted
     private String parentSsn;
     private List<String> parentGender;
-    private List<String> parentRaceEthnicity;
-
+    
     private String parentConfirmSuggestedAddress;
 
     private String hasAdultDependents;

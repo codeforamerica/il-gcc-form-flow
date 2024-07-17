@@ -25,9 +25,6 @@ flow:
     onPostAction: CreateParentBirthDate
     crossFieldValidationAction: ValidateParentBirth
     nextScreens:
-      - name: parent-info-basic-2
-  parent-info-basic-2:
-    nextScreens:
       - name: parent-info-service
   parent-info-service:
     nextScreens:
