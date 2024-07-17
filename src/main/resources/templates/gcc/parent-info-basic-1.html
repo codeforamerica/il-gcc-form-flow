@@ -11,7 +11,8 @@
         <th:block th:replace="~{fragments/gcc-icons :: adultFace}"></th:block>
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-basic-1.title}, subtext=#{general.indicates-required})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
+          <th:block th:ref="formContent" th:with="
+                      genderOptions=${T(org.ilgcc.app.utils.GenderOption).values()}">
             <div class="form-card__content">
               <th:block th:replace="~{fragments/inputs/text ::
                 text(inputName='parentFirstName',
@@ -33,6 +34,16 @@
                 date(inputName='parentBirth',
                 groupName='parentBirthDate',
                 label=#{parent-info-basic-1.dob-question})}"/>
+              <th:block
+                  th:replace="~{fragments/inputs/ssn :: ssn(
+                  inputName='parentSsn',
+                  label=#{parent-info-basic-2.ssn-question},
+                  helpText=#{parent-info-basic-2.ssn-helptext})}"/>
+              <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='parentGender',
+                    label=#{parent-info-basic-2.gender-question},
+                    options=${genderOptions},
+                    noneOfTheAboveLabel=#{general.inputs.prefer-not-to-answer})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
