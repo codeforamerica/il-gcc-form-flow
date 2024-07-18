@@ -2,7 +2,7 @@ form-flow:
   encryption-key: ${ENCRYPTION_KEY}
   lock-after-submitted:
     - flow: gcc
-      redirect: submit-confirmation
+      redirect: submit-sign-name
   design-system:
     name: honeycrisp
   languages: en, es
