@@ -9,5 +9,6 @@ RUN ./gradlew assemble && \
     cp /opt/il-gcc/build/libs/app.jar app.jar
 
 EXPOSE 8080
+EXPOSE 8000
 
 CMD ["java", "-jar", "/opt/il-gcc/app.jar", "--debug"]

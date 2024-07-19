@@ -75,7 +75,7 @@ spring:
     resources:
       static-locations: file:src/main/resources/static/, file:generated/main/resources/static
   datasource:
-    url: jdbc:postgresql://localhost:5432/il-gcc
+    url: jdbc:postgresql://host.docker.internal:5432/il-gcc
     username: il-gcc
   servlet:
     multipart:
