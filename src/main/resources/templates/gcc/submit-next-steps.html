@@ -14,8 +14,7 @@
                     <p id="header-help-message"
                        th:utext="#{submit-next-steps.subtext}"></p>
                 </header>
-                <th:block
-                        th:replace="~{fragments/form :: form(action=|/flow/${flow}/${screen}/submit|, content=~{::formContent})}">
+                <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
                             <div class="notice--success">

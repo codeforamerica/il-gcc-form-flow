@@ -12,8 +12,8 @@
                 <th:block th:replace="~{fragments/cardHeader :: cardHeader(
                         header=#{submit-sign-name.title},
                         subtext=#{submit-sign-name.subtext})}"/>
-                <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-                    <th:block th:ref="formContent">
+                <th:block
+                    th:replace="~{fragments/form :: form(action=|/flow/${flow}/${screen}/submit|, content=~{::formContent})}">                    <th:block th:ref="formContent">
                         <div class="form-card__content">
                             <th:block th:replace="~{fragments/inputs/text ::
                                 text(inputName='signedName',
