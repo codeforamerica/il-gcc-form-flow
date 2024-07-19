@@ -20,7 +20,3 @@ management:
     web:
       exposure:
         include: '*'
-org:
-  jobrunr:
-    dashboard:
-      enabled: false
