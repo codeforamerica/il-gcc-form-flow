@@ -34,7 +34,7 @@
                           <th:block th:replace="~{fragments/inputs/checkboxInSet ::
                           checkboxInSet(inputName=${inputName},
                           value=${option.getValue()},
-                          label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg(option.getLabel())},
+                          label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg('activities-parent-type.' + option.getLabel())},
                           checkboxHelpText=${#strings.isEmpty(option.getHelpText()) ? null : #messages.msg(option.getHelpText())})}"/>
                         </th:block>
                         <div class="question-with-follow-up spacing-below-0">
@@ -67,7 +67,7 @@
                         <th:block th:replace="~{fragments/inputs/checkboxInSet ::
                           checkboxInSet(inputName=${inputName},
                           value=${option.getValue()},
-                          label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg(option.getLabel())},
+                          label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg('activities-parent-partner-type.' + option.getLabel())},
                           checkboxHelpText=${#strings.isEmpty(option.getHelpText()) ? null : #messages.msg(option.getHelpText())})}"/>
                       </th:block>
                       <div class="question-with-follow-up">

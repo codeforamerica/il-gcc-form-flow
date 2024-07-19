@@ -2,9 +2,9 @@ package org.ilgcc.app.utils;
 
 public enum ChildcareReasonOption implements InputOption {
 
-  WORKING("activities-parent-type.working"),
-  SCHOOL("activities-parent-type.going-to-school"),
-  TANF_TRAINING("activities-parent-type.tanf-training");
+  WORKING("working"),
+  SCHOOL("going-to-school"),
+  TANF_TRAINING("tanf-training");
 
   private final String label;
 
