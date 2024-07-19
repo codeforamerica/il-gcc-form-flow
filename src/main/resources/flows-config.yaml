@@ -349,13 +349,13 @@ flow:
     nextScreens:
       - name: submit-complete
   submit-complete:
+    beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: submit-next-steps
   submit-next-steps:
     nextScreens:
       - name: submit-confirmation
   submit-confirmation:
-    beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: submit-confirmation
   doc-upload-recommended-docs:
