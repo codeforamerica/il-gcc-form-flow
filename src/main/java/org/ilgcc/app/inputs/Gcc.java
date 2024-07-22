@@ -8,6 +8,7 @@ import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.*;
 
 import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class Gcc extends FlowInputs {
@@ -66,7 +67,7 @@ public class Gcc extends FlowInputs {
     private String parentContactPreferredCommunicationMethod;
     private String parentHasPartner;
     private String parentHasQualifyingPartner;
-    @Phone(message="{errors.invalid-phone-number}")
+    @Phone(message = "{errors.invalid-phone-number}")
     private String parentPartnerPhoneNumber;
     @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
     private String parentPartnerEmail;
@@ -83,7 +84,6 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthDay;
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
-    private List<String> parentPartnerGender;
     @Phone(message = "{errors.invalid-phone-number}")
     private String phoneNumber;
     private String streetAddress;
@@ -129,7 +129,7 @@ public class Gcc extends FlowInputs {
     @Encrypted
     private String parentSsn;
     private List<String> parentGender;
-    
+
     private String parentConfirmSuggestedAddress;
 
     private String hasAdultDependents;
