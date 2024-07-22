@@ -10,4 +10,4 @@ RUN ./gradlew assemble && \
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/opt/il-gcc/app.jar"]
+CMD ["java", "-jar", "/opt/il-gcc/app.jar"]
