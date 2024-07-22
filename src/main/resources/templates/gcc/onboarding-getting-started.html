@@ -24,7 +24,19 @@
             buttonLabel=#{onboarding-getting-started.accordion.second.label},
             content=~{::second})}">
             <th:block th:ref="second">
-              <p th:text="#{general.eligibility-table.title}"></p>
+              <p th:text="#{onboarding-getting-started.accordion.second.paragraph-1}"></p>
+              <p th:text="#{onboarding-getting-started.accordion.second.paragraph-2}"></p>
+              <ul class="list--bulleted">
+                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.working}"></li>
+                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.enrolling}"></li>
+                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.experiencing-homelessness}"></li>
+                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.deployed}"></li>
+                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.participating}"></li>
+                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.caring}"></li>
+                <li th:text="#{faq.do-i-qualify-for-ccap.activities.li.when-you-are-working}"></li>
+              </ul>
+                <br/>
+              <p th:text="#{onboarding-getting-started.accordion.second.paragraph-3}"></p>
               <table class="eligibility-table">
                 <thead>
                 <tr>
