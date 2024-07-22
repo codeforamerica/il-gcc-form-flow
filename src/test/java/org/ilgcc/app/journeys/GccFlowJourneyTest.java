@@ -483,7 +483,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-sign-name.title"));
         testPage.enter("signedName", "parent first parent last");
         testPage.enter("partnerSignedName", "partner parent");
-        testPage.clickContinue();
+        testPage.clickButton(getEnMessage("submit-sign-name.submit-application"));
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
@@ -511,7 +511,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
-        testPage.clickButton(getEnMessage("submit-next-steps.button"));
+        testPage.clickContinue();
 
         // submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));

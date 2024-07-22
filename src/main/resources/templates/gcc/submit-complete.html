@@ -10,6 +10,9 @@
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block th:replace="~{fragments/gcc-icons :: greenCheck}"></th:block>
+                <div th:if="${lockedSubmissionMessage}" class="notice--warning">
+                    <p th:text="${lockedSubmissionMessage}"></p>
+                </div>
                 <header class="form-card__header">
                     <h1 id="header" class="h2" th:utext="#{submit-complete.header}"></h1>
                 </header>

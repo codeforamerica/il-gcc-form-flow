@@ -15,9 +15,6 @@
         <div class="grid">
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
-                <div th:if="${lockedSubmissionMessage}" class="notice--warning">
-                    <p th:text="${lockedSubmissionMessage}"></p>
-                </div>
                 <th:block th:replace="~{fragments/gcc-icons :: documentsSent}"></th:block>
                 <th:block th:replace="~{fragments/cardHeader :: cardHeader(
                     header=#{submit-confirmation.title(${provider.getDisplayName()})},
