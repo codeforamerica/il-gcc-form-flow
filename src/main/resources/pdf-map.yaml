@@ -3,6 +3,7 @@ pdf: /pdfs/IL-CCAP-Form.pdf
 inputFields:
   parentFirstName: APPLICANT_NAME_FIRST
   parentLastName: APPLICANT_NAME_LAST
+  parentFullName: APPLICANT_NAME_FULL
   parentHomeStreetAddress1: APPLICANT_ADDRESS_HOME_STREET
   parentHomeStreetAddress2: APPLICANT_ADDRESS_HOME_APT
   parentHomeCity: APPLICANT_ADDRESS_HOME_CITY
@@ -122,6 +123,7 @@ inputFields:
   signedName: APPLICANT_SIGNATURE
   partnerSignedName: PARTNER_SIGNATURE
   partnerSignedAt: PARTNER_SIGNATURE_DATE
+  receivedTimestamp: RECEIVED_TIMESTAMP
 dbFields:
   submittedAt: APPLICANT_SIGNATURE_DATE
 
