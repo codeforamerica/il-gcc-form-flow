@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import formflow.library.data.Submission;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
+import java.util.List;
 import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
@@ -99,5 +100,34 @@ public class NeedChildcareForChildrenPreparerTest {
             .build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
         assertThat(result.get("childcareStartDate")).isEqualTo(new SingleField("childcareStartDate", "11/1/2009", null));
+    }
+
+    @Test
+    public void setCorrectEthnicityRaceKeyInPDF(){
+        submission = new SubmissionTestBuilder()
+                .withChild("Black Native American", "Child", "Yes")
+                .addChildDataArray(0, "childRaceEthnicity", List.of("BLACK", "NATIVE_AMERICAN"))
+                .withChild("White Asian Hispanic", "Child", "Yes")
+                .addChildDataArray(1, "childRaceEthnicity", List.of("WHITE", "BLACK", "ASIAN"))
+                .withChild("OTHER MIDDLE EASTERN WHITE", "Child", "Yes")
+                .addChildDataArray(2, "childRaceEthnicity", List.of("HISPANIC", "MIDDLE_EASTERN"))
+                .withChild("No Race", "Child", "Yes")
+                .addChildDataArray(3, "childRaceEthnicity", List.of("NONE"))
+                .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("childRaceEthnicity_1")).isEqualTo(new SingleField("childRaceEthnicity", "2, 5", 1));
+        assertThat(result.get("childRaceEthnicity_2")).isEqualTo(new SingleField("childRaceEthnicity", "1, 2, 4", 2));
+        assertThat(result.get("childRaceEthnicity_3")).isEqualTo(new SingleField("childRaceEthnicity", "3, O", 3));
+        assertThat(result.get("childRaceEthnicity_4")).isEqualTo(new SingleField("childRaceEthnicity", "X", 4));
+    }
+
+    @Test
+    public void deduplicatesEthnicityRaceKeyInPDF(){
+        submission = new SubmissionTestBuilder()
+                .withChild("Black Native American", "Child", "Yes")
+                .addChildDataArray(0, "childRaceEthnicity", List.of("OTHER", "MIDDLE_EASTERN"))
+                .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("childRaceEthnicity_1")).isEqualTo(new SingleField("childRaceEthnicity", "O", 1));
     }
 }
