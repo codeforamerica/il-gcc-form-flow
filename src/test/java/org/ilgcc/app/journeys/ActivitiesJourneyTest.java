@@ -90,7 +90,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-name
-        testPage.enter("schoolName", "World");
+        testPage.enter("applicantSchoolName", "World");
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-name.header"));
         testPage.clickContinue();
 
@@ -232,7 +232,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-name
-        testPage.enter("schoolName", "World");
+        testPage.enter("applicantSchoolName", "World");
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-name.header"));
         testPage.clickContinue();
 
@@ -420,7 +420,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-name
-        testPage.enter("schoolName", "World");
+        testPage.enter("applicantSchoolName", "World");
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-ed-program-name.header"));
         testPage.clickContinue();
 

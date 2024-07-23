@@ -305,16 +305,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-name
-        testPage.enter("schoolName", "World Training Program");
+        testPage.enter("applicantSchoolName", "World Training Program");
         testPage.clickContinue();
 
         //activities-ed-program-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
-        testPage.enter("phoneNumber", "(217) 123-1233");
-        testPage.enter("streetAddress", "123 Main St");
-        testPage.enter("city", "Springfield");
-        testPage.enter("state", "IL - Illinois");
-        testPage.enter("zipCode", "62629");
+        testPage.enter("applicantSchoolPhoneNumber", "(217) 123-1233");
+        testPage.enter("applicantSchoolStreetAddress", "123 Main St");
+        testPage.enter("applicantSchoolCity", "Springfield");
+        testPage.enter("applicantSchoolState", "IL - Illinois");
+        testPage.enter("applicantSchoolZipCode", "62629");
         testPage.clickContinue();
 
         //activities-ed-program-method

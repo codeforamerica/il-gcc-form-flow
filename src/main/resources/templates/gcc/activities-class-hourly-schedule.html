@@ -3,7 +3,7 @@
       screen(
         header=#{activities-class-hourly-schedule.header},
         subtext=#{activities-class-hourly-schedule.subtext},
-        programName=${fieldData.schoolName},
+        programName=${fieldData.applicantSchoolName},
         isSameEveryDay=${!#lists.isEmpty(fieldData.get('activitiesClassHoursSameEveryDay[]'))},
         sameHoursLabel=#{activities-class-hourly-schedule.hours-are-the-same},
         selectedDays=${fieldData['weeklySchedule[]']},
