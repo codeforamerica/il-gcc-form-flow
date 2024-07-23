@@ -1,3 +1,3 @@
 cmd: java -jar /opt/il-gcc/app.jar
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/*.jar
+web: ./scripts/webapp_launcher.sh
 dashboard: ./scripts/jobrunr_dashboard_launcher.sh
