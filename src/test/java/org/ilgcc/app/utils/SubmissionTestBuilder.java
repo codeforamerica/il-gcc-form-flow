@@ -349,6 +349,18 @@ public class SubmissionTestBuilder {
 
         return this;
     }
+
+    public SubmissionTestBuilder addChildDataArray(int childIterationIndex, String inputName, List value){
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+        if (children.isEmpty()) {
+            return this;
+        }
+
+        Map<String, Object> child = children.get(childIterationIndex);
+
+        child.put(inputName+"[]", value);
+        return this;
+    }
     public SubmissionTestBuilder withChildAttendsSchoolDuringTheDay(int childIterationPosition, String childAttendsOtherEd){
         List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
         if (children.isEmpty()) {
