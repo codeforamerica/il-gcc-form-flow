@@ -52,15 +52,14 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
   }
 
   private String formatChildRaceEthnicity(List raceEthnicity){
-    List<String> ethnicities = new ArrayList<>();
-    if(raceEthnicity.equals(List.of("NONE"))){
-        ethnicities.add("X");
-    } else {
-      raceEthnicity.forEach(name -> {
-        ethnicities.add(RaceEthnicityOption.getPdfValueByName(String.valueOf(name)));
-      });
+    if(raceEthnicity.isEmpty()){
+      return "";
     }
-    return String.join(", ", ethnicities.stream().distinct().sorted().toList());
+    else if(raceEthnicity.equals(List.of("NONE"))){
+        return "X";
+    } else {
+      return String.join(", ", raceEthnicity.stream().map(name -> RaceEthnicityOption.getPdfValueByName(String.valueOf(name))).distinct().sorted().toList());
+    }
   }
 
   private String getEarliestCCAPStartDate(String earliestCCAPStartDate, String childCCAPStartDate, DateTimeFormatter formatter){

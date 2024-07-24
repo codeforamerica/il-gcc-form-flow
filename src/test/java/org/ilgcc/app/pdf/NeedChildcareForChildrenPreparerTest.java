@@ -130,4 +130,14 @@ public class NeedChildcareForChildrenPreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
         assertThat(result.get("childRaceEthnicity_1")).isEqualTo(new SingleField("childRaceEthnicity", "O", 1));
     }
+
+    @Test
+    public void ethnicityRaceFieldCanBeEmpty(){
+        submission = new SubmissionTestBuilder()
+                .withChild("Black Native American", "Child", "Yes")
+                .addChildDataArray(0, "childRaceEthnicity", List.of())
+                .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("childRaceEthnicity_1")).isEqualTo(new SingleField("childRaceEthnicity", "", 1));
+    }
 }
