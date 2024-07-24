@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.ilgcc.app.utils.GenderOption;
 import org.ilgcc.app.utils.RaceEthnicityOption;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,7 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
       results.put("childLastName_" + iteration, new SingleField("childLastName", (String) child.getOrDefault("childLastName", ""), iteration));
       results.put("childDateOfBirth_" + iteration, new SingleField("childDateOfBirth", formatChildDateOfBirth(child), iteration));
       results.put("childRaceEthnicity_" + iteration, new SingleField("childRaceEthnicity", formatChildRaceEthnicity((List) child.getOrDefault("childRaceEthnicity[]", List.of())), iteration));
+      results.put("childGender_" + iteration, new SingleField("childGender", formatChildGender((List) child.getOrDefault("childGender[]", List.of())), iteration));
       results.put("childSpecialNeeds_" + iteration, new SingleField("childSpecialNeeds", formatYesNo((String) child.getOrDefault("childHasDisability", "")), iteration));
       results.put("childUSCitizen_" + iteration, new SingleField("childUSCitizen", formatYesNo((String) child.getOrDefault("childIsUsCitizen", "")), iteration));
       results.put("childCareChildInSchool_" + iteration, new SingleField("childCareChildInSchool", (String) child.getOrDefault("childAttendsOtherEd", ""), iteration));
@@ -59,6 +61,14 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
         return "X";
     } else {
       return String.join(", ", raceEthnicity.stream().map(name -> RaceEthnicityOption.getPdfValueByName(String.valueOf(name))).distinct().sorted().toList());
+    }
+  }
+
+  private String formatChildGender(List gender){
+    if(gender.isEmpty() || gender.equals(List.of("NONE"))) {
+      return "";
+    } else {
+      return String.join(",", gender.stream().map(name -> GenderOption.getPdfValueByName(String.valueOf(name))).distinct().sorted().toList());
     }
   }
 

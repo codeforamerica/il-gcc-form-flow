@@ -184,6 +184,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         //children-ccap-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
+        testPage.clickElementById("childGender-MALE");
+        testPage.clickElementById("childGender-TRANSGENDER");
         testPage.selectRadio("childHasDisability", "No");
         testPage.selectRadio("childIsUsCitizen", "Yes");
         testPage.clickElementById("none__checkbox-childRaceEthnicity");
