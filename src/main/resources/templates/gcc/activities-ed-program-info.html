@@ -2,11 +2,11 @@
     th:replace="~{fragments/screens/activities-ed-program-info ::
       screen(
         subtext=#{activities-ed-program-info.description},
-        programName=${fieldData.schoolName},
-        phoneNumberInputName='phoneNumber',
-        streetAddressInputName='streetAddress',
-        cityInputName='city',
-        stateInputName='state',
-        zipCodeInputName='zipCode'
+        programName=${fieldData.applicantSchoolName},
+        phoneNumberInputName='applicantSchoolPhoneNumber',
+        streetAddressInputName='applicantSchoolStreetAddress',
+        cityInputName='applicantSchoolCity',
+        stateInputName='applicantSchoolState',
+        zipCodeInputName='applicantSchoolZipCode'
       )}">
 </th:block>

@@ -12,10 +12,11 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public class Gcc extends FlowInputs {
+
     MultipartFile uploadDocuments;
     private String lang;
     @NotBlank(message = "{errors.provide-program-name}")
-    private String schoolName;
+    private String applicantSchoolName;
     @NotBlank(message = "{errors.select-one-option}")
     private String educationType;
     @NotBlank(message = "{errors.choose-provider}")
@@ -85,12 +86,12 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
     @Phone(message = "{errors.invalid-phone-number}")
-    private String phoneNumber;
-    private String streetAddress;
-    private String city;
-    private String state;
+    private String applicantSchoolPhoneNumber;
+    private String applicantSchoolStreetAddress;
+    private String applicantSchoolCity;
+    private String applicantSchoolState;
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
-    private String zipCode;
+    private String applicantSchoolZipCode;
     private String activitiesClassHoursSameEveryDay;
     @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeAllDays;
