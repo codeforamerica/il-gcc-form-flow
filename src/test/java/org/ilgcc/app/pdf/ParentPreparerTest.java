@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 
 public class ParentPreparerTest {
   private final ParentPreparer preparer = new ParentPreparer();
@@ -63,7 +62,21 @@ public class ParentPreparerTest {
 
     assertThat(result.get("applicantSchoolStartDate")).isEqualTo(new SingleField("applicantSchoolStartDate", "10/09/2024", null));
     assertThat(result.get("applicantSchoolEndDate")).isEqualTo(new SingleField("applicantSchoolEndDate", "", null));
+  }
 
+  @Test
+  public void activitiesProgramDatesAreGeneratedWithMissingDay(){
+    submission = new SubmissionTestBuilder()
+            .with("activitiesProgramStartYear", "2024")
+            .with("activitiesProgramStartMonth", "10")
+            .with("activitiesProgramEndYear", "2025")
+            .with("activitiesProgramEndMonth", "02")
+            .build();
+
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+    assertThat(result.get("applicantSchoolStartDate")).isEqualTo(new SingleField("applicantSchoolStartDate", "10/2024", null));
+    assertThat(result.get("applicantSchoolEndDate")).isEqualTo(new SingleField("applicantSchoolEndDate", "02/2025", null));
   }
 
   @Test
