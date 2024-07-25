@@ -66,6 +66,15 @@ public class SubmissionUtilities {
         .containsKey("parentMailingStreetAddress1" + FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATED);
   }
 
+  public static String applicantFirstName(Map<String, Object> inputData) {
+    var applicantPreferredName = inputData.getOrDefault("parentPreferredName", "").toString();
+    if(!applicantPreferredName.isBlank()){
+      return applicantPreferredName;
+    } else {
+      return inputData.get("parentFirstName").toString();
+    }
+  }
+
   /**
    * Mixpanel helper method
    */

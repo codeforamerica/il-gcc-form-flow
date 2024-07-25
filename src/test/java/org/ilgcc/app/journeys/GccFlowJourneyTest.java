@@ -54,6 +54,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
         testPage.enter("parentFirstName", "parent first");
         testPage.enter("parentLastName", "parent last");
+        testPage.enter("parentPreferredName", "Preferred Parent First");
         testPage.enter("parentBirthMonth", "12");
         testPage.enter("parentBirthDay", "25");
         testPage.enter("parentBirthYear", "1985");

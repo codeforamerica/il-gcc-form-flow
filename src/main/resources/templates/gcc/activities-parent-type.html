@@ -21,7 +21,7 @@
                            parentHasPartner=${fieldData.getOrDefault('parentHasQualifyingPartner', 'false')}">
                 <div>
                   <div class="spacing-below-25">
-                    <th:block th:utext="${fieldData.get('parentFirstName')}"></th:block>
+                    <th:block th:text="${T(org.ilgcc.app.utils.SubmissionUtilities).applicantFirstName(fieldData)}"></th:block>
                   </div>
                   <div th:id="parentActivties">
                     <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
