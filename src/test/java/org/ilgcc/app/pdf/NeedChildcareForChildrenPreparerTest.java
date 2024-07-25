@@ -140,4 +140,31 @@ public class NeedChildcareForChildrenPreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
         assertThat(result.get("childRaceEthnicity_1")).isEqualTo(new SingleField("childRaceEthnicity", "", 1));
     }
+    @Test
+    public void multipleGenderOptionsAreConsolidated(){
+        submission = new SubmissionTestBuilder()
+                .withChild("All Gender", "Child", "Yes")
+                .addChildDataArray(0, "childGender", List.of("MALE", "FEMALE", "NONBINARY", "TRANSGENDER"))
+                .withChild("Male Nonbinary", "Child", "Yes")
+                .addChildDataArray(1, "childGender", List.of("MALE", "NONBINARY"))
+                .withChild("Female Transgender", "Child", "Yes")
+                .addChildDataArray(2, "childGender", List.of("FEMALE", "TRANSGENDER"))
+                .withChild("No Listed Gender", "Child", "Yes")
+                .addChildDataArray(3, "childGender", List.of("NONE"))
+                .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("childGender_1")).isEqualTo(new SingleField("childGender", "F,M,NB,T", 1));
+        assertThat(result.get("childGender_2")).isEqualTo(new SingleField("childGender", "M,NB", 2));
+        assertThat(result.get("childGender_3")).isEqualTo(new SingleField("childGender", "F,T", 3));
+        assertThat(result.get("childGender_4")).isEqualTo(new SingleField("childGender", "", 4));
+    }
+    @Test
+    public void genderFieldCanBeEmpty(){
+        submission = new SubmissionTestBuilder()
+                .withChild("No Gender", "Child", "Yes")
+                .addChildDataArray(0, "childGender", List.of())
+                .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("childGender_1")).isEqualTo(new SingleField("childGender", "", 1));
+    }
 }
