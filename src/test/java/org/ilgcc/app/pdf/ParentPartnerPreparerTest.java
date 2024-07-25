@@ -33,6 +33,21 @@ public class ParentPartnerPreparerTest {
   }
 
   @Test
+  public void partnerProgramDatesAreGeneratedWithMissingDay(){
+    submission = new SubmissionTestBuilder()
+            .with("partnerProgramStartYear", "2024")
+            .with("partnerProgramStartMonth", "10")
+            .with("partnerProgramEndYear", "2025")
+            .with("partnerProgramEndMonth", "02")
+            .build();
+
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+    assertThat(result.get("partnerProgramStart")).isEqualTo(new SingleField("partnerProgramStart", "10/2024", null));
+    assertThat(result.get("partnerProgramEnd")).isEqualTo(new SingleField("partnerProgramEnd", "02/2025", null));
+  }
+
+  @Test
   public void partnerProgramMissingEndDate(){
     submission = new SubmissionTestBuilder()
         .with("partnerProgramStartYear", "2024")

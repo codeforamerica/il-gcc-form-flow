@@ -12,8 +12,7 @@ import org.ilgcc.app.utils.PreparerUtilities;
 import org.springframework.stereotype.Component;
 
 import static org.ilgcc.app.utils.PreparerUtilities.flowIteratorPreparer;
-import static org.ilgcc.app.utils.SubmissionUtilities.getDateInput;
-import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
+import static org.ilgcc.app.utils.SubmissionUtilities.getDateInputWithDayOptional;
 import static org.ilgcc.app.utils.SubmissionUtilities.selectedYes;
 
 @Component
@@ -43,13 +42,18 @@ public class ParentPreparer implements SubmissionFieldPreparer {
         results.put("parentExperiencingHomelessness",
             new SingleField("parentExperiencingHomelessness", Boolean.toString(experiencingHomelessness), null));
 
-        var applicantSchoolStartDate = formatToStringFromLocalDate(getDateInput(submission, "activitiesProgramStart"));
-        results.put("applicantSchoolStartDate",
-            new SingleField("applicantSchoolStartDate", applicantSchoolStartDate, null));
 
-        var applicantSchoolEndDate =  formatToStringFromLocalDate(getDateInput(submission, "activitiesProgramEnd"));
-        results.put("applicantSchoolEndDate",
-            new SingleField("applicantSchoolEndDate", applicantSchoolEndDate, null));
+        var applicantSchoolStartDate = getDateInputWithDayOptional(submission, "activitiesProgramStart");
+        if(!applicantSchoolStartDate.isEmpty()){
+            results.put("applicantSchoolStartDate",
+                    new SingleField("applicantSchoolStartDate", applicantSchoolStartDate, null));
+        }
+
+        var applicantSchoolEndDate = getDateInputWithDayOptional(submission, "activitiesProgramEnd");
+        if(!applicantSchoolStartDate.isEmpty()){
+            results.put("applicantSchoolEndDate",
+                    new SingleField("applicantSchoolEndDate", applicantSchoolEndDate, null));
+        }
 
         var jobsCompanyFields = List.of("companyName", "employerStreetAddress","employerCity", "employerState", "employerZipCode", "employerPhoneNumber");
         Map jobsData = flowIteratorPreparer(submission, "jobs", jobsCompanyFields);

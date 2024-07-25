@@ -110,6 +110,22 @@ public class SubmissionUtilities {
     return Optional.of(LocalDate.of(parseInt(year), parseInt(month), parseInt(day)));
   }
 
+  public static String getDateInputWithDayOptional(Submission submission, String inputName) {
+    String year = (String) submission.getInputData().get("%sYear".formatted(inputName));
+    String month = (String) submission.getInputData().get("%sMonth".formatted(inputName));
+    String day = (String) submission.getInputData().get("%sDay".formatted(inputName));
+    if (year == null && month == null && day == null || (year + month + day).isBlank()) {
+      return "";
+    } else if (year == null || month == null) {
+      throw new IllegalArgumentException("Date must be complete if specified");
+    } else if ( day == null ){
+      return month + "/" + year;
+    } else {
+      return formatToStringFromLocalDate(Optional.of(LocalDate.of(parseInt(year), parseInt(month), parseInt(day))));
+    }
+  }
+
+
   public static Optional<LocalTime> getTimeInput(Map<String, Object> inputData, String inputName) {
     String rawValue = (String) inputData.getOrDefault(inputName, "");
     if (rawValue.isBlank()) {
