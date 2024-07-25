@@ -294,6 +294,7 @@ public class Gcc extends FlowInputs {
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String employerZipCode;
 
+    @NotBlank(message = "{errors.require-company-name}")
     private String partnerCompanyName;
     @Phone(message = "{errors.invalid-phone-number}")
     private String partnerEmployerPhoneNumber;
