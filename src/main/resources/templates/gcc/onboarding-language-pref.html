@@ -4,52 +4,67 @@
 <script th:inline="javascript">
     function setFormAction() {
         let locale = $('#languageRead')[0].value
-        let formAction = [[ ${formAction} ]] + "?lang=" + ("Spanish" === locale ? 'es' : 'en');
+        let formAction = [[ ${formAction}]] + "?lang=" + ("Spanish" === locale ? 'es' : 'en');
         let form = $('form')[0]
         form.setAttribute('action', formAction);
     }
 </script>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: languagePreferences}"></th:block>
-        <th:block
-            th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-language-pref.header})}"/>
-        <th:block th:replace="~{'fragments/form' :: form(action=${formAction}, content=~{::formContents})}">
-          <th:block th:ref="formContents">
-            <div class="form-card__content">
-              <th:block
-                  th:replace="~{fragments/inputs/overrides/select :: select(label=#{onboarding-language-pref.language-to-read-label}, inputName='languageRead', helpText=#{onboarding-language-pref.language-to-read-help-text}, onchange='setFormAction()', content=~{::contentRead})}">
-                <th:block th:ref="contentRead">
-                  <th:block
-                      th:replace="~{fragments/inputs/selectOption :: selectOption(value='English', optionText=#{general.language.english})}"/>
-                  <th:block
-                      th:replace="~{fragments/inputs/selectOption :: selectOption(value='Spanish', optionText=#{general.language.spanish})}"/>
-                </th:block>
-              </th:block>
-              <th:block
-                  th:replace="~{fragments/inputs/select :: select(label=#{onboarding-language-pref.language-to-speak-label}, inputName='languageSpeak', helpText=#{onboarding-language-pref.language-to-speak-help-text}, content=~{::contentSpeak})}">
-                <th:block th:ref="contentSpeak">
-                  <th:block
-                      th:replace="~{fragments/inputs/selectOption :: selectOption(value='English', optionText=#{general.language.english})}"/>
-                  <th:block
-                      th:replace="~{fragments/inputs/selectOption :: selectOption(value='Spanish', optionText=#{general.language.spanish})}"/>
-                </th:block>
-              </th:block>
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: languagePreferences}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-language-pref.header})}"/>
+                <th:block
+                        th:replace="~{'fragments/form' :: form(action=${formAction}, content=~{::formContents})}">
+                    <th:block th:ref="formContents">
+                        <div class="form-card__content"
+                             th:with="
+                                  languageOptions=${T(org.ilgcc.app.utils.LanguageOption).values()}">
+                            <th:block th:replace="~{fragments/inputs/overrides/select :: select(
+                                    label=#{onboarding-language-pref.language-to-read-label},
+                                    inputName='languageRead',
+                                    helpText=#{onboarding-language-pref.language-to-read-help-text},
+                                    onchange='setFormAction()',
+                                    content=~{::contentRead})}">
+                                <th:block th:ref="contentRead">
+                                    <th:block th:each="option : ${languageOptions}">
+                                        <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
+                                            value=${option.getPdfValue()},
+                                            optionText=${#strings.contains(option.getLabel(), '.') ? #messages.msg(option.getLabel()) : option.getLabel()},
+                                            optionLang=${option.getLanguageSubtag()})}"/>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
+                            <th:block th:replace="~{fragments/inputs/select :: select(
+                                    label=#{onboarding-language-pref.language-to-speak-label},
+                                    inputName='languageSpeak',
+                                    helpText=#{onboarding-language-pref.language-to-speak-help-text},
+                                    content=~{::contentSpeak})}">
+                                <th:block th:ref="contentSpeak">
+                                    <th:block th:each="option : ${languageOptions}">
+                                        <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
+                                            value=${option.getPdfValue()},
+                                            optionText=${#strings.contains(option.getLabel(), '.') ? #messages.msg(option.getLabel()) : option.getLabel()},
+                                            optionLang=${option.getLanguageSubtag()})}"/>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
 
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
+                        </div>
+                        <div class="form-card__footer">
+                            <th:block
+                                    th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
