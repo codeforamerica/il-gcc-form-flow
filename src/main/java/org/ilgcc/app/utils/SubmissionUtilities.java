@@ -118,7 +118,7 @@ public class SubmissionUtilities {
       return "";
     } else if (year == null || month == null) {
       throw new IllegalArgumentException("Date must be complete if specified");
-    } else if ( day == null ){
+    } else if ( day == null || day.isEmpty() ){
       return month + "/" + year;
     } else {
       return formatToStringFromLocalDate(Optional.of(LocalDate.of(parseInt(year), parseInt(month), parseInt(day))));

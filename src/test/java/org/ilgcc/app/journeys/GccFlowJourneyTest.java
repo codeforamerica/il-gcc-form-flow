@@ -352,7 +352,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         testPage.enter("activitiesProgramEndYear", "2025");
         testPage.enter("activitiesProgramEndMonth", "02");
-        testPage.enter("activitiesProgramEndDay", "12");
+        testPage.enter("activitiesProgramEndDay", "");
         testPage.clickContinue();
         //activities-partner-add-job
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-add-jobs.title"));
