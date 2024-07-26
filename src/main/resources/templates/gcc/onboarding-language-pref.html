@@ -22,7 +22,9 @@
                 <th:block
                         th:replace="~{'fragments/form' :: form(action=${formAction}, content=~{::formContents})}">
                     <th:block th:ref="formContents">
-                        <div class="form-card__content">
+                        <div class="form-card__content"
+                             th:with="
+                                  languageOptions=${T(org.ilgcc.app.utils.LanguageOption).values()}">
                             <th:block th:replace="~{fragments/inputs/overrides/select :: select(
                                     label=#{onboarding-language-pref.language-to-read-label},
                                     inputName='languageRead',
@@ -30,28 +32,12 @@
                                     onchange='setFormAction()',
                                     content=~{::contentRead})}">
                                 <th:block th:ref="contentRead">
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='English',
-                                        optionText=#{general.language.english})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Spanish',
-                                        optionText=#{general.language.spanish},
-                                        optionLang='es')}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Arabic',
-                                        optionText=#{general.language.arabic})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Tagalog',
-                                        optionText=#{general.language.tagalog})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Polish',
-                                        optionText=#{general.language.polish})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Chinese',
-                                        optionText=#{general.language.chinese})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Other',
-                                        optionText=#{general.other})}"/>
+                                    <th:block th:each="option : ${languageOptions}">
+                                        <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
+                                            value=${option.getPdfValue()},
+                                            optionText=${#strings.contains(option.getLabel(), '.') ? #messages.msg(option.getLabel()) : option.getLabel()},
+                                            optionLang=${option.getLanguageSubtag()})}"/>
+                                    </th:block>
                                 </th:block>
                             </th:block>
                             <th:block th:replace="~{fragments/inputs/select :: select(
@@ -60,27 +46,12 @@
                                     helpText=#{onboarding-language-pref.language-to-speak-help-text},
                                     content=~{::contentSpeak})}">
                                 <th:block th:ref="contentSpeak">
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='English',
-                                        optionText=#{general.language.english})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Spanish',
-                                        optionText=#{general.language.spanish})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Arabic',
-                                        optionText=#{general.language.arabic})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Tagalog',
-                                        optionText=#{general.language.tagalog})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Polish',
-                                        optionText=#{general.language.polish})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Chinese',
-                                        optionText=#{general.language.chinese})}"/>
-                                    <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
-                                        value='Other',
-                                        optionText=#{general.other})}"/>
+                                    <th:block th:each="option : ${languageOptions}">
+                                        <th:block th:replace="~{fragments/inputs/selectOption :: selectOption(
+                                            value=${option.getPdfValue()},
+                                            optionText=${#strings.contains(option.getLabel(), '.') ? #messages.msg(option.getLabel()) : option.getLabel()},
+                                            optionLang=${option.getLanguageSubtag()})}"/>
+                                    </th:block>
                                 </th:block>
                             </th:block>
 
