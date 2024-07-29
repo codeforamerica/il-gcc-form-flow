@@ -10,11 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 @Slf4j
 @Component
@@ -22,7 +18,7 @@ public class UploadSubmissionToS3 implements Action {
 
   private final PdfService pdfService;
   private final CloudFileRepository cloudFileRepository;
-  private final String CONTENT_TYPE = "application/zip";
+  private final String CONTENT_TYPE = "application/pdf";
 
 
   public UploadSubmissionToS3(PdfService pdfService, CloudFileRepository cloudFileRepository) {
@@ -33,28 +29,19 @@ public class UploadSubmissionToS3 implements Action {
   @Override
   public void run(FormSubmission formSubmission, Submission submission) {
 
-    try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-      ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
+    try {
         byte[] pdfFile = pdfService.getFilledOutPDF(submission);
         String pdfFileName = String.format("%s.pdf", submission.getId());
 
-        ZipEntry zipEntry = new ZipEntry(pdfFileName);
-        zipOutputStream.putNextEntry(zipEntry);
-        zipOutputStream.write(pdfFile);
-        zipOutputStream.closeEntry();
+        MultipartFile multipartFile = new ByteArrayMultipartFile(pdfFile, pdfFileName, CONTENT_TYPE);
 
-        zipOutputStream.finish();
-
-        byte[] zipBytes = byteArrayOutputStream.toByteArray();
-        MultipartFile multipartFile = new ByteArrayMultipartFile(zipBytes, String.format("%s.zip", submission.getId()), CONTENT_TYPE);
-
-        cloudFileRepository.upload(generateZipPath(submission), multipartFile);
+        cloudFileRepository.upload(generatePdfPath(submission), multipartFile);
     } catch (IOException | InterruptedException e) {
       throw new RuntimeException(e);
     }
   }
 
-  public String generateZipPath(Submission submission) {
-    return String.format("%s/%s.zip", submission.getId(), submission.getId());
+  public String generatePdfPath(Submission submission) {
+    return String.format("%s/%s.pdf", submission.getId(), submission.getId());
   }
 }
