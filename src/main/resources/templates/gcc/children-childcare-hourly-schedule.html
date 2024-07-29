@@ -46,18 +46,32 @@
     const $sameEveryDay = $('#same-each-day')
     const $individualDays = $('#days-of-the-week')
 
+    //on load
     if($childcareHoursSameEveryDay.is(':checked')){
       $individualDays.toggleClass('hidden')
     }else{
       $sameEveryDay.toggleClass('hidden')
     }
+    disableFields()
 
+    //on checkbox change
     $childcareHoursSameEveryDay.change(function () {
       toggleSameTimeEveryDay();
     })
     function toggleSameTimeEveryDay() {
         $sameEveryDay.toggleClass('hidden')
         $individualDays.toggleClass('hidden')
+        disableFields()
+    }
+
+    function disableFields(){
+      if ($sameEveryDay.hasClass('hidden')) {
+        $('#same-each-day :input').prop('disabled', true);
+        $('#days-of-the-week :input').prop('disabled', false);
+      } else {
+        $('#same-each-day :input').prop('disabled', false);
+        $('#days-of-the-week :input').prop('disabled', true);
+      }
     }
   });
 </script>

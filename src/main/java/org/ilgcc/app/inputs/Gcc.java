@@ -177,29 +177,40 @@ public class Gcc extends FlowInputs {
 
     private String ccapStartDate;
 
+    @NotEmpty(message = "{errors.select-at-least-one-day}")
     private List<String> childcareWeeklySchedule;
     private Boolean childcareHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String childcareStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String childcareStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeMonday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String childcareStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String childcareStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeWednesday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String childcareStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeThursday;
-
+    @NotBlank(message = "{errors.validate.start.time}")
     private String childcareStartTimeFriday;
-
+    @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeFriday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String childcareStartTimeSaturday;
-
+    @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeSaturday;
+    @NotBlank(message = "{errors.validate.start.time}")
     private String childcareStartTimeSunday;
-
+    @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeSunday;
     private String childAttendsOtherEd;
 
