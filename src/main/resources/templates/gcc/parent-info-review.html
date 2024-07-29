@@ -13,10 +13,10 @@
           <div class="form-card__content">
             <p class="text--left"><strong th:text="#{parent-info-review.personal.information}"></strong></p>
             <ol class="list--bulleted">
-              <li th:text="${inputData.get('parentFirstName') + ' ' + inputData.get('parentLastName')}"></li>
-              <li th:text="${inputData.get('parentBirthMonth') + '/' + inputData.get('parentBirthDay') + '/' + inputData.get('parentBirthYear')}"></li>
+              <li th:text="|${inputData.get('parentFirstName')} ${inputData.get('parentLastName')}|"></li>
+              <li th:text="|${inputData.get('parentBirthMonth')}/${inputData.get('parentBirthDay')}/${inputData.get('parentBirthYear')}|"></li>
             </ol>
-            <a id="edit-parent-info-basic" th:href="'/flow/' + ${flow} + '/parent-info-basic-1'" th:text="#{parent-info-review.personal.information.link}"></a>
+            <a id="edit-parent-info-basic" th:href="|/flow/${flow}/parent-info-basic-1|" th:text="#{parent-info-review.personal.information.link}"></a>
             <hr class="spacing-below-15 spacing-above-15">
 
             <p class="text--left"><strong th:text="#{parent-info-review.home.address}"></strong></p>
@@ -29,7 +29,7 @@
             <div th:unless="${inputData.containsKey('homeAddressLines') and !inputData.get('homeAddressLines').isEmpty()}">
               <p th:text="#{general.none-added}"></p>
             </div>
-            <a id="edit-home-address" th:href="'/flow/' + ${flow} + '/parent-home-address'" th:text="#{parent-info-review.home.address.link}"></a>
+            <a id="edit-home-address" th:href="|/flow/${flow}/parent-home-address|" th:text="#{parent-info-review.home.address.link}"></a>
             <hr class="spacing-below-15 spacing-above-15">
 
             <p class="text--left"><strong th:text="#{parent-info-review.mailing.address}"></strong></p>
@@ -42,7 +42,7 @@
             <div th:unless="${inputData.containsKey('addressLines') and !inputData.get('addressLines').isEmpty()}">
               <p th:text="#{general.none-added}"></p>
             </div>
-            <a id="edit-mailing-address" th:href="'/flow/' + ${flow} + '/parent-mailing-address'" th:text="#{parent-info-review.mailing.address.link}"></a>
+            <a id="edit-mailing-address" th:href="|/flow/${flow}/parent-mailing-address|" th:text="#{parent-info-review.mailing.address.link}"></a>
             <hr class="spacing-below-15 spacing-above-15">
 
             <p class="text--left"><strong th:text="#{parent-info-review.contact.info}"></strong></p>
@@ -53,7 +53,7 @@
             <div th:unless="${!#strings.isEmpty(inputData.get('parentContactEmail')) or !#strings.isEmpty(inputData.get('parentContactPhoneNumber'))}">
               <p th:text="#{general.none-added}"></p>
             </div>
-            <a id="edit-parent-contact-info-basic" th:href="'/flow/' + ${flow} + '/parent-contact'" th:text="#{parent-info-review.contact.info.link}"></a>
+            <a id="edit-parent-contact-info-basic" th:href="|/flow/${flow}/parent-contact-info|" th:text="#{parent-info-review.contact.info.link}"></a>
           </div>
           <div class="form-card__footer">
             <th:block th:replace="~{fragments/continueButton :: continue}"/>
