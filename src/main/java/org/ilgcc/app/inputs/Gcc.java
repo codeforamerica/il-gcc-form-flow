@@ -185,11 +185,89 @@ public class Gcc extends FlowInputs {
     private String childcareStartTimeSunday;
     @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeSunday;
-    
+
     // children-ccap-child-other-ed
     private String childAttendsOtherEd;
+
+    // activities-parent-type
+    private List<String> activitiesParentChildcareReason;
+    private String activitiesParentChildcareReason_other;
+    private List<String> activitiesParentPartnerChildcareReason;
+    private String activitiesParentPartnerChildcareReason_other;
+
+    // activities-employer-name
+    @NotBlank(message = "{errors.require-company-name}")
+    private String companyName;
+
+    // activities-employer-address
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String employerPhoneNumber;
+    private String employerStreetAddress;
+    private String employerCity;
+    private String employerState;
+    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    private String employerZipCode;
+
+    //activities-self-employment
+    private String isSelfEmployed;
+
+    // activities-work-schedule-vary
+    private String activitiesWorkVary;
+
+    // activities-job-weekly-schedule
+    @NotEmpty(message = "{activities-job-weekly-schedule.validation}")
+    private List<String> activitiesJobWeeklySchedule;
     @NotEmpty(message = "{errors.select-at-least-one-day}")
     private List<String> weeklySchedule;
+    // TODO: Investigate why we need both of these fields
+
+    // activities-job-hourly-schedule
+    private String activitiesJobHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeMonday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeWednesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeThursday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeFriday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeFriday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeSaturday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeSaturday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesJobStartTimeSunday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesJobEndTimeSunday;
+
+    // activities-work-commute-time
+    private String activitiesJobCommuteTime;
+
+    // activities-ed-program-type
+    @NotBlank(message = "{errors.select-one-option}")
+    private String educationType;
+
+
+    @NotBlank(message = "{errors.provide-program-name}")
+    private String applicantSchoolName;
+    private String programTaught;
+
     private String activitiesProgramStartDay;
     private String activitiesProgramStartMonth;
     private String activitiesProgramStartYear;
@@ -205,12 +283,6 @@ public class Gcc extends FlowInputs {
     private String applicantSchoolState;
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String applicantSchoolZipCode;
-
-    @NotBlank(message = "{errors.provide-program-name}")
-    private String applicantSchoolName;
-    @NotBlank(message = "{errors.select-one-option}")
-    private String educationType;
-    private String programTaught;
     @NotBlank(message = "{errors.select-yes-or-no}")
     private String programSchedule;
     private String activitiesClassHoursSameEveryDay;
@@ -325,19 +397,6 @@ public class Gcc extends FlowInputs {
     private String doesAnyoneInHouseholdPayChildSupport;
     @Money
     private String amountYourHouseholdPaysInChildSupport;
-    private List<String> activitiesParentChildcareReason;
-    private String activitiesParentChildcareReason_other;
-    private List<String> activitiesParentPartnerChildcareReason;
-    private String activitiesParentPartnerChildcareReason_other;
-    @NotBlank(message = "{errors.require-company-name}")
-    private String companyName;
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String employerPhoneNumber;
-    private String employerStreetAddress;
-    private String employerCity;
-    private String employerState;
-    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
-    private String employerZipCode;
 
     @NotBlank(message = "{errors.require-company-name}")
     private String partnerCompanyName;
@@ -348,46 +407,7 @@ public class Gcc extends FlowInputs {
     private String partnerEmployerState;
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String partnerEmployerZipCode;
-    private String isSelfEmployed;
 
-    private String activitiesWorkVary;
-    @Size(min = 1, message = "{activities-job-weekly-schedule.validation}")
-    private List<String> activitiesJobWeeklySchedule;
-    private String activitiesJobHoursSameEveryDay;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeAllDays;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeAllDays;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeMonday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeMonday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeTuesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeTuesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeWednesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeWednesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeThursday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeThursday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeFriday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeFriday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeSaturday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeSaturday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeSunday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeSunday;
-
-    private String activitiesJobCommuteTime;
 
     @NotEmpty(message = "{errors.validate.legal-terms}")
     private List<String> agreesToLegalTerms;
