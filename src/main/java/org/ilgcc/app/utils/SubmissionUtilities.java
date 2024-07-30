@@ -171,4 +171,7 @@ public class SubmissionUtilities {
             .toList();
   }
 
+  public static String generateZipPath(Submission submission) {
+    return String.format("%s/%s.zip", submission.getId(), submission.getId());
+  }
 }

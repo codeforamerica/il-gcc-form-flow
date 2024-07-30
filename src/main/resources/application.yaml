@@ -101,4 +101,7 @@ org:
     background-job-server:
       enabled: true
     dashboard:
-      enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
+      enabled: ${JOBRUNR_DASHBOARD_ENABLED:true}
+il-gcc:
+  dts:
+    url: ${DOCUMENT_TRANSFER_SERVICE_URL}
