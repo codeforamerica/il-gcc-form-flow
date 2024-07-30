@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class Gcc extends FlowInputs {
 
+    private String current_uuid;
+
     MultipartFile uploadDocuments;
     private String lang;
 
@@ -89,8 +91,8 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthDay;
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
+    private String parentPartnerBirthDate;
 
-//    TODO: Confirm that we do not need a birthdate
     @Encrypted
     private String parentPartnerSSN;
 
@@ -118,7 +120,7 @@ public class Gcc extends FlowInputs {
     private String adultDependentBirthdateDay;
     private String adultDependentBirthdateMonth;
     private String adultDependentBirthdateYear;
-    //   TODO: Confirm that we do not need a birthdate
+
     // children-info-basic
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
@@ -217,9 +219,6 @@ public class Gcc extends FlowInputs {
     // activities-job-weekly-schedule
     @NotEmpty(message = "{activities-job-weekly-schedule.validation}")
     private List<String> activitiesJobWeeklySchedule;
-    @NotEmpty(message = "{errors.select-at-least-one-day}")
-    private List<String> weeklySchedule;
-    // TODO: Investigate why we need both of these fields
 
     // activities-job-hourly-schedule
     private String activitiesJobHoursSameEveryDay;
@@ -263,19 +262,11 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.select-one-option}")
     private String educationType;
 
-
+    // activities-ed-program-name
     @NotBlank(message = "{errors.provide-program-name}")
     private String applicantSchoolName;
-    private String programTaught;
 
-    private String activitiesProgramStartDay;
-    private String activitiesProgramStartMonth;
-    private String activitiesProgramStartYear;
-    private String activitiesProgramEndDay;
-    private String activitiesProgramEndMonth;
-    private String activitiesProgramEndYear;
-
-
+    // activities-ed-program-info
     @Phone(message = "{errors.invalid-phone-number}")
     private String applicantSchoolPhoneNumber;
     private String applicantSchoolStreetAddress;
@@ -283,8 +274,17 @@ public class Gcc extends FlowInputs {
     private String applicantSchoolState;
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String applicantSchoolZipCode;
+
+    // activities-ed-program-method
+    private String programTaught;
     @NotBlank(message = "{errors.select-yes-or-no}")
     private String programSchedule;
+
+    // activities-class-weekly-schedule
+    @NotEmpty(message = "{errors.select-at-least-one-day}")
+    private List<String> weeklySchedule;
+
+    // activities-class-hourly-schedule
     private String activitiesClassHoursSameEveryDay;
     @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeAllDays;
@@ -319,15 +319,36 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeSunday;
 
+    // activities-ed-program-dates
+    private String activitiesProgramStartDay;
+    private String activitiesProgramStartMonth;
+    private String activitiesProgramStartYear;
+    private String activitiesProgramEndDay;
+    private String activitiesProgramEndMonth;
+    private String activitiesProgramEndYear;
 
-    private List<String> unearnedIncomePrograms;
-    private String unearnedIncomeAssetsMoreThanOneMillionDollars;
-    private String current_uuid;
+    // activities-partner-employer-name
+    @NotBlank(message = "{errors.require-company-name}")
+    private String partnerCompanyName;
 
+    // activities-partner-employer-address
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String partnerEmployerPhoneNumber;
+    private String partnerEmployerStreetAddress;
+    private String partnerEmployerCity;
+    private String partnerEmployerState;
+    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    private String partnerEmployerZipCode;
+
+    // activities-partner-ed-program-type
     @NotBlank(message = "{errors.select-one-option}")
     private String partnerEducationType;
+
+    // activities-partner-ed-program-name
     @NotBlank(message = "{errors.provide-program-name}")
     private String partnerProgramName;
+
+    // activities-partner-ed-program-info
     @Phone(message = "{errors.invalid-phone-number}")
     private String partnerEdPhoneNumber;
     private String partnerEdStreetAddress;
@@ -335,12 +356,17 @@ public class Gcc extends FlowInputs {
     private String partnerEdState;
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String partnerEdZipCode;
+
+    // activities-partner-ed-program-method
     private String partnerProgramTaught;
     @NotBlank(message = "{errors.select-yes-or-no}")
     private String partnerProgramSchedule;
 
+    // activities-partner-class-weekly-schedule
     @NotEmpty(message = "{errors.select-at-least-one-day}")
     private List<String> partnerClassWeeklySchedule;
+
+    // activities-partner-class-hourly-schedule
     private String partnerClassHoursSameEveryDay;
     @NotBlank(message = "{errors.validate.start.time}")
     private String partnerClassStartTimeAllDays;
@@ -374,13 +400,19 @@ public class Gcc extends FlowInputs {
     private String partnerClassStartTimeSunday;
     @NotBlank(message = "{errors.validate.end.time}")
     private String partnerClassEndTimeSunday;
+
+    // activities-partner-ed-program-dates
     private String partnerProgramStartDay;
     private String partnerProgramStartMonth;
     private String partnerProgramStartYear;
     private String partnerProgramEndDay;
     private String partnerProgramEndMonth;
     private String partnerProgramEndYear;
+
+    // unearned-income-source
     private List<String> unearnedIncomeSource;
+
+    // unearned-income-amount
     @Money
     private String unearnedIncomeRental;
     @Money
@@ -394,27 +426,30 @@ public class Gcc extends FlowInputs {
     @Money
     private String unearnedIncomeWorkers;
 
+    // unearned-income-assets
+    private String unearnedIncomeAssetsMoreThanOneMillionDollars;
+
+    // unearned-income-child-support
     private String doesAnyoneInHouseholdPayChildSupport;
+
+    // unearned-income-child-support-amount
     @Money
     private String amountYourHouseholdPaysInChildSupport;
 
-    @NotBlank(message = "{errors.require-company-name}")
-    private String partnerCompanyName;
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String partnerEmployerPhoneNumber;
-    private String partnerEmployerStreetAddress;
-    private String partnerEmployerCity;
-    private String partnerEmployerState;
-    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
-    private String partnerEmployerZipCode;
+    // unearned-income-programs
+    private List<String> unearnedIncomePrograms;
 
-
+    // submit-ccap-terms
     @NotEmpty(message = "{errors.validate.legal-terms}")
     private List<String> agreesToLegalTerms;
+
+    // submit-sign-name
     @NotBlank(message = "{errors.validate.signed-name}")
     private String signedName;
     @NotBlank(message = "{errors.validate.signed-name}")
     private String partnerSignedName;
+
+    // submit-confirmation
     private String surveyDifficulty;
     private String surveyAdditionalComments;
 }
