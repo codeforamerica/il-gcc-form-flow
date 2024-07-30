@@ -20,11 +20,3 @@ management:
     web:
       exposure:
         include: '*'
-org:
-  jobrunr:
-    job-scheduler:
-      enabled: true
-    background-job-server:
-      enabled: true
-    dashboard:
-      enabled: false
