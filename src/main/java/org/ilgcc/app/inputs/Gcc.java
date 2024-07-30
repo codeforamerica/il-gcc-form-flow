@@ -15,17 +15,13 @@ public class Gcc extends FlowInputs {
 
     MultipartFile uploadDocuments;
     private String lang;
-    @NotBlank(message = "{errors.provide-program-name}")
-    private String applicantSchoolName;
-    @NotBlank(message = "{errors.select-one-option}")
-    private String educationType;
+
     @NotBlank(message = "{errors.choose-provider}")
     private String dayCareChoice;
-    private String programTaught;
-    @NotBlank(message = "{errors.select-yes-or-no}")
-    private String programSchedule;
     private String languageRead;
     private String languageSpeak;
+
+//    parent-info-basic-1
     @NotBlank(message = "{errors.provide-first-name}")
     private String parentFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
@@ -36,8 +32,16 @@ public class Gcc extends FlowInputs {
     private String parentBirthMonth;
     private String parentBirthYear;
     private String parentBirthDate;
+    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
+    @Encrypted
+    private String parentSsn;
+    private List<String> parentGender;
+
+    // parent-info-service
     private String parentIsServing;
     private String parentInMilitaryReserveOrNationalGuard;
+
+    // parent-home-address
     private Boolean parentHomeExperiencingHomelessness;
     @NotBlank(message = "{errors.provide-street}")
     private String parentHomeStreetAddress1;
@@ -49,10 +53,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String parentHomeZipCode;
 
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String parentContactPhoneNumber;
-
-    private String parentContactEmail;
+    // parent-mailing-address
     private Boolean parentMailingAddressSameAsHomeAddress;
     @NotBlank(message = "{errors.provide-street}")
     private String parentMailingStreetAddress1;
@@ -64,27 +65,88 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String parentMailingZipCode;
     private String useSuggestedParentAddress;
+
+//    ToDo: Confirm that this field is being used somewhere
+    private String parentConfirmSuggestedAddress;
+    // parent-comm-preference
     @NotBlank(message = "{errors.invalid-communication-preference}")
     private String parentContactPreferredCommunicationMethod;
+
+    // parent-contact-info
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String parentContactPhoneNumber;
+    private String parentContactEmail;
+
+    // parent-has-a-partner
     private String parentHasPartner;
     private String parentHasQualifyingPartner;
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String parentPartnerPhoneNumber;
-    @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
-    private String parentPartnerEmail;
-    private String parentPartnerIsServing;
-    private String parentPartnerInMilitaryReserveOrNationalGuard;
-    private String parentPartnerHasDisability;
+
+    // parent-partner-info-basic
     @NotBlank(message = "{errors.provide-first-name}")
     private String parentPartnerFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
     private String parentPartnerLastName;
-
-    @Encrypted
-    private String parentPartnerSSN;
     private String parentPartnerBirthDay;
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
+
+//    TODO: Confirm that we do not need a birthdate
+    @Encrypted
+    private String parentPartnerSSN;
+
+    // parent-partner-contact
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String parentPartnerPhoneNumber;
+    @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
+    private String parentPartnerEmail;
+
+    // parent-partner-info-service
+    private String parentPartnerIsServing;
+    private String parentPartnerInMilitaryReserveOrNationalGuard;
+
+    // parent-partner-info-disability
+    private String parentPartnerHasDisability;
+
+    // parent-other-family
+    private String hasAdultDependents;
+
+    // parent-add-adults-detail
+    @NotBlank(message = "{errors.provide-first-name}")
+    private String adultDependentFirstName;
+    @NotBlank(message = "{errors.provide-last-name}")
+    private String adultDependentLastName;
+    private String adultDependentBirthdateDay;
+    private String adultDependentBirthdateMonth;
+    private String adultDependentBirthdateYear;
+    //   TODO: Confirm that we do not need a birthdate
+    @NotBlank(message = "{errors.provide-first-name}")
+    private String childFirstName;
+    @NotBlank(message = "{errors.provide-last-name}")
+    private String childLastName;
+
+    private String childDateOfBirthDay;
+    private String childDateOfBirthMonth;
+    private String childDateOfBirthYear;
+    @NotBlank(message = "{errors.required-financial-assistance}")
+    private String needFinancialAssistanceForChild;
+
+    @NotEmpty(message = "{errors.select-child-relationship}")
+    private String childRelationship;
+    private List<String> childGender;
+    private List<String> childRaceEthnicity;
+    private String childHasDisability;
+    private String childIsUsCitizen;
+    private String childInCare;
+    @NotEmpty(message = "{errors.select-at-least-one-day}")
+    private List<String> weeklySchedule;
+    private String activitiesProgramStartDay;
+    private String activitiesProgramStartMonth;
+    private String activitiesProgramStartYear;
+    private String activitiesProgramEndDay;
+    private String activitiesProgramEndMonth;
+    private String activitiesProgramEndYear;
+
+
     @Phone(message = "{errors.invalid-phone-number}")
     private String applicantSchoolPhoneNumber;
     private String applicantSchoolStreetAddress;
@@ -92,6 +154,14 @@ public class Gcc extends FlowInputs {
     private String applicantSchoolState;
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String applicantSchoolZipCode;
+
+    @NotBlank(message = "{errors.provide-program-name}")
+    private String applicantSchoolName;
+    @NotBlank(message = "{errors.select-one-option}")
+    private String educationType;
+    private String programTaught;
+    @NotBlank(message = "{errors.select-yes-or-no}")
+    private String programSchedule;
     private String activitiesClassHoursSameEveryDay;
     @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesClassStartTimeAllDays;
@@ -126,51 +196,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesClassEndTimeSunday;
 
-    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
-    @Encrypted
-    private String parentSsn;
-    private List<String> parentGender;
 
-    private String parentConfirmSuggestedAddress;
-
-    private String hasAdultDependents;
-
-    @NotBlank(message = "{errors.provide-first-name}")
-    private String adultDependentFirstName;
-
-    @NotBlank(message = "{errors.provide-last-name}")
-    private String adultDependentLastName;
-
-    private String adultDependentBirthdateDay;
-    private String adultDependentBirthdateMonth;
-    private String adultDependentBirthdateYear;
-
-    @NotBlank(message = "{errors.provide-first-name}")
-    private String childFirstName;
-    @NotBlank(message = "{errors.provide-last-name}")
-    private String childLastName;
-
-    private String childDateOfBirthDay;
-    private String childDateOfBirthMonth;
-    private String childDateOfBirthYear;
-    @NotBlank(message = "{errors.required-financial-assistance}")
-    private String needFinancialAssistanceForChild;
-
-    @NotEmpty(message = "{errors.select-child-relationship}")
-    private String childRelationship;
-    private List<String> childGender;
-    private List<String> childRaceEthnicity;
-    private String childHasDisability;
-    private String childIsUsCitizen;
-    private String childInCare;
-    @NotEmpty(message = "{errors.select-at-least-one-day}")
-    private List<String> weeklySchedule;
-    private String activitiesProgramStartDay;
-    private String activitiesProgramStartMonth;
-    private String activitiesProgramStartYear;
-    private String activitiesProgramEndDay;
-    private String activitiesProgramEndMonth;
-    private String activitiesProgramEndYear;
     private String ccapStartDay;
     private String ccapStartMonth;
     private String ccapStartYear;
