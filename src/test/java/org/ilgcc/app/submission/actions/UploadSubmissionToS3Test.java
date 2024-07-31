@@ -48,7 +48,7 @@ class UploadSubmissionToS3Test {
     byte[] pdfFiles = new byte[]{1, 2, 3, 4};
     when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
 
-    uploadSubmissionToS3.run(formSubmission, submission);
+    uploadSubmissionToS3.run(submission);
 
     verify(pdfService).getFilledOutPDF(submission);
     verify(cloudFileRepository).upload(eq(generateExpectedFilePath(submission)), any(MultipartFile.class));

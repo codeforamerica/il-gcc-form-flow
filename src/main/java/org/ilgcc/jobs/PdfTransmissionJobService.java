@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -32,13 +33,13 @@ public class PdfTransmissionJobService {
     private String accessKey;
     private String consumerId;
     private String consumerAuthToken;
-    private final URL documentTransferServiceUrl;
+    private final String documentTransferServiceUrl;
 
     public PdfTransmissionJobService(@Value("${form-flow.aws.access_key}") String accessKey,
             @Value("${form-flow.aws.secret_key}") String secretKey,
             @Value("${form-flow.aws.s3_bucket_name}") String BUCKET_NAME,
             @Value("${form-flow.aws.region}") String region,
-            DocumentTransferConfiguration documentTransferConfiguration) {
+            DocumentTransferConfiguration documentTransferConfiguration) throws MalformedURLException {
         this.accessKey = accessKey;
         this.secretKey = secretKey;
         this.BUCKET_NAME = BUCKET_NAME;
@@ -75,7 +76,8 @@ public class PdfTransmissionJobService {
     }
 
     private void sendDocumentTransferServiceRequest(String presignedUrl, Submission submission) throws IOException {
-        HttpURLConnection httpUrlConnection = (HttpURLConnection) documentTransferServiceUrl.openConnection();
+        URL dtsURL = new URL(documentTransferServiceUrl);
+        HttpURLConnection httpUrlConnection = (HttpURLConnection) dtsURL.openConnection();
         httpUrlConnection.setRequestMethod("POST");
         httpUrlConnection.setRequestProperty("Content-Type", "application/json");
         httpUrlConnection.setRequestProperty("Accept", "application/json");

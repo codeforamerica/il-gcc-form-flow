@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class DocumentTransferConfiguration {
-    public URL url;
+    public String url;
     public String consumerId;
     public String authToken;
 }
