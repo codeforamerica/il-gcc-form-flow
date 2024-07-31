@@ -96,6 +96,14 @@ public abstract class AbstractBasePageTest {
     return messageSource.getMessage(key, args, Locale.ENGLISH);
   }
 
+  public String getRequiredEnMessage(String key){
+    return String.format("%s %s", getEnMessage(key), getEnMessage("general.required-field"));
+  }
+
+  public String getRequiredEnMessageWithParams(String key, Object[] args){
+    return String.format("%s %s", getEnMessageWithParams(key, args), getEnMessage("general.required-field"));
+  }
+
   protected void initTestPage() {
     testPage = new Page(driver, localServerPort);
   }
