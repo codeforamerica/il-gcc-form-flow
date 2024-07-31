@@ -13,19 +13,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class Gcc extends FlowInputs {
 
+    private String current_uuid;
+
     MultipartFile uploadDocuments;
     private String lang;
-    @NotBlank(message = "{errors.provide-program-name}")
-    private String applicantSchoolName;
-    @NotBlank(message = "{errors.select-one-option}")
-    private String educationType;
+
     @NotBlank(message = "{errors.choose-provider}")
     private String dayCareChoice;
-    private String programTaught;
-    @NotBlank(message = "{errors.select-yes-or-no}")
-    private String programSchedule;
     private String languageRead;
     private String languageSpeak;
+
+//    parent-info-basic-1
     @NotBlank(message = "{errors.provide-first-name}")
     private String parentFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
@@ -36,8 +34,16 @@ public class Gcc extends FlowInputs {
     private String parentBirthMonth;
     private String parentBirthYear;
     private String parentBirthDate;
+    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
+    @Encrypted
+    private String parentSsn;
+    private List<String> parentGender;
+
+    // parent-info-service
     private String parentIsServing;
     private String parentInMilitaryReserveOrNationalGuard;
+
+    // parent-home-address
     private Boolean parentHomeExperiencingHomelessness;
     @NotBlank(message = "{errors.provide-street}")
     private String parentHomeStreetAddress1;
@@ -49,10 +55,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String parentHomeZipCode;
 
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String parentContactPhoneNumber;
-
-    private String parentContactEmail;
+    // parent-mailing-address
     private Boolean parentMailingAddressSameAsHomeAddress;
     @NotBlank(message = "{errors.provide-street}")
     private String parentMailingStreetAddress1;
@@ -64,121 +67,92 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String parentMailingZipCode;
     private String useSuggestedParentAddress;
+    private String parentConfirmSuggestedAddress;
+    // parent-comm-preference
     @NotBlank(message = "{errors.invalid-communication-preference}")
     private String parentContactPreferredCommunicationMethod;
+
+    // parent-contact-info
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String parentContactPhoneNumber;
+    private String parentContactEmail;
+
+    // parent-has-a-partner
     private String parentHasPartner;
     private String parentHasQualifyingPartner;
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String parentPartnerPhoneNumber;
-    @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
-    private String parentPartnerEmail;
-    private String parentPartnerIsServing;
-    private String parentPartnerInMilitaryReserveOrNationalGuard;
-    private String parentPartnerHasDisability;
+
+    // parent-partner-info-basic
     @NotBlank(message = "{errors.provide-first-name}")
     private String parentPartnerFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
     private String parentPartnerLastName;
-
-    @Encrypted
-    private String parentPartnerSSN;
     private String parentPartnerBirthDay;
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String applicantSchoolPhoneNumber;
-    private String applicantSchoolStreetAddress;
-    private String applicantSchoolCity;
-    private String applicantSchoolState;
-    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
-    private String applicantSchoolZipCode;
-    private String activitiesClassHoursSameEveryDay;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeAllDays;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeAllDays;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeMonday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeMonday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeTuesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeTuesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeWednesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeWednesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeThursday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeThursday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeFriday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeFriday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeSaturday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeSaturday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeSunday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeSunday;
-
-    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
+    private String parentPartnerBirthDate;
     @Encrypted
-    private String parentSsn;
-    private List<String> parentGender;
+    private String parentPartnerSSN;
 
-    private String parentConfirmSuggestedAddress;
+    // parent-partner-contact
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String parentPartnerPhoneNumber;
+    @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
+    private String parentPartnerEmail;
 
+    // parent-partner-info-service
+    private String parentPartnerIsServing;
+    private String parentPartnerInMilitaryReserveOrNationalGuard;
+
+    // parent-partner-info-disability
+    private String parentPartnerHasDisability;
+
+    // parent-other-family
     private String hasAdultDependents;
 
+    // parent-add-adults-detail
     @NotBlank(message = "{errors.provide-first-name}")
     private String adultDependentFirstName;
-
     @NotBlank(message = "{errors.provide-last-name}")
     private String adultDependentLastName;
-
     private String adultDependentBirthdateDay;
     private String adultDependentBirthdateMonth;
     private String adultDependentBirthdateYear;
+    private String adultDependentBirthdateDate;
 
+    // children-info-basic
     @NotBlank(message = "{errors.provide-first-name}")
     private String childFirstName;
     @NotBlank(message = "{errors.provide-last-name}")
     private String childLastName;
-
     private String childDateOfBirthDay;
     private String childDateOfBirthMonth;
     private String childDateOfBirthYear;
+    private String childDateOfBirthDate;
     @NotBlank(message = "{errors.required-financial-assistance}")
     private String needFinancialAssistanceForChild;
 
+    // children-ccap-info
     @NotEmpty(message = "{errors.select-child-relationship}")
     private String childRelationship;
     private List<String> childGender;
-    private List<String> childRaceEthnicity;
     private String childHasDisability;
     private String childIsUsCitizen;
+    private List<String> childRaceEthnicity;
+
+    // children-ccap-in-care
     private String childInCare;
-    @NotEmpty(message = "{errors.select-at-least-one-day}")
-    private List<String> weeklySchedule;
-    private String activitiesProgramStartDay;
-    private String activitiesProgramStartMonth;
-    private String activitiesProgramStartYear;
-    private String activitiesProgramEndDay;
-    private String activitiesProgramEndMonth;
-    private String activitiesProgramEndYear;
+
+    // children-ccap-start-date
     private String ccapStartDay;
     private String ccapStartMonth;
     private String ccapStartYear;
-
     private String ccapStartDate;
 
+    // children-childcare-weekly-schedule
     @NotEmpty(message = "{errors.select-at-least-one-day}")
     private List<String> childcareWeeklySchedule;
+
+    // children-childcare-hourly-schedule
     private Boolean childcareHoursSameEveryDay;
     @NotBlank(message = "{errors.validate.start.time}")
     private String childcareStartTimeAllDays;
@@ -212,91 +186,21 @@ public class Gcc extends FlowInputs {
     private String childcareStartTimeSunday;
     @NotBlank(message = "{errors.validate.end.time}")
     private String childcareEndTimeSunday;
+
+    // children-ccap-child-other-ed
     private String childAttendsOtherEd;
 
-    private List<String> unearnedIncomePrograms;
-    private String unearnedIncomeAssetsMoreThanOneMillionDollars;
-    private String current_uuid;
-
-    @NotBlank(message = "{errors.select-one-option}")
-    private String partnerEducationType;
-    @NotBlank(message = "{errors.provide-program-name}")
-    private String partnerProgramName;
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String partnerEdPhoneNumber;
-    private String partnerEdStreetAddress;
-    private String partnerEdCity;
-    private String partnerEdState;
-    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
-    private String partnerEdZipCode;
-    private String partnerProgramTaught;
-    @NotBlank(message = "{errors.select-yes-or-no}")
-    private String partnerProgramSchedule;
-
-    @NotEmpty(message = "{errors.select-at-least-one-day}")
-    private List<String> partnerClassWeeklySchedule;
-    private String partnerClassHoursSameEveryDay;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeAllDays;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeAllDays;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeMonday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeMonday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeTuesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeTuesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeWednesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeWednesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeThursday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeThursday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeFriday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeFriday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeSaturday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeSaturday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeSunday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeSunday;
-    private String partnerProgramStartDay;
-    private String partnerProgramStartMonth;
-    private String partnerProgramStartYear;
-    private String partnerProgramEndDay;
-    private String partnerProgramEndMonth;
-    private String partnerProgramEndYear;
-    private List<String> unearnedIncomeSource;
-    @Money
-    private String unearnedIncomeRental;
-    @Money
-    private String unearnedIncomeDividends;
-    @Money
-    private String unearnedIncomeUnemployment;
-    @Money
-    private String unearnedIncomeRoyalties;
-    @Money
-    private String unearnedIncomePension;
-    @Money
-    private String unearnedIncomeWorkers;
-
-    private String doesAnyoneInHouseholdPayChildSupport;
-    @Money
-    private String amountYourHouseholdPaysInChildSupport;
+    // activities-parent-type
     private List<String> activitiesParentChildcareReason;
     private String activitiesParentChildcareReason_other;
     private List<String> activitiesParentPartnerChildcareReason;
     private String activitiesParentPartnerChildcareReason_other;
+
+    // activities-employer-name
     @NotBlank(message = "{errors.require-company-name}")
     private String companyName;
+
+    // activities-employer-address
     @Phone(message = "{errors.invalid-phone-number}")
     private String employerPhoneNumber;
     private String employerStreetAddress;
@@ -305,20 +209,17 @@ public class Gcc extends FlowInputs {
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String employerZipCode;
 
-    @NotBlank(message = "{errors.require-company-name}")
-    private String partnerCompanyName;
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String partnerEmployerPhoneNumber;
-    private String partnerEmployerStreetAddress;
-    private String partnerEmployerCity;
-    private String partnerEmployerState;
-    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
-    private String partnerEmployerZipCode;
+    //activities-self-employment
     private String isSelfEmployed;
 
+    // activities-work-schedule-vary
     private String activitiesWorkVary;
-    @Size(min = 1, message = "{activities-job-weekly-schedule.validation}")
+
+    // activities-job-weekly-schedule
+    @NotEmpty(message = "{activities-job-weekly-schedule.validation}")
     private List<String> activitiesJobWeeklySchedule;
+
+    // activities-job-hourly-schedule
     private String activitiesJobHoursSameEveryDay;
     @NotBlank(message = "{errors.validate.start.time}")
     private String activitiesJobStartTimeAllDays;
@@ -353,14 +254,201 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.validate.end.time}")
     private String activitiesJobEndTimeSunday;
 
+    // activities-work-commute-time
     private String activitiesJobCommuteTime;
 
+    // activities-ed-program-type
+    @NotBlank(message = "{errors.select-one-option}")
+    private String educationType;
+
+    // activities-ed-program-name
+    @NotBlank(message = "{errors.provide-program-name}")
+    private String applicantSchoolName;
+
+    // activities-ed-program-info
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String applicantSchoolPhoneNumber;
+    private String applicantSchoolStreetAddress;
+    private String applicantSchoolCity;
+    private String applicantSchoolState;
+    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    private String applicantSchoolZipCode;
+
+    // activities-ed-program-method
+    private String programTaught;
+    @NotBlank(message = "{errors.select-yes-or-no}")
+    private String programSchedule;
+
+    // activities-class-weekly-schedule
+    @NotEmpty(message = "{errors.select-at-least-one-day}")
+    private List<String> weeklySchedule;
+
+    // activities-class-hourly-schedule
+    private String activitiesClassHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesClassStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesClassEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesClassStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesClassEndTimeMonday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesClassStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesClassEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesClassStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesClassEndTimeWednesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesClassStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesClassEndTimeThursday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesClassStartTimeFriday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesClassEndTimeFriday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesClassStartTimeSaturday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesClassEndTimeSaturday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String activitiesClassStartTimeSunday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String activitiesClassEndTimeSunday;
+
+    // activities-ed-program-dates
+    private String activitiesProgramStartDay;
+    private String activitiesProgramStartMonth;
+    private String activitiesProgramStartYear;
+    private String activitiesProgramEndDay;
+    private String activitiesProgramEndMonth;
+    private String activitiesProgramEndYear;
+
+    // activities-partner-employer-name
+    @NotBlank(message = "{errors.require-company-name}")
+    private String partnerCompanyName;
+
+    // activities-partner-employer-address
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String partnerEmployerPhoneNumber;
+    private String partnerEmployerStreetAddress;
+    private String partnerEmployerCity;
+    private String partnerEmployerState;
+    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    private String partnerEmployerZipCode;
+
+    // activities-partner-ed-program-type
+    @NotBlank(message = "{errors.select-one-option}")
+    private String partnerEducationType;
+
+    // activities-partner-ed-program-name
+    @NotBlank(message = "{errors.provide-program-name}")
+    private String partnerProgramName;
+
+    // activities-partner-ed-program-info
+    @Phone(message = "{errors.invalid-phone-number}")
+    private String partnerEdPhoneNumber;
+    private String partnerEdStreetAddress;
+    private String partnerEdCity;
+    private String partnerEdState;
+    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    private String partnerEdZipCode;
+
+    // activities-partner-ed-program-method
+    private String partnerProgramTaught;
+    @NotBlank(message = "{errors.select-yes-or-no}")
+    private String partnerProgramSchedule;
+
+    // activities-partner-class-weekly-schedule
+    @NotEmpty(message = "{errors.select-at-least-one-day}")
+    private List<String> partnerClassWeeklySchedule;
+
+    // activities-partner-class-hourly-schedule
+    private String partnerClassHoursSameEveryDay;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeAllDays;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeAllDays;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeMonday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeMonday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeTuesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeTuesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeWednesday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeWednesday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeThursday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeThursday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeFriday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeFriday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeSaturday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeSaturday;
+    @NotBlank(message = "{errors.validate.start.time}")
+    private String partnerClassStartTimeSunday;
+    @NotBlank(message = "{errors.validate.end.time}")
+    private String partnerClassEndTimeSunday;
+
+    // activities-partner-ed-program-dates
+    private String partnerProgramStartDay;
+    private String partnerProgramStartMonth;
+    private String partnerProgramStartYear;
+    private String partnerProgramEndDay;
+    private String partnerProgramEndMonth;
+    private String partnerProgramEndYear;
+
+    // unearned-income-source
+    private List<String> unearnedIncomeSource;
+
+    // unearned-income-amount
+    @Money
+    private String unearnedIncomeRental;
+    @Money
+    private String unearnedIncomeDividends;
+    @Money
+    private String unearnedIncomeUnemployment;
+    @Money
+    private String unearnedIncomeRoyalties;
+    @Money
+    private String unearnedIncomePension;
+    @Money
+    private String unearnedIncomeWorkers;
+
+    // unearned-income-assets
+    private String unearnedIncomeAssetsMoreThanOneMillionDollars;
+
+    // unearned-income-child-support
+    private String doesAnyoneInHouseholdPayChildSupport;
+
+    // unearned-income-child-support-amount
+    @Money
+    private String amountYourHouseholdPaysInChildSupport;
+
+    // unearned-income-programs
+    private List<String> unearnedIncomePrograms;
+
+    // submit-ccap-terms
     @NotEmpty(message = "{errors.validate.legal-terms}")
     private List<String> agreesToLegalTerms;
+
+    // submit-sign-name
     @NotBlank(message = "{errors.validate.signed-name}")
     private String signedName;
     @NotBlank(message = "{errors.validate.signed-name}")
     private String partnerSignedName;
+
+    // submit-confirmation
     private String surveyDifficulty;
     private String surveyAdditionalComments;
 }

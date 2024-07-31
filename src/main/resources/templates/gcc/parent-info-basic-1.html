@@ -9,7 +9,7 @@
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
         <th:block th:replace="~{fragments/gcc-icons :: adultFace}"></th:block>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-basic-1.title}, subtext=#{general.indicates-required})}"/>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-basic-1.title})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent" th:with="
                       genderOptions=${T(org.ilgcc.app.utils.GenderOption).values()}">
