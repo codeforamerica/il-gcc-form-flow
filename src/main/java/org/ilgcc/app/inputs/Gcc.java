@@ -67,8 +67,6 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String parentMailingZipCode;
     private String useSuggestedParentAddress;
-
-//    ToDo: Confirm that this field is being used somewhere
     private String parentConfirmSuggestedAddress;
     // parent-comm-preference
     @NotBlank(message = "{errors.invalid-communication-preference}")
@@ -92,7 +90,6 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
     private String parentPartnerBirthDate;
-
     @Encrypted
     private String parentPartnerSSN;
 
@@ -120,6 +117,7 @@ public class Gcc extends FlowInputs {
     private String adultDependentBirthdateDay;
     private String adultDependentBirthdateMonth;
     private String adultDependentBirthdateYear;
+    private String adultDependentBirthdateDate;
 
     // children-info-basic
     @NotBlank(message = "{errors.provide-first-name}")
@@ -129,6 +127,7 @@ public class Gcc extends FlowInputs {
     private String childDateOfBirthDay;
     private String childDateOfBirthMonth;
     private String childDateOfBirthYear;
+    private String childDateOfBirthDate;
     @NotBlank(message = "{errors.required-financial-assistance}")
     private String needFinancialAssistanceForChild;
 
