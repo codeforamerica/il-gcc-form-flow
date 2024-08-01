@@ -1,12 +1,13 @@
 <th:block
         th:replace="~{fragments/screens/screenWithOneInput ::
-  screenWithOneInput(
-    title=#{unearned-income-source.title},
-    header=#{unearned-income-source.header},
-    subtext=#{unearned-income-source.header.help},
-    required='true',
-    formAction=${formAction},
-    inputContent=~{::inputContent})}">
+          screenWithOneInput(
+            title=#{unearned-income-source.title},
+            header=#{unearned-income-source.header},
+            subtext=#{unearned-income-source.header.help},
+            required='true',
+            buttonLabel=#{'general.inputs.continue'},
+            formAction=${formAction},
+            inputContent=~{::inputContent})}">
     <th:block th:ref="inputContent">
         <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
         <th:block th:with="incomeOptions=${T(org.ilgcc.app.utils.IncomeOption).values()}">
