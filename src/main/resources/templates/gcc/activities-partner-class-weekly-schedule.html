@@ -1,9 +1,23 @@
 <th:block
-    th:replace="~{fragments/screens/activities-class-weekly-schedule ::
-      screen(
-        header=${#messages.msg('activities-partner-class-weekly-schedule.header', inputData.get('parentPartnerFirstName'))},
+        th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
+          subflowScreenWithOneInput(
+            title=#{activities-partner-class-weekly-schedule.title},
+           header=${#messages.msg('activities-partner-class-weekly-schedule.header', inputData.get('parentPartnerFirstName'))},
         subtext=${#messages.msg('activities-partner-class-weekly-schedule.subtext', inputData.get('parentPartnerFirstName'))},
-        programName=${fieldData.partnerProgramName},
-        inputName='partnerClassWeeklySchedule'
-      )}">
+        headerName=${fieldData.partnerProgramName},
+            buttonLabel=#{'general.inputs.continue'},
+            required='true',
+            formAction=${formAction},
+            inputContent=~{::inputContent})}">
+    <th:block th:ref="inputContent">
+        <th:block th:ref="formContent"
+                  th:with="dayOfWeekOptions=${T(org.ilgcc.app.utils.DayOfWeekOption).values()}">
+            <div class="form-card__content">
+                <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='partnerClassWeeklySchedule',
+                    ariaLabel='header',
+                    options=${dayOfWeekOptions})}"/>
+            </div>
+        </th:block>
+    </th:block>
 </th:block>

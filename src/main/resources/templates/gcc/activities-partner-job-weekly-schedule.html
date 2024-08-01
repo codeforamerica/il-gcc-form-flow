@@ -1,49 +1,23 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{activities-partner-job-weekly-schedule.title})}"></head>
-<body>
-<div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.partnerCompanyName})}"></th:block>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-partner-job-weekly-schedule.header(${inputData.get('parentPartnerFirstName')})}, subtext=#{activities-partner-job-weekly-schedule.subtext(${inputData.get('parentPartnerFirstName')})})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-              <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
-                              checkboxFieldset(inputName='activitiesJobWeeklySchedule',
-                              ariaLabel='header',
-                              content=~{::checkboxOptions})}">
-                <th:block th:ref="checkboxOptions">
-                  <th:block
-                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesJobWeeklySchedule', value='Monday',  label=#{general.week.Monday})}" />
-                  <th:block
-                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesJobWeeklySchedule', value='Tuesday', label=#{general.week.Tuesday})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesJobWeeklySchedule', value='Wednesday', label=#{general.week.Wednesday})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesJobWeeklySchedule', value='Thursday', label=#{general.week.Thursday})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesJobWeeklySchedule', value='Friday', label=#{general.week.Friday})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesJobWeeklySchedule', value='Saturday', label=#{general.week.Saturday})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='activitiesJobWeeklySchedule', value='Sunday', label=#{general.week.Sunday})}"/>
-                </th:block>
-              </th:block>
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+<th:block
+        th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
+          subflowScreenWithOneInput(
+            title=#{activities-partner-job-weekly-schedule.title},
+            header=#{activities-partner-job-weekly-schedule.header(${inputData.get('parentPartnerFirstName')})},
+            subtext=#{activities-partner-job-weekly-schedule.subtext(${inputData.get('parentPartnerFirstName')})},
+            headerName=${fieldData.partnerCompanyName},
+            buttonLabel=#{'general.inputs.continue'},
+            required='true',
+            formAction=${formAction},
+            inputContent=~{::inputContent})}">
+  <th:block th:ref="inputContent">
+    <th:block th:ref="formContent"
+              th:with="dayOfWeekOptions=${T(org.ilgcc.app.utils.DayOfWeekOption).values()}">
+      <div class="form-card__content">
+        <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='activitiesJobWeeklySchedule',
+                    ariaLabel='header',
+                    options=${dayOfWeekOptions})}"/>
+      </div>
+    </th:block>
+  </th:block>
+</th:block>

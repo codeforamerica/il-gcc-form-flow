@@ -1,16 +1,25 @@
 <th:block
-    th:fragment="date(inputName, groupName)"
-    th:with="
+        th:fragment="date(inputName, groupName)"
+        th:with="
       hasLabel=${!#strings.isEmpty(label)},
       hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
+      requiredInputsForFlow=${requiredInputs.get(flow)},
+      isRequiredInput=${(requiredInputsForFlow != null && requiredInputsForFlow.getOrDefault(inputName + 'Month', false)) ||
+        (requiredInputsForFlow != null && requiredInputsForFlow.getOrDefault(inputName + 'Day', false)) ||
+        (requiredInputsForFlow != null && requiredInputsForFlow.getOrDefault(inputName + 'Year', false)) ||
+        (required != null && required)},
       hasErrorMonth=${errorMessages != null && !#arrays.isEmpty(errorMessages.get(inputName + 'Month'))},
       hasErrorDay=${errorMessages != null && !#arrays.isEmpty(errorMessages.get(inputName + 'Day'))},
       hasErrorYear=${errorMessages != null && !#arrays.isEmpty(errorMessages.get(inputName + 'Year'))},
       hasErrorGroup=${hasErrorYear || hasErrorMonth || hasErrorDay || (errorMessages != null && !#arrays.isEmpty(errorMessages.get(groupName)))}"
-    th:assert="${hasLabel || hasAriaLabel}">
+        th:assert="${hasLabel || hasAriaLabel}">
   <div th:class="'form-group' + ${hasErrorGroup ? ' form-group--error' : ''}">
     <fieldset th:id="${groupName}" class="input-group input-group--inline">
-      <legend th:if="${hasLabel}" th:for="${inputName}" th:text="${label}" class="form-question"/>
+      <legend th:if="${hasLabel}" th:for="${inputName}"
+              class="form-question">
+        <span th:text="${label}"></span>
+        <span th:if="${isRequiredInput && !hasAriaLabel}" class="required-input" th:text="#{general.required-field}"></span>
+      </legend>
       <p class="text--help">
         <label th:for="${inputName}+'-month'"
                th:id="${inputName}+'-month-label'"
@@ -57,13 +66,14 @@
               aria-invalid=${hasErrorYear}"
              th:value="${fieldData.getOrDefault(inputName + 'Year', '')}"/>
     </fieldset>
-    <th:block th:if="${hasErrorMonth}"
-              th:replace="~{fragments/inputError :: validationError(inputName=${inputName} + 'Month')}"></th:block>
-    <th:block th:if="${hasErrorDay}"
-              th:replace="~{fragments/inputError :: validationError(inputName=${inputName} + 'Day')}"></th:block>
-    <th:block th:if="${hasErrorYear}"
-              th:replace="~{fragments/inputError :: validationError(inputName=${inputName} + 'Year')}"></th:block>
-    <th:block th:if="${hasErrorGroup}"
-              th:replace="~{fragments/inputError :: validationError(inputName=${groupName})}"></th:block>
+
+    <th:block
+            th:replace="~{fragments/inputError :: validationError(inputName=${inputName} + 'Month')}"></th:block>
+    <th:block
+            th:replace="~{fragments/inputError :: validationError(inputName=${inputName} + 'Day')}"></th:block>
+    <th:block
+            th:replace="~{fragments/inputError :: validationError(inputName=${inputName} + 'Year')}"></th:block>
+    <th:block
+            th:replace="~{fragments/inputError :: validationError(inputName=${groupName})}"></th:block>
   </div>
 </th:block>
