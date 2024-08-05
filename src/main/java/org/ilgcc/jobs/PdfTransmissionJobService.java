@@ -68,7 +68,7 @@ public class PdfTransmissionJobService {
                 .build();
 
         GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
-                .signatureDuration(Duration.ofMinutes(5))
+                .signatureDuration(Duration.ofMinutes(10))
                 .getObjectRequest(getObjectRequest)
                 .build();
 
@@ -91,9 +91,12 @@ public class PdfTransmissionJobService {
                 + "},"
                 + "\"destination\": {"
                 + "\"type\": \"onedrive\","
-                + "\"path\": \"/document/%s\""
+                + "\"path\": \"document/%s\","
+                + "\"filename\": \"%s.zip\""
                 + "}"
-                + "}", presignedUrl, submission.getId());
+                + "}", presignedUrl, submission.getId(), submission.getId());
+        
+        log.info("JSON Request: " + jsonString);
 
         try (OutputStream os = httpUrlConnection.getOutputStream()) {
             byte[] input = jsonString.getBytes(StandardCharsets.UTF_8);

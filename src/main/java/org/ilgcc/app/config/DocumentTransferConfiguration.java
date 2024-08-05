@@ -14,4 +14,5 @@ public class DocumentTransferConfiguration {
     public String url;
     public String consumerId;
     public String authToken;
+    public String presignedUrlDuration;
 }
