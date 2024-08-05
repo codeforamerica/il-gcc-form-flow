@@ -519,7 +519,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         //activities-partner-add-job
         assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-add-job.header.any-other-jobs", new Object[]{"partner"}));
-        testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
+        testPage.clickButton(getEnMessage("activities-partner-add-jobs.this-is-all-their-jobs"));
         //activities-partner-add-ed-program
         assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-add-ed-program.header", new Object[]{"partner"}));
         testPage.clickContinue();

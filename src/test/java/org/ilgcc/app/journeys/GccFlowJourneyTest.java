@@ -412,7 +412,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-partner-add-job
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-add-jobs.title"));
-        testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
+        testPage.clickButton(getEnMessage("activities-partner-add-jobs.this-is-all-their-jobs"));
         // activities-partner-ed
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
