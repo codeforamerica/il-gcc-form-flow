@@ -573,7 +573,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // Note that currently, we are skipping the parent partner job questions
-        assertThat(testPage.getHeader()).isEqualTo("Now tell us about partner's school or training program.");
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-add-ed-program.header", new Object[]{"partner"}));
         testPage.clickContinue();
         testPage.clickElementById("partnerEducationType-fourYearCollege-label");
         assertThat(testPage.getHeader()).isEqualTo(getRequiredEnMessageWithParams("activities-partner-ed-program-type.header", new Object[]{"partner"}));
