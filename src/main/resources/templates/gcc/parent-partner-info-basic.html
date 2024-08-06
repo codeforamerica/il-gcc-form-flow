@@ -20,7 +20,7 @@
                             <th:block
                                     th:replace="~{fragments/inputs/text :: text(inputName='parentPartnerLastName', helpText=#{parent-partner-info-basic.last.name.help}, label=#{general.question.their-last-name})}"/>
                             <th:block
-                                    th:replace="~{fragments/inputs/date :: date(inputName='parentPartnerBirth', groupName='parentPartnerBirth', label=#{general.question.their-date-of-birth})}"/>
+                                    th:replace="~{fragments/inputs/date :: date(inputName='parentPartnerBirth', groupName='parentPartnerBirth', label=#{general.question.their-date-of-birth}, required='true')}"/>
                             <th:block
                                     th:replace="~{fragments/inputs/ssn :: ssn(inputName='parentPartnerSSN', helpText=#{parent-partner-info-basic.ssn.help}, label=#{parent-partner-info-basic.ssn})}"/>
                         </div>
