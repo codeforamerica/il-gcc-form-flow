@@ -10,7 +10,6 @@
     required='true',
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
-    <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
   <th:block th:replace="~{fragments/inputs/radioFieldset ::
                 radioFieldset(inputName='parentContactPreferredCommunicationMethod',
                 ariaLabel='header',
