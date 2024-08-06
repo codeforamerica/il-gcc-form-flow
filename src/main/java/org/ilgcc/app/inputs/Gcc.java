@@ -18,12 +18,14 @@ public class Gcc extends FlowInputs {
     MultipartFile uploadDocuments;
     private String lang;
 
+    // onboarding-choose-provider
+
     @NotBlank(message = "{errors.choose-provider}")
     private String dayCareChoice;
     private String languageRead;
     private String languageSpeak;
 
-//    parent-info-basic-1
+    // parent-info-basic-1
     @NotBlank(message = "{errors.provide-first-name}")
     private String parentFirstName;
     @NotBlank(message = "{errors.provide-last-name}")

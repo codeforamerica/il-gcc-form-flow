@@ -535,7 +535,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("partnerProgramTaught-In-Person-label");
         testPage.clickElementById("partnerProgramSchedule-Yes-label");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-weekly-schedule.title"));
         testPage.clickElementById("partnerClassWeeklySchedule-Monday");
         testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
         testPage.clickContinue();
@@ -587,7 +587,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("partnerProgramTaught-In-Person-label");
         testPage.clickElementById("partnerProgramSchedule-Yes-label");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-weekly-schedule.title"));
         testPage.clickElementById("partnerClassWeeklySchedule-Monday");
         testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
         testPage.clickContinue();
