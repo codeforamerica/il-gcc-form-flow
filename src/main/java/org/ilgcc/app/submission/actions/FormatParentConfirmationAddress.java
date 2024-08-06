@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.ilgcc.app.utils.SubmissionUtilities.parentIsExperiencingHomelessness;
+import static org.ilgcc.app.utils.SubmissionUtilities.parentMailingAddressIsHomeAddress;
 
 @Component
 public class FormatParentConfirmationAddress implements Action {
@@ -50,12 +51,18 @@ public class FormatParentConfirmationAddress implements Action {
     var parentHomeState = (String) inputData.get("parentHomeState");
     var parentHomeZipCode = (String) inputData.get("parentHomeZipCode");
 
-    if (parentAddressFieldsAreNotEmpty(parentHomeStreetAddress1, parentHomeCity, parentHomeState, parentHomeZipCode) && !parentIsExperiencingHomelessness(inputData)) {
+    if (parentAddressFieldsAreNotEmpty(parentHomeStreetAddress1, parentHomeCity, parentHomeState, parentHomeZipCode) && !parentIsExperiencingHomelessness(inputData) ) {
       List<String> homeAddressLines = new ArrayList<>();
-      homeAddressLines.add(parentHomeStreetAddress1);
-      homeAddressLines.add(parentHomeStreetAddress2);
-      homeAddressLines.add("%s, %s".formatted(parentHomeCity, parentHomeState));
-      homeAddressLines.add(parentHomeZipCode);
+      if(parentMailingAddressIsHomeAddress(inputData) && parentMailingUsingSmartySuggestion.equals("true")){
+        homeAddressLines.add(parentMailingSuggestedStreetAddress1);
+        homeAddressLines.add("%s, %s".formatted(parentMailingSuggestedCity, parentMailingSuggestedState));
+        homeAddressLines.add(parentMailingSuggestedZipCode);
+      }else{
+        homeAddressLines.add(parentHomeStreetAddress1);
+        homeAddressLines.add(parentHomeStreetAddress2);
+        homeAddressLines.add("%s, %s".formatted(parentHomeCity, parentHomeState));
+        homeAddressLines.add(parentHomeZipCode);
+      }
 
       inputData.put("homeAddressLines", homeAddressLines);
     }

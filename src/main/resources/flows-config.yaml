@@ -51,6 +51,7 @@ flow:
       - name: parent-confirm-address
   parent-confirm-address:
     beforeDisplayAction: SetEditAddressRedirect
+#    beforeSaveAction: SetMailingAddressToHomeAddressIfSame
     nextScreens:
       - name: parent-comm-preference
   parent-comm-preference:
