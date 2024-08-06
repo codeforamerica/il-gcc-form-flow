@@ -2,27 +2,20 @@ package org.ilgcc.app.utils;
 
 import formflow.library.data.Submission;
 import formflow.library.inputs.FieldNameMarkers;
-import formflow.library.pdf.SingleField;
-import formflow.library.pdf.SubmissionField;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Function;
-import org.ilgcc.app.utils.ActivitySchedules.ConsistentHourlySchedule;
-import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
-import org.ilgcc.app.utils.ActivitySchedules.PerDayHourlySchedule;
 
-import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
-import static java.util.function.Function.identity;
 
 
 public class SubmissionUtilities {
   public static final DateTimeFormatter MM_DD_YYYY = DateTimeFormatter.ofPattern("M/d/uuuu");
+  public static final DateTimeFormatter YYYY_MM_DD_DASHES = DateTimeFormatter.ofPattern("yyyy-MM-dd");
   public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyy");
   public static final String PROGRAM_SCHEDULE = "programSchedule";
 
@@ -171,7 +164,11 @@ public class SubmissionUtilities {
             .toList();
   }
 
-  public static String generateZipPath(Submission submission) {
-    return String.format("%s/%s.zip", submission.getId(), submission.getId());
+  public static String generatePdfPath(Submission submission) {
+    return String.format("%s/%s.pdf", submission.getId(), submission.getId());
+  }
+  
+  public static String getDashFormattedSubmittedAtDate(Submission submission) {
+    return YYYY_MM_DD_DASHES.format(submission.getSubmittedAt());
   }
 }

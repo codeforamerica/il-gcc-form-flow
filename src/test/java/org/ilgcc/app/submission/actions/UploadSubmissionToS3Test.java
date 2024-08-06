@@ -1,6 +1,5 @@
 package org.ilgcc.app.submission.actions;
 
-import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
@@ -33,13 +32,11 @@ class UploadSubmissionToS3Test {
   private UploadSubmissionToS3 uploadSubmissionToS3;
 
   private Submission submission;
-  private FormSubmission formSubmission;
 
   @BeforeEach
   void setUp() {
     submission = new Submission();
     submission.setId(UUID.randomUUID());
-    formSubmission = new FormSubmission(Map.of());
   }
 
   @Test
@@ -51,10 +48,10 @@ class UploadSubmissionToS3Test {
     uploadSubmissionToS3.run(submission);
 
     verify(pdfService).getFilledOutPDF(submission);
-    verify(cloudFileRepository).upload(eq(generateExpectedFilePath(submission)), any(MultipartFile.class));
+    verify(cloudFileRepository).upload(eq(generateExpectedPdfPath(submission)), any(MultipartFile.class));
   }
 
-  private String generateExpectedFilePath(Submission submission) {
+  private String generateExpectedPdfPath(Submission submission) {
     return String.format("%s/%s.pdf", submission.getId(), submission.getId());
   }
 }
