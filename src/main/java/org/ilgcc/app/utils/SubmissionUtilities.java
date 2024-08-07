@@ -144,10 +144,7 @@ public class SubmissionUtilities {
   }
 
   public static String formatToStringFromLocalDate(Optional<LocalDate> date){
-    if(date.isPresent()){
-      return date.get().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-    }
-    return "";
+      return date.map(localDate -> localDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))).orElse("");
   }
 
   public static String selectedYes(String selected){
