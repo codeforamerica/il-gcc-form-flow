@@ -3,9 +3,7 @@ package org.ilgcc.jobs;
 import static org.ilgcc.app.utils.SubmissionUtilities.getDashFormattedSubmittedAtDate;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+
 import formflow.library.data.Submission;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +16,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.text.StringEscapeUtils;
 import org.ilgcc.app.config.DocumentTransferConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jobrunr.jobs.JobId;
