@@ -22,11 +22,11 @@
                  )}"/>
               </div>
               <div id="same-each-day">
-                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTimeAllDays', endInputName='childcareEndTimeAllDays', label=${fieldData.get('displayWeeklySchedule')})}" />
+                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTimeAllDays', endInputName='childcareEndTimeAllDays', required='true', label=${fieldData.get('displayWeeklySchedule')})}" />
               </div>
               <div id="days-of-the-week">
                 <th:block th:each="day: ${fieldData['childcareWeeklySchedule[]']}">
-                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTime' + ${day}, endInputName='childcareEndTime' + ${day}, label=#{${'general.week.' + day}})}" />
+                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTime' + ${day}, endInputName='childcareEndTime' + ${day}, required='true', label=#{${'general.week.' + day}})}" />
                 </th:block>
               </div>
             </div>
