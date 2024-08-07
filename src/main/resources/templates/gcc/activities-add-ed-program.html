@@ -1,7 +1,9 @@
 <th:block
-    th:replace="~{fragments/screens/activities-add-ed-program ::
-      screen(
-        header=#{activities-add-ed-program.header},
-        subtext=#{activities-add-ed-program.subtext}
-      )}">
+    th:with="parentName=${T(org.ilgcc.app.utils.SubmissionUtilities).applicantFirstName(inputData)}">
+    <th:block
+        th:replace="~{fragments/screens/activities-add-ed-program ::
+          screen(
+            header=${#messages.msg('activities-add-ed-program.header', parentName)},
+            subtext=#{activities-add-ed-program.subtext}
+          )}"/>
 </th:block>
