@@ -80,7 +80,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
         //activities-add-ed-program
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-add-ed-program.header"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-add-ed-program.header", new Object[]{"parent first"}));
         testPage.clickContinue();
 
         //activities-ed-program-type
@@ -222,7 +222,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-add-ed-program
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-add-ed-program.header"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-add-ed-program.header", new Object[]{"parent first"}));
         testPage.clickContinue();
 
         //activities-ed-program-type
@@ -410,7 +410,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
         //activities-add-ed-program
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-add-ed-program.header"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-add-ed-program.header", new Object[]{"parent first"}));
         testPage.clickContinue();
 
         //activities-ed-program-type
