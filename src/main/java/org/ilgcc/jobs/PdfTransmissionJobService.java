@@ -114,12 +114,7 @@ public class PdfTransmissionJobService {
                 response.append(responseLine.trim());
             }
             
-            Gson prettyGson = new GsonBuilder().setPrettyPrinting().create();
-            JsonElement jsonElement = JsonParser.parseString(response.toString());
-            String prettyJsonResponseString = prettyGson.toJson(jsonElement);
-            String sanitizedResponse = StringEscapeUtils.escapeJava(prettyJsonResponseString);
-            
-            log.info("Received response from the document transfer service: {}", sanitizedResponse);
+            log.info("Received response from the document transfer service: " + response);
         } catch (Exception e) {
             log.error("There was an error when reading the response from the document transfer service", e);
         }
