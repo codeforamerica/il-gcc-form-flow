@@ -10,8 +10,8 @@ import org.springframework.web.servlet.view.RedirectView;
 public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public RedirectView handleIllegalArgumentException() {
-        log.info("IllegalArgumentException handled");
+    public RedirectView handleIllegalArgumentException(IllegalArgumentException e) {
+        log.info(String.format("IllegalArgumentException handled: %s", e.getMessage()));
         return new RedirectView("/error");
     }
 }
