@@ -414,17 +414,17 @@ public class Gcc extends FlowInputs {
     private List<String> unearnedIncomeSource;
 
     // unearned-income-amount
-    @Money
+    @Money(message="{errors.invalid-dollar-amount}")
     private String unearnedIncomeRental;
-    @Money
+    @Money(message="{errors.invalid-dollar-amount}")
     private String unearnedIncomeDividends;
-    @Money
+    @Money(message="{errors.invalid-dollar-amount}")
     private String unearnedIncomeUnemployment;
-    @Money
+    @Money(message="{errors.invalid-dollar-amount}")
     private String unearnedIncomeRoyalties;
-    @Money
+    @Money(message="{errors.invalid-dollar-amount}")
     private String unearnedIncomePension;
-    @Money
+    @Money(message="{errors.invalid-dollar-amount}")
     private String unearnedIncomeWorkers;
 
     // unearned-income-assets
@@ -434,7 +434,7 @@ public class Gcc extends FlowInputs {
     private String doesAnyoneInHouseholdPayChildSupport;
 
     // unearned-income-child-support-amount
-    @Money
+    @Money(message="{errors.invalid-dollar-amount}")
     private String amountYourHouseholdPaysInChildSupport;
 
     // unearned-income-programs
