@@ -31,7 +31,7 @@ public class FormatParentConfirmationAddress implements Action {
     if (parentAddressFieldsAreNotEmpty(parentMailingStreetAddress1, parentMailingCity, parentMailingState, parentMailingZipCode)) {
       List<Object> addressLines = new ArrayList<>();
 
-      if (parentMailingUsingSmartySuggestion.equals("true")) {
+      if (!(parentMailingUsingSmartySuggestion==null) && parentMailingUsingSmartySuggestion.equals("true")) {
         addressLines.add(Map.entry("mailing-street-address-1", parentMailingSuggestedStreetAddress1));
         addressLines.add(Map.entry("mailing-city-and-state","%s, %s".formatted(parentMailingSuggestedCity, parentMailingSuggestedState)));
         addressLines.add(Map.entry("mailing-zip-code", parentMailingSuggestedZipCode));
@@ -53,7 +53,7 @@ public class FormatParentConfirmationAddress implements Action {
 
     if (parentAddressFieldsAreNotEmpty(parentHomeStreetAddress1, parentHomeCity, parentHomeState, parentHomeZipCode) && !parentIsExperiencingHomelessness(inputData) ) {
       List<Object> homeAddressLines = new ArrayList<>();
-      if(parentMailingAddressIsHomeAddress(inputData) && parentMailingUsingSmartySuggestion.equals("true")){
+      if(parentMailingAddressIsHomeAddress(inputData) && !(parentMailingUsingSmartySuggestion==null) && parentMailingUsingSmartySuggestion.equals("true")){
         homeAddressLines.add(Map.entry("home-street-address-1", parentMailingSuggestedStreetAddress1));
         homeAddressLines.add(Map.entry("home-city-and-state", "%s, %s".formatted(parentMailingSuggestedCity, parentMailingSuggestedState)));
         homeAddressLines.add(Map.entry("home-zip-code", parentMailingSuggestedZipCode));
