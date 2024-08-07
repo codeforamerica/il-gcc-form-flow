@@ -75,6 +75,10 @@ public class SubmissionUtilities {
     }
   }
 
+  public static String applicantFullLegalName(Map<String, Object> inputData) {
+    return inputData.get("parentFirstName") + " " + inputData.get("parentLastName");
+  }
+
   /**
    * Mixpanel helper method
    */
