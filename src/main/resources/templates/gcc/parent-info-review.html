@@ -22,7 +22,7 @@
             <p class="text--left"><strong th:text="#{parent-info-review.home.address}"></strong></p>
             <div th:unless="${T(org.ilgcc.app.utils.SubmissionUtilities).parentIsExperiencingHomelessness(fieldData)}">
               <th:block th:each="addressLine : ${inputData.get('homeAddressLines')}">
-                <div th:text="${addressLine}"></div>
+                <div th:id="${addressLine.getKey()}" th:text="${addressLine.getValue()}"></div>
               </th:block>
               <br>
             </div>
@@ -35,7 +35,7 @@
             <p class="text--left"><strong th:text="#{parent-info-review.mailing.address}"></strong></p>
             <div th:if="${inputData.containsKey('addressLines') and !inputData.get('addressLines').isEmpty()}">
               <th:block th:each="addressLine : ${inputData.get('addressLines')}">
-                <div th:text="${addressLine}"></div>
+                <div th:id="${addressLine.getKey()}" th:text="${addressLine.getValue()}"></div>
               </th:block>
               <br>
             </div>
