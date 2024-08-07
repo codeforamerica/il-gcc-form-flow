@@ -3,6 +3,9 @@ package org.ilgcc.jobs;
 import static org.ilgcc.app.utils.SubmissionUtilities.getDashFormattedSubmittedAtDate;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import formflow.library.data.Submission;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +18,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringEscapeUtils;
 import org.ilgcc.app.config.DocumentTransferConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jobrunr.jobs.JobId;
@@ -105,10 +109,17 @@ public class PdfTransmissionJobService {
                 new InputStreamReader(httpUrlConnection.getInputStream(), StandardCharsets.UTF_8))) {
             StringBuilder response = new StringBuilder();
             String responseLine = null;
+            
             while ((responseLine = br.readLine()) != null) {
                 response.append(responseLine.trim());
             }
-            log.info("Received response from the document transfer service: {}", response);
+            
+            Gson prettyGson = new GsonBuilder().setPrettyPrinting().create();
+            JsonElement jsonElement = JsonParser.parseString(response.toString());
+            String prettyJsonResponseString = prettyGson.toJson(jsonElement);
+            String sanitizedResponse = StringEscapeUtils.escapeJava(prettyJsonResponseString);
+            
+            log.info("Received response from the document transfer service: {}", sanitizedResponse);
         } catch (Exception e) {
             log.error("There was an error when reading the response from the document transfer service", e);
         }
