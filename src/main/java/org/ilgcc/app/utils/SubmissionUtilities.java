@@ -2,23 +2,15 @@ package org.ilgcc.app.utils;
 
 import formflow.library.data.Submission;
 import formflow.library.inputs.FieldNameMarkers;
-import formflow.library.pdf.SingleField;
-import formflow.library.pdf.SubmissionField;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.Function;
-import org.ilgcc.app.utils.ActivitySchedules.ConsistentHourlySchedule;
-import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
-import org.ilgcc.app.utils.ActivitySchedules.PerDayHourlySchedule;
 
-import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
-import static java.util.function.Function.identity;
 
 
 public class SubmissionUtilities {
@@ -151,10 +143,7 @@ public class SubmissionUtilities {
   }
 
   public static String formatToStringFromLocalDate(Optional<LocalDate> date){
-    if(date.isPresent()){
-      return date.get().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-    }
-    return "";
+      return date.map(localDate -> localDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))).orElse("");
   }
 
   public static String selectedYes(String selected){
