@@ -1,7 +1,6 @@
 <head th:fragment="head" th:assert="${!#strings.isEmpty(title)}">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${title}"></title>
     <script>
         (function (h, o, u, n, d) {
@@ -34,6 +33,6 @@
         })
     </script>
     <th:block th:replace="~{fragments/libraryHead :: headLinks}"></th:block>
-    <link href="/assets/css/custom.css" rel="preload" as="style"/>
     <link href="/assets/css/custom.css" rel="stylesheet"/>
+    <meta name="format-detection" content="telephone=no">
 </head>
