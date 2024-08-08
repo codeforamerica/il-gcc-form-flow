@@ -1,38 +1,39 @@
 <head th:fragment="head" th:assert="${!#strings.isEmpty(title)}">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="format-detection" content="telephone=no">
-  <title th:text="${title}"></title>
-  <script>
-    (function(h,o,u,n,d) {
-      h=h[d]=h[d]||{q:[],onReady:function(c){h.q.push(c)}}
-      d=o.createElement(u);d.async=1;d.src=n
-      n=o.getElementsByTagName(u)[0];n.parentNode.insertBefore(d,n)
-    })(window,document,'script','https://www.datadoghq-browser-agent.com/us1/v5/datadog-rum.js','DD_RUM')
-    window.DD_RUM.onReady(function() {
-      window.DD_RUM.init({
-        clientToken: '[[${@environment.getProperty("DATADOG_RUM_CLIENT_TOKEN")}]]',
-        applicationId: '[[${@environment.getProperty("DATADOG_RUM_APPLICATION_ID")}]]',
-        site: 'datadoghq.com',
-        service: 'il-gcc-front-end',
-        env: '[[${@environment.getProperty("DATADOG_ENVIRONMENT")}]]',
-        sessionSampleRate: 100,
-        sessionReplaySampleRate: 0,
-        trackUserInteractions: true,
-        trackResources: true,
-        trackLongTasks: true,
-        defaultPrivacyLevel: 'mask-user-input',
-      });
-    })
-  </script>
-  <th:block th:if="${@environment.getProperty('form-flow.design-system.name') != 'cfa-uswds'}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="format-detection" content="telephone=no">
+    <title th:text="${title}"></title>
+    <script>
+        (function (h, o, u, n, d) {
+            h = h[d] = h[d] || {
+                q: [], onReady: function (c) {
+                    h.q.push(c)
+                }
+            }
+            d = o.createElement(u);
+            d.async = 1;
+            d.src = n
+            n = o.getElementsByTagName(u)[0];
+            n.parentNode.insertBefore(d, n)
+        })(window, document, 'script',
+            'https://www.datadoghq-browser-agent.com/us1/v5/datadog-rum.js', 'DD_RUM')
+        window.DD_RUM.onReady(function () {
+            window.DD_RUM.init({
+                clientToken: '[[${@environment.getProperty("DATADOG_RUM_CLIENT_TOKEN")}]]',
+                applicationId: '[[${@environment.getProperty("DATADOG_RUM_APPLICATION_ID")}]]',
+                site: 'datadoghq.com',
+                service: 'il-gcc-front-end',
+                env: '[[${@environment.getProperty("DATADOG_ENVIRONMENT")}]]',
+                sessionSampleRate: 100,
+                sessionReplaySampleRate: 0,
+                trackUserInteractions: true,
+                trackResources: true,
+                trackLongTasks: true,
+                defaultPrivacyLevel: 'mask-user-input',
+            });
+        })
+    </script>
     <th:block th:replace="~{fragments/libraryHead :: headLinks}"></th:block>
     <link href="/assets/css/custom.css" rel="preload" as="style"/>
     <link href="/assets/css/custom.css" rel="stylesheet"/>
-  </th:block>
-  <th:block th:if="${@environment.getProperty('form-flow.design-system.name') == 'cfa-uswds'}">
-    <link href="/assets/css/styles.css" rel="stylesheet"/>
-    <script defer src="/assets/js/scripts.js"></script>
-  </th:block>
-  <th:block th:replace="~{fragments/mixpanelTracking :: mixpanelTracking}"></th:block>
 </head>
