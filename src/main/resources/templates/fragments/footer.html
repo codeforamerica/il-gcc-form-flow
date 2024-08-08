@@ -1,20 +1,30 @@
-<footer th:fragment="footer" class="main-footer footer-blue">
-  <div class="grid">
-    <div class="grid__item">
-      <div class="grid__item width-one-half">
-        <p th:text="#{footer.this-benefits-application-is}"></p>
-        <a class="text--small font-white" target="_blank" rel="noopener noreferrer" href="/faq"
-           th:text="#{footer.faq}"></a><br/>
-        <a class="text--small font-white" target="_blank" rel="noopener noreferrer" href="/privacy"
-           th:text="#{footer.privacy}"></a>
-      </div>
-      <div class="main-footer__cfa-logo grid__item">
-        <a href="https://www.codeforamerica.org" class="spacing-below-0">
-          <img src="/webjars/form-flow/0.0.1/images/code-for-america-logo_white.svg"
-               alt="Code for America logo"
-               style="width: 100px;">
-        </a>
-      </div>
-    </div>
-  </div>
-</footer>
+<th:block th:fragment="footer">
+    <footer class="main-footer footer-blue">
+        <div class="grid">
+            <div class="grid__item">
+                <div class="grid__item width-one-half">
+                    <p th:text="#{footer.this-benefits-application-is}"></p>
+                    <a class="text--small font-white" target="_blank" rel="noopener noreferrer"
+                       href="/faq"
+                       th:text="#{footer.faq}"></a><br/>
+                    <a class="text--small font-white" target="_blank" rel="noopener noreferrer"
+                       href="/privacy"
+                       th:text="#{footer.privacy}"></a>
+                </div>
+                <div class="main-footer__cfa-logo grid__item">
+                    <a href="https://www.codeforamerica.org" class="spacing-below-0">
+                        <img src="/webjars/form-flow/0.0.1/images/code-for-america-logo_white.svg"
+                             loading="lazy"
+                             alt="Code for America logo"
+                             style="width: 100px;">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
+    <script src="/webjars/form-flow/0.0.1/js/formFlowLanguageSelector.js" defer></script>
+    <script src="/webjars/form-flow/0.0.1/js/formFlowDisableMultipleFormSubmit.js" defer></script>
+    <script src="/webjars/form-flow/0.0.1/js/formFlowFollowUpQuestion.js" defer></script>
+    <th:block th:replace="~{fragments/mixpanelTracking :: mixpanelTracking}"></th:block>
+</th:block>
