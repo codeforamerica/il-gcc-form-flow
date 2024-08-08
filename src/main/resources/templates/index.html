@@ -30,14 +30,15 @@
               class="button--small button"></a>
           </div>
         </div>
-        <img src="/assets/images/mother-reading-to-child.svg" alt="" class="width-one-half is-tablet-hidden">
+<!--        <img src="/assets/images/mother-reading-to-child.svg" alt="" class="width-one-half is-tablet-hidden">-->
+        <th:block th:replace="~{fragments/heroSvg :: mother-reading-to-child}"></th:block>
       </div>
     </section>
     <section class="slab slab--white">
       <div class="grid">
         <div class="index-child-care-image-container width-one-fourth">
-            <img src="/assets/images/seal-of-illinois.png" alt="Seal of the State of Illinois" style="width: 141px; height: 141px;">
-            <img src="/assets/images/IDHS-logo.png" alt="Illinois Department of Human Services logo" style="width: 168px; height: auto">
+            <img loading="lazy" src="/assets/images/seal-of-illinois.png" alt="Seal of the State of Illinois" style="width: 141px; height: 141px;">
+            <img loading="lazy" src="/assets/images/IDHS-logo.png" alt="Illinois Department of Human Services logo" style="width: 168px; height: auto">
         </div>
 
         <div class="width-two-thirds">
@@ -80,7 +81,7 @@
         </div>
         <div class="width-one-half">
           <div class="width-one-half is-desktop-hidden">
-            <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-left">
+            <img loading="lazy" src="/assets/images/woman-with-paperwork.svg" alt="" class="img-left">
           </div>
           <p class="paragraph-large normal" th:text="#{index.gather-docs.first-paragraph}"></p>
           <div class="index-icon-list spacing-below-15">
@@ -97,7 +98,7 @@
           </div>
         </div>
         <div class="width-one-half is-tablet-hidden">
-          <img src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
+          <img loading="lazy" src="/assets/images/woman-with-paperwork.svg" alt="" class="img-center">
         </div>
       </div>
     </section>
