@@ -92,6 +92,7 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
     private String parentPartnerBirthDate;
+    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{errors.invalid-ssn}")
     @Encrypted
     private String parentPartnerSSN;
 
