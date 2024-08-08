@@ -7,13 +7,17 @@
           hasError=${
             errorMessages != null &&
             errorMessages.get(inputName) != null &&
-            (#arrays.length(errorMessages.get(inputName)) > 0) }"
+            (#arrays.length(errorMessages.get(inputName)) > 0) },
+            requiredInputsForFlow=${requiredInputs.get(flow)},
+            isRequiredInput=${(requiredInputsForFlow != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)}"
         th:assert="${!#strings.isEmpty(startInputName)},${!#strings.isEmpty(endInputName)}, ${hasLabel || hasAriaLabel}">
     <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
         <legend class="form-question spacing-below-15"
                 th:id="${startInputName + '-legend'}"
                 th:inline="text">
-            [[${label}]]
+            <span th:text="${label}"></span>
+            <span th:if="${isRequiredInput && !hasAriaLabel}" class="required-input"
+                  th:text="#{general.required-field}"></span>
         </legend>
         <div class="form-width--long-time">
             <div class="flex-one">

@@ -45,11 +45,11 @@
             <div class="form-card__content" th:with="isSameEveryDay=${!#lists.isEmpty(fieldData.get('activitiesJobHoursSameEveryDay[]'))}">
               <th:block th:replace="~{fragments/inputs/checkbox :: checkbox(inputName='activitiesJobHoursSameEveryDay', value='Yes', label=#{activities-job-hourly-schedule.job.hours.same.every.day}, toggleVisibility='#activitiesWeekly')}" />
               <div id="grouped-days" th:class="${isSameEveryDay ? '' : 'hidden'}">
-                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesJobStartTimeAllDays', endInputName='activitiesJobEndTimeAllDays', label=${fieldData.get('displayWeeklySchedule')})}" />
+                <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesJobStartTimeAllDays', endInputName='activitiesJobEndTimeAllDays', required='true', label=${fieldData.get('displayWeeklySchedule')})}" />
               </div>
               <div id="individual-days" th:class="${isSameEveryDay ? 'hidden' : ''}">
                 <th:block th:each="day: ${fieldData['activitiesJobWeeklySchedule[]']}">
-                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesJobStartTime' + ${day}, endInputName='activitiesJobEndTime' + ${day}, label=#{${'general.week.' + day}})}" />
+                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='activitiesJobStartTime' + ${day}, endInputName='activitiesJobEndTime' + ${day}, required='true', label=#{${'general.week.' + day}})}" />
                 </th:block>
               </div>
             </div>
