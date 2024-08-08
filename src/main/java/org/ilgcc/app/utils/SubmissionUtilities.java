@@ -16,7 +16,7 @@ import static java.util.Collections.emptyList;
 public class SubmissionUtilities {
   public static final DateTimeFormatter MM_DD_YYYY = DateTimeFormatter.ofPattern("M/d/uuuu");
   public static final DateTimeFormatter YYYY_MM_DD_DASHES = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-  public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyy");
+  public static final DateTimeFormatter MMMM_DD_COMMA_YYYY = DateTimeFormatter.ofPattern("MMMM dd, yyy");
   public static final String PROGRAM_SCHEDULE = "programSchedule";
 
   /**
@@ -26,7 +26,7 @@ public class SubmissionUtilities {
    * @return the string formatted date
    */
   public static String getFormattedSubmittedAtDate(Submission submission) {
-    return dateTimeFormatter.format(submission.getSubmittedAt());
+    return MMMM_DD_COMMA_YYYY.format(submission.getSubmittedAt());
   }
 
   /**

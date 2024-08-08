@@ -94,16 +94,16 @@ public class PdfTransmissionJobService {
     public void sendDocumentTransferServiceRequest(String presignedUrl, Submission submission) throws IOException {
         HttpURLConnection httpUrlConnection = getHttpURLConnection();
         String jsonString = createJsonRequestBody(presignedUrl, submission);
-
         try (OutputStream os = httpUrlConnection.getOutputStream()) {
             byte[] input = jsonString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         } catch (Exception e) {
-            log.error("There was an error when sending the request to the document transfer service", e);
+            throw new RuntimeException("There was an error when sending the request to the document transfer service for submission with ID: " + submission.getId(), e);
         }
-
+        
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(httpUrlConnection.getInputStream(), StandardCharsets.UTF_8))) {
+            test();
             StringBuilder response = new StringBuilder();
             String responseLine = null;
             
@@ -113,7 +113,7 @@ public class PdfTransmissionJobService {
             
             log.info("Received response from the document transfer service: " + response);
         } catch (Exception e) {
-            log.error("There was an error when reading the response from the document transfer service", e);
+            throw new RuntimeException("There was an error when reading the response from the document transfer service for submission with ID: " + submission.getId(), e);
         }
     }
 
@@ -144,5 +144,9 @@ public class PdfTransmissionJobService {
         httpUrlConnection.setRequestProperty("Authorization", String.format("Bearer realm=\"%s\" %s", consumerId, consumerAuthToken));
         httpUrlConnection.setDoOutput(true);
         return httpUrlConnection;
+    }
+    
+    private RuntimeException test() {
+        throw new RuntimeException("This is a test exception");
     }
 }
