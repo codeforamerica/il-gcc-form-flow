@@ -17,11 +17,11 @@
               <div class="form-card__content">
                 <th:block th:replace="~{fragments/inputs/checkbox :: checkbox(value='Yes', label=${sameHoursLabel})}"/>
                 <div id="grouped-days" th:class="${isSameEveryDay ? '' : 'hidden'}">
-                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName=${inputNamePrefix} + 'StartTimeAllDays', endInputName=${inputNamePrefix} + 'EndTimeAllDays', label=${fieldData.get('displayWeeklySchedule')})}"/>
+                  <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName=${inputNamePrefix} + 'StartTimeAllDays', endInputName=${inputNamePrefix} + 'EndTimeAllDays', required='true', label=${fieldData.get('displayWeeklySchedule')})}"/>
                 </div>
                 <div id="individual-days" th:class="${isSameEveryDay ? 'hidden' : ''}">
                   <th:block th:each="day: ${selectedDays}">
-                    <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName=${inputNamePrefix} + 'StartTime' + ${day}, endInputName=${inputNamePrefix} + 'EndTime' + ${day}, label=#{${'general.week.' + day}})}"/>
+                    <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName=${inputNamePrefix} + 'StartTime' + ${day}, endInputName=${inputNamePrefix} + 'EndTime' + ${day}, required='true', label=#{${'general.week.' + day}})}"/>
                   </th:block>
                 </div>
               </div>
