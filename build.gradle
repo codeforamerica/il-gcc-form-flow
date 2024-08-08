@@ -18,7 +18,7 @@ plugins {
     id 'jacoco'
     id "org.flywaydb.flyway" version "[9.+,10.0["
     id 'io.miret.etienne.sass' version '1.5.0'
-    id "io.sentry.jvm.gradle" version "4.10.0"
+    id "io.sentry.jvm.gradle" version "4.11.0"
 }
 
 jacoco {
