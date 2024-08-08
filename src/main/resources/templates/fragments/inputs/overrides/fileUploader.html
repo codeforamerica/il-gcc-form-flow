@@ -51,7 +51,7 @@
   <input type="hidden" th:name="${inputName}">
   <script src="/webjars/dropzone/5.9.3/dist/min/dropzone.min.js" defer></script>
   <script src="/webjars/form-flow/0.0.1/js/formFlowDropZone.js" defer></script>
-  <script th:inline="javascript">
+  <script th:inline="javascript" defer>
     Dropzone.autoDiscover = false;
     window.dropzonePrefix = 'myDropZone';
     window['documentIcon'
