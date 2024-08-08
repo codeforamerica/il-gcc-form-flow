@@ -475,3 +475,7 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 .list--material-get-app li {
     padding-left: 4rem;
 }
+
+.required-input{
+  color: #D13F00;
+}
