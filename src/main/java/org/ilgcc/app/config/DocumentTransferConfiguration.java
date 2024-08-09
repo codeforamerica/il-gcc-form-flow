@@ -16,4 +16,5 @@ public class DocumentTransferConfiguration {
     public String authToken;
     public Long presignedUrlDuration;
     public String processingOrg;
+    public String enableBackgroundJobs;
 }
