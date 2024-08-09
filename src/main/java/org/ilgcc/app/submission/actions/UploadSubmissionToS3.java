@@ -23,20 +23,20 @@ public class UploadSubmissionToS3 implements Action {
 
     private final PdfService pdfService;
     private final CloudFileRepository cloudFileRepository;
-
+    
     private final PdfTransmissionJobService pdfTransmissionJobService;
     private final String CONTENT_TYPE = "application/pdf";
     
-    private final String jobRunrEnabled;
+    private final String enableBackgroundJobs;
 
 
     public UploadSubmissionToS3(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJobService pdfTransmissionJobService,
-            @Value("${org.jobrunr.job-scheduler.enabled}") String jobRunrEnabled) {
+            @Value("${il-gcc.dts.enable-background-jobs}") String enableBackgroundJobs) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJobService = pdfTransmissionJobService;
-        this.jobRunrEnabled = jobRunrEnabled;
+        this.enableBackgroundJobs = enableBackgroundJobs;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class UploadSubmissionToS3 implements Action {
                 }
             }).thenRun(() -> {
                 try {
-                    if (jobRunrEnabled.equals("true")) {
+                    if (enableBackgroundJobs.equals("true")) {
                         pdfTransmissionJobService.enqueuePdfTransmissionJob(s3ZipPath, submission);
                     }
                 } catch (IOException e) {

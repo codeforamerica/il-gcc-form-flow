@@ -20,16 +20,6 @@ management:
     web:
       exposure:
         include: '*'
-org:
-  jobrunr:
-    jobs:
-      retry-back-off-time-seed: 10
-    job-scheduler:
-      enabled: false
-    background-job-server:
-      enabled: false
-    dashboard:
-      enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
   dts:
     processing-org: '4c-ccap-apps'

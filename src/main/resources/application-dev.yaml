@@ -15,16 +15,7 @@ server:
     key-store: ./localhost+2.p12
     key-store-type: PKCS12
     key-store-password: ${KEY_STORE_PASSWORD}
-org:
-  jobrunr:
-#    jobs:
-#      retry-back-off-time-seed: 10
-    job-scheduler:
-      enabled: true
-    background-job-server:
-      enabled: true
-    dashboard:
-      enabled: ${JOBRUNR_DASHBOARD_ENABLED:true}
 il-gcc:
   dts:
     processing-org: '4c-ccap-apps-testing'
+    enable-background-jobs: false
