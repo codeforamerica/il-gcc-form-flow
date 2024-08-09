@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.ilgcc.app.utils.SubmissionUtilities.parentIsExperiencingHomelessness;
+import static org.ilgcc.app.utils.SubmissionUtilities.parentMailingAddressIsHomeAddress;
 
 @Component
 public class FormatParentConfirmationAddress implements Action {
@@ -28,17 +29,17 @@ public class FormatParentConfirmationAddress implements Action {
     var parentMailingSuggestedZipCode = (String) inputData.get("parentMailingZipCode_validated");
 
     if (parentAddressFieldsAreNotEmpty(parentMailingStreetAddress1, parentMailingCity, parentMailingState, parentMailingZipCode)) {
-      List<String> addressLines = new ArrayList<>();
+      List<Object> addressLines = new ArrayList<>();
 
-      if (parentMailingUsingSmartySuggestion.equals("true")) {
-        addressLines.add(parentMailingSuggestedStreetAddress1);
-        addressLines.add("%s, %s".formatted(parentMailingSuggestedCity, parentMailingSuggestedState));
-        addressLines.add(parentMailingSuggestedZipCode);
+      if (!(parentMailingUsingSmartySuggestion==null) && parentMailingUsingSmartySuggestion.equals("true")) {
+        addressLines.add(Map.entry("mailing-street-address-1", parentMailingSuggestedStreetAddress1));
+        addressLines.add(Map.entry("mailing-city-and-state","%s, %s".formatted(parentMailingSuggestedCity, parentMailingSuggestedState)));
+        addressLines.add(Map.entry("mailing-zip-code", parentMailingSuggestedZipCode));
       } else {
-        addressLines.add(parentMailingStreetAddress1);
-        addressLines.add(parentMailingStreetAddress2);
-        addressLines.add("%s, %s".formatted(parentMailingCity, parentMailingState));
-        addressLines.add(parentMailingZipCode);
+        addressLines.add(Map.entry("mailing-street-address-1", parentMailingStreetAddress1));
+        addressLines.add(Map.entry("mailing-street-address-2",parentMailingStreetAddress2));
+        addressLines.add(Map.entry("mailing-city-and-state", "%s, %s".formatted(parentMailingCity, parentMailingState)));
+        addressLines.add(Map.entry("mailing-zip-code",parentMailingZipCode));
       }
 
       inputData.put("addressLines", addressLines);
@@ -50,12 +51,18 @@ public class FormatParentConfirmationAddress implements Action {
     var parentHomeState = (String) inputData.get("parentHomeState");
     var parentHomeZipCode = (String) inputData.get("parentHomeZipCode");
 
-    if (parentAddressFieldsAreNotEmpty(parentHomeStreetAddress1, parentHomeCity, parentHomeState, parentHomeZipCode) && !parentIsExperiencingHomelessness(inputData)) {
-      List<String> homeAddressLines = new ArrayList<>();
-      homeAddressLines.add(parentHomeStreetAddress1);
-      homeAddressLines.add(parentHomeStreetAddress2);
-      homeAddressLines.add("%s, %s".formatted(parentHomeCity, parentHomeState));
-      homeAddressLines.add(parentHomeZipCode);
+    if (parentAddressFieldsAreNotEmpty(parentHomeStreetAddress1, parentHomeCity, parentHomeState, parentHomeZipCode) && !parentIsExperiencingHomelessness(inputData) ) {
+      List<Object> homeAddressLines = new ArrayList<>();
+      if(parentMailingAddressIsHomeAddress(inputData) && !(parentMailingUsingSmartySuggestion==null) && parentMailingUsingSmartySuggestion.equals("true")){
+        homeAddressLines.add(Map.entry("home-street-address-1", parentMailingSuggestedStreetAddress1));
+        homeAddressLines.add(Map.entry("home-city-and-state", "%s, %s".formatted(parentMailingSuggestedCity, parentMailingSuggestedState)));
+        homeAddressLines.add(Map.entry("home-zip-code", parentMailingSuggestedZipCode));
+      }else{
+        homeAddressLines.add(Map.entry("home-street-address-1", parentHomeStreetAddress1));
+        homeAddressLines.add(Map.entry("home-street-address-2", parentHomeStreetAddress2));
+        homeAddressLines.add(Map.entry("home-city-and-state", "%s, %s".formatted(parentHomeCity, parentHomeState)));
+        homeAddressLines.add((Map.entry("home-zip-code", parentHomeZipCode)));
+      }
 
       inputData.put("homeAddressLines", homeAddressLines);
     }
