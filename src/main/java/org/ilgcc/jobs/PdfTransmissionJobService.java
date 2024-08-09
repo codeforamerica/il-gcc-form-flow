@@ -90,7 +90,7 @@ public class PdfTransmissionJobService {
         return s3Presigner.presignGetObject(getObjectPresignRequest).url().toString();
     }
     
-    @Job(name = "Send Document Transfer Service Request", retries = 3)
+    @Job(name = "Send Document Transfer Service Request", retries = 5)
     public void sendDocumentTransferServiceRequest(String presignedUrl, Submission submission) throws IOException {
         HttpURLConnection httpUrlConnection = getHttpURLConnection();
         String jsonString = createJsonRequestBody(presignedUrl, submission);
@@ -103,7 +103,6 @@ public class PdfTransmissionJobService {
         
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(httpUrlConnection.getInputStream(), StandardCharsets.UTF_8))) {
-            test();
             StringBuilder response = new StringBuilder();
             String responseLine = null;
             
@@ -144,9 +143,5 @@ public class PdfTransmissionJobService {
         httpUrlConnection.setRequestProperty("Authorization", String.format("Bearer realm=\"%s\" %s", consumerId, consumerAuthToken));
         httpUrlConnection.setDoOutput(true);
         return httpUrlConnection;
-    }
-    
-    private RuntimeException test() {
-        throw new RuntimeException("This is a test exception");
     }
 }

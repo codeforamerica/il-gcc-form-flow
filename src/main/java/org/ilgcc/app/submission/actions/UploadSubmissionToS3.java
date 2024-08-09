@@ -11,6 +11,7 @@ import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.jobs.PdfTransmissionJobService;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,13 +26,17 @@ public class UploadSubmissionToS3 implements Action {
 
     private final PdfTransmissionJobService pdfTransmissionJobService;
     private final String CONTENT_TYPE = "application/pdf";
+    
+    private final String jobRunrEnabled;
 
 
     public UploadSubmissionToS3(PdfService pdfService, CloudFileRepository cloudFileRepository,
-            PdfTransmissionJobService pdfTransmissionJobService) {
+            PdfTransmissionJobService pdfTransmissionJobService,
+            @Value("${org.jobrunr.job-scheduler.enabled}") String jobRunrEnabled) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJobService = pdfTransmissionJobService;
+        this.jobRunrEnabled = jobRunrEnabled;
     }
 
     @Override
@@ -52,7 +57,9 @@ public class UploadSubmissionToS3 implements Action {
                 }
             }).thenRun(() -> {
                 try {
-                    pdfTransmissionJobService.enqueuePdfTransmissionJob(s3ZipPath, submission);
+                    if (jobRunrEnabled.equals("true")) {
+                        pdfTransmissionJobService.enqueuePdfTransmissionJob(s3ZipPath, submission);
+                    }
                 } catch (IOException e) {
                     log.error("An error occurred when enqueuing a job with the document transfer service.", e);
                 }

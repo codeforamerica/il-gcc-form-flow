@@ -94,14 +94,6 @@ server:
 management:
   endpoints:
     enabled-by-default: false
-org:
-  jobrunr:
-    job-scheduler:
-      enabled: true
-    background-job-server:
-      enabled: true
-    dashboard:
-      enabled: ${JOBRUNR_DASHBOARD_ENABLED:true}
 il-gcc:
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
