@@ -51,3 +51,8 @@ org:
       enabled: false
     dashboard:
       enabled: false
+il-gcc:
+  dts:
+    url: ${DOCUMENT_TRANSFER_SERVICE_URL}
+    consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
+    auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}

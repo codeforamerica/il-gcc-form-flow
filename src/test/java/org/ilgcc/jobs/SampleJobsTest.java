@@ -5,7 +5,6 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.awaitility.Awaitility.await;
 import static org.ilgcc.jobs.HttpClient.getJson;
 import static org.jobrunr.server.BackgroundJobServerConfiguration.usingStandardBackgroundJobServerConfiguration;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -71,8 +70,11 @@ public class SampleJobsTest {
 
     // Get the enqueued jobs list immediately and check that there's an enqueued job
     String enqueuedJobs = getEnqueuedJobs();
-    assertThatJson(enqueuedJobs).inPath("$.items[0].jobHistory[0].state").asString().contains("ENQUEUED");
-
+    if (!enqueuedJobs.contains("\"total\":0")) {
+      // Sometimes this will be empty because of a race condition where the job has already started processing by the time this runs
+      assertThatJson(enqueuedJobs).inPath("$.items[0].jobHistory[0].state").asString().contains("ENQUEUED");
+    }
+    
     // Now that job should be processing, so check that the enqueued jobs list eventually goes to zero
     await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> assertThatJson(getEnqueuedJobs()).inPath("$.total").isEqualTo("0"));
 
