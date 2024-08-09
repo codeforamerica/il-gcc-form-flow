@@ -10,10 +10,12 @@ import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.jobs.context.JobContext;
 import org.jobrunr.jobs.context.JobDashboardProgressBar;
 import org.jobrunr.scheduling.JobScheduler;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@Profile("test")
 public class SampleJobProcessor implements JobProcessorInterface {
 
   @Recurring(id = "sample-recurring-job", cron = "0 0/15 * * *")

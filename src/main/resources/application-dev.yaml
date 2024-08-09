@@ -15,3 +15,7 @@ server:
     key-store: ./localhost+2.p12
     key-store-type: PKCS12
     key-store-password: ${KEY_STORE_PASSWORD}
+il-gcc:
+  dts:
+    processing-org: '4c-ccap-apps-testing'
+    enable-background-jobs: false

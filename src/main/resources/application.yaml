@@ -101,9 +101,18 @@ management:
     enabled-by-default: false
 org:
   jobrunr:
+    jobs:
+      retry-back-off-time-seed: 10
     job-scheduler:
       enabled: true
     background-job-server:
       enabled: true
     dashboard:
       enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
+il-gcc:
+  dts:
+    url: ${DOCUMENT_TRANSFER_SERVICE_URL}
+    consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
+    auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
+    presigned-url-Duration: 5 # Minutes
+    enable-background-jobs: false

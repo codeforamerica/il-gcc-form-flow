@@ -345,7 +345,7 @@ flow:
     nextScreens:
       - name: submit-sign-name
   submit-sign-name:
-    onPostAction: UploadSubmissionToS3
+    afterSaveAction: UploadSubmissionToS3
     nextScreens:
       - name: submit-complete
   submit-complete:
