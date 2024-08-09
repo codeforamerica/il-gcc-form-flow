@@ -92,6 +92,11 @@ server:
     whitelabel:
       enabled: false
 management:
+  datadog:
+    metrics:
+      export:
+        api-key: ${DATADOG_API_KEY}
+        application-key: ${DATADOG_APPLICATION_KEY}
   endpoints:
     enabled-by-default: false
 org:
