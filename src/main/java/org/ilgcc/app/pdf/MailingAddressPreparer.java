@@ -17,11 +17,11 @@ public class MailingAddressPreparer implements SubmissionFieldPreparer {
   public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
     var results = new HashMap<String, SubmissionField>();
     var inputData = submission.getInputData();
-    Boolean homeAddressSameAsMailingAddress = (Boolean) inputData.getOrDefault("parentMailingAddressSameAsHomeAddress[]", "no").equals(List.of("yes"));
-    Boolean useSuggestedParentAddress = (Boolean) inputData.getOrDefault("useSuggestedParentAddress", "false").equals("true");
+    var homeAddressSameAsMailingAddress = inputData.getOrDefault("parentMailingAddressSameAsHomeAddress[]", "no").equals(List.of("yes"));
+    var useSuggestedParentAddress = inputData.getOrDefault("useSuggestedParentAddress", "false").equals("true");
 
     String mailingAddressStreet1 = useSuggestedParentAddress ? "parentMailingStreetAddress1_validated" : "parentMailingStreetAddress1";
-    String mailingAddressStreet2 = useSuggestedParentAddress ? "parentMailingStreetAddress2_validated" : "parentMailingStreetAddress2";
+    String mailingAddressStreet2 = useSuggestedParentAddress ? "" : "parentMailingStreetAddress2";
     String mailingCity = useSuggestedParentAddress ? "parentMailingCity_validated" : "parentMailingCity";
     String mailingState = useSuggestedParentAddress ? "parentMailingState_validated" : "parentMailingState";
     String mailingZipCode = useSuggestedParentAddress ? "parentMailingZipCode_validated" : "parentMailingZipCode";

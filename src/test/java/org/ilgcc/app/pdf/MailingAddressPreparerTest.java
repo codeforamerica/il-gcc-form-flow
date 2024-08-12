@@ -49,11 +49,29 @@ public class MailingAddressPreparerTest {
         .build();
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentMailingAddressForPDFStreet")).isEqualTo(new SingleField("parentMailingAddressForPDFStreet", "972 Mission St [Validated]", null));
-    assertThat(result.get("parentMailingAddressForPDFApt")).isEqualTo(new SingleField("parentMailingAddressForPDFApt", "5 [Validated]", null));
+    assertThat(result.get("parentMailingAddressForPDFApt")).isEqualTo(new SingleField("parentMailingAddressForPDFApt", "", null));
     assertThat(result.get("parentMailingAddressForPDFCity")).isEqualTo(new SingleField("parentMailingAddressForPDFCity", "San Francisco [Validated]", null));
     assertThat(result.get("parentMailingAddressForPDFState")).isEqualTo(new SingleField("parentMailingAddressForPDFState", "CA [Validated]", null));
     assertThat(result.get("parentMailingAddressForPDFZipCode")).isEqualTo(new SingleField("parentMailingAddressForPDFZipCode", "94103 [Validated]", null));
   }
+  @Test
+  public void shouldMapStreetAddress2ToAnEmptyStringWhenASuggestedAddressIsUsed(){
+    submission = new SubmissionTestBuilder()
+        .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+        .withHomeAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+        .with("useSuggestedParentAddress", "true")
+        .with("parentMailingAddressSameAsHomeAddress[]", List.of("yes"))
+        .withValidatedMailingAddress("972 Mission St [Validated]", "5 [Validated]", "San Francisco [Validated]", "CA [Validated]", "94103 [Validated]")
+        .build();
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+    assertThat(result.get("parentHomeStreetAddress1ForPDF")).isEqualTo(new SingleField("parentHomeStreetAddress1ForPDF", "972 Mission St [Validated]", null));
+    assertThat(result.get("parentHomeStreetAddress2ForPDF")).isEqualTo(new SingleField("parentHomeStreetAddress2ForPDF", "", null));
+    assertThat(result.get("parentMailingAddressForPDFStreet")).isEqualTo(new SingleField("parentMailingAddressForPDFStreet", "972 Mission St [Validated]", null));
+    assertThat(result.get("parentMailingAddressForPDFApt")).isEqualTo(new SingleField("parentMailingAddressForPDFApt", "", null));
+
+  }
+
   @Test
   public void shouldMapSuggestedMailingAddressToHomeAddressIfClientSelectsHomeAddressIsSameAsMailingAddressAndChoosesToUseSuggestedAddress(){
     submission = new SubmissionTestBuilder()
@@ -67,7 +85,6 @@ public class MailingAddressPreparerTest {
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
 
     assertThat(result.get("parentHomeStreetAddress1ForPDF")).isEqualTo(new SingleField("parentHomeStreetAddress1ForPDF", "972 Mission St [Validated]", null));
-    assertThat(result.get("parentHomeStreetAddress2ForPDF")).isEqualTo(new SingleField("parentHomeStreetAddress2ForPDF", "5 [Validated]", null));
     assertThat(result.get("parentHomeCityForPDF")).isEqualTo(new SingleField("parentHomeCityForPDF", "San Francisco [Validated]", null));
     assertThat(result.get("parentHomeStateForPDF")).isEqualTo(new SingleField("parentHomeStateForPDF", "CA [Validated]", null));
     assertThat(result.get("parentHomeZipCodeForPDF")).isEqualTo(new SingleField("parentHomeZipCodeForPDF", "94103 [Validated]", null));
