@@ -3,7 +3,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="format-detection" content="telephone=no">
   <title th:text="${title}"></title>
-  <script th:with="environment=${#arrays.contains(@environment.getActiveProfiles(), 'dev')}">
+  <script th:with="environment=${!#arrays.isEmpty(@environment.getActiveProfiles()) && !#strings.isEmpty(profile) && #arrays.contains(@environment.getActiveProfiles(), profile)} ? profile : 'dev'">
     console.log("environment: [[${environment}]]");
     (function(h,o,u,n,d) {
       h=h[d]=h[d]||{q:[],onReady:function(c){h.q.push(c)}}
@@ -17,8 +17,8 @@
         // `site` refers to the Datadog site parameter of your organization
         // see https://docs.datadoghq.com/getting_started/site/
         site: 'datadoghq.com',
-        service: 'il-gcc-staging',
-        env: 'staging',
+        service: 'il-gcc-front-end',
+        env: '[[${environment}]]',
         // Specify a version number to identify the deployed version of your application in Datadog
         // version: '1.0.0',
         sessionSampleRate: 100,
