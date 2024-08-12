@@ -3,8 +3,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="format-detection" content="telephone=no">
   <title th:text="${title}"></title>
-  <script th:with="environment=${!#arrays.isEmpty(@environment.getActiveProfiles()) && !#strings.isEmpty(profile) && #arrays.contains(@environment.getActiveProfiles(), profile)} ? profile : 'dev'">
-    console.log("environment: [[${environment}]]");
+  <script>
     (function(h,o,u,n,d) {
       h=h[d]=h[d]||{q:[],onReady:function(c){h.q.push(c)}}
       d=o.createElement(u);d.async=1;d.src=n
@@ -16,9 +15,7 @@
         applicationId: '[[${@environment.getProperty("DATADOG_RUM_APPLICATION_ID")}]]',
         site: 'datadoghq.com',
         service: 'il-gcc-front-end',
-        env: '[[${environment}]]',
-        // Specify a version number to identify the deployed version of your application in Datadog
-        // version: '1.0.0',
+        env: '[[${@environment.getProperty("DATADOG_ENVIRONMENT")}]]',
         sessionSampleRate: 100,
         sessionReplaySampleRate: 0,
         trackUserInteractions: true,
