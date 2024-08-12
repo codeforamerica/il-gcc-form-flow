@@ -14,8 +14,6 @@
       window.DD_RUM.init({
         clientToken: '[[${@environment.getProperty("DATADOG_RUM_CLIENT_TOKEN")}]]',
         applicationId: '[[${@environment.getProperty("DATADOG_RUM_APPLICATION_ID")}]]',
-        // `site` refers to the Datadog site parameter of your organization
-        // see https://docs.datadoghq.com/getting_started/site/
         site: 'datadoghq.com',
         service: 'il-gcc-front-end',
         env: '[[${environment}]]',
