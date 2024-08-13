@@ -8,8 +8,6 @@ form-flow:
     show-stack-trace: false
   virus-scanning:
     enabled: true
-  address-validation:
-    disabled: false
 management:
   endpoint:
     health:
