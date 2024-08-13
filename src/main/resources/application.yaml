@@ -35,7 +35,6 @@ form-flow:
     access_key: ${AWS_ACCESS_KEY}
     secret_key: ${AWS_SECRET_KEY}
   address-validation:
-    disabled: true
     smarty:
       auth-id: ${SMARTY_AUTH_ID}
       auth-token: ${SMARTY_AUTH_TOKEN}
