@@ -1,8 +1,6 @@
 form-flow:
   error:
     show-stack-trace: true
-  address-validation:
-    disabled: false
 management:
   endpoints:
     enabled-by-default: true
