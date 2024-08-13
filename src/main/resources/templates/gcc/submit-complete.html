@@ -28,10 +28,6 @@
                        th:text="#{submit-complete.button.skip}"
                        class="button"
                        id="skip-link"></a>
-                    <ul th:if="${!#strings.isEmpty(email)}" class="list--checkmark list--material-checkmark"
-                    >
-                        <li th:text="#{submit-complete.email-notice(${email})}"></li>
-                    </ul>
                 </div>
             </main>
         </div>
