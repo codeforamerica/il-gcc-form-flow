@@ -3,6 +3,8 @@ form-flow:
     show-stack-trace: true
   address-validation:
     disabled: true
+  aws:
+    s3_bucket_name: ${AWS_BUCKET}
 management:
   endpoints:
     enabled-by-default: true
@@ -18,4 +20,4 @@ server:
 il-gcc:
   dts:
     processing-org: '4c-ccap-apps-testing'
-    enable-background-jobs: false
+    enable-background-jobs: true

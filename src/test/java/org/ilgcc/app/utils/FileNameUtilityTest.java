@@ -2,7 +2,12 @@ package org.ilgcc.app.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import formflow.library.data.Submission;
+import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import org.ilgcc.app.utils.enums.FileNameUtility;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -10,18 +15,29 @@ public class FileNameUtilityTest {
     
     @ParameterizedTest
     @CsvSource({
-            "Alex Gonzalez, Alex-Gonzalez",
-            "Paul Mc'Donald, Paul-McDonald",
-            "Alejandro Cortés, Alejandro-Cortes",
-            "Ana Gabriel-McKig, Ana-Gabriel-McKig",
-            "Jessica De Sandoval, Jessica-De-Sandoval",
-            "María José González, Maria-Jose-Gonzalez",
-            "Jean-Luc Picard, Jean-Luc-Picard",
-            "Abdul Rahman Al-Saud, Abdul-Rahman-Al-Saud",
-            "Jürgen Müller, Jurgen-Muller",
-            "François L'Écuyer, Francois-LEcuyer"
+            "Gonzalez Alex, Gonzalez-Alex",
+            "Mc'Donald Paul, McDonald-Paul",
+            "Cortés Alejandro, Cortes-Alejandro",
+            "Gabriel-McKig Ana, Gabriel-McKig-Ana",
+            "De Sandoval Jessica, De-Sandoval-Jessica",
+            "José González María, Jose-Gonzalez-Maria",
+            "Picard Jean-Luc, Picard-Jean-Luc",
+            "Al-Saud Abdul Rahman , Al-Saud-Abdul-Rahman",
+            "Müller Jürgen, Muller-Jurgen",
+            "L'Écuyer François, LEcuyer-Francois"
     })
     void getApplicantNameForFileNameShouldReturnValidString(String input, String expected) {
-        assertEquals(expected, FileNameUtility.getApplicantNameForFileName(input));
+        assertEquals(expected, FileNameUtility.formatApplicantNameForFileName(input));
+    }
+    
+    @Test
+    void getFileNameForPdfShouldReturnValidString() {
+        Submission submission = new Submission();
+        submission.setSubmittedAt(OffsetDateTime.parse("2024-02-07T12:00:00Z"));
+        Map<String, Object> inputData = new HashMap<>();
+        inputData.put("parentFirstName", "Alex");
+        inputData.put("parentLastName", "Gonzalez");
+        submission.setInputData(inputData);
+        assertEquals("Gonzalez-Alex-2024-02-07-CCAP-Application-Form.pdf", FileNameUtility.getFileNameForPdf(submission));
     }
 }

@@ -375,6 +375,7 @@ flow:
   delete-partner-job:
     nextScreens: null
   doc-upload-submit-confirmation:
+    afterSaveAction: SendUploadedFileToDocumentTransferService
     nextScreens:
       - name: submit-next-steps
 subflows:

@@ -1,35 +1,37 @@
 package org.ilgcc.app.utils.enums;
 
-import formflow.library.data.SubmissionRepositoryService;
+import static org.ilgcc.app.utils.SubmissionUtilities.getApplicantNameLastToFirst;
+import static org.ilgcc.app.utils.SubmissionUtilities.getDashFormattedSubmittedAtDate;
+import static org.ilgcc.app.utils.SubmissionUtilities.getDashFormattedSubmittedAtDateWithTime;
+
+import formflow.library.data.Submission;
 import java.text.Normalizer;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.SubmissionUtilities;
 
 
 @Slf4j
 public class FileNameUtility {
 
-    private SubmissionRepositoryService submissionRepositoryService;
 
+    public static String getFileNameForPdf(Submission submission) {
+        String applicantNameLastToFirst = SubmissionUtilities.getApplicantNameLastToFirst(submission);
+        String formattedApplicantName = formatApplicantNameForFileName(applicantNameLastToFirst);
+        String dashFormattedSubmittedAtDate = SubmissionUtilities.getDashFormattedSubmittedAtDate(submission);
+        return String.format("%s-%s-CCAP-Application-Form.pdf", formattedApplicantName, dashFormattedSubmittedAtDate);
+    }
 
-//    public String getFileNameForUpload(MultipartFile file, String filePath) {
-//        String uuid = filePath.split("/")[0];
-//        submissionRepositoryService.findById(UUID.fromString(uuid)).ifPresent(submission -> {
-//            String applicantFullName = SubmissionUtilities.applicantFullLegalName(submission.getInputData());
-//            String applicantNameForFileName = getApplicantNameForFileName(applicantFullName);
-//            OffsetDateTime submittedAt = submission.getSubmittedAt();
-//            String centralTimestampFromSubmittedAt = getCentralTimestampFromSubmittedAt(submittedAt);
-//
-//
-//        }
-//    }
+    public static String getFileNameForUploadedDocument(Submission submission, int fileNumber, int totalFiles) {
+        String applicantNameLastToFirst = SubmissionUtilities.getApplicantNameLastToFirst(submission);
+        String formattedApplicantName = formatApplicantNameForFileName(applicantNameLastToFirst);
+        String dashFormattedSubmittedAtDate = SubmissionUtilities.getDashFormattedSubmittedAtDate(submission);
+        return String.format("%s-%s-CCAP-Application-Form-Supporting-Document-%d-of-%d.pdf",
+                formattedApplicantName, dashFormattedSubmittedAtDate, fileNumber, totalFiles);
+    }
 
-    public static String getApplicantNameForFileName(String fullName) {
+    public static String formatApplicantNameForFileName(String fullNameLastToFirst) {
         // Breaks down diacritics into English letter and diacritic seperately
-        String normalized = Normalizer.normalize(fullName, Normalizer.Form.NFD);
+        String normalized = Normalizer.normalize(fullNameLastToFirst, Normalizer.Form.NFD);
 
         // Remove diacritic marks
         String withoutDiacritics = normalized.replaceAll("\\p{M}", "");
@@ -43,10 +45,12 @@ public class FileNameUtility {
         // Combine parts with hyphens
         return String.join("-", nameParts);
     }
-    
-    private String getCentralTimestampFromSubmittedAt(OffsetDateTime submittedAt) {
-        ZonedDateTime centralTime = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return centralTime.format(formatter);
+
+    public static String getSharePointFilePath(Submission submission, String processingOrg) {
+        return String.format("/%s/%s/%s",
+                processingOrg,
+                getDashFormattedSubmittedAtDate(submission),
+                formatApplicantNameForFileName(getApplicantNameLastToFirst(submission) + "-" +
+                        getDashFormattedSubmittedAtDateWithTime(submission)));
     }
 }
