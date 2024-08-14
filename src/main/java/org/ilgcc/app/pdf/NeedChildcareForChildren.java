@@ -38,7 +38,7 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
       results.put("childSpecialNeeds_" + iteration, new SingleField("childSpecialNeeds", formatYesNo((String) child.getOrDefault("childHasDisability", "")), iteration));
       results.put("childUSCitizen_" + iteration, new SingleField("childUSCitizen", formatYesNo((String) child.getOrDefault("childIsUsCitizen", "")), iteration));
       results.put("childCareChildInSchool_" + iteration, new SingleField("childCareChildInSchool", (String) child.getOrDefault("childAttendsOtherEd", ""), iteration));
-      results.put("childRelationship_", new SingleField("childRelationship", (String) child.get("childRelationship"), iteration));
+      results.put("childRelationship_"+ iteration, new SingleField("childRelationship", (String) child.get("childRelationship"), iteration));
       earliestCCAPStart = getEarliestCCAPStartDate(earliestCCAPStart, (String) child.getOrDefault("ccapStartDate", ""), formatter);
       iteration++;
     }
