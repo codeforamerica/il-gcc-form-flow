@@ -9,7 +9,8 @@ import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.SubmissionUtilities;
-import org.ilgcc.jobs.PdfTransmissionJobService;
+import org.ilgcc.app.utils.enums.FileNameUtility;
+import org.ilgcc.jobs.PdfTransmissionJob;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,18 +25,18 @@ public class UploadSubmissionToS3 implements Action {
     private final PdfService pdfService;
     private final CloudFileRepository cloudFileRepository;
     
-    private final PdfTransmissionJobService pdfTransmissionJobService;
+    private final PdfTransmissionJob pdfTransmissionJob;
     private final String CONTENT_TYPE = "application/pdf";
     
     private final String enableBackgroundJobs;
 
 
     public UploadSubmissionToS3(PdfService pdfService, CloudFileRepository cloudFileRepository,
-            PdfTransmissionJobService pdfTransmissionJobService,
+            PdfTransmissionJob pdfTransmissionJob,
             @Value("${il-gcc.dts.enable-background-jobs}") String enableBackgroundJobs) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
-        this.pdfTransmissionJobService = pdfTransmissionJobService;
+        this.pdfTransmissionJob = pdfTransmissionJob;
         this.enableBackgroundJobs = enableBackgroundJobs;
     }
 
@@ -44,7 +45,7 @@ public class UploadSubmissionToS3 implements Action {
 
         try {
             byte[] pdfFile = pdfService.getFilledOutPDF(submission);
-            String pdfFileName = String.format("%s.pdf", submission.getId());
+            String pdfFileName = String.format(FileNameUtility.getFileNameForPdf(submission));
             MultipartFile multipartFile = new ByteArrayMultipartFile(pdfFile, pdfFileName, CONTENT_TYPE);
             String s3ZipPath = SubmissionUtilities.generatePdfPath(submission);
 
@@ -58,7 +59,7 @@ public class UploadSubmissionToS3 implements Action {
             }).thenRun(() -> {
                 try {
                     if (enableBackgroundJobs.equals("true")) {
-                        pdfTransmissionJobService.enqueuePdfTransmissionJob(s3ZipPath, submission);
+                        pdfTransmissionJob.enqueuePdfTransmissionJob(s3ZipPath, submission);
                     }
                 } catch (IOException e) {
                     log.error("An error occurred when enqueuing a job with the document transfer service.", e);

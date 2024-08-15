@@ -5,6 +5,7 @@ import formflow.library.inputs.FieldNameMarkers;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
@@ -14,9 +15,11 @@ import static java.util.Collections.emptyList;
 
 
 public class SubmissionUtilities {
-  public static final DateTimeFormatter MM_DD_YYYY = DateTimeFormatter.ofPattern("M/d/uuuu");
-  public static final DateTimeFormatter YYYY_MM_DD_DASHES = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-  public static final DateTimeFormatter MMMM_DD_COMMA_YYYY = DateTimeFormatter.ofPattern("MMMM dd, yyy");
+  public static final DateTimeFormatter MM_DD_YYYY = DateTimeFormatter.ofPattern("M/d/uuuu").withZone(ZoneId.of("America/Chicago")) ;
+  public static final DateTimeFormatter YYYY_MM_DD_DASHES = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.of("America/Chicago"));
+  public static final DateTimeFormatter YYYY_MM_DD_HH_MM_AMPM_DASHES = DateTimeFormatter.ofPattern("yyyy-MM-dd-hh'.'mm-a").withZone(ZoneId.of("America/Chicago"));
+  public static final DateTimeFormatter MMMM_DD_COMMA_YYYY = DateTimeFormatter.ofPattern("MMMM dd, yyy").withZone(ZoneId.of("America/Chicago"));
+  public static final DateTimeFormatter MM_DD_YYYY_DASHES = DateTimeFormatter.ofPattern("MM/dd/yyyy").withZone(ZoneId.of("America/Chicago"));
   public static final String PROGRAM_SCHEDULE = "programSchedule";
 
   /**
@@ -66,6 +69,10 @@ public class SubmissionUtilities {
     } else {
       return inputData.get("parentFirstName").toString();
     }
+  }
+
+  public static String getApplicantNameLastToFirst(Submission submission) {
+    return submission.getInputData().get("parentLastName") + " " + submission.getInputData().get("parentFirstName");
   }
 
   /**
@@ -140,10 +147,7 @@ public class SubmissionUtilities {
   }
 
   public static String formatToStringFromLocalDate(Optional<LocalDate> date){
-    if(date.isPresent()){
-      return date.get().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-    }
-    return "";
+      return date.map(MM_DD_YYYY_DASHES::format).orElse("");
   }
 
   public static String selectedYes(String selected){
@@ -171,4 +175,8 @@ public class SubmissionUtilities {
   public static String getDashFormattedSubmittedAtDate(Submission submission) {
     return YYYY_MM_DD_DASHES.format(submission.getSubmittedAt());
   }
+  
+    public static String getDashFormattedSubmittedAtDateWithTime(Submission submission) {
+        return YYYY_MM_DD_HH_MM_AMPM_DASHES.format(submission.getSubmittedAt());
+    }
 }
