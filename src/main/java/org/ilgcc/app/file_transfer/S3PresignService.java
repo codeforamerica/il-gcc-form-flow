@@ -30,20 +30,20 @@ public class S3PresignService {
     private final Region region;
     private final String secretKey;
     private final String accessKey;
-    private final String BUCKET_NAME;
+    private final String bucketName;
     private final S3Presigner s3Presigner;
     private final S3Client s3Client;
     private final Long presignedUrlDuration;
     
     public S3PresignService(@Value("${form-flow.aws.access_key}") String accessKey,
             @Value("${form-flow.aws.secret_key}") String secretKey,
-            @Value("${form-flow.aws.s3_bucket_name}") String BUCKET_NAME,
+            @Value("${form-flow.aws.s3_bucket_name}") String bucketName,
             @Value("${form-flow.aws.region}") String region,
             DocumentTransferConfiguration documentTransferConfiguration) {
         this.region = Region.of(region);
         this.secretKey = secretKey;
         this.accessKey = accessKey;
-        this.BUCKET_NAME = BUCKET_NAME;
+        this.bucketName = bucketName;
         this.presignedUrlDuration = documentTransferConfiguration.getPresignedUrlDuration();
 
         AwsBasicCredentials awsCreds = AwsBasicCredentials.create(this.accessKey, this.secretKey);
@@ -60,7 +60,7 @@ public class S3PresignService {
 
     public String generatePresignedUrl(String objectPath) {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                .bucket(BUCKET_NAME)
+                .bucket(bucketName)
                 .key(objectPath)
                 .build();
 
@@ -81,7 +81,7 @@ public class S3PresignService {
     public CompletableFuture<Boolean> isObjectScannedAndClean(String objectPath) {
         try {
             GetObjectTaggingRequest getObjectTaggingRequest = GetObjectTaggingRequest.builder()
-                    .bucket(BUCKET_NAME)
+                    .bucket(bucketName)
                     .key(objectPath)
                     .build();
             GetObjectTaggingResponse taggingResult = s3Client.getObjectTagging(getObjectTaggingRequest);
@@ -96,7 +96,7 @@ public class S3PresignService {
                     .ifPresent(tag -> log.info("File at path: {} was scanned and found to be clean with 'scan-result' {}", objectPath, tag.value()));
             return CompletableFuture.completedFuture(true);
         } catch (S3Exception e) {
-            log.info("No object was found at path" + objectPath + " It's possible the object was moved to quarantine, or deleted.", e);
+            log.error("No object was found at path" + objectPath + " It's possible the object was moved to quarantine, or deleted.", e);
             throw new S3ObjectNotFoundException("No object was found at path: " + objectPath + " when checking file tags. It's possible the object was moved to quarantine, or deleted.");
         }
     }

@@ -45,8 +45,7 @@ public class SendUploadedFileToDocumentTransferService implements Action {
                         uploadedDocumentTransmissionJob.enqueueUploadedDocumentTransmissionJob(submission, userFile, fileName);
                     }
                 }).exceptionally(e -> {
-                    log.error("The error is :", e);
-                    log.error("There was an error when attempting to send uploaded file with id: {} in submission with id: {} to the document transfer service. It's possible the file had a virus, or could not be scanned.", userFile.getFileId(), submission.getId());
+                    log.error("There was an error when attempting to send uploaded file with id: {} in submission with id: {} to the document transfer service. It's possible the file had a virus, or could not be scanned.", userFile.getFileId(), submission.getId(), e);
                     return null;
                 });
             }
