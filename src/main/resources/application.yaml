@@ -43,6 +43,7 @@ form-flow:
     path: 'src/main/resources/pdfs/'
     map-file: pdf-map.yaml
     generate-flattened: false
+    read-only: true
   email-client:
     mailgun:
       key: ${MAILGUN_KEY:'no-key-set'}

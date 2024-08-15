@@ -1,8 +1,6 @@
 form-flow:
   error:
     show-stack-trace: true
-  address-validation:
-    disabled: true
   aws:
     s3_bucket_name: ${AWS_BUCKET}
 management:
