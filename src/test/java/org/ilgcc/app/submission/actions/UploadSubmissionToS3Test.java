@@ -3,6 +3,7 @@ package org.ilgcc.app.submission.actions;
 import formflow.library.data.Submission;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ class UploadSubmissionToS3Test {
 
     byte[] pdfFiles = new byte[]{1, 2, 3, 4};
     when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
-
+    submission.setSubmittedAt(OffsetDateTime.now());
     uploadSubmissionToS3.run(submission);
 
     verify(pdfService).getFilledOutPDF(submission);
