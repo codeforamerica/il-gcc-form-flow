@@ -116,4 +116,4 @@ il-gcc:
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
     auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
     presigned-url-Duration: 5 # Minutes
-    enable-background-jobs: true
+    enable-background-jobs: false
