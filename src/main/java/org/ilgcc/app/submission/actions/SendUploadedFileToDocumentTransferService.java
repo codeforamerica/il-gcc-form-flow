@@ -36,7 +36,7 @@ public class SendUploadedFileToDocumentTransferService implements Action {
 
     @Override
     public void run(Submission submission) {
-        if (enableBackgroundJobs.equals("false")) {
+        if (!enableBackgroundJobs.equals("false")) {
             log.info("Sending uploaded files to document transfer service for submission with ID: {}", submission.getId());
             List<UserFile> userFiles = userFileRepositoryService.findAllBySubmission(submission);
             if (!userFiles.isEmpty()) {
