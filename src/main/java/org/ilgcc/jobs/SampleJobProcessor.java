@@ -18,12 +18,6 @@ import org.springframework.stereotype.Component;
 @Profile("test")
 public class SampleJobProcessor implements JobProcessorInterface {
 
-  @Recurring(id = "sample-recurring-job", cron = "0 0/15 * * *")
-  @Job(name = "Sample recurring job")
-  public void doRecurringJob() {
-    System.out.println("Doing some work without arguments");
-  }
-
   @Override
   public void doSimpleJob(String anArgument) {
     System.out.println("Doing some work: " + anArgument);
