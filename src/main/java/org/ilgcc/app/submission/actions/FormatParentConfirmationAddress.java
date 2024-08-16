@@ -69,6 +69,9 @@ public class FormatParentConfirmationAddress implements Action {
   }
 
   private boolean parentAddressFieldsAreNotEmpty(String streetAddress1, String city, String state, String zipCode){
-    return (!streetAddress1.isBlank() && !city.isBlank() && !state.isBlank() && !zipCode.isBlank());
+    return (streetAddress1 != null && !streetAddress1.isBlank() 
+            && city != null && !city.isBlank()
+            && state != null && !state.isBlank()
+            && zipCode != null && !zipCode.isBlank());
   }
 }
