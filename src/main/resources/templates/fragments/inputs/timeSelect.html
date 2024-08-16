@@ -8,7 +8,7 @@
         <fieldset th:id="${inputGroupName}">
             <th:block
                     th:with="hourInputName=${inputGroupName+'Hour'}, minuteInputName=${inputGroupName+'Minute'}, amPmInputName=${inputGroupName+'AmPm'}">
-                <div class="steps-box">
+                <div class="steps-box spacing-below-35">
                     <div class="form-question-stack">
                         <div class="form-question-vertical-align">
                             <label th:for="${hourInputName}"
@@ -40,7 +40,7 @@
                                    th:text="#{'general.minute'}"
                                    th:id="${minuteInputName}"></label>
                         </div>
-                        <input type="number" class="text-input" minlength="1" maxlength="2" min="0" max="59"
+                        <input type="number" class="text-input minute-question-stack" minlength="1" maxlength="2" min="0" max="59"
                                th:id="${minuteInputName}"
                                th:name="${minuteInputName}"
                                th:attr="
