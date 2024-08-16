@@ -15,6 +15,7 @@ import java.util.*;
 
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 import static org.ilgcc.app.utils.SubmissionUtilities.*;
 
 @Component
@@ -61,6 +62,60 @@ public class SchedulePreparerUtility {
         return fields;
     }
 
+    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData, String dayKey, String dayValue,
+            String inputPrefixKey, String pdfPrefix, int iterator) {
+        Map<String, SubmissionField> fields = new HashMap<>();
+
+        String hourStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "Hour", "");
+        String minuteStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "Minute", "");
+        String amPmStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "AmPm", "");
+
+        String hourEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "Hour", "");
+        String minuteEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "Minute", "");
+        String amPmEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "AmPm", "");
+
+        fields.put(pdfPrefix + dayKey + START + "_" + iterator,
+                new SingleField(pdfPrefix + dayKey + START, formatTimeString(hourStartValue, minuteStartValue), iterator));
+        fields.put(pdfPrefix + dayKey + START + AM_PM + "_" + iterator,
+                new SingleField(pdfPrefix + dayKey + START + AM_PM, amPmStartValue, iterator));
+        fields.put(pdfPrefix + dayKey + END + "_" + iterator,
+                new SingleField(pdfPrefix + dayKey + END,  formatTimeString(hourEndValue, minuteEndValue), iterator));
+        fields.put(pdfPrefix + dayKey + END + AM_PM + "_" + iterator,
+                new SingleField(pdfPrefix + dayKey + END + AM_PM, amPmEndValue, iterator));
+
+        return fields;
+    }
+
+    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData, String dayKey, String dayValue,
+            String inputPrefixKey, String pdfPrefix) {
+        Map<String, SubmissionField> fields = new HashMap<>();
+
+        String hourStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "Hour", "");
+        String minuteStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "Minute", "");
+        String amPmStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "AmPm", "");
+
+        String hourEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "Hour", "");
+        String minuteEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "Minute", "");
+        String amPmEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "AmPm", "");
+
+        fields.put(pdfPrefix + dayKey + START,
+                new SingleField(pdfPrefix + dayKey + START, formatTimeString(hourStartValue, minuteStartValue), null));
+        fields.put(pdfPrefix + dayKey + START + AM_PM,
+                new SingleField(pdfPrefix + dayKey + START + AM_PM, amPmStartValue, null));
+        fields.put(pdfPrefix + dayKey + END,
+                new SingleField(pdfPrefix + dayKey + END,  formatTimeString(hourEndValue, minuteEndValue), null));
+        fields.put(pdfPrefix + dayKey + END + AM_PM,
+                new SingleField(pdfPrefix + dayKey + END + AM_PM, amPmEndValue, null));
+
+        return fields;
+    }
+
+    private static String formatTimeString(String hourValue, String minuteValue){
+        int hourInt = Integer.parseInt(hourValue);
+        int minuteInt = Integer.parseInt(minuteValue);
+        return String.format("%02d:%02d", hourInt, minuteInt);
+    }
+
     public static Optional<List<DayOfWeekOption>> getDaysOfWeekField(Map<String, Object> inputData, String inputName) {
         Object value = inputData.get(inputName);
         if (value == null) {
@@ -99,6 +154,22 @@ public class SchedulePreparerUtility {
             return Optional.of(new PerDayHourlySchedule(dailyScheduleMap));
         }
     }
+
+    public static Map<String, String> hourlyScheduleKeys(Map<String, Object> inputData, String inputName,
+            String weeklyScheduleInputName) {
+        List<String> sameEveryDayField = getOptionalListField(
+                inputData, "%sHoursSameEveryDay[]".formatted(inputName), Object::toString).orElse(List.of());
+
+        boolean sameEveryDay = !sameEveryDayField.isEmpty() && sameEveryDayField.get(0).equalsIgnoreCase("Yes");
+
+        List<String> daysInSchedule = (List) inputData.getOrDefault(weeklyScheduleInputName, List.of());
+
+        if (sameEveryDay) {
+            return daysInSchedule.stream().collect(toMap(day -> day, day -> "AllDays"));
+        } else {
+            return daysInSchedule.stream().collect(toMap(day -> day, day -> day));
+        }
+    };
 
     public static <T> Optional<List<T>> getOptionalListField(
         Map<String, Object> inputData, String fieldName, Function<Object, T> converter) {
