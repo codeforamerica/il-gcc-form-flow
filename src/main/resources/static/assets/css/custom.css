@@ -484,3 +484,25 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 .required-input{
   color: #D13F00;
 }
+
+.bottom-border {
+  border-bottom: black;
+  border-bottom-style: solid;
+  padding-top: 30px;
+}
+
+.form-question-stack {
+  flex: 1 1 0;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: inline-flex
+}
+
+.form-question-vertical-align {
+  padding-bottom: 10px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex
+}
