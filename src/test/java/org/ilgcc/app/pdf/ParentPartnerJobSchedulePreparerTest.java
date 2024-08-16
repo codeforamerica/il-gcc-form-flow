@@ -20,7 +20,7 @@ public class ParentPartnerJobSchedulePreparerTest {
     @Test
     public void withTheSameScheduleEveryDay() {
         submission = new SubmissionTestBuilder()
-            .withPartnerRegularWorkSchedule(List.of("Monday", "Thursday","Sunday"),"10:00", "15:45")
+            .withPartnerRegularWorkSchedule(List.of("Monday", "Thursday","Sunday"))
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
@@ -61,9 +61,9 @@ public class ParentPartnerJobSchedulePreparerTest {
     @Test
     public void withDifferentScheduleEveryDay() {
         submission = new SubmissionTestBuilder()
-            .withPartnerWorkScheduleByDay("Monday","10:00", "15:45")
-            .withPartnerWorkScheduleByDay("Wednesday","08:00", "12:45")
-            .withPartnerWorkScheduleByDay("Friday","12:00", "19:00")
+            .withPartnerWorkScheduleByDay("Monday","10","0", "AM", "3", "45", "PM")
+            .withPartnerWorkScheduleByDay("Wednesday","8", "0", "AM", "12", "45", "PM")
+            .withPartnerWorkScheduleByDay("Friday","12", "0", "PM", "7", "0", "PM")
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
@@ -104,8 +104,8 @@ public class ParentPartnerJobSchedulePreparerTest {
     @Test
     public void withTwoJobs() {
         submission = new SubmissionTestBuilder()
-            .withPartnerRegularWorkSchedule(List.of("Monday"),"10:00", "15:45")
-            .withPartnerRegularWorkSchedule(List.of("Monday", "Wednesday"),"08:00", "12:45")
+            .withPartnerRegularWorkSchedule(List.of("Monday"))
+            .withPartnerRegularWorkScheduleAddHour(List.of("Monday", "Wednesday"),"8","0", "AM", "12", "45", "PM")
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);

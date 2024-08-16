@@ -19,7 +19,7 @@ public class PartnerEducationSchedulePreparerTest {
     @Test
     public void withTheSameScheduleEveryDay() {
         submission = new SubmissionTestBuilder()
-            .withRegularSchoolSchedule("partnerClass", "partnerClassWeeklySchedule[]", List.of("Monday", "Thursday","Sunday"),"10:00", "15:45")
+            .withRegularSchoolSchedule("partnerClass", "partnerClassWeeklySchedule[]", List.of("Monday", "Thursday","Sunday"))
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
@@ -60,9 +60,9 @@ public class PartnerEducationSchedulePreparerTest {
     @Test
     public void withDifferentScheduleEveryDay() {
         submission = new SubmissionTestBuilder()
-            .withSchoolScheduleByDay("partnerClass","Monday","10:00", "15:45")
-            .withSchoolScheduleByDay("partnerClass","Wednesday", "08:00", "12:45")
-            .withSchoolScheduleByDay("partnerClass","Friday","12:00", "19:00")
+            .withSchoolScheduleByDay("partnerClass","Monday","10", "0", "AM", "3", "45", "PM")
+            .withSchoolScheduleByDay("partnerClass","Wednesday","8", "0", "AM", "12", "45", "PM")
+            .withSchoolScheduleByDay("partnerClass","Friday","12", "0", "PM", "7", "0", "PM")
             .with("partnerClassWeeklySchedule[]", List.of("Monday", "Wednesday", "Friday"))
             .build();
 
