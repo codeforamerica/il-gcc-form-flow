@@ -105,11 +105,11 @@ org:
     jobs:
       retry-back-off-time-seed: 10
     job-scheduler:
-      enabled: false
+      enabled: true
     background-job-server:
-      enabled: false
+      enabled: true
     dashboard:
-      enabled: false
+      enabled: true
 il-gcc:
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
