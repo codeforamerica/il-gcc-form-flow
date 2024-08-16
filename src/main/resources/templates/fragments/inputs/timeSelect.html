@@ -1,0 +1,86 @@
+<th:block
+        th:fragment="timeSelect"
+        th:with="
+        hasGroupName=${!#strings.isEmpty(inputGroupName)}"
+        th:assert="
+          ${hasGroupName}">
+    <div th:class="'question-group'">
+        <fieldset th:id="${inputGroupName}">
+            <th:block
+                    th:with="hourInputName=${inputGroupName+'Hour'}, minuteInputName=${inputGroupName+'Minute'}, amPmInputName=${inputGroupName+'AmPm'}">
+                <div class="steps-box">
+                    <div class="form-question-stack">
+                        <div class="form-question-vertical-align">
+                            <label th:for="${hourInputName}"
+                                   th:text="#{'general.hour'}"
+                                   th:id="${hourInputName}"></label>
+                        </div>
+                        <div class="select">
+                            <select class="select__element"
+                                    th:id="${hourInputName}"
+                                    th:name="${hourInputName}"
+                                    th:attr="
+                                aria-describedby=${hasHelpText ? hourInputName + '-help-text' : ''},
+                                aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
+                                aria-invalid=${hasError}">
+                                <th:block
+                                        th:replace="~{fragments/inputs/selectOptionPlaceholder :: selectOptionPlaceholder(optionText=#{general.hour})}"/>
+
+                                <th:block
+                                        th:each="hour : ${T(org.ilgcc.app.utils.HourSelectOption).values()}">
+                                    <th:block
+                                            th:replace="~{fragments/inputs/selectOption :: selectOption(value=${hour.getLabel()}, optionText=${hour.getLabel()}, inputName=${hourInputName})}"/>
+                                </th:block>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-question-stack">
+                        <div class="form-question-vertical-align">
+                            <label th:for="${minuteInputName}"
+                                   th:text="#{'general.minute'}"
+                                   th:id="${minuteInputName}"></label>
+                        </div>
+                        <input type="number" class="text-input" minlength="1" maxlength="2" min="0" max="59"
+                               th:id="${minuteInputName}"
+                               th:name="${minuteInputName}"
+                               th:attr="
+                                aria-describedby=${hasHelpText ? minuteInputName + '-help-text' : ''},
+                                aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
+                                aria-invalid=${hasError}"
+                               th:value="${fieldData.getOrDefault(minuteInputName, '')}">
+                    </div>
+                    <div class="form-question-stack">
+                        <div class="form-question-vertical-align">
+                            <label th:for="${amPmInputName}"
+                                   th:text="#{'general.amOrPM'}"
+                                   th:id="${amPmInputName}"></label>
+                        </div>
+                        <div class="select">
+                            <select class="select__element"
+                                    th:id="${amPmInputName}"
+                                    th:name="${amPmInputName}"
+                                    th:attr="
+                                            aria-describedby=${hasHelpText ? amPmInputName + '-help-text' : ''},
+                                            aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
+                                            aria-invalid=${hasError}">
+                                <th:block
+                                        th:replace="~{fragments/inputs/selectOptionPlaceholder :: selectOptionPlaceholder(optionText=#{general.amOrPM})}"/>
+                                <th:block
+                                        th:each="amPM : ${T(org.ilgcc.app.utils.AmPmSelectOption).values()}">
+                                    <pre th:text="${amPmInputName}"></pre>
+                                    <pre th:text="${amPM}"></pre>
+                                    <pre th:text="${fieldData.getOrDefault(amPmInputName, '').equals(amPM.toString())}"></pre>
+                                    <pre th:text="${fieldData.getOrDefault(amPmInputName, '')}"></pre>
+                                    <th:block
+                                            th:replace="~{fragments/inputs/selectOption :: selectOption(value=${amPM.toString()}, optionText=${amPM.toString()}, inputName=${amPmInputName})}"/>
+                                </th:block>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </th:block>
+        </fieldset>
+
+    </div>
+</th:block>

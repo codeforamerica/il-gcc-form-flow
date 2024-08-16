@@ -4,49 +4,32 @@
           hasHelpText=${!#strings.isEmpty(helpText)},
           hasLabel=${!#strings.isEmpty(label)},
           hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
-          hasError=${
-            errorMessages != null &&
-            errorMessages.get(inputName) != null &&
-            (#arrays.length(errorMessages.get(inputName)) > 0) },
             requiredInputsForFlow=${requiredInputs.get(flow)},
             isRequiredInput=${(requiredInputsForFlow != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)}"
         th:assert="${!#strings.isEmpty(startInputName)},${!#strings.isEmpty(endInputName)}, ${hasLabel || hasAriaLabel}">
-    <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
-        <legend class="form-question spacing-below-15"
+    <div th:class="'form-group bottom-border'">
+        <legend class="heading-35 spacing-below-15"
                 th:id="${startInputName + '-legend'}"
                 th:inline="text">
             <span th:text="${label}"></span>
             <span th:if="${isRequiredInput && !hasAriaLabel}" class="required-input"
                   th:text="#{general.required-field}"></span>
         </legend>
-        <div class="form-width--long-time">
-            <div class="flex-one">
-                <label th:for="${startInputName}" th:text="#{general.inputs.time.range.start}" class="text--help grey-darkest spacing-above-15 spacing-below-5"/>
-                <input type="time" class="time-input"
-                       th:id="${startInputName}"
-                       th:name="${startInputName}"
-                       th:attr="
-                    aria-describedby=${hasHelpText ? startInputName + '-help-text' : ''},
-                    aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
-                    aria-invalid=${hasError}"
-                       th:value="${fieldData.getOrDefault(startInputName, '')}">
-            </div>
-            <strong class="padding-left-25 padding-right-25" th:text="#{general.to}"></strong>
-            <div class="flex-one">
-                <label th:for="${endInputName}" th:text="#{general.inputs.time.range.end}" class="text--help grey-darkest spacing-above-15 spacing-below-5"/>
-                <input type="time" class="time-input"
-                       th:id="${endInputName}"
-                       th:name="${endInputName}"
-                       th:attr="
-                aria-describedby=${hasHelpText ? endInputName + '-help-text' : ''},
-                aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
-                aria-invalid=${hasError}"
-                       th:value="${fieldData.getOrDefault(endInputName, '')}">
-            </div>
+        <div>
+            <label th:for="${startInputName}" th:text="#{general.inputs.time.range.start}"
+                   class="form-question"/>
+            <th:block
+                    th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
+            <th:block
+                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${startInputName})}"/>
         </div>
-        <th:block
-                th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
-        <th:block
-                th:replace="~{fragments/inputError :: validationError(inputName=${endInputName})}"></th:block>
+        <div>
+            <label th:for="${endInputName}" th:text="#{general.inputs.time.range.end}"
+                   class="form-question"/>
+            <th:block
+                    th:replace="~{fragments/inputError :: validationError(inputName=${endInputName})}"></th:block>
+            <th:block
+                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${endInputName})}"/>
+        </div>
     </div>
 </th:block>
