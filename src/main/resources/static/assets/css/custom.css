@@ -481,7 +481,7 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 }
 
 .bottom-border {
-  border-bottom: black;
+  border-bottom: #AAAAAA;
   border-bottom-style: solid;
   padding-top: 30px;
 }
@@ -492,6 +492,23 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   justify-content: flex-start;
   align-items: flex-start;
   display: inline-flex
+}
+
+.minute-question-stack {
+  width: 100%;
+  height: 100%;
+  padding-top: 17px;
+  padding-bottom: 18px;
+  padding-left: 24px;
+  padding-right: 24px;
+  background: white;
+  margin-bottom: 0;
+  border: 2px #121111 solid;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  display: inline-flex;
+  background-color: white;
 }
 
 .form-question-vertical-align {
