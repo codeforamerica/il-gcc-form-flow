@@ -157,38 +157,71 @@ public class Gcc extends FlowInputs {
 
     // children-childcare-hourly-schedule
     private Boolean childcareHoursSameEveryDay;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String childcareStartTimeAllDays;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String childcareEndTimeAllDays;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String childcareStartTimeMonday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String childcareEndTimeMonday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String childcareStartTimeTuesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String childcareEndTimeTuesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String childcareStartTimeWednesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String childcareEndTimeWednesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String childcareStartTimeThursday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String childcareEndTimeThursday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String childcareStartTimeFriday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String childcareEndTimeFriday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String childcareStartTimeSaturday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String childcareEndTimeSaturday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String childcareStartTimeSunday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String childcareEndTimeSunday;
+
+    private String childcareStartTimeAllDaysHour;
+    private String childcareStartTimeAllDaysMinute;
+    private String childcareStartTimeAllDaysAmPm;
+
+    private String childcareEndTimeAllDaysHour;
+    private String childcareEndTimeAllDaysMinute;
+    private String childcareEndTimeAllDaysAmPm;
+
+    private String childcareStartTimeMondayHour;
+    private String childcareStartTimeMondayMinute;
+    private String childcareStartTimeMondayAmPm;
+
+    private String childcareEndTimeMondayHour;
+    private String childcareEndTimeMondayMinute;
+    private String childcareEndTimeMondayAmPm;
+
+    private String childcareStartTimeTuesdayHour;
+    private String childcareStartTimeTuesdayMinute;
+    private String childcareStartTimeTuesdayAmPm;
+
+    private String childcareEndTimeTuesdayHour;
+    private String childcareEndTimeTuesdayMinute;
+    private String childcareEndTimeTuesdayAmPm;
+
+    private String childcareStartTimeWednesdayHour;
+    private String childcareStartTimeWednesdayMinute;
+    private String childcareStartTimeWednesdayAmPm;
+
+    private String childcareEndTimeWednesdayHour;
+    private String childcareEndTimeWednesdayMinute;
+    private String childcareEndTimeWednesdayAmPm;
+
+    private String childcareStartTimeThursdayHour;
+    private String childcareStartTimeThursdayMinute;
+    private String childcareStartTimeThursdayAmPm;
+
+    private String childcareEndTimeThursdayHour;
+    private String childcareEndTimeThursdayMinute;
+    private String childcareEndTimeThursdayAmPm;
+
+    private String childcareStartTimeFridayHour;
+    private String childcareStartTimeFridayMinute;
+    private String childcareStartTimeFridayAmPm;
+
+    private String childcareEndTimeFridayHour;
+    private String childcareEndTimeFridayMinute;
+    private String childcareEndTimeFridayAmPm;
+
+    private String childcareStartTimeSaturdayHour;
+    private String childcareStartTimeSaturdayMinute;
+    private String childcareStartTimeSaturdayAmPm;
+
+    private String childcareEndTimeSaturdayHour;
+    private String childcareEndTimeSaturdayMinute;
+    private String childcareEndTimeSaturdayAmPm;
+
+    private String childcareStartTimeSundayHour;
+    private String childcareStartTimeSundayMinute;
+    private String childcareStartTimeSundayAmPm;
+
+    private String childcareEndTimeSundayHour;
+    private String childcareEndTimeSundayMinute;
+    private String childcareEndTimeSundayAmPm;
+    
 
     // children-ccap-child-other-ed
     private String childAttendsOtherEd;
@@ -224,38 +257,70 @@ public class Gcc extends FlowInputs {
 
     // activities-job-hourly-schedule
     private String activitiesJobHoursSameEveryDay;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeAllDays;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeAllDays;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeMonday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeMonday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeTuesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeTuesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeWednesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeWednesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeThursday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeThursday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeFriday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeFriday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeSaturday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeSaturday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesJobStartTimeSunday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesJobEndTimeSunday;
+
+    private String activitiesJobStartTimeAllDaysHour;
+    private String activitiesJobStartTimeAllDaysMinute;
+    private String activitiesJobStartTimeAllDaysAmPm;
+
+    private String activitiesJobEndTimeAllDaysHour;
+    private String activitiesJobEndTimeAllDaysMinute;
+    private String activitiesJobEndTimeAllDaysAmPm;
+
+    private String activitiesJobStartTimeMondayHour;
+    private String activitiesJobStartTimeMondayMinute;
+    private String activitiesJobStartTimeMondayAmPm;
+
+    private String activitiesJobEndTimeMondayHour;
+    private String activitiesJobEndTimeMondayMinute;
+    private String activitiesJobEndTimeMondayAmPm;
+
+    private String activitiesJobStartTimeTuesdayHour;
+    private String activitiesJobStartTimeTuesdayMinute;
+    private String activitiesJobStartTimeTuesdayAmPm;
+
+    private String activitiesJobEndTimeTuesdayHour;
+    private String activitiesJobEndTimeTuesdayMinute;
+    private String activitiesJobEndTimeTuesdayAmPm;
+
+    private String activitiesJobStartTimeWednesdayHour;
+    private String activitiesJobStartTimeWednesdayMinute;
+    private String activitiesJobStartTimeWednesdayAmPm;
+
+    private String activitiesJobEndTimeWednesdayHour;
+    private String activitiesJobEndTimeWednesdayMinute;
+    private String activitiesJobEndTimeWednesdayAmPm;
+
+    private String activitiesJobStartTimeThursdayHour;
+    private String activitiesJobStartTimeThursdayMinute;
+    private String activitiesJobStartTimeThursdayAmPm;
+
+    private String activitiesJobEndTimeThursdayHour;
+    private String activitiesJobEndTimeThursdayMinute;
+    private String activitiesJobEndTimeThursdayAmPm;
+
+    private String activitiesJobStartTimeFridayHour;
+    private String activitiesJobStartTimeFridayMinute;
+    private String activitiesJobStartTimeFridayAmPm;
+
+    private String activitiesJobEndTimeFridayHour;
+    private String activitiesJobEndTimeFridayMinute;
+    private String activitiesJobEndTimeFridayAmPm;
+
+    private String activitiesJobStartTimeSaturdayHour;
+    private String activitiesJobStartTimeSaturdayMinute;
+    private String activitiesJobStartTimeSaturdayAmPm;
+
+    private String activitiesJobEndTimeSaturdayHour;
+    private String activitiesJobEndTimeSaturdayMinute;
+    private String activitiesJobEndTimeSaturdayAmPm;
+
+    private String activitiesJobStartTimeSundayHour;
+    private String activitiesJobStartTimeSundayMinute;
+    private String activitiesJobStartTimeSundayAmPm;
+
+    private String activitiesJobEndTimeSundayHour;
+    private String activitiesJobEndTimeSundayMinute;
+    private String activitiesJobEndTimeSundayAmPm;
 
     // activities-work-commute-time
     private String activitiesJobCommuteTime;
@@ -288,38 +353,70 @@ public class Gcc extends FlowInputs {
 
     // activities-class-hourly-schedule
     private String activitiesClassHoursSameEveryDay;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeAllDays;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeAllDays;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeMonday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeMonday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeTuesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeTuesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeWednesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeWednesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeThursday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeThursday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeFriday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeFriday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeSaturday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeSaturday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String activitiesClassStartTimeSunday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String activitiesClassEndTimeSunday;
+
+    private String activitiesClassStartTimeAllDaysHour;
+    private String activitiesClassStartTimeAllDaysMinute;
+    private String activitiesClassStartTimeAllDaysAmPm;
+
+    private String activitiesClassEndTimeAllDaysHour;
+    private String activitiesClassEndTimeAllDaysMinute;
+    private String activitiesClassEndTimeAllDaysAmPm;
+
+    private String activitiesClassStartTimeMondayHour;
+    private String activitiesClassStartTimeMondayMinute;
+    private String activitiesClassStartTimeMondayAmPm;
+
+    private String activitiesClassEndTimeMondayHour;
+    private String activitiesClassEndTimeMondayMinute;
+    private String activitiesClassEndTimeMondayAmPm;
+
+    private String activitiesClassStartTimeTuesdayHour;
+    private String activitiesClassStartTimeTuesdayMinute;
+    private String activitiesClassStartTimeTuesdayAmPm;
+
+    private String activitiesClassEndTimeTuesdayHour;
+    private String activitiesClassEndTimeTuesdayMinute;
+    private String activitiesClassEndTimeTuesdayAmPm;
+
+    private String activitiesClassStartTimeWednesdayHour;
+    private String activitiesClassStartTimeWednesdayMinute;
+    private String activitiesClassStartTimeWednesdayAmPm;
+
+    private String activitiesClassEndTimeWednesdayHour;
+    private String activitiesClassEndTimeWednesdayMinute;
+    private String activitiesClassEndTimeWednesdayAmPm;
+
+    private String activitiesClassStartTimeThursdayHour;
+    private String activitiesClassStartTimeThursdayMinute;
+    private String activitiesClassStartTimeThursdayAmPm;
+
+    private String activitiesClassEndTimeThursdayHour;
+    private String activitiesClassEndTimeThursdayMinute;
+    private String activitiesClassEndTimeThursdayAmPm;
+
+    private String activitiesClassStartTimeFridayHour;
+    private String activitiesClassStartTimeFridayMinute;
+    private String activitiesClassStartTimeFridayAmPm;
+
+    private String activitiesClassEndTimeFridayHour;
+    private String activitiesClassEndTimeFridayMinute;
+    private String activitiesClassEndTimeFridayAmPm;
+
+    private String activitiesClassStartTimeSaturdayHour;
+    private String activitiesClassStartTimeSaturdayMinute;
+    private String activitiesClassStartTimeSaturdayAmPm;
+
+    private String activitiesClassEndTimeSaturdayHour;
+    private String activitiesClassEndTimeSaturdayMinute;
+    private String activitiesClassEndTimeSaturdayAmPm;
+
+    private String activitiesClassStartTimeSundayHour;
+    private String activitiesClassStartTimeSundayMinute;
+    private String activitiesClassStartTimeSundayAmPm;
+
+    private String activitiesClassEndTimeSundayHour;
+    private String activitiesClassEndTimeSundayMinute;
+    private String activitiesClassEndTimeSundayAmPm;
 
     // activities-ed-program-dates
     private String activitiesProgramStartDay;
@@ -370,38 +467,71 @@ public class Gcc extends FlowInputs {
 
     // activities-partner-class-hourly-schedule
     private String partnerClassHoursSameEveryDay;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeAllDays;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeAllDays;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeMonday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeMonday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeTuesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeTuesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeWednesday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeWednesday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeThursday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeThursday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeFriday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeFriday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeSaturday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeSaturday;
-    @NotBlank(message = "{errors.validate.start.time}")
-    private String partnerClassStartTimeSunday;
-    @NotBlank(message = "{errors.validate.end.time}")
-    private String partnerClassEndTimeSunday;
+
+    private String partnerClassStartTimeAllDaysHour;
+    private String partnerClassStartTimeAllDaysMinute;
+    private String partnerClassStartTimeAllDaysAmPm;
+
+    private String partnerClassEndTimeAllDaysHour;
+    private String partnerClassEndTimeAllDaysMinute;
+    private String partnerClassEndTimeAllDaysAmPm;
+
+    private String partnerClassStartTimeMondayHour;
+    private String partnerClassStartTimeMondayMinute;
+    private String partnerClassStartTimeMondayAmPm;
+
+    private String partnerClassEndTimeMondayHour;
+    private String partnerClassEndTimeMondayMinute;
+    private String partnerClassEndTimeMondayAmPm;
+
+    private String partnerClassStartTimeTuesdayHour;
+    private String partnerClassStartTimeTuesdayMinute;
+    private String partnerClassStartTimeTuesdayAmPm;
+
+    private String partnerClassEndTimeTuesdayHour;
+    private String partnerClassEndTimeTuesdayMinute;
+    private String partnerClassEndTimeTuesdayAmPm;
+
+    private String partnerClassStartTimeWednesdayHour;
+    private String partnerClassStartTimeWednesdayMinute;
+    private String partnerClassStartTimeWednesdayAmPm;
+
+    private String partnerClassEndTimeWednesdayHour;
+    private String partnerClassEndTimeWednesdayMinute;
+    private String partnerClassEndTimeWednesdayAmPm;
+
+    private String partnerClassStartTimeThursdayHour;
+    private String partnerClassStartTimeThursdayMinute;
+    private String partnerClassStartTimeThursdayAmPm;
+
+    private String partnerClassEndTimeThursdayHour;
+    private String partnerClassEndTimeThursdayMinute;
+    private String partnerClassEndTimeThursdayAmPm;
+
+    private String partnerClassStartTimeFridayHour;
+    private String partnerClassStartTimeFridayMinute;
+    private String partnerClassStartTimeFridayAmPm;
+
+    private String partnerClassEndTimeFridayHour;
+    private String partnerClassEndTimeFridayMinute;
+    private String partnerClassEndTimeFridayAmPm;
+
+    private String partnerClassStartTimeSaturdayHour;
+    private String partnerClassStartTimeSaturdayMinute;
+    private String partnerClassStartTimeSaturdayAmPm;
+
+    private String partnerClassEndTimeSaturdayHour;
+    private String partnerClassEndTimeSaturdayMinute;
+    private String partnerClassEndTimeSaturdayAmPm;
+
+    private String partnerClassStartTimeSundayHour;
+    private String partnerClassStartTimeSundayMinute;
+    private String partnerClassStartTimeSundayAmPm;
+
+    private String partnerClassEndTimeSundayHour;
+    private String partnerClassEndTimeSundayMinute;
+    private String partnerClassEndTimeSundayAmPm;
+
 
     // activities-partner-ed-program-dates
     private String partnerProgramStartDay;
