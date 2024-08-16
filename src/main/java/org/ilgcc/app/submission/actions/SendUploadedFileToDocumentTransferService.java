@@ -1,5 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
+import com.google.common.io.Files;
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.UserFile;
@@ -42,7 +43,8 @@ public class SendUploadedFileToDocumentTransferService implements Action {
             if (!userFiles.isEmpty()) {
                 for (int i = 0; i < userFiles.size(); i++) {
                     UserFile userFile = userFiles.get(i);
-                    String fileName = FileNameUtility.getFileNameForUploadedDocument(submission, i + 1, userFiles.size());
+                    String fileExtension = Files.getFileExtension(userFile.getOriginalName());
+                    String fileName = FileNameUtility.getFileNameForUploadedDocument(submission, i + 1, userFiles.size(), fileExtension);
                     CompletableFuture<Boolean> scannedAndCleanFuture = s3PresignService.isObjectScannedAndClean(userFile.getRepositoryPath());
                     int currentFileIndex = i;
                     scannedAndCleanFuture.thenAccept(scannedAndClean -> {
