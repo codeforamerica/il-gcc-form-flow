@@ -215,15 +215,19 @@ public class SubmissionTestBuilder {
 
         Map<String, Object> child = children.get(childPosition);
 
-        child.put("childcareEndTimeFriday", "");
-        child.put("childcareEndTimeMonday", "");
-        child.put("childcareEndTimeAllDays", "17:00");
-        child.put("childcareStartTimeFriday", "");
-        child.put("childcareStartTimeMonday", "");
-        child.put("childcareEndTimeWednesday", "");
-        child.put("childcareStartTimeAllDays", "09:00");
+        setTime(child, "childcare", "Start", "AllDays", "9", "0", "AM");
+        setTime(child, "childcare", "End", "AllDays", "5", "0", "PM");
+
+        setTime(child, "childcare", "Start", "Monday", "", "", "");
+        setTime(child, "childcare", "End", "Monday", "", "", "");
+
+        setTime(child, "childcare", "Start", "Wednesday", "", "", "");
+        setTime(child, "childcare", "End", "Wednesday", "", "", "");
+
+        setTime(child, "childcare", "Start", "Friday", "", "", "");
+        setTime(child, "childcare", "End", "Friday", "", "", "");
+
         child.put("childcareWeeklySchedule[]", List.of("Monday", "Wednesday", "Friday"));
-        child.put("childcareStartTimeWednesday", "");
         child.put("childcareHoursSameEveryDay[]", List.of("yes"));
 
         children.set(childPosition, child);
@@ -239,15 +243,19 @@ public class SubmissionTestBuilder {
 
         Map<String, Object> child = children.get(childPosition);
 
-        child.put("childcareEndTimeAllDays", "");
-        child.put("childcareEndTimeTuesday", "12:00");
-        child.put("childcareEndTimeSaturday", "15:00");
-        child.put("childcareEndTimeWednesday", "15:00");
-        child.put("childcareStartTimeAllDays", "");
-        child.put("childcareStartTimeTuesday", "09:00");
+        setTime(child, "childcare", "Start", "AllDays", "", "", "");
+        setTime(child, "childcare", "End", "AllDays", "", "", "");
+
+        setTime(child, "childcare", "Start", "Tuesday", "9", "0", "AM");
+        setTime(child, "childcare", "End", "Tuesday", "12", "0", "PM");
+
+        setTime(child, "childcare", "Start", "Wednesday", "1", "0", "PM");
+        setTime(child, "childcare", "End", "Wednesday", "3", "0", "PM");
+
+        setTime(child, "childcare", "Start", "Saturday", "1", "13", "PM");
+        setTime(child, "childcare", "End", "Saturday", "3", "10", "PM");
+
         child.put("childcareWeeklySchedule[]", List.of("Tuesday", "Wednesday", "Saturday"));
-        child.put("childcareStartTimeSaturday", "13:00");
-        child.put("childcareStartTimeWednesday", "13:00");
         child.put("childcareHoursSameEveryDay[]", List.of());
 
         children.set(childPosition, child);
@@ -255,13 +263,14 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withRegularSchoolSchedule(String inputNamePrefix, String weeklyScheduleName, List days,
-        String startTime, String endTime) {
+    public SubmissionTestBuilder withRegularSchoolSchedule(String inputNamePrefix, String weeklyScheduleName, List days) {
         if (!childcareReasonKey(inputNamePrefix).isBlank()) {
             submission.getInputData().put(childcareReasonKey(inputNamePrefix), List.of("SCHOOL"));
         }
-        submission.getInputData().put(inputNamePrefix + "EndTimeAllDays", endTime);
-        submission.getInputData().put(inputNamePrefix + "StartTimeAllDays", startTime);
+
+        setTime(submission.getInputData(), inputNamePrefix, "Start", "AllDays", "10", "0", "AM");
+        setTime(submission.getInputData(), inputNamePrefix, "End", "AllDays", "3", "45", "PM");
+
         submission.getInputData().put(inputNamePrefix + "HoursSameEveryDay[]", List.of("Yes"));
         submission.getInputData().put(weeklyScheduleName, days);
         return this;
@@ -269,19 +278,20 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withSchoolScheduleByDay(String inputNamePrefix, String day,
-        String startTime, String endTime) {
+        String startHour, String startMinute, String startAmPm, String endHour, String endMinute, String endAmPm) {
         if (!childcareReasonKey(inputNamePrefix).isBlank()) {
             submission.getInputData().put(childcareReasonKey(inputNamePrefix), List.of("SCHOOL"));
         }
         submission.getInputData().put(inputNamePrefix + "HoursSameEveryDay[]", List.of());
-        submission.getInputData().put(inputNamePrefix + "StartTime" + day, startTime);
-        submission.getInputData().put(inputNamePrefix + "EndTime" + day, endTime);
+
+        setTime(submission.getInputData(), inputNamePrefix, "Start", day, startHour, startMinute, startAmPm);
+        setTime(submission.getInputData(), inputNamePrefix, "End", day, endHour, endMinute, endAmPm);
 
         return this;
     }
 
     public SubmissionTestBuilder regularWorkScheduleWithCommuteTime(String commuteLength) {
-        withRegularWorkSchedule(List.of("Monday", "Thursday", "Sunday"), "10:00", "15:45");
+        withRegularWorkSchedule(List.of("Monday", "Thursday", "Sunday"));
 
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
 
@@ -296,7 +306,7 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withRegularWorkSchedule(List days, String startTime, String endTime) {
+    public SubmissionTestBuilder withRegularWorkSchedule(List days) {
         withJob("jobs", "Regular Schedule Job", "123 Main Str", "", "", "", "");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
@@ -305,15 +315,34 @@ public class SubmissionTestBuilder {
 
         Map<String, Object> job = jobs.get(jobs.size() - 1);
 
-        job.put("activitiesJobEndTimeAllDays", endTime);
-        job.put("activitiesJobStartTimeAllDays", startTime);
+        setTime(job, "activitiesJob", "Start", "AllDays", "10", "0", "AM");
+        setTime(job, "activitiesJob", "End", "AllDays", "3", "45", "PM");
+
         job.put("activitiesJobHoursSameEveryDay[]", List.of("Yes"));
         job.put("activitiesJobWeeklySchedule[]", days);
         submission.getInputData().put("activitiesParentChildcareReason[]", List.of("WORKING"));
         return this;
     }
 
-    public SubmissionTestBuilder withWorkScheduleByDay(String day, String startTime, String endTime) {
+    public SubmissionTestBuilder withRegularWorkScheduleAddHour(List days, String startHour, String startMinute, String startAmPm, String endHour, String endMinute, String endAmPm) {
+        withJob("jobs", "Regular Schedule Job", "123 Main Str", "", "", "", "");
+        List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
+        if (jobs == null) {
+            return this;
+        }
+
+        Map<String, Object> job = jobs.get(jobs.size() - 1);
+
+        setTime(job, "activitiesJob", "Start", "AllDays", startHour, startMinute, startAmPm);
+        setTime(job, "activitiesJob", "End", "AllDays", endHour, endMinute, endAmPm);
+
+        job.put("activitiesJobHoursSameEveryDay[]", List.of("Yes"));
+        job.put("activitiesJobWeeklySchedule[]", days);
+        submission.getInputData().put("activitiesParentChildcareReason[]", List.of("WORKING"));
+        return this;
+    }
+
+    public SubmissionTestBuilder withWorkScheduleByDay(String day, String startHour, String startMinute, String startAmPm, String endHour, String endMinute, String endAmPm) {
         withJob("jobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
@@ -321,9 +350,11 @@ public class SubmissionTestBuilder {
         }
 
         Map<String, Object> job = jobs.get(0);
+
         job.put("activitiesJobHoursSameEveryDay[]", List.of());
-        job.put("activitiesJobStartTime" + day, startTime);
-        job.put("activitiesJobEndTime" + day, endTime);
+        setTime(job, "activitiesJob", "Start", day, startHour, startMinute, startAmPm);
+        setTime(job, "activitiesJob", "End", day, endHour, endMinute, endAmPm);
+
         ArrayList<String> jobList = new ArrayList<>();
         if (job.containsKey("activitiesJobWeeklySchedule[]")) {
             List jobSchedule = (List) job.getOrDefault("activitiesJobWeeklySchedule[]", List.of());
@@ -336,7 +367,7 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withPartnerRegularWorkSchedule(List days, String startTime, String endTime) {
+    public SubmissionTestBuilder withPartnerRegularWorkSchedule(List days) {
         withJob("partnerJobs", "Regular Schedule Job", "123 Main Str", "", "", "", "");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (jobs == null) {
@@ -345,15 +376,33 @@ public class SubmissionTestBuilder {
 
         Map<String, Object> job = jobs.get(jobs.size() - 1);
 
-        job.put("activitiesJobEndTimeAllDays", endTime);
-        job.put("activitiesJobStartTimeAllDays", startTime);
+        setTime(job, "activitiesJob", "Start", "AllDays", "10", "0", "AM");
+        setTime(job, "activitiesJob", "End", "AllDays", "3", "45", "PM");
+
+        job.put("activitiesJobHoursSameEveryDay[]", List.of("Yes"));
+        job.put("activitiesJobWeeklySchedule[]", days);
+        submission.getInputData().put("activitiesParentChildcareReason[]", List.of("WORKING"));
+        return this;
+    }
+    public SubmissionTestBuilder withPartnerRegularWorkScheduleAddHour(List days, String startHour, String startMinute, String startAmPm, String endHour, String endMinute, String endAmPm) {
+        withJob("partnerJobs", "Regular Schedule Job", "123 Main Str", "", "", "", "");
+        List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
+        if (jobs == null) {
+            return this;
+        }
+
+        Map<String, Object> job = jobs.get(jobs.size() - 1);
+
+        setTime(job, "activitiesJob", "Start", "AllDays", startHour, startMinute, startAmPm);
+        setTime(job, "activitiesJob", "End", "AllDays", endHour, endMinute, endAmPm);
+
         job.put("activitiesJobHoursSameEveryDay[]", List.of("Yes"));
         job.put("activitiesJobWeeklySchedule[]", days);
         submission.getInputData().put("activitiesParentChildcareReason[]", List.of("WORKING"));
         return this;
     }
 
-    public SubmissionTestBuilder withPartnerWorkScheduleByDay(String day, String startTime, String endTime) {
+    public SubmissionTestBuilder withPartnerWorkScheduleByDay(String day, String startHour, String startMinute, String startAmPm, String endHour, String endMinute, String endAmPm) {
         withParentPartnerDetails();
         withJob("partnerJobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "");
         List<Map<String, Object>> partnerJobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
@@ -363,8 +412,10 @@ public class SubmissionTestBuilder {
 
         Map<String, Object> job = partnerJobs.get(0);
         job.put("activitiesJobHoursSameEveryDay[]", List.of());
-        job.put("activitiesJobStartTime" + day, startTime);
-        job.put("activitiesJobEndTime" + day, endTime);
+
+        setTime(job, "activitiesJob", "Start", day, startHour, startMinute, startAmPm);
+        setTime(job, "activitiesJob", "End", day, endHour, endMinute, endAmPm);
+
         ArrayList<String> jobList = new ArrayList<>();
         if (job.containsKey("activitiesJobWeeklySchedule[]")) {
             List jobSchedule = (List) job.getOrDefault("activitiesJobWeeklySchedule[]", List.of());
@@ -378,7 +429,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder regularPartnerScheduleWithCommuteTime(String commuteLength) {
-        withPartnerRegularWorkSchedule(List.of("Monday", "Thursday", "Sunday"), "10:00", "15:45");
+        withPartnerRegularWorkSchedule(List.of("Monday", "Thursday", "Sunday"));
 
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
 
@@ -467,5 +518,14 @@ public class SubmissionTestBuilder {
             submission.getInputData().put("partnerEducationType", educationType);
         }
         return this;
+    }
+
+    public SubmissionTestBuilder setTime(Map<String, Object> data, String inputPrefix, String startOrEndKey, String dayPostFix, String hour, String minute, String amPm){
+        data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "Hour", hour);
+        data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "Minute", minute);
+        data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "AmPm", amPm);
+
+        return this;
+
     }
 }
