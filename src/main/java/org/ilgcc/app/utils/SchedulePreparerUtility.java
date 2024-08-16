@@ -111,9 +111,12 @@ public class SchedulePreparerUtility {
     }
 
     private static String formatTimeString(String hourValue, String minuteValue){
-        int hourInt = Integer.parseInt(hourValue);
-        int minuteInt = Integer.parseInt(minuteValue);
-        return String.format("%02d:%02d", hourInt, minuteInt);
+        if(!hourValue.isEmpty() || !minuteValue.isEmpty()){
+            int hourInt = Integer.parseInt(hourValue);
+            int minuteInt = Integer.parseInt(minuteValue);
+            return String.format("%02d:%02d", hourInt, minuteInt);
+        }
+        return "";
     }
 
     public static Optional<List<DayOfWeekOption>> getDaysOfWeekField(Map<String, Object> inputData, String inputName) {
