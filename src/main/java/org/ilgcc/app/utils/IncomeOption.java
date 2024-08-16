@@ -5,7 +5,6 @@ public enum IncomeOption implements InputOption {
   RENTAL("unearned-income-source.rental", "unearnedIncomeRental"),
   ROYALTIES("unearned-income-source.royalties", "unearnedIncomeRoyalties"),
   PENSION("unearned-income-source.pension", "unearnedIncomePension"),
-  UNEMPLOYMENT("unearned-income-source.unemployment", "unearnedIncomeUnemployment"),
   WORKERS("unearned-income-source.workers", "unearnedIncomeWorkers");
 
   private final String label;

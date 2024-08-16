@@ -449,13 +449,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-source.title"));
         testPage.clickElementById("unearnedIncomeSource-ROYALTIES-label");
         testPage.clickElementById("unearnedIncomeSource-RENTAL-label");
-        testPage.clickElementById("unearnedIncomeSource-UNEMPLOYMENT-label");
         testPage.clickContinue();
 
         //unearned-income-amount
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-amount.title"));
         testPage.enter("unearnedIncomeRoyalties", "35");
-        testPage.enter("unearnedIncomeUnemployment", "175");
         testPage.clickContinue();
 
         //unearned-income-assets
