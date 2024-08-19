@@ -8,6 +8,7 @@ import formflow.library.pdf.SubmissionField;
 import java.util.List;
 import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.TimeOption;
 import org.ilgcc.app.utils.enums.CommuteTimeType;
 import org.junit.jupiter.api.Test;
 
@@ -61,9 +62,9 @@ public class ParentPartnerJobSchedulePreparerTest {
     @Test
     public void withDifferentScheduleEveryDay() {
         submission = new SubmissionTestBuilder()
-            .withPartnerWorkScheduleByDay("Monday","10","0", "AM", "3", "45", "PM")
-            .withPartnerWorkScheduleByDay("Wednesday","8", "0", "AM", "12", "45", "PM")
-            .withPartnerWorkScheduleByDay("Friday","12", "0", "PM", "7", "0", "PM")
+            .withPartnerWorkScheduleByDay("Monday",TimeOption.TIME10AM, TimeOption.TIME345PM)
+            .withPartnerWorkScheduleByDay("Wednesday",TimeOption.TIME8AM, TimeOption.TIME113PM)
+            .withPartnerWorkScheduleByDay("Friday",TimeOption.TIME12PM, TimeOption.TIME7PM)
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
@@ -87,7 +88,7 @@ public class ParentPartnerJobSchedulePreparerTest {
         assertThat(result.get("partnerEmployerScheduleWednesdayStartAmPm_1")).isEqualTo(
             new SingleField("partnerEmployerScheduleWednesdayStartAmPm", "AM", 1));
         assertThat(result.get("partnerEmployerScheduleWednesdayEnd_1")).isEqualTo(
-            new SingleField("partnerEmployerScheduleWednesdayEnd", "12:45", 1));
+            new SingleField("partnerEmployerScheduleWednesdayEnd", "01:13", 1));
         assertThat(result.get("partnerEmployerScheduleWednesdayEndAmPm_1")).isEqualTo(
             new SingleField("partnerEmployerScheduleWednesdayEndAmPm", "PM", 1));
 
@@ -105,7 +106,7 @@ public class ParentPartnerJobSchedulePreparerTest {
     public void withTwoJobs() {
         submission = new SubmissionTestBuilder()
             .withPartnerRegularWorkSchedule(List.of("Monday"))
-            .withPartnerRegularWorkScheduleAddHour(List.of("Monday", "Wednesday"),"8","0", "AM", "12", "45", "PM")
+            .withPartnerRegularWorkScheduleAddHour(List.of("Monday", "Wednesday"), TimeOption.TIME8AM, TimeOption.TIME113PM)
             .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
@@ -124,7 +125,7 @@ public class ParentPartnerJobSchedulePreparerTest {
         assertThat(result.get("partnerEmployerScheduleMondayStartAmPm_2")).isEqualTo(
             new SingleField("partnerEmployerScheduleMondayStartAmPm", "AM", 2));
         assertThat(result.get("partnerEmployerScheduleMondayEnd_2")).isEqualTo(
-            new SingleField("partnerEmployerScheduleMondayEnd", "12:45", 2));
+            new SingleField("partnerEmployerScheduleMondayEnd", "01:13", 2));
         assertThat(result.get("partnerEmployerScheduleMondayEndAmPm_2")).isEqualTo(
             new SingleField("partnerEmployerScheduleMondayEndAmPm", "PM", 2));
 
@@ -138,7 +139,7 @@ public class ParentPartnerJobSchedulePreparerTest {
         assertThat(result.get("partnerEmployerScheduleWednesdayStartAmPm_2")).isEqualTo(
             new SingleField("partnerEmployerScheduleWednesdayStartAmPm", "AM", 2));
         assertThat(result.get("partnerEmployerScheduleWednesdayEnd_2")).isEqualTo(
-            new SingleField("partnerEmployerScheduleWednesdayEnd", "12:45", 2));
+            new SingleField("partnerEmployerScheduleWednesdayEnd", "01:13", 2));
         assertThat(result.get("partnerEmployerScheduleWednesdayEndAmPm_2")).isEqualTo(
             new SingleField("partnerEmployerScheduleWednesdayEndAmPm", "PM", 2));
     }
