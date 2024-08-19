@@ -24,9 +24,6 @@
                                 aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
                                 aria-invalid=${hasError}">
                                 <th:block
-                                        th:replace="~{fragments/inputs/selectOptionPlaceholder :: selectOptionPlaceholder(optionText=#{general.hour})}"/>
-
-                                <th:block
                                         th:each="hour : ${T(org.ilgcc.app.utils.HourSelectOption).values()}">
                                     <th:block
                                             th:replace="~{fragments/inputs/selectOption :: selectOption(value=${hour.getLabel()}, optionText=${hour.getLabel()}, inputName=${hourInputName})}"/>
@@ -47,7 +44,7 @@
                                 aria-describedby=${hasHelpText ? minuteInputName + '-help-text' : ''},
                                 aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
                                 aria-invalid=${hasError}"
-                               th:value="${fieldData.getOrDefault(minuteInputName, '')}">
+                               th:value="${fieldData.getOrDefault(minuteInputName, '0')}">
                     </div>
                     <div class="form-question-stack">
                         <div class="form-question-vertical-align">
@@ -63,8 +60,7 @@
                                             aria-describedby=${hasHelpText ? amPmInputName + '-help-text' : ''},
                                             aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
                                             aria-invalid=${hasError}">
-                                <th:block
-                                        th:replace="~{fragments/inputs/selectOptionPlaceholder :: selectOptionPlaceholder(optionText=#{general.amOrPM})}"/>
+
                                 <th:block
                                         th:each="amPM : ${T(org.ilgcc.app.utils.AmPmSelectOption).values()}">
                                     <pre th:text="${amPmInputName}"></pre>
