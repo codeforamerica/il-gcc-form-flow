@@ -4,6 +4,7 @@ import formflow.library.data.Submission;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ActivitySchedules.ConsistentHourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
@@ -18,6 +19,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static org.ilgcc.app.utils.SubmissionUtilities.*;
 
+@Slf4j
 @Component
 public class SchedulePreparerUtility {
 
@@ -110,13 +112,15 @@ public class SchedulePreparerUtility {
         return fields;
     }
 
-    private static String formatTimeString(String hourValue, String minuteValue){
-        if(!hourValue.isEmpty() || !minuteValue.isEmpty()){
+    private static String formatTimeString(String hourValue, String minuteValue) {
+        try {
             int hourInt = Integer.parseInt(hourValue);
             int minuteInt = Integer.parseInt(minuteValue);
             return String.format("%02d:%02d", hourInt, minuteInt);
+        } catch (Exception e) {
+            log.error("Unable to parse hour: " + hourValue + " or minute: " + minuteValue);
+            return "";
         }
-        return "";
     }
 
     public static Optional<List<DayOfWeekOption>> getDaysOfWeekField(Map<String, Object> inputData, String inputName) {
