@@ -8,6 +8,7 @@ import formflow.library.pdf.SubmissionField;
 import java.util.List;
 import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.TimeOption;
 import org.junit.jupiter.api.Test;
 
 public class ApplicantEducationSchedulePreparerTest {
@@ -60,9 +61,9 @@ public class ApplicantEducationSchedulePreparerTest {
     @Test
     public void withDifferentScheduleEveryDay() {
         submission = new SubmissionTestBuilder()
-            .withSchoolScheduleByDay("activitiesClass","Monday","10", "0", "AM", "3", "45", "PM")
-            .withSchoolScheduleByDay("activitiesClass","Wednesday","8", "0", "AM", "12", "45", "PM")
-            .withSchoolScheduleByDay("activitiesClass","Friday","12", "0", "PM", "7", "0", "PM")
+            .withSchoolScheduleByDay("activitiesClass","Monday", TimeOption.TIME10AM, TimeOption.TIME345PM)
+            .withSchoolScheduleByDay("activitiesClass","Wednesday",TimeOption.TIME8AM, TimeOption.TIME310PM)
+            .withSchoolScheduleByDay("activitiesClass","Friday",TimeOption.TIME12PM, TimeOption.TIME7PM)
             .with("weeklySchedule[]", List.of("Monday", "Wednesday", "Friday"))
             .build();
 
@@ -87,7 +88,7 @@ public class ApplicantEducationSchedulePreparerTest {
         assertThat(result.get("applicantEducationScheduleWednesdayStartAmPm")).isEqualTo(
             new SingleField("applicantEducationScheduleWednesdayStartAmPm", "AM", null));
         assertThat(result.get("applicantEducationScheduleWednesdayEnd")).isEqualTo(
-            new SingleField("applicantEducationScheduleWednesdayEnd", "12:45", null));
+            new SingleField("applicantEducationScheduleWednesdayEnd", "03:10", null));
         assertThat(result.get("applicantEducationScheduleWednesdayEndAmPm")).isEqualTo(
             new SingleField("applicantEducationScheduleWednesdayEndAmPm", "PM", null));
 
