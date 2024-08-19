@@ -549,8 +549,7 @@ public class Gcc extends FlowInputs {
     private String unearnedIncomeRental;
     @Money(message="{errors.invalid-dollar-amount}")
     private String unearnedIncomeDividends;
-    @Money(message="{errors.invalid-dollar-amount}")
-    private String unearnedIncomeUnemployment;
+
     @Money(message="{errors.invalid-dollar-amount}")
     private String unearnedIncomeRoyalties;
     @Money(message="{errors.invalid-dollar-amount}")
