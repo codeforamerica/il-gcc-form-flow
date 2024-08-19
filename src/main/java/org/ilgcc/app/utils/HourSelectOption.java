@@ -1,6 +1,7 @@
 package org.ilgcc.app.utils;
 
 public enum HourSelectOption implements InputOption {
+  HOUR_12("12"),
   HOUR_1("1"),
   HOUR_2("2"),
   HOUR_3("3"),
@@ -11,9 +12,7 @@ public enum HourSelectOption implements InputOption {
   HOUR_8("8"),
   HOUR_9("9"),
   HOUR_10("10"),
-  HOUR_11("11"),
-  HOUR_12("12");
-
+  HOUR_11("11");
   private final String label;
 
   HourSelectOption(String label) {
