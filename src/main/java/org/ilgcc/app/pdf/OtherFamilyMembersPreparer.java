@@ -29,6 +29,7 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
       results.put(getUniqueKey(), new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
       results.put(getUniqueKey(), new SingleField("familyMemberLastName", (String) child.get("childLastName"), iteration));
       results.put(getUniqueKey(), new SingleField("familyMemberDateOfBirth", formatChildDateOfBirth(child), iteration));
+      results.put(getUniqueKey(), new SingleField("familyMemberRelationship", (String) child.get("childRelationship"), iteration));
       iteration++;
     }
 
