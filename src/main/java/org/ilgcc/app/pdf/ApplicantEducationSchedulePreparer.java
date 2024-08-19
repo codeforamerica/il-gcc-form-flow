@@ -21,10 +21,10 @@ public class ApplicantEducationSchedulePreparer implements SubmissionFieldPrepar
                         "activitiesClass",
                         "weeklySchedule[]");
 
-        for (var day : careSchedule.keySet()) {
-            results.putAll(
-                    SchedulePreparerUtility.createSubmissionFieldsFromDay(submission.getInputData(), day, careSchedule.get(day), "activitiesClass", "applicantEducationSchedule"));
-        }
+
+        results.putAll(
+                SchedulePreparerUtility.createSubmissionFieldsFromDay(submission.getInputData(), careSchedule, "activitiesClass", "applicantEducationSchedule"));
+
 
         return results;
     }
