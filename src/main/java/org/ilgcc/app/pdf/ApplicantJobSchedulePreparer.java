@@ -38,11 +38,9 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
                     "activitiesJob",
                     "activitiesJobWeeklySchedule[]");
 
-            for (var day : careSchedule.keySet()) {
                 results.putAll(
-                        SchedulePreparerUtility.createSubmissionFieldsFromDay(job, day, careSchedule.get(day), "activitiesJob", "applicantEmployerSchedule",
+                        SchedulePreparerUtility.createSubmissionFieldsFromDay(job, careSchedule, "activitiesJob", "applicantEmployerSchedule",
                                 iteration));
-            }
 
             String commuteTimeKey = (String) job.getOrDefault("activitiesJobCommuteTime", "");
 

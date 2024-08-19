@@ -32,11 +32,10 @@ public class ChildcareSchedulePreparer implements SubmissionFieldPreparer {
                             "childcare",
                             "childcareWeeklySchedule[]");
 
-            for (var day : careSchedule.keySet()) {
-                results.putAll(
-                        SchedulePreparerUtility.createSubmissionFieldsFromDay(child, day, careSchedule.get(day), "childcare", "childCareSchedule",
-                                iteration));
-            }
+            results.putAll(
+                    SchedulePreparerUtility.createSubmissionFieldsFromDay(child, careSchedule, "childcare", "childCareSchedule",
+                            iteration));
+
             iteration++;
         }
         return results;

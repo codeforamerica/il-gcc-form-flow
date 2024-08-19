@@ -22,11 +22,10 @@ public class PartnerEducationSchedulePreparer implements SubmissionFieldPreparer
                         "partnerClass",
                         "partnerClassWeeklySchedule[]");
 
-        for (var day : careSchedule.keySet()) {
-            results.putAll(
-                    SchedulePreparerUtility.createSubmissionFieldsFromDay(submission.getInputData(), day, careSchedule.get(day),
-                            "partnerClass", "partnerEducationSchedule"));
-        }
+        results.putAll(
+                SchedulePreparerUtility.createSubmissionFieldsFromDay(submission.getInputData(), careSchedule,
+                        "partnerClass", "partnerEducationSchedule"));
+
 
         return results;
     }

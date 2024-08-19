@@ -34,11 +34,9 @@ public class ParentPartnerJobSchedulePreparer implements SubmissionFieldPreparer
                     (Map<String, Object>) job,
                     "activitiesJob",
                     "activitiesJobWeeklySchedule[]");
-            for (var day : careSchedule.keySet()) {
-                results.putAll(
-                        SchedulePreparerUtility.createSubmissionFieldsFromDay(job, day, careSchedule.get(day), "activitiesJob", "partnerEmployerSchedule",
-                                iteration));
-            }
+            results.putAll(
+                    SchedulePreparerUtility.createSubmissionFieldsFromDay(job, careSchedule, "activitiesJob", "partnerEmployerSchedule",
+                            iteration));
 
             String commuteTimeKey = (String) job.getOrDefault("activitiesJobCommuteTime", "");
 

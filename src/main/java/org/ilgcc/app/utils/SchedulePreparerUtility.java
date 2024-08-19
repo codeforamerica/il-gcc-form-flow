@@ -64,55 +64,49 @@ public class SchedulePreparerUtility {
         return fields;
     }
 
-    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData, String dayKey, String dayValue,
+    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData, Map<String, String> dataMappings,
             String inputPrefixKey, String pdfPrefix, int iterator) {
         Map<String, SubmissionField> fields = new HashMap<>();
 
-        String hourStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "Hour", "");
-        String minuteStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "Minute", "");
-        String amPmStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "AmPm", "");
+        for (var day : dataMappings.keySet()) {
+            List.of(START, END).forEach(prefix -> {
+                String baseKey = inputPrefixKey + prefix + "Time" + dataMappings.get(day);
+                String amPmValue = (String) inputData.getOrDefault(baseKey + "AmPm", "");
 
-        String hourEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "Hour", "");
-        String minuteEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "Minute", "");
-        String amPmEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "AmPm", "");
+                fields.put(pdfPrefix + day + prefix + "_" + iterator,
+                        new SingleField(pdfPrefix + day + prefix, formatTimeString(inputData, baseKey), iterator));
+                fields.put(pdfPrefix + day + prefix + AM_PM + "_" + iterator,
+                        new SingleField(pdfPrefix + day + prefix + AM_PM, amPmValue, iterator));
 
-        fields.put(pdfPrefix + dayKey + START + "_" + iterator,
-                new SingleField(pdfPrefix + dayKey + START, formatTimeString(hourStartValue, minuteStartValue), iterator));
-        fields.put(pdfPrefix + dayKey + START + AM_PM + "_" + iterator,
-                new SingleField(pdfPrefix + dayKey + START + AM_PM, amPmStartValue, iterator));
-        fields.put(pdfPrefix + dayKey + END + "_" + iterator,
-                new SingleField(pdfPrefix + dayKey + END,  formatTimeString(hourEndValue, minuteEndValue), iterator));
-        fields.put(pdfPrefix + dayKey + END + AM_PM + "_" + iterator,
-                new SingleField(pdfPrefix + dayKey + END + AM_PM, amPmEndValue, iterator));
+            });
+        }
 
         return fields;
     }
 
-    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData, String dayKey, String dayValue,
+    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData, Map<String, String> dataMappings,
             String inputPrefixKey, String pdfPrefix) {
         Map<String, SubmissionField> fields = new HashMap<>();
 
-        String hourStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "Hour", "");
-        String minuteStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "Minute", "");
-        String amPmStartValue = (String) inputData.getOrDefault(inputPrefixKey + "StartTime" + dayValue + "AmPm", "");
+        for (var day : dataMappings.keySet()) {
+            List.of(START, END).forEach(prefix -> {
+                String baseKey = inputPrefixKey + prefix + "Time" + dataMappings.get(day);
+                String amPmValue = (String) inputData.getOrDefault(baseKey + "AmPm", "");
 
-        String hourEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "Hour", "");
-        String minuteEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "Minute", "");
-        String amPmEndValue = (String) inputData.getOrDefault(inputPrefixKey + "EndTime" + dayValue + "AmPm", "");
+                fields.put(pdfPrefix + day + prefix,
+                        new SingleField(pdfPrefix + day + prefix, formatTimeString(inputData, baseKey), null));
+                fields.put(pdfPrefix + day + prefix + AM_PM,
+                        new SingleField(pdfPrefix + day + prefix + AM_PM, amPmValue, null));
 
-        fields.put(pdfPrefix + dayKey + START,
-                new SingleField(pdfPrefix + dayKey + START, formatTimeString(hourStartValue, minuteStartValue), null));
-        fields.put(pdfPrefix + dayKey + START + AM_PM,
-                new SingleField(pdfPrefix + dayKey + START + AM_PM, amPmStartValue, null));
-        fields.put(pdfPrefix + dayKey + END,
-                new SingleField(pdfPrefix + dayKey + END,  formatTimeString(hourEndValue, minuteEndValue), null));
-        fields.put(pdfPrefix + dayKey + END + AM_PM,
-                new SingleField(pdfPrefix + dayKey + END + AM_PM, amPmEndValue, null));
-
+            });
+        }
         return fields;
     }
 
-    private static String formatTimeString(String hourValue, String minuteValue) {
+    private static String formatTimeString(Map<String, Object> inputData, String baseKey) {
+        String hourValue = (String) inputData.getOrDefault(baseKey + "Hour", "");
+        String minuteValue = (String) inputData.getOrDefault(baseKey + "Minute", "");
+
         try {
             int hourInt = Integer.parseInt(hourValue);
             int minuteInt = Integer.parseInt(minuteValue);
