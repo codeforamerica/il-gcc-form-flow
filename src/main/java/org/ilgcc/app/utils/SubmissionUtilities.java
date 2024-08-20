@@ -8,12 +8,13 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
 
-
+@Slf4j
 public class SubmissionUtilities {
   public static final DateTimeFormatter MM_DD_YYYY = DateTimeFormatter.ofPattern("M/d/uuuu").withZone(ZoneId.of("America/Chicago")) ;
   public static final DateTimeFormatter YYYY_MM_DD_DASHES = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.of("America/Chicago"));
@@ -67,7 +68,13 @@ public class SubmissionUtilities {
     if(!applicantPreferredName.isBlank()){
       return applicantPreferredName;
     } else {
-      return inputData.get("parentFirstName").toString();
+      var firstName = inputData.get("parentFirstName");
+      if (firstName != null) {
+        return firstName.toString();
+      } else {
+        log.error("parentFirstName is null which is impossible because it is a required field.");
+        return null;
+      }
     }
   }
 
