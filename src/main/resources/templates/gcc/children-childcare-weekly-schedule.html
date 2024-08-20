@@ -12,28 +12,14 @@
             formAction=${formAction},
             inputContent=~{::inputContent})}">
         <th:block th:ref="inputContent">
-            <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
-        checkboxFieldset(inputName='childcareWeeklySchedule',
-        label='',
-        ariaLabel='header',
-        content=~{::requiredChildcareDays})}">
-                <th:block th:ref="requiredChildcareDays">
-                    <!-- Copy the below input if you want to add more -->
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareWeeklySchedule',value='Monday', label=#{general.week.Monday})}"/>
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareWeeklySchedule',value='Tuesday', label=#{general.week.Tuesday})}"/>
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareWeeklySchedule',value='Wednesday', label=#{general.week.Wednesday})}"/>
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareWeeklySchedule',value='Thursday', label=#{general.week.Thursday})}"/>
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareWeeklySchedule',value='Friday', label=#{general.week.Friday})}"/>
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareWeeklySchedule',value='Saturday', label=#{general.week.Saturday})}"/>
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareWeeklySchedule',value='Sunday', label=#{general.week.Sunday})}"/>
-                </th:block>
+            <th:block th:ref="formContent"
+                      th:with="dayOfWeekOptions=${T(org.ilgcc.app.utils.DayOfWeekOption).values()}">
+                <div class="form-card__content">
+                    <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                  checkboxFieldset(inputName='childcareWeeklySchedule',
+                    ariaLabel='header',
+                    options=${dayOfWeekOptions})}"/>
+                </div>
             </th:block>
         </th:block>
     </th:block>
