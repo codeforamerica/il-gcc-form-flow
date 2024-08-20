@@ -78,6 +78,11 @@ html, body {
   color: var(--white);
 }
 
+.main-header a:not([role="menuitem"]):hover,
+.main-footer a:hover {
+  color: var(--idhs-highlight-green);
+}
+
 main.slab {
   padding-top: 0;
   padding-bottom: 0;
