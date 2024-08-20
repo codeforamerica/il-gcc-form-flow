@@ -9,8 +9,11 @@
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
         <th:block th:replace="~{fragments/gcc-icons :: clock}"></th:block>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{children-childcare-hourly-schedule.header(${fieldData.get('childFirstName')})})}"/>
-
+        <th:block th:with="childHasProvider=${fieldData.get('childInCare').equals('true')},
+              hasProviderHeader=#{children-childcare-hourly-schedule.header-current(${fieldData.get('childFirstName')})},
+              noCurrentProviderHeader=#{children-childcare-hourly-schedule.header-future(${fieldData.get('childFirstName')})}">
+          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${childHasProvider ? hasProviderHeader : noCurrentProviderHeader})}"/>
+        </th:block>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
