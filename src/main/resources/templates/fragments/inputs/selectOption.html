@@ -4,8 +4,9 @@
       ${value != null},
       ${!#strings.isEmpty(optionText)}">
     <option
+            th:with="defaultSelected=${defaultSelected != null ? defaultSelected : ''}"
+            th:selected="${fieldData.getOrDefault(inputName, defaultSelected).equals(value)}"
             th:value="${value}"
-            th:selected="${fieldData.getOrDefault(inputName, '').equals(value)}"
             th:text="${optionText}"
             th:lang="${optionLang}"></option>
 </th:block>

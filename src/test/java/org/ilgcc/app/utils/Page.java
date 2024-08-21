@@ -266,7 +266,7 @@ public class Page {
   }
 
   public String getSelectValue(String inputName) {
-    return driver.findElement(By.cssSelector(String.format("select[name='%s[]']", inputName)))
+    return driver.findElement(By.cssSelector(String.format("select[name='%s']", inputName)))
         .findElements(By.tagName("option")).stream()
         .filter(WebElement::isSelected)
         .findFirst()

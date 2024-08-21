@@ -1,0 +1,112 @@
+<th:block
+        th:fragment="state(inputName, label)"
+        th:assert="${!#strings.isEmpty(inputName)}, ${!#strings.isEmpty(label)}"
+        th:replace="~{fragments/inputs/select :: select(label=${label}, inputName=${inputName}, helpText=${helpText}, content=~{::usState})}">
+    <th:block th:ref="usState">
+        <th:block
+                th:replace="~{fragments/inputs/selectOptionPlaceholder :: selectOptionPlaceholder(optionText=#{state.placeholder})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='AL', optionText=#{state.al})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='AK', optionText=#{state.ak})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='AZ', optionText=#{state.az})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='AR', optionText=#{state.ar})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='CA', optionText=#{state.ca})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='CO', optionText=#{state.co})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='CT', optionText=#{state.ct})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='DE', optionText=#{state.de})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='FL', optionText=#{state.fl})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='GA', optionText=#{state.ga})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='HI', optionText=#{state.hi})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='ID', optionText=#{state.id})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(
+                value='IL',
+                optionText=#{state.il},
+                defaultSelected='IL')}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='IN', optionText=#{state.in})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='IA', optionText=#{state.ia})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='KS', optionText=#{state.ks})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='KY', optionText=#{state.ky})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='LA', optionText=#{state.la})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='ME', optionText=#{state.me})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='MD', optionText=#{state.md})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='MA', optionText=#{state.ma})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='MI', optionText=#{state.mi})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='MN', optionText=#{state.mn})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='MS', optionText=#{state.ms})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='MO', optionText=#{state.mo})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='MT', optionText=#{state.mt})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='NE', optionText=#{state.ne})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='NV', optionText=#{state.nv})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='NH', optionText=#{state.nh})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='NJ', optionText=#{state.nj})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='NM', optionText=#{state.nm})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='NY', optionText=#{state.ny})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='NC', optionText=#{state.nc})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='ND', optionText=#{state.nd})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='OH', optionText=#{state.oh})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='OK', optionText=#{state.ok})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='OR', optionText=#{state.or})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='PA', optionText=#{state.pa})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='RI', optionText=#{state.ri})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='SC', optionText=#{state.sc})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='SD', optionText=#{state.sd})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='TN', optionText=#{state.tn})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='TX', optionText=#{state.tx})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='UT', optionText=#{state.ut})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='VT', optionText=#{state.vt})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='VA', optionText=#{state.va})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='WA', optionText=#{state.wa})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='WV', optionText=#{state.wv})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='WI', optionText=#{state.wi})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/selectOption :: selectOption(value='WY', optionText=#{state.wy})}"/>
+    </th:block>
+</th:block>
