@@ -65,13 +65,12 @@ public class Page {
 
   public void clickButton(String buttonText) {
     checkForBadMessageKeys();
+    waitForFooterToLoad();
     WebElement buttonToClick = driver.findElements(By.className("button")).stream()
         .filter(button -> button.getText().contains(buttonText))
         .findFirst()
         .orElseThrow(() -> new RuntimeException("No button found containing text: " + buttonText));
     buttonToClick.click();
-
-    waitForFooterToLoad();
   }
 
   public void clickButtonLink(String buttonLinkText) {
