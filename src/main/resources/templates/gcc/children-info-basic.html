@@ -30,18 +30,11 @@
                 <th:block th:ref="childRelationship">
                   <th:block
                           th:replace="~{fragments/inputs/selectOption :: selectOption(value='', optionText=#{children-ccap-info.relationship-option.default})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.child}, optionText=#{children-ccap-info.relationship-option.child})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.stepchild}, optionText=#{children-ccap-info.relationship-option.stepchild})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.grandchild}, optionText=#{children-ccap-info.relationship-option.grandchild})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.fosterchild}, optionText=#{children-ccap-info.relationship-option.fosterchild})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.niecenephew}, optionText=#{children-ccap-info.relationship-option.niecenephew})}"/>
-                  <th:block
-                          th:replace="~{fragments/inputs/selectOption :: selectOption(value=#{children-ccap-info.relationship-option.other}, optionText=#{children-ccap-info.relationship-option.other})}"/>
+
+                  <th:block th:each="childRelationshipOption : ${T(org.ilgcc.app.utils.ChildRelationshipOption).values()}">
+                    <th:block
+                            th:replace="~{fragments/inputs/selectOption :: selectOption(value=${childRelationshipOption.pdfValue}, optionText=#{${childRelationshipOption.getLabel()}})}"/>
+                  </th:block>
                 </th:block>
               </th:block>
               <th:block th:replace="~{fragments/inputs/radioFieldset ::
