@@ -2,6 +2,7 @@
         th:fragment="timeRange"
         th:with="
           hasHelpText=${!#strings.isEmpty(helpText)},
+          dayLabelId=${startInputName + '-legend'},
           hasLabel=${!#strings.isEmpty(label)},
           hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
             requiredInputsForFlow=${requiredInputs.get(flow)},
@@ -9,27 +10,27 @@
         th:assert="${!#strings.isEmpty(startInputName)},${!#strings.isEmpty(endInputName)}, ${hasLabel || hasAriaLabel}">
     <div th:class="'form-group bottom-border'">
         <legend class="heading-35 spacing-below-15"
-                th:id="${startInputName + '-legend'}"
+                th:id="${dayLabelId}"
                 th:inline="text">
             <span th:text="${label}"></span>
             <span th:if="${isRequiredInput && !hasAriaLabel}" class="required-input"
                   th:text="#{general.required-field}"></span>
         </legend>
-        <div>
-            <label th:for="${startInputName}" th:text="#{general.inputs.time.range.start}"
+        <div th:with="startTimeLabelId=${startInputName + '-label'}">
+            <label th:for="${startInputName}" th:id="${startTimeLabelId}" th:text="#{general.inputs.time.range.start}"
                    class="form-question"/>
             <th:block
                     th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
             <th:block
-                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${startInputName})}"/>
+                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${startInputName}, ariaDescribedBy=${startTimeLabelId+' ' + dayLabelId})}"/>
         </div>
-        <div>
-            <label th:for="${endInputName}" th:text="#{general.inputs.time.range.end}"
+        <div th:with="endTimeLabelId=${endInputName + '-label'}">
+            <label th:for="${endInputName}"  th:id="${endTimeLabelId}" th:text="#{general.inputs.time.range.end}"
                    class="form-question"/>
             <th:block
                     th:replace="~{fragments/inputError :: validationError(inputName=${endInputName})}"></th:block>
             <th:block
-                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${endInputName})}"/>
+                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${endInputName}, ariaDescribedBy=${endTimeLabelId+' ' + dayLabelId})}"/>
         </div>
     </div>
 </th:block>

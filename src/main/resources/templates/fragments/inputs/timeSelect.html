@@ -1,7 +1,8 @@
 <th:block
         th:fragment="timeSelect"
         th:with="
-        hasGroupName=${!#strings.isEmpty(inputGroupName)}"
+            hasGroupName=${!#strings.isEmpty(inputGroupName)},
+            hasAriaDescribedByLabel=${!#strings.isEmpty(ariaDescribedBy)}"
         th:assert="
           ${hasGroupName}">
     <div th:class="'question-group'">
@@ -18,10 +19,7 @@
                                 <select class="select__element"
                                         th:id="${hourInputName}"
                                         th:name="${hourInputName}"
-                                        th:attr="
-                                aria-describedby=${hasHelpText ? hourInputName + '-help-text' : ''},
-                                aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
-                                aria-invalid=${hasError}">
+                                        th:attr="aria-describedby=${hasAriaDescribedByLabel ? hourInputName + ' ' + ariaDescribedBy : 'hourInputName'}">
                                     <th:block
                                             th:each="hour : ${T(org.ilgcc.app.utils.HourSelectOption).values()}">
                                         <th:block
@@ -40,10 +38,7 @@
                                    minlength="1" maxlength="2" min="0" max="59"
                                    th:id="${minuteInputName}"
                                    th:name="${minuteInputName}"
-                                   th:attr="
-                                aria-describedby=${hasHelpText ? minuteInputName + '-help-text' : ''},
-                                aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
-                                aria-invalid=${hasError}"
+                                   th:attr="aria-describedby=${hasAriaDescribedByLabel ? minuteInputName+ ' ' + ariaDescribedBy : minuteInputName}",
                                    th:value="${fieldData.getOrDefault(minuteInputName, '00')}">
                         </div>
                     </div>
@@ -56,11 +51,7 @@
                                 <select class="select__element"
                                         th:id="${amPmInputName}"
                                         th:name="${amPmInputName}"
-                                        th:attr="
-                                            aria-describedby=${hasHelpText ? amPmInputName + '-help-text' : ''},
-                                            aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
-                                            aria-invalid=${hasError}">
-
+                                        th:attr="aria-describedby=${hasAriaDescribedByLabel ? amPmInputName + ' ' + ariaDescribedBy : amPmInputName}">
                                     <th:block
                                             th:each="amPM : ${T(org.ilgcc.app.utils.AmPmSelectOption).values()}">
                                         <pre th:text="${amPmInputName}"></pre>
