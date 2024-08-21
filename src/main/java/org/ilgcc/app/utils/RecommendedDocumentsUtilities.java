@@ -75,7 +75,7 @@ public class RecommendedDocumentsUtilities {
     List<Map> jobs = (List<Map>) submission.getInputData().getOrDefault("jobs", emptyList());
     if (!jobs.isEmpty()) {
       for (var job : jobs) {
-        if (job.getOrDefault("isSelfEmployed", "no").equals("yes")) {
+        if (job.getOrDefault("isSelfEmployed", "false").equals("true")) {
           return true;
         }
       }
@@ -83,7 +83,7 @@ public class RecommendedDocumentsUtilities {
     List<Map> partnerJobs = (List<Map>) submission.getInputData().getOrDefault("partnerJobs", emptyList());
     if (!partnerJobs.isEmpty()) {
       for (var job : partnerJobs) {
-        if (job.getOrDefault("isSelfEmployed", "no").equals("yes")) {
+        if (job.getOrDefault("isSelfEmployed", "false").equals("true")) {
           return true;
         }
       }

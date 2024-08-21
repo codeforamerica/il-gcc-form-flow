@@ -13,7 +13,12 @@
         <th:block
             th:replace="~{fragments/form :: form(action=${formAction}, content=~{::documentUpload})}">
           <th:block th:ref="documentUpload">
-            <div class="form-card__content">
+            <div class="form-card__content"
+                 th:with="showWorkingDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showWorkingDocumentation(submission)},
+                          showSchoolOrTrainingDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showSchoolOrTrainingDocumentation(submission)},
+                          showTANFDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showTANFDocumentation(submission)},
+                          showSelfEmploymentDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showSelfEmploymentDocumentation(submission)},
+                          showHomelessDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showRequiredHomelessnessDocuments(submission)}">
               <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
                 controlId='r1',
                 linkLabel=~{::revealLabel1},
@@ -25,11 +30,11 @@
                 </th:block>
                 <th:block th:ref="revealContent1">
                   <p th:text="#{doc-upload-add-files.accordion-1.p1}"></p>
-                  <p th:utext="#{doc-upload-add-files.accordion-1.body1}"></p>
-                  <p th:utext="#{doc-upload-add-files.accordion-1.body2}"></p>
-                  <p th:utext="#{doc-upload-add-files.accordion-1.body3}"></p>
-                  <p th:utext="#{doc-upload-add-files.accordion-1.body4}"></p>
-                  <p th:utext="#{doc-upload-add-files.accordion-1.body5}"></p>
+                  <p th:if="${showWorkingDocumentation}" th:id="job-upload-instruction" th:utext="#{doc-upload-add-files.accordion-1.body1}"></p>
+                  <p th:if="${showSelfEmploymentDocumentation}" th:id="self-employment-upload-instruction" th:utext="#{doc-upload-add-files.accordion-1.body2}"></p>
+                  <p th:if="${showSchoolOrTrainingDocumentation}" th:id="school-upload-instruction" th:utext="#{doc-upload-add-files.accordion-1.body3}"></p>
+                  <p th:if="${showTANFDocumentation}" th:id="tanf-upload-instruction" th:utext="#{doc-upload-add-files.accordion-1.body4}"></p>
+                  <p th:if="${showHomelessDocumentation}" th:id="homelessness-upload-instruction" th:utext="#{doc-upload-add-files.accordion-1.body5}"></p>
                 </th:block>
               </th:block>
               <th:block
