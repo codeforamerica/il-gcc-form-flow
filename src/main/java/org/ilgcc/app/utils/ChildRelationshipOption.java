@@ -1,11 +1,11 @@
 package org.ilgcc.app.utils;
 
 public enum ChildRelationshipOption implements InputOption {
-    CHILD("children-ccap-info.relationship-option.child", "My child"),
-    STEP_CHILD("children-ccap-info.relationship-option.stepchild", "My step-child"),
-    GRANDCHILD("children-ccap-info.relationship-option.grandchild", "My grandchild"),
-    FOSTER_CHILD("children-ccap-info.relationship-option.fosterchild", "My foster-child"),
-    NIECE_OR_NEPHEW("children-ccap-info.relationship-option.niecenephew", "My niece / nephew"),
+    CHILD("children-ccap-info.relationship-option.child", "Child"),
+    STEP_CHILD("children-ccap-info.relationship-option.stepchild", "Step-child"),
+    GRANDCHILD("children-ccap-info.relationship-option.grandchild", "Grandchild"),
+    FOSTER_CHILD("children-ccap-info.relationship-option.fosterchild", "Foster-child"),
+    NIECE_OR_NEPHEW("children-ccap-info.relationship-option.niecenephew", "Niece/nephew"),
     OTHER("children-ccap-info.relationship-option.other", "Other");
 
     private final String label;
