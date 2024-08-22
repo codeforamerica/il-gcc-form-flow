@@ -78,10 +78,14 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
         String educationTypePrefix = "PARTNER";
         String educationTypeField = PreparerUtilities.getEducationTypeFieldValue(
                 (String) submission.getInputData().getOrDefault("partnerEducationType", ""), educationTypePrefix);
-        results.put("partnerEducation",
-                new
+        results.put("partnerEducation", new SingleField("partnerEducation", educationTypeField, null));
 
-                        SingleField("partnerEducation", educationTypeField, null));
+        var partnerHighestEducation = submission.getInputData().getOrDefault("partnerHasBachelorsDegree", "");
+
+        if(partnerHighestEducation.equals("true")){
+            results.put("partnerEducationHighestLevel",
+                    new SingleField("partnerEducationHighestLevel", "BA degree", null));
+        }
 
         return results;
     }

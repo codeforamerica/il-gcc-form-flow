@@ -84,8 +84,14 @@ public class ParentPreparer implements SubmissionFieldPreparer {
            } else if (parentGender.contains("NONBINARY")){
                results.put("parentGenderTNB", new SingleField("parentGenderTNB", "Nonbinary", null));
            }
-
        }
+
+        var applicantHighestEducation = inputData.getOrDefault("applicantHasBachelorsDegree", "");
+
+        if(applicantHighestEducation.equals("true")){
+            results.put("applicantEducationHighestLevel",
+                    new SingleField("applicantEducationHighestLevel", "BA degree", null));
+        }
 
         return results;
     }

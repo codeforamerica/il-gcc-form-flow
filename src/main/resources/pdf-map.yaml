@@ -52,6 +52,7 @@ inputFields:
   applicantSchoolPhoneNumber: APPLICANT_EDUCATION_SCHOOL_PHONE
   applicantSchoolStartDate: APPLICANT_EDUCATION_SCHOOL_TERM_BEGIN_DATE
   applicantSchoolEndDate: APPLICANT_EDUCATION_SCHOOL_TERM_END_DATE
+  applicantEducationHighestLevel: APPLICANT_EDUCATION_HIGHEST_LEVEL
   parentEducation: APPLICANT_EDUCATION_TYPE
   partnerEducation: PARTNER_EDUCATION_TYPE
   parentGenderMale: APPLICANT_GENDER_MALE
@@ -102,6 +103,7 @@ inputFields:
   partnerEducationScheduleSundayStart: PARTNER_EDUCATION_SCHEDULE_SUNDAY_START
   partnerEducationScheduleSundayStartAmPm: PARTNER_EDUCATION_SCHEDULE_SUNDAY_START_AM_PM
 
+  partnerEducationHighestLevel: PARTNER_EDUCATION_HIGHEST_LEVEL
   partnerEducationScheduleMondayEnd: PARTNER_EDUCATION_SCHEDULE_MONDAY_END
   partnerEducationScheduleMondayEndAmPm: PARTNER_EDUCATION_SCHEDULE_MONDAY_END_AM_PM
   partnerEducationScheduleTuesdayEnd: PARTNER_EDUCATION_SCHEDULE_TUESDAY_END

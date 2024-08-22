@@ -260,6 +260,9 @@ public class Gcc extends FlowInputs {
     // activities-work-commute-time
     private String activitiesJobCommuteTime;
 
+    // parent-info-bachelors
+    private String applicantHasBachelorsDegree;
+
     // activities-ed-program-type
     @NotBlank(message = "{errors.select-one-option}")
     private String educationType;
@@ -341,6 +344,9 @@ public class Gcc extends FlowInputs {
     private String partnerEmployerState;
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String partnerEmployerZipCode;
+
+    // parent-partner-info-bachelors
+    private String partnerHasBachelorsDegree;
 
     // activities-partner-ed-program-type
     @NotBlank(message = "{errors.select-one-option}")
