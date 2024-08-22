@@ -249,6 +249,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         //activities-add-jobs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
         testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
+        // Add First Job
         //activities-employer-name
         assertThat(testPage.getTitle()).isEqualTo("Activities Employer Name");
         testPage.enter("companyName", "testCompany");
@@ -299,6 +300,24 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-add-jobs (list)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+
+        // Add Second Job
+        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
+        addPrimaryParentJob("2");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+
+        // Add Third Job
+        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
+        addPrimaryParentJob("3");
+
+        assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isFalse();
+
+        // Add Fourth Job
+        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
+        addPrimaryParentJob("4");
+
+        assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isTrue();
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
         //activities-add-ed-program
@@ -312,7 +331,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-ed-program-name
-        testPage.enter("applicantSchoolName", "World Training Program");
+        testPage.enter("applicantSchoolName", "World Partner Training Program");
         testPage.clickContinue();
 
         //activities-ed-program-info
@@ -368,6 +387,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-employer-address.title"));
         testPage.enter("partnerEmployerPhoneNumber", "4444");
         testPage.enter("partnerEmployerCity", "Oakland");
+        testPage.enter("partnerEmployerState", "IL - Illinois");
         testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
         testPage.enter("partnerEmployerZipCode", "6042");
         testPage.clickContinue();
@@ -415,6 +435,18 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-partner-add-job
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-add-jobs.title"));
+        testPage.clickButton("Add a job");
+
+        // Add a second parent partner job
+        addParentPartnerJob("2");
+        testPage.clickButton("Add a job");
+
+        addParentPartnerJob("3");
+        assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isFalse();
+        testPage.clickButton("Add a job");
+
+        addParentPartnerJob("4");
+        assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isTrue();
         testPage.clickButton(getEnMessage("activities-partner-add-jobs.this-is-all-their-jobs"));
         // activities-partner-ed
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
@@ -425,7 +457,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.enter("partnerProgramName", "World University");
         testPage.clickContinue();
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
+        testPage.enter("partnerEdPhoneNumber", "(217) 323-1238");
+        testPage.enter("partnerEdStreetAddress", "234 Main St");
+        testPage.enter("partnerEdCity", "Springfield");
+        testPage.enter("partnerEdState", "IL - Illinois");
+        testPage.enter("partnerEdZipCode", "62628");
+
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-method.header"));
         testPage.clickElementById("partnerProgramTaught-In-Person-label");
@@ -606,5 +645,70 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         driver.get(downloadUrl);
         await().until(pdfDownloadCompletes());
         return getLatestDownloadedFile(path);
+    }
+
+    private void addPrimaryParentJob(String postFix){
+        //activities-employer-name
+        testPage.enter("companyName", "testCompany" + postFix);
+        testPage.clickContinue();
+        //activities-employer-address
+        testPage.enter("employerCity", "Chicago");
+        testPage.enter("employerStreetAddress", "123 Test Me" + postFix);
+        testPage.enter("employerState", "IL - Illinois");
+        testPage.enter("employerPhoneNumber", "333333333"+postFix);
+        testPage.enter("employerZipCode", "6042"+postFix);
+        testPage.clickContinue();
+
+        //activities-self-employment
+        testPage.clickNo();
+
+        //activities-work-schedule-vary
+        testPage.clickNo();
+
+        //activities-job-weekly-schedule
+        testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+        testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
+        testPage.clickContinue();
+
+        //activities-job-hourly-schedule
+        testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
+        testPage.enter("activitiesJobStartTimeAllDays", "09"+postFix+"0AM");
+        testPage.enter("activitiesJobEndTimeAllDays", "01"+postFix+"0PM");
+        testPage.clickContinue();
+
+        //activities-work-commute-time
+        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.hour"));
+        testPage.clickContinue();
+    }
+
+    private void addParentPartnerJob(String postFix){
+        testPage.enter("partnerCompanyName", "testPartnerCompany"+postFix);
+        testPage.clickContinue();
+        //activities--partner-employer-address
+        testPage.enter("partnerEmployerPhoneNumber", "433333333"+postFix);
+        testPage.enter("partnerEmployerCity", "Oakland");
+        testPage.enter("partnerEmployerState", "IL - Illinois");
+        testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
+        testPage.enter("partnerEmployerZipCode", "6042"+postFix);
+        testPage.clickContinue();
+        //activities-partner-self-employment
+        testPage.clickNo();
+        //activities-partner-work-schedule-vary
+        testPage.clickNo();
+
+        //activities-partner-job-weekly-schedule
+        testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+        testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
+        testPage.clickContinue();
+
+        //activities-partner-job-hourly-schedule
+        testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
+        testPage.enter("activitiesJobStartTimeAllDays", "09"+postFix+"0AM");
+        testPage.enter("activitiesJobEndTimeAllDays", "01"+postFix+"0PM");
+        testPage.clickContinue();
+
+        //activities-partner-commute-time
+        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
+        testPage.clickContinue();
     }
 }
