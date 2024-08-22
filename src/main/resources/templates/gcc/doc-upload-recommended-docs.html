@@ -17,7 +17,7 @@
                           showTANFDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showTANFDocumentation(submission)},
                           showSelfEmploymentDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showSelfEmploymentDocumentation(submission)},
                           showHomelessDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showRequiredHomelessnessDocuments(submission)}">
-              <div class="spacing-below-60" th:id="job-recommendation" th:if="showWorkingDocumentation">
+              <div class="spacing-below-60" th:if="${showWorkingDocumentation}" th:id="job-recommendation">
                 <th:block th:replace="~{fragments/gcc-icons :: incomeFamily}"></th:block>
                 <h2 class="h3 spacing-below-0 spacing-above-0" th:text="#{doc-upload-recommended-docs.jobs.header}"></h2>
                 <p th:text="#{doc-upload-recommended-docs.jobs.body}"></p>
