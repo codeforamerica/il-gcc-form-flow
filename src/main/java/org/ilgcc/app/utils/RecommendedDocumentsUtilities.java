@@ -96,7 +96,6 @@ public class RecommendedDocumentsUtilities {
         showTANFDocumentation(submission) ||
         showWorkingDocumentation(submission) ||
         showSelfEmploymentDocumentation(submission) ||
-        showSelfEmploymentDocumentation(submission)) ||
-        showRequiredHomelessnessDocuments(submission);
+        showRequiredHomelessnessDocuments(submission));
   }
 }

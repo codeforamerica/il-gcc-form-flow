@@ -22,6 +22,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
     testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
 
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+    assertThat(testPage.elementDoesNotExistById("controlId")).isTrue();
     }
     @Test
     void skipNotSkipDocUploadRecommendedDocsScreenIfOneDocumentIsRequiredForParent(){
