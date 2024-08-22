@@ -11,28 +11,33 @@
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{doc-upload-recommended-docs.header}, subtext=#{doc-upload-recommended-docs.subheader})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
-            <div class="form-card__content">
-              <div class="spacing-below-60">
+            <div class="form-card__content"
+                 th:with="showWorkingDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showWorkingDocumentation(submission)},
+                          showSchoolOrTrainingDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showSchoolOrTrainingDocumentation(submission)},
+                          showTANFDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showTANFDocumentation(submission)},
+                          showSelfEmploymentDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showSelfEmploymentDocumentation(submission)},
+                          showHomelessDocumentation=${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).showRequiredHomelessnessDocuments(submission)}">
+              <div class="spacing-below-60" th:if="${showWorkingDocumentation}" th:id="job-recommendation">
                 <th:block th:replace="~{fragments/gcc-icons :: incomeFamily}"></th:block>
                 <h2 class="h3 spacing-below-0 spacing-above-0" th:text="#{doc-upload-recommended-docs.jobs.header}"></h2>
                 <p th:text="#{doc-upload-recommended-docs.jobs.body}"></p>
               </div>
-              <div class="spacing-below-60">
+              <div class="spacing-below-60" th:id="self-employment-documentation" th:if="${showSelfEmploymentDocumentation}">
                 <th:block th:replace="~{fragments/gcc-icons :: income}"></th:block>
                 <h2 class="h3 spacing-below-0 spacing-above-0" th:text="#{doc-upload-recommended-docs.self-employment.header}"></h2>
                 <p th:text="#{doc-upload-recommended-docs.self-employment.body}"></p>
               </div>
-              <div class="spacing-below-60">
+              <div class="spacing-below-60" th:id="education-documentation" th:if="${showSchoolOrTrainingDocumentation}">
                 <th:block th:replace="~{fragments/gcc-icons :: education}"></th:block>
                 <h2 class="h3 spacing-below-0 spacing-above-0" th:text="#{doc-upload-recommended-docs.school.header}"></h2>
                 <p th:text="#{doc-upload-recommended-docs.school.body}"></p>
               </div>
-              <div class="spacing-below-60">
+              <div class="spacing-below-60" th:id="tanf-training-recommendation" th:if="${showTANFDocumentation}">
                 <th:block th:replace="~{fragments/gcc-icons :: job}"></th:block>
                 <h2 class="h3 spacing-below-0 spacing-above-0" th:text="#{doc-upload-recommended-docs.training.header}"></h2>
                 <p th:text="#{doc-upload-recommended-docs.training.body}"></p>
               </div>
-              <div class="spacing-below-60">
+              <div class="spacing-below-60" th:id="homeless-documentation" th:if="${showHomelessDocumentation}">
                 <th:block th:replace="~{fragments/gcc-icons :: homelessness}"></th:block>
                 <h2 class="h3 spacing-below-0 spacing-above-0" th:text="#{doc-upload-recommended-docs.homelessness.header}"></h2>
                 <p th:text="#{doc-upload-recommended-docs.homelessness.body}"></p>

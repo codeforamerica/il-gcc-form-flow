@@ -81,8 +81,8 @@ public class ParentPartnerPreparerTest {
   @Test
   public void partnerJobsProperlyMapped(){
     submission = new SubmissionTestBuilder()
-        .withPartnerJob("partnerJobs", "Partner Company One", "123 Partner First Job St", "Chicago", "IL", "60302", "(555) 123-1234")
-        .withPartnerJob("partnerJobs", "Partner Company Two", "456 Partner Second Job St", "Chicago", "IL", "60302", "(555) 343-1235")
+        .withPartnerJob("partnerJobs", "Partner Company One", "123 Partner First Job St", "Chicago", "IL", "60302", "(555) 123-1234", "false")
+        .withPartnerJob("partnerJobs", "Partner Company Two", "456 Partner Second Job St", "Chicago", "IL", "60302", "(555) 343-1235","false")
         .build();
 
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);

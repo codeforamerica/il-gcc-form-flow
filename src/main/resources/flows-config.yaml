@@ -359,6 +359,7 @@ flow:
     nextScreens:
       - name: submit-confirmation
   doc-upload-recommended-docs:
+    condition: HasRecommendedDocumentsToUpload
     nextScreens:
       - name: doc-upload-add-files
   doc-upload-add-files:

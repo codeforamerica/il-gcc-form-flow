@@ -163,7 +163,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withJob(String subflow, String companyName, String employerStreetAddress, String employerCity,
-        String employerState, String employerZipCode, String employerPhoneNumber) {
+        String employerState, String employerZipCode, String employerPhoneNumber, String isSelfEmployed) {
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get(subflow);
         if (jobs == null) {
             jobs = new ArrayList<>();
@@ -178,6 +178,7 @@ public class SubmissionTestBuilder {
         job.put("employerState", employerState);
         job.put("employerZipCode", employerZipCode);
         job.put("employerPhoneNumber", employerPhoneNumber);
+        job.put("isSelfEmployed", isSelfEmployed);
         job.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
         jobs.add(job);
         submission.getInputData().put(subflow, jobs);
@@ -185,7 +186,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withPartnerJob(String subflow, String companyName, String employerStreetAddress,
-        String employerCity, String employerState, String employerZipCode, String employerPhoneNumber) {
+        String employerCity, String employerState, String employerZipCode, String employerPhoneNumber, String isSelfEmployed) {
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get(subflow);
         if (jobs == null) {
             jobs = new ArrayList<>();
@@ -200,6 +201,7 @@ public class SubmissionTestBuilder {
         job.put("partnerEmployerState", employerState);
         job.put("partnerEmployerZipCode", employerZipCode);
         job.put("partnerEmployerPhoneNumber", employerPhoneNumber);
+        job.put("isSelfEmployed", isSelfEmployed);
         job.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
         jobs.add(job);
         submission.getInputData().put(subflow, jobs);
@@ -297,7 +299,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withRegularWorkSchedule(List days, String startTime, String endTime) {
-        withJob("jobs", "Regular Schedule Job", "123 Main Str", "", "", "", "");
+        withJob("jobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
             return this;
@@ -314,7 +316,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withWorkScheduleByDay(String day, String startTime, String endTime) {
-        withJob("jobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "");
+        withJob("jobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "", "false");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
             return this;
@@ -337,7 +339,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withPartnerRegularWorkSchedule(List days, String startTime, String endTime) {
-        withJob("partnerJobs", "Regular Schedule Job", "123 Main Str", "", "", "", "");
+        withJob("partnerJobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (jobs == null) {
             return this;
@@ -355,7 +357,7 @@ public class SubmissionTestBuilder {
 
     public SubmissionTestBuilder withPartnerWorkScheduleByDay(String day, String startTime, String endTime) {
         withParentPartnerDetails();
-        withJob("partnerJobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "");
+        withJob("partnerJobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "", "false");
         List<Map<String, Object>> partnerJobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (partnerJobs == null) {
             return this;

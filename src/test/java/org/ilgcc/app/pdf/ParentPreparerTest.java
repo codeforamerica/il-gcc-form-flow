@@ -82,7 +82,7 @@ public class ParentPreparerTest {
   @Test
   public void singleJobsIsProperlyMapped(){
     submission = new SubmissionTestBuilder()
-        .withJob("jobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234")
+        .withJob("jobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234", "false")
         .build();
 
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
