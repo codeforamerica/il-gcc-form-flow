@@ -66,6 +66,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         // parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
+        assertThat(testPage.getSelectValue("parentHomeState")).isEqualTo(getEnMessage("state.il"));
+
         testPage.enter("parentHomeStreetAddress1", "972 Mission St");
         testPage.enter("parentHomeStreetAddress2", "5th floor");
         testPage.enter("parentHomeCity", "San Francisco");
