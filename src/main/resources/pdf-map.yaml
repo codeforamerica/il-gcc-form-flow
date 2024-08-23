@@ -177,7 +177,7 @@ subflowInfo:
       childCareScheduleSundayEnd: CHILD_CARE_SCHEDULE_SUNDAY_END
       childCareScheduleSundayEndAmPm: CHILD_CARE_SCHEDULE_SUNDAY_END_AM_PM
   primaryParentJobs:
-    totalIterations: 2
+    totalIterations: 4
     inputFields:
       companyName: APPLICANT_EMPLOYER_NAME
       employerStreetAddress: APPLICANT_EMPLOYER_ADDRESS
@@ -218,7 +218,7 @@ subflowInfo:
       applicantEmployerTravelTimeHours: APPLICANT_EMPLOYER_TRAVEL_TIME_HOURS
       applicantEmployerTravelTimeMins: APPLICANT_EMPLOYER_TRAVEL_TIME_MINS
   parentPartnerJobs:
-    totalIterations: 2
+    totalIterations: 4
     inputFields:
       partnerCompanyName: PARTNER_EMPLOYER_NAME
       partnerEmployerStreetAddress: PARTNER_EMPLOYER_ADDRESS

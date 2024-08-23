@@ -9,7 +9,8 @@
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35"
       th:with="parentName=${T(org.ilgcc.app.utils.SubmissionUtilities).applicantFirstName(inputData)},
-               addedJobs=${inputData.containsKey('jobs') && inputData.get('jobs').size() > 0}">
+               addedJobs=${inputData.containsKey('jobs') && inputData.get('jobs').size() > 0},
+               maxJobs=${inputData.containsKey('jobs') && inputData.get('jobs').size() >= 4}">
         <th:block th:replace="~{fragments/gcc-icons :: income}"></th:block>
         <th:block th:with="addJobsHeader=|#{activities-add-jobs.header} ${parentName}.|,
                            addMoreJobsHeader=#{activities-add-jobs.header.any-other-jobs(${parentName})},
@@ -17,6 +18,16 @@
                            addMoreJobsSubtext=#{activities-add-jobs.subtext.add-jobs-list}">
           <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${addedJobs ? addMoreJobsHeader : addJobsHeader},
                                                                      subtext=${addedJobs ? addMoreJobsSubtext : jobsSubtext})}"/>
+          <th:block th:if="${!addedJobs}">
+            <p th:utext="#{'activities-add-jobs.number-limit'}"
+               class="notice notice--gray spacing-below-25"></p>
+          </th:block>
+
+          <th:block th:if="${maxJobs}">
+            <p th:text="#{'activities-add-jobs.max-jobs-reached'}"
+               class="notice--warning spacing-below-25"></p>
+          </th:block>
+
         </th:block>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
@@ -44,7 +55,7 @@
             <div class="form-card__footer">
               <div class="spacing-below-15">
                 <a th:id="add-parent-job" th:href="'/flow/' + ${flow} + '/activities-employer-name'"
-                  class="button button--primary spacing-above-15">
+                   th:class="'button button--primary spacing-above-15' + ${maxJobs ? ' disabled' : ''}">
                   <i class="icon-add"></i>
                   <span th:text="#{activities-add-jobs.add-a-job}"></span>
                 </a>
