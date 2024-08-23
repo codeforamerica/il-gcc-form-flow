@@ -127,4 +127,25 @@ public class ParentPartnerPreparerTest {
     assertThat(result.get("partnerEducation")).isEqualTo(new SingleField("partnerEducation", "PARTNER_EDUCATION_TYPE_INTERNSHIP", null));
   }
 
+  @Test
+  public void shouldNotMapBAToHighestEducationIfQuestionIsSkipped(){
+    submission = new SubmissionTestBuilder()
+            .withParentDetails()
+            .build();
+
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+    assertThat(result.get("partnerEducationHighestLevel")).isNull();
+  }
+
+  @Test
+  public void shouldMapBAToHighestEducationIfSelected(){
+    submission = new SubmissionTestBuilder()
+            .withParentDetails()
+            .with("partnerHasBachelorsDegree", "true")
+            .build();
+
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+    assertThat(result.get("partnerEducationHighestLevel")).isEqualTo(new SingleField("partnerEducationHighestLevel", "BA degree", null));
+  }
+
 }

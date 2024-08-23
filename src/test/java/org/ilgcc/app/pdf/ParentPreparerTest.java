@@ -3,6 +3,7 @@ package org.ilgcc.app.pdf;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import formflow.library.data.Submission;
+import formflow.library.data.Submission.SubmissionBuilder;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.List;
@@ -194,7 +195,26 @@ public class ParentPreparerTest {
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentGenderMale")).isNotEqualTo(new SingleField("parentGenderMale", "Yes", null));
     assertThat(result.get("parentGenderTNB")).isNotEqualTo(new SingleField("parentGenderTNB", "Nonbinary", null));
+  }
 
+  @Test
+  public void shouldNotMapBAToHighestEducationIfQuestionIsSkipped(){
+    submission = new SubmissionTestBuilder()
+            .withParentDetails()
+            .build();
 
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+    assertThat(result.get("applicantEducationHighestLevel")).isNull();
+  }
+
+  @Test
+  public void shouldMapBAToHighestEducationIfSelected(){
+    submission = new SubmissionTestBuilder()
+            .withParentDetails()
+            .with("applicantHasBachelorsDegree", "true")
+            .build();
+
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+    assertThat(result.get("applicantEducationHighestLevel")).isEqualTo(new SingleField("applicantEducationHighestLevel", "BA degree", null));
   }
 }
