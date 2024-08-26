@@ -137,6 +137,7 @@ flow:
   children-childcare-hourly-schedule:
     beforeDisplayAction: SetSubflowWeeklyScheduleGroup
     subflow: children
+    crossFieldValidationAction: ValidateChildcareHourlySchedule
     nextScreens:
       - name: children-ccap-child-other-ed
   children-ccap-child-other-ed:
@@ -196,6 +197,7 @@ flow:
       - name: activities-job-hourly-schedule
   activities-job-hourly-schedule:
     beforeDisplayAction: SetJobWeeklyScheduleGroup
+    crossFieldValidationAction: ValidateActivitiesJobSchedule
     subflow: jobs
     nextScreens:
       - name: activities-work-commute-time
@@ -231,6 +233,7 @@ flow:
       - name: activities-class-hourly-schedule
   activities-class-hourly-schedule:
     beforeDisplayAction: SetClassWeeklyScheduleGroup
+    crossFieldValidationAction: ValidateActivitiesClassHourlySchedule
     nextScreens:
       - name: activities-ed-program-dates
   activities-ed-program-dates:
@@ -275,6 +278,7 @@ flow:
       - name: activities-partner-job-hourly-schedule
   activities-partner-job-hourly-schedule:
     beforeDisplayAction: PartnerSetJobWeeklyScheduleGroup
+    crossFieldValidationAction: ValidateActivitiesJobSchedule
     subflow: partnerJobs
     nextScreens:
       - name: activities-partner-commute-time
@@ -310,6 +314,7 @@ flow:
       - name: activities-partner-class-hourly-schedule
   activities-partner-class-hourly-schedule:
     beforeDisplayAction: SetPartnerClassWeeklyScheduleGroup
+    crossFieldValidationAction: ValidatePartnerClassHourlySchedule
     nextScreens:
       - name: activities-partner-ed-program-dates
   activities-partner-ed-program-dates:
