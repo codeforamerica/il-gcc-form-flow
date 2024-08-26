@@ -324,6 +324,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
 
+        //parent-info-bachelors
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-bachelors.title"));
+        testPage.clickYes();
+
         //activities-ed-program-type
         assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(getEnMessage("activities-ed-program-type.highSchool"));
         testPage.clickElementById("educationType-highSchoolOrGed-label");
@@ -451,6 +455,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // activities-partner-ed
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
+
+        //parent-partner-info-bachelors
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-bachelors.title"));
+        testPage.clickElementById("partnerHasBachelorsDegree-skip");
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickElementById("partnerEducationType-twoYearCollege-label");
         testPage.clickContinue();

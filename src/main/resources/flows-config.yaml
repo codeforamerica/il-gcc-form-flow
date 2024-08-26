@@ -205,6 +205,9 @@ flow:
       - name: activities-add-jobs
   activities-add-ed-program:
     nextScreens:
+      - name: parent-info-bachelors
+  parent-info-bachelors:
+    nextScreens:
       - name: activities-ed-program-type
   activities-ed-program-type:
     nextScreens:
@@ -280,6 +283,9 @@ flow:
     nextScreens:
       - name: activities-partner-add-job
   activities-partner-add-ed-program:
+    nextScreens:
+      - name: parent-partner-info-bachelors
+  parent-partner-info-bachelors:
     nextScreens:
       - name: activities-partner-ed-program-type
   activities-partner-ed-program-type:

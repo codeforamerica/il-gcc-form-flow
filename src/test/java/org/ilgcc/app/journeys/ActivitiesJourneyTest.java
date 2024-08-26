@@ -83,6 +83,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-add-ed-program.header", new Object[]{"parent first"}));
         testPage.clickContinue();
 
+        //parent-info-bachelors
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-bachelors.title"));
+        testPage.clickElementById("applicantHasBachelorsDegree-skip");
+
         //activities-ed-program-type
         assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(getEnMessage("activities-ed-program-type.highSchool"));
         testPage.clickElementById("educationType-highSchoolOrGed-label");
@@ -224,6 +228,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         //activities-add-ed-program
         assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-add-ed-program.header", new Object[]{"parent first"}));
         testPage.clickContinue();
+
+        //parent-info-bachelors
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-bachelors.title"));
+        testPage.clickElementById("applicantHasBachelorsDegree-skip");
 
         //activities-ed-program-type
         assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(getEnMessage("activities-ed-program-type.highSchool"));
@@ -413,6 +421,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-add-ed-program.header", new Object[]{"parent first"}));
         testPage.clickContinue();
 
+        //parent-info-bachelors
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-bachelors.title"));
+        testPage.clickElementById("applicantHasBachelorsDegree-skip");
+
         //activities-ed-program-type
         assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(getEnMessage("activities-ed-program-type.highSchool"));
         testPage.clickElementById("educationType-highSchoolOrGed-label");
@@ -523,6 +535,11 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         //activities-partner-add-ed-program
         assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-add-ed-program.header", new Object[]{"partner"}));
         testPage.clickContinue();
+
+        //parent-partner-info-bachelors
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-bachelors.title"));
+        testPage.clickElementById("partnerHasBachelorsDegree-skip");
+
         testPage.clickElementById("partnerEducationType-fourYearCollege-label");
         assertThat(testPage.getHeader()).isEqualTo(getRequiredEnMessageWithParams("activities-partner-ed-program-type.header", new Object[]{"partner"}));
         testPage.clickContinue();
@@ -575,6 +592,11 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         // Note that currently, we are skipping the parent partner job questions
         assertThat(testPage.getHeader()).isEqualTo(getEnMessageWithParams("activities-partner-add-ed-program.header", new Object[]{"partner"}));
         testPage.clickContinue();
+
+        //parent-partner-info-bachelors
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-bachelors.title"));
+        testPage.clickElementById("partnerHasBachelorsDegree-skip");
+
         testPage.clickElementById("partnerEducationType-fourYearCollege-label");
         assertThat(testPage.getHeader()).isEqualTo(getRequiredEnMessageWithParams("activities-partner-ed-program-type.header", new Object[]{"partner"}));
         testPage.clickContinue();
