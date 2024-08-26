@@ -214,10 +214,22 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         //children-childcare-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-hourly-schedule.title"));
-        testPage.enter("childcareStartTimeThursday", "1000AM");
-        testPage.enter("childcareEndTimeThursday", "0100PM");
-        testPage.enter("childcareStartTimeFriday", "0900AM");
-        testPage.enter("childcareEndTimeFriday", "1200PM");
+        testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
+        testPage.enter("childcareStartTimeThursdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
+        testPage.enter("childcareEndTimeThursdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareStartTimeFridayHour", "9");
+        testPage.enter("childcareStartTimeFridayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeFridayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeFridayHour", "12");
+        testPage.enter("childcareEndTimeFridayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeFridayAmPm", "PM");
+
         testPage.clickContinue();
         //children-ccap-child-other-ed
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
@@ -287,10 +299,23 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-job-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
-        testPage.enter("activitiesJobStartTimeMonday", "1200PM");
-        testPage.enter("activitiesJobEndTimeMonday", "0100PM");
-        testPage.enter("activitiesJobStartTimeSunday", "0200PM");
-        testPage.enter("activitiesJobEndTimeSunday", "0300PM");
+
+        testPage.selectFromDropdown("activitiesJobStartTimeMondayHour", "12");
+        testPage.enter("activitiesJobStartTimeMondayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobStartTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeMondayHour", "1");
+        testPage.enter("activitiesJobEndTimeMondayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobEndTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobStartTimeSundayHour", "2");
+        testPage.enter("activitiesJobStartTimeSundayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobStartTimeSundayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeSundayHour", "3");
+        testPage.enter("activitiesJobEndTimeSundayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobEndTimeSundayAmPm", "PM");
+
         testPage.clickContinue();
 
         //activities-work-commute-time
@@ -366,8 +391,15 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         //activities-class-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
-        testPage.enter("activitiesClassStartTimeAllDays", "0900AM");
-        testPage.enter("activitiesClassEndTimeAllDays", "13:00");
+
+        testPage.selectFromDropdown("activitiesClassStartTimeAllDaysHour", "9");
+        testPage.enter("activitiesClassStartTimeAllDaysMinute", "00");
+        testPage.selectFromDropdown("activitiesClassStartTimeAllDaysAmPm", "AM");
+
+        testPage.selectFromDropdown("activitiesClassEndTimeAllDaysHour", "1");
+        testPage.enter("activitiesClassEndTimeAllDaysMinute", "00");
+        testPage.selectFromDropdown("activitiesClassEndTimeAllDaysAmPm", "PM");
+
         testPage.clickContinue();
 
         //activities-ed-program-dates
@@ -426,10 +458,22 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-partner-job-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-job-hourly-schedule.title"));
-        testPage.enter("activitiesJobStartTimeMonday", "1200PM");
-        testPage.enter("activitiesJobEndTimeMonday", "0100PM");
-        testPage.enter("activitiesJobStartTimeSunday", "0200AM");
-        testPage.enter("activitiesJobEndTimeSunday", "0300PM");
+        testPage.selectFromDropdown("activitiesJobStartTimeMondayHour", "12");
+        testPage.enter("activitiesJobStartTimeMondayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobStartTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeMondayHour", "1");
+        testPage.enter("activitiesJobEndTimeMondayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobEndTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobStartTimeSundayHour", "2");
+        testPage.enter("activitiesJobStartTimeSundayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobStartTimeSundayAmPm", "AM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeSundayHour", "3");
+        testPage.enter("activitiesJobEndTimeSundayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobEndTimeSundayAmPm", "PM");
+
         testPage.clickContinue();
 
         //activities-partner-commute-time
@@ -484,10 +528,23 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("partnerClassWeeklySchedule-Wednesday");
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
-        testPage.enter("partnerClassStartTimeMonday", "1100AM");
-        testPage.enter("partnerClassEndTimeMonday", "16:00");
-        testPage.enter("partnerClassStartTimeWednesday", "14:00");
-        testPage.enter("partnerClassEndTimeWednesday", "15:00");
+
+        testPage.selectFromDropdown("partnerClassStartTimeMondayHour", "11");
+        testPage.enter("partnerClassStartTimeMondayMinute", "00");
+        testPage.selectFromDropdown("partnerClassStartTimeMondayAmPm", "AM");
+
+        testPage.selectFromDropdown("partnerClassEndTimeMondayHour", "4");
+        testPage.enter("partnerClassEndTimeMondayMinute", "00");
+        testPage.selectFromDropdown("partnerClassEndTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("partnerClassStartTimeWednesdayHour", "2");
+        testPage.enter("partnerClassStartTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("partnerClassStartTimeWednesdayAmPm", "PM");
+
+        testPage.selectFromDropdown("partnerClassEndTimeWednesdayHour", "3");
+        testPage.enter("partnerClassEndTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("partnerClassEndTimeWednesdayAmPm", "PM");
+
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
