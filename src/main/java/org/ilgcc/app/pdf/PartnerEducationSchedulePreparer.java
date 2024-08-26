@@ -6,30 +6,27 @@ import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
-import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
-import org.ilgcc.app.utils.DayOfWeekOption;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PartnerEducationSchedulePreparer implements SubmissionFieldPreparer {
+
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
 
-        Optional<HourlySchedule> educationSchedule = SchedulePreparerUtility.getHourlySchedule(submission, "partnerClass", "partnerClassWeeklySchedule[]");
-        if (educationSchedule.isEmpty()) {
-            return results;
-        }
+        Map<String, String> careSchedule =
+                SchedulePreparerUtility.hourlyScheduleKeys(
+                        submission.getInputData(),
+                        "partnerClass",
+                        "partnerClassWeeklySchedule[]");
 
-        Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = educationSchedule.get().toDailyScheduleMap();
-        for (var scheduleEntry : dailyScheduleMap.entrySet()) {
-            DayOfWeekOption day = scheduleEntry.getKey();
-            LocalTimeRange schedule = scheduleEntry.getValue();
-            results.putAll(SchedulePreparerUtility.createSubmissionFieldsFromSchedule(schedule, day, "partnerEducationSchedule"));
-        }
+        results.putAll(
+                SchedulePreparerUtility.createSubmissionFieldsFromDay(submission.getInputData(), careSchedule,
+                        "partnerClass", "partnerEducationSchedule"));
+
+
         return results;
     }
 }

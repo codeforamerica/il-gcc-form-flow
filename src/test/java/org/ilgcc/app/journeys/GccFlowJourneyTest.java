@@ -738,8 +738,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-job-hourly-schedule
         testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
-        testPage.enter("activitiesJobStartTimeAllDays", "09"+postFix+"0AM");
-        testPage.enter("activitiesJobEndTimeAllDays", "01"+postFix+"0PM");
+        testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
+        testPage.enter("activitiesJobStartTimeAllDaysMinute", postFix);
+        testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "AM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
+        testPage.enter("activitiesJobEndTimeAllDaysMinute", postFix);
+        testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
+
         testPage.clickContinue();
 
         //activities-work-commute-time
@@ -769,8 +775,14 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-partner-job-hourly-schedule
         testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
-        testPage.enter("activitiesJobStartTimeAllDays", "09"+postFix+"0AM");
-        testPage.enter("activitiesJobEndTimeAllDays", "01"+postFix+"0PM");
+        testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
+        testPage.enter("activitiesJobStartTimeAllDaysMinute", postFix);
+        testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
+        testPage.enter("activitiesJobEndTimeAllDaysMinute", postFix);
+        testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
+
         testPage.clickContinue();
 
         //activities-partner-commute-time

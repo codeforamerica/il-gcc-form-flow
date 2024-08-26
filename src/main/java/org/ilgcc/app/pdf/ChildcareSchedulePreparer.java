@@ -25,22 +25,17 @@ public class ChildcareSchedulePreparer implements SubmissionFieldPreparer {
         int iteration = 1;
 
         for (var child : SubmissionUtilities.getChildrenNeedingAssistance(submission)) {
-            Optional<HourlySchedule> careSchedule =
-                SchedulePreparerUtility.getHourlySchedule(
-                    child,
-                    "childcare",
-                    "childcareWeeklySchedule[]");
-            if (careSchedule.isEmpty()) {
-                continue;
-            }
 
-            Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = careSchedule.get().toDailyScheduleMap();
-            for (var scheduleEntry : dailyScheduleMap.entrySet()) {
-                DayOfWeekOption day = scheduleEntry.getKey();
-                LocalTimeRange schedule = scheduleEntry.getValue();
-                results.putAll(
-                    SchedulePreparerUtility.createSubmissionFieldsFromSchedule(schedule, day, "childCareSchedule", iteration));
-            }
+            Map<String, String> careSchedule =
+                    SchedulePreparerUtility.hourlyScheduleKeys(
+                            child,
+                            "childcare",
+                            "childcareWeeklySchedule[]");
+
+            results.putAll(
+                    SchedulePreparerUtility.createSubmissionFieldsFromDay(child, careSchedule, "childcare", "childCareSchedule",
+                            iteration));
+
             iteration++;
         }
         return results;
