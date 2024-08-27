@@ -19,10 +19,7 @@
     <section class="slab slab--white">
       <div class="grid">
         <nav class="grid__item width-one-third" th:with="sections = ${ {
-        'what-is-ccap', 'what-is-a-ccrr', 'what-is-a-child-care-provider', 'do-i-qualify-for-ccap',
-        'can-i-apply', 'do-have-to-be-a-us-resident-or-citizen', 'do-i-have-to-be-working',
-        'will-my-child-care-be-free-if-approved', 'how-do-i-know-if-the-child-care-provider-will-accept-ccap',
-        'how-do-i-find-child-care-provider-that-accepts-ccap'} }">
+        'general-questions', 'questions-about-the-online-application', 'questions-about-child-care', 'questions-about-the-process'} }">
           <p class="h3" th:text="#{faq.toc.header}"></p>
           <div class="spacing-below-15" th:each="section : ${sections}">
             <a th:href="'#' + ${section}" th:text="#{'faq.' + ${section} + '.header'}"></a>
@@ -33,7 +30,7 @@
             <div class="grid__item">
               <div class="grid__item spacing-below-35">
                 <!-- Answers Section -->
-                <h2 id="general-questions-header" class="h2" th:text="#{faq.general-questions.header}"></h2>
+                <h2 id="general-questions" class="h2" th:text="#{faq.general-questions.header}"></h2>
 
                 <!-- What is CCAP -->
                 <h3 id="what-is-ccap" class="h3" th:text="#{faq.what-is-ccap.header}"></h3>
