@@ -207,11 +207,13 @@ img.img-center{
   font-weight: normal;
   min-width: 13rem;
   border: 1px solid black;
-  background-color: lightgrey
+  background-color: lightgrey;
+  text-align: left;
+  padding: 1rem;
 }
 .faq-situation-table td {
-  border: 1px solid black
-
+  border: 1px solid black;
+  padding: 1rem;
 }
 .faq-situation-table tr {
   border: 1px solid black
