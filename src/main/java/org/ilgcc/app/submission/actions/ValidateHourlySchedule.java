@@ -33,12 +33,20 @@ public class ValidateHourlySchedule implements Action {
             if (hasMissingData(formData, startTimeGroupName)) {
                 errorMessages.put(startTimeGroupName,
                         List.of(messageSource.getMessage("errors.validate.start.time", null, null)));
+            } else if(minuteDataIsInvalid(formData, startTimeGroupName)) {
+                errorMessages.put(startTimeGroupName,
+                            List.of(messageSource.getMessage("errors.validate.minute", null, null)));
+
             }
 
             String endTimeGroupName = inputPrefix + "EndTime" + day;
             if (hasMissingData(formData, endTimeGroupName)) {
                 errorMessages.put(endTimeGroupName,
                         List.of(messageSource.getMessage("errors.validate.end.time", null, null)));
+            } else if(minuteDataIsInvalid(formData, endTimeGroupName)) {
+                errorMessages.put(startTimeGroupName,
+                        List.of(messageSource.getMessage("errors.validate.minute", null, null)));
+
             }
         });
 
@@ -59,14 +67,25 @@ public class ValidateHourlySchedule implements Action {
 
     protected Boolean hasMissingData(Map<String, Object> inputtedData, String fieldName) {
         AtomicBoolean hasMissingData = new AtomicBoolean(false);
-        if(inputtedData.containsKey(fieldName+"Hour")){
+        if(inputtedData.containsKey(fieldName+"Minute")){
             INPUT_POSTFIXES.forEach(pf -> {
-                if (inputtedData.get(fieldName + pf).toString().isEmpty()) {
+                if (inputtedData.getOrDefault(fieldName + pf, "").toString().isEmpty()) {
                     hasMissingData.set(true);
                 };
             });
         }
         return hasMissingData.get();
+    }
+
+    protected Boolean minuteDataIsInvalid(Map<String, Object> inputtedData, String fieldName) {
+        AtomicBoolean  minuteDataIsInvalid = new AtomicBoolean(false);
+        if(inputtedData.containsKey(fieldName+"Minute")){
+            Integer minuteValue = Integer.valueOf(inputtedData.get(fieldName+"Minute").toString());
+            if(minuteValue < 0 || minuteValue > 59){
+                minuteDataIsInvalid.set(true);
+            }
+        }
+        return minuteDataIsInvalid.get();
     }
 
 }
