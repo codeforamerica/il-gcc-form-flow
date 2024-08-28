@@ -9,8 +9,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 
+@Slf4j
 public class ValidateHourlySchedule implements Action {
     private final List<String> INPUT_POSTFIXES = List.of("Minute", "Hour", "AmPm");
     private final MessageSource messageSource;
@@ -80,9 +82,14 @@ public class ValidateHourlySchedule implements Action {
     protected Boolean minuteDataIsInvalid(Map<String, Object> inputtedData, String fieldName) {
         AtomicBoolean  minuteDataIsInvalid = new AtomicBoolean(false);
         if(inputtedData.containsKey(fieldName+"Minute")){
-            Integer minuteValue = Integer.valueOf(inputtedData.get(fieldName+"Minute").toString());
-            if(minuteValue < 0 || minuteValue > 59){
-                minuteDataIsInvalid.set(true);
+            try {
+                int minuteValue = Integer.valueOf(inputtedData.get(fieldName+"Minute").toString());
+                if(minuteValue < 0 || minuteValue > 59){
+                    minuteDataIsInvalid.set(true);
+                }
+            } catch (Exception e) {
+                log.error("Unable to parse minute value: " + inputtedData.get(fieldName+"Minute").toString());
+                return true;
             }
         }
         return minuteDataIsInvalid.get();
