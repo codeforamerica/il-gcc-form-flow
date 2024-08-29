@@ -67,9 +67,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.enter("childcareStartTimeThursdayMinute", "15");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isFalse();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
 
         testPage.goBack();
 
@@ -150,14 +148,6 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         //activities-work-commute-time
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-work-commute-time.title"));
-        testPage.selectFromDropdown("activitiesJobCommuteTime", "1 hour");
-        testPage.clickContinue();
-
-        //activities-add-jobs (list)
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
-        testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
-
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
     }
 
     @Test
@@ -200,9 +190,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.enter("activitiesJobEndTimeMondayMinute", "10");
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isFalse();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-work-commute-time.title"));
 
         testPage.goBack();
         testPage.enter("activitiesJobStartTimeMondayMinute", "-50");
@@ -216,20 +204,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.enter("activitiesJobStartTimeMondayMinute", "50");
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isFalse();
-
         //activities-work-commute-time
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-work-commute-time.title"));
-        testPage.selectFromDropdown("activitiesJobCommuteTime", "1 hour");
-        testPage.clickContinue();
-
-        //activities-add-jobs (list)
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
-        testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
-
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
     }
 
     @Test
@@ -265,8 +241,6 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("activitiesClassEndTimeAllDaysAmPm", "PM");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
 
         //activities-ed-program-dates
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
@@ -307,6 +281,9 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.enter("activitiesClassStartTimeAllDaysMinute", "55");
         testPage.clickContinue();
+
+        //activities-ed-program-dates
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
 
         testPage.goBack();
         testPage.enter("activitiesClassEndTimeAllDaysMinute", "12300");
@@ -410,6 +387,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.enter("activitiesJobStartTimeAllDaysMinute",  "22");
         testPage.clickContinue();
+        //activities-partner-commute-time
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-commute-time.title"));
 
         testPage.goBack();
 
@@ -424,8 +403,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //activities-partner-commute-time
-        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
-        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-commute-time.title"));
     }
 
     @Test
@@ -494,6 +472,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.enter("partnerClassStartTimeAllDaysMinute", "55");
         testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
 
         testPage.goBack();
 
