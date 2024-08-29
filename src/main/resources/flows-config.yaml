@@ -235,6 +235,9 @@ flow:
     beforeDisplayAction: SetClassWeeklyScheduleGroup
     crossFieldValidationAction: ValidateActivitiesClassHourlySchedule
     nextScreens:
+      - name: activities-class-commute-time
+  activities-class-commute-time:
+    nextScreens:
       - name: activities-ed-program-dates
   activities-ed-program-dates:
     crossFieldValidationAction: ValidateMonthYearActivitiesProgram
@@ -315,6 +318,9 @@ flow:
   activities-partner-class-hourly-schedule:
     beforeDisplayAction: SetPartnerClassWeeklyScheduleGroup
     crossFieldValidationAction: ValidatePartnerClassHourlySchedule
+    nextScreens:
+      - name: activities-partner-class-commute-time
+  activities-partner-class-commute-time:
     nextScreens:
       - name: activities-partner-ed-program-dates
   activities-partner-ed-program-dates:

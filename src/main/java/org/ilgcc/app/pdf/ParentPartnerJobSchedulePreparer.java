@@ -42,7 +42,7 @@ public class ParentPartnerJobSchedulePreparer implements SubmissionFieldPreparer
 
             if(!commuteTimeKey.isBlank()){
                 TimeSpan commuteTimeValue = CommuteTimeType.getTimeSpanByName(commuteTimeKey);
-                results.put("partnerEmployerTravelTimeHours_"+iteration, new SingleField("partnerEmployerTravelTimeHours", commuteTimeValue.getHours(), iteration));
+                results.put("partnerEmployerTravelTimeHours_"+iteration, new SingleField("partnerEmployerTravelTimeHours", commuteTimeValue.getPaddedHours(), iteration));
                 results.put("partnerEmployerTravelTimeMins_"+iteration, new SingleField("partnerEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
             }
             iteration++;

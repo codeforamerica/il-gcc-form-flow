@@ -144,6 +144,11 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
+        //activities-class-commute-time
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-commute-time.title"));
+        testPage.selectFromDropdown("activitiesEdCommuteTime", getEnMessage("general.hours.1.5.hours"));
+        testPage.clickContinue();
+
         //activities-ed-program-dates
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
@@ -305,6 +310,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("activitiesClassEndTimeAllDaysHour", "1");
         testPage.enter("activitiesClassEndTimeAllDaysMinute", "00");
         testPage.selectFromDropdown("activitiesClassEndTimeAllDaysAmPm", "PM");
+        testPage.clickContinue();
+
+        //activities-class-commute-time
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-commute-time.title"));
         testPage.clickContinue();
 
         //activities-ed-program-dates
@@ -517,6 +526,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("activitiesClassEndTimeAllDaysAmPm", "PM");
         testPage.clickContinue();
 
+        //activities-class-commute-time
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-commute-time.title"));
+        testPage.clickContinue();
+
         //activities-ed-program-dates
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
@@ -640,6 +653,8 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.enter("partnerClassEndTimeTuesdayMinute", "00");
         testPage.selectFromDropdown("partnerClassEndTimeTuesdayAmPm", "PM");
         testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-commute-time.title"));
+        testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
@@ -710,6 +725,10 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.enter("partnerClassEndTimeTuesdayMinute", "00");
         testPage.selectFromDropdown("partnerClassEndTimeTuesdayAmPm", "PM");
         testPage.clickContinue();
+        //activities-class-commute-time
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-commute-time.title"));
+        testPage.clickContinue();
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 

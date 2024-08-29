@@ -50,6 +50,8 @@ inputFields:
   applicantSchoolState: APPLICANT_EDUCATION_SCHOOL_STATE
   applicantSchoolZipCode: APPLICANT_EDUCATION_SCHOOL_ZIP
   applicantSchoolPhoneNumber: APPLICANT_EDUCATION_SCHOOL_PHONE
+  applicantSchoolTravelTimeHours: APPLICANT_EDUCATION_TRAVEL_TIME_HOURS
+  applicantSchoolTravelTimeMins: APPLICANT_EDUCATION_TRAVEL_TIME_MINS
   applicantSchoolStartDate: APPLICANT_EDUCATION_SCHOOL_TERM_BEGIN_DATE
   applicantSchoolEndDate: APPLICANT_EDUCATION_SCHOOL_TERM_END_DATE
   applicantEducationHighestLevel: APPLICANT_EDUCATION_HIGHEST_LEVEL
@@ -118,6 +120,8 @@ inputFields:
   partnerEducationScheduleSaturdayEndAmPm: PARTNER_EDUCATION_SCHEDULE_SATURDAY_END_AM_PM
   partnerEducationScheduleSundayEnd: PARTNER_EDUCATION_SCHEDULE_SUNDAY_END
   partnerEducationScheduleSundayEndAmPm: PARTNER_EDUCATION_SCHEDULE_SUNDAY_END_AM_PM
+  partnerEducationTravelTimeHours: PARTNER_EDUCATION_TRAVEL_TIME_HOURS
+  partnerEducationTravelTimeMins: PARTNER_EDUCATION_TRAVEL_TIME_MINS
   childcareStartDate: CHILD_CARE_START_DATE_CHILD
   otherMonthlyIncomeApplicant: OTHER_MONTHLY_INCOME_APPLICANT
   unearnedIncomeAssetsMoreThanOneMillionDollars: TOTAL_ASSETS_MILLION
