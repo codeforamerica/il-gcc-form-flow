@@ -413,13 +413,13 @@ p.normal {
   width:100%;
   font-size:1.9rem;
   font-weight:700;
-  height:6rem;
+  height:6.4rem;
   padding:0 1.5rem;
   margin-bottom:1.5rem;
   box-shadow:inset 0px 2px 0px rgba(0,0,0,0.15);
   border:2px solid #121111;
   border-radius:0;
-  background-color:#F7F5F4
+  background-color:white
 }
 
 .form-width--long-time {
@@ -506,4 +506,44 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 
 .required-input{
   color: #D13F00;
+}
+
+.bottom-border {
+  border-bottom: #AAAAAA;
+  border-bottom-style: solid;
+  padding-top: 30px;
+}
+
+.form-question-stack {
+  flex: 1 1 0;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: inline-flex;
+}
+
+.form-question-vertical-align {
+  padding-bottom: 10px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  width: 100%;
+}
+
+.form-question-stack .select{
+  width: 100%;
+}
+
+.form-question-stack:nth-child(2) {
+  flex: 1 1 0px;
+}
+
+@media only screen and (max-width: 500px) {
+  .form-question-stack{
+    flex: 1 1 50px;
+  }
+  .form-question-stack .select__element{
+    padding: 0 4rem 0 1.5rem;
+  }
 }

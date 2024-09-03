@@ -2,51 +2,35 @@
         th:fragment="timeRange"
         th:with="
           hasHelpText=${!#strings.isEmpty(helpText)},
+          dayLabelId=${startInputName + '-legend'},
           hasLabel=${!#strings.isEmpty(label)},
           hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
-          hasError=${
-            errorMessages != null &&
-            errorMessages.get(inputName) != null &&
-            (#arrays.length(errorMessages.get(inputName)) > 0) },
             requiredInputsForFlow=${requiredInputs.get(flow)},
             isRequiredInput=${(requiredInputsForFlow != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)}"
         th:assert="${!#strings.isEmpty(startInputName)},${!#strings.isEmpty(endInputName)}, ${hasLabel || hasAriaLabel}">
-    <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
-        <legend class="form-question spacing-below-15"
-                th:id="${startInputName + '-legend'}"
+    <div th:class="'form-group bottom-border'">
+        <legend class="heading-35 spacing-below-15"
+                th:id="${dayLabelId}"
                 th:inline="text">
             <span th:text="${label}"></span>
             <span th:if="${isRequiredInput && !hasAriaLabel}" class="required-input"
                   th:text="#{general.required-field}"></span>
         </legend>
-        <div class="form-width--long-time">
-            <div class="flex-one">
-                <label th:for="${startInputName}" th:text="#{general.inputs.time.range.start}" class="text--help grey-darkest spacing-above-15 spacing-below-5"/>
-                <input type="time" class="time-input"
-                       th:id="${startInputName}"
-                       th:name="${startInputName}"
-                       th:attr="
-                    aria-describedby=${hasHelpText ? startInputName + '-help-text' : ''},
-                    aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
-                    aria-invalid=${hasError}"
-                       th:value="${fieldData.getOrDefault(startInputName, '')}">
-            </div>
-            <strong class="padding-left-25 padding-right-25" th:text="#{general.to}"></strong>
-            <div class="flex-one">
-                <label th:for="${endInputName}" th:text="#{general.inputs.time.range.end}" class="text--help grey-darkest spacing-above-15 spacing-below-5"/>
-                <input type="time" class="time-input"
-                       th:id="${endInputName}"
-                       th:name="${endInputName}"
-                       th:attr="
-                aria-describedby=${hasHelpText ? endInputName + '-help-text' : ''},
-                aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
-                aria-invalid=${hasError}"
-                       th:value="${fieldData.getOrDefault(endInputName, '')}">
-            </div>
+        <div th:with="startTimeLabelId=${startInputName + '-label'}">
+            <label th:for="${startInputName}" th:id="${startTimeLabelId}" th:text="#{general.inputs.time.range.start}"
+                   class="form-question"/>
+            <th:block
+                    th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
+            <th:block
+                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${startInputName}, ariaDescribedBy=${startTimeLabelId+' ' + dayLabelId})}"/>
         </div>
-        <th:block
-                th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
-        <th:block
-                th:replace="~{fragments/inputError :: validationError(inputName=${endInputName})}"></th:block>
+        <div th:with="endTimeLabelId=${endInputName + '-label'}">
+            <label th:for="${endInputName}"  th:id="${endTimeLabelId}" th:text="#{general.inputs.time.range.end}"
+                   class="form-question"/>
+            <th:block
+                    th:replace="~{fragments/inputError :: validationError(inputName=${endInputName})}"></th:block>
+            <th:block
+                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${endInputName}, ariaDescribedBy=${endTimeLabelId+' ' + dayLabelId})}"/>
+        </div>
     </div>
 </th:block>

@@ -170,4 +170,87 @@ public abstract class AbstractBasePageTest {
   protected Callable<Boolean> pdfDownloadCompletes() {
     return () -> getAllFiles().size() > 0;
   }
+
+  protected void addPrimaryParentJob(String postFix) {
+    //activities-employer-name
+    testPage.enter("companyName", "testCompany" + postFix);
+    testPage.clickContinue();
+    //activities-employer-address
+    testPage.enter("employerCity", "Chicago");
+    testPage.enter("employerStreetAddress", "123 Test Me" + postFix);
+    testPage.enter("employerState", "IL - Illinois");
+    testPage.enter("employerPhoneNumber", "333333333" + postFix);
+    testPage.enter("employerZipCode", "6042" + postFix);
+    testPage.clickContinue();
+
+    //activities-self-employment
+    testPage.clickNo();
+
+    //activities-work-schedule-vary
+    testPage.clickNo();
+  }
+
+  protected void addPrimaryParentJobSchedule(String postFix){
+
+    //activities-job-weekly-schedule
+    testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+    testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
+    testPage.clickContinue();
+
+    //activities-job-hourly-schedule
+    testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
+    testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
+    testPage.enter("activitiesJobStartTimeAllDaysMinute", postFix);
+    testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "AM");
+
+    testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
+    testPage.enter("activitiesJobEndTimeAllDaysMinute", postFix);
+    testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
+
+    testPage.clickContinue();
+
+    //activities-work-commute-time
+    testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.hour"));
+    testPage.clickContinue();
+  }
+
+  protected void addParentPartnerJob(String postFix) {
+    testPage.enter("partnerCompanyName", "testPartnerCompany" + postFix);
+    testPage.clickContinue();
+    //activities--partner-employer-address
+    testPage.enter("partnerEmployerPhoneNumber", "433333333" + postFix);
+    testPage.enter("partnerEmployerCity", "Oakland");
+    testPage.enter("partnerEmployerState", "IL - Illinois");
+    testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
+    testPage.enter("partnerEmployerZipCode", "6042" + postFix);
+    testPage.clickContinue();
+    //activities-partner-self-employment
+    testPage.clickNo();
+    //activities-partner-work-schedule-vary
+    testPage.clickNo();
+  }
+
+  protected void addParentPartnerJobSchedule(String postFix){
+
+    //activities-partner-job-weekly-schedule
+    testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+    testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
+    testPage.clickContinue();
+
+    //activities-partner-job-hourly-schedule
+    testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
+    testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
+    testPage.enter("activitiesJobStartTimeAllDaysMinute", postFix);
+    testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "PM");
+
+    testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
+    testPage.enter("activitiesJobEndTimeAllDaysMinute", postFix);
+    testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
+
+    testPage.clickContinue();
+
+    //activities-partner-commute-time
+    testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
+    testPage.clickContinue();
+  }
 }
