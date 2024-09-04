@@ -401,6 +401,11 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
+        //activities-class-commute-time
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-commute-time.title"));
+        testPage.selectFromDropdown("activitiesEdCommuteTime", getEnMessage("general.hours.1.5.hours"));
+        testPage.clickContinue();
+
         //activities-ed-program-dates
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.enter("activitiesProgramStartYear", "2024");
@@ -546,6 +551,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("partnerClassEndTimeWednesdayMinute", "00");
         testPage.selectFromDropdown("partnerClassEndTimeWednesdayAmPm", "PM");
 
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-commute-time.title"));
+        testPage.selectFromDropdown("partnerProgramCommuteTime", getEnMessage("general.hours.1.5.hours"));
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();

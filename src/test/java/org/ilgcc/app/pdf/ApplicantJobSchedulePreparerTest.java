@@ -153,7 +153,7 @@ public class ApplicantJobSchedulePreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
 
         assertThat(result.get("applicantEmployerTravelTimeHours_1")).isEqualTo(
-            new SingleField("applicantEmployerTravelTimeHours", "1", 1));
+            new SingleField("applicantEmployerTravelTimeHours", "01", 1));
         assertThat(result.get("applicantEmployerTravelTimeMins_1")).isEqualTo(
             new SingleField("applicantEmployerTravelTimeMins", "30", 1));
         assertThat(result.get("applicantEmployerTravelTimeHours_2")).isEqualTo(null);
@@ -170,11 +170,11 @@ public class ApplicantJobSchedulePreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
 
         assertThat(result.get("applicantEmployerTravelTimeHours_1")).isEqualTo(
-            new SingleField("applicantEmployerTravelTimeHours", "2", 1));
+            new SingleField("applicantEmployerTravelTimeHours", "02", 1));
         assertThat(result.get("applicantEmployerTravelTimeMins_1")).isEqualTo(
             new SingleField("applicantEmployerTravelTimeMins", "0", 1));
         assertThat(result.get("applicantEmployerTravelTimeHours_2")).isEqualTo(
-            new SingleField("applicantEmployerTravelTimeHours", "1", 2));
+            new SingleField("applicantEmployerTravelTimeHours", "01", 2));
         assertThat(result.get("applicantEmployerTravelTimeMins_2")).isEqualTo(
             new SingleField("applicantEmployerTravelTimeMins", "30", 2));
     }

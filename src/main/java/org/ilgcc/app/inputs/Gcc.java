@@ -421,6 +421,9 @@ public class Gcc extends FlowInputs {
     private String activitiesClassEndTimeSundayMinute;
     private String activitiesClassEndTimeSundayAmPm;
 
+    // activities-class-commute-time
+    private String activitiesEdCommuteTime;
+
     // activities-ed-program-dates
     private String activitiesProgramStartDay;
     private String activitiesProgramStartMonth;
@@ -538,6 +541,9 @@ public class Gcc extends FlowInputs {
     private String partnerClassEndTimeSundayMinute;
     private String partnerClassEndTimeSundayAmPm;
 
+
+    // activities-partner-ed-commute-time
+    private String partnerProgramCommuteTime;
 
     // activities-partner-ed-program-dates
     private String partnerProgramStartDay;
