@@ -40,7 +40,8 @@
             </div>
             <div class="form-card__footer">
               <div class="spacing-below-15">
-                <a th:href="'/flow/' + ${flow} + '/children-info-basic'"
+                <a id="add-children"
+                   th:href="'/flow/' + ${flow} + '/children-info-basic'"
                    th:class="'button button--primary spacing-above-15' + ${maxChildrenAdded ? ' disabled' : ''}">
                   <i class="icon-add"></i>
                   <span th:text="#{children-add.add-button}"></span>

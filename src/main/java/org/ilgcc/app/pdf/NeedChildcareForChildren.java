@@ -29,7 +29,7 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
     var results = new HashMap<String, SubmissionField>();
     int iteration = 1;
     String earliestCCAPStart= "";
-    for (var child : SubmissionUtilities.getChildrenNeedingAssistance(submission)) {
+    for (var child : SubmissionUtilities.firstFourChildrenNeedingAssistance(submission)) {
       results.put("childFirstName_" + iteration, new SingleField("childFirstName", (String) child.getOrDefault("childFirstName", ""), iteration));
       results.put("childLastName_" + iteration, new SingleField("childLastName", (String) child.getOrDefault("childLastName", ""), iteration));
       results.put("childDateOfBirth_" + iteration, new SingleField("childDateOfBirth", formatChildDateOfBirth(child), iteration));

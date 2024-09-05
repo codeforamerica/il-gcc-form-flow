@@ -175,6 +175,20 @@ public class SubmissionUtilities {
             .toList();
   }
 
+  public static List<Map<String, Object>> firstFourChildrenNeedingAssistance(Submission submission){
+    int childrenNeedingAssistance = getChildrenNeedingAssistance(submission).size();
+    if(childrenNeedingAssistance<4){
+      return getChildrenNeedingAssistance(submission).subList(0,childrenNeedingAssistance);
+    } else {
+      return getChildrenNeedingAssistance(submission).subList(0,4);
+    }
+  }
+
+  public static List<Map<String, Object>> getAdditionalChildrenNeedingAssistance(Submission submission){
+    int childrenNeedingAssistance = getChildrenNeedingAssistance(submission).size();
+    return getChildrenNeedingAssistance(submission).subList(4,childrenNeedingAssistance);
+  }
+
   public static String generatePdfPath(Submission submission) {
     return String.format("%s/%s.pdf", submission.getId(), submission.getId());
   }

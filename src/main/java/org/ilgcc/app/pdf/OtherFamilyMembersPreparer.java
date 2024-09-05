@@ -5,6 +5,7 @@ import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -21,6 +22,20 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
   public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
     var results = new HashMap<String, SubmissionField>();
     int iteration = 1;
+
+    if(SubmissionUtilities.getChildrenNeedingAssistance(submission).size()>4){
+      var seekingAssistance = SubmissionUtilities.getAdditionalChildrenNeedingAssistance(submission);
+      for(var child : seekingAssistance){
+        results.put("familyMemberFirstName_" + iteration, new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
+        results.put("familyMemberLastName_" + iteration,
+                new SingleField("familyMemberLastName", (String) child.get("childLastName")+ " (Needs CCAP)", iteration));
+        results.put("familyMemberDateOfBirth_" + iteration,
+                new SingleField("familyMemberDateOfBirth", formatChildDateOfBirth(child), iteration));
+        results.put("familyMemberRelationship_" + iteration,
+                new SingleField("familyMemberRelationship", (String) child.get("childRelationship"), iteration));
+        iteration++;
+      }
+    }
 
     var children = ((List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList())).stream()
         .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "No").equals("No"))

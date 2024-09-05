@@ -16,6 +16,26 @@ public class NeedChildcareForChildrenPreparerTest {
     private Submission submission;
 
     @Test
+    public void includesOnlyFirstFourChildrenNeedingAssistance(){
+        submission = new SubmissionTestBuilder()
+                .withChild("First", "Child", "Yes")
+                .withChild("Second", "Child", "Yes")
+                .withChild("Third", "Child", "Yes")
+                .withChild("Fourth", "Child", "Yes")
+                .withChild("Fifth", "Child", "Yes")
+                .withChild("Sixth", "Child", "Yes")
+                .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("childFirstName_1")).isEqualTo(new SingleField("childFirstName", "First", 1));
+        assertThat(result.get("childFirstName_2")).isEqualTo(new SingleField("childFirstName", "Second", 2));
+        assertThat(result.get("childFirstName_3")).isEqualTo(new SingleField("childFirstName", "Third", 3));
+        assertThat(result.get("childFirstName_4")).isEqualTo(new SingleField("childFirstName", "Fourth", 4));
+        assertThat(result.get("childFirstName_5")).isEqualTo(null);
+        assertThat(result.get("childFirstName_6")).isEqualTo(null);
+    }
+
+    @Test
     public void shouldSelectTrueOnPDFFieldWhenChildIsAttendingAnyOtherSchoolDuringDay() {
         submission = new SubmissionTestBuilder()
                 .withChild("First", "Child", "Yes")
@@ -47,7 +67,7 @@ public class NeedChildcareForChildrenPreparerTest {
     }
     @Test
     public void shouldSelectFalseOnPDFFieldWhenChildIsNotAUSCitizen() {
-    
+
         submission = new SubmissionTestBuilder()
             .withChild("First", "Child", "Yes")
             .withChildIsAUSCitizen(0, "No")
