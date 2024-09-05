@@ -26,26 +26,22 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
         .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "No").equals("No"))
         .toList();
     for (var child : children) {
-      results.put(getUniqueKey(), new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberLastName", (String) child.get("childLastName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberDateOfBirth", formatChildDateOfBirth(child), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberRelationship", (String) child.get("childRelationship"), iteration));
+      results.put("familyMemberFirstName_" + iteration, new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
+      results.put("familyMemberLastName_" + iteration, new SingleField("familyMemberLastName", (String) child.get("childLastName"), iteration));
+      results.put("familyMemberDateOfBirth_" + iteration, new SingleField("familyMemberDateOfBirth", formatChildDateOfBirth(child), iteration));
+      results.put("familyMemberRelationship_" + iteration, new SingleField("familyMemberRelationship", (String) child.get("childRelationship"), iteration));
       iteration++;
     }
 
     var adultDependents = (List<Map<String, Object>>) submission.getInputData().getOrDefault("adultDependents", emptyList());
     for (var adult : adultDependents) {
-      results.put(getUniqueKey(), new SingleField("familyMemberFirstName", (String) adult.get("adultDependentFirstName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberLastName", (String) adult.get("adultDependentLastName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberDateOfBirth", formatAdultDependentDateOfBirth(adult), iteration));
+      results.put("familyMemberFirstName_" + iteration, new SingleField("familyMemberFirstName", (String) adult.get("adultDependentFirstName"), iteration));
+      results.put("familyMemberLastName_" + iteration, new SingleField("familyMemberLastName", (String) adult.get("adultDependentLastName"), iteration));
+      results.put("familyMemberDateOfBirth_" + iteration, new SingleField("familyMemberDateOfBirth", formatAdultDependentDateOfBirth(adult), iteration));
       iteration++;
     }
 
     return results;
-  }
-
-  private String getUniqueKey() {
-    return getClass().getName() + new Random();
   }
 
   private String formatChildDateOfBirth(Map<String, Object> child) {
