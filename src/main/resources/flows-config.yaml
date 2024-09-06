@@ -17,7 +17,6 @@ flow:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
       - name: parent-info-intro
-
   parent-info-intro:
     nextScreens:
       - name: parent-info-basic-1
@@ -28,16 +27,15 @@ flow:
       - name: parent-info-service
   parent-info-service:
     nextScreens:
-      - name: parent-home-address
+      - name: parent-info-disability
 # I think these screens were removed from the Figma designs
 #  parent-info-dv:
 #    condition: SkipTemplate
 #    nextScreens:
 #      - name: parent-info-disability
-#  parent-info-disability:
-#    condition: SkipTemplate
-#    nextScreens:
-#      - name: parent-home-address
+  parent-info-disability:
+    nextScreens:
+      - name: parent-home-address
   parent-home-address:
     onPostAction: ClearHomeAddressWhenExperiencingHomelessnessIsSelected
     nextScreens:
@@ -354,7 +352,6 @@ flow:
   unearned-income-programs:
     nextScreens:
       - name: submit-intro
-
   submit-intro:
     nextScreens:
       - name: submit-ccap-terms
