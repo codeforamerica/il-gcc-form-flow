@@ -10,10 +10,6 @@ import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
-import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
-import org.ilgcc.app.utils.DayOfWeekOption;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.enums.CommuteTimeType;
 import org.ilgcc.app.utils.enums.TimeSpan;
@@ -30,30 +26,23 @@ public class ParentPartnerJobSchedulePreparer implements SubmissionFieldPreparer
 
         List<Map> jobs = (List<Map>) submission.getInputData().getOrDefault("partnerJobs", emptyList());
 
+
+
         for (var job : jobs) {
-            Optional<HourlySchedule> workSchedule =
-                SchedulePreparerUtility.getHourlySchedule(
+            Map<String, String> careSchedule =
+                    SchedulePreparerUtility.hourlyScheduleKeys(
                     (Map<String, Object>) job,
                     "activitiesJob",
                     "activitiesJobWeeklySchedule[]");
-            if (workSchedule.isEmpty()) {
-                continue;
-            }
-
-            Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = workSchedule.get().toDailyScheduleMap();
-            for (var scheduleEntry : dailyScheduleMap.entrySet()) {
-                DayOfWeekOption day = scheduleEntry.getKey();
-                LocalTimeRange schedule = scheduleEntry.getValue();
-                results.putAll(
-                    SchedulePreparerUtility.createSubmissionFieldsFromSchedule(schedule, day, "partnerEmployerSchedule",
-                        iteration));
-            }
+            results.putAll(
+                    SchedulePreparerUtility.createSubmissionFieldsFromDay(job, careSchedule, "activitiesJob", "partnerEmployerSchedule",
+                            iteration));
 
             String commuteTimeKey = (String) job.getOrDefault("activitiesJobCommuteTime", "");
 
             if(!commuteTimeKey.isBlank()){
                 TimeSpan commuteTimeValue = CommuteTimeType.getTimeSpanByName(commuteTimeKey);
-                results.put("partnerEmployerTravelTimeHours_"+iteration, new SingleField("partnerEmployerTravelTimeHours", commuteTimeValue.getHours(), iteration));
+                results.put("partnerEmployerTravelTimeHours_"+iteration, new SingleField("partnerEmployerTravelTimeHours", commuteTimeValue.getPaddedHours(), iteration));
                 results.put("partnerEmployerTravelTimeMins_"+iteration, new SingleField("partnerEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
             }
             iteration++;

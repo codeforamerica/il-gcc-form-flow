@@ -214,10 +214,22 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         //children-childcare-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-hourly-schedule.title"));
-        testPage.enter("childcareStartTimeThursday", "1000AM");
-        testPage.enter("childcareEndTimeThursday", "0100PM");
-        testPage.enter("childcareStartTimeFriday", "0900AM");
-        testPage.enter("childcareEndTimeFriday", "1200PM");
+        testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
+        testPage.enter("childcareStartTimeThursdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
+        testPage.enter("childcareEndTimeThursdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareStartTimeFridayHour", "9");
+        testPage.enter("childcareStartTimeFridayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeFridayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeFridayHour", "12");
+        testPage.enter("childcareEndTimeFridayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeFridayAmPm", "PM");
+
         testPage.clickContinue();
         //children-ccap-child-other-ed
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
@@ -287,10 +299,23 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-job-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
-        testPage.enter("activitiesJobStartTimeMonday", "1200PM");
-        testPage.enter("activitiesJobEndTimeMonday", "0100PM");
-        testPage.enter("activitiesJobStartTimeSunday", "0200PM");
-        testPage.enter("activitiesJobEndTimeSunday", "0300PM");
+
+        testPage.selectFromDropdown("activitiesJobStartTimeMondayHour", "12");
+        testPage.enter("activitiesJobStartTimeMondayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobStartTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeMondayHour", "1");
+        testPage.enter("activitiesJobEndTimeMondayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobEndTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobStartTimeSundayHour", "2");
+        testPage.enter("activitiesJobStartTimeSundayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobStartTimeSundayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeSundayHour", "3");
+        testPage.enter("activitiesJobEndTimeSundayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobEndTimeSundayAmPm", "PM");
+
         testPage.clickContinue();
 
         //activities-work-commute-time
@@ -301,21 +326,20 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         //activities-add-jobs (list)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
 
-        // Add Second Job
-        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
-        addPrimaryParentJob("2");
+        List.of("2", "3").forEach(el -> {
+            // Add 2nd, 3rd, 4th job
+            testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
+            addPrimaryParentJob(el);
+            addPrimaryParentJobSchedule(el);
+        });
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
-
-        // Add Third Job
-        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
-        addPrimaryParentJob("3");
-
         assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isFalse();
 
         // Add Fourth Job
         testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
         addPrimaryParentJob("4");
+        addPrimaryParentJobSchedule("4");
 
         assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isTrue();
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
@@ -366,8 +390,20 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         //activities-class-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
-        testPage.enter("activitiesClassStartTimeAllDays", "0900AM");
-        testPage.enter("activitiesClassEndTimeAllDays", "13:00");
+
+        testPage.selectFromDropdown("activitiesClassStartTimeAllDaysHour", "9");
+        testPage.enter("activitiesClassStartTimeAllDaysMinute", "00");
+        testPage.selectFromDropdown("activitiesClassStartTimeAllDaysAmPm", "AM");
+
+        testPage.selectFromDropdown("activitiesClassEndTimeAllDaysHour", "1");
+        testPage.enter("activitiesClassEndTimeAllDaysMinute", "00");
+        testPage.selectFromDropdown("activitiesClassEndTimeAllDaysAmPm", "PM");
+
+        testPage.clickContinue();
+
+        //activities-class-commute-time
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-commute-time.title"));
+        testPage.selectFromDropdown("activitiesEdCommuteTime", getEnMessage("general.hours.1.5.hours"));
         testPage.clickContinue();
 
         //activities-ed-program-dates
@@ -426,10 +462,22 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-partner-job-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-job-hourly-schedule.title"));
-        testPage.enter("activitiesJobStartTimeMonday", "1200PM");
-        testPage.enter("activitiesJobEndTimeMonday", "0100PM");
-        testPage.enter("activitiesJobStartTimeSunday", "0200AM");
-        testPage.enter("activitiesJobEndTimeSunday", "0300PM");
+        testPage.selectFromDropdown("activitiesJobStartTimeMondayHour", "12");
+        testPage.enter("activitiesJobStartTimeMondayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobStartTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeMondayHour", "1");
+        testPage.enter("activitiesJobEndTimeMondayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobEndTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("activitiesJobStartTimeSundayHour", "2");
+        testPage.enter("activitiesJobStartTimeSundayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobStartTimeSundayAmPm", "AM");
+
+        testPage.selectFromDropdown("activitiesJobEndTimeSundayHour", "3");
+        testPage.enter("activitiesJobEndTimeSundayMinute", "00");
+        testPage.selectFromDropdown("activitiesJobEndTimeSundayAmPm", "PM");
+
         testPage.clickContinue();
 
         //activities-partner-commute-time
@@ -439,17 +487,19 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-partner-add-job
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-add-jobs.title"));
-        testPage.clickButton("Add a job");
 
-        // Add a second parent partner job
-        addParentPartnerJob("2");
-        testPage.clickButton("Add a job");
+        List.of("2", "3").forEach(el -> {
+            // Add a 2nd, 3rd job
+            testPage.clickButton("Add a job");
+            addParentPartnerJob(el);
+            addParentPartnerJobSchedule(el);
+        });
 
-        addParentPartnerJob("3");
         assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isFalse();
         testPage.clickButton("Add a job");
 
         addParentPartnerJob("4");
+        addParentPartnerJobSchedule("4");
         assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isTrue();
         testPage.clickButton(getEnMessage("activities-partner-add-jobs.this-is-all-their-jobs"));
         // activities-partner-ed
@@ -484,10 +534,26 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("partnerClassWeeklySchedule-Wednesday");
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
-        testPage.enter("partnerClassStartTimeMonday", "1100AM");
-        testPage.enter("partnerClassEndTimeMonday", "16:00");
-        testPage.enter("partnerClassStartTimeWednesday", "14:00");
-        testPage.enter("partnerClassEndTimeWednesday", "15:00");
+
+        testPage.selectFromDropdown("partnerClassStartTimeMondayHour", "11");
+        testPage.enter("partnerClassStartTimeMondayMinute", "00");
+        testPage.selectFromDropdown("partnerClassStartTimeMondayAmPm", "AM");
+
+        testPage.selectFromDropdown("partnerClassEndTimeMondayHour", "4");
+        testPage.enter("partnerClassEndTimeMondayMinute", "00");
+        testPage.selectFromDropdown("partnerClassEndTimeMondayAmPm", "PM");
+
+        testPage.selectFromDropdown("partnerClassStartTimeWednesdayHour", "2");
+        testPage.enter("partnerClassStartTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("partnerClassStartTimeWednesdayAmPm", "PM");
+
+        testPage.selectFromDropdown("partnerClassEndTimeWednesdayHour", "3");
+        testPage.enter("partnerClassEndTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("partnerClassEndTimeWednesdayAmPm", "PM");
+
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-commute-time.title"));
+        testPage.selectFromDropdown("partnerProgramCommuteTime", getEnMessage("general.hours.1.5.hours"));
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
@@ -654,70 +720,5 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         driver.get(downloadUrl);
         await().until(pdfDownloadCompletes());
         return getLatestDownloadedFile(path);
-    }
-
-    private void addPrimaryParentJob(String postFix){
-        //activities-employer-name
-        testPage.enter("companyName", "testCompany" + postFix);
-        testPage.clickContinue();
-        //activities-employer-address
-        testPage.enter("employerCity", "Chicago");
-        testPage.enter("employerStreetAddress", "123 Test Me" + postFix);
-        testPage.enter("employerState", "IL - Illinois");
-        testPage.enter("employerPhoneNumber", "333333333"+postFix);
-        testPage.enter("employerZipCode", "6042"+postFix);
-        testPage.clickContinue();
-
-        //activities-self-employment
-        testPage.clickNo();
-
-        //activities-work-schedule-vary
-        testPage.clickNo();
-
-        //activities-job-weekly-schedule
-        testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
-        testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
-        testPage.clickContinue();
-
-        //activities-job-hourly-schedule
-        testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
-        testPage.enter("activitiesJobStartTimeAllDays", "09"+postFix+"0AM");
-        testPage.enter("activitiesJobEndTimeAllDays", "01"+postFix+"0PM");
-        testPage.clickContinue();
-
-        //activities-work-commute-time
-        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.hour"));
-        testPage.clickContinue();
-    }
-
-    private void addParentPartnerJob(String postFix){
-        testPage.enter("partnerCompanyName", "testPartnerCompany"+postFix);
-        testPage.clickContinue();
-        //activities--partner-employer-address
-        testPage.enter("partnerEmployerPhoneNumber", "433333333"+postFix);
-        testPage.enter("partnerEmployerCity", "Oakland");
-        testPage.enter("partnerEmployerState", "IL - Illinois");
-        testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
-        testPage.enter("partnerEmployerZipCode", "6042"+postFix);
-        testPage.clickContinue();
-        //activities-partner-self-employment
-        testPage.clickNo();
-        //activities-partner-work-schedule-vary
-        testPage.clickNo();
-
-        //activities-partner-job-weekly-schedule
-        testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
-        testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
-        testPage.clickContinue();
-
-        //activities-partner-job-hourly-schedule
-        testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
-        testPage.enter("activitiesJobStartTimeAllDays", "09"+postFix+"0AM");
-        testPage.enter("activitiesJobEndTimeAllDays", "01"+postFix+"0PM");
-        testPage.clickContinue();
-
-        //activities-partner-commute-time
-        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
-        testPage.clickContinue();
     }
 }

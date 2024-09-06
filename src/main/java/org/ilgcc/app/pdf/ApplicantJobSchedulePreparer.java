@@ -32,29 +32,21 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
         List<Map> jobs = (List<Map>) submission.getInputData().getOrDefault("jobs", emptyList());
 
         for (var job : jobs) {
-            Optional<HourlySchedule> workSchedule =
-                SchedulePreparerUtility.getHourlySchedule(
+            Map<String, String> careSchedule =
+                SchedulePreparerUtility.hourlyScheduleKeys(
                     (Map<String, Object>) job,
                     "activitiesJob",
                     "activitiesJobWeeklySchedule[]");
-            if (workSchedule.isEmpty()) {
-                continue;
-            }
 
-            Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = workSchedule.get().toDailyScheduleMap();
-            for (var scheduleEntry : dailyScheduleMap.entrySet()) {
-                DayOfWeekOption day = scheduleEntry.getKey();
-                LocalTimeRange schedule = scheduleEntry.getValue();
                 results.putAll(
-                    SchedulePreparerUtility.createSubmissionFieldsFromSchedule(schedule, day, "applicantEmployerSchedule",
-                        iteration));
-            }
+                        SchedulePreparerUtility.createSubmissionFieldsFromDay(job, careSchedule, "activitiesJob", "applicantEmployerSchedule",
+                                iteration));
 
             String commuteTimeKey = (String) job.getOrDefault("activitiesJobCommuteTime", "");
 
             if(!commuteTimeKey.isBlank()){
                 TimeSpan commuteTimeValue = CommuteTimeType.getTimeSpanByName(commuteTimeKey);
-                results.put("applicantEmployerTravelTimeHours_"+iteration, new SingleField("applicantEmployerTravelTimeHours", commuteTimeValue.getHours(), iteration));
+                results.put("applicantEmployerTravelTimeHours_"+iteration, new SingleField("applicantEmployerTravelTimeHours", commuteTimeValue.getPaddedHours(), iteration));
                 results.put("applicantEmployerTravelTimeMins_"+iteration, new SingleField("applicantEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
             }
             iteration++;

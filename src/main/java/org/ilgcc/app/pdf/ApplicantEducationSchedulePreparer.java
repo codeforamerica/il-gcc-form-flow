@@ -2,34 +2,41 @@ package org.ilgcc.app.pdf;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
+import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import org.ilgcc.app.utils.ActivitySchedules.HourlySchedule;
-import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
-import org.ilgcc.app.utils.DayOfWeekOption;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
+import org.ilgcc.app.utils.enums.CommuteTimeType;
+import org.ilgcc.app.utils.enums.TimeSpan;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ApplicantEducationSchedulePreparer implements SubmissionFieldPreparer {
+
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
 
-        Optional<HourlySchedule> educationSchedule = SchedulePreparerUtility.getHourlySchedule(submission, "activitiesClass", "weeklySchedule[]");
-        if (educationSchedule.isEmpty()) {
-            return results;
+        Map<String, String> careSchedule =
+                SchedulePreparerUtility.hourlyScheduleKeys(
+                        submission.getInputData(),
+                        "activitiesClass",
+                        "weeklySchedule[]");
+
+        results.putAll(
+                SchedulePreparerUtility.createSubmissionFieldsFromDay(submission.getInputData(), careSchedule, "activitiesClass", "applicantEducationSchedule"));
+
+        String commuteTimeKey = (String) submission.getInputData().getOrDefault("activitiesEdCommuteTime", "");
+        if (!commuteTimeKey.isBlank()) {
+            TimeSpan commuteTimeValue = CommuteTimeType.getTimeSpanByName(commuteTimeKey);
+            results.put("applicantSchoolTravelTimeHours",
+                    new SingleField("applicantSchoolTravelTimeHours", commuteTimeValue.getPaddedHours(), null));
+            results.put("applicantSchoolTravelTimeMins",
+                    new SingleField("applicantSchoolTravelTimeMins", commuteTimeValue.getMinutes(), null));
         }
 
-        Map<DayOfWeekOption, LocalTimeRange> dailyScheduleMap = educationSchedule.get().toDailyScheduleMap();
-        for (var scheduleEntry : dailyScheduleMap.entrySet()) {
-            DayOfWeekOption day = scheduleEntry.getKey();
-            LocalTimeRange schedule = scheduleEntry.getValue();
-            results.putAll(SchedulePreparerUtility.createSubmissionFieldsFromSchedule(schedule, day, "applicantEducationSchedule"));
-        }
         return results;
     }
 }

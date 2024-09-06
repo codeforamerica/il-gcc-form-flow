@@ -19,10 +19,7 @@
     <section class="slab slab--white">
       <div class="grid">
         <nav class="grid__item width-one-third" th:with="sections = ${ {
-        'what-is-ccap', 'what-is-a-ccrr', 'what-is-a-child-care-provider', 'do-i-qualify-for-ccap',
-        'can-i-apply', 'do-have-to-be-a-us-resident-or-citizen', 'do-i-have-to-be-working',
-        'will-my-child-care-be-free-if-approved', 'how-do-i-know-if-the-child-care-provider-will-accept-ccap',
-        'how-do-i-find-child-care-provider-that-accepts-ccap'} }">
+        'general-questions', 'questions-about-the-online-application', 'questions-about-child-care', 'questions-about-the-process'} }">
           <p class="h3" th:text="#{faq.toc.header}"></p>
           <div class="spacing-below-15" th:each="section : ${sections}">
             <a th:href="'#' + ${section}" th:text="#{'faq.' + ${section} + '.header'}"></a>
@@ -33,7 +30,7 @@
             <div class="grid__item">
               <div class="grid__item spacing-below-35">
                 <!-- Answers Section -->
-                <h2 id="general-questions-header" class="h2" th:text="#{faq.general-questions.header}"></h2>
+                <h2 id="general-questions" class="h2" th:text="#{faq.general-questions.header}"></h2>
 
                 <!-- What is CCAP -->
                 <h3 id="what-is-ccap" class="h3" th:text="#{faq.what-is-ccap.header}"></h3>
@@ -127,6 +124,116 @@
                 <h3 id="how-do-i-find-child-care-provider-that-accepts-ccap" class="h3" th:text="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.header}"></h3>
                 <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-are-looking-for-a-child-care-provider}"></p>
                 <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-have-a-friend-relative}"></p>
+
+                <h2 th:id="questions-about-the-online-application" class="h2" th:text="#{faq.questions-about-the-online-application.header}"></h2>
+                <h3 class="h3" th:text="#{faq.questions-about-the-online-application.what-is-get-child-care-il-question}"></h3>
+                <p th:text="#{faq.questions-about-the-online-application.what-is-get-child-care-il-answer}"></p>
+                <h3 class="h3" th:text="#{faq.questions-about-the-online-application.who-can-use-the-online-application-question}"></h3>
+                <p th:text="#{faq.questions-about-the-online-application.starting-in-summer-2024}"></p>
+                <ul class="list--bulleted">
+                  <li th:text="#{faq.questions-about-the-online-application.starting-in-summer-2024.li.clc}"></li>
+                  <li th:text="#{faq.questions-about-the-online-application.li.tgp}"></li>
+                  <li th:text="#{faq.questions-about-the-online-application.li.op}"></li>
+                </ul>
+                <p th:text="#{faq.questions-about-the-online-application.the-online-application}"></p>
+                <h3 class="h3" th:text="#{faq.questions-about-the-online-application.what-can-i-do}"></h3>
+                <p th:text="#{faq.questions-about-the-online-application.what-can-i-do.please-contact}"></p>
+                <h3 class="h3" th:text="#{faq.questions-about-the-online-application.how-can-i-report-it}"></h3>
+                <p th:utext="#{faq.questions-about-the-online-application.please-report-any-bugs}"></p>
+                <p th:text="#{faq.questions-about-the-online-application.please-include-as-much-detail}"></p>
+                <ul class="list--bulleted">
+                  <li th:text="#{faq.questions-about-the-online-application.please-include-as-much-detail.li-1}"></li>
+                  <li th:text="#{faq.questions-about-the-online-application.please-include-as-much-detail.li-2}"></li>
+                  <li th:text="#{faq.questions-about-the-online-application.please-include-as-much-detail.li-3}"></li>
+                  <li th:text="#{faq.questions-about-the-online-application.please-include-as-much-detail.li-4}"></li>
+                  <li th:text="#{faq.questions-about-the-online-application.please-include-as-much-detail.li-5}"></li>
+                </ul>
+                <h2 id="questions-about-child-care" class="h2" th:text="#{faq.questions-about-child-care.header}"></h2>
+                <h3 class="h3" th:text="#{faq.questions-about-child-care.do-i-need-to-choose}"></h3>
+                <p th:text="#{faq.questions-about-child-care.do-i-need-to-choose.we-highly-recommend}"></p>
+                <p th:text="#{faq.questions-about-child-care.do-i-need-to-choose.if-you-use}"></p>
+                <h3 class="h3" th:text="#{faq.questions-about-child-care.can-i-use-a-friend}"></h3>
+                <ul class="list--bulleted">
+                  <li th:utext="#{faq.questions-about-child-care.can-i-use-a-friend.li-1}"></li>
+                  <li th:text="#{faq.questions-about-child-care.can-i-use-a-friend.li-2}"></li>
+                  <li th:utext="#{faq.questions-about-child-care.can-i-use-a-friend.li-3}"></li>
+                  <li th:utext="#{faq.questions-about-child-care.can-i-use-a-friend.li-4}"></li>
+                </ul>
+                <h2 id="questions-about-the-process" class="h2" th:text="#{faq.questions-about-the-process.header}"></h2>
+                <h3 class="h3" th:text="#{faq.questions-about-the-process.what-is-the-status}"></h3>
+                <p th:utext="#{faq.questions-about-the-process.what-is-the-status.to-check-the-status}"></p>
+                <h3 class="h3" th:text="#{faq.questions-about-the-process.what-verification-documents-do-i-need}"></h3>
+                <p th:text="#{faq.questions-about-the-process.what-verification-documents-do-i-need.the-specific-documents}"></p>
+                <p th:text="#{faq.questions-about-the-process.what-verification-documents-do-i-need.typical-situations}"></p>
+                <table class="faq-situation-table" >
+                  <tr>
+                    <th th:text="#{faq.questions-about-the-process.th-your-situation}"></th>
+                    <th th:text="#{faq.questions-about-the-process.th-document-needed}"></th>
+                  </tr>
+                  <tr>
+                    <td rowspan="2" th:text="#{faq.questions-about-the-process.typical-situations.td-you-and-your-partner}"></td>
+                    <td th:text="#{faq.questions-about-the-process.typical-situations.td-paystubs}"></td>
+                  </tr>
+                  <tr>
+                    <td th:utext="#{faq.questions-about-the-process.typical-situations.td-or-wage-or-income-verification-form}"></td>
+                  </tr>
+                  <tr>
+                    <td rowspan="2" th:text="#{faq.questions-about-the-process.typical-situations.td-you-or-your-partner}"></td>
+                    <td th:utext="#{faq.questions-about-the-process.typical-situations.td-self-employment-record}"></td>
+                  </tr>
+                  <tr>
+                    <td th:text="#{faq.questions-about-the-process.typical-situations.td-your-most-recent-federal-income-tax-return}"></td>
+                  </tr>
+                  <tr>
+                    <td rowspan="2" th:text="#{faq.questions-about-the-process.typical-situations.td-in-school}"></td>
+                    <td th:text="#{faq.questions-about-the-process.typical-situations.td-school-schedule}"></td>
+                  </tr>
+                  <tr>
+                    <td th:text="#{faq.questions-about-the-process.typical-situations.td-or-enrollment-letter}"></td>
+                  </tr>
+                  <tr>
+                    <td th:text="#{faq.questions-about-the-process.typical-situations.td-experiencing-homelessness}"></td>
+                    <td th:utext="#{faq.questions-about-the-process.typical-situations.td-certification-of-temporary-living-arrangement}"></td>
+                  </tr>
+                </table>
+                <p th:text="#{faq.questions-about-the-process.other-situations}"></p>
+                <table class="faq-situation-table">
+                  <tr>
+                    <th th:text="#{faq.questions-about-the-process.th-your-situation}"></th>
+                    <th th:text="#{faq.questions-about-the-process.th-document-needed}"></th>
+                  </tr>
+                  <tr>
+                    <td th:text="#{faq.questions-about-the-process.other-situations.you-or-your-partner-are-disabled}"></td>
+                    <td th:text="#{faq.questions-about-the-process.other-situations.documentation-about-the-disability}"></td>
+                  </tr>
+                  <tr>
+                    <td th:text="#{faq.questions-about-the-process.other-situations.communicate-with-dhs-by-email}"></td>
+                    <td th:utext="#{faq.questions-about-the-process.other-situations.email-agreement-form}"></td>
+                  </tr>
+                  <tr>
+                    <td th:text="#{faq.questions-about-the-process.other-situations.active-duty-military}"></td>
+                    <td th:text="#{faq.questions-about-the-process.other-situations.military-documents}"></td>
+                  </tr>
+                  <tr>
+                    <td th:text="#{faq.questions-about-the-process.other-situations.getting-out-of-intact-family-services}"></td>
+                    <td th:text="#{faq.questions-about-the-process.other-situations.child-care-services-referral-form}"></td>
+                  </tr>
+                  <tr>
+                    <td th:text="#{faq.questions-about-the-process.other-situations.receiving-tanf}"></td>
+                    <td th:text="#{faq.questions-about-the-process.other-situations.rsp-tanf}"></td>
+                  </tr>
+                </table>
+                <h3 class="h3" th:text="#{faq.questions-about-the-process.submit-verification-documents}"></h3>
+                <p th:text="#{faq.questions-about-the-process.submit-verification-documents.at-the-end}"></p>
+                <p th:text="#{faq.questions-about-the-process.submit-verification-documents.if-an-application}"></p>
+                <h3 class="h3" th:text="#{faq.questions-about-the-process.already-submitted-my-online-application}"></h3>
+                <p th:utext="#{faq.questions-about-the-process.already-submitted-my-online-application.extra-verification-documents}"></p>
+                <h3 class="h3" th:text="#{faq.questions-about-the-process.how-do-i-maintain-benefits}"></h3>
+                <p th:text="#{faq.questions-about-the-process.how-do-i-maintain-benefits.child-care-cases}"></p>
+                <p th:text="#{faq.questions-about-the-process.how-do-i-maintain-benefits.approved-for-initial-activity-search}"></p>
+                <p th:text="#{faq.questions-about-the-process.how-do-i-maintain-benefits.a-renewal-form}"></p>
+                <h3 class="h3" th:text="#{faq.questions-about-the-process.how-long-will-it-take}"></h3>
+                <p th:text="#{faq.questions-about-the-process.how-long-will-it-take.you-should-get-an-application-response}"></p>
               </div>
             </div>
           </div>
