@@ -105,6 +105,9 @@ public class Gcc extends FlowInputs {
     // parent-partner-info-service
     private String parentPartnerIsServing;
     private String parentPartnerInMilitaryReserveOrNationalGuard;
+    
+    // parent-info-disability
+    private String parentHasDisability;
 
     // parent-partner-info-disability
     private String parentPartnerHasDisability;

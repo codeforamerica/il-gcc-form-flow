@@ -64,6 +64,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // parent-info-service
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-service.title"));
         testPage.clickContinue();
+        // parent-info-disability
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-disability.title"));
+        testPage.clickYes();
         // parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
         assertThat(testPage.getSelectValue("parentHomeState")).isEqualTo(getEnMessage("state.il"));
