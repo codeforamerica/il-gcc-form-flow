@@ -5,6 +5,7 @@ import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -17,53 +18,72 @@ import static java.util.Collections.emptyList;
 @Component
 public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
 
-  @Override
-  public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
-    var results = new HashMap<String, SubmissionField>();
-    int iteration = 1;
+    @Override
+    public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
+        var results = new HashMap<String, SubmissionField>();
+        int iteration = 1;
 
-    var children = ((List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList())).stream()
-        .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "No").equals("No"))
-        .toList();
-    for (var child : children) {
-      results.put(getUniqueKey(), new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberLastName", (String) child.get("childLastName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberDateOfBirth", formatChildDateOfBirth(child), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberRelationship", (String) child.get("childRelationship"), iteration));
-      iteration++;
+        if (SubmissionUtilities.getChildrenNeedingAssistance(submission).size() > 4) {
+            var seekingAssistance = SubmissionUtilities.getAdditionalChildrenNeedingAssistance(submission);
+            for (var child : seekingAssistance) {
+                results.put("familyMemberFirstName_" + iteration,
+                        new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
+                results.put("familyMemberLastName_" + iteration,
+                        new SingleField("familyMemberLastName", (String) child.get("childLastName") + " (Needs CCAP)",
+                                iteration));
+                results.put("familyMemberDateOfBirth_" + iteration,
+                        new SingleField("familyMemberDateOfBirth", formatChildDateOfBirth(child), iteration));
+                results.put("familyMemberRelationship_" + iteration,
+                        new SingleField("familyMemberRelationship", (String) child.get("childRelationship"), iteration));
+                iteration++;
+            }
+        }
+
+        var children = ((List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList())).stream()
+                .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "No").equals("No"))
+                .toList();
+        for (var child : children) {
+            results.put("familyMemberFirstName_" + iteration,
+                    new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
+            results.put("familyMemberLastName_" + iteration,
+                    new SingleField("familyMemberLastName", (String) child.get("childLastName"), iteration));
+            results.put("familyMemberDateOfBirth_" + iteration,
+                    new SingleField("familyMemberDateOfBirth", formatChildDateOfBirth(child), iteration));
+            results.put("familyMemberRelationship_" + iteration,
+                    new SingleField("familyMemberRelationship", (String) child.get("childRelationship"), iteration));
+            iteration++;
+        }
+
+        var adultDependents = (List<Map<String, Object>>) submission.getInputData().getOrDefault("adultDependents", emptyList());
+        for (var adult : adultDependents) {
+            results.put("familyMemberFirstName_" + iteration,
+                    new SingleField("familyMemberFirstName", (String) adult.get("adultDependentFirstName"), iteration));
+            results.put("familyMemberLastName_" + iteration,
+                    new SingleField("familyMemberLastName", (String) adult.get("adultDependentLastName"), iteration));
+            results.put("familyMemberDateOfBirth_" + iteration,
+                    new SingleField("familyMemberDateOfBirth", formatAdultDependentDateOfBirth(adult), iteration));
+            iteration++;
+        }
+
+        return results;
     }
 
-    var adultDependents = (List<Map<String, Object>>) submission.getInputData().getOrDefault("adultDependents", emptyList());
-    for (var adult : adultDependents) {
-      results.put(getUniqueKey(), new SingleField("familyMemberFirstName", (String) adult.get("adultDependentFirstName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberLastName", (String) adult.get("adultDependentLastName"), iteration));
-      results.put(getUniqueKey(), new SingleField("familyMemberDateOfBirth", formatAdultDependentDateOfBirth(adult), iteration));
-      iteration++;
+    private String formatChildDateOfBirth(Map<String, Object> child) {
+        return String.format("%s/%s/%s",
+                child.get("childDateOfBirthMonth"),
+                child.get("childDateOfBirthDay"),
+                child.get("childDateOfBirthYear"));
     }
 
-    return results;
-  }
+    private String formatAdultDependentDateOfBirth(Map<String, Object> adult) {
+        var year = (String) adult.getOrDefault("adultDependentBirthdateYear", "");
+        if (year.isBlank()) {
+            return "";
+        }
 
-  private String getUniqueKey() {
-    return getClass().getName() + new Random();
-  }
-
-  private String formatChildDateOfBirth(Map<String, Object> child) {
-    return String.format("%s/%s/%s",
-        child.get("childDateOfBirthMonth"),
-        child.get("childDateOfBirthDay"),
-        child.get("childDateOfBirthYear"));
-  }
-
-  private String formatAdultDependentDateOfBirth(Map<String, Object> adult) {
-    var year = (String) adult.getOrDefault("adultDependentBirthdateYear", "");
-    if (year.isBlank()) {
-      return "";
+        return String.format("%s/%s/%s",
+                adult.get("adultDependentBirthdateMonth"),
+                adult.get("adultDependentBirthdateDay"),
+                year);
     }
-
-    return String.format("%s/%s/%s",
-        adult.get("adultDependentBirthdateMonth"),
-        adult.get("adultDependentBirthdateDay"),
-        year);
-  }
 }
