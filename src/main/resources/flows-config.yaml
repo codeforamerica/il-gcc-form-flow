@@ -28,11 +28,6 @@ flow:
   parent-info-service:
     nextScreens:
       - name: parent-info-disability
-# I think these screens were removed from the Figma designs
-#  parent-info-dv:
-#    condition: SkipTemplate
-#    nextScreens:
-#      - name: parent-info-disability
   parent-info-disability:
     nextScreens:
       - name: parent-home-address
