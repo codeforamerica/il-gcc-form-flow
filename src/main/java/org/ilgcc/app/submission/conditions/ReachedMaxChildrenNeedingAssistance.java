@@ -11,18 +11,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ReachedMaxChildrenNeedingAssistance implements Condition {
-  @Override
-  public Boolean run(Submission submission, String uuid) {
-    var children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
-    for(var child : children) {
-      if(child.get("uuid").equals(uuid)) {
-        if(child.getOrDefault("needFinancialAssistanceForChild", "No").equals("Yes")){
-          var childrenNeededAssistance = SubmissionUtilities.getChildrenNeedingAssistance(submission);
 
-          return childrenNeededAssistance.size() > 4;
+    @Override
+    public Boolean run(Submission submission, String uuid) {
+        var children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+        for (var child : children) {
+            if (child.get("uuid").equals(uuid)) {
+                if (child.getOrDefault("needFinancialAssistanceForChild", "No").equals("Yes")) {
+                    var childrenNeededAssistance = SubmissionUtilities.getChildrenNeedingAssistance(submission);
+
+                    return childrenNeededAssistance.size() > 4;
+                }
+            }
         }
-      }
+        return false;
     }
-    return false;
-  }
 }

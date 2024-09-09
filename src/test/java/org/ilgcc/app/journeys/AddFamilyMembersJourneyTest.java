@@ -12,12 +12,10 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
         //children-info-intro
         testPage.navigateToFlowScreen("gcc/children-info-intro");
 
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-            .withChild("First", "Child", "Yes")
-            .withChild("Second", "Child", "Yes")
-            .withChild("Third", "Child", "Yes")
-            .withChild("Fourth", "Child", "Yes")
-            .build());
+        saveSubmission(
+                getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails().withChild("First", "Child", "Yes")
+                        .withChild("Second", "Child", "Yes").withChild("Third", "Child", "Yes")
+                        .withChild("Fourth", "Child", "Yes").build());
 
         testPage.clickContinue();
 
@@ -46,16 +44,11 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
         //children-info-intro
         testPage.navigateToFlowScreen("gcc/children-info-intro");
 
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .withChild("First", "Child", "Yes")
-                .withChild("Second", "Child", "No")
-                .withChild("Third", "Child", "No")
-                .withChild("Fourth", "Child", "No")
-                .withChild("Fifth", "Child", "No")
-                .withChild("Sixth", "Child", "No")
-                .withChild("Seventh", "Child", "No")
-                .withChild("Eight", "Child", "No")
-                .build());
+        saveSubmission(
+                getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails().withChild("First", "Child", "Yes")
+                        .withChild("Second", "Child", "No").withChild("Third", "Child", "No").withChild("Fourth", "Child", "No")
+                        .withChild("Fifth", "Child", "No").withChild("Sixth", "Child", "No").withChild("Seventh", "Child", "No")
+                        .withChild("Eight", "Child", "No").build());
 
         testPage.clickContinue();
 

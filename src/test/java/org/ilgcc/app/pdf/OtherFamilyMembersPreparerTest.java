@@ -29,10 +29,12 @@ public class OtherFamilyMembersPreparerTest {
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
         assertThat(result.get("familyMemberFirstName_1")).isEqualTo(new SingleField("familyMemberFirstName", "Fifth", 1));
-        assertThat(result.get("familyMemberLastName_1")).isEqualTo(new SingleField("familyMemberLastName", "Child (Needs CCAP)", 1));
+        assertThat(result.get("familyMemberLastName_1")).isEqualTo(
+                new SingleField("familyMemberLastName", "Child (Needs CCAP)", 1));
 
         assertThat(result.get("familyMemberFirstName_2")).isEqualTo(new SingleField("familyMemberFirstName", "Sixth", 2));
-        assertThat(result.get("familyMemberLastName_2")).isEqualTo(new SingleField("familyMemberLastName", "Child (Needs CCAP)", 2));
+        assertThat(result.get("familyMemberLastName_2")).isEqualTo(
+                new SingleField("familyMemberLastName", "Child (Needs CCAP)", 2));
 
     }
 
@@ -53,7 +55,8 @@ public class OtherFamilyMembersPreparerTest {
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
         assertThat(result.get("familyMemberFirstName_1")).isEqualTo(new SingleField("familyMemberFirstName", "Fifth", 1));
-        assertThat(result.get("familyMemberLastName_1")).isEqualTo(new SingleField("familyMemberLastName", "Child (Needs CCAP)", 1));
+        assertThat(result.get("familyMemberLastName_1")).isEqualTo(
+                new SingleField("familyMemberLastName", "Child (Needs CCAP)", 1));
 
         assertThat(result.get("familyMemberFirstName_2")).isEqualTo(new SingleField("familyMemberFirstName", "Sixth", 2));
         assertThat(result.get("familyMemberLastName_2")).isEqualTo(new SingleField("familyMemberLastName", "Child", 2));
