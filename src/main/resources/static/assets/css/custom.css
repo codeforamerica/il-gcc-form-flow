@@ -553,7 +553,7 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 .notice--toolbar {
   line-height: 2.5rem;
   font-size: 1.9rem;
-  margin: 0 -1.5rem 0.3rem;
+  margin: 0 -1.5rem;
   border: none;
   border-bottom: 2px solid var(--hc-red);
 }
