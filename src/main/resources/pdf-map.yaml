@@ -4,6 +4,7 @@ inputFields:
   parentFirstName: APPLICANT_NAME_FIRST
   parentLastName: APPLICANT_NAME_LAST
   parentFullName: APPLICANT_NAME_FULL
+  parentHasDisability: APPLICANT_HAS_A_DISABILITY
   parentHomeStreetAddress1ForPDF: APPLICANT_ADDRESS_HOME_STREET
   parentHomeStreetAddress2ForPDF: APPLICANT_ADDRESS_HOME_APT
   parentHomeCityForPDF: APPLICANT_ADDRESS_HOME_CITY
