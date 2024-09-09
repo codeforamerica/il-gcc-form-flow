@@ -5,6 +5,7 @@
   --idhs-base-purple: #3262d4;
   --idhs-light-purple: #769bf3;
   --hc-green: #00891B;
+  --hc-red: #D13F00;
   --idhs-dark-green: #005e59;
   --idhs-base-green: #048e85;
   --idhs-light-green: #42c9b0;
@@ -61,6 +62,7 @@ html, body {
 
 .toolbar__wrapper {
   background-color: var(--idhs-base-blue);
+  height: auto;
 }
 
 .notice--warning {
@@ -505,7 +507,7 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 }
 
 .required-input{
-  color: #D13F00;
+  color: var(--hc-red);
 }
 
 .bottom-border {
@@ -545,5 +547,20 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   }
   .form-question-stack .select__element{
     padding: 0 4rem 0 1.5rem;
+  }
+}
+
+.notice--toolbar {
+  line-height: 2.5rem;
+  font-size: 1.9rem;
+  margin: 0 -1.5rem 0.3rem;
+  border: none;
+  border-bottom: 2px solid var(--hc-red);
+}
+
+@media only screen and (min-width: 601px) {
+  .notice--toolbar {
+    margin-left: -3.5rem;
+    margin-right: -3.5rem;
   }
 }
