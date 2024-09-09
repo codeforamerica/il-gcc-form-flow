@@ -22,7 +22,5 @@
                 th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='demo')}"/>
         <th:block
                 th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='dev')}"/>
-        <th:block
-                th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='production')}"/>
     </header>
 </th:block>
