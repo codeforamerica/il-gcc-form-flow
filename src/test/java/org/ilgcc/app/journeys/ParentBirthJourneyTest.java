@@ -18,7 +18,7 @@ public class ParentBirthJourneyTest extends AbstractBasePageTest {
     testPage.enter("parentFirstName", "parent first");
     testPage.enter("parentLastName", "parent last");
     testPage.clickContinue();
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
     assertThat(testPage.hasErrorText(getEnMessage("errors.provide-birthday"))).isTrue();
     testPage.enter("parentBirthMonth", "*");
     testPage.enter("parentBirthDay", "1");

@@ -52,7 +52,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         // parent-info-basic-1
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
-        testPage.enter("parentFirstName", "parent first");
         testPage.enter("parentLastName", "parent last");
         testPage.enter("parentPreferredName", "Preferred Parent First");
         testPage.enter("parentBirthMonth", "12");
@@ -60,6 +59,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentBirthYear", "1985");
         testPage.enter("parentSsn", "123-45-6789");
         testPage.clickElementById("parentGender-MALE-label");
+        testPage.clickContinue();
+
+        // parent-info-basic-1
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.findElementsByClass("notice--toolbar").size()).isEqualTo(1);
+        testPage.enter("parentFirstName", "parent first");
         testPage.clickContinue();
         // parent-info-service
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-service.title"));
