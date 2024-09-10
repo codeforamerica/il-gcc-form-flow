@@ -1,6 +1,9 @@
 <th:block th:fragment="toolbar">
     <header class="main-header toolbar__wrapper"
             th:with="linkText=${submission == null ? '#' : ('/download/gcc/' + submission.getId())}">
+        <div th:if="${errorMessages != null}" class="notice--error notice--toolbar">
+            <p th:utext="#{errors.general-banner-warning}"></p>
+        </div>
         <div class="toolbar">
             <div class="toolbar__left spacing-above-0">
                 <a href="#content" id="skip-to-content" class="button button--small"
@@ -22,7 +25,5 @@
                 th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='demo')}"/>
         <th:block
                 th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='dev')}"/>
-        <th:block
-                th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='production')}"/>
     </header>
 </th:block>

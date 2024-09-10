@@ -20,7 +20,7 @@ public class RecommendedDocumentsUtilities {
     boolean tanfISReasonForParentChildcareNeed = parentNeedForChildcareReasons.stream().anyMatch(
         reason -> reason.equals(ChildcareReasonOption.TANF_TRAINING.toString())
     );
-    boolean parentHasAPartner = inputData.getOrDefault("parentHasPartner", "false").equals("true");
+    boolean parentHasAPartner = inputData.getOrDefault("parentHasQualifyingPartner", "false").equals("true");
     if (parentHasAPartner) {
       List<String> partnerNeedForChildcareReasons = (List<String>) inputData.getOrDefault(
           "activitiesParentPartnerChildcareReason[]", List.of());
@@ -39,7 +39,7 @@ public class RecommendedDocumentsUtilities {
     boolean workingISReasonForParentChildcareNeed = parentNeedForChildcareReasons.stream().anyMatch(
         reason -> reason.equals(ChildcareReasonOption.WORKING.toString())
     );
-    boolean parentHasAPartner = inputData.getOrDefault("parentHasPartner", "false").equals("true");
+    boolean parentHasAPartner = inputData.getOrDefault("parentHasQualifyingPartner", "false").equals("true");
     if (parentHasAPartner) {
       List<String> partnerNeedForChildcareReasons = (List<String>) inputData.getOrDefault(
           "activitiesParentPartnerChildcareReason[]", List.of());
@@ -58,7 +58,7 @@ public class RecommendedDocumentsUtilities {
     boolean schoolISReasonForParentChildcareNeed = parentNeedForChildcareReasons.stream().anyMatch(
         reason -> reason.equals(ChildcareReasonOption.SCHOOL.toString())
     );
-    boolean parentHasAPartner = inputData.getOrDefault("parentHasPartner", "false").equals("true");
+    boolean parentHasAPartner = inputData.getOrDefault("parentHasQualifyingPartner", "false").equals("true");
     if (parentHasAPartner) {
       List<String> partnerNeedForChildcareReasons = (List<String>) inputData.getOrDefault(
           "activitiesParentPartnerChildcareReason[]", List.of());

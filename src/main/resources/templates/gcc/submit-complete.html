@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
-      th:with="email = ${inputData.getOrDefault('parentContactEmail', null)}">
+      th:with="showDocumentUploadInfo = ${T(org.ilgcc.app.utils.RecommendedDocumentsUtilities).shouldDisplayRecommendedDocumentScreens(submission)}">
 <head th:replace="~{fragments/head :: head(title=#{submit-complete.title})}"></head>
 <body>
 <div class="page-wrapper">
@@ -13,21 +13,42 @@
                 <div th:if="${lockedSubmissionMessage}" class="notice--warning">
                     <p th:text="${lockedSubmissionMessage}"></p>
                 </div>
-                <header class="form-card__header">
-                    <h1 id="header" class="h2" th:utext="#{submit-complete.header}"></h1>
-                </header>
-                <div class="form-card__content">
-                    <div class="notice notice--gray" th:utext="#{submit-complete.info-box}"></div>
+                <!-- Display document verification information and Document Upload Links-->
+                <div th:if="${showDocumentUploadInfo}">
+                    <header class="form-card__header">
+                        <h1 id="header-doc-upload" class="h2" th:utext="#{submit-complete.header}"></h1>
+                    </header>
+                    <div class="form-card__content">
+                        <div class="notice notice--gray" th:utext="#{submit-complete.info-box}"></div>
+                    </div>
+                    <div class="form-card__footer">
+                        <a href="/flow/gcc/doc-upload-recommended-docs"
+                           th:text="#{submit-complete.button.submit-docs}"
+                           class="button button--primary"
+                           id="continue-link"></a>
+                        <a href="/flow/gcc/submit-next-steps"
+                           th:text="#{submit-complete.button.skip}"
+                           class="button"
+                           id="skip-link"></a>
+                    </div>
                 </div>
-                <div class="form-card__footer">
-                    <a href="/flow/gcc/doc-upload-recommended-docs"
-                       th:text="#{submit-complete.button.submit-docs}"
-                       class="button button--primary"
-                       id="continue-link"></a>
-                    <a href="/flow/gcc/submit-next-steps"
-                       th:text="#{submit-complete.button.skip}"
-                       class="button"
-                       id="skip-link"></a>
+                <!-- Show information about next steps -->
+                <div th:if="${!showDocumentUploadInfo}">
+                    <header class="form-card__header">
+                        <h1 id="header-next-steps" class="h2" th:text="#{submit-complete-no-documents-to-upload.header}"></h1>
+                        <p id="header-help-message" th:text="#{submit-complete-no-documents-to-upload.subtext}"></p>
+                    </header>
+                    <div class="form-card__content">
+                        <div class="notice--success">
+                            <th:block th:utext="#{submit-next-steps.notice}"></th:block>
+                        </div>
+                    </div>
+                    <div class="form-card__footer">
+                        <a href="/flow/gcc/submit-confirmation"
+                           th:text="#{submit-complete-no-documents-to-upload.finish-application}"
+                           class="button button--primary"
+                           id="finish-application-link"></a>
+                    </div>
                 </div>
             </main>
         </div>
