@@ -23,6 +23,7 @@ inputFields:
   parentPartnerDateOfBirth: PARTNER_DOB
   parentPartnerPhoneNumber: PARTNER_PHONE_NUMBER
   parentPartnerIsServing: PARTNER_MILITARY_ACTIVE_DUTY
+  parentPartnerEmail: PARTNER_EMAIL_ADDRESS
   partnerProgramName: PARTNER_EDUCATION_SCHOOL_NAME
   partnerEdStreetAddress: PARTNER_EDUCATION_SCHOOL_ADDRESS
   partnerEdCity: PARTNER_EDUCATION_SCHOOL_CITY
@@ -61,6 +62,12 @@ inputFields:
   parentGenderMale: APPLICANT_GENDER_MALE
   parentGenderFemale: APPLICANT_GENDER_FEMALE
   parentGenderTNB: APPLICANT_GENDER_OTHER
+  languageSpeak: APPLICANT_SPOKEN_LANGUAGE
+  parentPreferredName: APPLICANT_NAME_PREFERRED
+  parentOtherLegalName: APPLICANT_NAME_OTHER
+  parentContactPreferredCommunicationMethod: APPLICANT_COMMUNICATION_PREFERENCE
+  activitiesParentChildcareReason_other: APPLICANT_CHILDCARE_REASON_OTHER
+  activitiesParentPartnerChildcareReason_other: PARTNER_CHILDCARE_REASON_OTHER
   applicantEducationScheduleMondayStart: APPLICANT_EDUCATION_SCHEDULE_MONDAY_START
   applicantEducationScheduleMondayStartAmPm: APPLICANT_EDUCATION_SCHEDULE_MONDAY_START_AM_PM
   applicantEducationScheduleTuesdayStart: APPLICANT_EDUCATION_SCHEDULE_TUESDAY_START
