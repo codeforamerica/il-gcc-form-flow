@@ -44,7 +44,7 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
 
             String commuteTimeKey = (String) job.getOrDefault("activitiesJobCommuteTime", "");
 
-            if(!commuteTimeKey.isBlank()){
+            if (!commuteTimeKey.isBlank()) {
                 TimeSpan commuteTimeValue = CommuteTimeType.getTimeSpanByName(commuteTimeKey);
                 results.put("applicantEmployerTravelTimeHours_"+iteration, new SingleField("applicantEmployerTravelTimeHours", commuteTimeValue.getPaddedHours(), iteration));
                 results.put("applicantEmployerTravelTimeMins_"+iteration, new SingleField("applicantEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
