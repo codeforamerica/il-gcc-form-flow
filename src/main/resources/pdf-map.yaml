@@ -132,6 +132,10 @@ inputFields:
   partnerEducationTravelTimeMins: PARTNER_EDUCATION_TRAVEL_TIME_MINS
   childcareStartDate: CHILD_CARE_START_DATE_CHILD
   otherMonthlyIncomeApplicant: OTHER_MONTHLY_INCOME_APPLICANT
+  unearnedIncomePrograms-snap: OTHER_SERVICES_FOOD_ASSISTANCE_SNAP
+  unearnedIncomePrograms-homeless-shelters: OTHER_SERVICES_HOMELESS_SHELTER_OR_PREVENTION_PROGRAMS
+  unearnedIncomePrograms-tanf: OTHER_SERVICES_CASH_ASSISTANCE_TANF
+  unearnedIncomePrograms-housing-vouchers: OTHER_SERVICES_HOUSING_VOUCHERS
   unearnedIncomeAssetsMoreThanOneMillionDollars: TOTAL_ASSETS_MILLION
   amountYourHouseholdPaysInChildSupport: APPLICANT_CHILD_SUPPORT_PAID
   signedName: APPLICANT_SIGNATURE
