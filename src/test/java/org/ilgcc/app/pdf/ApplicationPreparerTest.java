@@ -150,6 +150,6 @@ public class ApplicationPreparerTest {
         submission = new SubmissionTestBuilder()
             .with("unearnedIncomePrograms[]", List.of("HOUSING_VOUCHERS")).build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
-        assertThat(result.get("unearnedIncomePrograms-homeless-shelters")).isEqualTo(new SingleField("unearnedIncomePrograms-homeless-shelters", "true", null));
+        assertThat(result.get("unearnedIncomePrograms-housing-vouchers")).isEqualTo(new SingleField("unearnedIncomePrograms-housing-vouchers", "true", null));
     }
 }
