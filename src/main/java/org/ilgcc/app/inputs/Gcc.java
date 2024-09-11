@@ -27,9 +27,9 @@ public class Gcc extends FlowInputs {
     
     // onboarding-provider-info
     @NotBlank(message = "{errors.provide-provider-name}")
-    private String providerName;
-    private String providerEmail;
-    private String providerPhoneNumber;
+    private String familyIntendedProviderName;
+    private String familyIntendedProviderEmail;
+    private String familyIntendedProviderPhoneNumber;
 
     // parent-info-basic-1
     @NotBlank(message = "{errors.provide-first-name}")
