@@ -24,6 +24,12 @@ public class Gcc extends FlowInputs {
     private String dayCareChoice;
     private String languageRead;
     private String languageSpeak;
+    
+    // onboarding-provider-info
+    @NotBlank(message = "{errors.provide-provider-name}")
+    private String familyIntendedProviderName;
+    private String familyIntendedProviderEmail;
+    private String familyIntendedProviderPhoneNumber;
 
     // parent-info-basic-1
     @NotBlank(message = "{errors.provide-first-name}")
