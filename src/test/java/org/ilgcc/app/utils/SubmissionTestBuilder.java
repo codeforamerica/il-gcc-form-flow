@@ -1,6 +1,7 @@
 package org.ilgcc.app.utils;
 
 import static java.util.Collections.emptyList;
+
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -77,11 +78,11 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withHomeAddress(
-        String parentHomeStreetAddress1,
-        String parentHomeStreetAddress2,
-        String parentHomeCity,
-        String parentHomeState,
-        String parentHomeZipCode){
+            String parentHomeStreetAddress1,
+            String parentHomeStreetAddress2,
+            String parentHomeCity,
+            String parentHomeState,
+            String parentHomeZipCode) {
         submission.getInputData().put("parentHomeStreetAddress1", parentHomeStreetAddress1);
         submission.getInputData().put("parentHomeStreetAddress2", parentHomeStreetAddress2);
         submission.getInputData().put("parentHomeCity", parentHomeCity);
@@ -91,11 +92,11 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withMailingAddress(
-        String parentMailingStreetAddress1,
-        String parentMailingStreetAddress2,
-        String parentMailingCity,
-        String parentMailingState,
-        String parentMailingZipCode){
+            String parentMailingStreetAddress1,
+            String parentMailingStreetAddress2,
+            String parentMailingCity,
+            String parentMailingState,
+            String parentMailingZipCode) {
         submission.getInputData().put("parentMailingStreetAddress1", parentMailingStreetAddress1);
         submission.getInputData().put("parentMailingStreetAddress2", parentMailingStreetAddress2);
         submission.getInputData().put("parentMailingCity", parentMailingCity);
@@ -105,11 +106,11 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withValidatedMailingAddress(
-        String parentMailingStreetAddress1_validated,
-        String parentMailingStreetAddress2_validated,
-        String parentMailingCity_validated,
-        String parentMailingState_validated,
-        String parentMailingZipCode_validated){
+            String parentMailingStreetAddress1_validated,
+            String parentMailingStreetAddress2_validated,
+            String parentMailingCity_validated,
+            String parentMailingState_validated,
+            String parentMailingZipCode_validated) {
         submission.getInputData().put("parentMailingStreetAddress1_validated", parentMailingStreetAddress1_validated);
         submission.getInputData().put("parentMailingStreetAddress2_validated", parentMailingStreetAddress2_validated);
         submission.getInputData().put("parentMailingCity_validated", parentMailingCity_validated);
@@ -163,7 +164,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withJob(String subflow, String companyName, String employerStreetAddress, String employerCity,
-        String employerState, String employerZipCode, String employerPhoneNumber, String isSelfEmployed) {
+            String employerState, String employerZipCode, String employerPhoneNumber, String isSelfEmployed) {
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get(subflow);
         if (jobs == null) {
             jobs = new ArrayList<>();
@@ -186,7 +187,8 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withPartnerJob(String subflow, String companyName, String employerStreetAddress,
-        String employerCity, String employerState, String employerZipCode, String employerPhoneNumber, String isSelfEmployed) {
+            String employerCity, String employerState, String employerZipCode, String employerPhoneNumber,
+            String isSelfEmployed) {
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get(subflow);
         if (jobs == null) {
             jobs = new ArrayList<>();
@@ -281,7 +283,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withSchoolScheduleByDay(String inputNamePrefix, String day,
-        TimeOption startTime, TimeOption endTime) {
+            TimeOption startTime, TimeOption endTime) {
         if (!childcareReasonKey(inputNamePrefix).isBlank()) {
             submission.getInputData().put(childcareReasonKey(inputNamePrefix), List.of("SCHOOL"));
         }
@@ -390,6 +392,7 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("activitiesParentChildcareReason[]", List.of("WORKING"));
         return this;
     }
+
     public SubmissionTestBuilder withPartnerRegularWorkScheduleAddHour(List days, TimeOption startTime, TimeOption endTime) {
         withJob("partnerJobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
@@ -399,7 +402,7 @@ public class SubmissionTestBuilder {
 
         Map<String, Object> job = jobs.get(jobs.size() - 1);
 
-        setTime(job, "activitiesJob", "Start", "AllDays",startTime);
+        setTime(job, "activitiesJob", "Start", "AllDays", startTime);
         setTime(job, "activitiesJob", "End", "AllDays", endTime);
 
         job.put("activitiesJobHoursSameEveryDay[]", List.of("Yes"));
@@ -450,19 +453,22 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder addChildDataArray(int childIterationIndex, String inputName, List value){
-        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+    public SubmissionTestBuilder addChildDataArray(int childIterationIndex, String inputName, List value) {
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData()
+                .getOrDefault("children", emptyList());
         if (children.isEmpty()) {
             return this;
         }
 
         Map<String, Object> child = children.get(childIterationIndex);
 
-        child.put(inputName+"[]", value);
+        child.put(inputName + "[]", value);
         return this;
     }
-    public SubmissionTestBuilder withChildAttendsSchoolDuringTheDay(int childIterationPosition, String childAttendsOtherEd){
-        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+
+    public SubmissionTestBuilder withChildAttendsSchoolDuringTheDay(int childIterationPosition, String childAttendsOtherEd) {
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData()
+                .getOrDefault("children", emptyList());
         if (children.isEmpty()) {
             return this;
         }
@@ -472,8 +478,10 @@ public class SubmissionTestBuilder {
         child.put("childAttendsOtherEd", (childAttendsOtherEd));
         return this;
     }
-    public SubmissionTestBuilder withChildIsAUSCitizen(int childIterationPosition, String childIsUsCitizen){
-        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+
+    public SubmissionTestBuilder withChildIsAUSCitizen(int childIterationPosition, String childIsUsCitizen) {
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData()
+                .getOrDefault("children", emptyList());
         if (children.isEmpty()) {
             return this;
         }
@@ -482,8 +490,10 @@ public class SubmissionTestBuilder {
         child.put("childIsUsCitizen", (childIsUsCitizen));
         return this;
     }
-    public SubmissionTestBuilder withChildHasSpecialNeeds(int childIterationPosition, String childHasSpecialNeeds){
-        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+
+    public SubmissionTestBuilder withChildHasSpecialNeeds(int childIterationPosition, String childHasSpecialNeeds) {
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData()
+                .getOrDefault("children", emptyList());
         if (children.isEmpty()) {
             return this;
         }
@@ -493,8 +503,10 @@ public class SubmissionTestBuilder {
         child.put("childHasDisability", (childHasSpecialNeeds));
         return this;
     }
-    public SubmissionTestBuilder addChildCareStartDate(int childIterationPosition, String ccapStartDate){
-        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+
+    public SubmissionTestBuilder addChildCareStartDate(int childIterationPosition, String ccapStartDate) {
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData()
+                .getOrDefault("children", emptyList());
         if (children.isEmpty()) {
             return this;
         }
@@ -516,17 +528,18 @@ public class SubmissionTestBuilder {
 
     }
 
-    public SubmissionTestBuilder withEducationType(String educationType, String parentOrPartner){
-        if (parentOrPartner.equalsIgnoreCase("parent")){
+    public SubmissionTestBuilder withEducationType(String educationType, String parentOrPartner) {
+        if (parentOrPartner.equalsIgnoreCase("parent")) {
             submission.getInputData().put("educationType", educationType);
         }
-        if (parentOrPartner.equalsIgnoreCase("partner")){
+        if (parentOrPartner.equalsIgnoreCase("partner")) {
             submission.getInputData().put("partnerEducationType", educationType);
         }
         return this;
     }
 
-    public SubmissionTestBuilder setTime(Map<String, Object> data, String inputPrefix, String startOrEndKey, String dayPostFix, TimeOption timeOption){
+    public SubmissionTestBuilder setTime(Map<String, Object> data, String inputPrefix, String startOrEndKey, String dayPostFix,
+            TimeOption timeOption) {
         data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "Hour", timeOption.getHour());
         data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "Minute", timeOption.getMinute());
         data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "AmPm", timeOption.getAmOrPm());

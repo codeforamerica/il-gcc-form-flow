@@ -38,219 +38,221 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @Import({WebDriverConfiguration.class})
 @ActiveProfiles("test")
 public abstract class AbstractBasePageTest {
-  
-  private static final String UPLOADED_JPG_FILE_NAME = "test.jpeg";
-  
-  @Autowired
-  protected RemoteWebDriver driver;
 
-  @Autowired
-  SubmissionRepository repo;
+    private static final String UPLOADED_JPG_FILE_NAME = "test.jpeg";
 
-  @Autowired
-  UserFileRepository userFileRepository;
+    @Autowired
+    protected RemoteWebDriver driver;
 
-  @Autowired
-  protected Path path;
+    @Autowired
+    SubmissionRepository repo;
 
-  @Autowired
-  MessageSource messageSource;
-  protected String baseUrl;
+    @Autowired
+    UserFileRepository userFileRepository;
 
-  @LocalServerPort
-  protected String localServerPort;
+    @Autowired
+    protected Path path;
 
-  protected Page testPage;
+    @Autowired
+    MessageSource messageSource;
+    protected String baseUrl;
 
-  public Submission getSessionSubmission() {
-    // We're hoping that there's only one submission per session
-    // If 0 or >1, an error will be thrown
-    return Iterables.getOnlyElement(repo.findAll());
-  }
-  public SubmissionTestBuilder getSessionSubmissionTestBuilder() {
-    return new SubmissionTestBuilder(getSessionSubmission());
-  }
+    @LocalServerPort
+    protected String localServerPort;
 
-  public void saveSubmission(Submission submission) {
-    repo.save(submission);
-  }
+    protected Page testPage;
 
-  @BeforeEach
-  protected void setUp() throws IOException {
-    initTestPage();
-    baseUrl = "http://localhost:%s".formatted(localServerPort);
-
-    driver.navigate().to(baseUrl);
-  }
-  @AfterEach
-  protected void clearSubmissions() {
-    userFileRepository.deleteAll();
-    repo.deleteAll();
-  }
-
-  public String getEnMessage(String key){
-    return messageSource.getMessage(key, null, Locale.ENGLISH);
-  }
-
-  public String getEnMessageWithParams(String key, Object[] args){
-    return messageSource.getMessage(key, args, Locale.ENGLISH);
-  }
-
-  public String getRequiredEnMessage(String key){
-    return String.format("%s %s", getEnMessage(key), getEnMessage("general.required-field"));
-  }
-
-  public String getRequiredEnMessageWithParams(String key, Object[] args){
-    return String.format("%s %s", getEnMessageWithParams(key, args), getEnMessage("general.required-field"));
-  }
-
-  protected void initTestPage() {
-    testPage = new Page(driver, localServerPort);
-  }
-
-  @SuppressWarnings("unused")
-  public void takeSnapShot(String fileWithPath) {
-    TakesScreenshot screenshot = driver;
-    Path sourceFile = screenshot.getScreenshotAs(OutputType.FILE).toPath();
-    Path destinationFile = new File(fileWithPath).toPath();
-    try {
-      Files.copy(sourceFile, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    public Submission getSessionSubmission() {
+        // We're hoping that there's only one submission per session
+        // If 0 or >1, an error will be thrown
+        return Iterables.getOnlyElement(repo.findAll());
     }
-  }
 
-  protected void uploadFile(String filepath, String dzName) {
-    testPage.clickElementById("drag-and-drop-box-" + dzName); // is this needed?
-    WebElement upload = driver.findElement(By.className("dz-hidden-input"));
-    upload.sendKeys(TestUtils.getAbsoluteFilepathString(filepath));
-    await().until(
-        () -> !driver.findElements(By.className("file-details")).get(0).getAttribute("innerHTML")
-            .isBlank());
-  }
+    public SubmissionTestBuilder getSessionSubmissionTestBuilder() {
+        return new SubmissionTestBuilder(getSessionSubmission());
+    }
 
-  protected void uploadFile(String filepath) {
-    WebElement upload = driver.findElement(By.className("dz-hidden-input"));
-    upload.sendKeys(TestUtils.getAbsoluteFilepathString(filepath));
-    waitUntilFileIsUploaded();
-  }
+    public void saveSubmission(Submission submission) {
+        repo.save(submission);
+    }
 
-  protected void uploadJpgFile(){
-    uploadFile(UPLOADED_JPG_FILE_NAME);
-    assertThat(driver.findElement(By.id("file-preview-template-uploadDocuments")).getText().replace("\n", ""))
-        .contains(UPLOADED_JPG_FILE_NAME);
-  }
+    @BeforeEach
+    protected void setUp() throws IOException {
+        initTestPage();
+        baseUrl = "http://localhost:%s".formatted(localServerPort);
 
-  protected void uploadJpgFile(String dzName) {
-    uploadFile(UPLOADED_JPG_FILE_NAME, dzName);
-    assertThat(driver.findElement(By.id("dropzone-" + dzName)).getText().replace("\n", ""))
-        .contains(UPLOADED_JPG_FILE_NAME);
-  }
+        driver.navigate().to(baseUrl);
+    }
 
-  private void waitUntilFileIsUploaded() {
-    await().until(
-        () -> !driver.findElements(By.className("file-details")).get(0).getAttribute("innerHTML")
-            .isBlank());
-  }
+    @AfterEach
+    protected void clearSubmissions() {
+        userFileRepository.deleteAll();
+        repo.deleteAll();
+    }
 
-  protected File getLatestDownloadedFile(Path path) throws IOException {
-    return Files.list(path)
-        .filter(f -> !Files.isDirectory(f))
-        .max(Comparator.comparingLong(f -> f.toFile().lastModified())).get()
-        .toFile();
-  }
+    public String getEnMessage(String key) {
+        return messageSource.getMessage(key, null, Locale.ENGLISH);
+    }
+
+    public String getEnMessageWithParams(String key, Object[] args) {
+        return messageSource.getMessage(key, args, Locale.ENGLISH);
+    }
+
+    public String getRequiredEnMessage(String key) {
+        return String.format("%s %s", getEnMessage(key), getEnMessage("general.required-field"));
+    }
+
+    public String getRequiredEnMessageWithParams(String key, Object[] args) {
+        return String.format("%s %s", getEnMessageWithParams(key, args), getEnMessage("general.required-field"));
+    }
+
+    protected void initTestPage() {
+        testPage = new Page(driver, localServerPort);
+    }
+
+    @SuppressWarnings("unused")
+    public void takeSnapShot(String fileWithPath) {
+        TakesScreenshot screenshot = driver;
+        Path sourceFile = screenshot.getScreenshotAs(OutputType.FILE).toPath();
+        Path destinationFile = new File(fileWithPath).toPath();
+        try {
+            Files.copy(sourceFile, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void uploadFile(String filepath, String dzName) {
+        testPage.clickElementById("drag-and-drop-box-" + dzName); // is this needed?
+        WebElement upload = driver.findElement(By.className("dz-hidden-input"));
+        upload.sendKeys(TestUtils.getAbsoluteFilepathString(filepath));
+        await().until(
+                () -> !driver.findElements(By.className("file-details")).get(0).getAttribute("innerHTML")
+                        .isBlank());
+    }
+
+    protected void uploadFile(String filepath) {
+        WebElement upload = driver.findElement(By.className("dz-hidden-input"));
+        upload.sendKeys(TestUtils.getAbsoluteFilepathString(filepath));
+        waitUntilFileIsUploaded();
+    }
+
+    protected void uploadJpgFile() {
+        uploadFile(UPLOADED_JPG_FILE_NAME);
+        assertThat(driver.findElement(By.id("file-preview-template-uploadDocuments")).getText().replace("\n", ""))
+                .contains(UPLOADED_JPG_FILE_NAME);
+    }
+
+    protected void uploadJpgFile(String dzName) {
+        uploadFile(UPLOADED_JPG_FILE_NAME, dzName);
+        assertThat(driver.findElement(By.id("dropzone-" + dzName)).getText().replace("\n", ""))
+                .contains(UPLOADED_JPG_FILE_NAME);
+    }
+
+    private void waitUntilFileIsUploaded() {
+        await().until(
+                () -> !driver.findElements(By.className("file-details")).get(0).getAttribute("innerHTML")
+                        .isBlank());
+    }
+
+    protected File getLatestDownloadedFile(Path path) throws IOException {
+        return Files.list(path)
+                .filter(f -> !Files.isDirectory(f))
+                .max(Comparator.comparingLong(f -> f.toFile().lastModified())).get()
+                .toFile();
+    }
 
 
-  protected List<File> getAllFiles() {
-    return Arrays.stream(Objects.requireNonNull(path.toFile().listFiles()))
-        .filter(file -> file.getName().endsWith(".pdf"))
-        .toList();
-  }
+    protected List<File> getAllFiles() {
+        return Arrays.stream(Objects.requireNonNull(path.toFile().listFiles()))
+                .filter(file -> file.getName().endsWith(".pdf"))
+                .toList();
+    }
 
-  protected Callable<Boolean> pdfDownloadCompletes() {
-    return () -> getAllFiles().size() > 0;
-  }
+    protected Callable<Boolean> pdfDownloadCompletes() {
+        return () -> getAllFiles().size() > 0;
+    }
 
-  protected void addPrimaryParentJob(String postFix) {
-    //activities-employer-name
-    testPage.enter("companyName", "testCompany" + postFix);
-    testPage.clickContinue();
-    //activities-employer-address
-    testPage.enter("employerCity", "Chicago");
-    testPage.enter("employerStreetAddress", "123 Test Me" + postFix);
-    testPage.enter("employerState", "IL - Illinois");
-    testPage.enter("employerPhoneNumber", "333333333" + postFix);
-    testPage.enter("employerZipCode", "6042" + postFix);
-    testPage.clickContinue();
+    protected void addPrimaryParentJob(String postFix) {
+        //activities-employer-name
+        testPage.enter("companyName", "testCompany" + postFix);
+        testPage.clickContinue();
+        //activities-employer-address
+        testPage.enter("employerCity", "Chicago");
+        testPage.enter("employerStreetAddress", "123 Test Me" + postFix);
+        testPage.enter("employerState", "IL - Illinois");
+        testPage.enter("employerPhoneNumber", "333333333" + postFix);
+        testPage.enter("employerZipCode", "6042" + postFix);
+        testPage.clickContinue();
 
-    //activities-self-employment
-    testPage.clickNo();
+        //activities-self-employment
+        testPage.clickNo();
 
-    //activities-work-schedule-vary
-    testPage.clickNo();
-  }
+        //activities-work-schedule-vary
+        testPage.clickNo();
+    }
 
-  protected void addPrimaryParentJobSchedule(String postFix){
+    protected void addPrimaryParentJobSchedule(String postFix) {
 
-    //activities-job-weekly-schedule
-    testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
-    testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
-    testPage.clickContinue();
+        //activities-job-weekly-schedule
+        testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+        testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
+        testPage.clickContinue();
 
-    //activities-job-hourly-schedule
-    testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
-    testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
-    testPage.enter("activitiesJobStartTimeAllDaysMinute", postFix);
-    testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "AM");
+        //activities-job-hourly-schedule
+        testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
+        testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
+        testPage.enter("activitiesJobStartTimeAllDaysMinute", postFix);
+        testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "AM");
 
-    testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
-    testPage.enter("activitiesJobEndTimeAllDaysMinute", postFix);
-    testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
+        testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
+        testPage.enter("activitiesJobEndTimeAllDaysMinute", postFix);
+        testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
 
-    testPage.clickContinue();
+        testPage.clickContinue();
 
-    //activities-work-commute-time
-    testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.hour"));
-    testPage.clickContinue();
-  }
+        //activities-work-commute-time
+        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.hour"));
+        testPage.clickContinue();
+    }
 
-  protected void addParentPartnerJob(String postFix) {
-    testPage.enter("partnerCompanyName", "testPartnerCompany" + postFix);
-    testPage.clickContinue();
-    //activities--partner-employer-address
-    testPage.enter("partnerEmployerPhoneNumber", "433333333" + postFix);
-    testPage.enter("partnerEmployerCity", "Oakland");
-    testPage.enter("partnerEmployerState", "IL - Illinois");
-    testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
-    testPage.enter("partnerEmployerZipCode", "6042" + postFix);
-    testPage.clickContinue();
-    //activities-partner-self-employment
-    testPage.clickNo();
-    //activities-partner-work-schedule-vary
-    testPage.clickNo();
-  }
+    protected void addParentPartnerJob(String postFix) {
+        testPage.enter("partnerCompanyName", "testPartnerCompany" + postFix);
+        testPage.clickContinue();
+        //activities--partner-employer-address
+        testPage.enter("partnerEmployerPhoneNumber", "433333333" + postFix);
+        testPage.enter("partnerEmployerCity", "Oakland");
+        testPage.enter("partnerEmployerState", "IL - Illinois");
+        testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
+        testPage.enter("partnerEmployerZipCode", "6042" + postFix);
+        testPage.clickContinue();
+        //activities-partner-self-employment
+        testPage.clickNo();
+        //activities-partner-work-schedule-vary
+        testPage.clickNo();
+    }
 
-  protected void addParentPartnerJobSchedule(String postFix){
+    protected void addParentPartnerJobSchedule(String postFix) {
 
-    //activities-partner-job-weekly-schedule
-    testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
-    testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
-    testPage.clickContinue();
+        //activities-partner-job-weekly-schedule
+        testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+        testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
+        testPage.clickContinue();
 
-    //activities-partner-job-hourly-schedule
-    testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
-    testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
-    testPage.enter("activitiesJobStartTimeAllDaysMinute", postFix);
-    testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "PM");
+        //activities-partner-job-hourly-schedule
+        testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
+        testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
+        testPage.enter("activitiesJobStartTimeAllDaysMinute", postFix);
+        testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "PM");
 
-    testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
-    testPage.enter("activitiesJobEndTimeAllDaysMinute", postFix);
-    testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
+        testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
+        testPage.enter("activitiesJobEndTimeAllDaysMinute", postFix);
+        testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
 
-    testPage.clickContinue();
+        testPage.clickContinue();
 
-    //activities-partner-commute-time
-    testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
-    testPage.clickContinue();
-  }
+        //activities-partner-commute-time
+        testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
+        testPage.clickContinue();
+    }
 }
