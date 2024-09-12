@@ -138,6 +138,9 @@ inputFields:
   unearnedIncomePrograms-tanf: OTHER_SERVICES_CASH_ASSISTANCE_TANF
   unearnedIncomePrograms-housing-vouchers: OTHER_SERVICES_HOUSING_VOUCHERS
   unearnedIncomeAssetsMoreThanOneMillionDollars: TOTAL_ASSETS_MILLION
+  referralServicesDomesticViolence: REFERRAL_SERVICES_DOMESTIC_VIOLENCE
+  referralServicesHomelessness: REFERRAL_SERVICES_HOMELESSNESS
+  referralServicesPhysicalOrMentalDisability: REFERRAL_SERVICES_PHYSICAL_OR_MENTAL_DISABILITY
   amountYourHouseholdPaysInChildSupport: APPLICANT_CHILD_SUPPORT_PAID
   signedName: APPLICANT_SIGNATURE
   partnerSignedName: PARTNER_SIGNATURE

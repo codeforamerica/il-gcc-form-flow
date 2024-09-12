@@ -124,32 +124,67 @@ public class ApplicationPreparerTest {
 
         assertThat(result.get("parentFullName")).isEqualTo(new SingleField("parentFullName", "Stone, Lily-Mae", null));
     }
+
     @Test
-    public void shouldSelectFoodAssistanceCheckboxIfSnapIsSelected(){
+    public void shouldSelectFoodAssistanceCheckboxIfSnapIsSelected() {
         submission = new SubmissionTestBuilder()
-            .with("unearnedIncomePrograms[]", List.of("SNAP")).build();
+                .with("unearnedIncomePrograms[]", List.of("SNAP")).build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
-        assertThat(result.get("unearnedIncomePrograms-snap")).isEqualTo(new SingleField("unearnedIncomePrograms-snap", "true", null));
+        assertThat(result.get("unearnedIncomePrograms-snap")).isEqualTo(
+                new SingleField("unearnedIncomePrograms-snap", "true", null));
     }
+
     @Test
-    public void shouldSelectHomelessShelterCheckboxIfHomelessShelterIsSelected(){
+    public void shouldSelectHomelessShelterCheckboxIfHomelessShelterIsSelected() {
         submission = new SubmissionTestBuilder()
-            .with("unearnedIncomePrograms[]", List.of("HOMELESS_SHELTER_OR_PREVENTION_PROGRAMS")).build();
+                .with("unearnedIncomePrograms[]", List.of("HOMELESS_SHELTER_OR_PREVENTION_PROGRAMS")).build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
-        assertThat(result.get("unearnedIncomePrograms-homeless-shelters")).isEqualTo(new SingleField("unearnedIncomePrograms-homeless-shelters", "true", null));
+        assertThat(result.get("unearnedIncomePrograms-homeless-shelters")).isEqualTo(
+                new SingleField("unearnedIncomePrograms-homeless-shelters", "true", null));
     }
+
     @Test
-    public void shouldSelectCashAssistanceCheckboxIfCashAssistanceIsSelected(){
+    public void shouldSelectCashAssistanceCheckboxIfCashAssistanceIsSelected() {
         submission = new SubmissionTestBuilder()
-            .with("unearnedIncomePrograms[]", List.of("CASH_ASSISTANCE")).build();
+                .with("unearnedIncomePrograms[]", List.of("CASH_ASSISTANCE")).build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
-        assertThat(result.get("unearnedIncomePrograms-tanf")).isEqualTo(new SingleField("unearnedIncomePrograms-tanf", "true", null));
+        assertThat(result.get("unearnedIncomePrograms-tanf")).isEqualTo(
+                new SingleField("unearnedIncomePrograms-tanf", "true", null));
     }
+
     @Test
-    public void shouldSelectHousingVouchersCheckboxIfHousingVouchersIsSelected(){
+    public void shouldSelectHousingVouchersCheckboxIfHousingVouchersIsSelected() {
         submission = new SubmissionTestBuilder()
-            .with("unearnedIncomePrograms[]", List.of("HOUSING_VOUCHERS")).build();
+                .with("unearnedIncomePrograms[]", List.of("HOUSING_VOUCHERS")).build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
-        assertThat(result.get("unearnedIncomePrograms-housing-vouchers")).isEqualTo(new SingleField("unearnedIncomePrograms-housing-vouchers", "true", null));
+        assertThat(result.get("unearnedIncomePrograms-housing-vouchers")).isEqualTo(
+                new SingleField("unearnedIncomePrograms-housing-vouchers", "true", null));
+    }
+
+    @Test
+    public void shouldSelectDomesticViolenceCheckboxIfSafeSupportIsSelected() {
+        submission = new SubmissionTestBuilder()
+                .with("unearnedIncomeReferralServices[]", List.of("SAFE_SUPPORT")).build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("referralServicesDomesticViolence")).isEqualTo(
+                new SingleField("referralServicesDomesticViolence", "true", null));
+    }
+
+    @Test
+    public void shouldSelectHomelessnessCheckboxIfHousingSupportIsSelected() {
+        submission = new SubmissionTestBuilder()
+                .with("unearnedIncomeReferralServices[]", List.of("HOUSING_SUPPORT")).build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("referralServicesHomelessness")).isEqualTo(
+                new SingleField("referralServicesHomelessness", "true", null));
+    }
+
+    @Test
+    public void shouldSelectDisabilityCheckboxIfDisabilitySupportIsSelected() {
+        submission = new SubmissionTestBuilder()
+                .with("unearnedIncomeReferralServices[]", List.of("DISABILITY_SUPPORT")).build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("referralServicesPhysicalOrMentalDisability")).isEqualTo(
+                new SingleField("referralServicesPhysicalOrMentalDisability", "true", null));
     }
 }
