@@ -469,6 +469,11 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   border-color: #CFC5BF;
 }
 
+.notice--error {
+  background-color: #FCE3D9;
+  border-color: #D13F00;
+}
+
 .notice--gray p + p {
   margin-top: 2.5rem;
 }

@@ -13,22 +13,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ProviderLinkController {
 
-  FormFlowConfigurationProperties formFlowConfigurationProperties;
+    FormFlowConfigurationProperties formFlowConfigurationProperties;
 
-  public ProviderLinkController(FormFlowConfigurationProperties formFlowConfigurationProperties) {
-    this.formFlowConfigurationProperties = formFlowConfigurationProperties;
-  }
+    public ProviderLinkController(FormFlowConfigurationProperties formFlowConfigurationProperties) {
+        this.formFlowConfigurationProperties = formFlowConfigurationProperties;
+    }
 
-  /**
-   * Renders the website index page.
-   *
-   * @param httpSession The current HTTP session, not null.
-   * @return the static page template.
-   */
-  @GetMapping("provider-responses/submit-start")
-  String getScreen(HttpSession httpSession, @RequestParam(required = false) String status) {
-    httpSession.invalidate(); // For dev, reset session if you visit home
+    /**
+     * Renders the provider-responses website initial page.
+     *
+     * @param httpSession The current HTTP session, not null.
+     * @param status      Placeholder for application ID which will be used to determine provider response status
+     * @return the static page template.
+     */
+    @GetMapping("provider-responses/submit-start")
+    String getScreen(HttpSession httpSession, @RequestParam(required = false) String status) {
+        httpSession.invalidate(); // For dev, reset session if you visit home
 
-    return "provider-responses/submit-start";
-  }
+        return "provider-responses/submit-start";
+    }
 }

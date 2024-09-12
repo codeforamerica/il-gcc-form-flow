@@ -1,34 +1,29 @@
 package org.ilgcc.app.utils.enums;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
 
 @Getter
-public enum CommuteTimeType {
+public enum ProviderSubmissionStatus {
 
-    NO_MINUTES("general.hours.0.minutes", new TimeSpan("0", "0")),
-    THIRTY_MINUTES("general.hours.30.minutes", new TimeSpan("0", "30")),
-    ONE_HOUR("general.hours.1.hour", new TimeSpan("1", "0")),
-    HOUR_THIRTY("general.hours.1.5.hours", new TimeSpan("1", "30")),
-    TWO_HOURS("general.hours.2.hours", new TimeSpan("2", "0")),
-    TWO_HOURS_THIRTY("general.hours.2.5.hours", new TimeSpan("2", "30")),
-    THREE_HOURS("general.hours.3.hours", new TimeSpan("3", "0"));
+    ACTIVE("caring", "provider-responses-submit-start.active.header", "provider-responses-submit-start.active.notice",
+            "provider-responses-submit-start.active.button", ""),
+    EXPIRED("orangeClock", "provider-responses-submit-start.expired.header", "provider-responses-submit-start.expired.notice",
+            "provider-responses-submit-start.expired.button", "provider-responses-submit-start.expired.subtext"),
+    RESPONDED("docValidation", "provider-responses-submit-start.responded.header",
+            "provider-responses-submit-start.responded.notice", "provider-responses-submit-start.responded.button", "");
 
-    private final String label;
-    private final TimeSpan value;
+    private final String icon;
+    private final String headerLabel;
+    private final String noticeLabel;
+    private final String buttonLabel;
+    private final String subtextLabel;
 
-    CommuteTimeType(String label, TimeSpan value) {
-        this.label = label;
-        this.value = value;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public static TimeSpan getTimeSpanByName(String name) {
-        return  CommuteTimeType.valueOf(name).value;
+    ProviderSubmissionStatus(String icon, String headerLabel, String noticeLabel, String buttonLabel, String subtextLabel) {
+        this.icon = icon;
+        this.headerLabel = headerLabel;
+        this.noticeLabel = noticeLabel;
+        this.buttonLabel = buttonLabel;
+        this.subtextLabel = subtextLabel;
     }
 }
 
