@@ -585,6 +585,9 @@ public class Gcc extends FlowInputs {
     // unearned-income-programs
     private List<String> unearnedIncomePrograms;
 
+    // unearned-income-referral-services
+    private List<String> unearnedIncomeReferralServices;
+
     // submit-ccap-terms
     @NotEmpty(message = "{errors.validate.legal-terms}")
     private List<String> agreesToLegalTerms;

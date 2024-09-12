@@ -1,0 +1,19 @@
+<div th:with="referralServices=${T(org.ilgcc.app.utils.ReferralServicesOption).values()}">
+    <th:block th:replace="~{fragments/screens/screenWithOneInput ::
+      screenWithOneInput(
+        title=#{unearned-income-referral-services.title},
+        header=#{unearned-income-referral-services.header},
+        subtext=#{unearned-income-referral-services.subtext},
+        formAction=${formAction},
+        buttonLabel=#{general.button.continue},
+        inputContent=~{::inputContent})}">
+            <th:block th:ref="inputContent">
+                <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+                      checkboxFieldset(inputName='unearnedIncomeReferralServices',
+                        label='',
+                        ariaLabel='header',
+                        options=${referralServices},
+                        noneOfTheAboveLabel=#{general.inputs.none-of-the-above})}"/>
+        </th:block>
+    </th:block>
+</div>

@@ -352,6 +352,9 @@ flow:
       - name: unearned-income-programs
   unearned-income-programs:
     nextScreens:
+      - name: unearned-income-referral-services
+  unearned-income-referral-services:
+    nextScreens:
       - name: submit-intro
   submit-intro:
     nextScreens:
