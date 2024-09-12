@@ -7,6 +7,7 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
@@ -122,5 +123,33 @@ public class ApplicationPreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
 
         assertThat(result.get("parentFullName")).isEqualTo(new SingleField("parentFullName", "Stone, Lily-Mae", null));
+    }
+    @Test
+    public void shouldSelectFoodAssistanceCheckboxIfSnapIsSelected(){
+        submission = new SubmissionTestBuilder()
+            .with("unearnedIncomePrograms[]", List.of("SNAP")).build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("unearnedIncomePrograms-snap")).isEqualTo(new SingleField("unearnedIncomePrograms-snap", "true", null));
+    }
+    @Test
+    public void shouldSelectHomelessShelterCheckboxIfHomelessShelterIsSelected(){
+        submission = new SubmissionTestBuilder()
+            .with("unearnedIncomePrograms[]", List.of("HOMELESS_SHELTER_OR_PREVENTION_PROGRAMS")).build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("unearnedIncomePrograms-homeless-shelters")).isEqualTo(new SingleField("unearnedIncomePrograms-homeless-shelters", "true", null));
+    }
+    @Test
+    public void shouldSelectCashAssistanceCheckboxIfCashAssistanceIsSelected(){
+        submission = new SubmissionTestBuilder()
+            .with("unearnedIncomePrograms[]", List.of("CASH_ASSISTANCE")).build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("unearnedIncomePrograms-tanf")).isEqualTo(new SingleField("unearnedIncomePrograms-tanf", "true", null));
+    }
+    @Test
+    public void shouldSelectHousingVouchersCheckboxIfHousingVouchersIsSelected(){
+        submission = new SubmissionTestBuilder()
+            .with("unearnedIncomePrograms[]", List.of("HOUSING_VOUCHERS")).build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("unearnedIncomePrograms-housing-vouchers")).isEqualTo(new SingleField("unearnedIncomePrograms-housing-vouchers", "true", null));
     }
 }
