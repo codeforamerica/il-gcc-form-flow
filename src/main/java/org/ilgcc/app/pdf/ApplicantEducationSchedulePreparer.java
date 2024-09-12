@@ -26,7 +26,8 @@ public class ApplicantEducationSchedulePreparer implements SubmissionFieldPrepar
                         "weeklySchedule[]");
 
         results.putAll(
-                SchedulePreparerUtility.createSubmissionFieldsFromDay(submission.getInputData(), careSchedule, "activitiesClass", "applicantEducationSchedule"));
+                SchedulePreparerUtility.createSubmissionFieldsFromDay(submission.getInputData(), careSchedule, "activitiesClass",
+                        "applicantEducationSchedule"));
 
         String commuteTimeKey = (String) submission.getInputData().getOrDefault("activitiesEdCommuteTime", "");
         if (!commuteTimeKey.isBlank()) {

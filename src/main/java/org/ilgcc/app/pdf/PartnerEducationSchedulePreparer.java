@@ -1,3 +1,4 @@
+
 package org.ilgcc.app.pdf;
 
 import formflow.library.data.Submission;
@@ -30,10 +31,12 @@ public class PartnerEducationSchedulePreparer implements SubmissionFieldPreparer
                         "partnerClass", "partnerEducationSchedule"));
 
         String commuteTimeKey = (String) submission.getInputData().getOrDefault("partnerProgramCommuteTime", "");
-        if(!commuteTimeKey.isBlank()){
+        if (!commuteTimeKey.isBlank()) {
             TimeSpan commuteTimeValue = CommuteTimeType.getTimeSpanByName(commuteTimeKey);
-            results.put("partnerEducationTravelTimeHours", new SingleField("partnerEducationTravelTimeHours", commuteTimeValue.getPaddedHours(), null));
-            results.put("partnerEducationTravelTimeMins", new SingleField("partnerEducationTravelTimeMins", commuteTimeValue.getMinutes(), null));
+            results.put("partnerEducationTravelTimeHours",
+                    new SingleField("partnerEducationTravelTimeHours", commuteTimeValue.getPaddedHours(), null));
+            results.put("partnerEducationTravelTimeMins",
+                    new SingleField("partnerEducationTravelTimeMins", commuteTimeValue.getMinutes(), null));
         }
 
         return results;
