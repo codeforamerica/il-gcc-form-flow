@@ -19,6 +19,7 @@ inputFields:
   parentContactPhoneNumber: APPLICANT_PHONE_NUM_HOME
   parentPartnerFirstName: PARTNER_NAME_FIRST
   parentPartnerLastName: PARTNER_NAME_LAST
+  partnerFullName: PARTNER_NAME_FULL
   parentPartnerSSN: PARTNER_SSN
   parentPartnerDateOfBirth: PARTNER_DOB
   parentPartnerPhoneNumber: PARTNER_PHONE_NUMBER
