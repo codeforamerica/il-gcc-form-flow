@@ -31,40 +31,41 @@ public class SchedulePreparerUtility {
     private static String AM_PM = "AmPm";
 
     public static Map<String, SubmissionField> createSubmissionFieldsFromSchedule(LocalTimeRange schedule, DayOfWeekOption day,
-        String fieldPrefixKey) {
+            String fieldPrefixKey) {
         Map<String, SubmissionField> fields = new HashMap<>();
         if (!fieldPrefixKey.isBlank()) {
             String fieldPrefix = fieldPrefixKey + day.name();
             fields.put(fieldPrefix + START,
-                new SingleField(fieldPrefix + START, schedule.startTime().format(CLOCK_TIME_OF_AM_PM), null));
+                    new SingleField(fieldPrefix + START, schedule.startTime().format(CLOCK_TIME_OF_AM_PM), null));
             fields.put(fieldPrefix + START + AM_PM,
-                new SingleField(fieldPrefix + START + AM_PM, schedule.startTime().format(AM_PM_OF_DAY), null));
+                    new SingleField(fieldPrefix + START + AM_PM, schedule.startTime().format(AM_PM_OF_DAY), null));
             fields.put(fieldPrefix + END,
-                new SingleField(fieldPrefix + END, schedule.endTime().format(CLOCK_TIME_OF_AM_PM), null));
+                    new SingleField(fieldPrefix + END, schedule.endTime().format(CLOCK_TIME_OF_AM_PM), null));
             fields.put(fieldPrefix + END + AM_PM,
-                new SingleField(fieldPrefix + END + AM_PM, schedule.endTime().format(AM_PM_OF_DAY), null));
+                    new SingleField(fieldPrefix + END + AM_PM, schedule.endTime().format(AM_PM_OF_DAY), null));
         }
         return fields;
     }
 
     public static Map<String, SubmissionField> createSubmissionFieldsFromSchedule(LocalTimeRange schedule, DayOfWeekOption day,
-        String fieldPrefixKey, int iterator) {
+            String fieldPrefixKey, int iterator) {
         Map<String, SubmissionField> fields = new HashMap<>();
         if (!fieldPrefixKey.isBlank()) {
             String fieldPrefix = fieldPrefixKey + day.name();
             fields.put(fieldPrefix + START + "_" + iterator,
-                new SingleField(fieldPrefix + START, schedule.startTime().format(CLOCK_TIME_OF_AM_PM), iterator));
+                    new SingleField(fieldPrefix + START, schedule.startTime().format(CLOCK_TIME_OF_AM_PM), iterator));
             fields.put(fieldPrefix + START + AM_PM + "_" + iterator,
-                new SingleField(fieldPrefix + START + AM_PM, schedule.startTime().format(AM_PM_OF_DAY), iterator));
+                    new SingleField(fieldPrefix + START + AM_PM, schedule.startTime().format(AM_PM_OF_DAY), iterator));
             fields.put(fieldPrefix + END + "_" + iterator,
-                new SingleField(fieldPrefix + END, schedule.endTime().format(CLOCK_TIME_OF_AM_PM), iterator));
+                    new SingleField(fieldPrefix + END, schedule.endTime().format(CLOCK_TIME_OF_AM_PM), iterator));
             fields.put(fieldPrefix + END + AM_PM + "_" + iterator,
-                new SingleField(fieldPrefix + END + AM_PM, schedule.endTime().format(AM_PM_OF_DAY), iterator));
+                    new SingleField(fieldPrefix + END + AM_PM, schedule.endTime().format(AM_PM_OF_DAY), iterator));
         }
         return fields;
     }
 
-    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData, Map<String, String> dataMappings,
+    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData,
+            Map<String, String> dataMappings,
             String inputPrefixKey, String pdfPrefix, int iterator) {
         Map<String, SubmissionField> fields = new HashMap<>();
 
@@ -84,7 +85,8 @@ public class SchedulePreparerUtility {
         return fields;
     }
 
-    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData, Map<String, String> dataMappings,
+    public static Map<String, SubmissionField> createSubmissionFieldsFromDay(Map<String, Object> inputData,
+            Map<String, String> dataMappings,
             String inputPrefixKey, String pdfPrefix) {
         Map<String, SubmissionField> fields = new HashMap<>();
 
@@ -129,19 +131,19 @@ public class SchedulePreparerUtility {
     }
 
     public static Optional<HourlySchedule> getHourlySchedule(
-        Submission submission, String inputName, String weeklyScheduleInputName) {
+            Submission submission, String inputName, String weeklyScheduleInputName) {
         return getHourlySchedule(submission.getInputData(), inputName, weeklyScheduleInputName);
     }
 
     public static Optional<HourlySchedule> getHourlySchedule(
-        Map<String, Object> inputData, String inputName, String weeklyScheduleInputName) {
+            Map<String, Object> inputData, String inputName, String weeklyScheduleInputName) {
         Optional<List<DayOfWeekOption>> daysActive = getDaysOfWeekField(inputData, weeklyScheduleInputName);
         if (daysActive.isEmpty()) {
             return Optional.empty();
         }
 
         List<String> sameEveryDayField = getOptionalListField(
-            inputData, "%sHoursSameEveryDay[]".formatted(inputName), Object::toString).orElse(List.of());
+                inputData, "%sHoursSameEveryDay[]".formatted(inputName), Object::toString).orElse(List.of());
         boolean sameEveryDay = !sameEveryDayField.isEmpty() && sameEveryDayField.get(0).equalsIgnoreCase("Yes");
 
         if (sameEveryDay) {
@@ -149,9 +151,9 @@ public class SchedulePreparerUtility {
             return Optional.of(new ConsistentHourlySchedule(daysActive.get(), scheduleEveryDay));
         } else {
             var dailyScheduleMap = daysActive.get().stream().collect(
-                toImmutableMap(
-                    identity(),
-                    day -> getTimeRangeInput(inputData, inputName, day.name()).orElseThrow()));
+                    toImmutableMap(
+                            identity(),
+                            day -> getTimeRangeInput(inputData, inputName, day.name()).orElseThrow()));
             return Optional.of(new PerDayHourlySchedule(dailyScheduleMap));
         }
     }
@@ -170,10 +172,12 @@ public class SchedulePreparerUtility {
         } else {
             return daysInSchedule.stream().collect(toMap(day -> day, day -> day));
         }
-    };
+    }
+
+    ;
 
     public static <T> Optional<List<T>> getOptionalListField(
-        Map<String, Object> inputData, String fieldName, Function<Object, T> converter) {
+            Map<String, Object> inputData, String fieldName, Function<Object, T> converter) {
         Object value = inputData.get(fieldName);
         if (value == null) {
             return Optional.empty();

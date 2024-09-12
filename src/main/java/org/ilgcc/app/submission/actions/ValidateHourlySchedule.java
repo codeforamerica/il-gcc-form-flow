@@ -14,6 +14,7 @@ import org.springframework.context.MessageSource;
 
 @Slf4j
 public class ValidateHourlySchedule implements Action {
+
     private final List<String> INPUT_POSTFIXES = List.of("Minute", "Hour", "AmPm");
     private final MessageSource messageSource;
     private final String inputPrefix;
@@ -35,9 +36,9 @@ public class ValidateHourlySchedule implements Action {
             if (hasMissingData(formData, startTimeGroupName)) {
                 errorMessages.put(startTimeGroupName,
                         List.of(messageSource.getMessage("errors.validate.start.time", null, null)));
-            } else if(minuteDataIsInvalid(formData, startTimeGroupName)) {
+            } else if (minuteDataIsInvalid(formData, startTimeGroupName)) {
                 errorMessages.put(startTimeGroupName,
-                            List.of(messageSource.getMessage("errors.validate.minute", null, null)));
+                        List.of(messageSource.getMessage("errors.validate.minute", null, null)));
 
             }
 
@@ -45,7 +46,7 @@ public class ValidateHourlySchedule implements Action {
             if (hasMissingData(formData, endTimeGroupName)) {
                 errorMessages.put(endTimeGroupName,
                         List.of(messageSource.getMessage("errors.validate.end.time", null, null)));
-            } else if(minuteDataIsInvalid(formData, endTimeGroupName)) {
+            } else if (minuteDataIsInvalid(formData, endTimeGroupName)) {
                 errorMessages.put(startTimeGroupName,
                         List.of(messageSource.getMessage("errors.validate.minute", null, null)));
 
@@ -55,40 +56,41 @@ public class ValidateHourlySchedule implements Action {
         return errorMessages;
     }
 
-    protected List<String> daysToCheck(Map<String, Object> formData){
+    protected List<String> daysToCheck(Map<String, Object> formData) {
         List<String> sameEveryDayField = getOptionalListField(
                 formData, "%sHoursSameEveryDay[]".formatted(inputPrefix), Object::toString).orElse(List.of());
         boolean sameEveryDay = !sameEveryDayField.isEmpty() && sameEveryDayField.get(0).equalsIgnoreCase("Yes");
 
         if (sameEveryDay) {
             return List.of("AllDays");
-        } else{
+        } else {
             return List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
         }
     }
 
     protected Boolean hasMissingData(Map<String, Object> inputtedData, String fieldName) {
         AtomicBoolean hasMissingData = new AtomicBoolean(false);
-        if(inputtedData.containsKey(fieldName+"Minute")){
+        if (inputtedData.containsKey(fieldName + "Minute")) {
             INPUT_POSTFIXES.forEach(pf -> {
                 if (inputtedData.getOrDefault(fieldName + pf, "").toString().isEmpty()) {
                     hasMissingData.set(true);
-                };
+                }
+                ;
             });
         }
         return hasMissingData.get();
     }
 
     protected Boolean minuteDataIsInvalid(Map<String, Object> inputtedData, String fieldName) {
-        AtomicBoolean  minuteDataIsInvalid = new AtomicBoolean(false);
-        if(inputtedData.containsKey(fieldName+"Minute")){
+        AtomicBoolean minuteDataIsInvalid = new AtomicBoolean(false);
+        if (inputtedData.containsKey(fieldName + "Minute")) {
             try {
-                int minuteValue = Integer.valueOf(inputtedData.get(fieldName+"Minute").toString());
-                if(minuteValue < 0 || minuteValue > 59){
+                int minuteValue = Integer.valueOf(inputtedData.get(fieldName + "Minute").toString());
+                if (minuteValue < 0 || minuteValue > 59) {
                     minuteDataIsInvalid.set(true);
                 }
             } catch (Exception e) {
-                log.error("Unable to parse minute value: " + inputtedData.get(fieldName+"Minute").toString());
+                log.error("Unable to parse minute value: " + inputtedData.get(fieldName + "Minute").toString());
                 return true;
             }
         }

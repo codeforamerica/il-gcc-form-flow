@@ -33,21 +33,24 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
 
         for (var job : jobs) {
             Map<String, String> careSchedule =
-                SchedulePreparerUtility.hourlyScheduleKeys(
-                    (Map<String, Object>) job,
-                    "activitiesJob",
-                    "activitiesJobWeeklySchedule[]");
+                    SchedulePreparerUtility.hourlyScheduleKeys(
+                            (Map<String, Object>) job,
+                            "activitiesJob",
+                            "activitiesJobWeeklySchedule[]");
 
-                results.putAll(
-                        SchedulePreparerUtility.createSubmissionFieldsFromDay(job, careSchedule, "activitiesJob", "applicantEmployerSchedule",
-                                iteration));
+            results.putAll(
+                    SchedulePreparerUtility.createSubmissionFieldsFromDay(job, careSchedule, "activitiesJob",
+                            "applicantEmployerSchedule",
+                            iteration));
 
             String commuteTimeKey = (String) job.getOrDefault("activitiesJobCommuteTime", "");
 
-            if(!commuteTimeKey.isBlank()){
+            if (!commuteTimeKey.isBlank()) {
                 TimeSpan commuteTimeValue = CommuteTimeType.getTimeSpanByName(commuteTimeKey);
-                results.put("applicantEmployerTravelTimeHours_"+iteration, new SingleField("applicantEmployerTravelTimeHours", commuteTimeValue.getPaddedHours(), iteration));
-                results.put("applicantEmployerTravelTimeMins_"+iteration, new SingleField("applicantEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
+                results.put("applicantEmployerTravelTimeHours_" + iteration,
+                        new SingleField("applicantEmployerTravelTimeHours", commuteTimeValue.getPaddedHours(), iteration));
+                results.put("applicantEmployerTravelTimeMins_" + iteration,
+                        new SingleField("applicantEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
             }
             iteration++;
 

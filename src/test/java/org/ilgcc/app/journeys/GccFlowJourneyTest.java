@@ -26,6 +26,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     @Autowired
     SubmissionRepository repository;
+
     @Test
     void fullGccFlow() throws IOException {
         // Home page
@@ -358,7 +359,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickYes();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(getEnMessage("activities-ed-program-type.highSchool"));
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(
+                getEnMessage("activities-ed-program-type.highSchool"));
         testPage.clickElementById("educationType-highSchoolOrGed-label");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
@@ -638,19 +640,23 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
+        assertThat(testPage.getTitle()).isEqualTo(
+                getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
         testPage.clickElementById("surveyDifficulty-very-easy");
         testPage.clickButton(getEnMessage("submit-confirmation.button.feedback"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
-        assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo(getEnMessage("submit-confirmation.survey.complete"));
+        assertThat(testPage.getTitle()).isEqualTo(
+                getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
+        assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo(
+                getEnMessage("submit-confirmation.survey.complete"));
 
         // Download PDF and verify fields
         verifyPDF();
     }
 
     /**
-     * This compares the pdf fields in the generated pdf and our expected test pdf, "test_filled_ccap.pdf".
-     * If there are updates to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and values.
+     * This compares the pdf fields in the generated pdf and our expected test pdf, "test_filled_ccap.pdf". If there are updates
+     * to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and
+     * values.
      */
     private void verifyPDF() throws IOException {
         File pdfFile = getDownloadedPDF();
@@ -658,9 +664,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 //         regenerateExpectedPDF(pdfFile); // uncomment and run test to regenerate the test pdf
 
         try (FileInputStream actualIn = new FileInputStream(pdfFile);
-            PdfReader actualReader = new PdfReader(actualIn);
-            FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
-            PdfReader expectedReader = new PdfReader(expectedIn)) {
+                PdfReader actualReader = new PdfReader(actualIn);
+                FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
+                PdfReader expectedReader = new PdfReader(expectedIn)) {
             AcroFields actualAcroFields = actualReader.getAcroFields();
             AcroFields expectedAcroFields = expectedReader.getAcroFields();
 
@@ -687,7 +693,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
      */
     private static void regenerateExpectedPDF(File pdfFile) {
         try (FileInputStream regeneratedPDF = new FileInputStream(pdfFile);
-             FileOutputStream testPDF = new FileOutputStream("src/test/resources/output/test_filled_ccap.pdf")) {
+                FileOutputStream testPDF = new FileOutputStream("src/test/resources/output/test_filled_ccap.pdf")) {
             testPDF.write(regeneratedPDF.readAllBytes());
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -704,7 +710,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
                 "APPLICANT_NAME_FULL",
                 "RECEIVED_TIMESTAMP");
         for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
-            if(!UNTESTABLE_FIELDS.contains(expectedField)){
+            if (!UNTESTABLE_FIELDS.contains(expectedField)) {
                 var actual = actualAcroFields.getField(expectedField);
                 var expected = expectedAcroFields.getField(expectedField);
                 if (!expected.equals(actual)) {

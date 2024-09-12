@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ValidateActivitiesJobSchedule extends ValidateHourlySchedule{
+public class ValidateActivitiesJobSchedule extends ValidateHourlySchedule {
+
     public ValidateActivitiesJobSchedule(MessageSource messageSource) {
         super(messageSource, "activitiesJob");
     }

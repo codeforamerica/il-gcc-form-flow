@@ -17,7 +17,8 @@
                   th:text="#{general.required-field}"></span>
         </legend>
         <div th:with="startTimeLabelId=${startInputName + '-label'}">
-            <label th:for="${startInputName}" th:id="${startTimeLabelId}" th:text="#{general.inputs.time.range.start}"
+            <label th:for="${startInputName}" th:id="${startTimeLabelId}"
+                   th:text="#{general.inputs.time.range.start}"
                    class="form-question"/>
             <th:block
                     th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
@@ -25,7 +26,8 @@
                     th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${startInputName}, ariaDescribedBy=${startTimeLabelId+' ' + dayLabelId})}"/>
         </div>
         <div th:with="endTimeLabelId=${endInputName + '-label'}">
-            <label th:for="${endInputName}"  th:id="${endTimeLabelId}" th:text="#{general.inputs.time.range.end}"
+            <label th:for="${endInputName}" th:id="${endTimeLabelId}"
+                   th:text="#{general.inputs.time.range.end}"
                    class="form-question"/>
             <th:block
                     th:replace="~{fragments/inputError :: validationError(inputName=${endInputName})}"></th:block>

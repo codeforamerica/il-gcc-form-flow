@@ -6,6 +6,7 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
+
     @Test
     void missingChildCareTimeRaisesError() {
         addAChild();
@@ -235,7 +236,6 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
 
-
         testPage.selectFromDropdown("activitiesClassEndTimeAllDaysHour", "1");
         testPage.enter("activitiesClassEndTimeAllDaysMinute", "00");
         testPage.selectFromDropdown("activitiesClassEndTimeAllDaysAmPm", "PM");
@@ -336,7 +336,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
 
         testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
-        testPage.enter("activitiesJobStartTimeAllDaysMinute",  "00");
+        testPage.enter("activitiesJobStartTimeAllDaysMinute", "00");
         testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "PM");
 
         testPage.clickContinue();
@@ -345,7 +345,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
 
         testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
-        testPage.enter("activitiesJobEndTimeAllDaysMinute",  "00");
+        testPage.enter("activitiesJobEndTimeAllDaysMinute", "00");
         testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
 
         testPage.clickContinue();
@@ -379,11 +379,11 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("activitiesJobHoursSameEveryDay-Yes");
 
         testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
-        testPage.enter("activitiesJobStartTimeAllDaysMinute",  "78");
+        testPage.enter("activitiesJobStartTimeAllDaysMinute", "78");
         testPage.selectFromDropdown("activitiesJobStartTimeAllDaysAmPm", "PM");
 
         testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
-        testPage.enter("activitiesJobEndTimeAllDaysMinute",  "00");
+        testPage.enter("activitiesJobEndTimeAllDaysMinute", "00");
         testPage.selectFromDropdown("activitiesJobEndTimeAllDaysAmPm", "PM");
 
         testPage.clickContinue();
@@ -392,21 +392,21 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
 
-        testPage.enter("activitiesJobStartTimeAllDaysMinute",  "22");
+        testPage.enter("activitiesJobStartTimeAllDaysMinute", "22");
         testPage.clickContinue();
         //activities-partner-commute-time
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-commute-time.title"));
 
         testPage.goBack();
 
-        testPage.enter("activitiesJobEndTimeAllDaysMinute",  "-23");
+        testPage.enter("activitiesJobEndTimeAllDaysMinute", "-23");
         testPage.clickContinue();
 
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
 
-        testPage.enter("activitiesJobEndTimeAllDaysMinute",  "23");
+        testPage.enter("activitiesJobEndTimeAllDaysMinute", "23");
         testPage.clickContinue();
 
         //activities-partner-commute-time
@@ -503,7 +503,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
     }
 
-    void addAChild(){
+    void addAChild() {
         // children-add
         testPage.navigateToFlowScreen("gcc/children-add");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
@@ -539,7 +539,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
     }
 
-    void addParentSchool(){
+    void addParentSchool() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-add-ed-program");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
@@ -557,7 +557,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickYes();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(getEnMessage("activities-ed-program-type.highSchool"));
+        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(
+                getEnMessage("activities-ed-program-type.highSchool"));
         testPage.clickElementById("educationType-highSchoolOrGed-label");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
@@ -586,7 +587,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
     }
 
-    void addParentPartnerSchool(){
+    void addParentPartnerSchool() {
         //parent-partner-info-bachelors
         testPage.navigateToFlowScreen("gcc/parent-partner-info-bachelors");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
