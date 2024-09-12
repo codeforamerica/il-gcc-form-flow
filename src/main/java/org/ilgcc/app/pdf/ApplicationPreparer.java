@@ -3,7 +3,6 @@ package org.ilgcc.app.pdf;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
-import formflow.library.pdf.CheckboxField;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
@@ -84,16 +83,14 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         }
 
         List<String> unearnedIncomeReferral = (List<String>) inputData.getOrDefault("unearnedIncomeReferralServices[]", List.of());
-        if (!unearnedIncomeReferral .isEmpty()){
-            if (unearnedIncomeReferral.contains("SAFE_SUPPORT")){
-                results.put("referralServicesDomesticViolence", new SingleField("referralServicesDomesticViolence", "true", null));
-            }
-            if (unearnedIncomeReferral.contains("HOUSING_SUPPORT")){
-                results.put("referralServicesHomelessness", new SingleField("referralServicesHomelessness", "true", null));
-            }
-            if (unearnedIncomeReferral.contains("DISABILITY_SUPPORT")){
-                results.put("referralServicesPhysicalOrMentalDisability", new SingleField("referralServicesPhysicalOrMentalDisability", "true", null));
-            }
+        if (unearnedIncomeReferral.contains("SAFE_SUPPORT")){
+            results.put("referralServicesDomesticViolence", new SingleField("referralServicesDomesticViolence", "true", null));
+        }
+        if (unearnedIncomeReferral.contains("HOUSING_SUPPORT")){
+            results.put("referralServicesHomelessness", new SingleField("referralServicesHomelessness", "true", null));
+        }
+        if (unearnedIncomeReferral.contains("DISABILITY_SUPPORT")){
+            results.put("referralServicesPhysicalOrMentalDisability", new SingleField("referralServicesPhysicalOrMentalDisability", "true", null));
         }
 
         return results;
