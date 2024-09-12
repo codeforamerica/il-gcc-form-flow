@@ -55,6 +55,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
         testPage.enter("parentLastName", "parent last");
         testPage.enter("parentPreferredName", "Preferred Parent First");
+        testPage.enter("parentOtherLegalName", "Parent Other Legal Name");
         testPage.enter("parentBirthMonth", "12");
         testPage.enter("parentBirthDay", "25");
         testPage.enter("parentBirthYear", "1985");
@@ -135,6 +136,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // parent-partner-contact
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-contact.title"));
         testPage.enter("parentPartnerPhoneNumber", "3333333333");
+        testPage.enter("parentPartnerEmail", "partnerEmail@test.com");
         testPage.clickContinue();
         // parent-partner-info-service
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-service.title"));

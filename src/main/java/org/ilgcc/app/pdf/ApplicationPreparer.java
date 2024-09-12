@@ -12,6 +12,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.utils.PreparerUtilities;
@@ -60,7 +61,21 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
 
         results.put("otherMonthlyIncomeApplicant",
                 new SingleField("otherMonthlyIncomeApplicant", String.format("%.0f", Math.floor(totalExpenses)), null));
-
+        List<String> unearnedIncomePrograms = (List<String>) inputData.getOrDefault("unearnedIncomePrograms[]", List.of());
+        if (!unearnedIncomePrograms.isEmpty()){
+            if (unearnedIncomePrograms.contains("SNAP")){
+                results.put("unearnedIncomePrograms-snap", new SingleField("unearnedIncomePrograms-snap", "true", null));
+            }
+            if (unearnedIncomePrograms.contains("HOMELESS_SHELTER_OR_PREVENTION_PROGRAMS")){
+                results.put("unearnedIncomePrograms-homeless-shelters", new SingleField("unearnedIncomePrograms-homeless-shelters", "true", null));
+            }
+            if (unearnedIncomePrograms.contains("CASH_ASSISTANCE")){
+                results.put("unearnedIncomePrograms-tanf", new SingleField("unearnedIncomePrograms-tanf", "true", null));
+            }
+            if (unearnedIncomePrograms.contains("HOUSING_VOUCHERS")){
+                results.put("unearnedIncomePrograms-housing-vouchers", new SingleField("unearnedIncomePrograms-housing-vouchers", "true", null));
+            }
+        }
         return results;
     }
 }
