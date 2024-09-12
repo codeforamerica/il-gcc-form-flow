@@ -47,6 +47,10 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         var parentLastName = inputData.getOrDefault("parentLastName", "");
         results.put("parentFullName",
                 new SingleField("parentFullName", String.format("%s, %s", parentLastName, parentFirstName), null));
+        String partnerFirstName = inputData.getOrDefault("parentPartnerFirstName", "").toString();
+        String partnerLastName = inputData.getOrDefault("parentPartnerLastName", "").toString();
+        results.put("partnerFullName",
+                new SingleField("partnerFullName", String.format("%s, %s", partnerLastName, partnerFirstName), null));
 
         String rentalIncome = inputData.getOrDefault("unearnedIncomeRental", "").toString();
         String dividendIncome = inputData.getOrDefault("unearnedIncomeDividends", "").toString();
