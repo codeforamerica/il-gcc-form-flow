@@ -44,7 +44,8 @@
                                    th:id="${minuteInputName}"
                                    th:name="${minuteInputName}"
                                    th:place
-                                   th:attr="aria-describedby=${hasAriaDescribedByLabel ? minuteInputName+ ' ' + ariaDescribedBy : minuteInputName}",
+                                   th:attr="aria-describedby=${hasAriaDescribedByLabel ? minuteInputName+ ' ' + ariaDescribedBy : minuteInputName}"
+                                   ,
                                    th:value="${fieldData.getOrDefault(minuteInputName, '00')}">
                         </div>
                     </div>
