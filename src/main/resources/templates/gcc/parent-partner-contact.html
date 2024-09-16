@@ -15,7 +15,7 @@
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
-                            <th:block th:replace="~{fragments/inputs/phone :: phone(
+                            <th:block th:replace="~{fragments/inputs/overrides/phone :: phone(
                                         inputName='parentPartnerPhoneNumber',
                                         label=#{parent-partner-contact.phone.number},
                                         placeholder='(999) 999-9999')}"/>
