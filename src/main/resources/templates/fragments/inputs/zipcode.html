@@ -1,0 +1,37 @@
+<th:block
+        th:fragment="zipcode"
+        th:with="
+      hasHelpText=${!#strings.isEmpty(helpText)},
+      hasLabel=${!#strings.isEmpty(label)},
+      hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
+      requiredInputsForFlow=${requiredInputs.get(flow)},
+      isRequiredInput=${(requiredInputsForFlow != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)},
+      hasError=${
+        errorMessages != null &&
+        errorMessages.get(inputName) != null &&
+        (#arrays.length(errorMessages.get(inputName)) > 0) }"
+        th:assert="${!#strings.isEmpty(inputName)}, ${hasLabel || hasAriaLabel}">
+    <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
+        <label th:if="${hasLabel}" th:for="${inputName}" class="form-question">
+            <span th:text="${label}"></span>
+            <span th:if="${isRequiredInput && !hasAriaLabel}" class="required-input" th:text="#{general.required-field}"></span>
+        </label>
+        <p class="text--help"
+           th:if="${hasHelpText}"
+           th:id="${inputName + '-help-text'}"
+           th:text="${helpText}"></p>
+        <th:block
+                th:if="${hasError}"
+                th:replace="~{fragments/inputError :: validationError(inputName=${inputName})}"></th:block>
+        <input type="text" class="text-input"
+               inputmode="numeric"
+               th:id="${inputName}"
+               th:name="${inputName}"
+               th:placeholder="${placeholder}"
+               th:attr="
+            aria-describedby=${hasHelpText ? inputName + '-help-text' : ''},
+            aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
+            aria-invalid=${hasError}"
+               th:value="${fieldData.getOrDefault(inputName, '')}">
+    </div>
+</th:block>
