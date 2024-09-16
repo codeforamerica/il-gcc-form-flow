@@ -4,6 +4,7 @@ inputFields:
   parentFirstName: APPLICANT_NAME_FIRST
   parentLastName: APPLICANT_NAME_LAST
   parentFullName: APPLICANT_NAME_FULL
+  parentHasDisability: APPLICANT_HAS_A_DISABILITY
   parentHomeStreetAddress1ForPDF: APPLICANT_ADDRESS_HOME_STREET
   parentHomeStreetAddress2ForPDF: APPLICANT_ADDRESS_HOME_APT
   parentHomeCityForPDF: APPLICANT_ADDRESS_HOME_CITY
@@ -18,10 +19,12 @@ inputFields:
   parentContactPhoneNumber: APPLICANT_PHONE_NUM_HOME
   parentPartnerFirstName: PARTNER_NAME_FIRST
   parentPartnerLastName: PARTNER_NAME_LAST
+  partnerFullName: PARTNER_NAME_FULL
   parentPartnerSSN: PARTNER_SSN
   parentPartnerDateOfBirth: PARTNER_DOB
   parentPartnerPhoneNumber: PARTNER_PHONE_NUMBER
   parentPartnerIsServing: PARTNER_MILITARY_ACTIVE_DUTY
+  parentPartnerEmail: PARTNER_EMAIL_ADDRESS
   partnerProgramName: PARTNER_EDUCATION_SCHOOL_NAME
   partnerEdStreetAddress: PARTNER_EDUCATION_SCHOOL_ADDRESS
   partnerEdCity: PARTNER_EDUCATION_SCHOOL_CITY
@@ -60,6 +63,12 @@ inputFields:
   parentGenderMale: APPLICANT_GENDER_MALE
   parentGenderFemale: APPLICANT_GENDER_FEMALE
   parentGenderTNB: APPLICANT_GENDER_OTHER
+  languageSpeak: APPLICANT_SPOKEN_LANGUAGE
+  parentPreferredName: APPLICANT_NAME_PREFERRED
+  parentOtherLegalName: APPLICANT_NAME_OTHER
+  parentContactPreferredCommunicationMethod: APPLICANT_COMMUNICATION_PREFERENCE
+  activitiesParentChildcareReason_other: APPLICANT_CHILDCARE_REASON_OTHER
+  activitiesParentPartnerChildcareReason_other: PARTNER_CHILDCARE_REASON_OTHER
   applicantEducationScheduleMondayStart: APPLICANT_EDUCATION_SCHEDULE_MONDAY_START
   applicantEducationScheduleMondayStartAmPm: APPLICANT_EDUCATION_SCHEDULE_MONDAY_START_AM_PM
   applicantEducationScheduleTuesdayStart: APPLICANT_EDUCATION_SCHEDULE_TUESDAY_START
@@ -124,7 +133,14 @@ inputFields:
   partnerEducationTravelTimeMins: PARTNER_EDUCATION_TRAVEL_TIME_MINS
   childcareStartDate: CHILD_CARE_START_DATE_CHILD
   otherMonthlyIncomeApplicant: OTHER_MONTHLY_INCOME_APPLICANT
+  unearnedIncomePrograms-snap: OTHER_SERVICES_FOOD_ASSISTANCE_SNAP
+  unearnedIncomePrograms-homeless-shelters: OTHER_SERVICES_HOMELESS_SHELTER_OR_PREVENTION_PROGRAMS
+  unearnedIncomePrograms-tanf: OTHER_SERVICES_CASH_ASSISTANCE_TANF
+  unearnedIncomePrograms-housing-vouchers: OTHER_SERVICES_HOUSING_VOUCHERS
   unearnedIncomeAssetsMoreThanOneMillionDollars: TOTAL_ASSETS_MILLION
+  referralServicesDomesticViolence: REFERRAL_SERVICES_DOMESTIC_VIOLENCE
+  referralServicesHomelessness: REFERRAL_SERVICES_HOMELESSNESS
+  referralServicesPhysicalOrMentalDisability: REFERRAL_SERVICES_PHYSICAL_OR_MENTAL_DISABILITY
   amountYourHouseholdPaysInChildSupport: APPLICANT_CHILD_SUPPORT_PAID
   signedName: APPLICANT_SIGNATURE
   partnerSignedName: PARTNER_SIGNATURE
