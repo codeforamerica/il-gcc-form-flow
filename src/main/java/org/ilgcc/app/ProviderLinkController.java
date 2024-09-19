@@ -55,7 +55,7 @@ public class ProviderLinkController {
             @RequestParam(name = "conf_code") String confirmationCode,
             @RequestParam(name = "utm_medium", required = false) String utmMedium) throws IOException {
 
-        log.info("Loading submission for code {} from medium {}", confirmationCode, utmMedium);
+        log.info("Loading submission for code "+ confirmationCode + " from medium " + utmMedium);
 
         Optional<Submission> submission = submissionRepositoryService.findByShortCode(confirmationCode);
         if (submission.isPresent()) {
@@ -71,7 +71,7 @@ public class ProviderLinkController {
             s.setUrlParams(urlParams);
             submissionRepositoryService.save(s);
         } else {
-            log.info("Unable to load submission for code {}", confirmationCode);
+            log.info("Unable to load submission for code " + confirmationCode);
             // TODO: Handle invalid confirmation code
         }
 
