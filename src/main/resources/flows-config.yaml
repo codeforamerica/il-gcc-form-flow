@@ -399,6 +399,8 @@ flow:
     afterSaveAction: SendUploadedFileToDocumentTransferService
     nextScreens:
       - name: submit-next-steps
+  contact-provider-message:
+    nextScreens: null
 subflows:
   children:
     entryScreen: children-add
