@@ -8,3 +8,5 @@ form-flow:
     s3_bucket_name: ${DEMO_AWS_BUCKET}
   address-validation:
     disabled: true
+  short-code:
+    prefix: DEMO-

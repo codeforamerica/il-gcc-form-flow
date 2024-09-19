@@ -8,6 +8,8 @@ form-flow:
     show-stack-trace: false
   virus-scanning:
     enabled: true
+  short-code:
+    prefix: STG-
 management:
   endpoint:
     health:
