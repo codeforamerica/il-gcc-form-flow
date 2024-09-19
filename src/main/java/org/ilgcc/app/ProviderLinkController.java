@@ -55,9 +55,11 @@ public class ProviderLinkController {
             @RequestParam(name = "conf_code") String confirmationCode,
             @RequestParam(name = "utm_medium", required = false) String utmMedium) throws IOException {
 
-        log.info("Loading submission for code "+ confirmationCode + " from medium " + utmMedium);
+        String sanitizedConfirmationCode = confirmationCode.replace('\n', '_').replace('\r', '_');
+        String sanitizedUtmMedium = (utmMedium != null) ? utmMedium.replace('\n', '_').replace('\r', '_') : "unknown";
+        log.info("Loading submission for code " + sanitizedConfirmationCode + " from medium " + sanitizedUtmMedium);
 
-        Optional<Submission> submission = submissionRepositoryService.findByShortCode(confirmationCode);
+        Optional<Submission> submission = submissionRepositoryService.findByShortCode(sanitizedConfirmationCode);
         if (submission.isPresent()) {
             Submission s = submission.get();
             Map<String, String> urlParams = s.getUrlParams();
@@ -66,12 +68,12 @@ public class ProviderLinkController {
             }
 
             // TODO: Is this necessary?
-            urlParams.put("utm_medium", utmMedium);
-            urlParams.put("conf_code", confirmationCode);
+            urlParams.put("utm_medium", sanitizedUtmMedium);
+            urlParams.put("conf_code", sanitizedConfirmationCode);
             s.setUrlParams(urlParams);
             submissionRepositoryService.save(s);
         } else {
-            log.info("Unable to load submission for code " + confirmationCode);
+            log.info("Unable to load submission for code " + sanitizedConfirmationCode);
             // TODO: Handle invalid confirmation code
         }
 
