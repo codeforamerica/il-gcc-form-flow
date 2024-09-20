@@ -36,29 +36,18 @@ public class ValidateHourlySchedule implements Action {
             String startTimeGroupName = inputPrefix + "StartTime" + day;
             ArrayList<String> startElementsWithMissingData = elementsWithMissingData(formData, startTimeGroupName);
 
-            List<String> startTimeErrors = new ArrayList<>(List.of());
             if (!startElementsWithMissingData.isEmpty()) {
                 if (startElementsWithMissingData.containsAll(INPUT_POSTFIXES)) {
                     errorMessages.put(startTimeGroupName,
                             List.of(messageSource.getMessage("errors.validate.start.time", null, null)));
                 } else {
-                    if (startElementsWithMissingData.contains("Hour")) {
-                        startTimeErrors.add(messageSource.getMessage("errors.validate.time-hour", null, null));
-                    }
-                    if (startElementsWithMissingData.contains("Minute") || minuteDataIsInvalid(formData, startTimeGroupName)) {
-                        startTimeErrors.add(messageSource.getMessage("errors.validate.minute", null, null));
-                    }
-                    if (startElementsWithMissingData.contains("AmPm")) {
-                        startTimeErrors.add(messageSource.getMessage("errors.validate.time-ampm", null, null));
-                    }
-                    errorMessages.put(startTimeGroupName, startTimeErrors);
+                    errorMessages.put(startTimeGroupName, errorsToAdd(startElementsWithMissingData));
                 }
 
             } else if (minuteDataIsInvalid(formData, startTimeGroupName)) {
                 errorMessages.put(startTimeGroupName,
                         List.of(messageSource.getMessage("errors.validate.start.time", null, null)));
             }
-
 
             String endTimeGroupName = inputPrefix + "EndTime" + day;
             ArrayList<String> endElementsWithMissingData = elementsWithMissingData(formData, endTimeGroupName);
@@ -68,26 +57,13 @@ public class ValidateHourlySchedule implements Action {
                     errorMessages.put(endTimeGroupName,
                             List.of(messageSource.getMessage("errors.validate.end.time", null, null)));
                 } else {
-                    if (endElementsWithMissingData.contains("Hour")) {
-                        endTimeErrors.add(messageSource.getMessage("errors.validate.time-hour", null, null));
-                    }
-                    if (endElementsWithMissingData.contains("Minute") || minuteDataIsInvalid(formData, endTimeGroupName)) {
-                        endTimeErrors.add(messageSource.getMessage("errors.validate.minute", null, null));
-                    }
-                    if (endElementsWithMissingData.contains("AmPm")) {
-                        endTimeErrors.add(messageSource.getMessage("errors.validate.time-ampm", null, null));
-                    }
-
-                    errorMessages.put(endTimeGroupName, endTimeErrors);
+                    errorMessages.put(endTimeGroupName, errorsToAdd(endElementsWithMissingData));
                 }
             } else if (minuteDataIsInvalid(formData, endTimeGroupName)) {
                 errorMessages.put(endTimeGroupName,
                         List.of(messageSource.getMessage("errors.validate.end.time", null, null)));
             }
-
-
         });
-
         return errorMessages;
     }
 
@@ -106,6 +82,9 @@ public class ValidateHourlySchedule implements Action {
     protected ArrayList<String> elementsWithMissingData(Map<String, Object> inputtedData, String fieldName) {
         ArrayList<String> missingData = new ArrayList<>();
         if (inputtedData.containsKey(fieldName + "Minute")) {
+            if (minuteDataIsInvalid(inputtedData, fieldName)) {
+                missingData.add("Minute");
+            }
             INPUT_POSTFIXES.forEach(pf -> {
                 if (inputtedData.getOrDefault(fieldName + pf, "").toString().isEmpty()) {
                     missingData.add(pf);
@@ -114,6 +93,21 @@ public class ValidateHourlySchedule implements Action {
             });
         }
         return missingData;
+    }
+
+    protected ArrayList<String> errorsToAdd(ArrayList<String> missingData) {
+        ArrayList<String> errors = new ArrayList<>(List.of());
+        if (missingData.contains("Hour")) {
+            errors.add(messageSource.getMessage("errors.validate.time-hour", null, null));
+        }
+        if (missingData.contains("Minute")) {
+            errors.add(messageSource.getMessage("errors.validate.minute", null, null));
+        }
+        if (missingData.contains("AmPm")) {
+            errors.add(messageSource.getMessage("errors.validate.time-ampm", null, null));
+        }
+
+        return errors;
     }
 
     protected Boolean minuteDataIsInvalid(Map<String, Object> inputtedData, String fieldName) {

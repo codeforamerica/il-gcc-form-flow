@@ -428,8 +428,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("partnerClassHoursSameEveryDay-Yes");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.time-hour"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.time-ampm"))).isTrue();
 
         testPage.selectFromDropdown("partnerClassStartTimeAllDaysHour", "11");
         testPage.enter("partnerClassStartTimeAllDaysMinute", "00");
