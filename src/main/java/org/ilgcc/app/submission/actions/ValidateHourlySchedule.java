@@ -51,7 +51,6 @@ public class ValidateHourlySchedule implements Action {
 
             String endTimeGroupName = inputPrefix + "EndTime" + day;
             ArrayList<String> endElementsWithMissingData = elementsWithMissingData(formData, endTimeGroupName);
-            List<String> endTimeErrors = new ArrayList<>(List.of());
             if (!endElementsWithMissingData.isEmpty()) {
                 if (endElementsWithMissingData.containsAll(INPUT_POSTFIXES)) {
                     errorMessages.put(endTimeGroupName,
