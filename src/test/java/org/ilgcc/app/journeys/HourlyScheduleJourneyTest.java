@@ -179,7 +179,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("activitiesJobStartTimeMondayAmPm", "PM");
 
         testPage.selectFromDropdown("activitiesJobEndTimeMondayHour", "1");
-        testPage.enter("activitiesJobEndTimeMondayMinute", "100");
+        testPage.enter("activitiesJobEndTimeMondayMinute", "66");
         testPage.selectFromDropdown("activitiesJobEndTimeMondayAmPm", "PM");
 
         testPage.clickContinue();
@@ -264,7 +264,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
 
         testPage.selectFromDropdown("activitiesClassStartTimeAllDaysHour", "9");
-        testPage.enter("activitiesClassStartTimeAllDaysMinute", "105");
+        testPage.enter("activitiesClassStartTimeAllDaysMinute", "65");
         testPage.selectFromDropdown("activitiesClassStartTimeAllDaysAmPm", "AM");
 
         testPage.clickContinue();
@@ -291,7 +291,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.goBack();
         testPage.goBack();
-        testPage.enter("activitiesClassEndTimeAllDaysMinute", "12300");
+        testPage.enter("activitiesClassEndTimeAllDaysMinute", "75");
         testPage.clickContinue();
 
         assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
