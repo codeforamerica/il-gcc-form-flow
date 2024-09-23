@@ -20,16 +20,33 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-hourly-schedule.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("childcareEndTimeThursday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("childcareEndTimeThursday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
         testPage.enter("childcareEndTimeThursdayMinute", "00");
         testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
+
+        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
         testPage.enter("childcareStartTimeThursdayMinute", "15");
@@ -52,18 +69,24 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         //children-childcare-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-hourly-schedule.title"));
 
-        testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
-        testPage.enter("childcareEndTimeThursdayMinute", "00");
-        testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
-
         testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
         testPage.enter("childcareStartTimeThursdayMinute", "65");
         testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
 
+        testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
+        testPage.enter("childcareEndTimeThursdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
+
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+
+        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
 
         testPage.enter("childcareStartTimeThursdayMinute", "15");
 
@@ -74,9 +97,15 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.enter("childcareEndTimeThursdayMinute", "-15");
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("childcareEndTimeThursday-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
 
         testPage.enter("childcareEndTimeThursdayMinute", "15");
         testPage.clickContinue();
@@ -109,8 +138,30 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo("Job hourly schedule");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobStartTimeMonday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobStartTimeMonday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobEndTimeMonday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobEndTimeMonday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobStartTimeSunday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobStartTimeSunday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeSunday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobEndTimeSunday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobEndTimeSunday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeSunday-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("activitiesJobStartTimeMondayHour", "12");
         testPage.enter("activitiesJobStartTimeMondayMinute", "00");
@@ -123,8 +174,25 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // Errors triggered by missing data on Sunday
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobStartTimeSunday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobStartTimeSunday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeSunday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobEndTimeSunday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobEndTimeSunday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeSunday-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("activitiesJobStartTimeSundayHour", "2");
         testPage.enter("activitiesJobStartTimeSundayMinute", "00");
@@ -132,8 +200,24 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // Errors Triggered by missing Sunday AM.PM
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobStartTimeSunday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeSunday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeSunday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobEndTimeSunday-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobEndTimeSunday-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeSunday-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("activitiesJobStartTimeSundayAmPm", "PM");
 
@@ -142,7 +226,22 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("activitiesJobEndTimeSundayAmPm", "PM");
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeSunday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeSunday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeSunday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobEndTimeSunday-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeSunday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeSunday-error-message-3")).isTrue();
 
         testPage.enter("activitiesJobEndTimeSundayMinute", "1");
         testPage.clickContinue();
@@ -184,9 +283,14 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobEndTimeMonday-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-3")).isTrue();
 
         testPage.enter("activitiesJobEndTimeMondayMinute", "10");
         testPage.clickContinue();
@@ -198,9 +302,14 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+        assertThat(testPage.getElementText("activitiesJobStartTimeMonday-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeMonday-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeMonday-error-message-3")).isTrue();
 
         testPage.enter("activitiesJobStartTimeMondayMinute", "50");
         testPage.clickContinue();
@@ -225,16 +334,22 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
 
         testPage.selectFromDropdown("activitiesClassStartTimeAllDaysHour", "9");
         testPage.enter("activitiesClassStartTimeAllDaysMinute", "00");
         testPage.selectFromDropdown("activitiesClassStartTimeAllDaysAmPm", "AM");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesClassEndTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesClassEndTimeAllDays-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesClassEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("activitiesClassEndTimeAllDaysHour", "1");
         testPage.enter("activitiesClassEndTimeAllDaysMinute", "00");
@@ -268,18 +383,32 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("activitiesClassStartTimeAllDaysAmPm", "AM");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+
+        assertThat(testPage.getElementText("activitiesClassStartTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesClassEndTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesClassEndTimeAllDays-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesClassEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("activitiesClassEndTimeAllDaysHour", "1");
         testPage.enter("activitiesClassEndTimeAllDaysMinute", "00");
         testPage.selectFromDropdown("activitiesClassEndTimeAllDaysAmPm", "PM");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+
+        assertThat(testPage.getElementText("activitiesClassStartTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("activitiesClassEndTimeAllDays-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassEndTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.enter("activitiesClassStartTimeAllDaysMinute", "55");
         testPage.clickContinue();
@@ -294,9 +423,14 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.enter("activitiesClassEndTimeAllDaysMinute", "75");
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesClassEndTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("activitiesClassEndTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesClassEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.enter("activitiesClassEndTimeAllDaysMinute", "12");
         testPage.clickContinue();
@@ -332,8 +466,17 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+        assertThat(testPage.getElementText("activitiesJobStartTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobStartTimeAllDays-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobEndTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobEndTimeAllDays-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("activitiesJobStartTimeAllDaysHour", "9");
         testPage.enter("activitiesJobStartTimeAllDaysMinute", "00");
@@ -341,8 +484,15 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeAllDays-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobEndTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("activitiesJobEndTimeAllDays-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("activitiesJobEndTimeAllDaysHour", "1");
         testPage.enter("activitiesJobEndTimeAllDaysMinute", "00");
@@ -388,9 +538,14 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+        assertThat(testPage.getElementText("activitiesJobStartTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeAllDays-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.enter("activitiesJobStartTimeAllDaysMinute", "22");
         testPage.clickContinue();
@@ -402,9 +557,14 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.enter("activitiesJobEndTimeAllDaysMinute", "-23");
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeAllDays-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("activitiesJobEndTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("activitiesJobEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.enter("activitiesJobEndTimeAllDaysMinute", "23");
         testPage.clickContinue();
@@ -428,16 +588,33 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("partnerClassHoursSameEveryDay-Yes");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+
+        assertThat(testPage.getElementText("partnerClassStartTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("partnerClassStartTimeAllDays-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("partnerClassStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("partnerClassEndTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("partnerClassEndTimeAllDays-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("partnerClassEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("partnerClassStartTimeAllDaysHour", "11");
         testPage.enter("partnerClassStartTimeAllDaysMinute", "00");
         testPage.selectFromDropdown("partnerClassStartTimeAllDaysAmPm", "AM");
 
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassStartTimeAllDays-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("partnerClassEndTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.time-hour")));
+        assertThat(testPage.getElementText("partnerClassEndTimeAllDays-error-message-2")
+                .equals(getEnMessage("errors.validate.time-ampm")));
+        assertThat(testPage.elementDoesNotExistById("partnerClassEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.selectFromDropdown("partnerClassEndTimeAllDaysHour", "4");
         testPage.enter("partnerClassEndTimeAllDaysMinute", "00");
@@ -473,9 +650,14 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+        assertThat(testPage.getElementText("partnerClassStartTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("partnerClassStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.elementDoesNotExistById("partnerClassEndTimeAllDays-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassEndTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.clickContinue();
 
@@ -491,9 +673,14 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         testPage.enter("partnerClassEndTimeAllDaysMinute", "-22");
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.start.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.end.time"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.validate.minute"))).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassStartTimeAllDays-error-message-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassStartTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassStartTimeAllDays-error-message-3")).isTrue();
+
+        assertThat(testPage.getElementText("partnerClassEndTimeAllDays-error-message-1")
+                .equals(getEnMessage("errors.validate.minute")));
+        assertThat(testPage.elementDoesNotExistById("partnerClassEndTimeAllDays-error-message-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("partnerClassEndTimeAllDays-error-message-3")).isTrue();
 
         testPage.enter("partnerClassEndTimeAllDaysMinute", "22");
         testPage.clickContinue();
