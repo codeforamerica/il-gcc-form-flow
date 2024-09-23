@@ -15,7 +15,7 @@
               <div class="form-card__content">
                 <p th:text="#{contact-provider-message.below-we-prepared}"></p>
                 <p th:text="#{contact-provider-message.it-includes}"></p>
-                <a href="mailto:nowhere@mozilla.org?cc=name2@rapidtables.com&bcc=name3@rapidtables.com&subject=The%20subject%20of%20the%20email&body=The%20body%20of%20the%20email"
+                <a th:href="|mailto:test@test.com?subject=Testing&body=Hello%20-%20I%20just%20applied%20for%20CCAP%20and%20listed%20you%20as%20my%20provider.%20My%20confirmation%20code%20is%3A%201234567890%0D%0APlease%20complete%20the%20application%20within%203%20business%20days:%20www.youtube.com|"
                    class="button button--small"
                    th:text="#{contact-provider-message.email-message}"></a>
               </div>
