@@ -8,10 +8,12 @@ import formflow.library.data.Submission;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 @Slf4j
 public class ValidateHourlySchedule implements Action {
@@ -28,6 +30,8 @@ public class ValidateHourlySchedule implements Action {
     @Override
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
 
+        Locale locale = LocaleContextHolder.getLocale();
+
         Map<String, Object> formData = formSubmission.getFormData();
 
         Map<String, List<String>> errorMessages = new java.util.HashMap<>(Collections.emptyMap());
@@ -39,14 +43,14 @@ public class ValidateHourlySchedule implements Action {
             if (!startElementsWithMissingData.isEmpty()) {
                 if (startElementsWithMissingData.containsAll(INPUT_POSTFIXES)) {
                     errorMessages.put(startTimeGroupName,
-                            List.of(messageSource.getMessage("errors.validate.start.time", null, null)));
+                            List.of(messageSource.getMessage("errors.validate.start.time", null, locale)));
                 } else {
-                    errorMessages.put(startTimeGroupName, errorsToAdd(startElementsWithMissingData));
+                    errorMessages.put(startTimeGroupName, errorsToAdd(startElementsWithMissingData, locale));
                 }
 
             } else if (minuteDataIsInvalid(formData, startTimeGroupName)) {
                 errorMessages.put(startTimeGroupName,
-                        List.of(messageSource.getMessage("errors.validate.start.time", null, null)));
+                        List.of(messageSource.getMessage("errors.validate.start.time", null, locale)));
             }
 
             String endTimeGroupName = inputPrefix + "EndTime" + day;
@@ -54,13 +58,13 @@ public class ValidateHourlySchedule implements Action {
             if (!endElementsWithMissingData.isEmpty()) {
                 if (endElementsWithMissingData.containsAll(INPUT_POSTFIXES)) {
                     errorMessages.put(endTimeGroupName,
-                            List.of(messageSource.getMessage("errors.validate.end.time", null, null)));
+                            List.of(messageSource.getMessage("errors.validate.end.time", null, locale)));
                 } else {
-                    errorMessages.put(endTimeGroupName, errorsToAdd(endElementsWithMissingData));
+                    errorMessages.put(endTimeGroupName, errorsToAdd(endElementsWithMissingData, locale));
                 }
             } else if (minuteDataIsInvalid(formData, endTimeGroupName)) {
                 errorMessages.put(endTimeGroupName,
-                        List.of(messageSource.getMessage("errors.validate.end.time", null, null)));
+                        List.of(messageSource.getMessage("errors.validate.end.time", null, locale)));
             }
         });
         return errorMessages;
@@ -94,16 +98,16 @@ public class ValidateHourlySchedule implements Action {
         return missingData;
     }
 
-    protected ArrayList<String> errorsToAdd(ArrayList<String> missingData) {
+    protected ArrayList<String> errorsToAdd(ArrayList<String> missingData, Locale locale) {
         ArrayList<String> errors = new ArrayList<>(List.of());
         if (missingData.contains("Hour")) {
-            errors.add(messageSource.getMessage("errors.validate.time-hour", null, null));
+            errors.add(messageSource.getMessage("errors.validate.time-hour", null, locale));
         }
         if (missingData.contains("Minute")) {
-            errors.add(messageSource.getMessage("errors.validate.minute", null, null));
+            errors.add(messageSource.getMessage("errors.validate.minute", null, locale));
         }
         if (missingData.contains("AmPm")) {
-            errors.add(messageSource.getMessage("errors.validate.time-ampm", null, null));
+            errors.add(messageSource.getMessage("errors.validate.time-ampm", null, locale));
         }
 
         return errors;
