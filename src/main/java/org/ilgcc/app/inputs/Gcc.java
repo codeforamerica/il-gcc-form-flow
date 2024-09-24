@@ -28,7 +28,11 @@ public class Gcc extends FlowInputs {
     // onboarding-provider-info
     @NotBlank(message = "{errors.provide-provider-name}")
     private String familyIntendedProviderName;
+
+    @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
     private String familyIntendedProviderEmail;
+
+    @Phone(message = "{errors.invalid-phone-number}")
     private String familyIntendedProviderPhoneNumber;
 
     // parent-info-basic-1
