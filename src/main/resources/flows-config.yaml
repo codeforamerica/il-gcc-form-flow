@@ -9,7 +9,8 @@ flow:
         condition: NoProviderChosen
       - name: onboarding-confirm-provider
   onboarding-provider-info:
-    nextScreens: null
+    nextScreens:
+      - name: contact-provider-message
   pilot-offboard:
     nextScreens: null
   onboarding-confirm-provider:

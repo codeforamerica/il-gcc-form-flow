@@ -12,10 +12,11 @@
             th:replace="~{fragments/cardHeader :: cardHeader(header=#{contact-provider-message.header})}"/>
           <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
             <th:block th:ref="content">
-              <div class="form-card__content">
+              <div class="form-card__content"
+              th:with="emailAddress=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), '', #messages.msg('contact-provider-message.email-message-body'))}">
                 <p th:text="#{contact-provider-message.below-we-prepared}"></p>
                 <p th:text="#{contact-provider-message.it-includes}"></p>
-                <a th:href="|mailto:test@test.com?subject=Testing&body=Hello%20-%20I%20just%20applied%20for%20CCAP%20and%20listed%20you%20as%20my%20provider.%20My%20confirmation%20code%20is%3A%201234567890%0D%0APlease%20complete%20the%20application%20within%203%20business%20days:%20www.youtube.com|"
+                <a th:href="${emailAddress}"
                    class="button button--small"
                    th:text="#{contact-provider-message.email-message}"></a>
               </div>
