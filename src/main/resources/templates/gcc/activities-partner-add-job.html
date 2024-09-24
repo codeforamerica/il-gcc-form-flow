@@ -18,11 +18,6 @@
                            addMoreJobsSubtext=#{activities-partner-add-job.subtext.add-jobs-list}">
           <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${addedJobs ? addMoreJobsHeader : addJobsHeader},
                                                                      subtext=${addedJobs ? addMoreJobsSubtext : jobsSubtext})}"/>
-          <th:block th:if="${!addedJobs}">
-            <p th:utext="#{'activities-add-jobs.number-limit'}"
-               class="notice notice--gray spacing-below-25"></p>
-          </th:block>
-
           <th:block th:if="${maxJobs}">
             <p th:text="#{'activities-add-jobs.max-jobs-reached'}"
                class="notice--warning spacing-below-25"></p>

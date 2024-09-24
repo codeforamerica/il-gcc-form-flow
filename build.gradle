@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '3.3.3'
+    id 'org.springframework.boot' version '3.3.4'
     id 'io.spring.dependency-management' version '1.1.6'
     id 'java'
     id 'com.adarshr.test-logger' version '4.0.0'
@@ -48,16 +48,16 @@ repositories {
 }
 
 def profile = props.getProperty('SPRING_PROFILES_ACTIVE')
-def formFlowLibraryVersion = '1.4.0'
+def formFlowLibraryVersion = '1.4.2'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.3'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.4'
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
     implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.2.3'
     implementation 'org.apache.commons:commons-text:1.12.0'
-    implementation 'software.amazon.awssdk:s3:2.28.3'
+    implementation 'software.amazon.awssdk:s3:2.28.7'
 
     if (useLocalLibrary == 'true') {
         implementation fileTree(dir: "$rootDir/../form-flow/build/libs", include: '*.jar')
@@ -69,13 +69,13 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.34'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.3.3'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.3.4'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.3'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.4'
     testImplementation 'org.springframework.security:spring-security-test:6.3.3'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.24.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.25.0'
     testImplementation 'io.percy:percy-java-selenium:2.0.5'
     testImplementation 'org.jsoup:jsoup:1.18.1'
     testImplementation 'org.awaitility:awaitility:4.2.2'

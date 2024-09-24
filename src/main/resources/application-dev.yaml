@@ -3,6 +3,8 @@ form-flow:
     show-stack-trace: true
   aws:
     s3_bucket_name: ${AWS_BUCKET}
+  short-code:
+    prefix: DEV-
 management:
   endpoints:
     enabled-by-default: true
