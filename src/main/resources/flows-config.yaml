@@ -9,7 +9,8 @@ flow:
         condition: NoProviderChosen
       - name: onboarding-confirm-provider
   onboarding-provider-info:
-    nextScreens: null
+    nextScreens:
+      - name: contact-provider-message
   pilot-offboard:
     nextScreens: null
   onboarding-confirm-provider:
@@ -399,6 +400,8 @@ flow:
     afterSaveAction: SendUploadedFileToDocumentTransferService
     nextScreens:
       - name: submit-next-steps
+  contact-provider-message:
+    nextScreens: null
 subflows:
   children:
     entryScreen: children-add

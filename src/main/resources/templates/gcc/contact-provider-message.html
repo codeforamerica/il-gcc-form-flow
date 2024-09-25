@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{contact-provider-message.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{contact-provider-message.header})}"/>
+          <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
+            <th:block th:ref="content">
+              <div class="form-card__content"
+              th:with="emailAddress=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.email-message-subject'), #messages.msg('contact-provider-message.email-message-body'))}">
+                <p th:text="#{contact-provider-message.below-we-prepared}"></p>
+                <p th:text="#{contact-provider-message.it-includes}"></p>
+                <a th:href="${emailAddress}"
+                   class="button button--small"
+                   th:text="#{contact-provider-message.email-message}"></a>
+              </div>
+            <div class="form-card__footer">
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{general.inputs.continue})}"/>
+            </div>
+          </th:block>
+        </th:block>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}" />
+</body>
+</html>
