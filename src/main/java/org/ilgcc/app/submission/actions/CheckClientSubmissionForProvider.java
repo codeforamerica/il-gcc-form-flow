@@ -29,6 +29,7 @@ public class CheckClientSubmissionForProvider implements Action {
     private final static String SESSION_KEY_SELECTED_PROVIDER_ID = "selectedProviderId";
     private final static String SESSION_KEY_CLIENT_SUBMISSION_STATUS = "clientSubmissionStatus";
     private final static String SESSION_KEY_CLIENT_SUBMISSION_ID = "clientSubmissionId";
+    private final static String SESSION_KEY_CLIENT_CONFIRMATION_CODE = "confirmationCode";
 
     public CheckClientSubmissionForProvider(HttpSession httpSession, MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
@@ -49,7 +50,7 @@ public class CheckClientSubmissionForProvider implements Action {
 
                 httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, provider.getDisplayName());
                 httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_ID, provider.getIdNumber());
-                httpSession.setAttribute("confirmationCode", clientSubmissionInfo.getShortCode());
+                httpSession.setAttribute(SESSION_KEY_CLIENT_CONFIRMATION_CODE, clientSubmissionInfo.getShortCode());
 
                 LocalDate submittedAtDate = clientSubmissionInfo.getSubmittedAt().toLocalDate();
                 LocalDate todaysDate = LocalDate.now();
@@ -57,7 +58,17 @@ public class CheckClientSubmissionForProvider implements Action {
                     httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED);
                 } else {
                     boolean hasResponse = false;
-                    // TODO: Lookup and see if the client submission has a provider response as well
+                    if (clientSubmissionInfo.getInputData().get("providerResponseSubmissionId") != null) {
+                        // The above value should be set on the client submission whenever a provider first submits
+                        // their response.
+                        Optional<Submission> providerResponseSubmission = submissionRepositoryService.findById(UUID.fromString(
+                                clientSubmissionInfo.getInputData().get("providerResponseSubmissionId").toString()));
+                        if (providerResponseSubmission.isPresent() && providerResponseSubmission.get().getSubmittedAt() != null) {
+                            // Again, the UUID should only have been set after a successful provider submission, but double
+                            // checking that it's actually been submitted isn't a bad idea
+                            hasResponse = true;
+                        }
+                    }
                     if (hasResponse) {
                         httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.RESPONDED);
                     } else {
