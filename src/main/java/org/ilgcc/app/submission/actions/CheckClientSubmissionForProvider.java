@@ -48,7 +48,10 @@ public class CheckClientSubmissionForProvider implements Action {
                 ChildCareProvider provider = ChildCareProvider.valueOf(
                         clientSubmissionInfo.getInputData().get("dayCareChoice").toString());
 
+                // Used to display the correct provider name, if available, for the first provider screen
                 httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, provider.getDisplayName());
+
+                // To be used on subsequent screens to validate provider inputs == these values
                 httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_ID, provider.getIdNumber());
                 httpSession.setAttribute(SESSION_KEY_CLIENT_CONFIRMATION_CODE, clientSubmissionInfo.getShortCode());
 
