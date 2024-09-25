@@ -19,6 +19,9 @@
                 <a th:href="${emailAddress}"
                    class="button button--small"
                    th:text="#{contact-provider-message.email-message}"></a>
+                <a th:href="${smsMessage}"
+                   class="button button--small"
+                   th:text="#{contact-provider-message.email-message}"></a>
               </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
