@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.time.Duration;
 
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.db.Transmission;
 import org.ilgcc.app.file_transfer.DocumentTransferRequestService;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.jobrunr.scheduling.BackgroundJob;
@@ -40,6 +41,8 @@ public class UploadedDocumentTransmissionJob {
             throws IOException {
         String presignedUrl = s3PresignService.generatePresignedUrl(userFile.getRepositoryPath());
         log.info("Enqueuing uploaded document transfer job for file with ID: {} in submission with ID: {}", userFile.getFileId(), submission.getId());
-        documentTransferRequestService.sendDocumentTransferServiceRequest(presignedUrl, submission, fileName);
+        // TODO update this transmission for doc upload
+        Transmission docUploadTransmission = new Transmission();
+        documentTransferRequestService.sendDocumentTransferServiceRequest(presignedUrl, submission, fileName, docUploadTransmission);
     }
 }

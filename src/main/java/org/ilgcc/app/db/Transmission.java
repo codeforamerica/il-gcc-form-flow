@@ -18,12 +18,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
-import org.ilgcc.app.utils.enums.TransmissionStatus;
-import org.ilgcc.app.utils.enums.TransmissionType;
+import org.ilgcc.app.utils.enums.status;
+import org.ilgcc.app.utils.enums.type;
 
 @Entity
 @Table(name = "transmissions")
+@Setter
+@Getter
 public class Transmission {
 
     @Id
@@ -43,14 +47,31 @@ public class Transmission {
     private Date timeSent;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "transmission_status")
-    private TransmissionStatus transmissionStatus;
+    @Column(name = "status")
+    private status status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "transmission_type")
-    private TransmissionType transmissionType;
+    @Column(name = "type")
+    private type type;
 
     @Type(JsonType.class)
-    @Column(name = "transmission_errors", columnDefinition = "json")
-    private Map<TransmissionType, String> transmissionErrors;
+    @Column(name = "errors", columnDefinition = "json")
+    private Map<Integer, String> errors;
+    
+    @Column(name = "attempts")
+    private int attempts;
+
+    public Transmission(Submission submissionId, UserFile userFileId, Date timeSent, status status,
+            type type, Map<Integer, String> errors) {
+        this.submissionId = submissionId;
+        this.userFileId = userFileId;
+        this.timeSent = timeSent;
+        this.status = status;
+        this.type = type;
+        this.errors = errors;
+    }
+
+    public Transmission() {
+        
+    }
 }
