@@ -1,7 +1,9 @@
 package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
+import jakarta.validation.constraints.NotBlank;
 
 public class Providerresponse extends FlowInputs {
-    // TODO: Inputs go here for the new flow!
+    @NotBlank(message = "{errors.provide-provider-number}")
+    private String providerNumber;
 }

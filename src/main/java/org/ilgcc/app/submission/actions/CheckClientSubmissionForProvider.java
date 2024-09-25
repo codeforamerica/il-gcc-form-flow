@@ -57,7 +57,7 @@ public class CheckClientSubmissionForProvider implements Action {
 
                 LocalDate submittedAtDate = clientSubmissionInfo.getSubmittedAt().toLocalDate();
                 LocalDate todaysDate = LocalDate.now();
-                if (DAYS.between(submittedAtDate, todaysDate) >= 4) {
+                if (DAYS.between(submittedAtDate, todaysDate) >= 40) {
                     httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED);
                 } else {
                     boolean hasResponse = false;
@@ -85,7 +85,7 @@ public class CheckClientSubmissionForProvider implements Action {
             httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE);
 
             Locale locale = LocaleContextHolder.getLocale();
-            String placeholderProviderName = messageSource.getMessage("provider-response.submit-start.provider-placeholder", null,
+            String placeholderProviderName = messageSource.getMessage("provider-response-submit-start.provider-placeholder", null,
                     locale);
             httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, placeholderProviderName);
         }

@@ -437,6 +437,9 @@ name: providerresponse
 flow:
   submit-start:
     beforeDisplayAction: CheckClientSubmissionForProvider
+    nextScreens:
+      - name: ccap-registration
+  ccap-registration:
     nextScreens: null
 landmarks:
   firstScreen: submit-start
