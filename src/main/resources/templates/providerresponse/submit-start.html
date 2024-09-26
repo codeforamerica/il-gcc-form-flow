@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}">
-<head th:replace="~{fragments/head :: head(title=#{'provider-responses-submit-start.title'})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{'provider-response-submit-start.title'})}"></head>
 <body>
 <div class="page-wrapper">
     <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -9,18 +9,18 @@
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block
-                        th:with="providerSubmissionStatus=${T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).valueOf(param.status)}">
+                        th:with="providerSubmissionStatus=${T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).valueOf(session.clientSubmissionStatus)}">
                     <th:block
                             th:replace="~{fragments/gcc-icons :: ${providerSubmissionStatus.getIcon()}}"></th:block>
                     <th:block
                             th:unless="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).EXPIRED)}">
                         <th:block
-                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}('providerPlaceholder')})}"/>
+                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})})}"/>
                     </th:block>
                     <th:block
                             th:if="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).EXPIRED)}">
                         <th:block
-                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}('providerPlaceholder')}, subtext=#{${providerSubmissionStatus.getSubtextLabel()}})}"/>
+                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})}, subtext=#{${providerSubmissionStatus.getSubtextLabel()}})}"/>
                     </th:block>
                     <div th:class="'notice spacing-below-60 '+ ${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).EXPIRED) ? 'notice--error' : 'notice--gray'}"
                          th:text="#{${providerSubmissionStatus.getNoticeLabel()}}"></div>

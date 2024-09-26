@@ -432,3 +432,14 @@ landmarks:
     - doc-upload-recommended-docs
     - doc-upload-add-files
     - doc-upload-submit-confirmation
+---
+name: providerresponse
+flow:
+  submit-start:
+    beforeDisplayAction: CheckClientSubmissionForProvider
+    nextScreens:
+      - name: ccap-registration
+  ccap-registration:
+    nextScreens: null
+landmarks:
+  firstScreen: submit-start

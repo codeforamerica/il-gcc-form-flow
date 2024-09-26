@@ -5,12 +5,12 @@ import lombok.Getter;
 @Getter
 public enum ProviderSubmissionStatus {
 
-    ACTIVE("caring", "provider-responses-submit-start.active.header", "provider-responses-submit-start.active.notice",
-            "provider-responses-submit-start.active.button", ""),
-    EXPIRED("orangeClock", "provider-responses-submit-start.expired.header", "provider-responses-submit-start.expired.notice",
-            "provider-responses-submit-start.expired.button", "provider-responses-submit-start.expired.subtext"),
-    RESPONDED("docValidation", "provider-responses-submit-start.responded.header",
-            "provider-responses-submit-start.responded.notice", "provider-responses-submit-start.responded.button", "");
+    ACTIVE("caring", "provider-response-submit-start.active.header", "provider-response-submit-start.active.notice",
+            "provider-response-submit-start.active.button", ""),
+    EXPIRED("orangeClock", "provider-response-submit-start.expired.header", "provider-response-submit-start.expired.notice",
+            "provider-response-submit-start.expired.button", "provider-response-submit-start.expired.subtext"),
+    RESPONDED("docValidation", "provider-response-submit-start.responded.header",
+            "provider-response-submit-start.responded.notice", "provider-response-submit-start.responded.button", "");
 
     private final String icon;
     private final String headerLabel;

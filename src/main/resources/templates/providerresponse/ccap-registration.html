@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{'provider-response-ccap-registration.title'})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                    <th:block
+                            th:replace="~{fragments/gcc-icons :: registeredProvider }"></th:block>
+                    <th:block
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-ccap-registration.header}, subtext=#{provider-response-ccap-registration.subtext})}"/>
+
+                    <th:block th:replace="~{fragments/inputs/text :: text(inputName='providerResponseProviderNumber', ariaLabel='header')}"/>
+
+                    <div class="form-card__footer">
+                        <div>
+                            <th:block th:replace="~{fragments/continueButton :: continue(text=#{general.button.continue})}"/>
+                        </div>
+                    </div>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>
+:
