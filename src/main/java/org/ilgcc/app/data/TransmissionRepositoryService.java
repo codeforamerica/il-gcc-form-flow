@@ -3,6 +3,7 @@ package org.ilgcc.app.data;
 import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,12 +15,8 @@ public class TransmissionRepositoryService {
     public TransmissionRepositoryService(TransmissionRepository transmissionRepository) {
         this.transmissionRepository = transmissionRepository;
     }
-    
-//    public void save(Transmission transmission) {
-//        this.transmissionRepository.save(transmission);
-//    }
 
-//    public List<Transmission> findAllBySubmission(Submission submission) {
-//        return this.transmissionRepository.findAllBySubmission(submission);
-//    }
+    public List<Transmission> findAllBySubmissionId(Submission submission) {
+        return this.transmissionRepository.findAllBySubmissionId(submission);
+    }
 }
