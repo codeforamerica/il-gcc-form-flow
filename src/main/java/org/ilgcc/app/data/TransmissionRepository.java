@@ -1,4 +1,4 @@
-package org.ilgcc.app.db;
+package org.ilgcc.app.data;
 
 import formflow.library.data.Submission;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransmissionRepository extends JpaRepository<Transmission, UUID> {
     
-    List<Transmission> findAllBySubmission(Submission submission);
     
-    long countBySubmission(Submission submission);
+    
+//    List<Transmission> findAllBySubmission(Submission submission);
 }

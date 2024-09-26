@@ -1,33 +1,32 @@
-package org.ilgcc.app.db;
+package org.ilgcc.app.data;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
-
+import static jakarta.persistence.TemporalType.TIMESTAMP;
 import formflow.library.data.Submission;
 import formflow.library.data.UserFile;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
-import org.ilgcc.app.utils.enums.status;
-import org.ilgcc.app.utils.enums.type;
+import org.ilgcc.app.utils.enums.TransmissionStatus;
+import org.ilgcc.app.utils.enums.TransmissionType;
+import org.springframework.stereotype.Component;
+
 
 @Entity
 @Table(name = "transmissions")
-@Setter
 @Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Component
+@Builder
 public class Transmission {
 
     @Id
@@ -48,11 +47,11 @@ public class Transmission {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private status status;
+    private TransmissionStatus status;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private type type;
+    private TransmissionType type;
 
     @Type(JsonType.class)
     @Column(name = "errors", columnDefinition = "json")
@@ -61,17 +60,13 @@ public class Transmission {
     @Column(name = "attempts")
     private int attempts;
 
-    public Transmission(Submission submissionId, UserFile userFileId, Date timeSent, status status,
-            type type, Map<Integer, String> errors) {
+    public Transmission(Submission submissionId, UserFile userFileId, Date timeSent, TransmissionStatus status,
+            TransmissionType type, Map<Integer, String> errors) {
         this.submissionId = submissionId;
         this.userFileId = userFileId;
         this.timeSent = timeSent;
         this.status = status;
         this.type = type;
         this.errors = errors;
-    }
-
-    public Transmission() {
-        
     }
 }
