@@ -8,18 +8,28 @@
         <div class="grid">
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
-                    <th:block
-                            th:replace="~{fragments/gcc-icons :: registeredProvider }"></th:block>
-                    <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-ccap-registration.header}, subtext=#{provider-response-ccap-registration.subtext})}"/>
+                <th:block
+                        th:replace="~{fragments/gcc-icons :: registeredProvider }"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-ccap-registration.header}, subtext=#{provider-response-ccap-registration.subtext})}"/>
 
-                    <th:block th:replace="~{fragments/inputs/text :: text(inputName='providerResponseProviderNumber', ariaLabel='header')}"/>
-
-                    <div class="form-card__footer">
-                        <div>
-                            <th:block th:replace="~{fragments/continueButton :: continue(text=#{general.button.continue})}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="form-card__content">
+                            <th:block
+                                    th:replace="~{fragments/inputs/text :: text(inputName='providerResponseProviderNumber', ariaLabel='header')}"/>
                         </div>
-                    </div>
+                        <div class="form-card__footer">
+                            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{general.inputs.continue})}"/>
+                            <div>
+                                <a th:text="#{provider-response-ccap-registration.no-provider-number}"
+                                   th:href="${flow} + '/ccap-registration-unregistered'"></a>
+                            </div>
+                        </div>
+                    </th:block>
+                </th:block>
             </main>
         </div>
     </section>

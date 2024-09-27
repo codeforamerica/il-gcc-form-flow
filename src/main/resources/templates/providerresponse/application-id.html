@@ -1,0 +1,16 @@
+<th:block
+  th:replace="~{fragments/screens/screenWithOneInput ::
+  screenWithOneInput(
+    title=#{application-id.title},
+    header=#{application-id.header},
+    subtext=#{application-id.subtext},
+    iconFragment=~{fragments/gcc-icons :: clipboardWithEnvelope},
+    buttonLabel=#{general.button.continue},
+    formAction=${formAction},
+    inputContent=~{::inputContent})}">
+  <th:block th:ref="inputContent">
+    <th:block th:replace="~{fragments/inputs/text ::
+      text(inputName='providerResponseApplicationId',
+      ariaLabel='header')}"/>
+  </th:block>
+</th:block>

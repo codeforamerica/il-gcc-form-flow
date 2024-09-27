@@ -340,7 +340,7 @@ flow:
         condition: UnearnedIncomeSourceIsNone
       - name: unearned-income-amount
   unearned-income-amount:
-      nextScreens:
+    nextScreens:
       - name: unearned-income-assets
   unearned-income-assets:
     nextScreens:
@@ -440,6 +440,14 @@ flow:
     nextScreens:
       - name: ccap-registration
   ccap-registration:
+    onPostAction: SaveApplicationId
+    nextScreens:
+      - name: application-id
+  application-id:
+    nextScreens: null
+  response:
+     nextScreens: null
+  unregistered:
     nextScreens: null
 landmarks:
   firstScreen: submit-start
