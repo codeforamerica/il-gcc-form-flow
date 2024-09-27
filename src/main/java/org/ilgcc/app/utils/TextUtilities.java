@@ -9,8 +9,8 @@ import org.yaml.snakeyaml.util.UriEncoder;
 public class TextUtilities {
   public static String generateTextMessage (String recipient, String subject, String textBody){
   Map<String, String> params = new HashMap<>();
-  params.put("subject", subject);
-  params.put("body", textBody);
+
+  params.put("body", String.format(subject + "\n" + textBody));
 
   return params.keySet().stream()
       .map(key -> key + "=" + UriEncoder.encode(params.get(key)))
