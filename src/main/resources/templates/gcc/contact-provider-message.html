@@ -13,12 +13,16 @@
           <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
             <th:block th:ref="content">
               <div class="form-card__content"
-              th:with="emailAddress=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.email-message-subject'), #messages.msg('contact-provider-message.email-message-body'))}">
+              th:with="emailAddress=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body'))},
+                       smsMessage=${T(org.ilgcc.app.utils.TextUtilities).generateWellFormedTextMessage(inputData.get('familyIntendedProviderName'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body'))}">
                 <p th:text="#{contact-provider-message.below-we-prepared}"></p>
                 <p th:text="#{contact-provider-message.it-includes}"></p>
                 <a th:href="${emailAddress}"
                    class="button button--small"
                    th:text="#{contact-provider-message.email-message}"></a>
+                <a th:href="${smsMessage}"
+                   class="button button--small"
+                   th:text="#{contact-provider-message.text-message}"></a>
               </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
