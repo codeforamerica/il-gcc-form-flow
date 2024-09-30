@@ -18,16 +18,17 @@
                 <p th:text="#{contact-provider-message.below-we-prepared}"></p>
                 <p th:text="#{contact-provider-message.it-includes}"></p>
                 <div class="center">
-                  <a th:href="${emailAddress}"
-                     class="button button--small"
-                     th:text="#{contact-provider-message.email-message}">
-                    <i class="icon-check_box"></i>
+                  <a th:id="contact-provider-by-email" th:href="${emailAddress}" class="button button--wide">
+                    <i class="icon-markunread"></i>
+                    <span th:text="#{contact-provider-message.email-message}"></span>
                   </a>
                 </div>
                 <div>
                   <a th:href="${smsPhoneNumber}"
-                     class="button button--small"
-                     th:text="#{contact-provider-message.text-message}"></a>
+                     class="button button--wide">
+                    <i class="icon-insert_comment"></i>
+                    <span th:text="#{contact-provider-message.text-message}"></span>
+                  </a>
                 </div>
               </div>
             <div class="form-card__footer">

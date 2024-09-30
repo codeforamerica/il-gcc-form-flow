@@ -118,7 +118,10 @@ a, .button--link {
 .button--primary {
   background-color: var(--idhs-base-blue);
 }
-
+.button--wide {
+  width: 100%;
+  text-align: center;
+}
 /* Utilities */
 .padding-top-0 {
   padding-top: 0;
