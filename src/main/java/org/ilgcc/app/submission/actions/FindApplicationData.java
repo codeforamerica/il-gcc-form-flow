@@ -24,7 +24,8 @@ public class FindApplicationData implements Action {
         Optional<UUID> clientID = ProviderSubmissionUtilities.getClientId(providerSubmission);
         if(clientID != null &&  clientID.isPresent()){
            Optional<Submission> clientSubmission = submissionRepositoryService.findById(clientID.get());
-           providerSubmission.getInputData().put("ApplicantResponse", ProviderSubmissionUtilities.getApplicantSubmissionForProviderResponse(clientSubmission));
+           providerSubmission.getInputData().put("clientResponse", ProviderSubmissionUtilities.getApplicantSubmissionForProviderResponse(clientSubmission));
+           providerSubmission.getInputData().put("clientResponseChildren", ProviderSubmissionUtilities.getChildrenDataForProviderResponse(clientSubmission.get()));
         }
 
     }

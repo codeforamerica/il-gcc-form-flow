@@ -18,15 +18,31 @@
                             <div class="grid__item address-validation spacing-below-60">
                                 <th:block
                                         th:if="${submission.getInputData().containsKey('clientApplicationId')}"
-                                        th:with="applicationData=${submission.getInputData()}">
+                                        th:with="applicationData=${submission.getInputData().get('clientResponse')}, children=${submission.getInputData().get('clientResponseChildren')}">
                                     <div class="radio-button is-selected">
-                                        <p th:text="${applicationData.toString()}"></p>
-                                        <!--                                                                            <p id="provider-name" class="spacing-below-15" th:text="${provider.getDisplayName()}"></p>-->
-                                        <!--                                        <div id="provider-address">-->
-                                        <!--                                                                                    <th:block th:each="addressLine : ${provider.getAddressComponents()}">-->
-                                        <!--                                                                                        <div th:text="${addressLine}"></div>-->
-                                        <!--                                                                                    </th:block>-->
-                                    </div>
+                                        <p th:text="#{response.confirmation-code}"></p>
+                                        <p th:text="${applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a')}"></p>
+
+                                        <p th:text="#{response.parent-name}"></p>
+                                        <p th:text="${applicationData.getOrDefault('clientResponseParentName', 'n/a')}"></p>
+
+                                        <div id="provider-address">
+                                            <th:block
+                                                    th:each="child : ${submission.getInputData().get('clientResponseChildren')}">
+
+                                                <p th:text="#{response.child-name}"></p>
+                                                <p th:text="${child.getOrDefault('childName', 'n/a')}"></p>
+
+                                                <p th:text="#{response.child-age}"></p>
+                                                <p th:text="${child.getOrDefault('childAge', 'n/a')}"></p>
+
+                                                <p th:text="#{response.hours}"></p>
+                                                <ul th:utext="${child.get('childCareHours')}"></ul>
+
+                                                <p th:text="#{response.start-date}"></p>
+                                                <p th:text="${child.getOrDefault('childStartDate', 'n/a')}"></p>
+                                            </th:block>
+                                        </div>
                                 </th:block>
                             </div>
                         </div>
@@ -43,7 +59,8 @@
                         </th:block>
                         <div class="form-card__footer">
 
-                            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+                            <th:block
+                                    th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
                         </div>
                     </th:block>
                 </th:block>
