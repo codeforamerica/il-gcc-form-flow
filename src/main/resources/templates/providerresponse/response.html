@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{response.title})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: clipboardWithEnvelope}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{response.header})}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="form-card__content">
+                            <div class="grid__item address-validation spacing-below-60">
+                                <th:block th:if="${submission.getInputData().containsKey('clientApplicationId')}"
+                                        th:with="applicationData=${submission.getInputData()}">
+                                    <div class="radio-button is-selected">
+                                        <p th:text="${applicationData.toString()}"></p>
+<!--                                                                            <p id="provider-name" class="spacing-below-15" th:text="${provider.getDisplayName()}"></p>-->
+<!--                                        <div id="provider-address">-->
+<!--                                                                                    <th:block th:each="addressLine : ${provider.getAddressComponents()}">-->
+<!--                                                                                        <div th:text="${addressLine}"></div>-->
+<!--                                                                                    </th:block>-->
+                                        </div>
+                                </th:block>
+                            </div>
+                        </div>
+                        <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                                          radioFieldset(inputName='providerResponseAgreeToCare',
+                                          ariaLabel=#{response.title},
+                                          content=~{::providerResponse})}">
+                            <th:block th:ref="providerResponse">
+                                <th:block
+                                        th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='true', label=#{response.button.yes})}"/>
+                                <th:block
+                                        th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='false', label=#{response.button.no})}"/>
+                            </th:block>
+                        </th:block>
+        </div>
+        <div class="form-card__footer">
+
+            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{general.inputs.continue})}"/>
+        </div>
+        </th:block>
+        </th:block>
+        </main>
+</div>
+</section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

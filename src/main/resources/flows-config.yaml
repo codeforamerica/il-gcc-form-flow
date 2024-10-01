@@ -444,10 +444,13 @@ flow:
     nextScreens:
       - name: application-id
   application-id:
-    nextScreens: null
+    nextScreens:
+      - name: response
   response:
-     nextScreens: null
-  unregistered:
+    beforeDisplayAction: FindApplicationData
+    nextScreens:
+      - name: submit-complete
+  submit-complete:
     nextScreens: null
 landmarks:
   firstScreen: submit-start

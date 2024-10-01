@@ -23,8 +23,7 @@ public class SaveApplicationId implements Action {
         UUID clientSubmissionId = (UUID) httpSession.getAttribute("clientSubmissionId");
 
         if(!clientSubmissionId.toString().isEmpty()){
-            providerSubmission.getInputData().put("providerResponseApplicationId", clientSubmissionId);
-
+            providerSubmission.getInputData().put("clientApplicationId", clientSubmissionId);
         }
     }
 }
