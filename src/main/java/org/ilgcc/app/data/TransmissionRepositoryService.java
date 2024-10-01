@@ -33,7 +33,7 @@ public class TransmissionRepositoryService {
     
     public void setFailureError(Transmission transmission, String error) {
         Map<Integer, String> errors = transmission.getErrors() == null ? new HashMap<>() : transmission.getErrors();
-        Integer attempts = transmission.getAttempts();
+        int attempts = transmission.getAttempts();
         errors.put(attempts, error);
         transmission.setErrors(errors);
         attempts += 1;
