@@ -10,13 +10,11 @@ import org.springframework.stereotype.Component;
 public class HttpUrlConnectionFactory {
 
     private final String consumerId;
-    private final String consumerAuthToken;
+    private final String authToken;
 
-    public HttpUrlConnectionFactory(String consumerId, 
-            String consumerAuthToken, 
-            DocumentTransferConfiguration documentTransferConfiguration) {
+    public HttpUrlConnectionFactory(DocumentTransferConfiguration documentTransferConfiguration) {
         this.consumerId = documentTransferConfiguration.getConsumerId();
-        this.consumerAuthToken = documentTransferConfiguration.getAuthToken();
+        this.authToken = documentTransferConfiguration.getAuthToken();
     }
 
     public HttpURLConnection createHttpURLConnection(URL url) throws IOException {
@@ -24,7 +22,7 @@ public class HttpUrlConnectionFactory {
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Authorization", String.format("Bearer realm=\"%s\" %s", consumerId, consumerAuthToken));
+        connection.setRequestProperty("Authorization", String.format("Bearer realm=\"%s\" %s", consumerId, authToken));
         connection.setDoOutput(true);
         return connection;
     }
