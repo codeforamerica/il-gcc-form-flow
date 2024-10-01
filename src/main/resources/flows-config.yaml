@@ -444,6 +444,7 @@ flow:
     nextScreens:
       - name: application-id
   application-id:
+    onPostAction: SaveApplicationIdFromApplicationId
     nextScreens:
       - name: response
   response:

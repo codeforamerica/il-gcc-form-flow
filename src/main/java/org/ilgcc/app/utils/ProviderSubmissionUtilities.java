@@ -56,7 +56,7 @@ public class ProviderSubmissionUtilities {
                 String lastName = (String) child.get("childLastName");
 
                 childObject.put("childName", String.format("%s %s", firstName, lastName));
-                childObject.put("childAge", String.valueOf(childAge(child)));
+                childObject.put("childAge", String.format("Age %s", childAge(child)));
                 childObject.put("childCareHours", hoursRequested(child));
                 childObject.put("childStartDate", (String) child.get("ccapStartDate"));
                 children.add(childObject);
@@ -78,7 +78,7 @@ public class ProviderSubmissionUtilities {
         String minute = (String) child.get("childcare" + prefix + "Time" + day + "Minute");
         String amPm = (String) child.get("childcare" + prefix + "Time" + day + "AmPm");
 
-        if (!hour.isEmpty() & !minute.isEmpty() && !amPm.isEmpty()) {
+        if (!hour.isEmpty() && !minute.isEmpty() && !amPm.isEmpty()) {
             return String.format("%s:%s %s", hour, minute, amPm);
         }
 
