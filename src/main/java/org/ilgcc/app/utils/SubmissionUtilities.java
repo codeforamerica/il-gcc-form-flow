@@ -10,6 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
@@ -206,5 +209,25 @@ public class SubmissionUtilities {
 
     public static String getDashFormattedSubmittedAtDateWithTime(Submission submission) {
         return YYYY_MM_DD_HH_MM_AMPM_DASHES.format(submission.getSubmittedAt());
+    }
+
+    public static String convertToAbsoluteURL(String shortCode, String utmMedium){
+        HashMap <String, String> params = new HashMap<>();
+        params.put("conf_code", shortCode);
+        params.put("utm_medium", utmMedium);
+
+        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            multiValueMap.put(entry.getKey(), Collections.singletonList(entry.getValue()));
+        }
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("providerresponse/submit")
+            .queryParams(multiValueMap)
+            .toUriString();
+    }
+
+    public static String getProviderResponseURL(Submission submission, String utmMedium){
+        String shortCode = submission.getShortCode();
+        return convertToAbsoluteURL(shortCode, utmMedium);
     }
 }

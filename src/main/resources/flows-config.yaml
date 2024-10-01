@@ -432,6 +432,8 @@ landmarks:
     - doc-upload-recommended-docs
     - doc-upload-add-files
     - doc-upload-submit-confirmation
+    - onboarding-provider-info
+    - contact-provider-message
 ---
 name: providerresponse
 flow:
