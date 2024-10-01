@@ -58,7 +58,7 @@ public class Transmission {
     private Map<Integer, String> errors;
     
     @Column(name = "attempts")
-    private int attempts;
+    private int attempts = 1;
 
     public Transmission(Submission submissionId, UserFile userFileId, Date timeSent, TransmissionStatus status,
             TransmissionType type, Map<Integer, String> errors) {
