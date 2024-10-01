@@ -16,16 +16,17 @@
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
                             <div class="grid__item address-validation spacing-below-60">
-                                <th:block th:if="${submission.getInputData().containsKey('clientApplicationId')}"
+                                <th:block
+                                        th:if="${submission.getInputData().containsKey('clientApplicationId')}"
                                         th:with="applicationData=${submission.getInputData()}">
                                     <div class="radio-button is-selected">
                                         <p th:text="${applicationData.toString()}"></p>
-<!--                                                                            <p id="provider-name" class="spacing-below-15" th:text="${provider.getDisplayName()}"></p>-->
-<!--                                        <div id="provider-address">-->
-<!--                                                                                    <th:block th:each="addressLine : ${provider.getAddressComponents()}">-->
-<!--                                                                                        <div th:text="${addressLine}"></div>-->
-<!--                                                                                    </th:block>-->
-                                        </div>
+                                        <!--                                                                            <p id="provider-name" class="spacing-below-15" th:text="${provider.getDisplayName()}"></p>-->
+                                        <!--                                        <div id="provider-address">-->
+                                        <!--                                                                                    <th:block th:each="addressLine : ${provider.getAddressComponents()}">-->
+                                        <!--                                                                                        <div th:text="${addressLine}"></div>-->
+                                        <!--                                                                                    </th:block>-->
+                                    </div>
                                 </th:block>
                             </div>
                         </div>
@@ -40,17 +41,15 @@
                                         th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='false', label=#{response.button.no})}"/>
                             </th:block>
                         </th:block>
-        </div>
-        <div class="form-card__footer">
+                        <div class="form-card__footer">
 
-            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
-                  text=#{general.inputs.continue})}"/>
+                            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
         </div>
-        </th:block>
-        </th:block>
-        </main>
-</div>
-</section>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
