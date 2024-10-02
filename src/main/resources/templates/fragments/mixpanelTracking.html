@@ -42,32 +42,37 @@
     }
 
     mixpanel.track('page_load', tracking_params);
-
     function buttonClickEvent() {
-        const elementId = $(this).attr("id");
-        tracking_params['element_id'] = elementId
+      const elementId = $(this).attr("id");
+      const elementDataMixpanel = $(this).attr("data-mixpanel");
+      tracking_params['element_id'] = elementId
         mixpanel.track('button_click', tracking_params);
 
         if (elementId === 'language-menu') {
-            mixpanel.track('language_picker_click', {
-                'page_name': pageName,
-                'language': htmlLang,
-                'element_id': elementId
-            });
+          mixpanel.track('language_picker_click', {
+            'page_name': pageName,
+            'language': htmlLang,
+            'element_id': elementId
+          });
+        } else if (elementDataMixpanel === 'provider-response') {
+          mixpanel.track('provider_response', {
+            'family_application_id': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "clientApplicationId")} ]]`,
+            'provider_agrees_to_care': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "providerResponseAgreeToCare")} ]]`,
+          });
         }
 
         if (pageName.startsWith("/flow/gcc/onboarding-language-pref")) {
-            let form = $('form')
-            if (form.length > 0 && (form[0]).getAttribute('action').indexOf('?') > 0) {
-                const langCodes = new Map();
-                langCodes.set('Spanish', 'es');
-                langCodes.set('English', 'en');
-                mixpanel.track('language_change', {
-                    'previous_language': htmlLang,
-                    'selected_language': langCodes.get($('#languageRead')[0].value),
-                    'element_id': 'language_change_dropdown'
-                });
-            }
+          let form = $('form')
+          if (form.length > 0 && (form[0]).getAttribute('action').indexOf('?') > 0) {
+            const langCodes = new Map();
+            langCodes.set('Spanish', 'es');
+            langCodes.set('English', 'en');
+            mixpanel.track('language_change', {
+              'previous_language': htmlLang,
+              'selected_language': langCodes.get($('#languageRead')[0].value),
+              'element_id': 'language_change_dropdown'
+            });
+          }
         }
     }
 
@@ -152,5 +157,5 @@
             });
         });
 
-    });
+  });
 </script>

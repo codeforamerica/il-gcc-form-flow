@@ -59,11 +59,12 @@
                                         th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='false', label=#{response.button.no})}"/>
                             </th:block>
                         </th:block>
-                        <div class="form-card__footer">
-
-                            <th:block
-                                    th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-                        </div>
+                        <button id="form-submit-button"
+                                class="button button--primary"
+                                type="submit"
+                                data-mixpanel="provider-response"
+                                th:text="#{general.inputs.continue}"
+                        </button>
                     </th:block>
                 </th:block>
             </main>
@@ -73,3 +74,6 @@
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
 </html>
+
+
+

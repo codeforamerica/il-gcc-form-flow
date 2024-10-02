@@ -1,4 +1,5 @@
 package org.ilgcc.app.utils;
+
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
@@ -25,7 +26,6 @@ public class ProviderSubmissionUtilities {
         return null;
     }
 
-    //
     public static Map<String, String> getApplicantSubmissionForProviderResponse(Optional<Submission> applicantSubmission) {
         Map<String, String> applicationData = new HashMap<>();
 
@@ -35,7 +35,6 @@ public class ProviderSubmissionUtilities {
             applicationData.put("clientResponseParentName", getApplicantName(applicantInputs));
         }
 
-//
         return applicationData;
     }
 
@@ -50,7 +49,7 @@ public class ProviderSubmissionUtilities {
         List<Map<String, String>> children = new ArrayList<>();
 
         if (SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission).size() > 0) {
-            for(var child : SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission)){
+            for (var child : SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission)) {
                 Map<String, String> childObject = new HashMap<>();
                 String firstName = (String) child.get("childFirstName");
                 String lastName = (String) child.get("childLastName");
@@ -83,7 +82,6 @@ public class ProviderSubmissionUtilities {
         }
 
         return "";
-
     }
 
     private static String hoursRequested(Map<String, Object> child) {
