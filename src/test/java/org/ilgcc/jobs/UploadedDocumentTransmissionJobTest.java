@@ -1,6 +1,7 @@
 package org.ilgcc.jobs;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.utils.enums.TransmissionType.UPLOADED_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -16,6 +17,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.ilgcc.app.IlGCCApplication;
@@ -73,6 +77,8 @@ class UploadedDocumentTransmissionJobTest {
     private Submission submission;
     
     private UserFile testUserFile;
+    
+    private Transmission uploadedDocumentTransmission;
 
     private final String objectPath = "testPath";
 
@@ -86,6 +92,10 @@ class UploadedDocumentTransmissionJobTest {
 
         testUserFile = new UserFile(UUID.randomUUID(), submission, OffsetDateTime.now(), "testFile.pdf", "testFile.pdf", "Application/pdf", 10F, false, null);
         userFileRepositoryService.save(testUserFile);
+
+        Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
+        uploadedDocumentTransmission =
+                new Transmission(submission, testUserFile, now, null, UPLOADED_DOCUMENT, null);
         
         uploadedDocumentTransmissionJob = new UploadedDocumentTransmissionJob(s3PresignService, documentTransferRequestService);
     }
@@ -102,8 +112,10 @@ class UploadedDocumentTransmissionJobTest {
         when(httpUrlConnection.getOutputStream()).thenReturn(mock(OutputStream.class));
         when(httpUrlConnection.getInputStream()).thenReturn(new ByteArrayInputStream("Mock Response".getBytes()));
         when(httpUrlConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
-        
-        uploadedDocumentTransmissionJob.sendUploadedDocumentTransferRequest(submission, testUserFile, "testFile.pdf");
+
+
+       
+        uploadedDocumentTransmissionJob.sendUploadedDocumentTransferRequest(submission, testUserFile, "testFile.pdf", uploadedDocumentTransmission);
         
         List<Transmission> transmissions = transmissionRepositoryService.findAllBySubmissionId(submission);
         assertThat(transmissions).size().isEqualTo(1);
@@ -120,7 +132,7 @@ class UploadedDocumentTransmissionJobTest {
         when(httpUrlConnection.getInputStream()).thenReturn(new ByteArrayInputStream("Mock Response".getBytes()));
         when(httpUrlConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_BAD_REQUEST);
         
-        assertThrows(RuntimeException.class, () -> uploadedDocumentTransmissionJob.sendUploadedDocumentTransferRequest(submission, testUserFile, "testFile.pdf"));
+        assertThrows(RuntimeException.class, () -> uploadedDocumentTransmissionJob.sendUploadedDocumentTransferRequest(submission, testUserFile, "testFile.pdf", uploadedDocumentTransmission));
 
         List<Transmission> transmissions = transmissionRepositoryService.findAllBySubmissionId(submission);
         assertThat(transmissions).size().isEqualTo(1);

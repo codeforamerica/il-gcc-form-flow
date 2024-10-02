@@ -48,7 +48,7 @@ public class DocumentTransferRequestService {
             
             transmissionRepositoryService.updateStatus(transmission, Queued);
         } catch (Exception e) {
-            String errorMessage = String.format("There was an error when sending the request for transmission with ID %s of type %s with submission ID %s: ", transmission.getTransmissionId(), transmission.getType(), transmission.getSubmissionId());
+            String errorMessage = String.format("There was an error when sending the request for transmission with ID %s of type %s with submission ID %s: ", transmission.getTransmissionId(), transmission.getType(), transmission.getSubmissionId().getId()); // TODO why is submissionId an object?
             transmissionRepositoryService.setFailureError(transmission, errorMessage + e.getMessage());
             throw new RuntimeException(errorMessage, e);
         }

@@ -31,20 +31,20 @@ public class UploadedDocumentTransmissionJob {
     }
     
     public void enqueueUploadedDocumentTransmissionJob(Submission submission, UserFile userFile, String fileName) {
+        Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
+        Transmission uploadedDocumentTransmission =
+                new Transmission(submission, userFile, now, null, UPLOADED_DOCUMENT, null);
         BackgroundJob.create(aJob()
                 .withName("Send Document Transfer Request for Uploaded Document")
                 .withAmountOfRetries(3)
                 .scheduleIn(Duration.ofSeconds(5))
-                .<UploadedDocumentTransmissionJob>withDetails(x -> x.sendUploadedDocumentTransferRequest(submission, userFile, fileName)));
+                .<UploadedDocumentTransmissionJob>withDetails(x -> x.sendUploadedDocumentTransferRequest(submission, userFile, fileName, uploadedDocumentTransmission)));
     }
     
-    public void sendUploadedDocumentTransferRequest(Submission submission, UserFile userFile, String fileName)
+    public void sendUploadedDocumentTransferRequest(Submission submission, UserFile userFile, String fileName, Transmission uploadedDocumentTransmission)
             throws IOException {
         String presignedUrl = s3PresignService.generatePresignedUrl(userFile.getRepositoryPath());
         log.info("Enqueuing uploaded document transfer job for file with ID: {} in submission with ID: {}", userFile.getFileId(), submission.getId());
-        Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
-        Transmission uploadedDocumentTransmission =
-                new Transmission(submission, userFile, now, null, UPLOADED_DOCUMENT, null);
         documentTransferRequestService.sendDocumentTransferServiceRequest(presignedUrl, submission, fileName, uploadedDocumentTransmission);
     }
 }

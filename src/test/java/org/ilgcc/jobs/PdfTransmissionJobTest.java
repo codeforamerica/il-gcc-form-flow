@@ -49,7 +49,7 @@ import org.springframework.test.context.TestPropertySource;
         "DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN=test-token"
 })
 class PdfTransmissionJobTest {
-    
+
     private PdfTransmissionJob pdfTransmissionJob;
 
     @MockBean
@@ -57,23 +57,23 @@ class PdfTransmissionJobTest {
 
     @Autowired
     private TransmissionRepositoryService transmissionRepositoryService;
-    
+
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
-    
+
     @MockBean
     HttpUrlConnectionFactory httpUrlConnectionFactory;
-    
+
     @MockBean
     HttpURLConnection httpUrlConnection;
-    
+
     @Autowired
     DocumentTransferRequestService documentTransferRequestService;
 
     private static final InMemoryStorageProvider storageProvider = new InMemoryStorageProvider();
-    
+
     private JobScheduler jobScheduler;
-    
+
     private Submission submission;
 
     private final String objectPath = "testPath";
@@ -85,7 +85,7 @@ class PdfTransmissionJobTest {
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .build();
         submissionRepositoryService.save(submission);
-        
+
         jobScheduler = JobRunr.configure()
                 .useStorageProvider(storageProvider)
                 .useJobActivator(this::jobActivator)
@@ -114,7 +114,7 @@ class PdfTransmissionJobTest {
         await().atMost(15, TimeUnit.SECONDS).untilAsserted(
                 () -> assertThatJson(getSucceededJobs()).inPath("$.items[0].jobHistory[*].state")
                         .isEqualTo("['ENQUEUED', 'PROCESSING', 'SUCCEEDED']"));
-        
+
         List<Transmission> transmissions = transmissionRepositoryService.findAllBySubmissionId(submission);
         assertThat(transmissions).size().isEqualTo(1);
         Transmission transmission = transmissions.get(0);
@@ -140,8 +140,8 @@ class PdfTransmissionJobTest {
                     assertThat(transmissions.get(0).getType()).isEqualTo(TransmissionType.APPLICATION_PDF);
                 });
     }
-    
-    
+
+
     // Tells JobRunr's configuration what class will activate/call enqueue for jobs
     private <T> T jobActivator(Class<T> clazz) {
         return (T) pdfTransmissionJob;
