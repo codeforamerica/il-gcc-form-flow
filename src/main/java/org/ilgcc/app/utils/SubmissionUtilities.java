@@ -212,17 +212,13 @@ public class SubmissionUtilities {
     }
 
     public static String convertToAbsoluteURL(String shortCode, String utmMedium){
-        HashMap <String, String> params = new HashMap<>();
-        params.put("conf_code", shortCode);
-        params.put("utm_medium", utmMedium);
+        MultiValueMap <String, String> params = new LinkedMultiValueMap<>();
+        params.put("conf_code", Collections.singletonList(shortCode));
+        params.put("utm_medium", Collections.singletonList(utmMedium));
 
-        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            multiValueMap.put(entry.getKey(), Collections.singletonList(entry.getValue()));
-        }
         return ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("providerresponse/submit")
-            .queryParams(multiValueMap)
+            .queryParams(params)
             .toUriString();
     }
 

@@ -10,3 +10,4 @@ form-flow:
     disabled: true
   short-code:
     prefix: DEMO-
+    creation-point: creation
