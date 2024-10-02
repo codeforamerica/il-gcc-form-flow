@@ -21,28 +21,28 @@
                                         th:with="applicationData=${submission.getInputData().get('clientResponse')}, children=${submission.getInputData().get('clientResponseChildren')}">
 
                                     <p class="category" th:text="#{response.confirmation-code}"></p>
-                                    <p class="response"
+                                    <p class="response" th:id="confirmation-code"
                                        th:text="${applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a')}"></p>
 
                                     <p class="category" th:text="#{response.parent-name}"></p>
-                                    <p class="response"
+                                    <p class="response" th:id="parent-name"
                                        th:text="${applicationData.getOrDefault('clientResponseParentName', 'n/a')}"></p>
 
                                     <th:block
                                             th:each="child : ${submission.getInputData().get('clientResponseChildren')}">
                                         <p class="category" th:text="#{response.child-name}"></p>
-                                        <p class="response"
+                                        <p class="response" th:id="${'child-name-'+childStat.index}"
                                            th:text="${child.getOrDefault('childName', 'n/a')}"></p>
 
                                         <p class="category" th:text="#{response.child-age}"></p>
-                                        <p th:text="${child.getOrDefault('childAge', 'n/a')}"></p>
+                                        <p th:id="${'child-age-'+childStat.index}" th:text="${child.getOrDefault('childAge', 'n/a')}"></p>
 
                                         <p class="category" th:text="#{response.hours}"></p>
-                                        <ul class="list--bulleted"
+                                        <ul class="list--bulleted" th:id="${'child-schedule-'+childStat.index}"
                                             th:utext="${child.get('childCareHours')}"></ul>
 
                                         <p class="category" th:text="#{response.start-date}"></p>
-                                        <p class="response"
+                                        <p class="response" th:id="${'child-start-'+childStat.index}"
                                            th:text="${child.getOrDefault('childStartDate', 'n/a')}"></p>
                                     </th:block>
                                 </th:block>
