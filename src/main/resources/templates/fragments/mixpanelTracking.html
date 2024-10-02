@@ -56,7 +56,7 @@
           });
         } else if (elementDataMixpanel === 'provider-response') {
           mixpanel.track('provider_response', {
-            'family_application_id': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "clientApplicationId")} ]]`,
+            'family_application_id': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "familyApplicationId")} ]]`,
             'provider_agrees_to_care': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "providerResponseAgreeToCare")} ]]`,
           });
         }

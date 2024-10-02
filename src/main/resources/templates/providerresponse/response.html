@@ -17,7 +17,7 @@
                         <div class="form-card__content">
                             <div class="providerResponse">
                                 <th:block
-                                        th:if="${submission.getInputData().containsKey('clientApplicationId')}"
+                                        th:if="${submission.getInputData().containsKey('familyApplicationId')}"
                                         th:with="applicationData=${submission.getInputData().get('clientResponse')}, children=${submission.getInputData().get('clientResponseChildren')}">
 
                                     <p class="category" th:text="#{response.confirmation-code}"></p>

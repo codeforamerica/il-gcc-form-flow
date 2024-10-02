@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
 public class ProviderSubmissionUtilities {
 
     public static Optional<UUID> getClientId(Submission providerSubmission) {
-        if (providerSubmission.getInputData().containsKey("clientApplicationId")) {
-            String applicantID = (String) providerSubmission.getInputData().get("clientApplicationId");
+        if (providerSubmission.getInputData().containsKey("familyApplicationId")) {
+            String applicantID = (String) providerSubmission.getInputData().get("familyApplicationId");
             return Optional.of(UUID.fromString(applicantID));
         }
         return null;

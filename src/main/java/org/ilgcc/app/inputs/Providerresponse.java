@@ -4,7 +4,7 @@ import formflow.library.data.FlowInputs;
 import jakarta.validation.constraints.NotBlank;
 
 public class Providerresponse extends FlowInputs {
-    private String clientApplicationId;
+    private String familyApplicationId;
 
     @NotBlank(message = "{errors.provide-provider-number}")
     private String providerResponseProviderNumber;
