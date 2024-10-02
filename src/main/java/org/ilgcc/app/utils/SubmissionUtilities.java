@@ -1,21 +1,23 @@
 package org.ilgcc.app.utils;
 
+import static java.lang.Integer.parseInt;
+import static java.util.Collections.emptyList;
+
 import formflow.library.data.Submission;
 import formflow.library.inputs.FieldNameMarkers;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import static java.lang.Integer.parseInt;
-import static java.util.Collections.emptyList;
 
 @Slf4j
 public class SubmissionUtilities {
@@ -218,8 +220,8 @@ public class SubmissionUtilities {
 
         return ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("providerresponse/submit")
-            .queryParams(params)
-            .toUriString();
+            .queryParams(params).build()
+            .toUriString().replace("&", "%26");
     }
 
     public static String getProviderResponseURL(Submission submission, String utmMedium){
