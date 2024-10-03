@@ -96,8 +96,9 @@ class UploadedDocumentTransmissionJobTest {
         Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
         uploadedDocumentTransmission =
                 new Transmission(submission, testUserFile, now, null, UPLOADED_DOCUMENT, null);
+        transmissionRepositoryService.save(uploadedDocumentTransmission);
         
-        uploadedDocumentTransmissionJob = new UploadedDocumentTransmissionJob(s3PresignService, documentTransferRequestService);
+        uploadedDocumentTransmissionJob = new UploadedDocumentTransmissionJob(s3PresignService, documentTransferRequestService, transmissionRepositoryService);
     }
 
     @AfterEach
@@ -115,7 +116,7 @@ class UploadedDocumentTransmissionJobTest {
 
 
        
-        uploadedDocumentTransmissionJob.sendUploadedDocumentTransferRequest(submission, testUserFile, "testFile.pdf", uploadedDocumentTransmission);
+        uploadedDocumentTransmissionJob.sendUploadedDocumentTransferRequest(submission, testUserFile, "testFile.pdf", uploadedDocumentTransmission.getTransmissionId());
         
         List<Transmission> transmissions = transmissionRepositoryService.findAllBySubmissionId(submission);
         assertThat(transmissions).size().isEqualTo(1);
@@ -132,7 +133,7 @@ class UploadedDocumentTransmissionJobTest {
         when(httpUrlConnection.getInputStream()).thenReturn(new ByteArrayInputStream("Mock Response".getBytes()));
         when(httpUrlConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_BAD_REQUEST);
         
-        assertThrows(RuntimeException.class, () -> uploadedDocumentTransmissionJob.sendUploadedDocumentTransferRequest(submission, testUserFile, "testFile.pdf", uploadedDocumentTransmission));
+        assertThrows(RuntimeException.class, () -> uploadedDocumentTransmissionJob.sendUploadedDocumentTransferRequest(submission, testUserFile, "testFile.pdf", uploadedDocumentTransmission.getTransmissionId()));
 
         List<Transmission> transmissions = transmissionRepositoryService.findAllBySubmissionId(submission);
         assertThat(transmissions).size().isEqualTo(1);

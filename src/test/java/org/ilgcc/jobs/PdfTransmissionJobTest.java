@@ -93,7 +93,7 @@ class PdfTransmissionJobTest {
                 .useBackgroundJobServer(usingStandardBackgroundJobServerConfiguration()
                         .andPollInterval(ofMillis(200))).initialize().getJobScheduler();
 
-        pdfTransmissionJob = new PdfTransmissionJob(s3PresignService, jobScheduler, documentTransferRequestService);
+        pdfTransmissionJob = new PdfTransmissionJob(s3PresignService, jobScheduler, documentTransferRequestService, transmissionRepositoryService);
     }
 
     @AfterEach

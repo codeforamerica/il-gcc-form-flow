@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.ilgcc.app.utils.enums.TransmissionStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,10 @@ public class TransmissionRepositoryService {
 
     public Transmission save(Transmission transmission) {
         return transmissionRepository.save(transmission);
+    }
+    
+    public Transmission findById(UUID id) {
+        return this.transmissionRepository.findById(id).orElse(null);
     }
 
     public List<Transmission> findAllBySubmissionId(Submission submission) {

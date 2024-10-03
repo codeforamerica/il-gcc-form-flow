@@ -13,6 +13,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.config.DocumentTransferConfiguration;
 import org.ilgcc.app.data.Transmission;
@@ -39,16 +40,16 @@ public class DocumentTransferRequestService {
         this.httpUrlConnectionFactory = httpUrlConnectionFactory;
     }
 
-    public void sendDocumentTransferServiceRequest(String presignedUrl, Submission submission, String fileName, Transmission transmission) throws IOException {
+    public void sendDocumentTransferServiceRequest(String presignedUrl, Submission submission, String fileName, UUID transmissionId) throws IOException {
+        Transmission transmission = transmissionRepositoryService.findById(transmissionId);
         HttpURLConnection httpUrlConnection = httpUrlConnectionFactory.createHttpURLConnection(new URL(documentTransferServiceUrl));
         String jsonString = createJsonRequestBody(presignedUrl, submission, fileName);
         try (OutputStream os = httpUrlConnection.getOutputStream()) {
             byte[] input = jsonString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
             
-            transmissionRepositoryService.updateStatus(transmission, Queued);
         } catch (Exception e) {
-            String errorMessage = String.format("There was an error when sending the request for transmission with ID %s of type %s with submission ID %s: ", transmission.getTransmissionId(), transmission.getType(), transmission.getSubmissionId().getId()); // TODO why is submissionId an object?
+            String errorMessage = String.format("There was an error when sending the request for transmission with ID %s of type %s with submission ID %s: ", transmission.getTransmissionId(), transmission.getType(), transmission.getSubmissionId());
             transmissionRepositoryService.setFailureError(transmission, errorMessage + e.getMessage());
             throw new RuntimeException(errorMessage, e);
         }

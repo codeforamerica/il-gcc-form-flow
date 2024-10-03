@@ -4,6 +4,7 @@ import static jakarta.persistence.TemporalType.TIMESTAMP;
 import formflow.library.data.Submission;
 import formflow.library.data.UserFile;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -27,7 +28,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @Component
 @Builder
-public class Transmission {
+public class Transmission implements Serializable {
 
     @Id
     @GeneratedValue
@@ -37,7 +38,7 @@ public class Transmission {
     @JoinColumn(name = "submission_id")
     private Submission submissionId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_file_id")
     private UserFile userFileId;
 
@@ -68,5 +69,13 @@ public class Transmission {
         this.status = status;
         this.type = type;
         this.errors = errors;
+    }
+
+    public UUID getUserFileId() {
+        return userFileId != null ? userFileId.getFileId() : null;
+    }
+
+    public UUID getSubmissionId() {
+        return submissionId != null ? submissionId.getId() : null;
     }
 }
