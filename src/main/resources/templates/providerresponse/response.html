@@ -10,7 +10,7 @@
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block th:replace="~{fragments/gcc-icons :: clipboardWithEnvelope}"></th:block>
                 <th:block
-                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{response.header})}"/>
+                        th:replace="~{fragments/cardHeaderForSingleInputScreen :: cardHeaderForSingleInputScreen(header=#{response.header}, inputName='providerResponseAgreeToCare', required='true')}"/>
                 <th:block
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">
