@@ -19,7 +19,7 @@ public class SaveApplicationIdFromApplicationId implements Action {
     SubmissionRepositoryService submissionRepositoryService;
     @Override
     public void run(FormSubmission formSubmission, Submission providerSubmission) {
-        Boolean hasApplicationID = providerSubmission.getInputData().containsKey("familyApplicationId");
+        boolean hasApplicationID = providerSubmission.getInputData().containsKey("familyApplicationId");
         String providerProvidedConfirmationCode = (String) formSubmission.getFormData().getOrDefault("providerResponseFamilyConfirmationCode", "");
         if(!hasApplicationID && !providerProvidedConfirmationCode.isBlank()){
             Optional<Submission> clientSubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode);

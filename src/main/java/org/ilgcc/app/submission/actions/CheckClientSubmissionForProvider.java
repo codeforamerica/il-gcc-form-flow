@@ -57,7 +57,7 @@ public class CheckClientSubmissionForProvider implements Action {
 
                 LocalDate submittedAtDate = clientSubmissionInfo.getSubmittedAt().toLocalDate();
                 LocalDate todaysDate = LocalDate.now();
-                if (DAYS.between(submittedAtDate, todaysDate) >= 40) {
+                if (DAYS.between(submittedAtDate, todaysDate) >= 4) {
                     httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED);
                 } else {
                     boolean hasResponse = false;
