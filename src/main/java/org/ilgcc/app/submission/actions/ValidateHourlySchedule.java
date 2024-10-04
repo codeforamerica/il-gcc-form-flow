@@ -38,33 +38,42 @@ public class ValidateHourlySchedule implements Action {
 
         daysToCheck(formData).forEach(day -> {
             String startTimeGroupName = inputPrefix + "StartTime" + day;
-            ArrayList<String> startElementsWithMissingData = elementsWithMissingData(formData, startTimeGroupName);
 
-            if (!startElementsWithMissingData.isEmpty()) {
+            if (fieldHasFormData(formData, startTimeGroupName)) {
+                ArrayList<String> startElementsWithMissingData = elementsWithMissingData(formData, startTimeGroupName);
+
                 if (startElementsWithMissingData.containsAll(INPUT_POSTFIXES)) {
                     errorMessages.put(startTimeGroupName,
                             List.of(messageSource.getMessage("errors.validate.start.time", null, locale)));
-                } else {
-                    errorMessages.put(startTimeGroupName, errorsToAdd(startElementsWithMissingData, locale));
                 }
+                else {
+                    if (minuteDataIsInvalid(formData, startTimeGroupName)) {
+                        startElementsWithMissingData.add("Minute");
+                    }
 
-            } else if (minuteDataIsInvalid(formData, startTimeGroupName)) {
-                errorMessages.put(startTimeGroupName,
-                        List.of(messageSource.getMessage("errors.validate.start.time", null, locale)));
+                    if(!startElementsWithMissingData.isEmpty()){
+                        errorMessages.put(startTimeGroupName, errorsToAdd(startElementsWithMissingData, locale));
+                    }
+                }
             }
 
             String endTimeGroupName = inputPrefix + "EndTime" + day;
-            ArrayList<String> endElementsWithMissingData = elementsWithMissingData(formData, endTimeGroupName);
-            if (!endElementsWithMissingData.isEmpty()) {
+
+            if (fieldHasFormData(formData, endTimeGroupName)) {
+                ArrayList<String> endElementsWithMissingData = elementsWithMissingData(formData, endTimeGroupName);
+
                 if (endElementsWithMissingData.containsAll(INPUT_POSTFIXES)) {
                     errorMessages.put(endTimeGroupName,
                             List.of(messageSource.getMessage("errors.validate.end.time", null, locale)));
                 } else {
-                    errorMessages.put(endTimeGroupName, errorsToAdd(endElementsWithMissingData, locale));
+                    if (minuteDataIsInvalid(formData, endTimeGroupName)) {
+                        endElementsWithMissingData.add("Minute");
+                    }
+
+                    if(!endElementsWithMissingData.isEmpty()){
+                        errorMessages.put(endTimeGroupName, errorsToAdd(endElementsWithMissingData, locale));
+                    }
                 }
-            } else if (minuteDataIsInvalid(formData, endTimeGroupName)) {
-                errorMessages.put(endTimeGroupName,
-                        List.of(messageSource.getMessage("errors.validate.end.time", null, locale)));
             }
         });
         return errorMessages;
@@ -85,9 +94,6 @@ public class ValidateHourlySchedule implements Action {
     protected ArrayList<String> elementsWithMissingData(Map<String, Object> inputtedData, String fieldName) {
         ArrayList<String> missingData = new ArrayList<>();
         if (inputtedData.containsKey(fieldName + "Minute")) {
-            if (minuteDataIsInvalid(inputtedData, fieldName)) {
-                missingData.add("Minute");
-            }
             INPUT_POSTFIXES.forEach(pf -> {
                 if (inputtedData.getOrDefault(fieldName + pf, "").toString().isEmpty()) {
                     missingData.add(pf);
@@ -96,6 +102,10 @@ public class ValidateHourlySchedule implements Action {
             });
         }
         return missingData;
+    }
+
+    protected boolean fieldHasFormData(Map<String, Object> inputtedData, String fieldName) {
+        return inputtedData.containsKey(fieldName + "Minute");
     }
 
     protected ArrayList<String> errorsToAdd(ArrayList<String> missingData, Locale locale) {
