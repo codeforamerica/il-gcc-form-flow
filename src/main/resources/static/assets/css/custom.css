@@ -565,7 +565,10 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   border: none;
   border-bottom: 2px solid var(--hc-red);
 }
-
+.confirmation-example {
+  font-size: medium;
+  word-wrap: break-word;
+}
 @media only screen and (min-width: 601px) {
   .notice--toolbar {
     margin-left: -3.5rem;

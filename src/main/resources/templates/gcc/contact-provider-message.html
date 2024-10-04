@@ -8,22 +8,28 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: providerEnvelope}"></th:block>
         <th:block
             th:replace="~{fragments/cardHeader :: cardHeader(header=#{contact-provider-message.header})}"/>
           <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
             <th:block th:ref="content">
-              <div class="form-card__content">
-                <p th:text="#{contact-provider-message.below-we-prepared}"></p>
-                <p th:text="${#messages.msg('contact-provider-message.it-includes', submission.getShortCode())}"></p>
+              <div class="form-card__content"
+                th:with="shortCode=${submission.getShortCode()}">
+                <p th:text="${#messages.msg('contact-provider-message.below-we-prepared', T(org.ilgcc.app.utils.ChildCareProvider).valueOf(inputData.get('dayCareChoice')).getDisplayName())}"></p>
+                <p th:text="${#messages.msg('contact-provider-message.it-includes', shortCode)}"></p>
+                <div class="notice--warning notice--gray confirmation-example">
+                  <p th:text="${#messages.msg('contact-provider-message.message-p1', shortCode)}"></p>
+                  <p th:text="${#messages.msg('contact-provider-message.message-p2', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURLForHTML(submission, 'email'))}"></p>
+                </div>
                 <div class="center"
-                    th:with="emailAddress=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURL(submission, 'email'), submission.getShortCode()))}">
+                    th:with="emailAddress=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURL(submission, 'email'), shortCode))}">
                   <a th:id="contact-provider-by-email" th:href="${emailAddress}" class="button button--wide">
                     <i class="icon-markunread"></i>
                     <span th:text="#{contact-provider-message.email-message}"></span>
                   </a>
                 </div>
                 <div class="center"
-                    th:with="smsPhoneNumber=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURL(submission, 'text'), submission.getShortCode()))}">
+                    th:with="smsPhoneNumber=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURL(submission, 'text'), shortCode))}">
                   <a th:href="${smsPhoneNumber}"
                      class="button button--wide">
                     <i class="icon-insert_comment"></i>

@@ -213,7 +213,7 @@ public class SubmissionUtilities {
         return YYYY_MM_DD_HH_MM_AMPM_DASHES.format(submission.getSubmittedAt());
     }
 
-    public static String convertToAbsoluteURL(String shortCode, String utmMedium){
+    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium){
         MultiValueMap <String, String> params = new LinkedMultiValueMap<>();
         params.put("conf_code", Collections.singletonList(shortCode));
         params.put("utm_medium", Collections.singletonList(utmMedium));
@@ -226,6 +226,9 @@ public class SubmissionUtilities {
 
     public static String getProviderResponseURL(Submission submission, String utmMedium){
         String shortCode = submission.getShortCode();
-        return convertToAbsoluteURL(shortCode, utmMedium);
+        return convertToAbsoluteURLForEmailAndText(shortCode, utmMedium);
+    }
+    public static String getProviderResponseURLForHTML(Submission submission, String utmMedium){
+        return getProviderResponseURL(submission, utmMedium).replaceAll("%26", "&");
     }
 }
