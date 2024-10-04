@@ -62,7 +62,8 @@ public class DocumentTransferRequestService {
             while ((responseLine = br.readLine()) != null) {
                 response.append(responseLine.trim());
             }
-            if (httpUrlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            int responseCode = httpUrlConnection.getResponseCode();
+            if (responseCode >= 200 && responseCode < 300) {
                 transmissionRepositoryService.updateStatus(transmission, Complete);
                 log.info("Received response from the document transfer service: " + response);
             } else {
