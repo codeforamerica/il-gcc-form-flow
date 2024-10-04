@@ -401,7 +401,8 @@ flow:
     nextScreens:
       - name: submit-next-steps
   contact-provider-message:
-    nextScreens: null
+    nextScreens:
+      - name: submit-next-steps
 subflows:
   children:
     entryScreen: children-add
@@ -432,6 +433,8 @@ landmarks:
     - doc-upload-recommended-docs
     - doc-upload-add-files
     - doc-upload-submit-confirmation
+    - onboarding-provider-info
+    - contact-provider-message
 ---
 name: providerresponse
 flow:

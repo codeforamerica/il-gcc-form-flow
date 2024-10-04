@@ -1,18 +1,23 @@
 package org.ilgcc.app.utils;
 
+import static java.lang.Integer.parseInt;
+import static java.util.Collections.emptyList;
+
 import formflow.library.data.Submission;
 import formflow.library.inputs.FieldNameMarkers;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
-
-import static java.lang.Integer.parseInt;
-import static java.util.Collections.emptyList;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Slf4j
 public class SubmissionUtilities {
@@ -206,5 +211,24 @@ public class SubmissionUtilities {
 
     public static String getDashFormattedSubmittedAtDateWithTime(Submission submission) {
         return YYYY_MM_DD_HH_MM_AMPM_DASHES.format(submission.getSubmittedAt());
+    }
+
+    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium){
+        MultiValueMap <String, String> params = new LinkedMultiValueMap<>();
+        params.put("conf_code", Collections.singletonList(shortCode));
+        params.put("utm_medium", Collections.singletonList(utmMedium));
+
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("providerresponse/submit")
+            .queryParams(params).build()
+            .toUriString().replace("&", "%26");
+    }
+
+    public static String getProviderResponseURL(Submission submission, String utmMedium){
+        String shortCode = submission.getShortCode();
+        return convertToAbsoluteURLForEmailAndText(shortCode, utmMedium);
+    }
+    public static String getProviderResponseURLForHTML(Submission submission, String utmMedium){
+        return getProviderResponseURL(submission, utmMedium).replaceAll("%26", "&");
     }
 }
