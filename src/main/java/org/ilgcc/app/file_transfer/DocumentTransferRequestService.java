@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class DocumentTransferRequestService {
+public class DocumentTransferRequestService implements DocumentTransferRequest {
     
     private final String documentTransferServiceUrl;
     private final String processingOrg;
@@ -40,7 +41,8 @@ public class DocumentTransferRequestService {
         this.httpUrlConnectionFactory = httpUrlConnectionFactory;
     }
 
-    public void sendDocumentTransferServiceRequest(String presignedUrl, Submission submission, String fileName, UUID transmissionId) throws IOException {
+    public void sendDocumentTransferServiceRequest(String presignedUrl, Submission submission, String fileName, UUID transmissionId)
+            throws IOException {
         Transmission transmission = transmissionRepositoryService.findById(transmissionId);
         HttpURLConnection httpUrlConnection = httpUrlConnectionFactory.createHttpURLConnection(new URL(documentTransferServiceUrl));
         String jsonString = createJsonRequestBody(presignedUrl, submission, fileName);
