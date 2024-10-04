@@ -35,15 +35,20 @@ public class TransmissionRepositoryService {
         transmission.setStatus(status);
         this.transmissionRepository.save(transmission);
     }
-    
+
     public void setFailureError(Transmission transmission, String error) {
-        Map<Integer, String> errors = transmission.getErrors() == null ? new HashMap<>() : transmission.getErrors();
-        int attempts = transmission.getAttempts();
-        errors.put(attempts, error);
+        Map<String, String> errors = transmission.getErrors() == null ? new HashMap<>() : transmission.getErrors();
+        Integer attempts = transmission.getRetryAttempts();
+
+        if (attempts == null) {
+            errors.put("First failure", error);
+            transmission.setRetryAttempts(0); 
+        } else {
+            errors.put("Retry " + ++attempts, error);
+            transmission.setRetryAttempts(attempts);
+        }
+
         transmission.setErrors(errors);
-        attempts += 1;
-        transmission.setAttempts(attempts);
-        transmission.setStatus(TransmissionStatus.Failed);
         this.transmissionRepository.save(transmission);
     }
 }

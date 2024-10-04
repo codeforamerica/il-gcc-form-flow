@@ -56,13 +56,13 @@ public class Transmission implements Serializable {
 
     @Type(JsonType.class)
     @Column(name = "errors", columnDefinition = "json")
-    private Map<Integer, String> errors;
+    private Map<String, String> errors;
     
-    @Column(name = "attempts")
-    private int attempts = 1;
+    @Column(name = "retry_attempts")
+    private Integer retryAttempts;
 
     public Transmission(Submission submissionId, UserFile userFileId, Date timeSent, TransmissionStatus status,
-            TransmissionType type, Map<Integer, String> errors) {
+            TransmissionType type, Map<String, String> errors) {
         this.submissionId = submissionId;
         this.userFileId = userFileId;
         this.timeSent = timeSent;

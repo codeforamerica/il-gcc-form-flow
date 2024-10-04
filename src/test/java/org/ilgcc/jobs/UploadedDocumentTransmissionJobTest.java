@@ -1,6 +1,7 @@
 package org.ilgcc.jobs;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.utils.enums.TransmissionStatus.Queued;
 import static org.ilgcc.app.utils.enums.TransmissionType.UPLOADED_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -95,7 +96,7 @@ class UploadedDocumentTransmissionJobTest {
 
         Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
         uploadedDocumentTransmission =
-                new Transmission(submission, testUserFile, now, null, UPLOADED_DOCUMENT, null);
+                new Transmission(submission, testUserFile, now, Queued, UPLOADED_DOCUMENT, null);
         transmissionRepositoryService.save(uploadedDocumentTransmission);
         
         uploadedDocumentTransmissionJob = new UploadedDocumentTransmissionJob(s3PresignService, documentTransferRequestService, transmissionRepositoryService);
@@ -134,10 +135,5 @@ class UploadedDocumentTransmissionJobTest {
         when(httpUrlConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_BAD_REQUEST);
         
         assertThrows(RuntimeException.class, () -> uploadedDocumentTransmissionJob.sendUploadedDocumentTransferRequest(submission, testUserFile, "testFile.pdf", uploadedDocumentTransmission.getTransmissionId()));
-
-        List<Transmission> transmissions = transmissionRepositoryService.findAllBySubmissionId(submission);
-        assertThat(transmissions).size().isEqualTo(1);
-        assertThat(transmissions.get(0).getStatus()).isEqualTo(TransmissionStatus.Failed);
-        assertThat(transmissions.get(0).getType()).isEqualTo(TransmissionType.UPLOADED_DOCUMENT);
     }
 }

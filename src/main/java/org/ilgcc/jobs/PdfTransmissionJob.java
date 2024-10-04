@@ -50,7 +50,7 @@ public class PdfTransmissionJob {
         log.info("Enqueued job with ID: {} for submission with ID: {}", jobId, submission.getId());
     }
 
-    @Job(name = "Send Document Transfer Service Request", retries = 5)
+    @Job(name = "Send Document Transfer Service Request for Application PDF", retries = 5)
     public void sendPdfTransferRequest(String presignedUrl, Submission submission, String fileName, UUID transmissionId) throws IOException {
         documentTransferRequestService.sendDocumentTransferServiceRequest(presignedUrl, submission, fileName, transmissionId);
     }

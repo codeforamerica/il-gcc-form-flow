@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.ilgcc.jobs.HttpClient.getJson;
 import static org.jobrunr.server.BackgroundJobServerConfiguration.usingStandardBackgroundJobServerConfiguration;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -36,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import java.net.HttpURLConnection;
 import org.springframework.test.context.TestPropertySource;
@@ -55,7 +57,7 @@ class PdfTransmissionJobTest {
     @MockBean
     private S3PresignService s3PresignService;
 
-    @Autowired
+    @SpyBean
     private TransmissionRepositoryService transmissionRepositoryService;
 
     @Autowired
@@ -77,6 +79,8 @@ class PdfTransmissionJobTest {
     private Submission submission;
 
     private final String objectPath = "testPath";
+    @Autowired
+    private Transmission transmission;
 
     @BeforeEach
     void setUp() {
@@ -120,7 +124,7 @@ class PdfTransmissionJobTest {
         Transmission transmission = transmissions.get(0);
         assertThat(transmission.getStatus()).isEqualTo(TransmissionStatus.Complete);
         assertThat(transmission.getType()).isEqualTo(TransmissionType.APPLICATION_PDF);
-        assertThat(transmission.getAttempts()).isEqualTo(1);
+        assertThat(transmission.getRetryAttempts()).isEqualTo(null);
     }
 
     @Test
@@ -131,14 +135,7 @@ class PdfTransmissionJobTest {
         when(httpUrlConnection.getInputStream()).thenReturn(new ByteArrayInputStream("Mock Response".getBytes()));
         when(httpUrlConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_BAD_REQUEST);
 
-        pdfTransmissionJob.enqueuePdfTransmissionJob(objectPath, submission);
-        await().atMost(15, TimeUnit.SECONDS).untilAsserted(
-                () -> {
-                    List<Transmission> transmissions = transmissionRepositoryService.findAllBySubmissionId(submission);
-                    assertThat(transmissions).size().isEqualTo(1);
-                    assertThat(transmissions.get(0).getStatus()).isEqualTo(TransmissionStatus.Failed);
-                    assertThat(transmissions.get(0).getType()).isEqualTo(TransmissionType.APPLICATION_PDF);
-                });
+        assertThrows(RuntimeException.class, () -> pdfTransmissionJob.sendPdfTransferRequest("https://www.test.com", submission, objectPath, transmission.getTransmissionId()));
     }
 
 

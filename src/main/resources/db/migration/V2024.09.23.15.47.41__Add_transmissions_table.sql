@@ -11,7 +11,7 @@ $$
                 time_sent           TIMESTAMP WITH TIME ZONE NULL, -- Will Be Chicago Time
                 status VARCHAR(20),
                 type   VARCHAR(20),
-                attempts INTEGER DEFAULT 1,
+                retry_attempts INTEGER,
                 errors              JSONB
             );
         END IF;
