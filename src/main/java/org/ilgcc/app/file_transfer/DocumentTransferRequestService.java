@@ -40,7 +40,8 @@ public class DocumentTransferRequestService implements DocumentTransferRequest {
         this.transmissionRepositoryService = transmissionRepositoryService;
         this.httpUrlConnectionFactory = httpUrlConnectionFactory;
     }
-
+    
+    @Override
     public void sendDocumentTransferServiceRequest(String presignedUrl, Submission submission, String fileName, UUID transmissionId)
             throws IOException {
         Transmission transmission = transmissionRepositoryService.findById(transmissionId);
@@ -78,7 +79,8 @@ public class DocumentTransferRequestService implements DocumentTransferRequest {
             throw new RuntimeException(errorMessage, e);
         }
     }
-
+    
+    @Override
     public String createJsonRequestBody(String presignedUrl, Submission submission, String fileName) {
         Map<String, Object> jsonRequestBodyMap = new HashMap<>();
         Map<String, String> sourceMapBody = new HashMap<>();
