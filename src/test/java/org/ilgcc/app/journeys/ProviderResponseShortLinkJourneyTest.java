@@ -31,7 +31,7 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit?conf_code=%s&utm_medium=test".formatted(localServerPort,
+        driver.navigate().to("http://localhost:%s/providerresponse/submit/%s?utm_medium=test".formatted(localServerPort,
                 VALID_CONF_CODE));
 
         // submit-start
@@ -57,7 +57,7 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit?conf_code=%s&utm_medium=test".formatted(localServerPort,
+        driver.navigate().to("http://localhost:%s/providerresponse/submit/%s?utm_medium=test".formatted(localServerPort,
                 VALID_CONF_CODE));
 
         // submit-start
