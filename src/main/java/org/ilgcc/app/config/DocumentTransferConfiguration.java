@@ -17,4 +17,5 @@ public class DocumentTransferConfiguration {
     public Long presignedUrlDuration;
     public String processingOrg;
     public String enableBackgroundJobs;
+    public String waitForProviderResponse;
 }
