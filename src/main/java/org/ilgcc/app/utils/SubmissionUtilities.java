@@ -9,14 +9,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Slf4j
@@ -99,11 +96,11 @@ public class SubmissionUtilities {
     public static String getMixpanelValue(Map<String, Object> inputData, String inputName) {
         String value = inputData == null ? "not_set" : (String) inputData.getOrDefault(inputName, "not_set");
 
-      if (inputName.equals("parentHasPartner")) {
-        if (!"not_set".equals(value)) {
-          value = "true".equals(value) ? "dual_parent" : "single_parent";
+        if (inputName.equals("parentHasPartner")) {
+            if (!"not_set".equals(value)) {
+                value = "true".equals(value) ? "dual_parent" : "single_parent";
+            }
         }
-      }
         return value;
     }
 
@@ -213,22 +210,19 @@ public class SubmissionUtilities {
         return YYYY_MM_DD_HH_MM_AMPM_DASHES.format(submission.getSubmittedAt());
     }
 
-    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium){
-        MultiValueMap <String, String> params = new LinkedMultiValueMap<>();
-        params.put("conf_code", Collections.singletonList(shortCode));
-        params.put("utm_medium", Collections.singletonList(utmMedium));
-
+    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium) {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("providerresponse/submit")
-            .queryParams(params).build()
-            .toUriString().replace("&", "%26");
+                .path("providerresponse/submit/" + shortCode + "?utm_medium=" + utmMedium)
+                .build()
+                .toUriString();
     }
 
-    public static String getProviderResponseURL(Submission submission, String utmMedium){
+    public static String getProviderResponseURL(Submission submission, String utmMedium) {
         String shortCode = submission.getShortCode();
         return convertToAbsoluteURLForEmailAndText(shortCode, utmMedium);
     }
-    public static String getProviderResponseURLForHTML(Submission submission, String utmMedium){
+
+    public static String getProviderResponseURLForHTML(Submission submission, String utmMedium) {
         return getProviderResponseURL(submission, utmMedium).replaceAll("%26", "&");
     }
 }

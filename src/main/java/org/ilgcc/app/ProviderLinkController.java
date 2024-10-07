@@ -11,6 +11,7 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
@@ -33,9 +34,9 @@ public class ProviderLinkController {
      * @param utmMedium        The utm_medium param, likely email vs message vs blank
      * @return
      */
-    @GetMapping("providerresponse/submit")
+    @GetMapping(value = {"providerresponse/submit","providerresponse/submit/{confirmationCode}"})
     String loadClientSubmission(HttpSession session, HttpServletRequest request,
-            @RequestParam(name = "conf_code", required = false) String confirmationCode,
+            @PathVariable(required = false) String confirmationCode,
             @RequestParam(name = "utm_medium", required = false) String utmMedium) {
 
         session.invalidate();

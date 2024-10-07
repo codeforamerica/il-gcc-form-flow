@@ -34,7 +34,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit?conf_code=%s&utm_medium=test".formatted(localServerPort, CONF_CODE));
+        driver.navigate().to("http://localhost:%s/providerresponse/submit/%s?utm_medium=test".formatted(localServerPort, CONF_CODE));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));

@@ -7,10 +7,10 @@ import java.util.Map;
 import org.yaml.snakeyaml.util.UriEncoder;
 
 public class TextUtilities {
-  public static String generateTextMessage (String recipient, String subject, String textBody){
+  public static String generateTextMessage (String recipient, String textBody){
   Map<String, String> params = new HashMap<>();
 
-  params.put("body", subject + "\n" + textBody);
+  params.put("body", textBody);
 
   return params.keySet().stream()
       .map(key -> key + "=" + UriEncoder.encode(params.get(key)))
