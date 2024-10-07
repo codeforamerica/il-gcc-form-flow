@@ -58,7 +58,7 @@ public class CheckClientSubmissionForProvider implements Action {
                 LocalDate submittedAtDate = clientSubmissionInfo.getSubmittedAt().toLocalDate();
                 LocalDate todaysDate = LocalDate.now();
                 if (DAYS.between(submittedAtDate, todaysDate) >= 40) {
-                    httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED);
+                    httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED.name());
                 } else {
                     boolean hasResponse = false;
                     if (clientSubmissionInfo.getInputData().get("providerResponseSubmissionId") != null) {
@@ -73,9 +73,9 @@ public class CheckClientSubmissionForProvider implements Action {
                         }
                     }
                     if (hasResponse) {
-                        httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.RESPONDED);
+                        httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.RESPONDED.name());
                     } else {
-                        httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE);
+                        httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE.name());
                     }
                 }
             }
