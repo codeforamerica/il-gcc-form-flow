@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{provider-response-response.title})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: clipboardWithEnvelope}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeaderForSingleInputScreen :: cardHeaderForSingleInputScreen(header=#{provider-response-response.header}, inputName='providerResponseAgreeToCare', required='true')}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="form-card__content">
+                            <div class="providerResponse">
+                                <th:block
+                                        th:if="${submission.getInputData().containsKey('familySubmissionId')}"
+                                        th:with="applicationData=${submission.getInputData().get('clientResponse')}, children=${submission.getInputData().get('clientResponseChildren')}">
+
+                                    <p class="category" th:text="#{provider-response-response.confirmation-code}"></p>
+                                    <p class="response" th:id="confirmation-code"
+                                       th:text="${applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a')}"></p>
+
+                                    <p class="category" th:text="#{provider-response-response.parent-name}"></p>
+                                    <p class="response" th:id="parent-name"
+                                       th:text="${applicationData.getOrDefault('clientResponseParentName', 'n/a')}"></p>
+
+                                    <th:block
+                                            th:each="child : ${submission.getInputData().get('clientResponseChildren')}">
+                                        <p class="category" th:text="#{provider-response-response.child-name}"></p>
+                                        <p class="response" th:id="${'child-name-'+childStat.index}"
+                                           th:text="${child.getOrDefault('childName', 'n/a')}"></p>
+
+                                        <p class="category" th:text="#{provider-response-response.child-age}"></p>
+                                        <p th:id="${'child-age-'+childStat.index}" th:text="${child.getOrDefault('childAge', 'n/a')}"></p>
+
+                                        <p class="category" th:text="#{provider-response-response.hours}"></p>
+                                        <ul class="list--bulleted" th:id="${'child-schedule-'+childStat.index}"
+                                            th:utext="${child.get('childCareHours')}"></ul>
+
+                                        <p class="category" th:text="#{provider-response-response.start-date}"></p>
+                                        <p class="response" th:id="${'child-start-'+childStat.index}"
+                                           th:text="${child.getOrDefault('childStartDate', 'n/a')}"></p>
+                                    </th:block>
+                                </th:block>
+                            </div>
+                        </div>
+                        <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                                          radioFieldset(inputName='providerResponseAgreeToCare',
+                                          ariaLabel=#{provider-response-response.title},
+                                          content=~{::providerResponse})}">
+                            <th:block th:ref="providerResponse">
+                                <th:block
+                                        th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='true', label=#{provider-response-response.button.yes})}"/>
+                                <th:block
+                                        th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='false', label=#{provider-response-response.button.no})}"/>
+                            </th:block>
+                        </th:block>
+                        <button id="form-submit-button"
+                                class="button button--primary"
+                                type="submit"
+                                data-mixpanel="provider-response"
+                                th:text="#{general.inputs.continue}">
+                        </button>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>
+
+
+

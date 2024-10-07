@@ -607,4 +607,5 @@ public class Gcc extends FlowInputs {
     // submit-confirmation
     private String surveyDifficulty;
     private String surveyAdditionalComments;
+    private String providerResponseSubmissionId;
 }

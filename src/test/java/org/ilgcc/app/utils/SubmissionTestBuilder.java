@@ -36,6 +36,11 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withShortCode(String shortCode) {
+        submission.setShortCode(shortCode);
+        return this;
+    }
+
     public SubmissionTestBuilder withDayCareProvider() {
         submission.getInputData().put("dayCareChoice", "OPEN_SESAME");
         return this;
@@ -152,11 +157,12 @@ public class SubmissionTestBuilder {
         child.put("childFirstName", firstName);
         child.put("childLastName", lastName);
         child.put("childInCare", "true");
-        child.put("childBirthdateDay", "10");
-        child.put("childBirthdateMonth", "11");
-        child.put("childBirthdateYear", "2001");
+        child.put("childDateOfBirthMonth", "10");
+        child.put("childDateOfBirthDay", "11");
+        child.put("childDateOfBirthYear", "2001");
         child.put("needFinancialAssistanceForChild", needFinancialAssistanceForChild);
         child.put("childIsUsCitizen", "Yes");
+        child.put("ccapStartDate", "01/10/2025");
         child.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
         children.add(child);
         submission.getInputData().put("children", children);

@@ -1,0 +1,30 @@
+<th:block
+  th:replace="~{fragments/screens/screenWithOneInput ::
+  screenWithOneInput(
+    title=#{provider-response-application-id.title},
+    header=#{provider-response-application-id.header},
+    subtext=#{provider-response-application-id.subtext},
+    iconFragment=~{fragments/gcc-icons :: clipboardWithEnvelope},
+    buttonLabel=#{general.button.continue},
+    required='true',
+    formAction=${formAction},
+    inputContent=~{::inputContent})}">
+  <th:block th:ref="inputContent">
+    <th:block th:replace="~{fragments/inputs/text ::
+      text(inputName='providerResponseFamilyConfirmationCode',
+      ariaLabel='header')}"/>
+  </th:block>o
+</th:block>
+
+<script th:inline="javascript">
+  $(document).ready(function () {
+    const providerFamilyCode = $('#providerResponseFamilyConfirmationCode')
+
+    if(!providerFamilyCode.text()){
+      var confirmationCode = [[${session.confirmationCode}]];
+      if(confirmationCode){
+        providerFamilyCode.val(confirmationCode)
+      }
+    }
+  });
+</script>

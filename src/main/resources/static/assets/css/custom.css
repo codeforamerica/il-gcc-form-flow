@@ -110,8 +110,7 @@ a, .button--link {
 
 .slab a:not(.button):not(.reveal__link):not(.text--red),
 .slab a:not(.button):not(.reveal__link):not(.text--red):focus,
-.button--link, .button--link:focus
-{
+.button--link, .button--link:focus {
   color: var(--idhs-base-blue);
 }
 
@@ -140,9 +139,10 @@ a, .button--link {
   margin: 0;
 }
 
-img.img-center{
+img.img-center {
   width: 462px;
 }
+
 .img-left {
   display: block;
   margin-right: 0;
@@ -161,53 +161,64 @@ img.img-center{
   align-items: center;
   gap: 30px;
 }
+
 .index-child-care-image-container img:first-child {
   margin-bottom: 41px;
   margin-left: 14px;
   margin-right: 13px;
 }
+
 .eligibility-table {
   width: 100%;
   border-collapse: collapse;
 }
+
 .eligibility-table th {
   font-weight: normal;
   font-size: 1.6rem;
   color: var(--idhs-dark-blue);
   padding-bottom: 1rem;
 }
+
 .family-income-table {
   width: 80%;
   font-weight: normal;
   border: 1px solid black;
   border-collapse: collapse;
 }
+
 .family-income-table thead {
   border: 1px solid black;
 }
+
 .family-income-table th {
   font-weight: normal;
   align-content: center;
   min-width: 13rem;
   border: 1px solid black
 }
+
 .family-income-table td {
   border: 1px solid black
 
 }
+
 .family-income-table tr {
   text-align: center;
   border: 1px solid black
 
 }
+
 .faq-situation-table {
   font-weight: normal;
   border: 1px solid black;
   border-collapse: collapse;
 }
+
 .faq-situation-table thead {
   border: 1px solid black;
 }
+
 .faq-situation-table th {
   font-weight: normal;
   min-width: 13rem;
@@ -216,13 +227,16 @@ img.img-center{
   text-align: left;
   padding: 1rem;
 }
+
 .faq-situation-table td {
   border: 1px solid black;
   padding: 1rem;
 }
+
 .faq-situation-table tr {
   border: 1px solid black
 }
+
 .paragraph-large {
   font-size: 2.5rem;
   margin-bottom: 25px;
@@ -284,6 +298,7 @@ p.normal {
   border-radius: 3px;
   max-width: 35rem;
 }
+
 .legal-stuff-header {
   padding: 2.5rem 0 -2.5rem 0;
   margin: auto;
@@ -297,6 +312,7 @@ p.normal {
   overflow-y: scroll;
   padding-right: calc(1.5rem + 12px);
 }
+
 .textarea-readonly::-webkit-scrollbar {
   -webkit-appearance: none;
 }
@@ -358,7 +374,7 @@ p.normal {
   text-align: center;
 }
 
-.vertical-steps:before{
+.vertical-steps:before {
   content: '';
   display: block;
   position: absolute;
@@ -385,7 +401,7 @@ p.normal {
   gap: 10px;
 }
 
-.zero-flex-shrink svg{
+.zero-flex-shrink svg {
   flex-shrink: 0;
 }
 
@@ -413,18 +429,18 @@ p.normal {
   max-width: 25em;
 }
 
-.time-input{
-  display:flex;
-  width:100%;
-  font-size:1.9rem;
-  font-weight:700;
-  height:6.4rem;
-  padding:0 1.5rem;
-  margin-bottom:1.5rem;
-  box-shadow:inset 0px 2px 0px rgba(0,0,0,0.15);
-  border:2px solid #121111;
-  border-radius:0;
-  background-color:white
+.time-input {
+  display: flex;
+  width: 100%;
+  font-size: 1.9rem;
+  font-weight: 700;
+  height: 6.4rem;
+  padding: 0 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: inset 0px 2px 0px rgba(0, 0, 0, 0.15);
+  border: 2px solid #121111;
+  border-radius: 0;
+  background-color: white
 }
 
 .form-width--long-time {
@@ -502,19 +518,19 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 }
 
 .list--material-get-app li:before {
-      background-image: none;
-      font-family: 'Material Icons';
-      content: "get_app";
-      top: 1rem;
-      color: currentColor;
-      font-size: 3rem;
+  background-image: none;
+  font-family: 'Material Icons';
+  content: "get_app";
+  top: 1rem;
+  color: currentColor;
+  font-size: 3rem;
 }
 
 .list--material-get-app li {
-    padding-left: 4rem;
+  padding-left: 4rem;
 }
 
-.required-input{
+.required-input {
   color: var(--hc-red);
 }
 
@@ -541,7 +557,7 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   width: 100%;
 }
 
-.form-question-stack .select{
+.form-question-stack .select {
   width: 100%;
 }
 
@@ -550,10 +566,11 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 }
 
 @media only screen and (max-width: 500px) {
-  .form-question-stack{
+  .form-question-stack {
     flex: 1 1 50px;
   }
-  .form-question-stack .select__element{
+
+  .form-question-stack .select__element {
     padding: 0 4rem 0 1.5rem;
   }
 }
@@ -573,5 +590,43 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   .notice--toolbar {
     margin-left: -3.5rem;
     margin-right: -3.5rem;
+  }
+}
+
+.providerResponse {
+  width: 100%;
+  height: 100%;
+  padding-top: 17px;
+  padding-bottom: 18px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px #008060 solid;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 15px;
+  line-height: 25px;
+  word-wrap: break-word
+}
+
+.providerResponse {
+  .category {
+    margin-bottom: 0px;
+    margin-top: 2rem;
+    font-weight: 700;
+  }
+
+  .response {
+    margin-bottom: 0px;
+    font-weight: 400;
+  }
+
+  .list--bulleted {
+    margin-top: 0px;
+  }
+
+  .list--bulleted li{
+    margin-bottom: 0px;
   }
 }
