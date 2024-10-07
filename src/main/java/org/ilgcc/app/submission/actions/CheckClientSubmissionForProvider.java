@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ChildCareProvider;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.enums.ProviderSubmissionStatus;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -57,7 +58,7 @@ public class CheckClientSubmissionForProvider implements Action {
 
                 LocalDate submittedAtDate = clientSubmissionInfo.getSubmittedAt().toLocalDate();
                 LocalDate todaysDate = LocalDate.now();
-                if (DAYS.between(submittedAtDate, todaysDate) >= 40) {
+                if (DAYS.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submittedAtDate), todaysDate) > 0) {
                     httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED.name());
                 } else {
                     boolean hasResponse = false;

@@ -1,30 +1,18 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}">
-<head th:replace="~{fragments/head :: head(title=#{'provider-response-ccap-registration.title'})}"></head>
-<body>
-<div class="page-wrapper">
-    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-    <section class="slab">
-        <div class="grid">
-            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-            <main id="content" role="main" class="form-card spacing-above-35">
-                    <th:block
-                            th:replace="~{fragments/gcc-icons :: registeredProvider }"></th:block>
-                    <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-ccap-registration.header}, subtext=#{provider-response-ccap-registration.subtext})}"/>
-
-                    <th:block th:replace="~{fragments/inputs/text :: text(inputName='providerResponseProviderNumber', ariaLabel='header')}"/>
-
-                    <div class="form-card__footer">
-                        <div>
-                            <th:block th:replace="~{fragments/continueButton :: continue(text=#{general.button.continue})}"/>
-                        </div>
-                    </div>
-            </main>
-        </div>
-    </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
-:
+<th:block
+  th:replace="~{fragments/inputs/screenWithOneInputAndSkip ::
+  screenWithOneInputAndSkip(
+    title=#{'provider-response-ccap-registration.title'},
+    iconFragment=~{fragments/gcc-icons :: registeredProvider},
+    header=#{provider-response-ccap-registration.header},
+    required='true',
+    subtext=#{provider-response-ccap-registration.subtext},
+    skipLocation='/ccap-registration-unregistered',
+    skipText=#{provider-response-ccap-registration.no-provider-number},
+    buttonLabel=#{general.button.continue},
+    formAction=${formAction},
+    inputContent=~{::inputContent})}">
+  <th:block th:ref="inputContent">
+      <th:block
+              th:replace="~{fragments/inputs/text :: text(inputName='providerResponseProviderNumber', ariaLabel='header', required='true')}"/>
+  </th:block>
+</th:block>
