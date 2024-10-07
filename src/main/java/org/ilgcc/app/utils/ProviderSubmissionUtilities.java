@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ProviderSubmissionUtilities {
+    private final static Map<String, Integer> weekWithOffset = Map.of(
+            "MONDAY", 3, "TUESDAY", 3, "WEDNESDAY", 5, "THURSDAY", 5, "FRIDAY", 5, "SATURDAY", 4, "SUNDAY", 3);
 
     public static Optional<UUID> getClientId(Submission providerSubmission) {
         if (providerSubmission.getInputData().containsKey("familySubmissionId")) {
@@ -101,9 +103,6 @@ public class ProviderSubmissionUtilities {
     }
 
     public static LocalDate threeBusinessDaysFromSubmittedAtDate(LocalDate submittedAtDate) {
-        Map<String, Integer> weekWithOffset = Map.of(
-                "MONDAY", 3, "TUESDAY", 3, "WEDNESDAY", 5, "THURSDAY", 5, "FRIDAY", 5, "SATURDAY", 4, "SUNDAY", 3);
-
         Integer dayOffset = weekWithOffset.get(submittedAtDate.getDayOfWeek().toString());
         return submittedAtDate.plusDays(dayOffset);
     }
