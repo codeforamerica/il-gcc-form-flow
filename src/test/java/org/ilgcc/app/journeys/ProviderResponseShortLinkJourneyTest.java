@@ -31,7 +31,7 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit?conf_code=%s&utm_source=test".formatted(localServerPort,
+        driver.navigate().to("http://localhost:%s/providerresponse/submit?conf_code=%s&utm_medium=test".formatted(localServerPort,
                 VALID_CONF_CODE));
 
         // submit-start
@@ -51,13 +51,13 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
                 .with("parentPreferredName", "FirstName")
                 .withChild("First", "Child", "Yes")
                 .withConstantChildcareSchedule(0)
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(4))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
                 .withShortCode(VALID_CONF_CODE)
                 .build());
 
         testPage.clickContinue();
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit?conf_code=%s&utm_source=test".formatted(localServerPort,
+        driver.navigate().to("http://localhost:%s/providerresponse/submit?conf_code=%s&utm_medium=test".formatted(localServerPort,
                 VALID_CONF_CODE));
 
         // submit-start
