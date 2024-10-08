@@ -117,3 +117,4 @@ il-gcc:
     auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
     presigned-url-Duration: 5 # Minutes
     enable-background-jobs: true
+    wait-for-provider-response: ${WAIT_FOR_PROVIDER_RESPONSE_FLAG:false}
