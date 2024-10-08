@@ -24,20 +24,23 @@ public class UploadSubmissionToS3 implements Action {
 
     private final PdfService pdfService;
     private final CloudFileRepository cloudFileRepository;
-    
+
     private final PdfTransmissionJob pdfTransmissionJob;
     private final String CONTENT_TYPE = "application/pdf";
-    
+
     private final String enableBackgroundJobs;
 
+    private final String waitForProviderResponseFlag;
 
     public UploadSubmissionToS3(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob,
-            @Value("${il-gcc.dts.enable-background-jobs}") String enableBackgroundJobs) {
+            @Value("${il-gcc.dts.enable-background-jobs}") String enableBackgroundJobs,
+            @Value("${il-gcc.dts.wait-for-provider-response}") String waitForProviderResponseFlag) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
         this.enableBackgroundJobs = enableBackgroundJobs;
+        this.waitForProviderResponseFlag = waitForProviderResponseFlag;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class UploadSubmissionToS3 implements Action {
                 }
             }).thenRun(() -> {
                 try {
-                    if (enableBackgroundJobs.equals("true")) {
+                    if (enableBackgroundJobs.equals("true") && waitForProviderResponseFlag.equals("false")) {
                         pdfTransmissionJob.enqueuePdfTransmissionJob(s3ZipPath, submission);
                     }
                 } catch (IOException e) {
