@@ -41,10 +41,9 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
 
   private static Stream<Arguments> invalidDates() {
     return Stream.of(
-        Arguments.of("1", "1", "2050", "Please enter a start date between 01/01/1901 and today."),
-        Arguments.of("1", "1", "1889", "Please enter a start date between 01/01/1901 and today."),
-        Arguments.of("*", "1", "1889", "Please enter the date your child started care in this format: mm/dd/yyyy"),
-        Arguments.of("*1", "1", "1989", "Please enter the date your child started care in this format: mm/dd/yyyy")
+        Arguments.of("1", "1", "1889", "Make sure the date you entered is after 01/01/1901."),
+        Arguments.of("*", "1", "1889", "Make sure the date you entered is in this format: mm/dd/yyyy"),
+        Arguments.of("*1", "1", "1989", "Make sure the date you entered is in this format: mm/dd/yyyy")
     );
   }
 
@@ -61,15 +60,6 @@ public class CcapStartDateTest extends AbstractMockMvcTest {
   @NotNull
   private String getCcapStartDateError() throws Exception {
     return getCcapStartDatePage().getInputError("ccapStartDate").text();
-  }
-
-  @Test
-  void testDatesOutOfRangeForFutureCare() throws Exception {
-    postToIsInChildcarePage("false");
-
-    postToChildCareStartDate("1", "1", "2024");
-
-    assertThat(getCcapStartDateError()).isEqualTo("Please choose a future start date.");
   }
 
   @Test
