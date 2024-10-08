@@ -37,6 +37,10 @@ public class ValidateChildrenCCAPStartDate extends VerifyDate {
         (String) inputData.get("ccapStartDay"),
         (String) inputData.get("ccapStartYear"));
     
+    if (ccapStartingDate.replace("/", "").isBlank()) {
+      return errorMessages;
+    }
+    
     if (this.isDateInvalid(ccapStartingDate)) {
         errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-date-format", null, locale)));
     } else if (this.isBeforeMinDate(ccapStartingDate)) {
