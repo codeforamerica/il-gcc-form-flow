@@ -131,7 +131,7 @@ a, .button--link {
 
 .button--wide.fake-button {
   cursor: default;
-  
+
   > i.icon-check_circle {
     color: #048E85;
   }
