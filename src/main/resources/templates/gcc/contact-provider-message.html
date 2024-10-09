@@ -14,32 +14,42 @@
           <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
             <th:block th:ref="content">
               <div class="form-card__content"
-                th:with="shortCode=${submission.getShortCode()}">
-                <p th:text="${#messages.msg('contact-provider-message.below-we-prepared', T(org.ilgcc.app.utils.ChildCareProvider).valueOf(inputData.get('dayCareChoice')).getDisplayName())}"></p>
-                <p th:text="${#messages.msg('contact-provider-message.it-includes', shortCode)}"></p>
+                th:with="shortCode=${submission.getShortCode()}, ccpName=${T(org.ilgcc.app.utils.ChildCareProvider).valueOf(inputData.get('dayCareChoice')).getDisplayName()}">
+                <p th:utext="${#messages.msg('contact-provider-message.below-we-prepared', ccpName)}"></p>
+                <p th:utext="${#messages.msg('contact-provider-message.it-includes', shortCode)}"></p>
                 <div class="notice--warning notice--gray confirmation-example">
-                  <p th:text="${#messages.msg('contact-provider-message.message-p1', shortCode)}"></p>
-                  <p th:text="${#messages.msg('contact-provider-message.message-p2', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURLForHTML(submission, 'email'))}"></p>
+                  <p id="providerMessageP1" th:text="${#messages.msg('contact-provider-message.message-p1', shortCode)}"></p>
+                  <p id="providerMessageP2" th:text="${#messages.msg('contact-provider-message.message-p2', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURL(submission))}"></p>
                 </div>
                 <div class="center"
                     th:with="emailAddress=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURL(submission, 'email'), shortCode))}">
                   <a th:id="contact-provider-by-email" th:href="${emailAddress}" class="button button--wide">
-                    <i class="icon-markunread"></i>
+                    <th:block th:replace="~{fragments/gcc-icons :: email}"></th:block>
                     <span th:text="#{contact-provider-message.email-message}"></span>
                   </a>
                 </div>
                 <div class="center"
                     th:with="smsPhoneNumber=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-provider-message.message-body', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURL(submission, 'text'), shortCode))}">
-                  <a th:href="${smsPhoneNumber}"
+                  <a th:id="contact-provider-by-text" th:href="${smsPhoneNumber}"
                      class="button button--wide">
-                    <i class="icon-insert_comment"></i>
+                    <th:block th:replace="~{fragments/gcc-icons :: textMessage}"></th:block>
                     <span th:text="#{contact-provider-message.text-message}"></span>
                   </a>
+                </div>
+                <div class="center">
+                  <a th:id="copy-message-to-clipboard" class="button button--wide" onclick="copyToClipboard()">
+                    <th:block th:replace="~{fragments/gcc-icons :: copyMessage}"></th:block>
+                    <span th:text="#{contact-provider-message.copy-message}"></span>
+                  </a>
+                  <div th:id="message-copied-to-clipboard" class="button button--wide fake-button hidden">
+                    <th:block th:replace="~{fragments/gcc-icons :: greenCircleCheckmark}"></th:block>
+                    <span th:text="#{contact-provider-message.copied-message}"></span>
+                  </div>
                 </div>
               </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
-                  text=#{general.inputs.continue})}"/>
+                  text=#{general.complete-application}, classes='button button--primary disabled')}"/>
             </div>
           </th:block>
         </th:block>
@@ -49,4 +59,29 @@
 </div>
 <th:block th:replace="~{fragments/footer :: footer}" />
 </body>
+<script th:inline="javascript">
+  function copyToClipboard() {
+    const text = document.getElementById('providerMessageP1').textContent + "\n\n" + document.getElementById('providerMessageP2').textContent;
+    navigator.clipboard.writeText(text)
+    .then(() => {
+      // Flip the button to clicked state by removing the old button and showing the correct button
+      document.getElementById('copy-message-to-clipboard').remove();
+      document.getElementById('message-copied-to-clipboard').classList.remove("hidden");
+    })
+    .catch(err => {
+      console.error('Failed to copy to clipboard: ', err);
+    });
+  }
+
+  const ctaButtons = document.querySelectorAll("a.button.button--wide");
+  const continueButton = document.getElementById('form-submit-button');
+
+  let enableContinueButton = () => {
+    continueButton.classList.remove('disabled');
+  }
+
+  Array.prototype.forEach.call(ctaButtons, (item) => {
+    item.addEventListener('click', enableContinueButton);
+  });
+</script>
 </html>
