@@ -1,9 +1,11 @@
 package org.ilgcc.app.utils;
 
+import static java.time.temporal.ChronoUnit.DAYS;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,8 +104,12 @@ public class ProviderSubmissionUtilities {
         return String.join("", dateString);
     }
 
-    public static LocalDate threeBusinessDaysFromSubmittedAtDate(LocalDate submittedAtDate) {
+    public static LocalDate threeBusinessDaysFromSubmittedAtDate(OffsetDateTime submittedAtDate) {
         Integer dayOffset = weekWithOffset.get(submittedAtDate.getDayOfWeek().toString());
-        return submittedAtDate.plusDays(dayOffset);
+        return submittedAtDate.plusDays(dayOffset).toLocalDate();
+    }
+
+    public static boolean providerApplicationHasExpired(Submission submission, LocalDate todaysDate){
+        return submission.getSubmittedAt() != null && DAYS.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt()), todaysDate) > 0;
     }
 }
