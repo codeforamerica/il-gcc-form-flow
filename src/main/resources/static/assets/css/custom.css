@@ -122,14 +122,19 @@ a, .button--link {
   width: 100%;
   display: flex;
   justify-content: center;
-    > svg {
+    > i {
+      line-height: inherit;
+      font-size: 1.3em;
       margin: auto 8px auto 0;
     }
 }
 
 .button--wide.fake-button {
   cursor: default;
-  transform: none !important;
+  
+  > i.icon-check_circle {
+    color: #048E85;
+  }
 }
 
 .button--wide.fake-button:hover {

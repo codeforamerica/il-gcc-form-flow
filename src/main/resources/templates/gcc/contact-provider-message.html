@@ -24,7 +24,7 @@
                 <div class="center"
                     th:with="emailContent=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURL(submission, 'email'), shortCode))}">
                   <a th:id="contact-provider-by-email" th:href="${emailContent}" class="button button--wide">
-                    <th:block th:replace="~{fragments/gcc-icons :: email}"></th:block>
+                    <i class="icon-markunread"></i>
                     <span th:text="#{contact-provider-message.email-message}"></span>
                   </a>
                 </div>
@@ -32,17 +32,17 @@
                     th:with="textMessageContent=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-provider-message.message-body', T(org.ilgcc.app.utils.SubmissionUtilities).getProviderResponseURL(submission, 'text'), shortCode))}">
                   <a th:id="contact-provider-by-text" th:href="${textMessageContent}"
                      class="button button--wide">
-                    <th:block th:replace="~{fragments/gcc-icons :: textMessage}"></th:block>
+                    <i class="icon-insert_comment"></i>
                     <span th:text="#{contact-provider-message.text-message}"></span>
                   </a>
                 </div>
                 <div class="center">
                   <a th:id="copy-message-to-clipboard" th:href="'#copied'" class="button button--wide" onclick="copyToClipboard()">
-                    <th:block th:replace="~{fragments/gcc-icons :: copyMessage}"></th:block>
+                    <i class="icon-">content_copy</i>
                     <span th:text="#{contact-provider-message.copy-message}"></span>
                   </a>
                   <div th:id="message-copied-to-clipboard" class="button button--wide fake-button hidden">
-                    <th:block th:replace="~{fragments/gcc-icons :: greenCircleCheckmark}"></th:block>
+                    <i class="icon-check_circle"></i>
                     <span th:text="#{contact-provider-message.copied-message}"></span>
                   </div>
                 </div>
