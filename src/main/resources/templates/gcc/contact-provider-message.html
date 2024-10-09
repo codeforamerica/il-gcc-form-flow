@@ -46,11 +46,20 @@
                     <span th:text="#{contact-provider-message.copied-message}"></span>
                   </div>
                 </div>
+                <div class="form-card__footer">
+                  <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(
+              buttonLabel=#{contact-provider-message.faq-title},
+              content=~{::first})}">
+                    <th:block th:ref="first">
+                      <th:block th:utext="#{contact-provider-message.faq-answer}"></th:block>
+                    </th:block>
+                  </th:block>
+                </div>
               </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
-                  text=#{general.complete-application}, classes='button button--primary disabled')}"/>
-            </div>
+              <div class="form-card__footer">
+                <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                    text=#{general.complete-application}, classes='button button--primary disabled')}"/>
+              </div>
           </th:block>
         </th:block>
       </main>
