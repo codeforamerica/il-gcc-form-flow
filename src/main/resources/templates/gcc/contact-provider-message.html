@@ -37,7 +37,7 @@
                   </a>
                 </div>
                 <div class="center">
-                  <a th:id="copy-message-to-clipboard" class="button button--wide" onclick="copyToClipboard()">
+                  <a th:id="copy-message-to-clipboard" th:href="'#void'" class="button button--wide" onclick="copyToClipboard()">
                     <th:block th:replace="~{fragments/gcc-icons :: copyMessage}"></th:block>
                     <span th:text="#{contact-provider-message.copy-message}"></span>
                   </a>
