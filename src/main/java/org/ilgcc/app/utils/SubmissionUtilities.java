@@ -217,10 +217,6 @@ public class SubmissionUtilities {
                 .toUriString();
     }
 
-    public static String getProviderResponseURL(Submission submission) {
-        return getProviderResponseURL(submission, null);
-    }
-
     public static String getProviderResponseURL(Submission submission, String utmMedium) {
         String shortCode = submission.getShortCode();
         return convertToAbsoluteURLForEmailAndText(shortCode, utmMedium);
