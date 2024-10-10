@@ -65,10 +65,10 @@ public class CheckClientSubmissionForProvider implements Action {
                 }
                 ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
                 ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
-                if (providerApplicationHasExpired(submission, todaysDate)) {
+                if (providerApplicationHasExpired(clientSubmissionInfo, todaysDate)) {
                     httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED.name());
                 } else {
-                    boolean hasResponse = false;
+                      boolean hasResponse = false;
                     if (clientSubmissionInfo.getInputData().get("providerResponseSubmissionId") != null) {
                         // The above value should be set on the client submission whenever a provider first submits
                         // their response.
