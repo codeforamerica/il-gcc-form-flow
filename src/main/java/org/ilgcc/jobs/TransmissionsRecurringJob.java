@@ -9,6 +9,9 @@ import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
@@ -62,13 +65,17 @@ public class TransmissionsRecurringJob {
     @Job(name = "No provider response job")
     public void NoProviderResponseJob() {
         List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
-        LocalDate todaysDate = LocalDate.now();
 
-        if (waitForProviderResponseFlag.equals("false")) {
-            return;
-        } else if (submissionsWithoutTransmissions.isEmpty()) {
+
+//        if (waitForProviderResponseFlag.equals("false")) {
+//            return;
+//        } else
+
+        if (submissionsWithoutTransmissions.isEmpty()) {
             return;
         } else {
+            ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
+            ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
             for (Submission s : submissionsWithoutTransmissions) {
                 if (!hasProviderResponse(s) && providerApplicationHasExpired(s, todaysDate)) {
                     uploadPdfSubmissionToS3(s);

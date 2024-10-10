@@ -6,6 +6,9 @@ import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
@@ -60,8 +63,8 @@ public class CheckClientSubmissionForProvider implements Action {
                 if (submittedAtDate == null) {
                     log.warn("No submittedAt date found for submission " + submission.getId());
                 }
-
-                LocalDate todaysDate = LocalDate.now();
+                ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
+                ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
                 if (providerApplicationHasExpired(submission, todaysDate)) {
                     httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED.name());
                 } else {
