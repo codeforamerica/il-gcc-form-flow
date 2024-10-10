@@ -117,10 +117,43 @@ a, .button--link {
 .button--primary {
   background-color: var(--idhs-base-blue);
 }
+
 .button--wide {
   width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+    > i {
+      line-height: inherit;
+      font-size: 1.3em;
+      margin: auto 8px auto 0;
+    }
 }
+
+.button--wide.fake-button {
+  cursor: default;
+
+  > i.icon-check_circle {
+    color: #048E85;
+  }
+}
+
+.button--wide.fake-button:hover {
+  background-color: #FFFFFF;
+}
+
+.button--wide.fake-button:active {
+  transform: none;
+  transition: none;
+  top: 0;
+  box-shadow: 0 2px 0 rgba(0,0,0, .5);
+}
+
+
+.button--wide.hidden {
+  display: none;
+}
+
+
 /* Utilities */
 .padding-top-0 {
   padding-top: 0;
