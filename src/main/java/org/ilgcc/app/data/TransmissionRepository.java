@@ -12,13 +12,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransmissionRepository extends JpaRepository<Transmission, UUID> {
     @Query(value =
-            "SELECT s.* " +
-            "FROM submissions s " +
-            "LEFT JOIN transmissions t ON t.submission_id = s.id " +
-            "WHERE s.submitted_at IS NOT NULL " +
-            "AND t.transmission_id IS NULL " +
-            "ORDER BY s.updated_at ASC",
-            nativeQuery = true)
+            "SELECT s FROM Submission s " +
+            "LEFT JOIN Transmission t ON t.submissionId = s " +
+            "WHERE s.submittedAt IS NOT NULL " +
+            "AND t.transmissionId IS NULL " +
+            "ORDER BY s.updatedAt ASC")
 
     List<Submission> findSubmissionsWithoutTransmission();
 
