@@ -212,7 +212,7 @@ public class SubmissionUtilities {
 
     public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium) {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("providerresponse/submit/" + shortCode + "?utm_medium=" + utmMedium)
+                .path("providerresponse/submit/" + shortCode + (utmMedium != null ? "?utm_medium=" + utmMedium : ""))
                 .build()
                 .toUriString();
     }
@@ -220,9 +220,5 @@ public class SubmissionUtilities {
     public static String getProviderResponseURL(Submission submission, String utmMedium) {
         String shortCode = submission.getShortCode();
         return convertToAbsoluteURLForEmailAndText(shortCode, utmMedium);
-    }
-
-    public static String getProviderResponseURLForHTML(Submission submission, String utmMedium) {
-        return getProviderResponseURL(submission, utmMedium).replaceAll("%26", "&");
     }
 }
