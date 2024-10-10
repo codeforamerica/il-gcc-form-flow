@@ -7,14 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.ilgcc.app.utils.enums.TransmissionStatus;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class TransmissionRepositoryService {
-    
+
     TransmissionRepository transmissionRepository;
-    
+
     public TransmissionRepositoryService(TransmissionRepository transmissionRepository) {
         this.transmissionRepository = transmissionRepository;
     }
@@ -22,7 +23,7 @@ public class TransmissionRepositoryService {
     public Transmission save(Transmission transmission) {
         return transmissionRepository.save(transmission);
     }
-    
+
     public Transmission findById(UUID id) {
         return this.transmissionRepository.findById(id).orElse(null);
     }
@@ -30,7 +31,11 @@ public class TransmissionRepositoryService {
     public List<Transmission> findAllBySubmissionId(Submission submission) {
         return this.transmissionRepository.findAllBySubmissionId(submission);
     }
-    
+
+    public List<Submission> findSubmissionsWithoutTransmission(){
+        return this.transmissionRepository.findSubmissionsWithoutTransmission();
+    }
+
     public void updateStatus(Transmission transmission, TransmissionStatus status) {
         transmission.setStatus(status);
         this.transmissionRepository.save(transmission);
