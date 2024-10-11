@@ -34,7 +34,6 @@ public class TransmissionsRecurringJob {
     private final CloudFileRepository cloudFileRepository;
     private final String waitForProviderResponseFlag;
     private final PdfTransmissionJob pdfTransmissionJob;
-    private final String CONTENT_TYPE = "application/pdf";
 
     public TransmissionsRecurringJob(
             S3PresignService s3PresignService,
@@ -53,19 +52,14 @@ public class TransmissionsRecurringJob {
         this.waitForProviderResponseFlag = waitForProviderResponseFlag;
     }
 
-    @Recurring(id = "no-provider-response-job", cron = "* * * * *")
+    @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
         List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
-
-
-//        if (waitForProviderResponseFlag.equals("false")) {
-//            return;
-//        } else
-
-        if (submissionsWithoutTransmissions.isEmpty()) {
+        if (submissionsWithoutTransmissions.isEmpty() || waitForProviderResponseFlag.equals("false")) {
             return;
         } else {
+            log.info(String.format("Running the 'No provider response job' for %s submissions", submissionsWithoutTransmissions.size()));
             ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
             ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
             for (Submission submission : submissionsWithoutTransmissions) {
@@ -74,7 +68,7 @@ public class TransmissionsRecurringJob {
                     EnqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService, submission);
                 } else if (hasProviderResponse(submission) && providerApplicationHasExpired(submission, todaysDate)) {
                     throw new IllegalStateException(String.format(
-                            "Weird, provider response exist but the provider response expired. Check submission: %s", submission.getId()));
+                            "The provider response exists but the provider response expired. Check submission: %s", submission.getId()));
                 }
             }
         }

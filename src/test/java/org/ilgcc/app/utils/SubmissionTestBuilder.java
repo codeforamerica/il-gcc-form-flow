@@ -159,7 +159,7 @@ public class SubmissionTestBuilder {
         child.put("childInCare", "true");
         child.put("childDateOfBirthMonth", "10");
         child.put("childDateOfBirthDay", "11");
-        child.put("childDateOfBirthYear", "2001");
+        child.put("childDateOfBirthYear", "2002");
         child.put("needFinancialAssistanceForChild", needFinancialAssistanceForChild);
         child.put("childIsUsCitizen", "Yes");
         child.put("ccapStartDate", "01/10/2025");
