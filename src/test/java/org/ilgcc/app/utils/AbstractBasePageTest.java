@@ -5,6 +5,7 @@ import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import formflow.library.data.UserFileRepository;
 import java.util.Locale;
+import org.ilgcc.app.data.TransmissionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
@@ -36,7 +37,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import({WebDriverConfiguration.class})
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "selenium-test"})
 public abstract class AbstractBasePageTest {
 
     private static final String UPLOADED_JPG_FILE_NAME = "test.jpeg";
@@ -49,6 +50,9 @@ public abstract class AbstractBasePageTest {
 
     @Autowired
     UserFileRepository userFileRepository;
+    
+    @Autowired
+    TransmissionRepository transmissionRepository;
 
     @Autowired
     protected Path path;
@@ -87,6 +91,7 @@ public abstract class AbstractBasePageTest {
     @AfterEach
     protected void clearSubmissions() {
         userFileRepository.deleteAll();
+        transmissionRepository.deleteAll();
         repo.deleteAll();
     }
 

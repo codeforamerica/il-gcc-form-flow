@@ -64,6 +64,9 @@ public class UploadSubmissionToS3 implements Action {
                 } catch (IOException e) {
                     log.error("An error occurred when enqueuing a job with the document transfer service.", e);
                 }
+            }).exceptionally(e -> {
+                log.error("Error uploading submission to S3 for submission with ID: {}", submission.getId(), e);
+                return null;
             });
 
         } catch (IOException e) {

@@ -56,9 +56,14 @@ public class CheckClientSubmissionForProvider implements Action {
                 httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_ID, provider.getIdNumber());
                 httpSession.setAttribute(SESSION_KEY_CLIENT_CONFIRMATION_CODE, clientSubmissionInfo.getShortCode());
 
-                LocalDate submittedAtDate = clientSubmissionInfo.getSubmittedAt().toLocalDate();
+                // In Prod, there should always be a submittedAt date, but for Staging it's possible to skip around in the flow and never submit
+                LocalDate submittedAtDate = clientSubmissionInfo.getSubmittedAt() != null ? clientSubmissionInfo.getSubmittedAt().toLocalDate() : null;
+                if (submittedAtDate == null) {
+                    log.warn("No submittedAt date found for submission " + submission.getId());
+                }
+
                 LocalDate todaysDate = LocalDate.now();
-                if (DAYS.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submittedAtDate), todaysDate) > 0) {
+                if (submittedAtDate != null && DAYS.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submittedAtDate), todaysDate) > 0) {
                     httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED.name());
                 } else {
                     boolean hasResponse = false;
