@@ -7,7 +7,7 @@ import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.enums.FileNameUtility;
-import org.ilgcc.jobs.EnqueuePdfDocumentTransfer;
+import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.PdfTransmissionJob;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +40,7 @@ public class UploadSubmissionToS3 implements Action {
     @Override
     public void run(Submission submission) {
         if (enableBackgroundJobs.equals("true") && waitForProviderResponseFlag.equals("false")) {
-            new EnqueuePdfDocumentTransfer(pdfService, cloudFileRepository, pdfTransmissionJob).enqueueBySubmission(submission, FileNameUtility.getFileNameForPdf(submission));
+            EnqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob, submission, FileNameUtility.getFileNameForPdf(submission));
         }
     }
 }

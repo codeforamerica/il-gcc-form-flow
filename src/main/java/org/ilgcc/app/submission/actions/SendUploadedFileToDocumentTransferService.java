@@ -6,7 +6,7 @@ import formflow.library.data.UserFileRepositoryService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.file_transfer.S3PresignService;
-import org.ilgcc.jobs.EnqueueUploadedDocumentTransfer;
+import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.UploadedDocumentTransmissionJob;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ public class SendUploadedFileToDocumentTransferService implements Action {
     @Override
     public void run(Submission submission) {
         if (enableBackgroundJobs.equals("true") && waitForProviderResponseFlag.equals("false")) {
-            new EnqueueUploadedDocumentTransfer(userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService).enqueueBySubmission(submission);
+           EnqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService, submission);
         }
     }
 }

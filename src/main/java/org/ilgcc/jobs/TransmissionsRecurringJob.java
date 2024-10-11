@@ -68,13 +68,13 @@ public class TransmissionsRecurringJob {
         } else {
             ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
             ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
-            for (Submission s : submissionsWithoutTransmissions) {
-                if (!hasProviderResponse(s) && providerApplicationHasExpired(s, todaysDate)) {
-                    uploadPdfSubmissionToS3(s);
-                    sendUploadedDocumentsToDocumentTransferService(s);
-                } else if (hasProviderResponse(s) && providerApplicationHasExpired(s, todaysDate)) {
+            for (Submission submission : submissionsWithoutTransmissions) {
+                if (!hasProviderResponse(submission) && providerApplicationHasExpired(submission, todaysDate)) {
+                    EnqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob, submission, FileNameUtility.getFileNameForPdf(submission, "No-Provider-Response"));
+                    EnqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService, submission);
+                } else if (hasProviderResponse(submission) && providerApplicationHasExpired(submission, todaysDate)) {
                     throw new IllegalStateException(String.format(
-                            "Weird, provider response exist but the provider response expired. Check submission: %s", s.getId()));
+                            "Weird, provider response exist but the provider response expired. Check submission: %s", submission.getId()));
                 }
             }
         }
@@ -82,13 +82,5 @@ public class TransmissionsRecurringJob {
 
     private boolean hasProviderResponse(Submission submission) {
         return submission.getInputData().containsKey("providerResponseSubmissionId");
-    }
-
-    private void uploadPdfSubmissionToS3(Submission submission) {
-        new EnqueuePdfDocumentTransfer(pdfService, cloudFileRepository, pdfTransmissionJob).enqueueBySubmission(submission, FileNameUtility.getFileNameForPdf(submission, "No-Provider-Response"));
-    }
-
-    private void sendUploadedDocumentsToDocumentTransferService(Submission submission) {
-        new EnqueueUploadedDocumentTransfer(userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService).enqueueBySubmission(submission);
     }
 }
