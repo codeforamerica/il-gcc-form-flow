@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class EnqueueDocumentTransfer {
     private final static String CONTENT_TYPE = "application/pdf";
 
-    public static void enqueuePDFDocumentBySubmission(PdfService pdfService, CloudFileRepository cloudFileRepository,
+    public void enqueuePDFDocumentBySubmission(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob, Submission submission, String fileNameForPdf) {
         try {
             byte[] pdfFile = pdfService.getFilledOutPDF(submission);
@@ -54,7 +54,7 @@ public class EnqueueDocumentTransfer {
 
     }
 
-    public static void enqueueUploadedDocumentBySubmission(UserFileRepositoryService userFileRepositoryService,
+    public void enqueueUploadedDocumentBySubmission(UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, S3PresignService s3PresignService, Submission submission) {
         log.info("Sending uploaded files to document transfer service for submission with ID: {}", submission.getId());
         List<UserFile> userFiles = userFileRepositoryService.findAllBySubmission(submission);
