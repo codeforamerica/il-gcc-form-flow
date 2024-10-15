@@ -3,6 +3,8 @@ form-flow:
   lock-after-submitted:
     - flow: gcc
       redirect: submit-complete
+    - flow: providerresponse
+      redirect: submit-complete-final
   design-system:
     name: honeycrisp
   languages: en, es

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{provider-response-submit-complete-final.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+          <th:block th:replace="~{fragments/gcc-icons :: greenCheck}"></th:block>
+        <div
+            th:class="spacing-below-0"
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-submit-complete-final.header})}">
+        </div>
+          <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
+            <th:block th:ref="content">
+              <div class="form-card__content"
+                    th:with="confirmationCode=${submission.inputData.get('providerResponseFamilyConfirmationCode')}">
+                  <div class="notice--success">
+                      <p th:utext="${#messages.msg('provider-response-submit-complete-final.notice-pt1', confirmationCode)}"></p>
+                      <p th:text="#{provider-response-submit-complete-final.notice-pt2}"></p>
+                  </div>
+              </div>
+            <div class="form-card__footer">
+              <a href="/"
+                 th:text="#{provider-response-submit-complete-final.return-to-home-button}"
+                 class="button button--primary"
+                 id="return-to-home-button-"></a>
+              <a href="/providerresponse/submit"
+                 th:text="#{provider-response-submit-complete-final.respond-to-another-app-button}"
+                 class="button"
+                 id="respond-to-another-app-button"></a>
+            </div>
+          </th:block>
+        </th:block>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}" />
+</body>
+</html>
