@@ -18,7 +18,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     private static String CONF_CODE="A2123B";
 
     @Test
-    void ProviderresponseWithShortLinkFlowJourneyTest() {
+    void ProviderresponseJourneyTest() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
@@ -88,7 +88,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         //submit-complete-final
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
-
+        testPage.goBack();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        testPage.findElementById("respond-to-another-app-button").click();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
 
     }
 
