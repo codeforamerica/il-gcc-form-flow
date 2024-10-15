@@ -30,7 +30,7 @@ public class SampleJobsTest {
   public void startJobRunr() {
     testService = new SampleJobProcessor();
 
-    JobRunr.configure().useStorageProvider(storageProvider).useJobActivator(this::jobActivator).useDashboard()
+    JobRunr.configure().useStorageProvider(storageProvider).useJobActivator(this::jobActivator).useDashboard(1337)
         .useBackgroundJobServer(usingStandardBackgroundJobServerConfiguration().andPollInterval(ofMillis(200))).initialize();
   }
 
@@ -88,15 +88,15 @@ public class SampleJobsTest {
   }
 
   private String getSucceededJobs() {
-    return getJson("http://localhost:8000/api/jobs?state=SUCCEEDED");
+    return getJson("http://localhost:1337/api/jobs?state=SUCCEEDED");
   }
 
   private String getEnqueuedJobs() {
-    return getJson("http://localhost:8000/api/jobs?state=ENQUEUED");
+    return getJson("http://localhost:1337/api/jobs?state=ENQUEUED");
   }
 
   private String getProcessingJobs() {
-    return getJson("http://localhost:8000/api/jobs?state=PROCESSING");
+    return getJson("http://localhost:1337/api/jobs?state=PROCESSING");
   }
 
   @SuppressWarnings("unchecked")

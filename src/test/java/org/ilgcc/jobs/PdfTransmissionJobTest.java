@@ -93,7 +93,7 @@ class PdfTransmissionJobTest {
         jobScheduler = JobRunr.configure()
                 .useStorageProvider(storageProvider)
                 .useJobActivator(this::jobActivator)
-                .useDashboard()
+                .useDashboard(1337)
                 .useBackgroundJobServer(usingStandardBackgroundJobServerConfiguration()
                         .andPollInterval(ofMillis(200))).initialize().getJobScheduler();
 
@@ -145,6 +145,6 @@ class PdfTransmissionJobTest {
     }
 
     private String getSucceededJobs() {
-        return getJson("http://localhost:8000/api/jobs?state=SUCCEEDED");
+        return getJson("http://localhost:1337/api/jobs?state=SUCCEEDED");
     }
 }
