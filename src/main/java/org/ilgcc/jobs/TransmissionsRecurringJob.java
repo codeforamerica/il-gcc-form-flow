@@ -67,7 +67,7 @@ public class TransmissionsRecurringJob {
                     EnqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob, submission, FileNameUtility.getFileNameForPdf(submission, "No-Provider-Response"));
                     EnqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService, submission);
                 } else if (hasProviderResponse(submission) && providerApplicationHasExpired(submission, todaysDate)) {
-                    throw new IllegalStateException(String.format(
+                    log.error(String.format(
                             "The provider response exists but the provider response expired. Check submission: %s", submission.getId()));
                 }
             }
