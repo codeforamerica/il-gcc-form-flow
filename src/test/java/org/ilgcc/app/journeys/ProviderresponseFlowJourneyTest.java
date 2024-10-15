@@ -74,12 +74,22 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        testPage.clickElementById("providerResponseAgreeToCare-false-label");
+        testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickContinue();
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete.title"));
-        assertThat(testPage.findElementsByClass("notice").get(0).getText()).isEqualTo(getEnMessage("provider-response-submit-complete.notice-no"));
+        assertThat(testPage.findElementsByClass("notice").get(0).getText()).isEqualTo(getEnMessage("provider-response-submit-complete.notice-yes"));
+        testPage.clickContinue();
+
+        //info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
+        testPage.clickButton("Submit");
+
+        //submit-complete-final
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+
+
     }
 
 }
