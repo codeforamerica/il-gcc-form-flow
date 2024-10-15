@@ -14,4 +14,30 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank
     private String providerResponseAgreeToCare;
+    
+    private String providerResponseBusinessName;
+    
+    @NotBlank
+    private String providerResponseFirstName;
+    
+    @NotBlank
+    private String providerResponseLastName;
+    
+    @NotBlank
+    private String providerResponseServiceStreetAddress1;
+    
+    private String providerResponseServiceStreetAddress2;
+    
+    @NotBlank
+    private String providerResponseServiceCity;
+
+    @NotBlank
+    private String providerResponseServiceState;
+    
+    @NotBlank
+    private String providerResponseServiceZipCode;
+    
+    private String providerResponseContactPhoneNumber;
+    
+    private String providerResponseContactEmail;
 }

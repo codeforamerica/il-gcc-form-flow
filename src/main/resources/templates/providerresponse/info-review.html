@@ -1,29 +1,61 @@
 <!DOCTYPE html>
-<html th:lang="${#locale.language}">
-<head th:replace="~{fragments/head :: head(title=#{provider-response-info-review.title})}"></head>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{parent-info-review.title})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block
-            th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-info-review.header})}"/>
-          <th:block th:replace="~{fragments/form :: form(action=|/flow/${flow}/${screen}/submit|, content=~{::formContent})}">
-            <th:block th:ref="formContent">
-              <div class="form-card__content">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: evaluatingInformation}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-review.header})}"/>
+                <div class="form-card__content">
+                    <p class="text--left"><strong
+                            th:text="#{provider-response-info-review.basic-info}"></strong></p>
+                    <ol class="list--bulleted">
+                        <li th:text="${inputData.get('providerResponseBusinessName')}"></li>
+                        <li th:text="|${inputData.get('providerResponseFirstName')} ${inputData.get('providerResponseLastName')}|"></li>
+                    </ol>
+                    <a id="edit-parent-info-basic" th:href="|/flow/${flow}/info|"
+                       th:text="#{provider-response-info-review.basic-info-edit}"></a>
+                    <hr class="spacing-below-15 spacing-above-15">
 
-              </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
+                    <p class="text--left"><strong
+                            th:text="#{provider-response-info-review.child-care-service-address}"></strong>
+                    </p>
+                    <div th:text="${inputData.get('providerResponseServiceStreetAddress1')}"></div>
+                    <div th:if="${inputData.containsKey('providerResponseServiceStreetAddress2')}"
+                         th:text="${inputData.get('providerResponseServiceStreetAddress2')}"></div>
+                    <div th:text="|${inputData.get('providerResponseServiceCity')}, ${inputData.get('providerResponseServiceState')}|"></div>
+                  <div th:text="${inputData.get('providerResponseServiceZipCode')}"></div>
+                    <br>
+                    <a id="edit-home-address" th:href="|/flow/${flow}/info|"
+                       th:text="#{provider-response-info-review.child-care-service-address-edit}"></a>
+                    <hr class="spacing-below-15 spacing-above-15">
+                    <p class="text--left"><strong
+                            th:text="#{parent-info-review.contact.info}"></strong></p>
+                    <ol class="list--bulleted">
+                        <li th:if="${!#strings.isEmpty(inputData.get('providerResponseContactEmail'))}"
+                            th:text="${inputData.get('providerResponseContactEmail')}"></li>
+                        <li th:if="${!#strings.isEmpty(inputData.get('providerResponseContactPhoneNumber'))}"
+                            th:text="${inputData.get('providerResponseContactPhoneNumber')}"></li>
+                    </ol>
+                    <div th:if="${#strings.isEmpty(inputData['providerResponseContactEmail']) and #strings.isEmpty(inputData['providerResponseContactPhoneNumber'])}">
+                        <p th:text="#{general.none-added}"></p>
+                    </div>
+                    <a id="edit-parent-contact-info-basic"
+                       th:href="|/flow/${flow}/contact-info|"
+                       th:text="#{parent-info-review.contact.info.link}"></a>
+                </div>
+                <div class="form-card__footer">
+                    <th:block th:replace="~{fragments/continueButton :: continue}" />
+                </div>
+            </main>
+        </div>
+    </section>
 </div>
-<th:block th:replace="~{fragments/footer :: footer}" />
+<th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
 </html>
