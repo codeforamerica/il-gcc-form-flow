@@ -11,47 +11,62 @@
                 <th:block th:replace="~{fragments/gcc-icons :: evaluatingInformation}"></th:block>
                 <th:block
                         th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-review.header})}"/>
-                <div class="form-card__content">
-                    <p class="text--left"><strong
-                            th:text="#{provider-response-info-review.basic-info}"></strong></p>
-                    <ol class="list--bulleted">
-                        <li th:text="${inputData.get('providerResponseBusinessName')}"></li>
-                        <li th:text="|${inputData.get('providerResponseFirstName')} ${inputData.get('providerResponseLastName')}|"></li>
-                    </ol>
-                    <a id="edit-parent-info-basic" th:href="|/flow/${flow}/info|"
-                       th:text="#{provider-response-info-review.basic-info-edit}"></a>
-                    <hr class="spacing-below-15 spacing-above-15">
+                <th:block
+                        th:replace="~{fragments/form :: form(action=|/flow/${flow}/${screen}/submit|, content=~{::info})}">
+                    <th:block th:ref="info">
+                        <div class="form-card__content">
+                            <p class="text--left"><strong
+                                    th:text="#{provider-response-info-review.basic-info}"></strong>
+                            </p>
+                            <ol class="list--bulleted">
+                                <li id="business-name"
+                                    th:text="${inputData.get('providerResponseBusinessName')}"></li>
+                                <li id="full-name"
+                                    th:text="|${inputData.get('providerResponseFirstName')} ${inputData.get('providerResponseLastName')}|"></li>
+                            </ol>
+                            <a id="edit-parent-info-basic" th:href="|/flow/${flow}/info|"
+                               th:text="#{provider-response-info-review.basic-info-edit}"></a>
+                            <hr class="spacing-below-15 spacing-above-15">
 
-                    <p class="text--left"><strong
-                            th:text="#{provider-response-info-review.child-care-service-address}"></strong>
-                    </p>
-                    <div th:text="${inputData.get('providerResponseServiceStreetAddress1')}"></div>
-                    <div th:if="${inputData.containsKey('providerResponseServiceStreetAddress2')}"
-                         th:text="${inputData.get('providerResponseServiceStreetAddress2')}"></div>
-                    <div th:text="|${inputData.get('providerResponseServiceCity')}, ${inputData.get('providerResponseServiceState')}|"></div>
-                  <div th:text="${inputData.get('providerResponseServiceZipCode')}"></div>
-                    <br>
-                    <a id="edit-home-address" th:href="|/flow/${flow}/info|"
-                       th:text="#{provider-response-info-review.child-care-service-address-edit}"></a>
-                    <hr class="spacing-below-15 spacing-above-15">
-                    <p class="text--left"><strong
-                            th:text="#{parent-info-review.contact.info}"></strong></p>
-                    <ol class="list--bulleted">
-                        <li th:if="${!#strings.isEmpty(inputData.get('providerResponseContactEmail'))}"
-                            th:text="${inputData.get('providerResponseContactEmail')}"></li>
-                        <li th:if="${!#strings.isEmpty(inputData.get('providerResponseContactPhoneNumber'))}"
-                            th:text="${inputData.get('providerResponseContactPhoneNumber')}"></li>
-                    </ol>
-                    <div th:if="${#strings.isEmpty(inputData['providerResponseContactEmail']) and #strings.isEmpty(inputData['providerResponseContactPhoneNumber'])}">
-                        <p th:text="#{general.none-added}"></p>
-                    </div>
-                    <a id="edit-parent-contact-info-basic"
-                       th:href="|/flow/${flow}/contact-info|"
-                       th:text="#{parent-info-review.contact.info.link}"></a>
-                </div>
-                <div class="form-card__footer">
-                    <th:block th:replace="~{fragments/continueButton :: continue}" />
-                </div>
+                            <p class="text--left"><strong
+                                    th:text="#{provider-response-info-review.child-care-service-address}"></strong>
+                            </p>
+                            <div id="address-1"
+                                 th:text="${inputData.get('providerResponseServiceStreetAddress1')}"></div>
+                            <div id="address-2"
+                                 th:if="${inputData.containsKey('providerResponseServiceStreetAddress2')}"
+                                 th:text="${inputData.get('providerResponseServiceStreetAddress2')}"></div>
+                            <div id="city-state"
+                                 th:text="|${inputData.get('providerResponseServiceCity')}, ${inputData.get('providerResponseServiceState')}|"></div>
+                            <div id="zipcode"
+                                 th:text="${inputData.get('providerResponseServiceZipCode')}"></div>
+                            <br>
+                            <a id="edit-home-address" th:href="|/flow/${flow}/info|"
+                               th:text="#{provider-response-info-review.child-care-service-address-edit}"></a>
+                            <hr class="spacing-below-15 spacing-above-15">
+                            <p class="text--left"><strong
+                                    th:text="#{parent-info-review.contact.info}"></strong></p>
+                            <ol class="list--bulleted">
+                                <li id="email"
+                                    th:if="${!#strings.isEmpty(inputData.get('providerResponseContactEmail'))}"
+                                    th:text="${inputData.get('providerResponseContactEmail')}"></li>
+                                <li id="phone"
+                                    th:if="${!#strings.isEmpty(inputData.get('providerResponseContactPhoneNumber'))}"
+                                    th:text="${inputData.get('providerResponseContactPhoneNumber')}"></li>
+                            </ol>
+                            <div th:if="${#strings.isEmpty(inputData['providerResponseContactEmail']) and #strings.isEmpty(inputData['providerResponseContactPhoneNumber'])}">
+                                <p th:text="#{general.none-added}"></p>
+                            </div>
+                            <a id="edit-parent-contact-info-basic"
+                               th:href="|/flow/${flow}/contact-info|"
+                               th:text="#{parent-info-review.contact.info.link}"></a>
+                        </div>
+                        <div class="form-card__footer">
+                            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                      text=#{general.button.continue})}" />
+                        </div>
+                    </th:block>
+                </th:block>
             </main>
         </div>
     </section>
