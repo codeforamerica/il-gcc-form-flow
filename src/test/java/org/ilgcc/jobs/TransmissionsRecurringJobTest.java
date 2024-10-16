@@ -1,59 +1,69 @@
 package org.ilgcc.jobs;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.ilgcc.app.utils.enums.TransmissionStatus.Queued;
-import static org.ilgcc.app.utils.enums.TransmissionType.APPLICATION_PDF;
-
 import formflow.library.data.Submission;
-import formflow.library.data.SubmissionRepositoryService;
-import static org.mockito.Mockito.*;
-
+import formflow.library.data.SubmissionRepository;
+import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
-import java.time.OffsetDateTime;
 import java.util.Date;
-import java.util.logging.Logger;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.Transmission;
+import org.ilgcc.app.data.TransmissionRepository;
 import org.ilgcc.app.data.TransmissionRepositoryService;
+import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import org.mockito.MockedStatic;
+import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
+
+import static org.ilgcc.app.utils.enums.TransmissionStatus.Queued;
+import static org.ilgcc.app.utils.enums.TransmissionType.APPLICATION_PDF;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = IlGCCApplication.class)
 @ActiveProfiles("test")
-@TestPropertySource(properties = {
-        "WAIT_FOR_PROVIDER_RESPONSE_FLAG=true"
-})
 public class TransmissionsRecurringJobTest {
+
+    @Autowired
+    private SubmissionRepository submissionRepository;
+
+    @Autowired
+    private TransmissionRepository transmissionRepository;
+
     @Autowired
     private TransmissionRepositoryService transmissionRepositoryService;
-    @Autowired
-    private SubmissionRepositoryService submissionRepositoryService;
-    @Autowired
+    @Mock
+    private S3PresignService s3PresignService;
+
+    @Mock
+    private UserFileRepositoryService userFileRepositoryService;
+
+    @Mock
+    private UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
+
+    @Mock
+    private PdfService pdfService;
+
+    @Mock
+    private CloudFileRepository cloudFileRepository;
+
+    @Mock
+    private PdfTransmissionJob pdfTransmissionJob;
+
+    @Mock
+    private EnqueueDocumentTransfer enqueueDocumentTransfer;
+
+    @InjectMocks
     private TransmissionsRecurringJob transmissionsRecurringJob;
-//    @MockBean
-//    private EnqueueDocumentTransfer enqueueDocumentTransfer;
-
-    @MockBean
-    private PdfService mockedPdfService;
-    @MockBean
-    private CloudFileRepository mockedCloudFileRepository;
-    @MockBean
-    private PdfTransmissionJob mockedPdfTransmissionJob;
-    @MockBean
-    private Submission mockedSubmission;
-
-
-    private Logger mockLogger;
 
     private Submission expiredSubmission;
     private Submission transmittedSubmission;
@@ -63,72 +73,116 @@ public class TransmissionsRecurringJobTest {
 
     @BeforeEach
     void setUp() {
-        transmittedSubmission = new SubmissionTestBuilder()
+        MockitoAnnotations.initMocks(this);
+        transmissionsRecurringJob = new TransmissionsRecurringJob(
+                s3PresignService,
+                transmissionRepositoryService,
+                userFileRepositoryService,
+                uploadedDocumentTransmissionJob,
+                pdfService,
+                cloudFileRepository,
+                pdfTransmissionJob,
+                "true",
+                enqueueDocumentTransfer
+        );
+    }
+
+    @AfterEach
+    protected void clearSubmissions() {
+        transmissionRepository.deleteAll();
+        submissionRepository.deleteAll();
+    }
+
+    @Test
+    void enqueueDocumentTransferWillNotRunIfFlagIsOff() {
+        expiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
-                .with("providerResponseSubmissionId", "123124")
                 .build();
-        submissionRepositoryService.save(transmittedSubmission);
-        transmissionRepositoryService.save(new Transmission(transmittedSubmission, null, Date.from(OffsetDateTime.now()
-                .toInstant()), Queued, APPLICATION_PDF, null));
+        submissionRepository.save(expiredSubmission);
 
+        transmissionsRecurringJob = new TransmissionsRecurringJob(
+                s3PresignService,
+                transmissionRepositoryService,
+                userFileRepositoryService,
+                uploadedDocumentTransmissionJob,
+                pdfService,
+                cloudFileRepository,
+                pdfTransmissionJob,
+                "false",
+                enqueueDocumentTransfer
+        );
+
+        transmissionsRecurringJob.noProviderResponseJob();
+
+        verifyNoInteractions(enqueueDocumentTransfer);
+    }
+    @Test
+    void enqueueDocumentTransferIsOnlyCalledOnExpiredSubmissions() {
         unexpiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .build();
-        submissionRepositoryService.save(unexpiredSubmission);
+        submissionRepository.save(unexpiredSubmission);
 
         expiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
                 .build();
-        submissionRepositoryService.save(expiredSubmission);
+        submissionRepository.save(expiredSubmission);
 
         unsubmittedSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .build();
-        submissionRepositoryService.save(unsubmittedSubmission);
+        submissionRepository.save(unsubmittedSubmission);
 
+        transmissionsRecurringJob.noProviderResponseJob();
+
+        //Confirms that the method was called on the expired submission
+        verify(enqueueDocumentTransfer, times(1)).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
+                eq(pdfTransmissionJob), eq(expiredSubmission), any());
+        verify(enqueueDocumentTransfer, times(1)).enqueueUploadedDocumentBySubmission(eq(userFileRepositoryService),
+                eq(uploadedDocumentTransmissionJob), eq(s3PresignService), eq(expiredSubmission));
+
+        verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
+                eq(pdfTransmissionJob), eq(unexpiredSubmission), any());
+        verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(eq(userFileRepositoryService),
+                eq(uploadedDocumentTransmissionJob), eq(s3PresignService), eq(unexpiredSubmission));
+
+        verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
+                eq(pdfTransmissionJob), eq(unsubmittedSubmission), any());
+        verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(eq(userFileRepositoryService),
+                eq(uploadedDocumentTransmissionJob), eq(s3PresignService), eq(unsubmittedSubmission));
+    }
+
+    @Test
+    void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmission() {
+        transmittedSubmission = new SubmissionTestBuilder()
+                .withParentDetails()
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
+                .with("providerResponseSubmissionId", "123124")
+                .build();
+        submissionRepository.save(transmittedSubmission);
+        transmissionRepositoryService.save(new Transmission(transmittedSubmission, null, Date.from(OffsetDateTime.now()
+                .toInstant()), Queued, APPLICATION_PDF, null));
+
+        transmissionsRecurringJob.noProviderResponseJob();
+
+        verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService);
+    }
+
+    @Test
+    void enqueueDocumentTransferIsNotCalledOnExpiredUntransmittedSubmission() {
         expiredUntransmittedSubmissionWithProviderResponse = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
                 .with("providerResponseSubmissionId", "123124")
                 .build();
-        submissionRepositoryService.save(expiredUntransmittedSubmissionWithProviderResponse);
+        submissionRepository.save(expiredUntransmittedSubmissionWithProviderResponse);
 
-
-//        verify(enqueueDocumentTransfer).enqueuePDFDocumentBySubmission(mockedPdfService, mockedCloudFileRepository, mockedPdfTransmissionJob, eq(mockedSubmission), anyString());
-//        doNothing().when(enqueueDocumentTransfer).enqueueUploadedDocumentBySubmission(any(), any(), any(), any());
-
-    }
-
-
-    @Test
-    void noProviderResponseJobWillLogIfAnySubmissionsAreMissingTransmissions() {
-        MockedStatic<EnqueueDocumentTransfer> mockedEnqueueDocumentTransfer = mockStatic(EnqueueDocumentTransfer.class);
         transmissionsRecurringJob.noProviderResponseJob();
-        mockedEnqueueDocumentTransfer.verify()
-        verify(mockLogger).info(eq(String.format("Running the 'No provider response job' for %s submissions", 1)));
+
+        verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(any(), any(), any(), any(), any());
+        verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(any(), any(), any(), any());
     }
-
-    @Test
-    void submissionsWithoutProviderResponseWillCallDocumentTransferMethods() {
-// Will spy on the enqueue methods and confirm that they have been called with the expected submissions
-        assertThat(true).isTrue();
-    }
-
-    @Test
-    void submissionsWithProviderResponseWillNotCallDocumentTransferMethods() {
-        assertThat(true).isTrue();
-
-// Will spy on the enqueue methods and confirm that they have been called with the expected submissions
-    }
-
-    @Test
-    void submissionsNotExpiredWillNotCallDocumentTransferMethods() {
-        assertThat(true).isTrue();
-
-        // Will spy on the enqueue methods and confirm that they have been NOT called with the expected submissions
-    }
-
 }

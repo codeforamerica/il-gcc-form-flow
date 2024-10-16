@@ -36,13 +36,12 @@ public class TransmissionsRecurringJob {
     private final PdfTransmissionJob pdfTransmissionJob;
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
 
-    public TransmissionsRecurringJob(
-            S3PresignService s3PresignService,
-            TransmissionRepositoryService transmissionRepositoryService,
-            UserFileRepositoryService userFileRepositoryService, UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob,
-            PdfService pdfService,
+    public TransmissionsRecurringJob(S3PresignService s3PresignService,
+            TransmissionRepositoryService transmissionRepositoryService, UserFileRepositoryService userFileRepositoryService,
+            UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, PdfService pdfService,
             CloudFileRepository cloudFileRepository, PdfTransmissionJob pdfTransmissionJob,
-            @Value("${il-gcc.dts.wait-for-provider-response}") String waitForProviderResponseFlag, EnqueueDocumentTransfer enqueueDocumentTransfer) {
+            @Value("${il-gcc.dts.wait-for-provider-response}") String waitForProviderResponseFlag,
+            EnqueueDocumentTransfer enqueueDocumentTransfer) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
         this.userFileRepositoryService = userFileRepositoryService;
@@ -51,7 +50,7 @@ public class TransmissionsRecurringJob {
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
         this.waitForProviderResponseFlag = waitForProviderResponseFlag;
-        this.enqueueDocumentTransfer=enqueueDocumentTransfer;
+        this.enqueueDocumentTransfer = enqueueDocumentTransfer;
     }
 
     @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
@@ -61,16 +60,20 @@ public class TransmissionsRecurringJob {
         if (submissionsWithoutTransmissions.isEmpty() || waitForProviderResponseFlag.equals("false")) {
             return;
         } else {
-            log.info(String.format("Running the 'No provider response job' for %s submissions", submissionsWithoutTransmissions.size()));
+            log.info(String.format("Running the 'No provider response job' for %s submissions",
+                    submissionsWithoutTransmissions.size()));
             ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
             ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
             for (Submission submission : submissionsWithoutTransmissions) {
                 if (!hasProviderResponse(submission) && providerApplicationHasExpired(submission, todaysDate)) {
-                    enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob, submission, FileNameUtility.getFileNameForPdf(submission, "No-Provider-Response"));
-                    enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService, submission);
+                    enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
+                            submission, FileNameUtility.getFileNameForPdf(submission, "No-Provider-Response"));
+                    enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
+                            uploadedDocumentTransmissionJob, s3PresignService, submission);
                 } else if (hasProviderResponse(submission) && providerApplicationHasExpired(submission, todaysDate)) {
-                    log.error(String.format(
-                            "The provider response exists but the provider response expired. Check submission: %s", submission.getId()));
+                    log.error(
+                            String.format("The provider response exists but the provider response expired. Check submission: %s",
+                                    submission.getId()));
                 }
             }
         }

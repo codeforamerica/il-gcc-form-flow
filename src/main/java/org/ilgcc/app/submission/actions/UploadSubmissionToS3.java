@@ -44,7 +44,8 @@ public class UploadSubmissionToS3 implements Action {
     @Override
     public void run(Submission submission) {
         if (enableBackgroundJobs.equals("true") && waitForProviderResponseFlag.equals("false")) {
-            enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob, submission, FileNameUtility.getFileNameForPdf(submission));
+            enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
+                    submission, FileNameUtility.getFileNameForPdf(submission));
         }
     }
 }
