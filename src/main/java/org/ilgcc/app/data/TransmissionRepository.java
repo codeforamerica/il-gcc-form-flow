@@ -13,6 +13,7 @@ public interface TransmissionRepository extends JpaRepository<Transmission, UUID
             "SELECT s FROM Submission s " +
             "LEFT JOIN Transmission t ON t.submissionId = s " +
             "WHERE s.submittedAt IS NOT NULL " +
+            "AND s.flow = 'gcc' " +        
             "AND t.transmissionId IS NULL " +
             "ORDER BY s.updatedAt ASC")
 
