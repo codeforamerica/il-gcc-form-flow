@@ -1,10 +1,15 @@
 package org.ilgcc.app.utils;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.Period;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,8 +107,14 @@ public class ProviderSubmissionUtilities {
         return String.join("", dateString);
     }
 
-    public static LocalDate threeBusinessDaysFromSubmittedAtDate(LocalDate submittedAtDate) {
-        Integer dayOffset = weekWithOffset.get(submittedAtDate.getDayOfWeek().toString());
-        return submittedAtDate.plusDays(dayOffset);
+    public static ZonedDateTime threeBusinessDaysFromSubmittedAtDate(OffsetDateTime submittedAtDate) {
+        ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
+        ZonedDateTime submissionInChicagoTime = submittedAtDate.atZoneSameInstant(chicagoTimeZone);
+        Integer dayOffset = weekWithOffset.get(submissionInChicagoTime.getDayOfWeek().toString());
+        return submissionInChicagoTime.plusDays(dayOffset);
+    }
+
+    public static boolean providerApplicationHasExpired(Submission submission, ZonedDateTime todaysDate){
+        return submission.getSubmittedAt() != null && MINUTES.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt()), todaysDate) > 0;
     }
 }

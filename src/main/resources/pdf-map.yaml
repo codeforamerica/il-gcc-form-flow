@@ -146,6 +146,12 @@ inputFields:
   partnerSignedName: PARTNER_SIGNATURE
   partnerSignedAt: PARTNER_SIGNATURE_DATE
   receivedTimestamp: RECEIVED_TIMESTAMP
+
+  providerNameCorporate: PROVIDER_NAME_CORPORATE
+  providerPhoneNumber: PROVIDER_PHONE_NUMBER
+  providerEmail: PROVIDER_EMAIL
+  providerResponse: PROVIDER_RESPONSE
+
 dbFields:
   submittedAt: APPLICANT_SIGNATURE_DATE
 

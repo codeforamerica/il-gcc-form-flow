@@ -1,18 +1,20 @@
 package org.ilgcc.app.submission.actions;
 
-import static java.time.temporal.ChronoUnit.DAYS;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ChildCareProvider;
-import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerApplicationHasExpired;
 import org.ilgcc.app.utils.enums.ProviderSubmissionStatus;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -61,12 +63,12 @@ public class CheckClientSubmissionForProvider implements Action {
                 if (submittedAtDate == null) {
                     log.warn("No submittedAt date found for submission " + submission.getId());
                 }
-
-                LocalDate todaysDate = LocalDate.now();
-                if (submittedAtDate != null && DAYS.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submittedAtDate), todaysDate) > 0) {
+                ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
+                ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
+                if (providerApplicationHasExpired(clientSubmissionInfo, todaysDate)) {
                     httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED.name());
                 } else {
-                    boolean hasResponse = false;
+                      boolean hasResponse = false;
                     if (clientSubmissionInfo.getInputData().get("providerResponseSubmissionId") != null) {
                         // The above value should be set on the client submission whenever a provider first submits
                         // their response.

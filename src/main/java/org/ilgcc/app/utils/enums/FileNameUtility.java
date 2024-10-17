@@ -21,6 +21,13 @@ public class FileNameUtility {
         return String.format("%s-%s-CCAP-Application-Form.pdf", formattedApplicantName, dashFormattedSubmittedAtDate);
     }
 
+    public static String getFileNameForPdf(Submission submission, String suffix) {
+        String applicantNameLastToFirst = SubmissionUtilities.getApplicantNameLastToFirst(submission);
+        String formattedApplicantName = formatApplicantNameForFileName(applicantNameLastToFirst);
+        String dashFormattedSubmittedAtDate = SubmissionUtilities.getDashFormattedSubmittedAtDate(submission);
+        return String.format("%s-%s-CCAP-Application-Form-%s.pdf", formattedApplicantName, dashFormattedSubmittedAtDate, suffix);
+    }
+
     public static String getFileNameForUploadedDocument(Submission submission, int fileNumber, int totalFiles, String fileExtension) {
         String applicantNameLastToFirst = SubmissionUtilities.getApplicantNameLastToFirst(submission);
         String formattedApplicantName = formatApplicantNameForFileName(applicantNameLastToFirst);
