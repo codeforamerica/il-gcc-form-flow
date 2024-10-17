@@ -19,26 +19,23 @@ public class SendUploadedFileToDocumentTransferService implements Action {
     private final UserFileRepositoryService userFileRepositoryService;
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final S3PresignService s3PresignService;
-    private final String enableBackgroundJobs;
     private final String waitForProviderResponseFlag;
 
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
 
     public SendUploadedFileToDocumentTransferService(UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, S3PresignService s3PresignService, EnqueueDocumentTransfer enqueueDocumentTransfer,
-            @Value("${il-gcc.dts.enable-background-jobs}") String enableBackgroundJobs,
             @Value("${il-gcc.dts.wait-for-provider-response}") String waitForProviderResponseFlag) {
         this.userFileRepositoryService = userFileRepositoryService;
         this.uploadedDocumentTransmissionJob = uploadedDocumentTransmissionJob;
         this.s3PresignService = s3PresignService;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
-        this.enableBackgroundJobs = enableBackgroundJobs;
         this.waitForProviderResponseFlag=waitForProviderResponseFlag;
     }
 
     @Override
     public void run(Submission submission) {
-        if (enableBackgroundJobs.equals("true") && waitForProviderResponseFlag.equals("false")) {
+        if (waitForProviderResponseFlag.equals("false")) {
            enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService, submission);
         }
     }
