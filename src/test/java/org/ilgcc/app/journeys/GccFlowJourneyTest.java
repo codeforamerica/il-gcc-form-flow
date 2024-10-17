@@ -247,7 +247,23 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickYes();
         //children-add (with children listed)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+        // Add an incomplete iteration and assert that it is removed
+        testPage.clickButton(getEnMessage("children-add.add-button"));
+        testPage.enter("childFirstName", "ShouldBe");
+        testPage.enter("childLastName", "Removed");
+        testPage.enter("childDateOfBirthMonth", "1");
+        testPage.enter("childDateOfBirthDay", "1");
+        testPage.enter("childDateOfBirthYear", "2022");
+        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
+        testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
+        // Go back to the children-add page and assert that the incomplete iteration is removed
+        testPage.goBack();
+        testPage.goBack();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
         List<String> li = testPage.getTextBySelector(".child-name");
+        assertThat(li).doesNotContain("ShouldBe Removed");
         assertThat(li).containsExactly("mugully glopklin", "child mcchild");
         testPage.clickButton(getEnMessage("children-add.thats-all"));
 

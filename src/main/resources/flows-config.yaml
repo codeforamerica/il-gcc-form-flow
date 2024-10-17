@@ -103,6 +103,7 @@ flow:
     nextScreens:
       - name: children-add
   children-add:
+    beforeDisplayAction: RemoveIncompleteChildIterations
     nextScreens:
       - name: activities-parent-intro
   children-info-basic:
@@ -162,7 +163,7 @@ flow:
         condition: PartnerInSchool
       - name: unearned-income-intro
   activities-add-jobs:
-    subflow: jobs
+    beforeDisplayAction: RemoveIncompleteJobIterations
     nextScreens:
       - name: activities-add-ed-program
         condition: LearningIsOneReasonForChildcareNeed
@@ -250,7 +251,7 @@ flow:
         condition: PartnerInSchool
       - name: unearned-income-intro
   activities-partner-add-job:
-    subflow: partnerJobs
+    beforeDisplayAction: RemoveIncompletePartnerJobIterations
     nextScreens:
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
