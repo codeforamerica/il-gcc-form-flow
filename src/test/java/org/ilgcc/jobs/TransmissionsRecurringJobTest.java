@@ -98,6 +98,7 @@ public class TransmissionsRecurringJobTest {
         expiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
+                .withFlow("gcc")
                 .build();
         submissionRepository.save(expiredSubmission);
 
@@ -122,17 +123,20 @@ public class TransmissionsRecurringJobTest {
         unexpiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now())
+                .withFlow("gcc")
                 .build();
         submissionRepository.save(unexpiredSubmission);
 
         expiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
+                .withFlow("gcc")
                 .build();
         submissionRepository.save(expiredSubmission);
 
         unsubmittedSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
+                .withFlow("gcc")
                 .build();
         submissionRepository.save(unsubmittedSubmission);
 
@@ -161,6 +165,7 @@ public class TransmissionsRecurringJobTest {
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
                 .with("providerResponseSubmissionId", "123124")
+                .withFlow("gcc")
                 .build();
         submissionRepository.save(transmittedSubmission);
         transmissionRepositoryService.save(new Transmission(transmittedSubmission, null, Date.from(OffsetDateTime.now()
@@ -176,6 +181,7 @@ public class TransmissionsRecurringJobTest {
         expiredUntransmittedSubmissionWithProviderResponse = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
+                .withFlow("gcc")
                 .with("providerResponseSubmissionId", "123124")
                 .build();
         submissionRepository.save(expiredUntransmittedSubmissionWithProviderResponse);

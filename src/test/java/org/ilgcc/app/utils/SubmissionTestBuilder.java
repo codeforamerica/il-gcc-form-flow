@@ -36,6 +36,11 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withFlow(String flow){
+        submission.setFlow(flow);
+        return this;
+    }
+
     public SubmissionTestBuilder withShortCode(String shortCode) {
         submission.setShortCode(shortCode);
         return this;
