@@ -1,15 +1,29 @@
-<th:block
-  th:replace="~{fragments/screens/screenWithOneInput ::
-  screenWithOneInput(
-    title='placeholder',
-    header='placeholder',
-    subtext='placeholder',
-    formAction=${formAction},
-    inputContent=~{::inputContent})}">
-  <th:block th:ref="inputContent">
-    <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
-    <th:block th:replace="~{fragments/inputs/text ::
-      text(inputName='placeholder',
-      ariaLabel='header')}"/>
-  </th:block>
-</th:block>
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{onboarding-provider-info-confirm.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: greenCheck}"></th:block>
+        <th:block th:with="providerName=${inputData.getOrDefault('familyIntendedProviderName', '')}">
+          <th:block
+                  th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-provider-info-confirm.header(${providerName})}, subtext=#{onboarding-provider-info-confirm.notice(${providerName})})}"/>
+        </th:block>
+
+        <div class="form-card__content">
+
+        </div>
+        <div class="form-card__footer">
+          <th:block th:replace="~{fragments/continueButton :: continue}"/>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

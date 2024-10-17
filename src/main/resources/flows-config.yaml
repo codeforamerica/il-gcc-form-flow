@@ -20,6 +20,8 @@ flow:
       - name: contact-provider-message
   pilot-offboard:
     nextScreens: null
+  offboarding-no-provider:
+    nextScreens: null
   onboarding-provider-info-review:
     nextScreens:
       - name: onboarding-provider-info-confirm
