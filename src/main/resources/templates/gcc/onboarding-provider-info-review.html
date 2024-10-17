@@ -1,0 +1,15 @@
+<th:block
+  th:replace="~{fragments/screens/screenWithOneInput ::
+  screenWithOneInput(
+    title='placeholder',
+    header='placeholder',
+    subtext='placeholder',
+    formAction=${formAction},
+    inputContent=~{::inputContent})}">
+  <th:block th:ref="inputContent">
+    <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
+    <th:block th:replace="~{fragments/inputs/text ::
+      text(inputName='placeholder',
+      ariaLabel='header')}"/>
+  </th:block>
+</th:block>
