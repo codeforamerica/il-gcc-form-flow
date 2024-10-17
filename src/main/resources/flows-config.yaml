@@ -454,6 +454,12 @@ flow:
     nextScreens:
       - name: submit-complete
   submit-complete:
+    nextScreens: 
+      - name: info
+  info:
+    nextScreens:
+      - name: contact-info
+  contact-info:
     nextScreens:
       - name: info-review
   info-review:
@@ -461,7 +467,6 @@ flow:
       - name: submit-complete-final
   submit-complete-final:
     nextScreens: null
-
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:

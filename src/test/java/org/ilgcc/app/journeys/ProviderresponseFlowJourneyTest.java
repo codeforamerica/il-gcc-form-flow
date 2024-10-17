@@ -82,9 +82,34 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementsByClass("notice").get(0).getText()).isEqualTo(getEnMessage("provider-response-submit-complete.notice-yes"));
         testPage.clickContinue();
 
-        //info-review
+        //basic-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info.title"));
+        testPage.enter("providerResponseBusinessName", "Business Name");
+        testPage.enter("providerResponseFirstName", "First Name");
+        testPage.enter("providerResponseLastName", "Last Name");
+        testPage.enter("providerResponseServiceStreetAddress1", "123 Main St");
+        testPage.enter("providerResponseServiceCity", "City");
+        testPage.selectFromDropdown("providerResponseServiceState", "IL - Illinois");
+        testPage.enter("providerResponseServiceZipCode", "12345");
+        testPage.clickButton("Continue");
+        
+        // contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-contact-info.title"));
+        testPage.enter("providerResponseContactPhoneNumber", "5555555555");
+        testPage.enter("providerResponseContactEmail", "foo@bar.com");
+        testPage.clickButton("Continue");
+        
+        // info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
-        testPage.clickButton("Submit");
+        assertThat(testPage.findElementTextById("business-name")).isEqualTo("Business Name");
+        assertThat(testPage.findElementTextById("full-name")).isEqualTo("First Name Last Name");
+        assertThat(testPage.findElementTextById("address-1")).isEqualTo("123 Main St");
+        assertThat(testPage.findElementTextById("city-state")).isEqualTo("City, IL");
+        assertThat(testPage.findElementTextById("zipcode")).isEqualTo("12345");
+        assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
+        assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
+        testPage.clickButton("Continue");
+        
 
         //submit-complete-final
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
