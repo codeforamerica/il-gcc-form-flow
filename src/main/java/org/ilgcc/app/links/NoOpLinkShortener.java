@@ -12,17 +12,16 @@ public class NoOpLinkShortener implements ShortLinkService {
     }
 
     public String getShortLink(String longLink, int delay) {
-        log.info("Not actually shortening: {}", longLink);
+        log.debug("Not actually shortening: {}", longLink);
         for (int i = 0; i < delay; i++) {
-            log.info("Waiting 1 second while doing nothing with: {}", longLink);
+            log.debug("Waiting 1 more second while doing nothing with: {}", longLink);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        longLink = longLink + "&test_attribute=foo";
-        log.info("Successfully did absolutely nothing of value with: {}", longLink);
+        log.debug("Successfully did absolutely nothing of value with: {}", longLink);
         return longLink;
     }
 
