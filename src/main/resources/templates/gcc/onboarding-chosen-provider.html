@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{onboarding-chosen-provider.title})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: caring}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-chosen-provider.header}, subtext=#{onboarding-chosen-provider.subtext})}"/>
+                <div class="form-card__content">
+
+                </div>
+                <div class="form-card__footer">
+                    <a
+                            th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+                            th:name="'chosen-provider-button-yes'"
+                            th:id="'chosen-provider-button-yes'"
+                            th:aria-describedby="'header'"
+                            class="button">
+                        <span class="button__icon--left emoji emoji--inline emoji--checkmark"></span>
+                        <span th:text="#{general.inputs.yes}"></span>
+                    </a>
+                    <a
+                            th:href="'/flow/gcc/offboarding-no-provider'"
+                            th:name="'chosen-provider-button-no'"
+                            th:id="'chosen-provider-button-no'"
+                            th:aria-describedby="'header'"
+                            class="button">
+                        <span class="button__icon--left emoji emoji--inline emoji--crossmark"></span>
+                        <span th:text="#{general.inputs.no}"></span>
+                    </a>
+
+                </div>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

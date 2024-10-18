@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{onboarding-provider-info-review.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: evaluatingInformation}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-provider-info-review.header})}"/>
+        <div class="form-card__content">
+          <p class="text--left"><strong th:text="#{onboarding-provider-info-review.info-header-1}"></strong></p>
+          <ol class="list--bulleted">
+            <li th:text=" ${inputData.get('familyIntendedProviderName')}"></li>
+          </ol>
+          <hr class="spacing-below-15 spacing-above-15">
+          <p class="text--left"><strong th:text="#{onboarding-provider-info-review.info-header-2}"></strong></p>
+          <ol class="list--bulleted">
+            <li th:if="${!#strings.isEmpty(inputData.get('familyIntendedProviderEmail'))}" th:text="${inputData.get('familyIntendedProviderEmail')}"></li>
+            <li th:if="${!#strings.isEmpty(inputData.get('familyIntendedProviderPhoneNumber'))}" th:text="${inputData.get('familyIntendedProviderPhoneNumber')}"></li>
+          </ol>
+          <a id="edit-provider-info" th:href="|/flow/${flow}/onboarding-provider-info|" th:text="#{onboarding-provider-info-review.link}"></a>
+        </div>
+        <div class="form-card__footer">
+          <th:block th:replace="~{fragments/continueButton :: continue}"/>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

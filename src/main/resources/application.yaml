@@ -119,3 +119,5 @@ il-gcc:
     auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
     presigned-url-Duration: 5 # Minutes
     wait-for-provider-response: ${WAIT_FOR_PROVIDER_RESPONSE_FLAG:false}
+  pfc:
+    reveal-additional-provider-screens: ${REVEAL_ADDITIONAL_PROVIDER_SCREENS:false}

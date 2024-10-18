@@ -1,0 +1,20 @@
+<th:block
+        th:replace="~{fragments/inputs/screenWithOneInputAndSkip ::
+  screenWithOneInputAndSkip(
+    title=#{onboarding-zipcode.title},
+    header=#{onboarding-zipcode.header},
+    required='true',
+    iconFragment=~{fragments/gcc-icons :: homeAddress},
+    buttonLabel=#{general.button.continue},
+    skipLocation='onboarding-county',
+    skipText=#{onboarding-zipcode.link},
+    formAction=${formAction},
+    inputContent=~{::inputContent})}">
+    <th:block th:ref="inputContent">
+        <th:block th:replace="~{fragments/inputs/text ::
+      text(inputName='applicationZipCode',
+      ariaLabel='header'
+      )}"/>
+    </th:block>
+</th:block>
+</th:block>
