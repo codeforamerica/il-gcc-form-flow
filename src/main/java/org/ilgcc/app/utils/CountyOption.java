@@ -9,7 +9,6 @@ public enum CountyOption implements InputOption {
     OGLE("Ogle"),
     WHITESIDE("Whiteside");
 
-
     private final String value;
 
     CountyOption(String value) {
