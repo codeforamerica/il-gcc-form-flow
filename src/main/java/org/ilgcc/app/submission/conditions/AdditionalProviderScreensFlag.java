@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdditionalProviderScreensFlag implements Condition {
 
-  private final String revealAdditionalProviderScreens;
+    private final String revealAdditionalProviderScreens;
 
-  public AdditionalProviderScreensFlag(
-          @Value("${il-gcc.dts.reveal-additional-provider-screens}") String waitForProviderResponseFlag) {
-    this.revealAdditionalProviderScreens = waitForProviderResponseFlag;
-  }
+    public AdditionalProviderScreensFlag(
+            @Value("${il-gcc.pfc.reveal-additional-provider-screens}") String waitForProviderResponseFlag) {
+        this.revealAdditionalProviderScreens = waitForProviderResponseFlag;
+    }
 
-  @Override
-  public Boolean run(Submission submission) {
-    return revealAdditionalProviderScreens.equalsIgnoreCase("true");
-  }
+    @Override
+    public Boolean run(Submission submission) {
+        return revealAdditionalProviderScreens.equalsIgnoreCase("true");
+    }
 }
