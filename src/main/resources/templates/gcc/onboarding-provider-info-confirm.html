@@ -3,26 +3,29 @@
 <head th:replace="~{fragments/head :: head(title=#{onboarding-provider-info-confirm.title})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: greenCheck}"></th:block>
-        <th:block th:with="providerName=${inputData.getOrDefault('familyIntendedProviderName', '')}">
-          <th:block
-                  th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-provider-info-confirm.header(${providerName})}, subtext=#{onboarding-provider-info-confirm.notice(${providerName})})}"/>
-        </th:block>
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: greenCheck}"></th:block>
+                <th:block
+                        th:with="providerName=${inputData.getOrDefault('familyIntendedProviderName', '')}">
+                    <th:block
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-provider-info-confirm.header(${providerName})})}"/>
 
-        <div class="form-card__content">
+                    <div class="form-card__content">
+                        <p th:utext="#{onboarding-provider-info-confirm.notice(${providerName})}"></p>
 
+                    </div>
+                    <div class="form-card__footer">
+                        <th:block th:replace="~{fragments/continueButton :: continue}"/>
+                    </div>
+                </th:block>
+
+            </main>
         </div>
-        <div class="form-card__footer">
-          <th:block th:replace="~{fragments/continueButton :: continue}"/>
-        </div>
-      </main>
-    </div>
-  </section>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
