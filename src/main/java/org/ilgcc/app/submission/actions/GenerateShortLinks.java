@@ -47,7 +47,7 @@ public class GenerateShortLinks implements Action {
         submission.getInputData().put(SUBMISSION_DATA_TEXT_LINK, textUrl);
         submission.getInputData().put(SUBMISSION_DATA_CLIPBOARD_LINK, clipboardUrl);
 
-        if (waitForProviderResponse) {
+        if (false && waitForProviderResponse) {
             CompletableFuture<ShortenedLinks> shortenedLinks = CompletableFuture.supplyAsync(() -> {
                 ShortLinkService shortLinkService = new NoOpLinkShortener();
                 ShortenedLinks shortUrls = shortLinkService.getShortLinks(emailUrl, textUrl, clipboardUrl);
