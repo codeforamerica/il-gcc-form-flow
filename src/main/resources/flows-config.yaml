@@ -516,6 +516,7 @@ flow:
     nextScreens:
       - name: info-review
   info-review:
+    afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
       - name: submit-complete-final
   submit-complete-final:
