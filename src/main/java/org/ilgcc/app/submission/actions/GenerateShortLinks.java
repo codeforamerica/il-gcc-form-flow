@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.links.NoOpLinkShortener;
 import org.ilgcc.app.links.ShortLinkService;
+import org.ilgcc.app.links.ShortenedLinks;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -48,50 +49,26 @@ public class GenerateShortLinks implements Action {
             submission.getInputData().put(SUBMISSION_DATA_TEXT_LINK, textUrl);
             submission.getInputData().put(SUBMISSION_DATA_CLIPBOARD_LINK, clipboardUrl);
 
-            CompletableFuture<String> shortEmailUrl = CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<ShortenedLinks> shortenedLinks = CompletableFuture.supplyAsync(() -> {
                 ShortLinkService shortLinkService = new NoOpLinkShortener();
-                String shortUrl = shortLinkService.getShortLink(emailUrl);
-                log.info("Shortened email url of {} to be {}", emailUrl, shortUrl);
-                return shortUrl;
+                ShortenedLinks shortUrls = shortLinkService.getShortLinks(emailUrl, textUrl, clipboardUrl);
+                log.info("Shortened email url of {} to be {}", emailUrl, shortUrls.getShortEmailLink());
+                log.info("Shortened text url of {} to be {}", textUrl, shortUrls.getShortTextLink());
+                log.info("Shortened clipboard url of {} to be {}", clipboardUrl, shortUrls.getShortClipboardLink());
+                return shortUrls;
             }).exceptionally(e -> {
-                log.error("Error shortening email link for submission {}", submission.getId(), e);
-                return emailUrl;
+                log.error("Error shortening links for submission {}", submission.getId(), e);
+                return new ShortenedLinks(emailUrl, textUrl, clipboardUrl);
             });
 
-            shortEmailUrl.thenAccept(url -> {
-                submission.getInputData().put(SUBMISSION_DATA_EMAIL_LINK, url);
+            shortenedLinks.thenAccept(links -> {
+                submission.getInputData().put(SUBMISSION_DATA_EMAIL_LINK, links.getShortEmailLink());
+                submission.getInputData().put(SUBMISSION_DATA_TEXT_LINK, links.getShortTextLink());
+                submission.getInputData().put(SUBMISSION_DATA_CLIPBOARD_LINK, links.getShortClipboardLink());
                 submissionRepositoryService.save(submission);
             });
 
-            CompletableFuture<String> shortTextUrl = CompletableFuture.supplyAsync(() -> {
-                ShortLinkService shortLinkService = new NoOpLinkShortener();
-                String shortUrl = shortLinkService.getShortLink(textUrl);
-                log.info("Shortened text url of {} to be {}", textUrl, shortUrl);
-                return shortUrl;
-            }).exceptionally(e -> {
-                log.error("Error shortening text link for submission {}", submission.getId(), e);
-                return null;
-            });
 
-            shortTextUrl.thenAccept(url -> {
-                submission.getInputData().put(SUBMISSION_DATA_TEXT_LINK, url);
-                submissionRepositoryService.save(submission);
-            });
-
-            CompletableFuture<String> shortClipboardUrl = CompletableFuture.supplyAsync(() -> {
-                ShortLinkService shortLinkService = new NoOpLinkShortener();
-                String shortUrl = shortLinkService.getShortLink(clipboardUrl);
-                log.info("Shortened text url of {} to be {}", clipboardUrl, shortUrl);
-                return shortUrl;
-            }).exceptionally(e -> {
-                log.error("Error shortening clipboard link for submission {}", submission.getId(), e);
-                return null;
-            });
-
-            shortClipboardUrl.thenAccept(url -> {
-                submission.getInputData().put(SUBMISSION_DATA_CLIPBOARD_LINK, url);
-                submissionRepositoryService.save(submission);
-            });
         }
     }
 }
