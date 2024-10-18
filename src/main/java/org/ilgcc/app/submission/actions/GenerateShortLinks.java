@@ -1,6 +1,5 @@
 package org.ilgcc.app.submission.actions;
 
-
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -11,6 +10,7 @@ import org.ilgcc.app.links.NoOpLinkShortener;
 import org.ilgcc.app.links.ShortLinkService;
 import org.ilgcc.app.links.ShortenedLinks;
 import org.ilgcc.app.utils.SubmissionUtilities;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,12 +21,14 @@ public class GenerateShortLinks implements Action {
     private final SubmissionRepositoryService submissionRepositoryService;
     private final HttpServletRequest httpRequest;
 
+    @Value("${il-gcc.dts.wait-for-provider-response}")
+    boolean waitForProviderResponse;
+
     private static final String SUBMISSION_DATA_EMAIL_LINK = "emailLink";
     private static final String SUBMISSION_DATA_TEXT_LINK = "textLink";
     private static final String SUBMISSION_DATA_CLIPBOARD_LINK = "clipboardLink";
 
-    public GenerateShortLinks(HttpServletRequest httpRequest,
-            SubmissionRepositoryService submissionRepositoryService) {
+    public GenerateShortLinks(HttpServletRequest httpRequest, SubmissionRepositoryService submissionRepositoryService) {
         this.submissionRepositoryService = submissionRepositoryService;
         this.httpRequest = httpRequest;
     }
@@ -34,21 +36,18 @@ public class GenerateShortLinks implements Action {
     @Override
     public void run(Submission submission) {
 
-        if (true) {
-            // TODO: flag here to turn on link shortening and call real shortener
-            String baseUrl = ServletUriComponentsBuilder.fromContextPath(httpRequest).build().toUriString();
+        String baseUrl = ServletUriComponentsBuilder.fromContextPath(httpRequest).build().toUriString();
 
-            String emailUrl = SubmissionUtilities.convertToAbsoluteURLForEmailAndText(submission.getShortCode(), "email",
-                    baseUrl);
-            String textUrl = SubmissionUtilities.convertToAbsoluteURLForEmailAndText(submission.getShortCode(), "text",
-                    baseUrl);
-            String clipboardUrl = SubmissionUtilities.convertToAbsoluteURLForEmailAndText(submission.getShortCode(),
-                    "copy_link", baseUrl);
+        String emailUrl = SubmissionUtilities.convertToAbsoluteURLForEmailAndText(submission.getShortCode(), "email", baseUrl);
+        String textUrl = SubmissionUtilities.convertToAbsoluteURLForEmailAndText(submission.getShortCode(), "text", baseUrl);
+        String clipboardUrl = SubmissionUtilities.convertToAbsoluteURLForEmailAndText(submission.getShortCode(), "copy_link",
+                baseUrl);
 
-            submission.getInputData().put(SUBMISSION_DATA_EMAIL_LINK, emailUrl);
-            submission.getInputData().put(SUBMISSION_DATA_TEXT_LINK, textUrl);
-            submission.getInputData().put(SUBMISSION_DATA_CLIPBOARD_LINK, clipboardUrl);
+        submission.getInputData().put(SUBMISSION_DATA_EMAIL_LINK, emailUrl);
+        submission.getInputData().put(SUBMISSION_DATA_TEXT_LINK, textUrl);
+        submission.getInputData().put(SUBMISSION_DATA_CLIPBOARD_LINK, clipboardUrl);
 
+        if (waitForProviderResponse) {
             CompletableFuture<ShortenedLinks> shortenedLinks = CompletableFuture.supplyAsync(() -> {
                 ShortLinkService shortLinkService = new NoOpLinkShortener();
                 ShortenedLinks shortUrls = shortLinkService.getShortLinks(emailUrl, textUrl, clipboardUrl);
@@ -67,8 +66,8 @@ public class GenerateShortLinks implements Action {
                 submission.getInputData().put(SUBMISSION_DATA_CLIPBOARD_LINK, links.getShortClipboardLink());
                 submissionRepositoryService.save(submission);
             });
-
-
+        } else {
+            log.debug("Short link generation turned off.");
         }
     }
 }
