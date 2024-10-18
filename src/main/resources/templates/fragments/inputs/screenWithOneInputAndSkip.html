@@ -36,7 +36,7 @@
                         th:replace="~{fragments/inputs/submitButton :: submitButton(text=${buttonLabel != null ? buttonLabel : 'Submit'})}"/>
                 <div>
                   <a th:if="hasSkipLocation" th:text="${hasSkipTextValue ? skipText : 'Skip'}"
-                     th:href="${flow} + ${skipLocation}"></a>
+                     th:href="|/flow/${flow}/${skipLocation}|"></a>
                 </div>
               </div>
             </th:block>
