@@ -16,5 +16,5 @@ public class DocumentTransferConfiguration {
     public String authToken;
     public Long presignedUrlDuration;
     public String processingOrg;
-    public String waitForProviderResponse;
+    public boolean expandExistingProviderFlow;
 }

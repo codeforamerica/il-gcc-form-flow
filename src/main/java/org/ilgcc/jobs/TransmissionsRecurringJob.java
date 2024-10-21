@@ -32,7 +32,7 @@ public class TransmissionsRecurringJob {
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final PdfService pdfService;
     private final CloudFileRepository cloudFileRepository;
-    private final String waitForProviderResponseFlag;
+    private Boolean expandExistingProviderFlow;
     private final PdfTransmissionJob pdfTransmissionJob;
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
 
@@ -40,7 +40,7 @@ public class TransmissionsRecurringJob {
             TransmissionRepositoryService transmissionRepositoryService, UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, PdfService pdfService,
             CloudFileRepository cloudFileRepository, PdfTransmissionJob pdfTransmissionJob,
-            @Value("${il-gcc.dts.wait-for-provider-response}") String waitForProviderResponseFlag,
+            @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean expandExistingProviderFlow,
             EnqueueDocumentTransfer enqueueDocumentTransfer) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
@@ -49,7 +49,7 @@ public class TransmissionsRecurringJob {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
-        this.waitForProviderResponseFlag = waitForProviderResponseFlag;
+        this.expandExistingProviderFlow = expandExistingProviderFlow;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
     }
 
@@ -63,7 +63,7 @@ public class TransmissionsRecurringJob {
 
         List<Submission> expiredSubmissionsWithNoTransmission = submissionsWithoutTransmissions.stream()
                 .filter(submission -> providerApplicationHasExpired(submission, todaysDate)).toList();
-        if (expiredSubmissionsWithNoTransmission.isEmpty() || waitForProviderResponseFlag.equals("false")) {
+        if (expiredSubmissionsWithNoTransmission.isEmpty() || !expandExistingProviderFlow) {
             return;
         } else {
             log.info(String.format("Running the 'No provider response job' for %s expired submissions",

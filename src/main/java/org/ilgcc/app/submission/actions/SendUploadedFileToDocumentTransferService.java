@@ -19,24 +19,26 @@ public class SendUploadedFileToDocumentTransferService implements Action {
     private final UserFileRepositoryService userFileRepositoryService;
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final S3PresignService s3PresignService;
-    private final String waitForProviderResponseFlag;
+    private Boolean expandExistingProviderFlow;
 
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
 
     public SendUploadedFileToDocumentTransferService(UserFileRepositoryService userFileRepositoryService,
-            UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, S3PresignService s3PresignService, EnqueueDocumentTransfer enqueueDocumentTransfer,
-            @Value("${il-gcc.dts.wait-for-provider-response}") String waitForProviderResponseFlag) {
+            UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, S3PresignService s3PresignService,
+            EnqueueDocumentTransfer enqueueDocumentTransfer,
+            @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean expandExistingProviderFlow) {
         this.userFileRepositoryService = userFileRepositoryService;
         this.uploadedDocumentTransmissionJob = uploadedDocumentTransmissionJob;
         this.s3PresignService = s3PresignService;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
-        this.waitForProviderResponseFlag=waitForProviderResponseFlag;
+        this.expandExistingProviderFlow = expandExistingProviderFlow;
     }
 
     @Override
     public void run(Submission submission) {
-        if (waitForProviderResponseFlag.equals("false")) {
-           enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService, submission);
+        if (!expandExistingProviderFlow) {
+            enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
+                    uploadedDocumentTransmissionJob, s3PresignService, submission);
         }
     }
 }

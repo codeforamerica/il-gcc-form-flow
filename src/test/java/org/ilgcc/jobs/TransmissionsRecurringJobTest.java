@@ -82,7 +82,7 @@ public class TransmissionsRecurringJobTest {
                 pdfService,
                 cloudFileRepository,
                 pdfTransmissionJob,
-                "true",
+                true,
                 enqueueDocumentTransfer
         );
     }
@@ -110,7 +110,7 @@ public class TransmissionsRecurringJobTest {
                 pdfService,
                 cloudFileRepository,
                 pdfTransmissionJob,
-                "false",
+                false,
                 enqueueDocumentTransfer
         );
 
