@@ -9,16 +9,11 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import javax.swing.text.html.Option;
-import org.ilgcc.app.utils.PreparerUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -27,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 
+    @Autowired
     SubmissionRepositoryService submissionRepositoryService;
 
     @Override
@@ -58,7 +54,12 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                             new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
                 }
 
-                results.put("providerSignature", new SingleField("providerSignature", providerSignature(providerInputData), null));
+                results.put("providerSignature",
+                        new SingleField("providerSignature", providerSignature(providerInputData), null));
+
+                Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submission.getSubmittedAt()));
+                results.put("providerSignatureDate",
+                        new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate), null));
             }
         }
 
@@ -78,12 +79,12 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         return results;
     }
 
-    private String providerSignature(Map<String, Object> providerInputData){
+    private String providerSignature(Map<String, Object> providerInputData) {
         String firstname = (String) providerInputData.getOrDefault("providerResponseFirstName", "");
         String lastName = (String) providerInputData.getOrDefault("providerResponseLastName", "");
         String businessName = (String) providerInputData.getOrDefault("providerResponseBusinessName", "");
 
-        if(businessName.isEmpty()){
+        if (businessName.isEmpty()) {
             return String.format("%s %s", firstname, lastName);
         } else {
             return String.format("%s %s, %s", firstname, lastName, businessName);

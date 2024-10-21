@@ -151,6 +151,18 @@ inputFields:
   providerPhoneNumber: PROVIDER_PHONE_NUMBER
   providerEmail: PROVIDER_EMAIL
   providerResponse: PROVIDER_RESPONSE
+  providerResponseFirstName: PROVIDER_NAME_FIRST
+  providerResponseLastName: PROVIDER_NAME_LAST
+  providerResponseBusinessName: PROVIDER_NAME_CORPORATE
+  providerResponseServiceAddress1: PROVIDER_ADDRESS_SERVICE_STREET
+  providerResponseServiceAddress2: PROVIDER_ADDRESS_SERVICE_APT
+  providerResponseServiceCity: PROVIDER_ADDRESS_SERVICE_CITY
+  providerResponseServiceState: PROVIDER_ADDRESS_SERVICE_STATE
+  providerResponseServiceZipCode: PROVIDER_ADDRESS_SERVICE_ZIP
+  providerResponseContactPhoneNumber: PROVIDER_PHONE_NUMBER
+  providerResponseContactEmail: PROVIDER_EMAIL
+  providerSignature: PROVIDER_SIGNATURE
+  providerSignatureDate: PROVIDER_SIGNATURE_DATE
 
 dbFields:
   submittedAt: APPLICANT_SIGNATURE_DATE
