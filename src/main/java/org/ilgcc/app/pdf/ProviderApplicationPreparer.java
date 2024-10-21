@@ -14,10 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @ConditionalOnProperty(name = "il-gcc.dts.wait-for-provider-response", havingValue = "true")
 @Component
 public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
@@ -60,10 +62,11 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submission.getSubmittedAt()));
                 results.put("providerSignatureDate",
                         new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate), null));
+            } else {
+                log.error(String.format("Family Application (%s) does not have corresponding provider application for id: %s",
+                        submission.getId(), providerId));
             }
-        }
-
-        if (!hasProviderResponse) {
+        } else {
             results.put("providerNameCorporate",
                     new SingleField("providerNameCorporate", inputData.getOrDefault("familyIntendedProviderName", "").toString(),
                             null));
