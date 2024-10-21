@@ -25,6 +25,7 @@ public class NoOpLinkShortener implements ShortLinkService {
         return longLink;
     }
 
+    @Override
     public ShortenedLinks getShortLinks(String emailLongLink, String textLongLink, String clipboardLongLink) {
 
         CompletableFuture<String> shortEmailUrl = CompletableFuture.supplyAsync(() -> {
