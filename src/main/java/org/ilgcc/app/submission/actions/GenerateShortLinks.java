@@ -24,6 +24,9 @@ public class GenerateShortLinks implements Action {
     @Value("${il-gcc.dts.wait-for-provider-response}")
     boolean waitForProviderResponse;
 
+    @Value("${il-gcc.generate-short-links}")
+    boolean generateShortLinks;
+
     private static final String SUBMISSION_DATA_EMAIL_LINK = "emailLink";
     private static final String SUBMISSION_DATA_TEXT_LINK = "textLink";
     private static final String SUBMISSION_DATA_CLIPBOARD_LINK = "clipboardLink";
@@ -47,7 +50,7 @@ public class GenerateShortLinks implements Action {
         submission.getInputData().put(SUBMISSION_DATA_TEXT_LINK, textUrl);
         submission.getInputData().put(SUBMISSION_DATA_CLIPBOARD_LINK, clipboardUrl);
 
-        if (false && waitForProviderResponse) {
+        if (generateShortLinks && waitForProviderResponse) {
             CompletableFuture<ShortenedLinks> shortenedLinks = CompletableFuture.supplyAsync(() -> {
                 ShortLinkService shortLinkService = new NoOpLinkShortener();
                 ShortenedLinks shortUrls = shortLinkService.getShortLinks(emailUrl, textUrl, clipboardUrl);
