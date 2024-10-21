@@ -24,22 +24,22 @@ public class UploadSubmissionToS3 implements Action {
 
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
 
-    private final String waitForProviderResponseFlag;
+    private Boolean expandExistingProviderFlow;
 
     public UploadSubmissionToS3(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob,
             EnqueueDocumentTransfer enqueueDocumentTransfer,
-            @Value("${il-gcc.dts.wait-for-provider-response}") String waitForProviderResponseFlag) {
+            @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean expandExistingProviderFlow) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
-        this.waitForProviderResponseFlag = waitForProviderResponseFlag;
+        this.expandExistingProviderFlow = expandExistingProviderFlow;
     }
 
     @Override
     public void run(Submission submission) {
-        if (waitForProviderResponseFlag.equals("false")) {
+        if (!expandExistingProviderFlow) {
             enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
                     submission, FileNameUtility.getFileNameForPdf(submission));
         }
