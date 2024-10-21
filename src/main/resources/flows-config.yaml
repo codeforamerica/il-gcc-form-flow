@@ -498,6 +498,7 @@ flow:
       - name: response
   response:
     beforeDisplayAction: FindApplicationData
+    afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
       - name: submit-complete
         condition: ProviderAgreedToCare
