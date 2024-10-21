@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {
-        "REVEAL_ADDITIONAL_PROVIDER_SCREENS=true"
+        "WAIT_FOR_PROVIDER_RESPONSE_FLAG=true"
 })
 public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 

@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component;
  * This is a false-Condition to skip the pages that have not yet been implemented.
  */
 @Component
-public class AdditionalProviderScreensFlag implements Condition {
+public class ExpandExistingProviderFlowFlag implements Condition {
 
-    private final String revealAdditionalProviderScreens;
+    private Boolean expandExistingProviderFlow;
 
-    public AdditionalProviderScreensFlag(
-            @Value("${il-gcc.pfc.reveal-additional-provider-screens}") String waitForProviderResponseFlag) {
-        this.revealAdditionalProviderScreens = waitForProviderResponseFlag;
+    public ExpandExistingProviderFlowFlag(
+            @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean expandExistingProviderFlow) {
+        this.expandExistingProviderFlow = expandExistingProviderFlow;
     }
 
     @Override
     public Boolean run(Submission submission) {
-        return revealAdditionalProviderScreens.equalsIgnoreCase("true");
+        return expandExistingProviderFlow;
     }
 }

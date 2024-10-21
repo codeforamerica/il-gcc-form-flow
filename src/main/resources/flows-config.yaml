@@ -3,7 +3,7 @@ flow:
   onboarding-getting-started:
     nextScreens:
       - name: onboarding-chosen-provider
-        condition: AdditionalProviderScreensFlag
+        condition: ExpandExistingProviderFlowFlag
       - name: onboarding-choose-provider
   onboarding-choose-provider:
     nextScreens:
@@ -16,7 +16,7 @@ flow:
   onboarding-provider-info:
     nextScreens:
       - name: onboarding-provider-info-review
-        condition: AdditionalProviderScreensFlag
+        condition: ExpandExistingProviderFlowFlag
       - name: contact-provider-message
   pilot-offboard:
     nextScreens: null
@@ -41,7 +41,7 @@ flow:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
       - name: onboarding-getting-started
-        condition: AdditionalProviderScreensFlag
+        condition: ExpandExistingProviderFlowFlag
       - name: parent-info-intro
   parent-info-intro:
     nextScreens:
