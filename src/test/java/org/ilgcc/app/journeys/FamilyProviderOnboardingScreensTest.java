@@ -15,6 +15,13 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
     @Test
     void FamilyProviderOnboardingScreensTest() {
+        // Home page
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
+        testPage.clickButton(getEnMessage("index.apply-now"));
+        // onboarding-getting-started
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
+        testPage.clickContinue();
+
         testPage.navigateToFlowScreen("gcc/onboarding-language-pref");
         //onboarding-language-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
@@ -33,10 +40,6 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
         testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
-        testPage.clickContinue();
-
-        // onboarding-getting-started
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
 
         // onboarding-chosen-provider

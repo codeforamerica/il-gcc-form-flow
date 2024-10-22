@@ -2,7 +2,7 @@ name: gcc
 flow:
   onboarding-getting-started:
     nextScreens:
-      - name: onboarding-chosen-provider
+      - name: onboarding-language-pref
         condition: ExpandExistingProviderFlowFlag
       - name: onboarding-choose-provider
   onboarding-choose-provider:
@@ -33,10 +33,10 @@ flow:
       - name: onboarding-language-pref
   onboarding-county:
     nextScreens:
-      - name: onboarding-getting-started
+      - name: onboarding-chosen-provider
   onboarding-zipcode:
     nextScreens:
-      - name: onboarding-getting-started
+      - name: onboarding-chosen-provider
   onboarding-language-pref:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
