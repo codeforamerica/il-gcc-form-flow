@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
       th:with="
-            provider=${T(org.ilgcc.app.utils.ChildCareProvider).valueOf(inputData.get('dayCareChoice'))},
+            
             submittedDate=${inputData.getOrDefault('formattedSubmittedAtDate', 'No Date')},
             submittedTime=${inputData.getOrDefault('formattedSubmittedAtTime', 'No time')},
             hasSubmittedSurvey=${
