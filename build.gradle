@@ -74,7 +74,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.4'
-    testImplementation 'org.springframework.security:spring-security-test:6.3.3'
+    testImplementation 'org.springframework.security:spring-security-test:6.3.4'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.25.0'
     testImplementation 'io.percy:percy-java-selenium:2.1.0'
     testImplementation 'org.jsoup:jsoup:1.18.1'
