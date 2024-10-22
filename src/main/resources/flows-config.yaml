@@ -33,14 +33,14 @@ flow:
       - name: onboarding-language-pref
   onboarding-county:
     nextScreens:
-      - name: onboarding-language-pref
+      - name: onboarding-getting-started
   onboarding-zipcode:
     nextScreens:
-      - name: onboarding-language-pref
+      - name: onboarding-getting-started
   onboarding-language-pref:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
-      - name: onboarding-getting-started
+      - name: onboarding-county
         condition: ExpandExistingProviderFlowFlag
       - name: parent-info-intro
   parent-info-intro:

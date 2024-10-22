@@ -15,7 +15,12 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
     @Test
     void FamilyProviderOnboardingScreensTest() {
-        testPage.navigateToFlowScreen("gcc/onboarding-county");
+        testPage.navigateToFlowScreen("gcc/onboarding-language-pref");
+        //onboarding-language-preference
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
+        testPage.selectFromDropdown("languageRead", "English");
+        testPage.selectFromDropdown("languageSpeak", "Español");
+        testPage.clickContinue();
 
         // onboarding-county
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
@@ -28,12 +33,6 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
         testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
-        testPage.clickContinue();
-
-        //onboarding-language-preference
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
-        testPage.selectFromDropdown("languageRead", "English");
-        testPage.selectFromDropdown("languageSpeak", "Español");
         testPage.clickContinue();
 
         // onboarding-getting-started
