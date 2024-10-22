@@ -113,7 +113,7 @@ org:
     dashboard:
       enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
-  generate-short-links: false
+  generate-short-links: ${GENERATE_SHORT_LINKS_FLAG:false}
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
