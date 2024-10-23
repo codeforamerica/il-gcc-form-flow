@@ -29,12 +29,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest(classes = IlGCCApplication.class)
-@TestPropertySource(properties = {
-        "il-gcc.dts.expand-existing-provider-flow=true",
-})
+@SpringBootTest(
+        classes = IlGCCApplication.class,
+        properties = "il-gcc.dts.expand-existing-provider-flow=true"
+)
 @ActiveProfiles("test")
 public class TransmissionsRecurringJobFlagOnTest {
 
