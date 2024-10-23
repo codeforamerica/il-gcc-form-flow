@@ -53,7 +53,7 @@ public class TransmissionsRecurringJob {
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
     }
 
-    @Recurring(id = "no-provider-response-job", cron = "* * * * *")
+    @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
         List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
