@@ -453,6 +453,12 @@ flow:
     beforeDisplayAction: FindApplicationData
     nextScreens:
       - name: submit-complete
+        condition: ProviderAgreedToCare
+      - name: confirm-deny-care
+  confirm-deny-care:
+    beforeDisplayAction: FormatChildrenWhoNeedCareNames
+    nextScreens:
+      - name: submit-complete-final
   submit-complete:
     nextScreens: 
       - name: info

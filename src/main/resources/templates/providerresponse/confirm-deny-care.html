@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{provider-response-confirm-deny-care.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: warningSign}"></th:block>
+         <th:block
+              th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-confirm-deny-care.header(${inputData.get('childrenWhoNeedCareNames')})}, subtext=#{provider-response-confirm-deny-care.body})}"/>
+          <th:block th:replace="~{fragments/form :: form(action=|/flow/${flow}/${screen}/submit|, content=~{::content})}">
+            <th:block th:ref="content">
+              <div class="form-card__content">
+              </div>
+            <div class="form-card__footer">
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{provider-response-confirm-deny-care.confirm-button})}"/>
+              <a th:href="'/flow/' + ${flow} + '/response'" th:text="#{provider-response-confirm-deny-care.cancel-button}"
+                 class="button button--secondary" id="continue-link"></a>
+            </div>
+          </th:block>
+        </th:block>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}" />
+</body>
+</html>
