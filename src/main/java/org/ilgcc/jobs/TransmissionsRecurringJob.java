@@ -20,9 +20,11 @@ import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Slf4j
+@ConditionalOnProperty(name="il-gcc.dts.expand-existing-provider-flow", havingValue = "true")
 @Service
 public class TransmissionsRecurringJob {
 
@@ -32,7 +34,6 @@ public class TransmissionsRecurringJob {
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final PdfService pdfService;
     private final CloudFileRepository cloudFileRepository;
-    private Boolean expandExistingProviderFlow;
     private final PdfTransmissionJob pdfTransmissionJob;
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
 
@@ -40,7 +41,6 @@ public class TransmissionsRecurringJob {
             TransmissionRepositoryService transmissionRepositoryService, UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, PdfService pdfService,
             CloudFileRepository cloudFileRepository, PdfTransmissionJob pdfTransmissionJob,
-            @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean expandExistingProviderFlow,
             EnqueueDocumentTransfer enqueueDocumentTransfer) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
@@ -49,11 +49,10 @@ public class TransmissionsRecurringJob {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
-        this.expandExistingProviderFlow = expandExistingProviderFlow;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
     }
 
-    @Recurring(id = "no-provider-response-job", cron = "* * * * *")
+    @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
         List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
@@ -63,7 +62,7 @@ public class TransmissionsRecurringJob {
 
         List<Submission> expiredSubmissionsWithNoTransmission = submissionsWithoutTransmissions.stream()
                 .filter(submission -> providerApplicationHasExpired(submission, todaysDate)).toList();
-        if (expiredSubmissionsWithNoTransmission.isEmpty() || !expandExistingProviderFlow) {
+        if (expiredSubmissionsWithNoTransmission.isEmpty()) {
             return;
         } else {
             log.info(String.format("Running the 'No provider response job' for %s expired submissions",
