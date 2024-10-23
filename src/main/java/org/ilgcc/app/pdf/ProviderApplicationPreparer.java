@@ -53,8 +53,8 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 "providerResponseFirstName",
                 "providerResponseLastName",
                 "providerResponseBusinessName",
-                "providerResponseServiceAddress1",
-                "providerResponseServiceAddress2",
+                "providerResponseServiceStreetAddress1",
+                "providerResponseServiceStreetAddress2",
                 "providerResponseServiceCity",
                 "providerResponseServiceState",
                 "providerResponseServiceZipCode",
@@ -63,7 +63,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         );
 
         if (hasProviderResponse) {
-            UUID providerId = (UUID) inputData.get("providerResponseSubmissionId");
+            UUID providerId = UUID.fromString(inputData.get("providerResponseSubmissionId").toString());
             Optional<Submission> providerSubmission = submissionRepositoryService.findById(providerId);
             if (providerSubmission.isPresent()) {
                 Map<String, Object> providerInputData = providerSubmission.get().getInputData();

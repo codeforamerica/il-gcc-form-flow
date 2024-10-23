@@ -154,8 +154,8 @@ inputFields:
   providerResponseFirstName: PROVIDER_NAME_FIRST
   providerResponseLastName: PROVIDER_NAME_LAST
   providerResponseBusinessName: PROVIDER_NAME_CORPORATE
-  providerResponseServiceAddress1: PROVIDER_ADDRESS_SERVICE_STREET
-  providerResponseServiceAddress2: PROVIDER_ADDRESS_SERVICE_APT
+  providerResponseServiceStreetAddress1: PROVIDER_ADDRESS_SERVICE_STREET
+  providerResponseServiceStreetAddress2: PROVIDER_ADDRESS_SERVICE_APT
   providerResponseServiceCity: PROVIDER_ADDRESS_SERVICE_CITY
   providerResponseServiceState: PROVIDER_ADDRESS_SERVICE_STATE
   providerResponseServiceZipCode: PROVIDER_ADDRESS_SERVICE_ZIP

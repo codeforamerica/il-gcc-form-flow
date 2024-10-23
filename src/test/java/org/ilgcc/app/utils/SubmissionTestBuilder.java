@@ -50,8 +50,8 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("providerResponseFirstName", "Provider");
         submission.getInputData().put("providerResponseLastName", "LastName");
         submission.getInputData().put("providerResponseBusinessName", "DayCare Place");
-        submission.getInputData().put("providerResponseServiceAddress1", "123 Main St");
-        submission.getInputData().put("providerResponseServiceAddress2", "Unit 10");
+        submission.getInputData().put("providerResponseServiceStreetAddress1", "123 Main St");
+        submission.getInputData().put("providerResponseServiceStreetAddress2", "Unit 10");
         submission.getInputData().put("providerResponseServiceCity", "DeKalb");
         submission.getInputData().put("providerResponseServiceState", "IL");
         submission.getInputData().put("providerResponseServiceZipCode", "60112");

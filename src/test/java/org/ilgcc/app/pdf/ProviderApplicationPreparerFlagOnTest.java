@@ -86,10 +86,10 @@ public class ProviderApplicationPreparerFlagOnTest {
                 new SingleField("providerResponseLastName", "LastName", null));
         assertThat(result.get("providerResponseBusinessName")).isEqualTo(
                 new SingleField("providerResponseBusinessName", "DayCare Place", null));
-        assertThat(result.get("providerResponseServiceAddress1")).isEqualTo(
-                new SingleField("providerResponseServiceAddress1", "123 Main St", null));
-        assertThat(result.get("providerResponseServiceAddress2")).isEqualTo(
-                new SingleField("providerResponseServiceAddress2", "Unit 10", null));
+        assertThat(result.get("providerResponseServiceStreetAddress1")).isEqualTo(
+                new SingleField("providerResponseServiceStreetAddress1", "123 Main St", null));
+        assertThat(result.get("providerResponseServiceStreetAddress2")).isEqualTo(
+                new SingleField("providerResponseServiceStreetAddress2", "Unit 10", null));
         assertThat(result.get("providerResponseServiceCity")).isEqualTo(
                 new SingleField("providerResponseServiceCity", "DeKalb", null));
         assertThat(result.get("providerResponseServiceState")).isEqualTo(
@@ -134,8 +134,8 @@ public class ProviderApplicationPreparerFlagOnTest {
         assertThat(result.get("providerResponseFirstName")).isNull();
         assertThat(result.get("providerResponseLastName")).isNull();
         assertThat(result.get("providerResponseBusinessName")).isNull();
-        assertThat(result.get("providerResponseServiceAddress1")).isNull();
-        assertThat(result.get("providerResponseServiceAddress2")).isNull();
+        assertThat(result.get("providerResponseServiceStreetAddress1")).isNull();
+        assertThat(result.get("providerResponseServiceStreetAddress2")).isNull();
         assertThat(result.get("providerResponseServiceCity")).isNull();
         assertThat(result.get("providerResponseServiceState")).isNull();
         assertThat(result.get("providerResponseServiceZipCode")).isNull();
