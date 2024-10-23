@@ -18,10 +18,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(
         classes = IlGCCApplication.class,
-        properties = "il-gcc.dts.wait-for-provider-response=true"
+        properties = "il-gcc.dts.expand-existing-provider-flow=true"
 )
 @ActiveProfiles("test")
-public class ProviderApplicationPreparerTest {
+public class ProviderApplicationPreparerFlagOnTest {
 
     @Autowired
     private ProviderApplicationPreparer preparer;
@@ -36,6 +36,7 @@ public class ProviderApplicationPreparerTest {
     public void setsNoResponseWhenNoProviderSubmissionExists() {
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
+                .withDayCareProvider()
                 .with("familyIntendedProviderName", "ProviderName")
                 .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
                 .with("familyIntendedProviderEmail", "mail@test.com")
@@ -47,6 +48,14 @@ public class ProviderApplicationPreparerTest {
         assertThat(result.get("providerEmail")).isEqualTo(new SingleField("providerEmail", "mail@test.com", null));
         assertThat(result.get("providerResponse")).isEqualTo(
                 new SingleField("providerResponse", "No response from provider", null));
+
+        assertThat(result.get("dayCareName")).isEqualTo(null);
+        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressApt")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressCity")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressState")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 
     @Test
@@ -60,6 +69,7 @@ public class ProviderApplicationPreparerTest {
 
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
+                .withDayCareProvider()
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .with("familyIntendedProviderName", "ProviderName")
                 .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
@@ -91,6 +101,13 @@ public class ProviderApplicationPreparerTest {
         assertThat(result.get("providerResponseContactEmail")).isEqualTo(
                 new SingleField("providerResponseContactEmail", "mail@daycareplace.org", null));
 
+        assertThat(result.get("dayCareName")).isEqualTo(null);
+        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressApt")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressCity")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressState")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 
     @Test
@@ -105,6 +122,7 @@ public class ProviderApplicationPreparerTest {
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .withSubmittedAtDate(OffsetDateTime.now())
+                .withDayCareProvider()
                 .with("familyIntendedProviderName", "ProviderName")
                 .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
                 .with("familyIntendedProviderEmail", "mail@test.com")
@@ -123,6 +141,14 @@ public class ProviderApplicationPreparerTest {
         assertThat(result.get("providerResponseServiceZipCode")).isNull();
         assertThat(result.get("providerResponseContactPhoneNumber")).isNull();
         assertThat(result.get("providerResponseContactEmail")).isNull();
+
+        assertThat(result.get("dayCareName")).isEqualTo(null);
+        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressApt")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressCity")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressState")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
 
     }
 

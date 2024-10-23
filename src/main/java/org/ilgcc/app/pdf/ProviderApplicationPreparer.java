@@ -14,21 +14,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.ChildCareProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@ConditionalOnProperty(name = "il-gcc.dts.wait-for-provider-response", havingValue = "true")
 @Component
 public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
 
+    private Boolean expandExistingProviderFlowFlag;
+
+    public ProviderApplicationPreparer(
+            @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean expandExistingProviderFlowFlag) {
+        this.expandExistingProviderFlowFlag = expandExistingProviderFlowFlag;
+    }
+
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
+        if (expandExistingProviderFlowFlag) {
+            return prepareSubmittedDayCareData(submission);
+        } else {
+            return prepareSelectedDayCareData(submission);
+        }
+
+    }
+
+    private Map<String, SubmissionField> prepareSubmittedDayCareData(Submission submission) {
         var results = new HashMap<String, SubmissionField>();
         var inputData = submission.getInputData();
 
@@ -78,6 +94,22 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
             results.put("providerResponse",
                     new SingleField("providerResponse", "No response from provider", null));
         }
+
+        return results;
+    }
+
+    private Map<String, SubmissionField> prepareSelectedDayCareData(Submission submission) {
+        var results = new HashMap<String, SubmissionField>();
+
+        var provider = ChildCareProvider.valueOf((String) submission.getInputData().get("dayCareChoice"));
+
+        results.put("dayCareName", new SingleField("dayCareName", provider.getDisplayName(), null));
+        results.put("dayCareIdNumber", new SingleField("dayCareIdNumber", provider.getIdNumber(), null));
+        results.put("dayCareAddressStreet", new SingleField("dayCareAddressStreet", provider.getStreet(), null));
+        results.put("dayCareAddressApt", new SingleField("dayCareAddressApt", provider.getApt(), null));
+        results.put("dayCareAddressCity", new SingleField("dayCareAddressCity", provider.getCity(), null));
+        results.put("dayCareAddressState", new SingleField("dayCareAddressState", provider.getState(), null));
+        results.put("dayCareAddressZip", new SingleField("dayCareAddressZip", provider.getZipcode(), null));
 
         return results;
     }
