@@ -31,7 +31,7 @@ public class UploadProviderSubmissionToS3 implements Action {
     public UploadProviderSubmissionToS3(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob,
             EnqueueDocumentTransfer enqueueDocumentTransfer,
-            @Value("${il-gcc.dts.wait-for-provider-response}") String waitForProviderResponseFlag,
+            @Value("${il-gcc.dts.expand-existing-provider-flow}") String waitForProviderResponseFlag,
         SubmissionRepositoryService submissionRepositoryService) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;

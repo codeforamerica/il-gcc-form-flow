@@ -55,15 +55,7 @@ class UploadProviderSubmissionToS3Test {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
-    uploadProviderSubmissionToS3 = new UploadProviderSubmissionToS3(
-        pdfService,
-        cloudFileRepository,
-        pdfTransmissionJob,
-        enqueueDocumentTransfer,
-        Boolean.TRUE.toString(),
-        submissionRepositoryService
-    );
+    MockitoAnnotations.openMocks(this);
 
     familySubmission = new SubmissionTestBuilder()
         .withFlow("gcc")
@@ -83,20 +75,35 @@ class UploadProviderSubmissionToS3Test {
   }
 
   @Test
-  void whenFeatureFlagIsSetToTrueAndProviderSubmissionIsEnqueued() throws IOException, InterruptedException {
+  void whenFeatureFlagIsSetToTrueAndProviderSubmissionIsEnqueued() {
+    uploadProviderSubmissionToS3 = new UploadProviderSubmissionToS3(
+        pdfService,
+        cloudFileRepository,
+        pdfTransmissionJob,
+        enqueueDocumentTransfer,
+        "true",
+        submissionRepositoryService
+    );
     uploadProviderSubmissionToS3.run(providerSubmission);
 
     verify(enqueueDocumentTransfer, times(1)).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
         eq(pdfTransmissionJob), eq(familySubmission), any());
 
-//    providerResponseSubmission.getInputData().put("");
-//    byte[] pdfFiles = new byte[]{1, 2, 3, 4};
-//    when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
-//    submission.setSubmittedAt(OffsetDateTime.now());
-//    uploadSubmissionToS3.run(submission);
-//
-//    verify(pdfService).getFilledOutPDF(submission);
-//    verify(cloudFileRepository).upload(eq(generateExpectedPdfPath(submission)), any(MultipartFile.class));
+  }
+  @Test
+  void whenFeatureFlagIsSetToFalseAndProviderSubmissionIsNotEnqueued(){
+    uploadProviderSubmissionToS3 = new UploadProviderSubmissionToS3(
+        pdfService,
+        cloudFileRepository,
+        pdfTransmissionJob,
+        enqueueDocumentTransfer,
+        "false",
+        submissionRepositoryService
+    );
+    uploadProviderSubmissionToS3.run(providerSubmission);
+
+    verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
+        eq(pdfTransmissionJob), eq(familySubmission), any());
   }
 
   private String generateExpectedPdfPath(Submission submission) {
