@@ -20,9 +20,11 @@ import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Slf4j
+@ConditionalOnProperty(name="il-gcc.dts.expand-existing-provider-flow", havingValue = "true")
 @Service
 public class TransmissionsRecurringJob {
 
@@ -63,7 +65,7 @@ public class TransmissionsRecurringJob {
 
         List<Submission> expiredSubmissionsWithNoTransmission = submissionsWithoutTransmissions.stream()
                 .filter(submission -> providerApplicationHasExpired(submission, todaysDate)).toList();
-        if (expiredSubmissionsWithNoTransmission.isEmpty() || !expandExistingProviderFlow) {
+        if (expiredSubmissionsWithNoTransmission.isEmpty()) {
             return;
         } else {
             log.info(String.format("Running the 'No provider response job' for %s expired submissions",
