@@ -1,10 +1,17 @@
 package org.ilgcc.jobs;
 
+import static org.ilgcc.app.utils.enums.TransmissionStatus.Queued;
+import static org.ilgcc.app.utils.enums.TransmissionType.APPLICATION_PDF;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.Transmission;
@@ -18,20 +25,18 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
-
-import static org.ilgcc.app.utils.enums.TransmissionStatus.Queued;
-import static org.ilgcc.app.utils.enums.TransmissionType.APPLICATION_PDF;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = IlGCCApplication.class)
+@TestPropertySource(properties = {
+        "il-gcc.dts.expand-existing-provider-flow=true",
+})
 @ActiveProfiles("test")
-public class TransmissionsRecurringJobTest {
+public class TransmissionsRecurringJobFlagOnTest {
 
     @Autowired
     private SubmissionRepository submissionRepository;
@@ -59,6 +64,9 @@ public class TransmissionsRecurringJobTest {
     @Mock
     private PdfTransmissionJob pdfTransmissionJob;
 
+    @Autowired
+    private ApplicationContext context;
+
     @Mock
     private EnqueueDocumentTransfer enqueueDocumentTransfer;
 
@@ -82,7 +90,6 @@ public class TransmissionsRecurringJobTest {
                 pdfService,
                 cloudFileRepository,
                 pdfTransmissionJob,
-                true,
                 enqueueDocumentTransfer
         );
     }
@@ -94,30 +101,10 @@ public class TransmissionsRecurringJobTest {
     }
 
     @Test
-    void enqueueDocumentTransferWillNotRunIfFlagIsOff() {
-        expiredSubmission = new SubmissionTestBuilder()
-                .withParentDetails()
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
-                .withFlow("gcc")
-                .build();
-        submissionRepository.save(expiredSubmission);
-
-        transmissionsRecurringJob = new TransmissionsRecurringJob(
-                s3PresignService,
-                transmissionRepositoryService,
-                userFileRepositoryService,
-                uploadedDocumentTransmissionJob,
-                pdfService,
-                cloudFileRepository,
-                pdfTransmissionJob,
-                false,
-                enqueueDocumentTransfer
-        );
-
-        transmissionsRecurringJob.noProviderResponseJob();
-
-        verifyNoInteractions(enqueueDocumentTransfer);
+    public void transmissionRecurringJobEnabledWhenFlagIsOn() {
+        assertTrue(context.containsBean("transmissionsRecurringJob"));
     }
+
     @Test
     void enqueueDocumentTransferIsOnlyCalledOnExpiredSubmissions() {
         unexpiredSubmission = new SubmissionTestBuilder()

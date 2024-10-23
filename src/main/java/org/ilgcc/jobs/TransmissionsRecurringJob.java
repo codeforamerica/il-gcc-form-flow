@@ -34,7 +34,6 @@ public class TransmissionsRecurringJob {
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final PdfService pdfService;
     private final CloudFileRepository cloudFileRepository;
-    private Boolean expandExistingProviderFlow;
     private final PdfTransmissionJob pdfTransmissionJob;
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
 
@@ -42,7 +41,6 @@ public class TransmissionsRecurringJob {
             TransmissionRepositoryService transmissionRepositoryService, UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, PdfService pdfService,
             CloudFileRepository cloudFileRepository, PdfTransmissionJob pdfTransmissionJob,
-            @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean expandExistingProviderFlow,
             EnqueueDocumentTransfer enqueueDocumentTransfer) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
@@ -51,7 +49,6 @@ public class TransmissionsRecurringJob {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
-        this.expandExistingProviderFlow = expandExistingProviderFlow;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
     }
 
