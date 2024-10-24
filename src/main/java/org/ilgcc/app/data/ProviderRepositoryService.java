@@ -1,10 +1,11 @@
-package org.ilgcc.app.data;
+package formflow.library.data;
 
-import jakarta.transaction.Transactional;
 import java.math.BigInteger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ProviderRepositoryService {
 
     ProviderRepository providerRepository;
