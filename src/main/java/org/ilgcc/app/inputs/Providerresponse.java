@@ -2,11 +2,13 @@ package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
 import jakarta.validation.constraints.NotBlank;
+import org.ilgcc.app.data.annotations.ProviderIdNumber;
 
 public class Providerresponse extends FlowInputs {
     private String familySubmissionId;
 
     @NotBlank(message = "{errors.provide-provider-number}")
+    @ProviderIdNumber
     private String providerResponseProviderNumber;
 
     @NotBlank(message = "{errors.provide-applicant-number}")
