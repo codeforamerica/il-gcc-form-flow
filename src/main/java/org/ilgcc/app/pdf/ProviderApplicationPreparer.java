@@ -95,6 +95,15 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                     new SingleField("providerResponse", "No response from provider", null));
         }
 
+//        if(hasProviderResponse){
+////            get the prodiver submission.
+////            loop through provider submisisom
+////            for(fieldname:prodivder)
+////            results.put(fieldName,
+////                new SingleField(fieldname, inputData.getOrDefault(fieldName, "").toString(), null));
+//
+//        }
+
         return results;
     }
 
