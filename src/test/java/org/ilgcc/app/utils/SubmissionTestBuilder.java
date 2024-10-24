@@ -46,6 +46,21 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withProviderSubmissionData(){
+        submission.getInputData().put("providerResponseFirstName", "Provider");
+        submission.getInputData().put("providerResponseLastName", "LastName");
+        submission.getInputData().put("providerResponseBusinessName", "DayCare Place");
+        submission.getInputData().put("providerResponseServiceStreetAddress1", "123 Main St");
+        submission.getInputData().put("providerResponseServiceStreetAddress2", "Unit 10");
+        submission.getInputData().put("providerResponseServiceCity", "DeKalb");
+        submission.getInputData().put("providerResponseServiceState", "IL");
+        submission.getInputData().put("providerResponseServiceZipCode", "60112");
+        submission.getInputData().put("providerResponseContactPhoneNumber", "(111) 222-3333");
+        submission.getInputData().put("providerResponseContactEmail", "mail@daycareplace.org");
+
+        return this;
+    }
+
     public SubmissionTestBuilder withDayCareProvider() {
         submission.getInputData().put("dayCareChoice", "OPEN_SESAME");
         return this;
