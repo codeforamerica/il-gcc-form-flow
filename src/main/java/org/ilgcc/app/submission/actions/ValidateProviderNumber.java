@@ -4,12 +4,14 @@ package org.ilgcc.app.submission.actions;
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.data.ProviderRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -22,18 +24,39 @@ public class ValidateProviderNumber implements Action {
     @Autowired
     MessageSource messageSource;
 
-    private final String UNEARNED_INCOME_SOURCE = "providerResponseProviderNumber";
+    @Autowired
+    ProviderRepositoryService providerRepositoryService;
+
+    private final String PROVIDER_NUMBER = "providerResponseProviderNumber";
 
     @Override
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
-        Locale locale = LocaleContextHolder.getLocale();
         Map<String, List<String>> errorMessages = new HashMap<>();
-        var inputData = (List<String>) formSubmission.getFormData().get(UNEARNED_INCOME_SOURCE + "[]");
+        String inputValue = (String) formSubmission.getFormData().get(PROVIDER_NUMBER);
 
-//        if (Objects.isNull(inputData) || inputData.isEmpty()) {
-            errorMessages.put(UNEARNED_INCOME_SOURCE, List.of(messageSource.getMessage("unearned-income-source.field.required", null, locale)));
-//        }
+        if (!Objects.isNull(inputValue) && !inputValue.isEmpty()) {
+            try {
+                BigInteger providerNumber = new BigInteger(inputValue);
+                if (providerRepositoryService.doProvidersExist()) {
+                    if (!providerRepositoryService.isProviderIdValid(providerNumber)) {
+                        setErrorMessage(errorMessages);
+                    }
+                } else {
+                    if (inputValue.length() < 8 || inputValue.length() > 15) {
+                        setErrorMessage(errorMessages);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                setErrorMessage(errorMessages);
+            }
+        }
 
         return errorMessages;
+    }
+
+    private void setErrorMessage(Map<String, List<String>> errorMessages) {
+        Locale locale = LocaleContextHolder.getLocale();
+        errorMessages.put(PROVIDER_NUMBER,
+                List.of(messageSource.getMessage("provider-response-ccap-registration.error.invalid-number", null, locale)));
     }
 }
