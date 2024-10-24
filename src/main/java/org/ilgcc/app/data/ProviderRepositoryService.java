@@ -1,6 +1,7 @@
 package org.ilgcc.app.data;
 
 import java.math.BigInteger;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +15,24 @@ public class ProviderRepositoryService {
         this.providerRepository = providerRepository;
     }
 
-    public boolean doProvidersExist() {
-        return !providerRepository.findAll().isEmpty();
-    }
+    public boolean isProviderIdValid(String providerId) {
 
-    public boolean isProviderIdValid(BigInteger providerId) {
-        return providerRepository.findById(providerId).isPresent();
+        if (!Objects.isNull(providerId) && !providerId.isEmpty()) {
+            try {
+                BigInteger providerIdNumber = new BigInteger(providerId);
+                if (!providerRepository.findAll().isEmpty()) {
+                    if (!providerRepository.existsById(providerIdNumber)) {
+                        return false;
+                    }
+                } else {
+                    if (providerId.length() < 8 || providerId.length() > 15) {
+                        return false;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
     }
 }
