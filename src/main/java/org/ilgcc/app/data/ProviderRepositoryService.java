@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 public class ProviderRepositoryService {
 
     ProviderRepository providerRepository;
