@@ -15,6 +15,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 public class SubmissionUtilities {
@@ -210,13 +211,25 @@ public class SubmissionUtilities {
         return YYYY_MM_DD_HH_MM_AMPM_DASHES.format(submission.getSubmittedAt());
     }
 
-    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath()
+    public static String convertToAbsoluteURLForEmailAndText(UriComponentsBuilder builder, String shortCode, String utmMedium) {
+        return builder
                 .path("providerresponse/submit/" + shortCode + (utmMedium != null ? "?utm_medium=" + utmMedium : ""))
                 .build()
                 .toUriString();
     }
 
+    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium, String baseUrl) {
+        UriComponentsBuilder builder = ServletUriComponentsBuilder.fromUriString(baseUrl);
+        return convertToAbsoluteURLForEmailAndText(builder, shortCode, utmMedium);
+    }
+
+    // TODO: This method is probably not needed once the shortening code is in place properly -marc
+    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium) {
+        UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentContextPath();
+        return convertToAbsoluteURLForEmailAndText(builder, shortCode, utmMedium);
+    }
+
+    // TODO: This method is probably not needed once the shortening code is in place properly -marc
     public static String getProviderResponseURL(Submission submission, String utmMedium) {
         String shortCode = submission.getShortCode();
         return convertToAbsoluteURLForEmailAndText(shortCode, utmMedium);

@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.enums.FileNameUtility;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.PdfTransmissionJob;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
