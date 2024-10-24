@@ -53,6 +53,13 @@ form-flow:
       sender-email: 'UBI Demo <demo@mail.forms-starter.cfa-platforms.org>'
   error:
     pretty-print-packages: formflow,ilgcc
+  short-code:
+    short-code-configs:
+      gcc:
+        creation-point: submission
+        length: 6
+        type: alphanumeric
+        uppercase: true
 spring:
   profiles:
     group:
