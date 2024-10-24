@@ -53,6 +53,13 @@ form-flow:
       sender-email: 'UBI Demo <demo@mail.forms-starter.cfa-platforms.org>'
   error:
     pretty-print-packages: formflow,ilgcc
+  short-code:
+    short-code-configs:
+      gcc:
+        creation-point: submission
+        length: 6
+        type: alphanumeric
+        uppercase: true
 spring:
   profiles:
     group:
@@ -118,4 +125,4 @@ il-gcc:
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
     auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
     presigned-url-Duration: 5 # Minutes
-    wait-for-provider-response: ${WAIT_FOR_PROVIDER_RESPONSE_FLAG:false}
+    expand-existing-provider-flow: ${WAIT_FOR_PROVIDER_RESPONSE_FLAG:false}

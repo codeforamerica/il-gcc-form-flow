@@ -19,7 +19,7 @@ import org.ilgcc.app.utils.PreparerUtilities;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-@ConditionalOnProperty(name="il-gcc.dts.wait-for-provider-response", havingValue = "true")
+@ConditionalOnProperty(name="il-gcc.dts.expand-existing-provider-flow", havingValue = "true")
 @Component
 public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 

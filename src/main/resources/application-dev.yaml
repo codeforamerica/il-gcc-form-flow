@@ -4,8 +4,10 @@ form-flow:
   aws:
     s3_bucket_name: ${AWS_BUCKET}
   short-code:
-    prefix: DEV-
-    creation-point: creation
+    short-code-configs:
+      gcc:
+        prefix: DEV-
+        creation-point: creation
 management:
   endpoints:
     enabled-by-default: true
