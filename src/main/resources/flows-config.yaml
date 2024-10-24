@@ -488,7 +488,7 @@ flow:
     nextScreens:
       - name: ccap-registration
   ccap-registration:
-#    crossFieldValidationAction: ValidateProviderNumber
+    crossFieldValidationAction: ValidateProviderNumber
     onPostAction: SaveApplicationId
     nextScreens:
       - name: application-id
