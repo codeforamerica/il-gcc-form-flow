@@ -14,7 +14,7 @@
           <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
             <th:block th:ref="content">
               <div class="form-card__content"
-                th:with="shortCode=${submission.getShortCode()}, ccpName=${T(org.ilgcc.app.utils.ChildCareProvider).valueOf(inputData.get('dayCareChoice')).getDisplayName()}">
+                th:with="shortCode=${submission.getShortCode()}, ccpName=${T(org.ilgcc.app.utils.SubmissionUtilities).getProviderName(inputData)}">
                 <p th:utext="${#messages.msg('contact-provider-message.below-we-prepared', ccpName)}"></p>
                 <p th:utext="${#messages.msg('contact-provider-message.it-includes', shortCode)}"></p>
                 <div class="notice--warning notice--gray confirmation-example">
