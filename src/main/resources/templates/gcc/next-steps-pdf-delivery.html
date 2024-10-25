@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{submit-next-steps.title})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: nextSteps}"></th:block>
+                <header class="form-card__header spacing-below-25">
+                    <h1 id="header" class="h2" th:text="#{submit-next-steps.title}"></h1>
+                    <p id="header-help-message"
+                       th:utext="#{submit-next-steps.subtext}"></p>
+                </header>
+                <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="form-card__content">
+                            <div class="notice--success" th:with="providerName=${T(org.ilgcc.app.utils.SubmissionUtilities).getProviderName(inputData)}">
+                                <th:block th:utext="#{next-steps-pdf-delivery.notice(${providerName})}"></th:block>
+                            </div>
+                        </div>
+                        <div class="form-card__footer">
+                            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                                text=#{general.button.continue})}"/>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

@@ -426,6 +426,9 @@ flow:
   submit-provider-agreement-handoff:
     nextScreens:
       - name: next-steps-pdf-delivery
+  next-steps-pdf-delivery:
+    nextScreens:
+      - name: complete-submit-confirmation
   contact-provider-message:
     nextScreens:
       - name: complete-notice
