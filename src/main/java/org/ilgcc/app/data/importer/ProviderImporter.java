@@ -92,12 +92,12 @@ public class ProviderImporter {
                         sb.append(", ");
                     } else {
                         if (j % 50 == 0) {
-                            sb.append(");\n");
+                            sb.append(")\n ON CONFLICT (provider_id) DO NOTHING;\n");
                             sb.append(SQL_COMMIT);
                             sb.append(SQL_BEGIN);
                             sb.append(SQL_INSERT);
                         } else {
-                            String endOfLineCharacter = j % (lines.size() - 1) == 0 ? ";" : ",";
+                            String endOfLineCharacter = j % (lines.size() - 1) == 0 ? "\nON CONFLICT (provider_id) DO NOTHING;" : ",";
                             sb.append(")").append(endOfLineCharacter).append("\n");
                         }
                     }
