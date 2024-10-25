@@ -69,7 +69,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.34'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.3.4'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.3.5'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
