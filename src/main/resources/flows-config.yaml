@@ -411,6 +411,29 @@ flow:
   doc-upload-add-files:
     nextScreens:
       - name: doc-upload-submit-confirmation
+  doc-upload-submit-confirmation:
+    afterSaveAction: SendUploadedFileToDocumentTransferService
+    nextScreens:
+      - name: contact-provider-intro
+        condition: ExpandExistingProviderFlowFlag
+      - name: submit-next-steps
+  contact-provider-intro:
+    nextScreens:
+      - name: contact-provider-info
+  contact-provider-info:
+    nextScreens:
+      - name: contact-provider-message
+  contact-provider-message:
+    nextScreens:
+      - name: complete-notice
+        condition: ExpandExistingProviderFlowFlag
+      - name: submit-next-steps
+  complete-notice:
+    nextScreens:
+      - name: complete-next-steps
+  complete-next-steps:
+    nextScreens:
+      - name: complete-submit-confirmation
   doc-upload-confirm:
     nextScreens: null
   children-delete:
@@ -421,13 +444,6 @@ flow:
     nextScreens: null
   delete-partner-job:
     nextScreens: null
-  doc-upload-submit-confirmation:
-    afterSaveAction: SendUploadedFileToDocumentTransferService
-    nextScreens:
-      - name: submit-next-steps
-  contact-provider-message:
-    nextScreens:
-      - name: submit-next-steps
 subflows:
   children:
     entryScreen: children-add
