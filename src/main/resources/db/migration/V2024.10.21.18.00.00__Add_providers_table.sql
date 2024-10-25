@@ -6,14 +6,14 @@ $$
             CREATE TABLE providers
             (
                 provider_id BIGINT PRIMARY KEY,
-                type VARCHAR NOT NULL,
-                name VARCHAR NOT NULL,
+                type VARCHAR,
+                name VARCHAR,
                 dba_name VARCHAR,
-                street_address VARCHAR NOT NULL,
-                city VARCHAR NOT NULL,
-                state VARCHAR NOT NULL,
-                zip_code VARCHAR NOT NULL,
-                status VARCHAR NOT NULL
+                street_address VARCHAR,
+                city VARCHAR,
+                state VARCHAR,
+                zip_code VARCHAR,
+                status VARCHAR
             );
         END IF;
     END
