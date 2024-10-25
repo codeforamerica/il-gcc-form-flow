@@ -390,6 +390,7 @@ flow:
     nextScreens:
       - name: submit-sign-name
   submit-sign-name:
+    beforeSaveAction: GenerateShortLinks
     afterSaveAction: UploadSubmissionToS3
     nextScreens:
       - name: submit-complete
