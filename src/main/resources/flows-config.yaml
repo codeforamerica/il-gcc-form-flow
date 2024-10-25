@@ -423,6 +423,9 @@ flow:
   contact-provider-info:
     nextScreens:
       - name: contact-provider-message
+  submit-provider-agreement-handoff:
+    nextScreens:
+      - name: next-steps-pdf-delivery
   contact-provider-message:
     nextScreens:
       - name: complete-notice

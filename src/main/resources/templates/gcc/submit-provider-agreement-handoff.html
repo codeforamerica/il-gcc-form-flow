@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{submit-provider-agreement-handoff.title})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/icons :: clipboardWithEnvelope}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-provider-agreement-handoff.header}, subtext=#{submit-provider-agreement-handoff.body})}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
+                    <th:block th:ref="content">
+                        <div class="form-card__content">
+                            <a th:href="'/download/gcc/' + ${submission.getId()}" class="button button--wide">
+                                <i class="icon-get_app"></i>
+                                <span th:text="#{submit-provider-agreement-handoff.download}"></span>
+                            </a>
+                        </div>
+                        <div class="form-card__footer">
+                            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{submit-provider-agreement-handoff.next})}"/>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>
