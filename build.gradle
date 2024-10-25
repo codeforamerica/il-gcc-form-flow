@@ -52,7 +52,7 @@ def formFlowLibraryVersion = '1.4.4'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.4'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.5'
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
     implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.3.1'
