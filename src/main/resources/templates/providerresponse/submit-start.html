@@ -13,17 +13,7 @@
                     <th:block
                             th:replace="~{fragments/gcc-icons :: ${providerSubmissionStatus.getIcon()}}"></th:block>
                     <th:block
-                            th:unless="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).EXPIRED)}">
-                        <th:block
-                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})})}"/>
-                    </th:block>
-                    <th:block
-                            th:if="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).EXPIRED)}">
-                        <th:block
-                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})}, subtext=#{${providerSubmissionStatus.getSubtextLabel()}})}"/>
-                    </th:block>
-                    <div th:class="'notice spacing-below-60 '+ ${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).EXPIRED) ? 'notice--error' : 'notice--gray'}"
-                         th:text="#{${providerSubmissionStatus.getNoticeLabel()}}"></div>
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})}, subtext=#{${providerSubmissionStatus.getNoticeLabel()}})}"/>
                     <div class="form-card__footer">
                         <div>
                             <th:block
@@ -38,7 +28,6 @@
                                    class="button button--primary"
                                    id="continue-link"></a>
                             </th:block>
-
                         </div>
                     </div>
                 </th:block>

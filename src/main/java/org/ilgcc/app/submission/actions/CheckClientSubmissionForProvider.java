@@ -10,11 +10,14 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ChildCareProvider;
+
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerApplicationHasExpired;
+
 import org.ilgcc.app.utils.enums.ProviderSubmissionStatus;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -48,18 +51,18 @@ public class CheckClientSubmissionForProvider implements Action {
             Optional<Submission> clientSubmission = submissionRepositoryService.findById(clientSubmissionId);
             if (clientSubmission.isPresent()) {
                 Submission clientSubmissionInfo = clientSubmission.get();
-                ChildCareProvider provider = ChildCareProvider.valueOf(
-                        clientSubmissionInfo.getInputData().get("dayCareChoice").toString());
 
                 // Used to display the correct provider name, if available, for the first provider screen
-                httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, provider.getDisplayName());
+                httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, getProviderName(clientSubmissionInfo));
 
                 // To be used on subsequent screens to validate provider inputs == these values
-                httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_ID, provider.getIdNumber());
+                httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_ID, getProviderId(clientSubmissionInfo));
                 httpSession.setAttribute(SESSION_KEY_CLIENT_CONFIRMATION_CODE, clientSubmissionInfo.getShortCode());
 
                 // In Prod, there should always be a submittedAt date, but for Staging it's possible to skip around in the flow and never submit
-                LocalDate submittedAtDate = clientSubmissionInfo.getSubmittedAt() != null ? clientSubmissionInfo.getSubmittedAt().toLocalDate() : null;
+                LocalDate submittedAtDate =
+                        clientSubmissionInfo.getSubmittedAt() != null ? clientSubmissionInfo.getSubmittedAt().toLocalDate()
+                                : null;
                 if (submittedAtDate == null) {
                     log.warn("No submittedAt date found for submission " + submission.getId());
                 }
@@ -68,7 +71,7 @@ public class CheckClientSubmissionForProvider implements Action {
                 if (providerApplicationHasExpired(clientSubmissionInfo, todaysDate)) {
                     httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED.name());
                 } else {
-                      boolean hasResponse = false;
+                    boolean hasResponse = false;
                     if (clientSubmissionInfo.getInputData().get("providerResponseSubmissionId") != null) {
                         // The above value should be set on the client submission whenever a provider first submits
                         // their response.
@@ -96,6 +99,31 @@ public class CheckClientSubmissionForProvider implements Action {
             String placeholderProviderName = messageSource.getMessage("provider-response-submit-start.provider-placeholder", null,
                     locale);
             httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, placeholderProviderName);
+        }
+    }
+
+    private String getProviderName(Submission familySubmission) {
+        Map<String, Object> inputData = familySubmission.getInputData();
+
+        if (inputData.containsKey("familyIntendedProviderName")) {
+            return (String) inputData.get("familyIntendedProviderName");
+        } else {
+            ChildCareProvider provider = ChildCareProvider.valueOf(
+                    inputData.get("dayCareChoice").toString());
+
+            return provider.getDisplayName();
+        }
+    }
+
+    private String getProviderId(Submission familySubmission) {
+        Map<String, Object> inputData = familySubmission.getInputData();
+
+        if (inputData.containsKey("dayCareChoice")) {
+            ChildCareProvider provider = ChildCareProvider.valueOf(
+                    familySubmission.getInputData().get("dayCareChoice").toString());
+            return provider.getIdNumber();
+        } else {
+            return "";
         }
     }
 }
