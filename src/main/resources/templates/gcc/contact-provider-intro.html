@@ -9,10 +9,10 @@
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
                 <div class="text--centered">
-                    <th:block th:replace="~{fragments/gcc-icons :: clipboardWithEnvelope}"></th:block>
+                    <th:block th:replace="~{fragments/gcc-icons :: support}"></th:block>
                     <p class="text--grey-dark" th:text="#{contact-provider-intro.step}"></p>
                     <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{contact-provider-intro.title})}"/>
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{contact-provider-intro.header})}"/>
                 </div>
                 <div class="form-card__content">
                     <div class="boxed-content">
@@ -20,7 +20,6 @@
                         <ol class="list--numbered">
                             <li th:text="#{contact-provider-intro.box.one}"></li>
                             <li th:text="#{contact-provider-intro.box.two}"></li>
-                            <li th:text="#{contact-provider-intro.box.three}"></li>
                         </ol>
                     </div>
                 </div>

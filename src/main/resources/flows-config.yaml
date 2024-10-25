@@ -440,6 +440,8 @@ flow:
   complete-next-steps:
     nextScreens:
       - name: complete-submit-confirmation
+  complete-submit-confirmation:
+    nextScreens: null
   doc-upload-confirm:
     nextScreens: null
   children-delete:
@@ -480,6 +482,7 @@ landmarks:
     - doc-upload-recommended-docs
     - doc-upload-add-files
     - doc-upload-submit-confirmation
+    - complete-submit-confirmation
 ---
 name: providerresponse
 flow:

@@ -1,8 +1,10 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.CountyOption;
 import org.junit.jupiter.api.Test;
@@ -670,5 +672,40 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // doc-upload-recommended docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+        assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
+        uploadJpgFile();
+        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
+        await().atMost(5, TimeUnit.SECONDS).until(
+                () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
+        );
+
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
+
+        testPage.goBack();
+        testPage.goBack();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
+        testPage.clickContinue();
+
+        // submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(
+                getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
+        testPage.clickElementById("surveyDifficulty-very-easy");
+        testPage.clickButton(getEnMessage("submit-confirmation.button.feedback"));
+        assertThat(testPage.getTitle()).isEqualTo(
+                getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
+        assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo(
+                getEnMessage("submit-confirmation.survey.complete"));
     }
 }
