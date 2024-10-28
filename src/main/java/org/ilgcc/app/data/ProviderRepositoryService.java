@@ -32,7 +32,9 @@ public class ProviderRepositoryService {
             } catch (NumberFormatException e) {
                 return false;
             }
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 }

@@ -35,7 +35,7 @@ public class ProviderImporter {
 
         try {
             List<String> lines = Files.readAllLines(Paths.get(fileNameAndPath));
-            System.out.println("\n\nThere are " + lines.size() + " lines in " + fileNameAndPath);
+            System.out.println("\n\nThere are " + lines.size() + " rows in " + fileNameAndPath);
 
             if (!COLUMN_HEADERS.equals(Arrays.asList(lines.get(0).split(",")))) {
                 System.out.println("Column headers have changed. Unable to generate SQL because the data format has changed.");
@@ -45,12 +45,12 @@ public class ProviderImporter {
             Set<Integer> excludedColumnsIndices = new HashSet<>();
             for (String excludedColumnHeader : EXCLUDED_COLUMN_HEADERS) {
                 int index = COLUMN_HEADERS.indexOf(excludedColumnHeader);
-                if (index != -1) { // Check if the item exists in foo
+                if (index != -1) {
                     excludedColumnsIndices.add(index);
                 }
             }
 
-            System.out.println("\nPreparing to generate SQL.");
+            System.out.println("\nEverything looks ok in the CSV format! Preparing to generate SQL.");
 
             LocalDateTime now = LocalDateTime.now();
             String timestamp = now.format(formatter);
@@ -72,6 +72,7 @@ public class ProviderImporter {
                 StringBuilder sb = new StringBuilder("\t(");
                 for (int i = 0; i < values.length; i++) {
                     if (excludedColumnsIndices.contains(i)) {
+                        // Skip values in the excluded columns
                         continue;
                     }
 
@@ -79,11 +80,15 @@ public class ProviderImporter {
                     if (values[i] == null || values[i].isBlank()) {
                         valueToInsert.append("NULL");
                     } else {
-                        // escape ' to '', remove ", remove whitespace
+                        // escape ' to ''
+                        // remove "
+                        // remove whitespace
                         String cleanedValue = values[i].replaceAll("(?<!')'|'(?!')", "''").replaceAll("\"","").trim();
                         if (i == 0) {
+                            // No need to wrap the id with single quotes
                             valueToInsert.append(cleanedValue);
                         } else {
+                            // Every other field, other than the id, is just a VARCHAR so wrap those values with single quotes
                             valueToInsert.append("'").append(cleanedValue).append("'");
                         }
                     }
@@ -92,6 +97,8 @@ public class ProviderImporter {
                         sb.append(", ");
                     } else {
                         if (j % 50 == 0) {
+                            // Batches of 50
+                            // If there's a duplicated row, just skip over it so the batch does not get rolled back
                             sb.append(")\n ON CONFLICT (provider_id) DO NOTHING;\n");
                             sb.append(SQL_COMMIT);
                             sb.append(SQL_BEGIN);
