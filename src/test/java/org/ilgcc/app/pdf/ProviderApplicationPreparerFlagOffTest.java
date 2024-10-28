@@ -7,8 +7,8 @@ import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.utils.ChildCareProvider;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
@@ -24,12 +24,12 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class ProviderApplicationPreparerFlagOffTest {
 
+    NeedChildcareForChildren childCarePreparer = new NeedChildcareForChildren();
     @Autowired
     private ProviderApplicationPreparer preparer;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
-
     private ChildCareProvider provider = ChildCareProvider.OPEN_SESAME;
     private Submission familySubmission;
     private Submission providerSubmission;
@@ -102,5 +102,25 @@ public class ProviderApplicationPreparerFlagOffTest {
         assertThat(result.get("dayCareAddressCity")).isEqualTo(new SingleField("dayCareAddressCity", provider.getCity(), null));
         assertThat(result.get("dayCareAddressState")).isEqualTo(new SingleField("dayCareAddressState", provider.getState(), null));
         assertThat(result.get("dayCareAddressZip")).isEqualTo(new SingleField("dayCareAddressZip", provider.getZipcode(), null));
+    }
+    //when provider declines care then all of the previous family fields are mapped to the pdf and only 4 additional provider fields are mapped to the pdf
+    @Test
+    void shouldMapAllClientFieldsAndProviderDeclinedFieldsToPDF(){
+        familySubmission = new SubmissionTestBuilder()
+            .withFlow("gcc")
+            .withParentDetails()
+            .withChild("first", "last", "yes").addChildDataArray(1, "childGender", List.of("MALE", "NONBINARY"))
+            .withDayCareProvider()
+            .withSubmittedAtDate(OffsetDateTime.now())
+            .with("familyIntendedProviderName", "ProviderName")
+            .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
+            .with("familyIntendedProviderEmail", "mail@test.com")
+            .with("providerResponseSubmissionId", providerSubmission.getId())
+            .build();
+
+        //test that parentprovider
+        Map<String, SubmissionField> result = childCarePreparer.prepareSubmissionFields(familySubmission, null);
+        assertThat(result.get("childGender_1")).isEqualTo(new SingleField("childCareChildInSchool", "true", 1));
+
     }
 }
