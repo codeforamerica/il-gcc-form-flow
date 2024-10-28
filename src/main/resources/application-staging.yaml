@@ -9,8 +9,10 @@ form-flow:
   virus-scanning:
     enabled: true
   short-code:
-    prefix: STG-
-    creation-point: creation
+    short-code-configs:
+      gcc:
+        prefix: STG-
+        creation-point: creation
 management:
   endpoint:
     health:

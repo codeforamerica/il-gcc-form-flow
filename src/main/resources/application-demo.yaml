@@ -9,5 +9,7 @@ form-flow:
   address-validation:
     disabled: true
   short-code:
-    prefix: DEMO-
-    creation-point: creation
+    short-code-configs:
+      gcc:
+        prefix: DEMO-
+        creation-point: creation

@@ -17,10 +17,8 @@
                 <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
-                            <div class="notice--success">
-                                <th:block th:utext="${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow')}"></th:block>
-                                <th:block th:if="${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true'}" th:utext="#{submit-next-steps.notice-email-or-sms}"></th:block>
-                                <th:block th:unless="${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true'}" th:utext="#{submit-next-steps.notice}"></th:block>
+                            <div class="notice--success" th:with="providerName=${T(org.ilgcc.app.utils.SubmissionUtilities).getProviderName(inputData)}">
+                                <th:block th:utext="#{next-steps-pdf-delivery.notice(${providerName})}"></th:block>
                             </div>
                         </div>
                         <div class="form-card__footer">
