@@ -104,7 +104,7 @@ public class ProviderImporter {
                         sb.append(", ");
                     } else {
                         if (j % 20000 == 0) {
-                            // Batches of 50
+                            // Batches of 20000
                             // If there's a duplicated row, just skip over it so the batch does not get rolled back
                             sb.append(")\n ON CONFLICT (provider_id) DO NOTHING;\n");
                             sb.append(SQL_COMMIT);
