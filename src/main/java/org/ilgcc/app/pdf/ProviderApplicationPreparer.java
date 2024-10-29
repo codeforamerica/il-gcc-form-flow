@@ -77,10 +77,13 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 
                     results.put("providerSignature",
                         new SingleField("providerSignature", providerSignature(providerInputData), null));
-
-                    Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submission.getSubmittedAt()));
-                    results.put("providerSignatureDate",
-                        new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate), null));
+                    try {
+                        Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(providerSubmission.get().getSubmittedAt()));
+                        results.put("providerSignatureDate",
+                            new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate), null));
+                    } catch (NullPointerException e){
+                        log.error(String.format("Provider Application: %s, does not have a submittedAt date.", submission.getId().toString()));
+                    }
                 }else{
                     results.put("providerNameCorporate",
                         new SingleField("providerNameCorporate", inputData.getOrDefault("familyIntendedProviderName", "").toString(),
@@ -91,7 +94,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                     results.put("providerEmail",
                         new SingleField("providerEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
                     results.put("providerResponse",
-                        new SingleField("providerResponse", "No response from provider", null));
+                        new SingleField("providerResponse", "Provider declined", null));
                 }
             } else {
                 log.error(String.format("Family Application (%s) does not have corresponding provider application for id: %s",
