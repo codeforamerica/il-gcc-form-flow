@@ -40,7 +40,7 @@ public class UploadSubmissionToS3 implements Action {
     public void run(Submission submission) {
         if (!expandExistingProviderFlow) {
             enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
-                    submission, FileNameUtility.getFileNameForPdf(submission));
+                    submission, FileNameUtility.getFileNameForPdf(submission, "Form-Family"));
         }
     }
 }
