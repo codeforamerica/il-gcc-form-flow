@@ -9,6 +9,7 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,11 +44,11 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         }
 
     }
+    //Because we are printing the PDF from the GCC flow we need to get the provider submission then pull the responses values from the provdier submission
 
     private Map<String, SubmissionField> prepareSubmittedDayCareData(Submission submission) {
         var results = new HashMap<String, SubmissionField>();
         var inputData = submission.getInputData();
-
         boolean hasProviderResponse = inputData.containsKey("providerResponseSubmissionId");
         List<String> providerFields = List.of(
                 "providerResponseFirstName",
@@ -66,18 +67,32 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
             UUID providerId = UUID.fromString(inputData.get("providerResponseSubmissionId").toString());
             Optional<Submission> providerSubmission = submissionRepositoryService.findById(providerId);
             if (providerSubmission.isPresent()) {
-                Map<String, Object> providerInputData = providerSubmission.get().getInputData();
-                for (String fieldName : providerFields) {
-                    results.put(fieldName,
+                boolean providerAgreesToCare = providerSubmission.get().getInputData().getOrDefault("providerResponseAgreeToCare", "").equals("true");
+                if(providerAgreesToCare){
+                    Map<String, Object> providerInputData = providerSubmission.get().getInputData();
+                    for (String fieldName : providerFields) {
+                        results.put(fieldName,
                             new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
-                }
+                    }
 
-                results.put("providerSignature",
+                    results.put("providerSignature",
                         new SingleField("providerSignature", providerSignature(providerInputData), null));
 
-                Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submission.getSubmittedAt()));
-                results.put("providerSignatureDate",
+                    Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submission.getSubmittedAt()));
+                    results.put("providerSignatureDate",
                         new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate), null));
+                }else{
+                    results.put("providerNameCorporate",
+                        new SingleField("providerNameCorporate", inputData.getOrDefault("familyIntendedProviderName", "").toString(),
+                            null));
+                    results.put("providerPhoneNumber",
+                        new SingleField("providerPhoneNumber",
+                            inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(), null));
+                    results.put("providerEmail",
+                        new SingleField("providerEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
+                    results.put("providerResponse",
+                        new SingleField("providerResponse", "No response from provider", null));
+                }
             } else {
                 log.error(String.format("Family Application (%s) does not have corresponding provider application for id: %s",
                         submission.getId(), providerId));
@@ -95,14 +110,6 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                     new SingleField("providerResponse", "No response from provider", null));
         }
 
-//        if(hasProviderResponse){
-////            get the prodiver submission.
-////            loop through provider submisisom
-////            for(fieldname:prodivder)
-////            results.put(fieldName,
-////                new SingleField(fieldname, inputData.getOrDefault(fieldName, "").toString(), null));
-//
-//        }
 
         return results;
     }

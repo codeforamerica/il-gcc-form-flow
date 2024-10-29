@@ -121,6 +121,5 @@ public class ProviderApplicationPreparerFlagOffTest {
         //test that parentprovider
         Map<String, SubmissionField> result = childCarePreparer.prepareSubmissionFields(familySubmission, null);
         assertThat(result.get("childGender_1")).isEqualTo(new SingleField("childCareChildInSchool", "true", 1));
-
     }
 }
