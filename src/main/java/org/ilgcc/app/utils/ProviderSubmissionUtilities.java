@@ -70,6 +70,27 @@ public class ProviderSubmissionUtilities {
         }
         return children;
     }
+    
+    public static String formatChildNamesAsCommaSeperatedList(Submission applicantSubmission) {
+        List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission);
+        List<String> childNames = new ArrayList<>();
+        for (var child : children) {
+            String firstName = (String) child.get("childFirstName");
+            String lastName = (String) child.get("childLastName");
+            childNames.add(String.format("%s %s", firstName, lastName));
+        }
+        if (childNames.isEmpty()) {
+            return "";
+        } else if (childNames.size() == 1) {
+            return childNames.get(0); // Single name, no 'and'
+        } else if (childNames.size() == 2) {
+            return String.join(" and ", childNames); // Two childNames, join with 'and'
+        } else {
+            // More than 2 childNames, use comma for all but the last one
+            String last = childNames.remove(childNames.size() - 1); // Remove and keep the last name
+            return String.join(", ", childNames) + " and " + last; // Join remaining with commas, append 'and last'
+        }
+    }
 
     private static Integer childAge(Map<String, Object> child) {
         var bdayString = String.format("%s/%s/%s", child.get("childDateOfBirthMonth"), child.get("childDateOfBirthDay"),
