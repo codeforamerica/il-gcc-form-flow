@@ -18,20 +18,30 @@
                 <th:block th:replace="~{fragments/gcc-icons :: greenCheck}"></th:block>
                 <th:block th:replace="~{fragments/cardHeader :: cardHeader(
                     header=#{complete-submit-confirmation.header},
-                    subtext=#{complete-submit-confirmation.subtext(${submittedDate}, ${submittedTime}, ${submission.getId()})})}"/>
-                <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    subtext=#{complete-submit-confirmation.subtext(${submittedDate}, ${submittedTime}, ${submission.getShortCode()})})}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
                             <hr>
-                            <ul class="list--checkmark list--material-get-app">
-                                <li><a id="download-application" th:href="'/download/gcc/' + ${submission.getId()}" data-mixpanel="download-pdf"
-                                       th:text="#{complete-submit-confirmation.download-text}"></a> <span
-                                        th:text="#{complete-submit-confirmation.rest-of-download-paragraph}"></span></li>
+                            <ul class="list--checkmark list--material-download">
+                                <li>
+                                    <a id="download-application"
+                                       th:href="'/download/gcc/' + ${submission.getId()}"
+                                       data-mixpanel="download-pdf"
+                                       th:text="#{complete-submit-confirmation.download-text}"></a>
+                                    <span
+                                            th:text="#{complete-submit-confirmation.rest-of-download-paragraph}"></span>
+                                </li>
                             </ul>
-                            <ul class="list--checkmark list--material-get-app">
-                                <li><a id="call-ccrr" th:href="'/download/gcc/' + ${submission.getId()}" data-mixpanel="call-ccrr"
-                                       th:text="#{complete-submit-confirmation.call-text}"></a> <span
-                                        th:text="#{complete-submit-confirmation.rest-of-call-paragraph}"></span></li>
+                            <ul class="list--checkmark list--material-phone-in-talk">
+                                <li><a id="call-ccrr"
+                                       th:href="'/download/gcc/' + ${submission.getId()}"
+                                       data-mixpanel="call-ccrr"
+                                       th:text="#{complete-submit-confirmation.call-text}"></a>
+                                    <span
+                                            th:text="#{complete-submit-confirmation.rest-of-call-paragraph}"></span>
+                                </li>
                             </ul>
                             <hr>
                             <p th:text="#{submit-confirmation.experience}"></p>
@@ -81,7 +91,8 @@
                         </div>
                         <div class="form-card__footer">
                             <th:block th:if="${hasSubmittedSurvey}">
-                                <a th:text="#{submit-confirmation.button.return}" href="/" id="return-to-home"
+                                <a th:text="#{submit-confirmation.button.return}" href="/"
+                                   id="return-to-home"
                                    class="button--primary button"></a>
                             </th:block>
                             <th:block th:unless="${hasSubmittedSurvey}">
