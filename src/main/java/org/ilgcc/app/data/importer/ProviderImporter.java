@@ -26,6 +26,8 @@ public class ProviderImporter {
 
     private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of("Date of Last Approval", "Maintaining R&R");
 
+    private static final List<String> EXCLUDED_IDS = List.of("460328258720008");
+
     public static void main(String[] args) {
         String fileNameAndPath = args[0];
         if (fileNameAndPath == null || fileNameAndPath.isEmpty()) {
@@ -69,6 +71,11 @@ public class ProviderImporter {
                 String line = lines.get(j).replaceAll("\"([^\"]*?),\\s*([^\"]*)\"", "\"$1 $2\"");
                 String[] values = line.split(","); // Split by comma
 
+                if (EXCLUDED_IDS.contains(values[0])) {
+                    System.out.println("Ignoring ID " + values[0]);
+                    continue;
+                }
+
                 StringBuilder sb = new StringBuilder("\t(");
                 for (int i = 0; i < values.length; i++) {
                     if (excludedColumnsIndices.contains(i)) {
@@ -96,8 +103,8 @@ public class ProviderImporter {
                     if (i < values.length - 1) {
                         sb.append(", ");
                     } else {
-                        if (j % 50 == 0) {
-                            // Batches of 50
+                        if (j % 20000 == 0) {
+                            // Batches of 20000
                             // If there's a duplicated row, just skip over it so the batch does not get rolled back
                             sb.append(")\n ON CONFLICT (provider_id) DO NOTHING;\n");
                             sb.append(SQL_COMMIT);
