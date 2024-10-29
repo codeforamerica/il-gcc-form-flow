@@ -82,7 +82,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                         results.put("providerSignatureDate",
                             new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate), null));
                     } catch (NullPointerException e){
-                        log.error(String.format("Provider Application: %s, does not have a submittedAt date.", submission.getId().toString()));
+                        log.error(String.format("Provider Application: %s, does not have a submittedAt date.", providerSubmission.get().getId().toString()));
                     }
                 }else{
                     results.put("providerNameCorporate",

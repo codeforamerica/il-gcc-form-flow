@@ -6,14 +6,17 @@ import static org.mockito.Mockito.*;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import formflow.library.data.SubmissionRepositoryService;
+import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
+import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.PdfTransmissionJob;
+import org.ilgcc.jobs.UploadedDocumentTransmissionJob;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -52,6 +55,9 @@ class UploadProviderSubmissionToS3Test {
 
   @Autowired
   private SubmissionRepositoryService submissionRepositoryService;
+  private UserFileRepositoryService userFileRepositoryService;
+  private UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
+  private S3PresignService s3PresignService;
 
   @BeforeEach
   void setUp() {
@@ -82,8 +88,8 @@ class UploadProviderSubmissionToS3Test {
         pdfTransmissionJob,
         enqueueDocumentTransfer,
         "true",
-        submissionRepositoryService
-    );
+        submissionRepositoryService,
+        userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService);
     uploadProviderSubmissionToS3.run(providerSubmission);
 
     verify(enqueueDocumentTransfer, times(1)).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
@@ -98,8 +104,8 @@ class UploadProviderSubmissionToS3Test {
         pdfTransmissionJob,
         enqueueDocumentTransfer,
         "false",
-        submissionRepositoryService
-    );
+        submissionRepositoryService,
+        userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService);
     uploadProviderSubmissionToS3.run(providerSubmission);
 
     verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
