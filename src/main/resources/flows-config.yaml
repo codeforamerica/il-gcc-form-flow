@@ -431,13 +431,14 @@ flow:
       - name: complete-submit-confirmation
   contact-provider-message:
     nextScreens:
-      - name: complete-notice
+      - name: complete-next-steps
         condition: ExpandExistingProviderFlowFlag
       - name: submit-next-steps
-  complete-notice:
-    nextScreens:
-      - name: complete-next-steps
   complete-next-steps:
+    nextScreens:
+      - name: complete-submit-confirmation
+  complete-submit-confirmation:
+    beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: complete-submit-confirmation
   doc-upload-confirm:
@@ -480,6 +481,13 @@ landmarks:
     - doc-upload-recommended-docs
     - doc-upload-add-files
     - doc-upload-submit-confirmation
+    - contact-provider-intro
+    - contact-provider-info
+    - contact-provider-message
+    - complete-next-steps
+    - complete-submit-confirmation
+    - submit-provider-agreement-handoff
+    - next-steps-pdf-delivery
 ---
 name: providerresponse
 flow:

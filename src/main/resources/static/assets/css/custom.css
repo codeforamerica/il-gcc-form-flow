@@ -559,8 +559,26 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   font-size: 3rem;
 }
 
-.list--material-get-app li {
+.list--checkmark li {
   padding-left: 4rem;
+}
+
+.list--material-download li:before {
+  background-image: none;
+  font-family: 'Material Icons';
+  content: "file_download";
+  top: 0rem;
+  color: currentColor;
+  font-size: 3rem;
+}
+
+.list--material-phone-in-talk li:before {
+  background-image: none;
+  font-family: 'Material Icons';
+  content: "phone_in_talk";
+  top: 0rem;
+  color: currentColor;
+  font-size: 3rem;
 }
 
 .required-input {

@@ -26,10 +26,22 @@
                            th:text="#{submit-complete.button.submit-docs}"
                            class="button button--primary"
                            id="continue-link"></a>
-                        <a href="/flow/gcc/submit-next-steps"
-                           th:text="#{submit-complete.button.skip}"
-                           class="button"
-                           id="skip-link"></a>
+                        <th:block
+                                th:if="${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true'}">
+                            <a th:href="'/flow/' + ${flow} + '/contact-provider-intro'"
+                               data-mixpanel="skip-link"
+                               class="button"
+                               th:text="#{submit-complete.button.skip}"                            ></a>
+                        </th:block>
+                        <th:block
+                                th:unless="${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true'}">
+                            <a href="/flow/gcc/submit-next-steps"
+                               th:text="#{submit-complete.button.skip}"
+                               class="button"
+                               id="skip-link"
+                               data-mixpanel="skip-link"></a>
+                        </th:block>
+
                     </div>
                 </div>
                 <!-- Show information about next steps -->

@@ -1,8 +1,10 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.CountyOption;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
     @Test
-    void FamilyProviderOnboardingScreensTest() {
+    void fullGccFlowWithNewProviderWorkFeatureFlagOn() {
         // Home page
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
         testPage.clickButton(getEnMessage("index.apply-now"));
@@ -670,5 +672,48 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
+        testPage.clickButton(getEnMessage("submit-complete.button.skip"));
+
+        // contact-provider-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
+
+        // submit-complete
+        testPage.goBack();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // doc-upload-recommended docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+        assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
+        uploadJpgFile();
+        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
+        await().atMost(5, TimeUnit.SECONDS).until(
+                () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
+        );
+
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
+
+        // Done with adding documents
+        testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
+
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
+
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
+
+        testPage.clickElementById("copy-message-to-clipboard");
+        testPage.clickButton(getEnMessage("general.continue-next-steps"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-next-steps.title"));
+
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
     }
 }
