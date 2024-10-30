@@ -9,7 +9,6 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
 
-    private Boolean expandExistingProviderFlowFlag;
+    private final Boolean expandExistingProviderFlowFlag;
 
     public ProviderApplicationPreparer(
             @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean expandExistingProviderFlowFlag) {
@@ -67,7 +66,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
             UUID providerId = UUID.fromString(inputData.get("providerResponseSubmissionId").toString());
             Optional<Submission> providerSubmission = submissionRepositoryService.findById(providerId);
             if (providerSubmission.isPresent()) {
-                boolean providerAgreesToCare = providerSubmission.get().getInputData().getOrDefault("providerResponseAgreeToCare", "").equals("true");
+                boolean providerAgreesToCare = (boolean) providerSubmission.get().getInputData().getOrDefault("providerResponseAgreeToCare", false);
                 if(providerAgreesToCare){
                     Map<String, Object> providerInputData = providerSubmission.get().getInputData();
                     for (String fieldName : providerFields) {
