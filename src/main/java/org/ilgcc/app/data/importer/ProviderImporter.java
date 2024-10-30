@@ -50,14 +50,19 @@ public class ProviderImporter {
         Set<BigInteger> priorIds = new HashSet<>();
 
         if (args.length > 1) {
+            // If there's more than 1 command line argument, get the 2nd argument and use it
+            // as the path and filename for the prior data set
             String priorFileNameAndPath = args[1];
             if (priorFileNameAndPath == null || priorFileNameAndPath.isEmpty()) {
+                // If somehow there's a second parameter but it's blank, don't do anything
                 System.out.println("No old data supplied.");
             } else {
-                System.out.println("Old data supplied, building Id list.");
+                System.out.println("Old data supplied, building Id list!");
                 try {
                     List<String> lines = Files.readAllLines(Paths.get(priorFileNameAndPath));
                     for (int i = 1; i < lines.size(); i++) {
+                        // Skip the header row in the csv, and then just get everything in the first column
+                        // and dump all those Ids into a Set
                         String[] columns = lines.get(i).split(",");
                         priorIds.add(new BigInteger(columns[0]));
                     }
