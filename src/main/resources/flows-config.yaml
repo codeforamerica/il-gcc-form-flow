@@ -431,7 +431,7 @@ flow:
       - name: complete-submit-confirmation
   contact-provider-message:
     nextScreens:
-      - name: complete-notice
+      - name: complete-next-steps
         condition: ExpandExistingProviderFlowFlag
       - name: submit-next-steps
   complete-next-steps:
