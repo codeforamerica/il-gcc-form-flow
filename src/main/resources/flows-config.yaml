@@ -479,6 +479,10 @@ landmarks:
     - doc-upload-recommended-docs
     - doc-upload-add-files
     - doc-upload-submit-confirmation
+    - contact-provider-intro
+    - contact-provider-info
+    - contact-provider-message
+    - complete-next-steps
     - complete-submit-confirmation
 ---
 name: providerresponse

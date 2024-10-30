@@ -16,7 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
     @Test
-    void FamilyProviderOnboardingScreensTest() {
+    void fullGccFlowWithNewProviderWorkFeatureFlagOn() {
         // Home page
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
         testPage.clickButton(getEnMessage("index.apply-now"));
@@ -672,6 +672,14 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
+        testPage.clickButton(getEnMessage("submit-complete.button.skip"));
+
+        // contact-provider-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
+
+        // submit-complete
+        testPage.goBack();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
 
         // doc-upload-recommended docs
@@ -690,22 +698,22 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
 
-        testPage.goBack();
-        testPage.goBack();
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+        // Done with adding documents
+        testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
 
-        // submit-next-steps
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
+
         testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
 
-        // submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(
-                getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
-        testPage.clickElementById("surveyDifficulty-very-easy");
-        testPage.clickButton(getEnMessage("submit-confirmation.button.feedback"));
-        assertThat(testPage.getTitle()).isEqualTo(
-                getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
-        assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo(
-                getEnMessage("submit-confirmation.survey.complete"));
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
+
+        testPage.clickElementById("copy-message-to-clipboard");
+        testPage.clickButton(getEnMessage("general.continue-next-steps"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-next-steps.title"));
+
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
     }
 }
