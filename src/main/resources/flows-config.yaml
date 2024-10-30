@@ -438,7 +438,9 @@ flow:
     nextScreens:
       - name: complete-submit-confirmation
   complete-submit-confirmation:
-    nextScreens: null
+    beforeDisplayAction: FormatSubmittedAtDate
+    nextScreens:
+      - name: complete-submit-confirmation
   doc-upload-confirm:
     nextScreens: null
   children-delete:
@@ -484,6 +486,8 @@ landmarks:
     - contact-provider-message
     - complete-next-steps
     - complete-submit-confirmation
+    - submit-provider-agreement-handoff
+    - next-steps-pdf-delivery
 ---
 name: providerresponse
 flow:
