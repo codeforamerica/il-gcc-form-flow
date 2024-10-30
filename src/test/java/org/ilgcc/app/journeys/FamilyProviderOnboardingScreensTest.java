@@ -59,7 +59,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info.title"));
         testPage.enter("familyIntendedProviderName", "Provider Name");
         testPage.enter("familyIntendedProviderEmail", "mail@mail.com");
-        testPage.enter("familyIntendedProviderPhoneNumber", "1234567890");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(415) 456-7890");
         testPage.clickContinue();
 
         // onboarding-provider-info-review
