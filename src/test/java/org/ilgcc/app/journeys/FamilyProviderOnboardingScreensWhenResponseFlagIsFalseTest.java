@@ -4,12 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import org.ilgcc.app.utils.AbstractBasePageTest;
-import org.ilgcc.app.utils.CountyOption;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {
-        "expand-existing-provider-flow=false"
+        "il-gcc.dts.expand-existing-provider-flow=false"
 })
 public class FamilyProviderOnboardingScreensWhenResponseFlagIsFalseTest extends AbstractBasePageTest {
 
@@ -21,59 +20,18 @@ public class FamilyProviderOnboardingScreensWhenResponseFlagIsFalseTest extends 
         // onboarding-getting-started
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
+        //onboarding-choose-provider
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-choose-provider.title"));
+        testPage.clickElementById("dayCareChoice-OPEN_SESAME-label");
+        testPage.clickContinue();
+        //onboarding-confirm-provider
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-confirm-provider.title"));
+        testPage.clickLink(getEnMessage("onboarding-confirm-provider.yes"));
 
-        testPage.navigateToFlowScreen("gcc/onboarding-language-pref");
         //onboarding-language-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
         testPage.selectFromDropdown("languageRead", "English");
         testPage.selectFromDropdown("languageSpeak", "Español");
-        testPage.clickContinue();
-
-        // onboarding-county
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.clickLink(getEnMessage("onboarding-county.link"));
-
-        // onboarding-zipcode
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
-        testPage.enter("applicationZipCode", "40123");
-        testPage.clickLink(getEnMessage("onboarding-zipcode.link"));
-
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
-        testPage.clickContinue();
-
-        // onboarding-chosen-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
-        testPage.clickNo();
-
-        // offboarding-no-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("offboarding-no-provider.title"));
-        testPage.goBack();
-
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
-        testPage.clickYes();
-
-        // onboarding-provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info.title"));
-        testPage.enter("familyIntendedProviderName", "Provider Name");
-        testPage.enter("familyIntendedProviderEmail", "mail@mail.com");
-        testPage.enter("familyIntendedProviderPhoneNumber", "1234567890");
-        testPage.clickContinue();
-
-        // onboarding-provider-info-review
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info-review.title"));
-        testPage.clickLink(getEnMessage("onboarding-provider-info-review.link"));
-
-        // onboarding-provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info.title"));
-        testPage.clickContinue();
-
-        // onboarding-provider-info-review
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info-review.title"));
-        testPage.clickContinue();
-
-        // onboarding-provider-info-confirm
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info-confirm.title"));
         testPage.clickContinue();
 
         // parent-info-intro
