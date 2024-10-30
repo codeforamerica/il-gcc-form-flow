@@ -66,7 +66,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
             UUID providerId = UUID.fromString(inputData.get("providerResponseSubmissionId").toString());
             Optional<Submission> providerSubmission = submissionRepositoryService.findById(providerId);
             if (providerSubmission.isPresent()) {
-                boolean providerAgreesToCare = (boolean) providerSubmission.get().getInputData().getOrDefault("providerResponseAgreeToCare", false);
+                boolean providerAgreesToCare = providerSubmission.get().getInputData().getOrDefault("providerResponseAgreeToCare", "false").equals("true");
                 if(providerAgreesToCare){
                     Map<String, Object> providerInputData = providerSubmission.get().getInputData();
                     for (String fieldName : providerFields) {

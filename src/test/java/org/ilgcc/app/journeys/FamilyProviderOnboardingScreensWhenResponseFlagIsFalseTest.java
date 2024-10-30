@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {
-        "WAIT_FOR_PROVIDER_RESPONSE_FLAG=false"
+        "expand-existing-provider-flow=false"
 })
 public class FamilyProviderOnboardingScreensWhenResponseFlagIsFalseTest extends AbstractBasePageTest {
 

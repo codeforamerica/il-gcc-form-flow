@@ -40,13 +40,12 @@ public class PdfTransmissionJob {
         this.transmissionRepositoryService = transmissionRepositoryService;
     }
 
-    public void enqueuePdfTransmissionJob(String objectPath, Submission submission) throws IOException {
+    public void enqueuePdfTransmissionJob(String objectPath, Submission submission, String pdfFileName) throws IOException {
         String presignedUrl = s3PresignService.generatePresignedUrl(objectPath);
-        String fileNameForPdf = FileNameUtility.getFileNameForPdf(submission);
         Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
         Transmission pdfTransmission = transmissionRepositoryService.save(new Transmission(submission, null, now, Queued, APPLICATION_PDF, null));
         UUID transmissionId = pdfTransmission.getTransmissionId();
-        JobId jobId = jobScheduler.enqueue(() -> sendPdfTransferRequest(presignedUrl, submission, fileNameForPdf, transmissionId));
+        JobId jobId = jobScheduler.enqueue(() -> sendPdfTransferRequest(presignedUrl, submission, pdfFileName, transmissionId));
         log.info("Enqueued job with ID: {} for submission with ID: {}", jobId, submission.getId());
     }
 

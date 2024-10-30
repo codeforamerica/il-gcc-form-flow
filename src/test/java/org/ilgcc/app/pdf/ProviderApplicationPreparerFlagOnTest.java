@@ -63,7 +63,7 @@ public class ProviderApplicationPreparerFlagOnTest {
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
                 .withProviderSubmissionData()
-                .with("providerResponseAgreeToCare", true)
+                .with("providerResponseAgreeToCare", "true")
                 .build();
 
         submissionRepositoryService.save(providerSubmission);
@@ -158,7 +158,7 @@ public class ProviderApplicationPreparerFlagOnTest {
         providerSubmission = new SubmissionTestBuilder()
             .withFlow("providerresponse")
             .withProviderSubmissionData()
-            .with("providerResponseAgreeToCare", false)
+            .with("providerResponseAgreeToCare", "false")
             .build();
 
         submissionRepositoryService.save(providerSubmission);
@@ -189,7 +189,7 @@ public class ProviderApplicationPreparerFlagOnTest {
         providerSubmission = new SubmissionTestBuilder()
             .withFlow("providerresponse")
             .withProviderSubmissionData()
-            .with("providerResponseAgreeToCare", true)
+            .with("providerResponseAgreeToCare", "true")
             .build();
 
         submissionRepositoryService.save(providerSubmission);
