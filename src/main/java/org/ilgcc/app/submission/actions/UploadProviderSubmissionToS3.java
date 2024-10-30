@@ -29,7 +29,7 @@ public class UploadProviderSubmissionToS3 implements Action {
 
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
 
-    private final String waitForProviderResponseFlag;
+    private final Boolean waitForProviderResponseFlag;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final UserFileRepositoryService userFileRepositoryService;
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
@@ -38,7 +38,7 @@ public class UploadProviderSubmissionToS3 implements Action {
     public UploadProviderSubmissionToS3(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob,
             EnqueueDocumentTransfer enqueueDocumentTransfer,
-            @Value("${il-gcc.dts.expand-existing-provider-flow}") String waitForProviderResponseFlag,
+            @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean waitForProviderResponseFlag,
         SubmissionRepositoryService submissionRepositoryService, UserFileRepositoryService userFileRepositoryService,
         UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, S3PresignService s3PresignService) {
         this.pdfService = pdfService;
@@ -54,18 +54,19 @@ public class UploadProviderSubmissionToS3 implements Action {
 
     @Override
     public void run(Submission providerSubmission) {
-        if (waitForProviderResponseFlag.equals("true")) {
+        if (waitForProviderResponseFlag) {
             var clientId = ProviderSubmissionUtilities.getClientId(providerSubmission);
             if(clientId !=null && clientId.isPresent()){
-                Optional<Submission> familySubmission = submissionRepositoryService.findById(clientId.get());
-                if(familySubmission.isPresent()){
-                    Submission submission = familySubmission.get();
-                    submission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
-                    submissionRepositoryService.save(submission);
+                Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(clientId.get());
+                if(familySubmissionOptional.isPresent()){
+                    log.info("Provider submitted response for client ID {}, enqueuing transfer of documents.", clientId.get());
+                    Submission familySubmission = familySubmissionOptional.get();
+                    familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
+                    submissionRepositoryService.save(familySubmission);
                     enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
-                        submission, FileNameUtility.getFileNameForPdf(submission, "Provider-Responded"));
+                        familySubmission, FileNameUtility.getFileNameForPdf(familySubmission, "Provider-Responded"));
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
-                        uploadedDocumentTransmissionJob, s3PresignService, submission);
+                        uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }else{
                     log.error(String.format("We can not find a match for your family submission: %s", clientId.get()));
                 }
