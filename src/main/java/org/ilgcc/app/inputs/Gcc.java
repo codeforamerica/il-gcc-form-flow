@@ -28,7 +28,6 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-county}")
     private String applicationCounty;
 
-    @NotBlank(message = "{errors.provide-zip}")
     private String applicationZipCode;
     
     // onboarding-provider-info

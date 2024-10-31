@@ -23,7 +23,7 @@
         <th:block
                 th:if="${hasError}"
                 th:replace="~{fragments/inputError :: validationError(inputName=${inputName})}"></th:block>
-        <input type="text" class="text-input"
+        <input type="number" class="text-input"
                inputmode="numeric"
                th:id="${inputName}"
                th:name="${inputName}"

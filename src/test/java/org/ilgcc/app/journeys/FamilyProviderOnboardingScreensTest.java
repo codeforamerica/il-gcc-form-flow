@@ -37,11 +37,25 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         // onboarding-zipcode
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
-        testPage.enter("applicationZipCode", "40123");
         testPage.clickLink(getEnMessage("onboarding-zipcode.link"));
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
         testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
+        testPage.goBack();
+
+        // onboarding-zipcode
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
+        testPage.enter("applicationZipCode", "40123234324");
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-zip"))).isTrue();
+        testPage.enter("applicationZipCode", "94114");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("pilot-offboard.title"));
+        testPage.goBack();
+
+        testPage.enter("applicationZipCode", "61367");
         testPage.clickContinue();
 
         // onboarding-chosen-provider
