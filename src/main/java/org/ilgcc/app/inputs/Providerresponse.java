@@ -39,7 +39,9 @@ public class Providerresponse extends FlowInputs {
     
     @NotBlank
     private String providerResponseServiceZipCode;
-
+    
+    private String useSuggestedProviderAddress;
+    
     @Phone(message = "{errors.invalid-phone-number}")
     private String providerResponseContactPhoneNumber;
 

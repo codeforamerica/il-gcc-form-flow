@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{parent-confirm-address.title})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{provider-response-confirm-address.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -9,24 +9,24 @@
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent" th:with="hasSuggestion=${T(org.ilgcc.app.utils.SubmissionUtilities).hasAddressSuggestion(submission, 'parentMailing')}">
+          <th:block th:ref="formContent" th:with="hasSuggestion=${T(org.ilgcc.app.utils.SubmissionUtilities).hasAddressSuggestion(submission, 'providerResponseService')}">
             <div class="form-card__content">
               <th:block th:if="${hasSuggestion}">
                 <th:block th:replace="~{fragments/inputs/overrides/addressSuggestionFound ::
                   addressSuggestionFound(
                     header=#{parent-confirm-address.header},
                     notice=#{parent-confirm-address.note-suggested-addr},
-                    addressInputToCheck='parentMailing',
-                    inputName='useSuggestedParentAddress')}"/>
+                    addressInputToCheck='providerResponseService',
+                    inputName='useSuggestedProviderAddress')}"/>
               </th:block>
               <th:block th:unless="${hasSuggestion}">
                 <th:block th:replace="~{fragments/inputs/overrides/addressSuggestionNotFound ::
                   addressSuggestionNotFound(
                     header=#{parent-confirm-address.header},
                     notice=#{parent-confirm-address.note-addr-not-found},
-                    addressInputToCheck='parentMailing',
-                    inputName='useSuggestedParentAddress',
-                    editAddressURL='/flow/gcc/' + ${inputData.get('parentEditAddressRedirect')})}"/>
+                    addressInputToCheck='providerResponseService',
+                    inputName='useSuggestedProviderAddress',
+                    editAddressURL='/flow/providerresponse/info')}"/>
               </th:block>
             </div>
           </th:block>

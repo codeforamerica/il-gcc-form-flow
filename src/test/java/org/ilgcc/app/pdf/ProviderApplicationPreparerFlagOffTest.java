@@ -24,6 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class ProviderApplicationPreparerFlagOffTest {
 
+
     @Autowired
     private ProviderApplicationPreparer preparer;
 

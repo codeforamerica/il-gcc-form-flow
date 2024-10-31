@@ -13,6 +13,6 @@
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
       <th:block
-              th:replace="~{fragments/inputs/text :: text(inputName='providerResponseProviderNumber', ariaLabel='header', required='true')}"/>
+              th:replace="~{fragments/inputs/overrides/number :: number(inputName='providerResponseProviderNumber', ariaLabel='header', required='true')}"/>
   </th:block>
 </th:block>

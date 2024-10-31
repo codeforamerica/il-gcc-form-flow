@@ -512,6 +512,7 @@ flow:
       - name: confirm-deny-care
   confirm-deny-care:
     beforeDisplayAction: FormatChildrenWhoNeedCareNames
+    afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
       - name: submit-complete-final
   submit-complete:
@@ -519,11 +520,15 @@ flow:
       - name: info
   info:
     nextScreens:
+      - name: confirm-address
+  confirm-address:
+    nextScreens:
       - name: contact-info
   contact-info:
     nextScreens:
       - name: info-review
   info-review:
+    afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
       - name: submit-complete-final
   submit-complete-final:

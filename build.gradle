@@ -57,7 +57,7 @@ dependencies {
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
     implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.3.1'
     implementation 'org.apache.commons:commons-text:1.12.0'
-    implementation 'software.amazon.awssdk:s3:2.29.3'
+    implementation 'software.amazon.awssdk:s3:2.29.4'
 
     if (useLocalLibrary == 'true') {
         implementation fileTree(dir: "$rootDir/../form-flow/build/libs", include: '*.jar')
@@ -75,7 +75,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.5'
     testImplementation 'org.springframework.security:spring-security-test:6.3.4'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.25.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
     testImplementation 'io.percy:percy-java-selenium:2.1.0'
     testImplementation 'org.jsoup:jsoup:1.18.1'
     testImplementation 'org.awaitility:awaitility:4.2.2'
