@@ -22,10 +22,10 @@
                   text(inputName='familyIntendedProviderEmail',
                   label=#{onboarding-provider-info.email},
                   helpText=#{onboarding-provider-info.email-help})}" />
-                <th:block th:replace="~{fragments/inputs/text ::
-                  text(inputName='familyIntendedProviderPhoneNumber',
+                <th:block th:replace="~{fragments/inputs/phone :: phone(
+                  inputName='familyIntendedProviderPhoneNumber',
                   label=#{onboarding-provider-info.phone},
-                  helpText=#{onboarding-provider-info.phone-help})}" />
+                  helpText=#{onboarding-provider-info.phone-help})}"/>
               </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
