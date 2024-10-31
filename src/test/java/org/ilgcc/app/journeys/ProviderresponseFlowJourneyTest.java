@@ -92,6 +92,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("providerResponseServiceState", "IL - Illinois");
         testPage.enter("providerResponseServiceZipCode", "12345");
         testPage.clickButton("Continue");
+
+        // confirm-address
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-address.title"));
+        testPage.clickButton("Use this address");
         
         // contact-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-contact-info.title"));
@@ -109,7 +113,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
         assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
         testPage.clickButton("Continue");
-        
 
         //submit-complete-final
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));

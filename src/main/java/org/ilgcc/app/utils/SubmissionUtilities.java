@@ -66,10 +66,16 @@ public class SubmissionUtilities {
         return inputData.getOrDefault("parentMailingAddressSameAsHomeAddress[]", "no").equals(List.of("yes"));
     }
 
-    public static boolean hasAddressSuggestion(Submission submission) {
+    public static boolean hasParentAddressSuggestion(Submission submission) {
         return submission.getInputData().get(FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATE_ADDRESS + "parentMailing")
                 .equals("true") && submission.getInputData()
                 .containsKey("parentMailingStreetAddress1" + FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATED);
+    }
+
+    public static boolean hasProviderAddressSuggestion(Submission submission) {
+        return submission.getInputData().get(FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATE_ADDRESS + "providerResponseService")
+                .equals("true") && submission.getInputData()
+                .containsKey("providerResponseServiceStreetAddress1" + FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATED);
     }
 
     public static String applicantFirstName(Map<String, Object> inputData) {

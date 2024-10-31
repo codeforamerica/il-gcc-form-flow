@@ -520,6 +520,9 @@ flow:
       - name: info
   info:
     nextScreens:
+      - name: confirm-address
+  confirm-address:
+    nextScreens:
       - name: contact-info
   contact-info:
     nextScreens:
