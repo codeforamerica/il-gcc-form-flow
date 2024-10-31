@@ -37,6 +37,8 @@ public class Providerresponse extends FlowInputs {
     @NotBlank
     private String providerResponseServiceZipCode;
     
+    private String useSuggestedProviderAddress;
+    
     private String providerResponseContactPhoneNumber;
     
     private String providerResponseContactEmail;
