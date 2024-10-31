@@ -111,11 +111,14 @@ public class ProviderImporter {
                 String[] values = line.split(","); // Split by comma
 
                 if (EXCLUDED_IDS.contains(values[0])) {
+
                     // These Ids are excluded and should not ever be written to our DB, most likely
                     // because they are for testing and training purposes only and are not real providers
+                  
                     System.out.println("Ignoring ID " + values[0]);
                     continue;
                 }
+
 
                 if (idsInBatch.contains(new BigInteger(values[0]))) {
                     // Skip Ids that we've already added in this batch, because of how an INSERT/UPDATE works within a

@@ -39,7 +39,7 @@ public class EnqueueDocumentTransfer {
                 }
             }).thenRun(() -> {
                 try {
-                    pdfTransmissionJob.enqueuePdfTransmissionJob(s3ZipPath, submission);
+                    pdfTransmissionJob.enqueuePdfTransmissionJob(s3ZipPath, submission, pdfFileName);
                 } catch (IOException e) {
                     log.error("An error occurred when enqueuing a job with the document transfer service.", e);
                 }

@@ -113,7 +113,7 @@ class PdfTransmissionJobTest {
         when(httpUrlConnection.getInputStream()).thenReturn(new ByteArrayInputStream("Mock Response".getBytes()));
         when(httpUrlConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
 
-        pdfTransmissionJob.enqueuePdfTransmissionJob(objectPath, submission);
+        pdfTransmissionJob.enqueuePdfTransmissionJob(objectPath, submission, "test");
 
         await().atMost(15, TimeUnit.SECONDS).untilAsserted(
                 () -> assertThatJson(getSucceededJobs()).inPath("$.items[0].jobHistory[*].state")
