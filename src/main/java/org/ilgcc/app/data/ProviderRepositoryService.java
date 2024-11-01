@@ -20,14 +20,8 @@ public class ProviderRepositoryService {
         if (!Objects.isNull(providerId) && !providerId.isEmpty()) {
             try {
                 BigInteger providerIdNumber = new BigInteger(providerId);
-                if (!providerRepository.findAll().isEmpty()) {
-                    if (!providerRepository.existsById(providerIdNumber)) {
-                        return false;
-                    }
-                } else {
-                    if (providerId.length() < 8 || providerId.length() > 15) {
-                        return false;
-                    }
+                if (!providerRepository.existsById(providerIdNumber)) {
+                    return false;
                 }
             } catch (NumberFormatException e) {
                 return false;
