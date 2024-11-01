@@ -25,7 +25,7 @@
                 th:if="${hasError}"
                 th:replace="~{fragments/inputError :: validationError(inputName=${inputName})}"></th:block>
         <div class="text-input-group form-width--large">
-            <input type="text" inputmode="numeric"
+            <input type="number" inputmode="numeric"
                    class="text-input form-width--large"
                    th:id="${inputName}"
                    th:name="${inputName}"
