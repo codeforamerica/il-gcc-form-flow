@@ -52,6 +52,7 @@ org:
     dashboard:
       enabled: false
 il-gcc:
+  validate-provider-id: false
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
