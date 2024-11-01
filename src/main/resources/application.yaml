@@ -121,6 +121,7 @@ org:
       enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
   generate-short-links: ${GENERATE_SHORT_LINKS_FLAG:false}
+  validate-provider-id: ${VALIDATE_PROVIDER_ID_FLAG:true}
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
