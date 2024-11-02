@@ -24,7 +24,6 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
 
-        testPage.navigateToFlowScreen("gcc/onboarding-language-pref");
         //onboarding-language-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
         testPage.selectFromDropdown("languageRead", "English");
@@ -701,19 +700,40 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         // Done with adding documents
         testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
 
+        //contact-provider-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
-
         testPage.clickContinue();
+
+        //contact-provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
+        testPage.clickElementById("print-application-in-person");
 
+        //confirm-delivery
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-delivery.title"));
+        testPage.clickButton("Yes, continue");
+
+        //submit-provider-agreement-handoff
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-provider-agreement-handoff.title"));
+        testPage.goBack();
+
+        //confirm-delivery
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-delivery.title"));
+        testPage.clickButton("No, go back");
+
+        //contact-provider-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
 
+        //contact-provider-message
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
         testPage.clickElementById("copy-message-to-clipboard");
         testPage.clickButton(getEnMessage("general.continue-next-steps"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-next-steps.title"));
 
+        //complete-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-next-steps.title"));
         testPage.clickContinue();
+
+        //complete-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
     }
 }
