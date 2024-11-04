@@ -50,6 +50,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         Map<String, Object> inputData = submission.getInputData();
         boolean hasProviderResponse = inputData.containsKey("providerResponseSubmissionId");
         List<String> providerFields = List.of(
+                "providerResponseProviderNumber",
                 "providerResponseFirstName",
                 "providerResponseLastName",
                 "providerResponseBusinessName",
