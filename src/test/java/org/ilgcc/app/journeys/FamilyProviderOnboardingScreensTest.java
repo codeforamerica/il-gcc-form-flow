@@ -24,7 +24,6 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
 
-        testPage.navigateToFlowScreen("gcc/onboarding-language-pref");
         //onboarding-language-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
         testPage.selectFromDropdown("languageRead", "English");
@@ -37,11 +36,25 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         // onboarding-zipcode
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
-        testPage.enter("applicationZipCode", "40123");
         testPage.clickLink(getEnMessage("onboarding-zipcode.link"));
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
         testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
+        testPage.goBack();
+
+        // onboarding-zipcode
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
+        testPage.enter("applicationZipCode", "40123234324");
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-zip"))).isTrue();
+        testPage.enter("applicationZipCode", "94114");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("pilot-offboard.title"));
+        testPage.goBack();
+
+        testPage.enter("applicationZipCode", "61367");
         testPage.clickContinue();
 
         // onboarding-chosen-provider
@@ -701,19 +714,38 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         // Done with adding documents
         testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
 
+        //contact-provider-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
-
         testPage.clickContinue();
+
+        //contact-provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
+        testPage.clickElementById("print-application-in-person");
 
+        //confirm-delivery
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-delivery.title"));
+        testPage.clickButton("Yes, continue");
+
+        //submit-provider-agreement-handoff
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-provider-agreement-handoff.title"));
+        testPage.goBack();
+
+        //confirm-delivery
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-delivery.title"));
+        testPage.clickButton("No, go back");
+
+        //contact-provider-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
 
+        //contact-provider-message
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
         testPage.clickElementById("copy-message-to-clipboard");
         testPage.clickButton(getEnMessage("general.continue-next-steps"));
+        
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
-
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+
     }
 }
