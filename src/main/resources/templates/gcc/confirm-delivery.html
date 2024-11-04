@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{confirm-delivery.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: healthInsurance}"></th:block>
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{confirm-delivery.header}, subtext=#{confirm-delivery.subtext})}"/>
+        <div class="form-card__content">
+
+        </div>
+        <div class="form-card__footer">
+          <div class="spacing-below-35">
+            <th:block th:replace="~{fragments/continueButton :: continue(text=#{confirm-delivery.yes-continue})}"/>
+          </div>
+          <div >
+            <a class="button spacing-left-0"
+               th:id="go-to-contact-provider-info-button"
+               th:text="#{confirm-delivery.no-go-back}"
+               href="/flow/gcc/contact-provider-info"></a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

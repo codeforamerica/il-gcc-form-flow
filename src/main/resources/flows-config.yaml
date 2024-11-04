@@ -426,6 +426,9 @@ flow:
   contact-provider-info:
     nextScreens:
       - name: contact-provider-message
+  confirm-delivery:
+    nextScreens:
+      - name: submit-provider-agreement-handoff
   submit-provider-agreement-handoff:
     nextScreens:
       - name: next-steps-pdf-delivery
@@ -489,6 +492,7 @@ landmarks:
     - contact-provider-message
     - complete-next-steps
     - complete-submit-confirmation
+    - confirm-delivery
     - submit-provider-agreement-handoff
     - next-steps-pdf-delivery
 ---
