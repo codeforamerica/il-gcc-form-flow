@@ -437,9 +437,9 @@ flow:
       - name: complete-submit-confirmation
   contact-provider-message:
     nextScreens:
-      - name: complete-next-steps
-        condition: ExpandExistingProviderFlowFlag
       - name: submit-next-steps
+        condition: ExpandExistingProviderFlowFlag
+      - name: complete-next-steps
   complete-next-steps:
     nextScreens:
       - name: complete-submit-confirmation
