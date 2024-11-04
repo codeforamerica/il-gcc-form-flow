@@ -35,8 +35,11 @@ flow:
     nextScreens:
       - name: onboarding-chosen-provider
   onboarding-zipcode:
+    crossFieldValidationAction: ValidateZipCode
     nextScreens:
       - name: onboarding-chosen-provider
+        condition: HasSupportedZipCode
+      - name: pilot-offboard
   onboarding-language-pref:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
