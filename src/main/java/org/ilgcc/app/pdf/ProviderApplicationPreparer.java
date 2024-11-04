@@ -47,17 +47,12 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 
     private Map<String, SubmissionField> prepareSubmittedDayCareData(Submission submission) {
         var results = new HashMap<String, SubmissionField>();
-        var inputData = submission.getInputData();
+        Map<String, Object> inputData = submission.getInputData();
         boolean hasProviderResponse = inputData.containsKey("providerResponseSubmissionId");
         List<String> providerFields = List.of(
                 "providerResponseFirstName",
                 "providerResponseLastName",
                 "providerResponseBusinessName",
-                "providerResponseServiceStreetAddress1",
-                "providerResponseServiceStreetAddress2",
-                "providerResponseServiceCity",
-                "providerResponseServiceState",
-                "providerResponseServiceZipCode",
                 "providerResponseContactPhoneNumber",
                 "providerResponseContactEmail"
         );
@@ -73,6 +68,8 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                         results.put(fieldName,
                             new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
                     }
+
+                    results.putAll(prepareProviderAddressData(providerInputData));
 
                     results.put("providerSignature",
                         new SingleField("providerSignature", providerSignature(providerInputData), null));
@@ -112,7 +109,6 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                     new SingleField("providerResponse", "No response from provider", null));
         }
 
-
         return results;
     }
 
@@ -128,6 +124,25 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         results.put("dayCareAddressCity", new SingleField("dayCareAddressCity", provider.getCity(), null));
         results.put("dayCareAddressState", new SingleField("dayCareAddressState", provider.getState(), null));
         results.put("dayCareAddressZip", new SingleField("dayCareAddressZip", provider.getZipcode(), null));
+
+        return results;
+    }
+
+    private Map<String, SubmissionField> prepareProviderAddressData(Map<String, Object> inputData) {
+        var results = new HashMap<String, SubmissionField>();
+        var useSuggestedParentAddress = inputData.getOrDefault("useSuggestedProviderAddress", "false").equals("true");
+
+        String mailingAddressStreet1 = useSuggestedParentAddress ? "providerResponseServiceStreetAddress1_validated" : "providerResponseServiceStreetAddress1";
+        String mailingAddressStreet2 = useSuggestedParentAddress ? "" : "providerResponseServiceStreetAddress2";
+        String mailingCity = useSuggestedParentAddress ? "providerResponseServiceCity_validated" : "providerResponseServiceCity";
+        String mailingState = useSuggestedParentAddress ? "providerResponseServiceState_validated" : "providerResponseServiceState";
+        String mailingZipCode = useSuggestedParentAddress ? "providerResponseServiceZipCode_validated" : "providerResponseServiceZipCode";
+
+        results.put("providerResponseServiceStreetAddress1", new SingleField("providerResponseServiceStreetAddress1", inputData.getOrDefault(mailingAddressStreet1, "").toString(), null));
+        results.put("providerResponseServiceStreetAddress2", new SingleField("providerResponseServiceStreetAddress2", inputData.getOrDefault(mailingAddressStreet2, "").toString(), null));
+        results.put("providerResponseServiceCity", new SingleField("providerResponseServiceCity", inputData.getOrDefault(mailingCity, "").toString(), null));
+        results.put("providerResponseServiceState", new SingleField("providerResponseServiceState", inputData.getOrDefault(mailingState, "").toString(), null));
+        results.put("providerResponseServiceZipCode", new SingleField("providerResponseServiceZipCode", inputData.getOrDefault(mailingZipCode, "").toString(), null));
 
         return results;
     }
