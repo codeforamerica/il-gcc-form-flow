@@ -508,9 +508,12 @@ flow:
     nextScreens:
       - name: application-id
   application-id:
-    onPostAction: SaveApplicationIdFromApplicationId
+    crossFieldValidationAction: SaveApplicationIdFromApplicationId
+    afterSaveAction: CheckClientSubmissionForProvider
     nextScreens:
       - name: response
+        condition: IsConfirmationCodeActive
+      - name: submit-start
   response:
     beforeDisplayAction: FindApplicationData
     nextScreens:
