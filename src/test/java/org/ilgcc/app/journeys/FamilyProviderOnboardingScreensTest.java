@@ -733,7 +733,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-next-steps.title"));
         testPage.clickContinue();
 
-        //complete-next-steps
+        //complete-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
     }
 }
