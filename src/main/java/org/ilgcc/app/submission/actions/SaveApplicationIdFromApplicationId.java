@@ -39,17 +39,17 @@ public class SaveApplicationIdFromApplicationId implements Action {
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission providerSubmission) {
         Map<String, List<String>> errorMessages = new HashMap<>();
 
-        boolean hasApplicationID = providerSubmission.getInputData().containsKey("familySubmissionId");
         String providerProvidedConfirmationCode = (String) formSubmission.getFormData()
                 .getOrDefault("providerResponseFamilyConfirmationCode", "");
 
-        if (!hasApplicationID && !providerProvidedConfirmationCode.isBlank()) {
+        if (!providerProvidedConfirmationCode.isBlank()) {
             Optional<Submission> clientSubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode);
 
             if (clientSubmission.isPresent()) {
-                providerSubmission.getInputData().put("familySubmissionId", clientSubmission.get().getId());
                 httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_ID, clientSubmission.get().getId());
                 httpSession.removeAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS);
+
+                providerSubmission.getInputData().put("familySubmissionId", clientSubmission.get().getId());
             } else {
                 Locale locale = LocaleContextHolder.getLocale();
                 errorMessages.put("providerResponseFamilyConfirmationCode",
