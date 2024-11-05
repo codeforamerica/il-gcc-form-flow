@@ -508,7 +508,7 @@ flow:
     nextScreens:
       - name: application-id
   application-id:
-    crossFieldValidationAction: SaveApplicationIdFromApplicationId
+    crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
     afterSaveAction: CheckClientSubmissionForProvider
     nextScreens:
       - name: response

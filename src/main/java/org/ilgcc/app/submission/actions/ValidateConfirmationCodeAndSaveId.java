@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SaveApplicationIdFromApplicationId implements Action {
+public class ValidateConfirmationCodeAndSaveId implements Action {
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
@@ -31,7 +31,7 @@ public class SaveApplicationIdFromApplicationId implements Action {
 
     private final HttpSession httpSession;
 
-    public SaveApplicationIdFromApplicationId(HttpSession httpSession) {
+    public ValidateConfirmationCodeAndSaveId(HttpSession httpSession) {
         this.httpSession = httpSession;
     }
 
@@ -51,16 +51,18 @@ public class SaveApplicationIdFromApplicationId implements Action {
 
                 providerSubmission.getInputData().put("familySubmissionId", clientSubmission.get().getId());
             } else {
-                Locale locale = LocaleContextHolder.getLocale();
-                errorMessages.put("providerResponseFamilyConfirmationCode",
-                        List.of(messageSource.getMessage("provider-response-application-id.error.invalid", null, locale)));
+                setErrorMessages(errorMessages);
             }
         } else {
-            Locale locale = LocaleContextHolder.getLocale();
-            errorMessages.put("providerResponseFamilyConfirmationCode",
-                    List.of(messageSource.getMessage("provider-response-application-id.error.invalid", null, locale)));
+            setErrorMessages(errorMessages);
         }
 
         return errorMessages;
+    }
+
+    private void setErrorMessages(Map<String, List<String>> errorMessages) {
+        Locale locale = LocaleContextHolder.getLocale();
+        errorMessages.put("providerResponseFamilyConfirmationCode",
+                List.of(messageSource.getMessage("provider-response-application-id.error.invalid", null, locale)));
     }
 }
