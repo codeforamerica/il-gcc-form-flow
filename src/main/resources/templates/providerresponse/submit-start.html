@@ -23,7 +23,7 @@
                             </th:block>
                             <th:block
                                     th:unless="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).ACTIVE)}">
-                                <a th:href="'/faq'"
+                                <a th:href="'/'"
                                    th:text="#{${providerSubmissionStatus.getButtonLabel()}}"
                                    class="button button--primary"
                                    id="continue-link"></a>
