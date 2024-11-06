@@ -141,8 +141,7 @@ inputFields:
   partnerSignedAt: PARTNER_SIGNATURE_DATE
   receivedTimestamp: RECEIVED_TIMESTAMP
 
-
-
+  providerResponseProviderNumber: PROVIDER_ID_NUMBER
   providerNameCorporate: PROVIDER_NAME_CORPORATE
   providerPhoneNumber: PROVIDER_PHONE_NUMBER
   providerEmail: PROVIDER_EMAIL
