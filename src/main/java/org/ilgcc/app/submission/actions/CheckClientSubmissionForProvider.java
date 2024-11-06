@@ -33,8 +33,8 @@ public class CheckClientSubmissionForProvider implements Action {
 
     private final static String SESSION_KEY_SELECTED_PROVIDER_NAME = "selectedProviderName";
     private final static String SESSION_KEY_SELECTED_PROVIDER_ID = "selectedProviderId";
-    private final static String SESSION_KEY_CLIENT_SUBMISSION_STATUS = "clientSubmissionStatus";
-    private final static String SESSION_KEY_CLIENT_SUBMISSION_ID = "clientSubmissionId";
+    public final static String SESSION_KEY_CLIENT_SUBMISSION_STATUS = "clientSubmissionStatus";
+    public final static String SESSION_KEY_CLIENT_SUBMISSION_ID = "clientSubmissionId";
     private final static String SESSION_KEY_CLIENT_CONFIRMATION_CODE = "confirmationCode";
 
     public CheckClientSubmissionForProvider(HttpSession httpSession, MessageSource messageSource,
@@ -46,7 +46,14 @@ public class CheckClientSubmissionForProvider implements Action {
 
     @Override
     public void run(Submission submission) {
+
         UUID clientSubmissionId = (UUID) httpSession.getAttribute(SESSION_KEY_CLIENT_SUBMISSION_ID);
+        String providerSubmissionStatus = (String) httpSession.getAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS);
+
+        if (clientSubmissionId != null && providerSubmissionStatus != null) {
+            return;
+        }
+
         if (clientSubmissionId != null) {
             Optional<Submission> clientSubmission = submissionRepositoryService.findById(clientSubmissionId);
             if (clientSubmission.isPresent()) {
@@ -93,7 +100,7 @@ public class CheckClientSubmissionForProvider implements Action {
         } else {
             // If we don't have a client submission, we use the Active status but without any
             // data pre-loaded.
-            httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE);
+            httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE.name());
 
             Locale locale = LocaleContextHolder.getLocale();
             String placeholderProviderName = messageSource.getMessage("provider-response-submit-start.provider-placeholder", null,
