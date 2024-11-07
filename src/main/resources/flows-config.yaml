@@ -505,6 +505,7 @@ flow:
   ccap-registration:
     crossFieldValidationAction: ValidateProviderNumber
     onPostAction: SaveApplicationId
+    beforeSaveAction: GenerateDummyClientSubmissionForDev
     nextScreens:
       - name: application-id
   application-id:
@@ -542,6 +543,7 @@ flow:
     nextScreens:
       - name: submit-complete-final
   submit-complete-final:
+    beforeDisplayAction: RemoveDummySubmissionForDev
     nextScreens: null
 landmarks:
   firstScreen: submit-start

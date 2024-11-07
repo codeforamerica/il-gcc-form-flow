@@ -25,7 +25,7 @@
                                 th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
                             <th:block th:ref="content">
                                 <div class="form-card__content"
-                                     th:with="confirmationCode=${submission.inputData.get('providerResponseFamilyConfirmationCode')}">
+                                     th:with="confirmationCode=${submission.inputData.get('providerResponseFamilyShortCode')}">
                                     <div class="notice--success">
                                         <p th:utext="${#messages.msg('provider-response-submit-complete-final.notice-pt1', confirmationCode)}"></p>
                                         <p th:text="#{provider-response-submit-complete-final.notice-pt2}"></p>

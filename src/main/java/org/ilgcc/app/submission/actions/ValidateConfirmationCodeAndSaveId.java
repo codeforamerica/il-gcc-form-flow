@@ -40,7 +40,7 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
         Map<String, List<String>> errorMessages = new HashMap<>();
 
         String providerProvidedConfirmationCode = (String) formSubmission.getFormData()
-                .getOrDefault("providerResponseFamilyConfirmationCode", "");
+                .getOrDefault("providerResponseFamilyShortCode", "");
 
         if (!providerProvidedConfirmationCode.isBlank()) {
             Optional<Submission> clientSubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode);
@@ -62,7 +62,7 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
 
     private void setErrorMessages(Map<String, List<String>> errorMessages) {
         Locale locale = LocaleContextHolder.getLocale();
-        errorMessages.put("providerResponseFamilyConfirmationCode",
+        errorMessages.put("providerResponseFamilyShortCode",
                 List.of(messageSource.getMessage("provider-response-application-id.error.invalid", null, locale)));
     }
 }
