@@ -1,7 +1,7 @@
 <th:block th:fragment="toolbar">
     <header class="main-header toolbar__wrapper"
-            th:with="linkText=${submission == null ? '#' : ('/download/' + flow + '/' + submission.getId())}">
-        <div th:if="${errorMessages != null}" class="notice--error notice--toolbar">
+            th:with="linkText=${submission == null ? '#' : (flow == 'providerresponse' ? ('/provider-response-download/' + flow + '/' + submission.getId()) : ('/download/' + flow + '/' + submission.getId()))}">
+    <div th:if="${errorMessages != null}" class="notice--error notice--toolbar">
             <p th:utext="#{errors.general-banner-warning}"></p>
         </div>
         <div class="toolbar">
