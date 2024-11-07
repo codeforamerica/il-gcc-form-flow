@@ -48,8 +48,8 @@ public class ProviderResponsePdfController {
 
     @GetMapping({"{flow}/{submissionId}"})
     ResponseEntity<?> downloadPdf(@PathVariable String flow, @PathVariable String submissionId, HttpServletRequest request, Locale locale) throws IOException {
-        log.info("GET downloadPdf (url: {}): flow: {}, submissionId: {}", request.getRequestURI().toLowerCase(), flow,
-                submissionId);
+        log.info("GET downloadPdf (url: {}): flow: {}, submissionId: {}", sanitizeString(request.getRequestURI().toLowerCase()), sanitizeString(flow),
+                sanitizeString(submissionId));
 
         Optional<Submission> optionalProviderSubmission = this.submissionRepositoryService.findById(UUID.fromString(submissionId));
         if (optionalProviderSubmission.isEmpty()) {
