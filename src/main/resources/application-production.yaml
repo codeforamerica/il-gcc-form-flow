@@ -21,5 +21,6 @@ management:
       exposure:
         include: '*'
 il-gcc:
+  show-no-provider-flow: ${SHOW_NO_PROVIDER_FLOW:false}
   dts:
     processing-org: '4c-ccap-apps'
