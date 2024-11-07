@@ -47,13 +47,13 @@ public class ProviderResponsePdfController {
 
 
     @GetMapping({"{flow}/{submissionId}"})
-    ResponseEntity<?> downloadPdf(@PathVariable String flow, @PathVariable String submissionId, HttpSession httpSession, HttpServletRequest request, Locale locale) throws IOException {
+    ResponseEntity<?> downloadPdf(@PathVariable String flow, @PathVariable String submissionId, HttpServletRequest request, Locale locale) throws IOException {
         log.info("GET downloadPdf (url: {}): flow: {}, submissionId: {}", request.getRequestURI().toLowerCase(), flow,
                 submissionId);
 
         Optional<Submission> optionalProviderSubmission = this.submissionRepositoryService.findById(UUID.fromString(submissionId));
         if (optionalProviderSubmission.isEmpty()) {
-            log.error("Attempted to download PDF with submission_id: {} but no submission was found", submissionId);
+            log.error("Attempted to download PDF with submission_id: {} but no submission was found", sanitizeString(submissionId));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.messageSource.getMessage("error.notfound", null, locale));
         }
 
@@ -63,24 +63,28 @@ public class ProviderResponsePdfController {
         
         if (providerResponseFamilyConfirmationCode == null) {
             log.error("Attempted to download PDF with submission_id: {} but no providerResponseFamilyConfirmationCode was found",
-                    submissionId);
+                    sanitizeString(submissionId));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.messageSource.getMessage("error.notfound", null, locale));
         }
 
         Optional<Submission> optionalFamilySubmission = submissionRepositoryService.findByShortCode(providerResponseFamilyConfirmationCode);
         if (optionalFamilySubmission.isEmpty()) {
             log.error("Attempted to download PDF with submission_id: {} but no family submission was found with confirmation code: {}",
-                    submissionId, providerResponseFamilyConfirmationCode);
+                    sanitizeString(submissionId), sanitizeString(providerResponseFamilyConfirmationCode));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(this.messageSource.getMessage("error.notfound", null, locale));
         }
         
         Submission familySubmission = optionalFamilySubmission.get();
 
-        log.info("Downloading PDF with provider submission_id: {} and family submission_id: {}", submissionId,
-                familySubmission.getId());
+        log.info("Downloading PDF with provider submission_id: {} and family submission_id: {}", sanitizeString(submissionId),
+                sanitizeString(String.valueOf(familySubmission.getId())));
         HttpHeaders headers = new HttpHeaders();
         byte[] data = this.pdfService.getFilledOutPDF(familySubmission);
         headers.add("Content-Disposition", "attachment; filename=%s".formatted(this.pdfService.generatePdfName(familySubmission)));
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(data);
+    }
+
+    private String sanitizeString(String input) {
+        return input.replaceAll("[^a-zA-Z0-9_-]", ""); // Allow only alphanumeric characters, hyphens, and underscores
     }
 }
