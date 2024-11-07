@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
 @Slf4j
 @Component
 public class SaveApplicationId implements Action {
@@ -22,7 +23,7 @@ public class SaveApplicationId implements Action {
     public void run(FormSubmission formSubmission, Submission providerSubmission) {
         UUID clientSubmissionId = (UUID) httpSession.getAttribute("clientSubmissionId");
 
-        if(!clientSubmissionId.toString().isEmpty()){
+        if (clientSubmissionId != null && !clientSubmissionId.toString().isEmpty()) {
             providerSubmission.getInputData().put("familySubmissionId", clientSubmissionId);
         }
     }
