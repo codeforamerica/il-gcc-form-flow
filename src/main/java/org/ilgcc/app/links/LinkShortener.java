@@ -1,24 +1,19 @@
 package org.ilgcc.app.links;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-
+@Slf4j
+@Component
 public class LinkShortener implements ShortLinkService {
-
-    @Value("${link-shortener.short-io.api-key}")
-    static String apiKey;
-
-    @Value("${link-shortener.short-io.domain}")
-    static String domain;
 
     private static MediaType mediaType = MediaType.parse("application/json");
 
@@ -31,62 +26,44 @@ public class LinkShortener implements ShortLinkService {
 
     @Override
     public ShortenedLinks getShortLinks(String emailLongLink, String textLongLink, String clipboardLongLink) {
-        JsonObject content = new JsonObject();
+        String emailLink = requestShortLink(emailLongLink, "email");
+        String textLink = requestShortLink(textLongLink, "text");
+        String clipboardLink = requestShortLink(clipboardLongLink, "copy_link");
 
-        //do we actually want to pass utmSource here or before?
+        return new ShortenedLinks(emailLink, textLink, clipboardLink);
+    }
+
+    public String requestShortLink(String longLink, String utmSource) {
+        JsonObject content = new JsonObject();
 
         try {
             content.addProperty("skipQS", false);
             content.addProperty("archived", false);
             content.addProperty("allowDuplicates", false);
-            content.addProperty("domain", domain);
-
-            List links = new ArrayList<>();
-            JsonObject emailLink = new JsonObject();
-            emailLink.addProperty("originalURL", emailLongLink);
-            emailLink.addProperty("utmSource", "email");
-            emailLink.addProperty("cloaking", true);
-            links.add(emailLink);
-
-            JsonObject textLink = new JsonObject();
-            textLink.addProperty("originalURL", textLongLink);
-            textLink.addProperty("utmSource", "text");
-            textLink.addProperty("cloaking", true);
-            links.add(textLink);
-
-            JsonObject clipboardLink = new JsonObject();
-            clipboardLink.addProperty("originalURL", clipboardLongLink);
-            clipboardLink.addProperty("utmSource", "copy_link");
-            clipboardLink.addProperty("cloaking", true);
-            links.add(clipboardLink);
-
-            content.addProperty("links", links.toString());
+            content.addProperty("domain", System.getenv("SHORT_IO_DOMAIN"));
+            content.addProperty("originalURL", longLink);
+            content.addProperty("utmSource", utmSource);
 
             RequestBody body = RequestBody.create(mediaType, content.toString());
 
-
-            Request request = new Request.Builder().url("https://api.short.io/links/bulk").post(body)
+            Request request = new Request.Builder()
+                    .url("https://api.short.io/links")
+                    .post(body)
                     .addHeader("accept", "application/json")
                     .addHeader("content-type", "application/json")
-                    .addHeader("Authorization", apiKey).build();
-
+                    .addHeader("Authorization", System.getenv("SHORT_IO_API_KEY"))
+                    .build();
 
             Response response = client.newCall(request).execute();
 
-
             if (response.code() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.code());
+                log.error(String.format("Failed : HTTP error code : %s", response.code()));
+                return longLink;
             }
-
-            //todo: fogure out what this actually returns
-            ShortenedLinks shortenedLinks = new ShortenedLinks(response.body().toString(), response.body().toString(), response.body().toString());
-
-            return shortenedLinks;
-
-
+            JsonObject jsonbody = JsonParser.parseString(response.body().string()).getAsJsonObject();
+            return jsonbody.get("shortURL").getAsString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
