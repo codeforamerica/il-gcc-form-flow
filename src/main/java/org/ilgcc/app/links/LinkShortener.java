@@ -25,13 +25,10 @@ public class LinkShortener {
 
     private static OkHttpClient client = new OkHttpClient();
 
-    public LinkShortener(@Value("${link-shortener.short-io.api-key}") String apiKey,
-            @Value("${link-shortener.short-io.domain}") String domain) {
+    public LinkShortener(@Value("${il-gcc.link-shortener.api-key}") String apiKey,
+            @Value("${il-gcc.link-shortener.domain}") String domain) {
         this.apiKey = apiKey;
         this.domain = domain;
-    }
-    public static String getShortLink(String longLink) {
-        return null;
     }
 
     public static ShortenedLinks getShortLinks(String emailLongLink, String textLongLink, String clipboardLongLink) {
