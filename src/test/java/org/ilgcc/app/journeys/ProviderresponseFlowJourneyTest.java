@@ -252,22 +252,22 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
-        assertThat(testPage.hasErrorText(getEnMessage("provider-response-application-id.error.invalid"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
         testPage.enter("providerResponseFamilyConfirmationCode", "a2123b");
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
-        assertThat(testPage.hasErrorText(getEnMessage("provider-response-application-id.error.invalid"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
         testPage.enter("providerResponseFamilyConfirmationCode", "123");
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
-        assertThat(testPage.hasErrorText(getEnMessage("provider-response-application-id.error.invalid"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
         testPage.enter("providerResponseFamilyConfirmationCode", "ABCDEFGHIJKLMNOP");
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
-        assertThat(testPage.hasErrorText(getEnMessage("provider-response-application-id.error.invalid"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
     }
 
     @Test
