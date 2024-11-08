@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.links.LinkShortener;
-import org.ilgcc.app.links.ShortLinkService;
 import org.ilgcc.app.links.ShortenedLinks;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,8 +51,7 @@ public class GenerateShortLinks implements Action {
 
         if (generateShortLinks && expandExistingProviderFlow) {
             CompletableFuture<ShortenedLinks> shortenedLinks = CompletableFuture.supplyAsync(() -> {
-                ShortLinkService shortLinkService = new LinkShortener();
-                ShortenedLinks shortUrls = shortLinkService.getShortLinks(emailUrl, textUrl, clipboardUrl);
+                ShortenedLinks shortUrls = LinkShortener.getShortLinks(emailUrl, textUrl, clipboardUrl);
                 log.info("Shortened email url of {} to be {}", emailUrl, shortUrls.getShortEmailLink());
                 log.info("Shortened text url of {} to be {}", textUrl, shortUrls.getShortTextLink());
                 log.info("Shortened clipboard url of {} to be {}", clipboardUrl, shortUrls.getShortClipboardLink());
