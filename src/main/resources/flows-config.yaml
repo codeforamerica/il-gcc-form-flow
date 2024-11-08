@@ -504,8 +504,8 @@ flow:
       - name: ccap-registration
   ccap-registration:
     crossFieldValidationAction: ValidateProviderNumber
-    onPostAction: SaveApplicationId
-    beforeSaveAction: GenerateDummyClientSubmissionForDev
+    beforeSaveAction: SaveApplicationId
+    onPostAction: GenerateDummyClientSubmissionForDev
     nextScreens:
       - name: application-id
   application-id:

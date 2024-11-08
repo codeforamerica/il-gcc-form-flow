@@ -19,7 +19,7 @@ public class SaveApplicationId implements Action {
     }
 
     @Override
-    public void run(FormSubmission formSubmission, Submission providerSubmission) {
+    public void run(Submission providerSubmission) {
         UUID clientSubmissionId = (UUID) httpSession.getAttribute("clientSubmissionId");
 
         if (null != clientSubmissionId && !clientSubmissionId.toString().isEmpty()){

@@ -27,6 +27,5 @@ public class FindApplicationData implements Action {
            providerSubmission.getInputData().put("clientResponse", ProviderSubmissionUtilities.getApplicantSubmissionForProviderResponse(clientSubmission));
            providerSubmission.getInputData().put("clientResponseChildren", ProviderSubmissionUtilities.getChildrenDataForProviderResponse(clientSubmission.get()));
         }
-
     }
 }
