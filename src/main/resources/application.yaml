@@ -122,6 +122,7 @@ org:
 il-gcc:
   generate-short-links: ${GENERATE_SHORT_LINKS_FLAG:false}
   validate-provider-id: ${VALIDATE_PROVIDER_ID_FLAG:true}
+  show-no-provider-flow: ${SHOW_NO_PROVIDER_FLOW:true}
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
