@@ -62,7 +62,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.clickNo();
 
         // offboarding-no-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("offboarding-no-provider.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("no-provider-intro.title"));
         testPage.goBack();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
