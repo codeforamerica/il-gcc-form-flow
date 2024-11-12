@@ -12,7 +12,6 @@ public class Providerresponse extends FlowInputs {
     @NotBlank(message = "{errors.provide-provider-number}")
     private String providerResponseProviderNumber;
 
-    @NotBlank(message = "{errors.provide-applicant-number}")
     private String providerResponseFamilyShortCode;
 
     @NotBlank
