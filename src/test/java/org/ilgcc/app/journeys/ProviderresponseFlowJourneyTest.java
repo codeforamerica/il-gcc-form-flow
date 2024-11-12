@@ -47,7 +47,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // application-id
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
-        testPage.findElementTextById("providerResponseFamilyConfirmationCode").equals(CONF_CODE);
+        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
         testPage.clickContinue();
 
         // response

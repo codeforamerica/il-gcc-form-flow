@@ -11,14 +11,14 @@
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
     <th:block th:replace="~{fragments/inputs/text ::
-      text(inputName='providerResponseFamilyConfirmationCode',
+      text(inputName='providerResponseFamilyShortCode',
       ariaLabel='header')}"/>
   </th:block>o
 </th:block>
 
 <script th:inline="javascript">
   $(document).ready(function () {
-    const providerFamilyCode = $('#providerResponseFamilyConfirmationCode')
+    const providerFamilyCode = $('#providerResponseFamilyShortCode')
 
     if(!providerFamilyCode.text()){
       var confirmationCode = [[${session.confirmationCode}]];
