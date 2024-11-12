@@ -223,18 +223,6 @@ public class SubmissionUtilities {
         return convertToAbsoluteURLForEmailAndText(builder, shortCode, utmMedium);
     }
 
-    // TODO: This method is probably not needed once the shortening code is in place properly -marc
-    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium) {
-        UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentContextPath();
-        return convertToAbsoluteURLForEmailAndText(builder, shortCode, utmMedium);
-    }
-
-    // TODO: This method is probably not needed once the shortening code is in place properly -marc
-    public static String getProviderResponseURL(Submission submission, String utmMedium) {
-        String shortCode = submission.getShortCode();
-        return convertToAbsoluteURLForEmailAndText(shortCode, utmMedium);
-    }
-
     public static String getProviderName(Map<String, Object> inputData) {
         if (inputData.containsKey("dayCareChoice")) {
             String dayCareChoice = (String) inputData.get("dayCareChoice");

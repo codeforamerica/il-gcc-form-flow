@@ -129,3 +129,6 @@ il-gcc:
     auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
     presigned-url-Duration: 5 # Minutes
     expand-existing-provider-flow: ${WAIT_FOR_PROVIDER_RESPONSE_FLAG:false}
+  link-shortener:
+    api-key: ${SHORT_IO_API_KEY}
+    domain: ${SHORT_IO_DOMAIN}
