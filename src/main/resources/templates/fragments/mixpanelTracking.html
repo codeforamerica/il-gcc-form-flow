@@ -55,9 +55,17 @@
             'element_id': elementId
           });
         } else if (elementDataMixpanel === 'provider-response') {
+          let value = "not_set";
+           if (document.getElementById("providerResponseAgreeToCare-true").checked){
+             value = "provider_agreed";
+           }
+          if (document.getElementById("providerResponseAgreeToCare-false").checked){
+            value = "provider_declined"
+          }
+
           mixpanel.track('provider_response', {
             'family_application_id': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "familySubmissionId")} ]]`,
-            'provider_agrees_to_care': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(inputData, "providerResponseAgreeToCare")} ]]`,
+            'provider_agrees_to_care': value,
           });
         }
 
