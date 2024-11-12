@@ -4,7 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -46,18 +47,22 @@ public class LinkShortener {
             emailLink.addProperty("originalURL", emailLongLink);
             emailLink.addProperty("utmSource", "email");
             emailLink.addProperty("allowDuplicates", false);
+            emailLink.addProperty("title", nameShortUrl(emailLongLink, "email"));
             links.add(emailLink);
 
             JsonObject textLink = new JsonObject();
             textLink.addProperty("originalURL", textLongLink);
             textLink.addProperty("utmSource", "text");
             textLink.addProperty("allowDuplicates", false);
+            textLink.addProperty("title", nameShortUrl(textLongLink, "text"));
             links.add(textLink);
 
             JsonObject clipboardLink = new JsonObject();
             clipboardLink.addProperty("originalURL", clipboardLongLink);
             clipboardLink.addProperty("utmSource", "copy_link");
             clipboardLink.addProperty("allowDuplicates", false);
+            clipboardLink.addProperty("title", nameShortUrl(clipboardLongLink, "copy_link"));
+
             links.add(clipboardLink);
 
             content.add("links", links);
@@ -86,4 +91,20 @@ public class LinkShortener {
         }
     }
 
+    private static String nameShortUrl(String longURL, String utmSource){
+        return String.format("%s - %s", extractConfCode(longURL), utmSource);
+    }
+
+    private static String extractConfCode(String longURL) {
+        String regex = "(?<=submit/)([^?]+)";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(longURL);
+
+        if(matcher.find()){
+            return matcher.group();
+        } else {
+            return "";
+        }
+    }
 }
