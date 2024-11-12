@@ -13,6 +13,6 @@ public class NoProviderChosenAndShowNoProviderFlow implements Condition {
 
   @Override
   public Boolean run(Submission submission) {
-    return showNoProviderFlow && submission.getInputData().getOrDefault("hasChosenProvider", "false").equals("false");
+    return showNoProviderFlow && submission.getInputData().containsKey("hasChosenProvider") && submission.getInputData().get("hasChosenProvider").equals("false");
   }
 }
