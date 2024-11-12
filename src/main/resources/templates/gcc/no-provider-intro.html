@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{offboarding-no-provider.title})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{no-provider-intro.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -11,17 +11,18 @@
         <th:block th:replace="~{fragments/gcc-icons :: caring}"></th:block>
         <th:block
             th:replace="~{fragments/cardHeader :: cardHeader(
-            header=#{offboarding-no-provider.header},
+            header=#{no-provider-intro.header},
             subtext=#{offboarding-no-provider.subtext})}"/>
         <div class="form-card__content">
 
         </div>
         <div class="form-card__footer">
+          <th:block th:replace="~{fragments/continueButton :: continue(text=#{no-provider-intro.continue})}"/>
           <a
               href="/"
               id="offboard-no-provider-home-link"
               th:text="#{pilot-offboard.link}"
-              class="button--primary button"></a>
+              class="button--secondary button"></a>
         </div>
       </main>
     </div>

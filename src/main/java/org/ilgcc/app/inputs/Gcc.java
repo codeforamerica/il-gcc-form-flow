@@ -17,6 +17,9 @@ public class Gcc extends FlowInputs {
 
     MultipartFile uploadDocuments;
     private String lang;
+    
+    // onboarding-chosen-provider
+    private String hasChosenProvider;
 
     // onboarding-choose-provider
 
