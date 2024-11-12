@@ -147,7 +147,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // application-id
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
-        testPage.enter("providerResponseFamilyConfirmationCode", CONF_CODE);
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // response
@@ -248,22 +248,22 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // application-id
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
-        testPage.enter("providerResponseFamilyConfirmationCode", "");
+        testPage.enter("providerResponseFamilyShortCode", "");
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
-        testPage.enter("providerResponseFamilyConfirmationCode", "a2123b");
+        testPage.enter("providerResponseFamilyShortCode", "a2123b");
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
-        testPage.enter("providerResponseFamilyConfirmationCode", "123");
+        testPage.enter("providerResponseFamilyShortCode", "123");
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
-        testPage.enter("providerResponseFamilyConfirmationCode", "ABCDEFGHIJKLMNOP");
+        testPage.enter("providerResponseFamilyShortCode", "ABCDEFGHIJKLMNOP");
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
@@ -294,7 +294,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // application-id
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
-        testPage.enter("providerResponseFamilyConfirmationCode", CONF_CODE);
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // expired
@@ -339,7 +339,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // application-id
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
-        testPage.enter("providerResponseFamilyConfirmationCode", CONF_CODE);
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // response

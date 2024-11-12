@@ -62,7 +62,7 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
 
     private void setErrorMessages(Map<String, List<String>> errorMessages) {
         Locale locale = LocaleContextHolder.getLocale();
-        errorMessages.put("providerResponseFamilyConfirmationCode",
+        errorMessages.put("providerResponseFamilyShortCode",
                 List.of(messageSource.getMessage("errors.provide-applicant-number", null, locale)));
     }
 }
