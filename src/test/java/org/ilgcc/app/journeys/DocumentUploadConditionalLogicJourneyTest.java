@@ -3,12 +3,11 @@ package org.ilgcc.app.journeys;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import org.ilgcc.app.utils.AbstractBasePageTest;
-import org.ilgcc.app.utils.ChildCareProvider;
 import org.junit.jupiter.api.Test;
 public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageTest {
     boolean hasPartner = false;
     @Test
-    void shouldSkipDocUploadPromptIfNoDocumentsAreRequiredForParentOrSpouse(){
+    void shouldSkipDocUploadPromptIfNoDocumentsAreRequiredForParentOrSpouseAndShouldHideRecommendedDocumentsAccordionOnTheDocuUploadAddFilesScreen(){
     testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
     saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
         .withParentDetails()
@@ -24,13 +23,14 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
     navigatePassedSignedName(hasPartner);
     // submit-complete
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-    testPage.clickButton(getEnMessage("submit-complete-no-documents-to-upload.finish-application"));
+    testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessageWithParams("submit-confirmation.title", List.of(ChildCareProvider.OPEN_SESAME.getDisplayName()).toArray()));
-
+    //doc-upload-add-files
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+    assertThat(testPage.elementDoesNotExistById("controlId")).isTrue();
     }
     @Test
-    void skipNotSkipDocUploadRecommendedDocsScreenIfOneDocumentIsRequiredForParent(){
+    void skipNotSkipDocUploadRecommendedDocsScreenIfOneDocumentIsRequiredAndShouldDisplayRecommendedDocumentsAccordionOnTheDocUploadAddFilesScreen(){
         testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
@@ -45,9 +45,16 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        //doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("controlId")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isFalse();
     }
 
     @Test
@@ -65,7 +72,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         navigatePassedSignedName(hasPartner);
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -94,7 +101,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         navigatePassedSignedName(hasPartner);
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -122,7 +129,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         navigatePassedSignedName(hasPartner);
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -150,7 +157,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         navigatePassedSignedName(hasPartner);
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.button.submit-docs"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -178,7 +185,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         navigatePassedSignedName(hasPartner);
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -207,7 +214,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         navigatePassedSignedName(hasPartner);
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -236,7 +243,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         navigatePassedSignedName(hasPartner);
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -265,7 +272,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         navigatePassedSignedName(hasPartner);
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -292,7 +299,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         navigatePassedSignedName(hasPartner);
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
