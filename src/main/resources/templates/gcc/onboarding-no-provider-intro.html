@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{onboarding-no-provider-intro.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab slab--grey">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: caring}"></th:block>
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(
+            header=#{onboarding-no-provider-intro.header},
+            subtext=#{offboarding-no-provider.subtext})}"/>
+        <div class="form-card__content">
+
+        </div>
+        <div class="form-card__footer">
+          <th:block th:replace="~{fragments/continueButton :: continue(text=#{onboarding-no-provider-intro.continue})}"/>
+          <a
+              href="/"
+              id="offboard-no-provider-home-link"
+              th:text="#{pilot-offboard.link}"
+              class="button--secondary button"></a>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

@@ -12,12 +12,19 @@ flow:
       - name: onboarding-confirm-provider
   onboarding-chosen-provider:
     nextScreens:
+      - name: onboarding-no-provider-intro
+        condition: NoProviderChosenAndShowNoProviderFlow
+      - name: offboarding-no-provider
+        condition: NoProviderChosenAndShowProviderFlagIsOff
       - name: onboarding-provider-info
   onboarding-provider-info:
     nextScreens:
       - name: onboarding-provider-info-review
         condition: ExpandExistingProviderFlowFlag
       - name: contact-provider-message
+  onboarding-no-provider-intro:
+    nextScreens:
+      - name: parent-info-intro
   pilot-offboard:
     nextScreens: null
   offboarding-no-provider:

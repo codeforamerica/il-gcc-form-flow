@@ -9,6 +9,6 @@ public class NoProviderChosen implements Condition {
 
   @Override
   public Boolean run(Submission submission) {
-    return submission.getInputData().getOrDefault("dayCareChoice", "none").equals("none");
+    return submission.getInputData().containsKey("dayCareChoice") && submission.getInputData().get("dayCareChoice").equals("none");
   }
 }
