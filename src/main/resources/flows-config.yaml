@@ -397,9 +397,6 @@ flow:
     afterSaveAction: UploadSubmissionToS3
     nextScreens:
       - name: submit-complete
-#  GCC submit complete screen should either goto doc-upload-recommended-docs if the user has recommended docs
-#  or Goto the doc-upload-add-files page if there are no recommended docs  This page should hide the recommended docs
-#  accordion if there are no recommended docs
   submit-complete:
     nextScreens:
       - name: doc-upload-recommended-docs
