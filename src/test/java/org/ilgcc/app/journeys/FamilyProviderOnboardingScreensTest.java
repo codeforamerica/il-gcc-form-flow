@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {
-        "WAIT_FOR_PROVIDER_RESPONSE_FLAG=true"
+        "WAIT_FOR_PROVIDER_RESPONSE_FLAG=true",
+        "SHOW_NO_PROVIDER_FLOW=false"
 })
 public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
@@ -62,7 +63,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.clickNo();
 
         // offboarding-no-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("no-provider-intro.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("offboarding-no-provider.title"));
         testPage.goBack();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
