@@ -7,8 +7,6 @@ flow:
       - name: onboarding-choose-provider
   onboarding-choose-provider:
     nextScreens:
-      - name: no-provider-intro
-        condition: NoProviderChosenAndShowNoProviderFlow
       - name: pilot-offboard
         condition: NoProviderChosen
       - name: onboarding-confirm-provider
