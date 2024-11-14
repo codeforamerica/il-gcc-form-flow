@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,4 +52,7 @@ public class Provider implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "date_of_last_approval")
+    private OffsetDateTime dateOfLastApproval;
 }

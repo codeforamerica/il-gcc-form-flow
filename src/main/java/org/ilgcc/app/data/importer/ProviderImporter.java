@@ -6,7 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,7 +21,9 @@ import java.util.stream.Collectors;
 public class ProviderImporter {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HH.mm.ss");
-    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, status) VALUES\n";
+    private static final DateTimeFormatter dateColumnFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+
+    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, date_of_last_approval, status) VALUES\n";
     private static final String SQL_BEGIN = "BEGIN;\n";
     private static final String SQL_COMMIT = "COMMIT;\n\n";
 
@@ -31,12 +37,14 @@ public class ProviderImporter {
             "\tcity = excluded.city,\n" +
             "\tstate = excluded.state,\n" +
             "\tzip_code = excluded.zip_code,\n" +
+            "\tdate_of_last_approval = excluded.date_of_last_approval,\n" +
             "\tstatus = excluded.status;\n";
 
     private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", "Provider Type", "RSRCE_NAME", "DO_BUSN_AS_NAME",
             "STR_ADR", "CITY", "ST", "ZIP", "Date of Last Approval", "Maintaining R&R", "Provider Status");
 
-    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of("Date of Last Approval", "Maintaining R&R");
+    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of("Maintaining R&R");
+    private static final List<String> DATE_COLUMN_HEADERS = List.of("Date of Last Approval");
 
     private static final List<String> EXCLUDED_IDS = List.of("460328258720008");
 
@@ -90,6 +98,14 @@ public class ProviderImporter {
                 }
             }
 
+            Set<Integer> dateColumnsIndices = new HashSet<>();
+            for (String dateColumnHeader : DATE_COLUMN_HEADERS) {
+                int index = COLUMN_HEADERS.indexOf(dateColumnHeader);
+                if (index != -1) {
+                    dateColumnsIndices.add(index);
+                }
+            }
+
             System.out.println("\nEverything looks ok in the CSV format! Preparing to generate SQL.");
 
             LocalDateTime now = LocalDateTime.now();
@@ -114,11 +130,10 @@ public class ProviderImporter {
 
                     // These Ids are excluded and should not ever be written to our DB, most likely
                     // because they are for testing and training purposes only and are not real providers
-                  
+
                     System.out.println("Ignoring ID " + values[0]);
                     continue;
                 }
-
 
                 if (idsInBatch.contains(new BigInteger(values[0]))) {
                     // Skip Ids that we've already added in this batch, because of how an INSERT/UPDATE works within a
@@ -145,12 +160,18 @@ public class ProviderImporter {
                         // escape ' to ''
                         // remove "
                         // remove whitespace
-                        String cleanedValue = values[i].replaceAll("(?<!')'|'(?!')", "''").replaceAll("\"","").trim();
+                        String cleanedValue = values[i].replaceAll("(?<!')'|'(?!')", "''").replaceAll("\"", "").trim();
                         if (i == 0) {
                             // No need to wrap the id with single quotes
                             valueToInsert.append(cleanedValue);
+                        } else if (dateColumnsIndices.contains(i)) {
+                            LocalDate localDate = LocalDate.parse(cleanedValue, dateColumnFormatter);
+                            ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.of("America/Chicago"));
+                            OffsetDateTime offsetDateTime = zonedDateTime.toOffsetDateTime();
+
+                            valueToInsert.append("'").append(offsetDateTime).append("'");
                         } else {
-                            // Every other field, other than the id, is just a VARCHAR so wrap those values with single quotes
+                            // Every other field, other than the id and dates, is just a VARCHAR so wrap those values with single quotes
                             valueToInsert.append("'").append(cleanedValue).append("'");
                         }
                     }
