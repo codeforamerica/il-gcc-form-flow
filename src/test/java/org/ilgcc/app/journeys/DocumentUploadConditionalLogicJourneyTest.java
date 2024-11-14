@@ -30,7 +30,7 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
     assertThat(testPage.elementDoesNotExistById("controlId")).isTrue();
     }
     @Test
-    void DisplaysRecommendedDocumentsScreenIfDocsAreRequired()
+    void DisplaysRecommendedDocumentsScreenIfDocsAreRequired(){
         testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
