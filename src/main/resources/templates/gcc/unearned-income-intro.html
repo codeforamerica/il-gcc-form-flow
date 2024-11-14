@@ -10,7 +10,7 @@
       <main id="content" role="main" class="form-card spacing-above-35">
         <div class="text--centered">
           <th:block th:replace="~{fragments/gcc-icons :: incomeFamily}"></th:block>
-          <p class="text--grey-dark" th:text="#{unearned-income-intro.step}"></p>
+          <p class="text--grey-dark" th:id="unearned-income-intro-step" th:text="#{unearned-income-intro.step}"></p>
           <th:block
                   th:replace="~{fragments/cardHeader :: cardHeader(header=#{unearned-income-intro.header})}"/>
         </div>

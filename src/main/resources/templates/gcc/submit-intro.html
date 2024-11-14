@@ -10,7 +10,7 @@
             <main id="content" role="main" class="form-card spacing-above-35">
                 <div class="text--centered">
                     <th:block th:replace="~{fragments/gcc-icons :: clipboardWithEnvelope}"></th:block>
-                    <p class="text--grey-dark" th:text="#{submit-intro.step}"></p>
+                    <p class="text--grey-dark" th:id="submit-intro-step" th:text="#{submit-intro.step}"></p>
                     <th:block
                             th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-intro.title})}"/>
                 </div>
