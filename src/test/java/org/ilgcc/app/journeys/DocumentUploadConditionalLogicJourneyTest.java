@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageTest {
     boolean hasPartner = false;
     @Test
-    void shouldSkipDocUploadPromptIfNoDocumentsAreRequiredForParentOrSpouseAndShouldHideRecommendedDocumentsAccordionOnTheDocuUploadAddFilesScreen(){
+    void SkipsRecommendedDocumentsScreenIfNoneAreRequiredFor(){
     testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
     saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
         .withParentDetails()
