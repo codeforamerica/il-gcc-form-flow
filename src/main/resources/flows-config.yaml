@@ -406,16 +406,10 @@ flow:
       - name: submit-complete
   submit-complete:
     nextScreens:
-      - name: submit-next-steps
-  submit-next-steps:
-    nextScreens:
-      - name: submit-confirmation
-  submit-confirmation:
-    beforeDisplayAction: FormatSubmittedAtDate
-    nextScreens:
-      - name: submit-confirmation
+      - name: doc-upload-recommended-docs
+        condition: HasRecommendedDocumentsToUpload
+      - name: doc-upload-add-files
   doc-upload-recommended-docs:
-    condition: HasRecommendedDocumentsToUpload
     nextScreens:
       - name: doc-upload-add-files
   doc-upload-add-files:
@@ -439,6 +433,13 @@ flow:
   submit-provider-agreement-handoff:
     nextScreens:
       - name: next-steps-pdf-delivery
+  submit-next-steps:
+    nextScreens:
+      - name: submit-confirmation
+  submit-confirmation:
+    beforeDisplayAction: FormatSubmittedAtDate
+    nextScreens:
+      - name: submit-confirmation
   next-steps-pdf-delivery:
     nextScreens:
       - name: complete-submit-confirmation

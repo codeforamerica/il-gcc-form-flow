@@ -13,53 +13,24 @@
                 <div th:if="${lockedSubmissionMessage}" class="notice--warning">
                     <p th:text="${lockedSubmissionMessage}"></p>
                 </div>
-                <!-- Display document verification information and Document Upload Links-->
-                <div th:if="${showDocumentUploadInfo}">
-                    <header class="form-card__header">
+                <div>
+                    <header class="form-card__header spacing-below-0">
                         <h1 id="header-doc-upload" class="h2" th:utext="#{submit-complete.header}"></h1>
                     </header>
-                    <div class="form-card__content">
-                        <div class="notice notice--gray" th:utext="#{submit-complete.info-box}"></div>
+                    <div class="form-card__content notice notice--gray">
+                        <div th:utext="#{submit-complete.info-box.pg-1}"></div>
+                        <p th:utext="#{submit-complete.info-box.pg-2}"></p>
                     </div>
                     <div class="form-card__footer">
-                        <a href="/flow/gcc/doc-upload-recommended-docs"
-                           th:text="#{submit-complete.button.submit-docs}"
-                           class="button button--primary"
-                           id="continue-link"></a>
-                        <th:block
-                                th:if="${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true'}">
+                        <th:block th:id="continue-link" th:replace="~{fragments/continueButton :: continue(text=#{submit-complete.yes-add-document-now})}" />
+
+                        <th:block>
                             <a th:href="'/flow/' + ${flow} + '/contact-provider-intro'"
                                data-mixpanel="skip-link"
                                class="button"
-                               th:text="#{submit-complete.button.skip}"                            ></a>
+                               id="skip-to-contact-provider-intro-link"
+                               th:text="#{submit-complete.button.do-this-later}"                            ></a>
                         </th:block>
-                        <th:block
-                                th:unless="${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true'}">
-                            <a href="/flow/gcc/submit-next-steps"
-                               th:text="#{submit-complete.button.skip}"
-                               class="button"
-                               id="skip-link"
-                               data-mixpanel="skip-link"></a>
-                        </th:block>
-
-                    </div>
-                </div>
-                <!-- Show information about next steps -->
-                <div th:if="${!showDocumentUploadInfo}">
-                    <header class="form-card__header">
-                        <h1 id="header-next-steps" class="h2" th:text="#{submit-complete-no-documents-to-upload.header}"></h1>
-                        <p id="header-help-message" th:text="#{submit-complete-no-documents-to-upload.subtext}"></p>
-                    </header>
-                    <div class="form-card__content">
-                        <div class="notice--success">
-                            <th:block th:utext="#{submit-next-steps.notice}"></th:block>
-                        </div>
-                    </div>
-                    <div class="form-card__footer">
-                        <a href="/flow/gcc/submit-confirmation"
-                           th:text="#{submit-complete-no-documents-to-upload.finish-application}"
-                           class="button button--primary"
-                           id="finish-application-link"></a>
                     </div>
                 </div>
             </main>

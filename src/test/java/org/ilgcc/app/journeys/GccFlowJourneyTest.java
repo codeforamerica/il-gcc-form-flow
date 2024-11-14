@@ -639,7 +639,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
