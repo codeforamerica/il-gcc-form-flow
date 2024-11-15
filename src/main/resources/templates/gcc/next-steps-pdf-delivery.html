@@ -15,8 +15,8 @@
                 <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
-                            <div th:with="providerName=${T(org.ilgcc.app.utils.SubmissionUtilities).getProviderName(inputData)}">
-                                <th:block th:utext="#{next-steps-pdf-delivery.notice(${providerName})}"></th:block>
+                            <div th:with="providerName=${T(org.ilgcc.app.utils.SubmissionUtilities).getProviderName(inputData)}, ccrrName=${submission.getInputData().getOrDefault('ccrrName', '')}">
+                                <th:block th:utext="#{next-steps-pdf-delivery.notice(${providerName}, ${ccrrName})}"></th:block>
                             </div>
                         </div>
                         <div class="form-card__footer">
