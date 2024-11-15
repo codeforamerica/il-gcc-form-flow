@@ -24,7 +24,7 @@
                 service: 'il-gcc-front-end',
                 env: '[[${@environment.getProperty("DATADOG_ENVIRONMENT")}]]',
                 sessionSampleRate: 100,
-                sessionReplaySampleRate: '[[${@environment.getProperty("DATADOG_SESSION_REPLAY_SAMPLE_RATE")}]]',
+                sessionReplaySampleRate: [[${@environment.getProperty("DATADOG_SESSION_REPLAY_SAMPLE_RATE")}]],
                 trackUserInteractions: true,
                 trackResources: true,
                 trackLongTasks: true,
