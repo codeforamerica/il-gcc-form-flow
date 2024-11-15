@@ -50,6 +50,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // parent-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
+        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 5");
         testPage.clickContinue();
         // parent-info-basic-1
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
@@ -174,6 +175,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("parent-intro-family-info.continue"));
         //children-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
+        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 5");
         testPage.clickContinue();
         // children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
@@ -269,6 +271,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-parent-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
+        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 3 of 5");
         testPage.clickContinue();
         //activities-parent-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
@@ -588,6 +591,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //unearned-income-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 4 of 5");
         testPage.clickContinue();
 
         //unearned-income-source
@@ -624,6 +628,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-intro.title"));
+        assertThat(testPage.findElementTextById("submit-intro-step")).isEqualTo("Step 5 of 5");
         testPage.clickContinue();
 
         // submit-ccap-terms
