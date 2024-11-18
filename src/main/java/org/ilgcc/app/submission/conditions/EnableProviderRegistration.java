@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class EnableProviderRegistration implements Condition {
 
-//    @Value("featureflagPlaceHolder")
-    private boolean enableProviderRegistration = false;
+    @Value("${il-gcc.allow-provider-registration-flow}")
+    private boolean enableProviderRegistration;
 
     @Override
     public Boolean run(Submission submission) {
-        return enableProviderRegistration;
+        return false && enableProviderRegistration;
     }
 }
