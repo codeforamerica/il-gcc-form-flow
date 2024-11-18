@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}">
-<head th:replace="~{fragments/doc-upload-head :: head(title=#{doc-upload-add-files.title})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{doc-upload-add-files.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -42,6 +42,7 @@
               </div>
               <th:block
                   th:replace="~{fragments/inputs/overrides/fileUploader :: fileUploader(inputName='uploadDocuments')}"></th:block>
+
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
