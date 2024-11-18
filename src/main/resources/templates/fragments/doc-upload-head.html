@@ -1,0 +1,59 @@
+<head th:fragment="head" th:assert="${!#strings.isEmpty(title)}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${errorMessages == null ? title : #messages.msg('errors.general-title')}"></title>
+    <script>
+      (function (h, o, u, n, d) {
+        h = h[d] = h[d] || {
+          q: [], onReady: function (c) {
+            h.q.push(c)
+          }
+        }
+        d = o.createElement(u);
+        d.async = 1;
+        d.src = n
+        n = o.getElementsByTagName(u)[0];
+        n.parentNode.insertBefore(d, n)
+      })(window, document, 'script',
+          'https://www.datadoghq-browser-agent.com/us1/v5/datadog-rum.js', 'DD_RUM')
+      window.DD_RUM.onReady(function () {
+        window.DD_RUM.init({
+          clientToken: '[[${@environment.getProperty("DATADOG_RUM_CLIENT_TOKEN")}]]',
+          applicationId: '[[${@environment.getProperty("DATADOG_RUM_APPLICATION_ID")}]]',
+          site: 'datadoghq.com',
+          service: 'il-gcc-front-end',
+          env: '[[${@environment.getProperty("DATADOG_ENVIRONMENT")}]]',
+          sessionSampleRate: 100,
+          sessionReplaySampleRate: '[[${@environment.getProperty("DATADOG_SESSION_REPLAY_SAMPLE_RATE")}]]',
+          trackUserInteractions: true,
+          trackResources: true,
+          trackLongTasks: true,
+          defaultPrivacyLevel: 'mask-user-input',
+        });
+      })
+    </script>
+    <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
+    <script src="/webjars/form-flow/0.0.1/js/formFlowDropZone.js"></script>
+    <script src="/webjars/form-flow/0.0.1/js/formFlowLanguageSelector.js" defer></script>
+    <script src="/webjars/form-flow/0.0.1/js/formFlowDisableMultipleFormSubmit.js" defer></script>
+    <script src="/webjars/form-flow/0.0.1/js/formFlowFollowUpQuestion.js" defer></script>
+    <th:block th:replace="~{fragments/mixpanelTracking :: mixpanelTracking}"></th:block>
+    <link href="/webjars/form-flow/0.0.1/css/honeycrisp.min.css" rel="stylesheet"/>
+    <link href="/webjars/form-flow/0.0.1/css/libraryStyles.css" rel="stylesheet"/>
+    <link href="/webjars/form-flow/0.0.1/css/customDropzone.css" rel="stylesheet"/>
+    <link href="/assets/css/custom.css" rel="stylesheet"/>
+    <link rel="preload" href="/webjars/form-flow/0.0.1/fonts/MaterialIcons-Regular.eot?ia7soh"
+          as="font"
+          crossorigin="anonymous"/>
+    <link rel="preload" href="/webjars/form-flow/0.0.1/fonts/MaterialIcons-Regular.ttf?ia7soh"
+          as="font"
+          crossorigin="anonymous"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta property="og:title" content="Illinois: Get help paying for child care."/>
+    <meta property="og:description" content="Apply for Child Care Assistance in under 20 minutes."/>
+    <meta property="og:image"
+          content="https://www.getchildcareil.org/assets/images/mother-reading-to-child.svg"/>
+    <meta property="og:logo" content="https://www.getchildcareil.org/assets/images/IDHS-logo.png"/>
+    <meta property="og:url" content="https://www.getchildcareil.org/">
+    <meta property="og:type" content="Website"/>
+</head>

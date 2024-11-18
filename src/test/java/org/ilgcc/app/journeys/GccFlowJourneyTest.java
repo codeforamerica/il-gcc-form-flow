@@ -87,6 +87,15 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         // parent-mailing-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
+        testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
+        // Click it twice so it populates the mailing address fields
+        testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
+        // Check that JS is correct populating fields when selecting same as home address
+        assertThat(testPage.getInputValue("parentMailingStreetAddress1")).isEqualTo("972 Mission St");
+        assertThat(testPage.getInputValue("parentMailingStreetAddress2")).isEqualTo("5th floor");
+        assertThat(testPage.getInputValue("parentMailingCity")).isEqualTo("San Francisco");
+        assertThat(testPage.getSelectValue("parentMailingState")).isEqualTo(getEnMessage("state.ca"));
+        assertThat(testPage.getInputValue("parentMailingZipCode")).isEqualTo("94103");
         testPage.goBack();
         //parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
