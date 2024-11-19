@@ -13,6 +13,6 @@ public class EnableProviderRegistration implements Condition {
 
     @Override
     public Boolean run(Submission submission) {
-        return false && enableProviderRegistration;
+        return enableProviderRegistration;
     }
 }
