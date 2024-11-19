@@ -532,9 +532,17 @@ flow:
       - name: response
         condition: IsConfirmationCodeActive
       - name: submit-start
+  registration-family-response-intro:
+    nextScreens:
+      - name: confirmation-code
+  confirmation-code:
+    nextScreens:
+      - name: response
   response:
     beforeDisplayAction: FindApplicationData
     nextScreens:
+      - name: info
+        condition: EnableProviderRegistration
       - name: submit-complete
         condition: ProviderAgreedToCare
       - name: confirm-deny-care
@@ -547,6 +555,11 @@ flow:
     nextScreens:
       - name: info
   info:
+    nextScreens:
+      - name: service-address
+        condition: EnableProviderRegistration
+      - name: confirm-address
+  service-address:
     nextScreens:
       - name: confirm-address
   confirm-address:
