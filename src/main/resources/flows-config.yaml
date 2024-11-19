@@ -509,7 +509,16 @@ flow:
   submit-start:
     beforeDisplayAction: CheckClientSubmissionForProvider
     nextScreens:
+      - name: paid-by-ccap
+        condition: EnableProviderRegistration
       - name: ccap-registration
+  paid-by-ccap:
+    nextScreens:
+      - name: provider-number
+  provider-number:
+    nextScreens: null
+  registration-start:
+    nextScreens: null
   ccap-registration:
     crossFieldValidationAction: ValidateProviderNumber
     beforeSaveAction: SaveApplicationId

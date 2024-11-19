@@ -1,6 +1,7 @@
 package org.ilgcc.app.pdf;
 
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
+import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -36,6 +37,9 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
+        if (hasNotChosenProvider(submission)) {
+            return prepareNoProviderData();
+        }
         if (expandExistingProviderFlowFlag) {
             return prepareSubmittedDayCareData(submission);
         } else {
@@ -62,36 +66,42 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
             UUID providerId = UUID.fromString(inputData.get("providerResponseSubmissionId").toString());
             Optional<Submission> providerSubmission = submissionRepositoryService.findById(providerId);
             if (providerSubmission.isPresent()) {
-                boolean providerAgreesToCare = providerSubmission.get().getInputData().getOrDefault("providerResponseAgreeToCare", "false").equals("true");
-                if(providerAgreesToCare){
+                boolean providerAgreesToCare = providerSubmission.get().getInputData()
+                        .getOrDefault("providerResponseAgreeToCare", "false").equals("true");
+                if (providerAgreesToCare) {
                     Map<String, Object> providerInputData = providerSubmission.get().getInputData();
                     for (String fieldName : providerFields) {
                         results.put(fieldName,
-                            new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
+                                new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
                     }
 
                     results.putAll(prepareProviderAddressData(providerInputData));
 
                     results.put("providerSignature",
-                        new SingleField("providerSignature", providerSignature(providerInputData), null));
+                            new SingleField("providerSignature", providerSignature(providerInputData), null));
                     try {
-                        Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(providerSubmission.get().getSubmittedAt()));
+                        Optional<LocalDate> providerSignatureDate = Optional.of(
+                                LocalDate.from(providerSubmission.get().getSubmittedAt()));
                         results.put("providerSignatureDate",
-                            new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate), null));
-                    } catch (NullPointerException e){
-                        log.error(String.format("Provider Application: %s, does not have a submittedAt date.", providerSubmission.get().getId().toString()));
+                                new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate),
+                                        null));
+                    } catch (NullPointerException e) {
+                        log.error(String.format("Provider Application: %s, does not have a submittedAt date.",
+                                providerSubmission.get().getId().toString()));
                     }
-                }else{
+                } else {
                     results.put("providerNameCorporate",
-                        new SingleField("providerNameCorporate", inputData.getOrDefault("familyIntendedProviderName", "").toString(),
-                            null));
+                            new SingleField("providerNameCorporate",
+                                    inputData.getOrDefault("familyIntendedProviderName", "").toString(),
+                                    null));
                     results.put("providerPhoneNumber",
-                        new SingleField("providerPhoneNumber",
-                            inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(), null));
+                            new SingleField("providerPhoneNumber",
+                                    inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(), null));
                     results.put("providerEmail",
-                        new SingleField("providerEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
+                            new SingleField("providerEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(),
+                                    null));
                     results.put("providerResponse",
-                        new SingleField("providerResponse", "Provider declined", null));
+                            new SingleField("providerResponse", "Provider declined", null));
                 }
             } else {
                 log.error(String.format("Family Application (%s) does not have corresponding provider application for id: %s",
@@ -133,18 +143,39 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         var results = new HashMap<String, SubmissionField>();
         var useSuggestedParentAddress = inputData.getOrDefault("useSuggestedProviderAddress", "false").equals("true");
 
-        String mailingAddressStreet1 = useSuggestedParentAddress ? "providerResponseServiceStreetAddress1_validated" : "providerResponseServiceStreetAddress1";
+        String mailingAddressStreet1 = useSuggestedParentAddress ? "providerResponseServiceStreetAddress1_validated"
+                : "providerResponseServiceStreetAddress1";
         String mailingAddressStreet2 = useSuggestedParentAddress ? "" : "providerResponseServiceStreetAddress2";
         String mailingCity = useSuggestedParentAddress ? "providerResponseServiceCity_validated" : "providerResponseServiceCity";
-        String mailingState = useSuggestedParentAddress ? "providerResponseServiceState_validated" : "providerResponseServiceState";
-        String mailingZipCode = useSuggestedParentAddress ? "providerResponseServiceZipCode_validated" : "providerResponseServiceZipCode";
+        String mailingState =
+                useSuggestedParentAddress ? "providerResponseServiceState_validated" : "providerResponseServiceState";
+        String mailingZipCode =
+                useSuggestedParentAddress ? "providerResponseServiceZipCode_validated" : "providerResponseServiceZipCode";
 
-        results.put("providerResponseServiceStreetAddress1", new SingleField("providerResponseServiceStreetAddress1", inputData.getOrDefault(mailingAddressStreet1, "").toString(), null));
-        results.put("providerResponseServiceStreetAddress2", new SingleField("providerResponseServiceStreetAddress2", inputData.getOrDefault(mailingAddressStreet2, "").toString(), null));
-        results.put("providerResponseServiceCity", new SingleField("providerResponseServiceCity", inputData.getOrDefault(mailingCity, "").toString(), null));
-        results.put("providerResponseServiceState", new SingleField("providerResponseServiceState", inputData.getOrDefault(mailingState, "").toString(), null));
-        results.put("providerResponseServiceZipCode", new SingleField("providerResponseServiceZipCode", inputData.getOrDefault(mailingZipCode, "").toString(), null));
+        results.put("providerResponseServiceStreetAddress1", new SingleField("providerResponseServiceStreetAddress1",
+                inputData.getOrDefault(mailingAddressStreet1, "").toString(), null));
+        results.put("providerResponseServiceStreetAddress2", new SingleField("providerResponseServiceStreetAddress2",
+                inputData.getOrDefault(mailingAddressStreet2, "").toString(), null));
+        results.put("providerResponseServiceCity",
+                new SingleField("providerResponseServiceCity", inputData.getOrDefault(mailingCity, "").toString(), null));
+        results.put("providerResponseServiceState",
+                new SingleField("providerResponseServiceState", inputData.getOrDefault(mailingState, "").toString(), null));
+        results.put("providerResponseServiceZipCode",
+                new SingleField("providerResponseServiceZipCode", inputData.getOrDefault(mailingZipCode, "").toString(), null));
 
+        return results;
+    }
+    
+    private Map<String, SubmissionField> prepareNoProviderData() {
+        var results = new HashMap<String, SubmissionField>();
+        results.put("providerNameCorporate",
+                new SingleField("providerNameCorporate", "No qualified provider",
+                        null));
+        results.put("dayCareIdNumber",
+                new SingleField("dayCareIdNumber", "460328258720008",
+                        null));
+        results.put("providerResponse",
+                new SingleField("providerResponse", "No provider chosen", null));
         return results;
     }
 
