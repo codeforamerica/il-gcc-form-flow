@@ -681,3 +681,9 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
     margin-bottom: 0px;
   }
 }
+
+#conf-code-help {
+  font-size: 1.6rem;
+  color: #5F5854;
+}
+
