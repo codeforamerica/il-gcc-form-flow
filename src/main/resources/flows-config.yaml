@@ -585,7 +585,35 @@ flow:
       - name: submit-complete-final
   submit-complete-final:
     beforeDisplayAction: RemoveDummySubmissionForDev
-    nextScreens: null
+    nextScreens:
+      - name: registration-getting-started
+        condition: EnableProviderRegistration
+      - name: submit-complete-final
+  registration-getting-started:
+    nextScreens:
+      - name: registration-provider-care-intro
+  registration-provider-care-intro:
+    nextScreens:
+      - name: registration-licensing
+  registration-licensing:
+    nextScreens:
+      - name: registration-licensing-info
+  registration-licensing-info:
+    nextScreens:
+      - name: registration-licensed-care-location
+  registration-licensed-care-location:
+    nextScreens:
+      - name: null
+  registration-applicant:
+    nextScreens:
+      - name: registration-unlicensed-care-location
+  registration-unlicensed-care-location:
+    nextScreens:
+      - name: registration-unlicensed-relationship
+  registration-unlicensed-relationship:
+    nextScreens:
+      - name: null
+
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
