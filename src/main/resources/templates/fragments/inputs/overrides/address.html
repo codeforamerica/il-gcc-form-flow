@@ -23,8 +23,6 @@
     hasAutoCompleteState=${!#strings.isEmpty(autoCompleteState)},
     hasAutoCompleteZipCode=${!#strings.isEmpty(autoCompleteZipCode)},
     validateAddressInputName=${T(formflow.library.inputs.FieldNameMarkers).UNVALIDATED_FIELD_MARKER_VALIDATE_ADDRESS + inputName}">
-    <p th:text="${hasAutoCompleteStreetAddress1}"></p>
-    <p th:text="${autoCompleteStreetAddress1}"></p>
     <th:block th:replace="~{fragments/inputs/text ::
                   text(inputName=${streetAddressInputName},
                   autoComplete=${hasAutoCompleteStreetAddress1 ? autoCompleteStreetAddress1 : null},
