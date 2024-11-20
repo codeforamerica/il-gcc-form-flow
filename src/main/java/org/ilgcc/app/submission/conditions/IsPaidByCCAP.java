@@ -9,7 +9,6 @@ public class IsPaidByCCAP implements Condition {
 
     @Override
     public Boolean run(Submission submission) {
-        return submission != null && submission.getInputData() != null && "true".equals(
-                submission.getInputData().get("providerPaidCcap"));
+        return "true".equals(submission.getInputData().get("providerPaidCcap"));
     }
 }
