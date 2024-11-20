@@ -44,6 +44,8 @@ public class Providerresponse extends FlowInputs {
     @Phone(message = "{errors.invalid-phone-number}")
     private String providerResponseContactPhoneNumber;
 
+    private String providerPaidCcap;
+
     @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
     private String providerResponseContactEmail;
 }
