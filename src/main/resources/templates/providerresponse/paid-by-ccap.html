@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{paid-by-ccap.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,14 +8,20 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: careFinancial}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{paid-by-ccap.header})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+                <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(
+                  inputName='providerPaidCcap',
+                  ariaDescribe='header')}"/>
+
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <a href="/flow/providerresponse/registration-start"
+                 th:id="not-sure-providerPaidCcap-link"
+                 th:text="#{paid-by-ccap.im-not-sure}"></a>
             </div>
           </th:block>
         </th:block>
@@ -26,3 +32,5 @@
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
 </html>
+
+cfa:ye

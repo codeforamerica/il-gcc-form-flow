@@ -527,6 +527,8 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: provider-number
+        condition: IsPaidByCCAP
+      - name: registration-start
   provider-number:
     condition: EnableProviderRegistration
     nextScreens:
