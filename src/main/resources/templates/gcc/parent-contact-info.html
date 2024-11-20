@@ -14,9 +14,9 @@
           <th:block th:ref="formContent">
             <div class="form-card__content">
               <th:block th:with="emailIsRequired=${inputData.getOrDefault('parentContactPreferredCommunicationMethod','').equals('email')}">
-                <th:block th:replace="~{fragments/inputs/text :: text(inputName='parentContactEmail', label=#{parent-contact-info.email-label}, helpText=#{parent-contact-info.email-helpText}, required=${emailIsRequired})}" />
+                <th:block th:replace="~{fragments/inputs/text :: text(inputName='parentContactEmail', label=#{parent-contact-info.email-label}, helpText=#{parent-contact-info.email-helpText}, required=${emailIsRequired}, autoComplete='email')}" />
               </th:block>
-              <th:block th:replace="~{fragments/inputs/overrides/phone :: phone(inputName='parentContactPhoneNumber', label=#{parent-contact-info.phone-label}, placeholder='(999) 999-9999', helpText=#{parent-contact-info.phone-helpText})}"/>
+              <th:block th:replace="~{fragments/inputs/overrides/phone :: phone(inputName='parentContactPhoneNumber', label=#{parent-contact-info.phone-label}, placeholder='(999) 999-9999', helpText=#{parent-contact-info.phone-helpText}, autoComplete='tel')}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
