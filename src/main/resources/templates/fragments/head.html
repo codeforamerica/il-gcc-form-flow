@@ -2,6 +2,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${errorMessages == null ? title : #messages.msg('errors.general-title')}"></title>
+    <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
     <script>
         (function (h, o, u, n, d) {
             h = h[d] = h[d] || {
@@ -32,10 +33,6 @@
             });
         })
     </script>
-    <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
-    <script src="/webjars/form-flow/0.0.1/js/formFlowLanguageSelector.js" defer></script>
-    <script src="/webjars/form-flow/0.0.1/js/formFlowDisableMultipleFormSubmit.js" defer></script>
-    <script src="/webjars/form-flow/0.0.1/js/formFlowFollowUpQuestion.js" defer></script>
     <th:block th:replace="~{fragments/mixpanelTracking :: mixpanelTracking}"></th:block>
     <link href="/webjars/form-flow/0.0.1/css/honeycrisp.min.css" rel="stylesheet"/>
     <link href="/webjars/form-flow/0.0.1/css/libraryStyles.css" rel="stylesheet"/>
