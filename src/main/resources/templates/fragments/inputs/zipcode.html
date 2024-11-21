@@ -4,6 +4,7 @@
       hasHelpText=${!#strings.isEmpty(helpText)},
       hasLabel=${!#strings.isEmpty(label)},
       hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
+      hasAutoComplete=${!#strings.isEmpty(autoComplete)},
       requiredInputsForFlow=${requiredInputs.get(flow)},
       isRequiredInput=${(requiredInputsForFlow != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)},
       hasError=${
@@ -29,6 +30,7 @@
                th:name="${inputName}"
                th:placeholder="${placeholder}"
                th:attr="
+            autocomplete=${hasAutoComplete ? autoComplete : null},
             aria-describedby=${hasHelpText ? inputName + '-help-text' : ''},
             aria-labelledby=${hasAriaLabel ? ariaLabel : ''},
             aria-invalid=${hasError}"

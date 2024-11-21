@@ -17,11 +17,13 @@
               <th:block th:replace="~{fragments/inputs/text ::
                 text(inputName='parentFirstName',
                 label=#{parent-info-basic-1.first-name-question},
-                helpText=#{parent-info-basic-1.legal.help})}"/>
+                helpText=#{parent-info-basic-1.legal.help},
+                autoComplete='given-name')}"/>
               <th:block th:replace="~{fragments/inputs/text ::
                 text(inputName='parentLastName',
                 label=#{parent-info-basic-1.last-name-question},
-                helpText=#{parent-info-basic-1.legal.help})}"/>
+                helpText=#{parent-info-basic-1.legal.help},
+                autoComplete='family-name')}"/>
               <th:block th:replace="~{fragments/inputs/text ::
                 text(inputName='parentPreferredName',
                 label=#{parent-info-basic-1.preferred-name-question},
@@ -33,6 +35,9 @@
               <th:block th:replace="~{fragments/inputs/date ::
                 date(inputName='parentBirth',
                 groupName='parentBirthDate',
+                autoCompleteMonth='bday-month',
+                autoCompleteDay='bday-day',
+                autoCompleteYear='bday-year',
                 required='true',
                 label=#{parent-info-basic-1.dob-question})}"/>
               <th:block
