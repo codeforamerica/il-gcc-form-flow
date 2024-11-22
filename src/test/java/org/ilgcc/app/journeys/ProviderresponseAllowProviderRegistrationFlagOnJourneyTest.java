@@ -46,10 +46,35 @@ public class ProviderresponseAllowProviderRegistrationFlagOnJourneyTest extends 
         assertThat(testPage.elementDoesNotExistById("providerPaidCcap-true")).isFalse();
         assertThat(testPage.elementDoesNotExistById("providerPaidCcap-false")).isFalse();
         assertThat(testPage.elementDoesNotExistById("not-sure-providerPaidCcap-link")).isFalse();
-
     }
 
 
+    @Test
+    void RegisterAsCCAPProvider() {
+        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
+
+        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
+                .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+                .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+
+        testPage.clickContinue();
+
+        driver.navigate()
+                .to("http://localhost:%s/providerresponse/submit/%s?utm_medium=test".formatted(localServerPort, CONF_CODE));
+
+        // submit-start when application is still active
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
+        testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
+
+        // paid-by-ccap
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
+        testPage.clickNo();
+
+        // registration-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start.title"));
+        testPage.clickButton(getEnMessage("registration-start.button"));
+    }
 
 
 }
