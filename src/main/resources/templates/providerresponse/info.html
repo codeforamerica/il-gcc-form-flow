@@ -10,7 +10,7 @@
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block th:replace="~{fragments/gcc-icons :: caring}"></th:block>
                 <th:block
-                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-basic-1.title})}"/>
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-info.header})}"/>
                 <th:block
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::info})}">
                     <th:block th:ref="info">
