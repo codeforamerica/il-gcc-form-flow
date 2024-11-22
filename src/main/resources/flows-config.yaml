@@ -598,8 +598,8 @@ flow:
   registration-getting-started:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: registration-provider-care-intro
-  registration-provider-care-intro:
+      - name: registration-provide-care-intro
+  registration-provide-care-intro:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-licensing
