@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{provider-response-info.title})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{parent-info-basic-1.title})}"></head>
 <body>
 <div class="page-wrapper">
     <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -10,15 +10,11 @@
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block th:replace="~{fragments/gcc-icons :: caring}"></th:block>
                 <th:block
-                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-info.header})}"/>
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-basic-1.title})}"/>
                 <th:block
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::info})}">
                     <th:block th:ref="info">
                         <div class="form-card__content">
-                            <th:block th:replace="~{fragments/inputs/text ::
-                              text(inputName='providerResponseBusinessName',
-                              label=#{provider-response-info.business-name},
-                              helpText=#{provider-response-info.business-name-help})}"/>
                             <th:block th:replace="~{fragments/inputs/text ::
                               text(inputName='providerResponseFirstName',
                               label=#{provider-response-info.first-name},
@@ -27,12 +23,10 @@
                               text(inputName='providerResponseLastName',
                               label=#{provider-response-info.last-name},
                               helpText=#{provider-response-info.last-name-help})}"/>
-                            <th:block th:replace="~{fragments/inputs/overrides/address ::
-                                              address(
-                                                validate=true,
-                                                requireAddressFields=true,
-                                                inputName='providerResponseService'
-                                              )}"/>
+                            <th:block th:replace="~{fragments/inputs/text ::
+                              text(inputName='providerResponseBusinessName',
+                              label=#{provider-response-info.business-name},
+                              helpText=#{provider-response-info.business-name-help})}"/>
                         </div>
                         <div class="form-card__footer">
                             <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
