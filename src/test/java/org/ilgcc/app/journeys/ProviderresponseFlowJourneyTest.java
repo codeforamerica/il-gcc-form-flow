@@ -43,8 +43,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("providerResponseProviderNumber", "123456789012345");
         testPage.clickContinue();
 
-        // application-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
         testPage.clickContinue();
 
@@ -146,7 +146,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // application-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
@@ -247,7 +247,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // application-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.enter("providerResponseFamilyShortCode", "");
         testPage.clickContinue();
 
@@ -293,7 +293,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // application-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
@@ -338,7 +338,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // application-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-application-id.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 

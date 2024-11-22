@@ -542,8 +542,8 @@ flow:
     beforeSaveAction: SaveApplicationId
     onPostAction: GenerateDummyClientSubmissionForDev
     nextScreens:
-      - name: application-id
-  application-id:
+      - name: confirmation-code
+  confirmation-code:
     crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
     afterSaveAction: CheckClientSubmissionForProvider
     nextScreens:
@@ -554,10 +554,6 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: confirmation-code
-  confirmation-code:
-    condition: EnableProviderRegistration
-    nextScreens:
-      - name: response
   response:
     beforeDisplayAction: FindApplicationData
     nextScreens:
