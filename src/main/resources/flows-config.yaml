@@ -573,10 +573,7 @@ flow:
   info:
     nextScreens:
       - name: service-address
-        condition: EnableProviderRegistration
-      - name: confirm-address
   service-address:
-    condition: EnableProviderRegistration
     nextScreens:
       - name: confirm-address
   confirm-address:
@@ -590,7 +587,6 @@ flow:
     nextScreens:
       - name: submit-complete-final
   submit-complete-final:
-    beforeDisplayAction: RemoveDummySubmissionForDev
     nextScreens:
       - name: registration-getting-started
         condition: EnableProviderRegistration
