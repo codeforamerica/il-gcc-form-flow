@@ -84,6 +84,18 @@ public class ProviderresponseAllowProviderRegistrationFlagOnJourneyTest extends 
         testPage.clickContinue();
 
         // registration-licensing
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing.title"));
+        testPage.clickYes();
+
+        // registration-licensing-info
+//        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing-info.title"));
+        testPage.goBack();
+
+        // registration-licensing
+        testPage.clickNo();
+
+        // registration-applicant
+//        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-applicant.title"));
     }
 
 

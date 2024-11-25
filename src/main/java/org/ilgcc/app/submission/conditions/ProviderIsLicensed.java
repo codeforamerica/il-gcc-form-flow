@@ -8,6 +8,6 @@ public class ProviderIsLicensed extends BasicCondition {
 
     @Override
     public Boolean run(Submission submission) {
-        return run(submission, "providerLicensed");
+        return run(submission, "providerLicensed", "true");
     }
 }

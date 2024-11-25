@@ -603,7 +603,7 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-licensing-info
-        condition: providerIsLicensed
+        condition: ProviderIsLicensed
       - name: registration-applicant
   registration-licensing-info:
     condition: EnableProviderRegistration
