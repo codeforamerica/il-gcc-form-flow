@@ -7,6 +7,7 @@ import java.util.Map;
 
 @Component
 public class ParentPartnerQualifies extends BasicCondition {
+
     @Override
     public Boolean run(Submission submission) {
         return run(submission, "parentHasPartner", "true") && run(submission, "parentHasQualifyingPartner", "true");
