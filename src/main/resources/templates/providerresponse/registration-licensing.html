@@ -11,13 +11,13 @@
                 <th:block th:replace="~{fragments/gcc-icons :: licensedProvider}"></th:block>
                 <th:block
                         th:replace="~{fragments/cardHeaderForSingleInputScreen ::
-              cardHeaderForSingleInputScreen(header=#{registration-licensing.header}, subtext=#{registration-licensing.subtext}, inputName=${inputName}, required='true')}"/>
+              cardHeaderForSingleInputScreen(header=#{registration-licensing.header}, subtext=#{registration-licensing.subtext}, required='true')}"/>
                 <th:block
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::providerLicensed})}">
                     <th:block th:ref="providerLicensed">
                         <div class="form-card__content">
                             <button
-                                    th:name="providerLicensed"
+                                    th:name="providerCurrentlyLicensed"
                                     th:id="providerLicensed-true"
                                     th:aria-describedby="header"
                                     type="submit"
@@ -26,7 +26,7 @@
                                 <span th:text="#{registration-licensing.button-yes}"></span>
                             </button>
                             <button
-                                    th:name="providerLicensed"
+                                    th:name="providerCurrentlyLicensed"
                                     th:id="providerLicensed-false"
                                     th:aria-describedby="header"
                                     type="submit"
