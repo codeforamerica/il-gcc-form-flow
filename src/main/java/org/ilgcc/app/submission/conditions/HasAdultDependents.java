@@ -1,14 +1,13 @@
 package org.ilgcc.app.submission.conditions;
 
-import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HasAdultDependents implements Condition {
+public class HasAdultDependents extends BasicCondition {
 
-  @Override
-  public Boolean run(Submission submission) {
-    return submission.getInputData().getOrDefault("hasAdultDependents", "false").equals("true");
-  }
+    @Override
+    public Boolean run(Submission submission) {
+        return run(submission, "hasAdultDependents", "true");
+    }
 }

@@ -57,7 +57,7 @@ public class DocumentTransferRequestService implements DocumentTransferRequest {
             throw new RuntimeException(errorMessage, e);
         }
 
-        try (BufferedReader br = new BufferedReader(
+        try (BufferedReader br = new BufferedReader (
                 new InputStreamReader(httpUrlConnection.getInputStream(), StandardCharsets.UTF_8))) {
             StringBuilder response = new StringBuilder();
             String responseLine = null;

@@ -87,6 +87,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("providerResponseBusinessName", "Business Name");
         testPage.enter("providerResponseFirstName", "First Name");
         testPage.enter("providerResponseLastName", "Last Name");
+        testPage.clickButton("Continue");
+
+        // service-address
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-service-address.title"));
         testPage.enter("providerResponseServiceStreetAddress1", "123 Main St");
         testPage.enter("providerResponseServiceCity", "City");
         testPage.selectFromDropdown("providerResponseServiceState", "IL - Illinois");
@@ -189,6 +193,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("providerResponseBusinessName", "Business Name");
         testPage.enter("providerResponseFirstName", "First Name");
         testPage.enter("providerResponseLastName", "Last Name");
+        testPage.clickButton("Continue");
+        
+        // service-address
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-service-address.title"));
         testPage.enter("providerResponseServiceStreetAddress1", "123 Main St");
         testPage.enter("providerResponseServiceCity", "City");
         testPage.selectFromDropdown("providerResponseServiceState", "IL - Illinois");
