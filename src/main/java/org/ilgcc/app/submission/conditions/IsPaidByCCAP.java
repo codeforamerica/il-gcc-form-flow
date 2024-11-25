@@ -5,10 +5,10 @@ import formflow.library.data.Submission;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IsPaidByCCAP implements Condition {
+public class IsPaidByCCAP extends BasicCondition {
 
     @Override
     public Boolean run(Submission submission) {
-        return "true".equals(submission.getInputData().get("providerPaidCcap"));
+        return run(submission, "providerPaidCcap", "true");
     }
 }

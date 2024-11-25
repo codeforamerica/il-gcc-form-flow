@@ -5,11 +5,11 @@ import formflow.library.data.Submission;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ParentHasPartner implements Condition {
+public class ParentHasPartner extends BasicCondition {
 
-  @Override
-  public Boolean run(Submission submission) {
-    return submission.getInputData().getOrDefault("parentHasPartner", "false").equals("true");
-  }
+    @Override
+    public Boolean run(Submission submission) {
+        return run(submission, "parentHasPartner", "true");
+    }
 
 }
