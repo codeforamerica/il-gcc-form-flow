@@ -180,14 +180,18 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
     }
 
     private String providerLicense(Map<String, Object> providerInputData) {
+        String providerHasStateLicense = (String) providerInputData.getOrDefault("providerCurrentlyLicensed", "false");
         String providerLicenseNumber = (String) providerInputData.getOrDefault("providerLicenseNumber", "");
         String providerLicenseState = (String) providerInputData.getOrDefault("providerLicenseState", "");
-
-        if (providerLicenseState.isEmpty()) {
-            return providerLicenseNumber;
-        } else {
-            return String.format("%s (%s)", providerLicenseNumber, providerLicenseState);
+        if (providerHasStateLicense.equalsIgnoreCase("true")) {
+            if (providerLicenseState.isEmpty()) {
+                return providerLicenseNumber;
+            } else {
+                return String.format("%s (%s)", providerLicenseNumber, providerLicenseState);
+            }
         }
+        return "";
+
     }
 
     private Optional<Submission> providerSubmissionFromId(Submission submission) {
