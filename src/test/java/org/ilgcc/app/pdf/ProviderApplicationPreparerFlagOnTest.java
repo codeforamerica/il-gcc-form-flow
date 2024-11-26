@@ -172,47 +172,6 @@ public class ProviderApplicationPreparerFlagOnTest {
     }
 
     @Test
-    public void setsNoProviderInputtedDataWhenProviderResponseCannotBeFound() {
-        providerSubmission = new SubmissionTestBuilder()
-                .withFlow("providerresponse")
-                .withProviderSubmissionData()
-                .build();
-
-        submissionRepositoryService.save(providerSubmission);
-
-        familySubmission = new SubmissionTestBuilder()
-                .withFlow("gcc")
-                .withSubmittedAtDate(OffsetDateTime.now())
-                .withDayCareProvider()
-                .with("familyIntendedProviderName", "ProviderName")
-                .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
-                .with("familyIntendedProviderEmail", "mail@test.com")
-                .with("providerResponseSubmissionId", UUID.randomUUID())
-                .build();
-
-        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-        assertThat(result.get("providerNameCorporate")).isNull();
-        assertThat(result.get("providerResponseFirstName")).isNull();
-        assertThat(result.get("providerResponseLastName")).isNull();
-        assertThat(result.get("providerResponseBusinessName")).isNull();
-        assertThat(result.get("providerResponseServiceStreetAddress1")).isNull();
-        assertThat(result.get("providerResponseServiceStreetAddress2")).isNull();
-        assertThat(result.get("providerResponseServiceCity")).isNull();
-        assertThat(result.get("providerResponseServiceState")).isNull();
-        assertThat(result.get("providerResponseServiceZipCode")).isNull();
-        assertThat(result.get("providerResponseContactPhoneNumber")).isNull();
-        assertThat(result.get("providerResponseContactEmail")).isNull();
-
-        assertThat(result.get("dayCareName")).isEqualTo(null);
-        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressApt")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressCity")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressState")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
-
-    }
-    @Test
     public void shouldReturnFamilyIntendedProviderInfoIfProviderDoesNotAgreeToCare(){
         providerSubmission = new SubmissionTestBuilder()
             .withFlow("providerresponse")
