@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up ChromeDriver
-        uses: nanasess/setup-chromedriver@v2.2.2
+        uses: nanasess/setup-chromedriver@v2.3.0
       - name: Set up JDK
         uses: actions/setup-java@v4.5.0
         with:
@@ -67,7 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up ChromeDriver
-        uses: nanasess/setup-chromedriver@v2.2.2
+        uses: nanasess/setup-chromedriver@v2.3.0
       - name: Set up JDK
         uses: actions/setup-java@v4.5.0
         with:
