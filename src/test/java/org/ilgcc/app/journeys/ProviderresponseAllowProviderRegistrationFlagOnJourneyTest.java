@@ -88,14 +88,39 @@ public class ProviderresponseAllowProviderRegistrationFlagOnJourneyTest extends 
         testPage.clickYes();
 
         // registration-licensing-info
-//        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing-info.title"));
-        testPage.goBack();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing-info.title"));
+        testPage.enterInputById("providerLicenseNumber", "1231412");
+        testPage.clickContinue();
+
+        // registration-licensed-care-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensed-care-location.title"));
+        testPage.clickElementById("providerLicensedCareLocation-childCareHome-label");
+        testPage.clickContinue();
+
+        // registration-basic-info-intro
+        // placeholder for registration basic intro logic
 
         // registration-licensing
+        testPage.navigateToFlowScreen("providerresponse/registration-licensing");
         testPage.clickNo();
 
         // registration-applicant
-//        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-applicant.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-applicant.title"));
+        testPage.selectRadio("providerLicenseExemptType", "Self");
+        testPage.clickContinue();
+        
+        // registration-unlicensed-care-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-unlicensed-care-location.title"));
+        testPage.selectRadio("providerLicenseExemptCareLocation", "Providers home");
+        testPage.clickContinue();
+        
+        // registration-unlicensed-relationship
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-unlicensed-relationship.title"));
+        testPage.selectRadio("providerLicenseExemptRelationship", "Relative");
+        testPage.clickContinue();
+        
+        // registration-basic-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-basic-info-intro.title"));
     }
 
 

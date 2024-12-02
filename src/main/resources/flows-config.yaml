@@ -607,11 +607,13 @@ flow:
   registration-licensed-care-location:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: null
+      - name: registration-basic-info-intro
   registration-applicant:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-unlicensed-care-location
+        condition: ProviderIsRegisteringForSelf
+      - name: registration-basic-info-intro
   registration-unlicensed-care-location:
     condition: EnableProviderRegistration
     nextScreens:
@@ -619,8 +621,11 @@ flow:
   registration-unlicensed-relationship:
     condition: EnableProviderRegistration
     nextScreens:
+      - name: registration-basic-info-intro
+  registration-basic-info-intro:
+    condition: EnableProviderRegistration
+    nextScreens:
       - name: null
-
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
