@@ -156,6 +156,7 @@ inputFields:
   providerResponseServiceZipCode: PROVIDER_ADDRESS_SERVICE_ZIP
   providerResponseContactPhoneNumber: PROVIDER_PHONE_NUMBER
   providerResponseContactEmail: PROVIDER_EMAIL
+  providerLicenseNumber: PROVIDER_LICENSE_NUMBER
   providerSignature: PROVIDER_SIGNATURE
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
 

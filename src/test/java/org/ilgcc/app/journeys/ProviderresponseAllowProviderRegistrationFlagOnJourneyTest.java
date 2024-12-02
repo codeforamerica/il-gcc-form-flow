@@ -88,10 +88,20 @@ public class ProviderresponseAllowProviderRegistrationFlagOnJourneyTest extends 
         testPage.clickYes();
 
         // registration-licensing-info
-//        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing-info.title"));
-        testPage.goBack();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing-info.title"));
+        testPage.enterInputById("providerLicenseNumber", "1231412");
+        testPage.clickContinue();
+
+        // registration-licensed-care-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensed-care-location.title"));
+        testPage.clickElementById("providerLicensedCareLocation-childCareHome-label");
+        testPage.clickContinue();
+
+        // registration-basic-info-intro
+        // placeholder for registration basic intro logic
 
         // registration-licensing
+        testPage.navigateToFlowScreen("providerresponse/registration-licensing");
         testPage.clickNo();
 
         // registration-applicant

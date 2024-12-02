@@ -63,9 +63,10 @@ public class ProviderApplicationPreparerFlagOffTest {
     }
 
     @Test
-    public void setsDayCareDataWhenFlagIsOffEvenIfProviderResponseIsRecorded() {
+    public void mapsDayCareDataIfProviderDoesNotAgreeToCare() {
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
+                .with("providerResponseAgreeToCare", "false")
                 .withProviderSubmissionData()
                 .build();
 
@@ -103,5 +104,57 @@ public class ProviderApplicationPreparerFlagOffTest {
         assertThat(result.get("dayCareAddressCity")).isEqualTo(new SingleField("dayCareAddressCity", provider.getCity(), null));
         assertThat(result.get("dayCareAddressState")).isEqualTo(new SingleField("dayCareAddressState", provider.getState(), null));
         assertThat(result.get("dayCareAddressZip")).isEqualTo(new SingleField("dayCareAddressZip", provider.getZipcode(), null));
+    }
+
+    @Test
+    public void mapsProviderResponseIfProviderAgreesToCare() {
+        providerSubmission = new SubmissionTestBuilder()
+                .withFlow("providerresponse")
+                .withProviderSubmissionData()
+                .withProviderStateLicense()
+                .with("providerResponseAgreeToCare", "true")
+                .build();
+
+        submissionRepositoryService.save(providerSubmission);
+
+        familySubmission = new SubmissionTestBuilder()
+                .withFlow("gcc")
+                .withDayCareProvider()
+                .withSubmittedAtDate(OffsetDateTime.now())
+                .with("familyIntendedProviderName", "ProviderName")
+                .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
+                .with("familyIntendedProviderEmail", "mail@test.com")
+                .with("providerResponseSubmissionId", providerSubmission.getId())
+
+                .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+        assertThat(result.get("providerResponseFirstName")).isEqualTo(
+                new SingleField("providerResponseFirstName", "Provider", null));
+        assertThat(result.get("providerResponseLastName")).isEqualTo(
+                new SingleField("providerResponseLastName", "LastName", null));
+        assertThat(result.get("providerResponseBusinessName")).isEqualTo(
+                new SingleField("providerResponseBusinessName", "DayCare Place", null));
+        assertThat(result.get("providerResponseServiceStreetAddress1")).isEqualTo(
+                new SingleField("providerResponseServiceStreetAddress1", "123 Main St", null));
+        assertThat(result.get("providerResponseServiceStreetAddress2")).isEqualTo(
+                new SingleField("providerResponseServiceStreetAddress2", "Unit 10", null));
+        assertThat(result.get("providerResponseServiceCity")).isEqualTo(
+                new SingleField("providerResponseServiceCity", "DeKalb", null));
+        assertThat(result.get("providerResponseServiceState")).isEqualTo(
+                new SingleField("providerResponseServiceState", "IL", null));
+        assertThat(result.get("providerResponseServiceZipCode")).isEqualTo(
+                new SingleField("providerResponseServiceZipCode", "60112", null));
+        assertThat(result.get("providerResponseContactPhoneNumber")).isEqualTo(
+                new SingleField("providerResponseContactPhoneNumber", "(111) 222-3333", null));
+        assertThat(result.get("providerResponseContactEmail")).isEqualTo(
+                new SingleField("providerResponseContactEmail", "mail@daycareplace.org", null));
+        assertThat(result.get("providerLicenseNumber")).isEqualTo(
+                new SingleField("providerLicenseNumber", "123453646 (IL)", null));
+
+        assertThat(result.get("dayCareName")).isEqualTo(null);
+        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 }
