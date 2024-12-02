@@ -34,10 +34,19 @@ public class ValidateProviderNumber implements Action {
         Map<String, List<String>> errorMessages = new HashMap<>();
         String inputValue = (String) formSubmission.getFormData().get(PROVIDER_NUMBER);
 
-        if (validateProviderId && !providerRepositoryService.isProviderIdValid(inputValue)) {
+        if (validateProviderId) {
             Locale locale = LocaleContextHolder.getLocale();
-            errorMessages.put(PROVIDER_NUMBER,
-                    List.of(messageSource.getMessage("provider-response-ccap-registration.error.invalid-number", null, locale)));
+
+            if (inputValue == null || inputValue.isBlank()) {
+                errorMessages.put(PROVIDER_NUMBER,
+                        List.of(messageSource.getMessage("errors.provide-provider-number", null, locale)));
+            } else if (inputValue.length() < 8 || inputValue.length() > 15) {
+                errorMessages.put(PROVIDER_NUMBER,
+                        List.of(messageSource.getMessage("errors.provide-provider-number-length", null, locale)));
+            }else if (!providerRepositoryService.isProviderIdValid(inputValue)) {
+                errorMessages.put(PROVIDER_NUMBER,
+                        List.of(messageSource.getMessage("provider-response-ccap-registration.error.invalid-number", null, locale)));
+            }
         }
 
         return errorMessages;
