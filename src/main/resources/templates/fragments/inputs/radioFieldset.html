@@ -16,11 +16,11 @@
       ${!#strings.isEmpty(inputName)},
       ${hasLabel || hasAriaLabel},
       ${hasContent || hasOptions}">
-    <div th:class="'form-group' + ${(hasError ? ' form-group--error' : '')}">
+    <div th:class="'form-group spacing-below-35' + ${(hasError ? ' form-group--error' : '')}">
         <fieldset th:attr="
       aria-describedby=${hasHelpText ? inputName + '-help-text' : ''},
       aria-labelledby=${hasAriaLabel ? ariaLabel : ''}">
-            <legend class="form-question"
+            <legend th:if="${hasLabel}" class="form-question"
                     th:id="${inputName + '-legend'}"
                     th:inline="text">
                 <span th:text="${label}"></span>

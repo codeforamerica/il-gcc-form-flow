@@ -1,3 +1,4 @@
+<div id="registration-applicant"></div>
 <th:block
   th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
@@ -21,7 +22,7 @@
                             th:replace="~{fragments/inputs/radio :: radio(inputName='providerLicenseExemptType',value='License-exempt', label=#{registration-applicant.option2})}"/>
                   </th:block>
                 </th:block>
-    <div class="notice notice--gray">
+    <div class="notice notice--gray spacing-above-35">
       <p th:text="#{registration-applicant.notice}"></p>
     </div>
   </th:block>
