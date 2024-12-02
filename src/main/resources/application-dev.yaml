@@ -25,6 +25,6 @@ org:
     jobs:
       retry-back-off-time-seed: 1
 il-gcc:
-  validate-provider-id: false
+  validate-provider-id: ${VALIDATE_PROVIDER_ID_FLAG:false}
   dts:
     processing-org: '4c-ccap-apps-testing'

@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {
-        "WAIT_FOR_PROVIDER_RESPONSE_FLAG=true"
+        "WAIT_FOR_PROVIDER_RESPONSE_FLAG=true",
+        "SHOW_NO_PROVIDER_FLOW=false"
 })
 public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
@@ -685,7 +686,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.button.skip"));
+        testPage.clickButton(getEnMessage("submit-complete.button.do-this-later"));
 
         // contact-provider-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
@@ -693,7 +694,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         // submit-complete
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -745,7 +746,8 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
 
     }
 }

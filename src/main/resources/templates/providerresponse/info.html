@@ -16,10 +16,6 @@
                     <th:block th:ref="info">
                         <div class="form-card__content">
                             <th:block th:replace="~{fragments/inputs/text ::
-                              text(inputName='providerResponseBusinessName',
-                              label=#{provider-response-info.business-name},
-                              helpText=#{provider-response-info.business-name-help})}"/>
-                            <th:block th:replace="~{fragments/inputs/text ::
                               text(inputName='providerResponseFirstName',
                               label=#{provider-response-info.first-name},
                               helpText=#{provider-response-info.first-name-help})}"/>
@@ -27,12 +23,10 @@
                               text(inputName='providerResponseLastName',
                               label=#{provider-response-info.last-name},
                               helpText=#{provider-response-info.last-name-help})}"/>
-                            <th:block th:replace="~{fragments/inputs/overrides/address ::
-                                              address(
-                                                validate=true,
-                                                requireAddressFields=true,
-                                                inputName='providerResponseService'
-                                              )}"/>
+                            <th:block th:replace="~{fragments/inputs/text ::
+                              text(inputName='providerResponseBusinessName',
+                              label=#{provider-response-info.business-name},
+                              helpText=#{provider-response-info.business-name-help})}"/>
                         </div>
                         <div class="form-card__footer">
                             <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(

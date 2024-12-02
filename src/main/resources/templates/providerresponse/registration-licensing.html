@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{registration-licensing.title})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: licensedProvider}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeaderForSingleInputScreen ::
+              cardHeaderForSingleInputScreen(header=#{registration-licensing.header}, subtext=#{registration-licensing.subtext}, required='true')}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::providerLicensed})}">
+                    <th:block th:ref="providerLicensed">
+                        <div class="form-card__content">
+                            <button
+                                    th:name="providerCurrentlyLicensed"
+                                    th:id="providerLicensed-true"
+                                    th:aria-describedby="header"
+                                    type="submit"
+                                    value="true"
+                                    class="button button--primary">
+                                <span th:text="#{registration-licensing.button-yes}"></span>
+                            </button>
+                            <button
+                                    th:name="providerCurrentlyLicensed"
+                                    th:id="providerLicensed-false"
+                                    th:aria-describedby="header"
+                                    type="submit"
+                                    value="false"
+                                    class="button">
+                                <span th:text="#{registration-licensing.button-no}"></span>
+                            </button>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

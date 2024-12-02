@@ -3,29 +3,28 @@
 <head th:replace="~{fragments/head :: head(title=#{offboarding-no-provider.title})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab slab--grey">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: caring}"></th:block>
-        <th:block
-            th:replace="~{fragments/cardHeader :: cardHeader(
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab slab--grey">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: caring}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(
             header=#{offboarding-no-provider.header},
             subtext=#{offboarding-no-provider.subtext})}"/>
-        <div class="form-card__content">
-
+                <div class="form-card__content">
+                </div>
+                <div class="form-card__footer">
+                    <a
+                            href="/"
+                            id="offboard-no-provider-home-link"
+                            th:text="#{pilot-offboard.link}"
+                            class="button--primary button"></a>
+                </div>
+            </main>
         </div>
-        <div class="form-card__footer">
-          <a
-              href="/"
-              id="offboard-no-provider-home-link"
-              th:text="#{pilot-offboard.link}"
-              class="button--primary button"></a>
-        </div>
-      </main>
-    </div>
-  </section>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>

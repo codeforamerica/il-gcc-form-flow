@@ -25,5 +25,6 @@ management:
         include: '*'
 il-gcc:
   show-no-provider-flow: ${SHOW_NO_PROVIDER_FLOW:true}
+  allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
   dts:
     processing-org: '4c-ccap-apps-testing'

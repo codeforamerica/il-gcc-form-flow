@@ -56,9 +56,9 @@ public class UploadProviderSubmissionToS3 implements Action {
     public void run(Submission providerSubmission) {
         if (waitForProviderResponseFlag) {
             var clientId = ProviderSubmissionUtilities.getClientId(providerSubmission);
-            if(clientId !=null && clientId.isPresent()){
+            if (clientId != null && clientId.isPresent()) {
                 Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(clientId.get());
-                if(familySubmissionOptional.isPresent()){
+                if (familySubmissionOptional.isPresent()) {
                     log.info("Provider submitted response for client ID {}, enqueuing transfer of documents.", clientId.get());
                     Submission familySubmission = familySubmissionOptional.get();
                     familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
@@ -67,10 +67,10 @@ public class UploadProviderSubmissionToS3 implements Action {
                         familySubmission, FileNameUtility.getFileNameForPdf(familySubmission, "Provider-Responded"));
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                         uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
-                }else{
+                } else {
                     log.error(String.format("We can not find a match for your family submission: %s", clientId.get()));
                 }
-            }else{
+            } else {
                 log.error(String.format("Family Submission Id is Blank for the provider submission: %s.", providerSubmission.getId().toString()));
             }
 

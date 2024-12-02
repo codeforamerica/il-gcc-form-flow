@@ -677,7 +677,17 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
     margin-top: 0px;
   }
 
-  .list--bulleted li{
+  .list--bulleted li {
     margin-bottom: 0px;
   }
+}
+
+#confirmation-code-help-text {
+  font-size: 1.6rem;
+  color: #5F5854;
+}
+
+/* THIS NEEDS TO BE HERE, IF IT'S REMOVED IT WILL BREAK JAVASCRIPT FOR SAME AS HOME ADDRESS FUNCTIONALITY */
+.hidden {
+  display: none !important;
 }

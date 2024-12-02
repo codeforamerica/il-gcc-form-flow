@@ -17,9 +17,11 @@ public class Gcc extends FlowInputs {
 
     MultipartFile uploadDocuments;
     private String lang;
+    
+    // onboarding-chosen-provider
+    private String hasChosenProvider;
 
     // onboarding-choose-provider
-
     @NotBlank(message = "{errors.choose-provider}")
     private String dayCareChoice;
     private String languageRead;
@@ -29,6 +31,8 @@ public class Gcc extends FlowInputs {
     private String applicationCounty;
 
     private String applicationZipCode;
+    
+    private String ccrrName;
     
     // onboarding-provider-info
     @NotBlank(message = "{errors.provide-provider-name}")

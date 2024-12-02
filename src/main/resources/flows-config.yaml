@@ -12,12 +12,19 @@ flow:
       - name: onboarding-confirm-provider
   onboarding-chosen-provider:
     nextScreens:
+      - name: onboarding-no-provider-intro
+        condition: NoProviderChosenAndShowNoProviderFlow
+      - name: offboarding-no-provider
+        condition: NoProviderChosenAndShowProviderFlagIsOff
       - name: onboarding-provider-info
   onboarding-provider-info:
     nextScreens:
       - name: onboarding-provider-info-review
         condition: ExpandExistingProviderFlowFlag
       - name: contact-provider-message
+  onboarding-no-provider-intro:
+    nextScreens:
+      - name: parent-info-intro
   pilot-offboard:
     nextScreens: null
   offboarding-no-provider:
@@ -32,6 +39,7 @@ flow:
     nextScreens:
       - name: onboarding-language-pref
   onboarding-county:
+    onPostAction: SetCCRRName
     nextScreens:
       - name: onboarding-chosen-provider
   onboarding-zipcode:
@@ -399,16 +407,10 @@ flow:
       - name: submit-complete
   submit-complete:
     nextScreens:
-      - name: submit-next-steps
-  submit-next-steps:
-    nextScreens:
-      - name: submit-confirmation
-  submit-confirmation:
-    beforeDisplayAction: FormatSubmittedAtDate
-    nextScreens:
-      - name: submit-confirmation
+      - name: doc-upload-recommended-docs
+        condition: HasRecommendedDocumentsToUpload
+      - name: doc-upload-add-files
   doc-upload-recommended-docs:
-    condition: HasRecommendedDocumentsToUpload
     nextScreens:
       - name: doc-upload-add-files
   doc-upload-add-files:
@@ -417,6 +419,8 @@ flow:
   doc-upload-submit-confirmation:
     afterSaveAction: SendUploadedFileToDocumentTransferService
     nextScreens:
+      - name: no-provider-intro
+        condition: NoProviderChosenAndShowNoProviderFlow
       - name: contact-provider-intro
         condition: ExpandExistingProviderFlowFlag
       - name: submit-next-steps
@@ -432,9 +436,22 @@ flow:
   submit-provider-agreement-handoff:
     nextScreens:
       - name: next-steps-pdf-delivery
+  submit-next-steps:
+    nextScreens:
+      - name: complete-submit-confirmation
+  submit-confirmation:
+    beforeDisplayAction: FormatSubmittedAtDate
+    nextScreens:
+      - name: submit-confirmation
   next-steps-pdf-delivery:
     nextScreens:
       - name: complete-submit-confirmation
+  no-provider-intro:
+    nextScreens:
+      - name: no-provider-notice
+  no-provider-notice:
+    nextScreens:
+      - name: submit-next-steps
   contact-provider-message:
     nextScreens:
       - name: submit-next-steps
@@ -495,30 +512,52 @@ landmarks:
     - confirm-delivery
     - submit-provider-agreement-handoff
     - next-steps-pdf-delivery
+    - no-provider-intro
+    - no-provider-notice
 ---
 name: providerresponse
 flow:
   submit-start:
     beforeDisplayAction: CheckClientSubmissionForProvider
     nextScreens:
+      - name: paid-by-ccap
+        condition: EnableProviderRegistration
       - name: ccap-registration
+  paid-by-ccap:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: provider-number
+        condition: IsPaidByCCAP
+      - name: registration-start
+  provider-number:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: confirmation-code
+  registration-start:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-getting-started
   ccap-registration:
     crossFieldValidationAction: ValidateProviderNumber
     beforeSaveAction: SaveApplicationId
     onPostAction: GenerateDummyClientSubmissionForDev
     nextScreens:
-      - name: application-id
-  application-id:
+      - name: confirmation-code
+  confirmation-code:
     crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
     afterSaveAction: CheckClientSubmissionForProvider
     nextScreens:
       - name: response
         condition: IsConfirmationCodeActive
       - name: submit-start
+  registration-family-response-intro:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: confirmation-code
   response:
     beforeDisplayAction: FindApplicationData
     nextScreens:
-      - name: submit-complete
+      - name: info
         condition: ProviderAgreedToCare
       - name: confirm-deny-care
   confirm-deny-care:
@@ -526,10 +565,10 @@ flow:
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
       - name: submit-complete-final
-  submit-complete:
-    nextScreens:
-      - name: info
   info:
+    nextScreens:
+      - name: service-address
+  service-address:
     nextScreens:
       - name: confirm-address
   confirm-address:
@@ -543,8 +582,45 @@ flow:
     nextScreens:
       - name: submit-complete-final
   submit-complete-final:
-    beforeDisplayAction: RemoveDummySubmissionForDev
-    nextScreens: null
+    nextScreens:
+      - name: registration-getting-started
+        condition: EnableProviderRegistration
+      - name: submit-complete-final
+  registration-getting-started:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-provide-care-intro
+  registration-provide-care-intro:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-licensing
+  registration-licensing:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-licensing-info
+        condition: ProviderIsLicensed
+      - name: registration-applicant
+  registration-licensing-info:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-licensed-care-location
+  registration-licensed-care-location:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: null
+  registration-applicant:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-unlicensed-care-location
+  registration-unlicensed-care-location:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-unlicensed-relationship
+  registration-unlicensed-relationship:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: null
+
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:

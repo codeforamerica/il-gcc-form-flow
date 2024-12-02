@@ -28,7 +28,7 @@ public class GenerateDummyClientSubmissionForDev implements Action {
     
     @Autowired
     Environment env;
-    
+
     public GenerateDummyClientSubmissionForDev(SubmissionRepositoryService submissionRepositoryService,
             SubmissionRepository submissionRepository, HttpSession httpSession) {
         this.submissionRepositoryService = submissionRepositoryService;
@@ -44,7 +44,7 @@ public class GenerateDummyClientSubmissionForDev implements Action {
             Optional<Submission> existingDummyClientSubmision = submissionRepositoryService.findByShortCode("DEV-123ABC");
             existingDummyClientSubmision.ifPresent(submissionRepository::delete);
 
-            Map<String, Object> inputData = createFamilySubmission();
+            Map<String, Object> inputData = createFamilySubmission(submission);
 
             Submission dummyClientSubmission = new Submission();
             dummyClientSubmission.setSubmittedAt(OffsetDateTime.now().minusDays(1));
@@ -58,7 +58,7 @@ public class GenerateDummyClientSubmissionForDev implements Action {
         }
     }
 
-    private @NotNull Map<String, Object> createFamilySubmission() {
+    private @NotNull Map<String, Object> createFamilySubmission(Submission providerSubmission) {
         Map<String, Object> inputData = new HashMap<>();
         inputData.put("familyIntendedProviderName", "Dev Provider");
         inputData.put("parentFirstName", "Devy");
@@ -72,6 +72,7 @@ public class GenerateDummyClientSubmissionForDev implements Action {
         inputData.put("parentHomeState", "CA - California");
         inputData.put("parentHomeZipCode", "94103");
         inputData.put("parentHasPartner", "false");
+        inputData.put("providerResponseSubmissionId", providerSubmission.getId().toString());
         
         List<Map<String, Object>> children = new ArrayList<>();
         Map<String, Object> child1 = new HashMap<>();

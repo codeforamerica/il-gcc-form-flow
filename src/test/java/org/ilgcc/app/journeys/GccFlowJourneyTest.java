@@ -50,6 +50,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // parent-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
+        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 5");
         testPage.clickContinue();
         // parent-info-basic-1
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
@@ -86,6 +87,15 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         // parent-mailing-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
+        testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
+        // Click it twice so it populates the mailing address fields
+        testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
+        // Check that JS is correct populating fields when selecting same as home address
+        assertThat(testPage.getInputValue("parentMailingStreetAddress1")).isEqualTo("972 Mission St");
+        assertThat(testPage.getInputValue("parentMailingStreetAddress2")).isEqualTo("5th floor");
+        assertThat(testPage.getInputValue("parentMailingCity")).isEqualTo("San Francisco");
+        assertThat(testPage.getSelectValue("parentMailingState")).isEqualTo(getEnMessage("state.ca"));
+        assertThat(testPage.getInputValue("parentMailingZipCode")).isEqualTo("94103");
         testPage.goBack();
         //parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
@@ -174,6 +184,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("parent-intro-family-info.continue"));
         //children-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
+        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 5");
         testPage.clickContinue();
         // children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
@@ -269,6 +280,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-parent-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
+        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 3 of 5");
         testPage.clickContinue();
         //activities-parent-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
@@ -588,6 +600,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //unearned-income-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 4 of 5");
         testPage.clickContinue();
 
         //unearned-income-source
@@ -624,6 +637,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-intro.title"));
+        assertThat(testPage.findElementTextById("submit-intro-step")).isEqualTo("Step 5 of 5");
         testPage.clickContinue();
 
         // submit-ccap-terms
@@ -639,7 +653,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
         // doc-upload-recommended docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -665,13 +679,13 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
         testPage.clickContinue();
 
-        // submit-confirmation
+        // complete-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(
-                getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
+                getEnMessage("complete-submit-confirmation.title"));
         testPage.clickElementById("surveyDifficulty-very-easy");
         testPage.clickButton(getEnMessage("submit-confirmation.button.feedback"));
         assertThat(testPage.getTitle()).isEqualTo(
-                getEnMessageWithParams("submit-confirmation.title", new Object[]{"Open Sesame"}));
+                getEnMessage("complete-submit-confirmation.title"));
         assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo(
                 getEnMessage("submit-confirmation.survey.complete"));
 

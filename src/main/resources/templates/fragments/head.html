@@ -2,6 +2,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${errorMessages == null ? title : #messages.msg('errors.general-title')}"></title>
+    <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
     <script>
         (function (h, o, u, n, d) {
             h = h[d] = h[d] || {
@@ -24,7 +25,7 @@
                 service: 'il-gcc-front-end',
                 env: '[[${@environment.getProperty("DATADOG_ENVIRONMENT")}]]',
                 sessionSampleRate: 100,
-                sessionReplaySampleRate: 0,
+                sessionReplaySampleRate: [[${@environment.getProperty("DATADOG_SESSION_REPLAY_SAMPLE_RATE")}]],
                 trackUserInteractions: true,
                 trackResources: true,
                 trackLongTasks: true,
@@ -32,15 +33,9 @@
             });
         })
     </script>
-    <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
-    <script src="/webjars/form-flow/0.0.1/js/formFlowDropZone.js"></script>
-    <script src="/webjars/form-flow/0.0.1/js/formFlowLanguageSelector.js" defer></script>
-    <script src="/webjars/form-flow/0.0.1/js/formFlowDisableMultipleFormSubmit.js" defer></script>
-    <script src="/webjars/form-flow/0.0.1/js/formFlowFollowUpQuestion.js" defer></script>
     <th:block th:replace="~{fragments/mixpanelTracking :: mixpanelTracking}"></th:block>
     <link href="/webjars/form-flow/0.0.1/css/honeycrisp.min.css" rel="stylesheet"/>
     <link href="/webjars/form-flow/0.0.1/css/libraryStyles.css" rel="stylesheet"/>
-    <link href="/webjars/form-flow/0.0.1/css/customDropzone.css" rel="stylesheet"/>
     <link href="/assets/css/custom.css" rel="stylesheet"/>
     <link rel="preload" href="/webjars/form-flow/0.0.1/fonts/MaterialIcons-Regular.eot?ia7soh"
           as="font"

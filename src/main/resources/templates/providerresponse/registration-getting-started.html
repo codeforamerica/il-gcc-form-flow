@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{registration-getting-started.title})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab slab--grey">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: prepareToApply}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-getting-started.header}, subtext=#{registration-getting-started.subtext})}"/>
+                <div class="form-card__content">
+                    <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(
+            buttonLabel=#{registration-getting-started.accordion.first.label},
+            content=~{::first})}">
+                        <th:block th:ref="first">
+                            <p th:text="#{registration-getting-started.accordion.first.paragraph-1}"></p>
+                            <ul class="list--bulleted">
+                                <li th:text="#{registration-getting-started.accordion.first.list-1}"></li>
+                                <li th:text="#{registration-getting-started.accordion.first.list-2}"></li>
+                                <li th:text="#{registration-getting-started.accordion.first.list-3}"></li>
+                                <li th:text="#{registration-getting-started.accordion.first.list-4}"></li>
+                            </ul>
+                            <p th:text="#{registration-getting-started.accordion.first.paragraph-2}"></p>
+                        </th:block>
+                    </th:block>
+                    <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(
+            buttonLabel=#{registration-getting-started.accordion.second.label},
+            content=~{::second})}">
+                        <th:block th:ref="second">
+                            <p th:text="#{registration-getting-started.accordion.second.paragraph-1}"></p>
+                            <p th:text="#{registration-getting-started.accordion.second.paragraph-2}"></p>
+                            <p th:text="#{registration-getting-started.accordion.second.paragraph-3}"></p>
+                            <ul class="list--bulleted">
+                                <li th:text="#{registration-getting-started.accordion.second.list-1}"></li>
+                                <li th:text="#{registration-getting-started.accordion.second.list-2}"></li>
+                                <li th:text="#{registration-getting-started.accordion.second.list-3}"></li>
+                            </ul>
+                        </th:block>
+                    </th:block>
+                </div>
+                <div class="form-card__footer">
+                    <th:block th:replace="~{fragments/continueButton :: continue}"/>
+                </div>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

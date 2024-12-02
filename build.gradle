@@ -18,7 +18,7 @@ plugins {
     id 'jacoco'
     id "org.flywaydb.flyway" version "[9.+,10.0["
     id 'io.miret.etienne.sass' version '1.5.1'
-    id "io.sentry.jvm.gradle" version "4.13.0"
+    id "io.sentry.jvm.gradle" version "4.14.1"
 }
 
 jacoco {
@@ -48,16 +48,16 @@ repositories {
 }
 
 def profile = props.getProperty('SPRING_PROFILES_ACTIVE')
-def formFlowLibraryVersion = '1.4.4'
+def formFlowLibraryVersion = '1.4.5'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.5'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.4.0'
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
-    implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.3.1'
+    implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.3.2'
     implementation 'org.apache.commons:commons-text:1.12.0'
-    implementation 'software.amazon.awssdk:s3:2.29.8'
+    implementation 'software.amazon.awssdk:s3:2.29.23'
 
     if (useLocalLibrary == 'true') {
         implementation fileTree(dir: "$rootDir/../form-flow/build/libs", include: '*.jar')
@@ -67,24 +67,24 @@ dependencies {
         println "📚Using form flow library ${formFlowLibraryVersion}"
     }
 
-    compileOnly 'org.projectlombok:lombok:1.18.34'
+    compileOnly 'org.projectlombok:lombok:1.18.36'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.3.5'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.4.0'
 
-    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.5'
-    testImplementation 'org.springframework.security:spring-security-test:6.3.4'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.4.0'
+    testImplementation 'org.springframework.security:spring-security-test:6.4.1'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.27.0'
     testImplementation 'io.percy:percy-java-selenium:2.1.0'
-    testImplementation 'org.jsoup:jsoup:1.18.1'
+    testImplementation 'org.jsoup:jsoup:1.18.3'
     testImplementation 'org.awaitility:awaitility:4.2.2'
     testImplementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
     testImplementation 'com.h2database:h2:2.3.232'
-    testImplementation 'com.deque.html.axe-core:selenium:4.10.0'
-    testImplementation 'org.projectlombok:lombok:1.18.34'
-    testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:3.5.0'
+    testImplementation 'com.deque.html.axe-core:selenium:4.10.1'
+    testImplementation 'org.projectlombok:lombok:1.18.36'
+    testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:4.1.0'
 
     testAnnotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'

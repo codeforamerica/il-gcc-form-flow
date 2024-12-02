@@ -217,7 +217,7 @@ public class Page {
   }
 
   public String getInputValue(String inputName) {
-    return driver.findElement(By.cssSelector(String.format("input[name='%s[]']", inputName)))
+    return driver.findElement(By.cssSelector(String.format("input[name='%s']", inputName)))
         .getAttribute("value");
   }
 
