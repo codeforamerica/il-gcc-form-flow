@@ -43,9 +43,10 @@ public class ValidateProviderNumber implements Action {
             } else if (inputValue.length() < 8 || inputValue.length() > 15) {
                 errorMessages.put(PROVIDER_NUMBER,
                         List.of(messageSource.getMessage("errors.provide-provider-number-length", null, locale)));
-            }else if (!providerRepositoryService.isProviderIdValid(inputValue)) {
+            } else if (!providerRepositoryService.isProviderIdValid(inputValue)) {
                 errorMessages.put(PROVIDER_NUMBER,
-                        List.of(messageSource.getMessage("provider-response-provider-number.error.invalid-number", null, locale)));
+                        List.of(messageSource.getMessage("provider-response-provider-number.error.invalid-number", null,
+                                locale)));
             }
         }
 
