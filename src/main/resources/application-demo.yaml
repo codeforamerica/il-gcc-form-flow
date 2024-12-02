@@ -15,5 +15,6 @@ form-flow:
         creation-point: creation
 il-gcc:
   validate-provider-id: ${VALIDATE_PROVIDER_ID_FLAG:false}
+  allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:true}
   dts:
     processing-org: '4c-ccap-apps-testing'
