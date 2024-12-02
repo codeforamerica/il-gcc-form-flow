@@ -59,4 +59,17 @@ public class Providerresponse extends FlowInputs {
     private String providerLicensedCareLocation;
     @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
     private String providerResponseContactEmail;
+    
+    // registration-applicant
+    @NotBlank
+    private String providerLicenseExemptType;
+    
+    // registration-unlicensed-care-location
+    @NotBlank
+    private String providerLicenseExemptCareLocation;
+    
+    // registration-unlicensed-relationship
+    
+    @NotBlank
+    private String providerLicenseExemptRelationship;
 }

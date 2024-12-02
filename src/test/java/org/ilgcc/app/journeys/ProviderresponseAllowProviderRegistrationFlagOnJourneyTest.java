@@ -105,7 +105,22 @@ public class ProviderresponseAllowProviderRegistrationFlagOnJourneyTest extends 
         testPage.clickNo();
 
         // registration-applicant
-//        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-applicant.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-applicant.title"));
+        testPage.selectRadio("providerLicenseExemptType", "Self");
+        testPage.clickContinue();
+        
+        // registration-unlicensed-care-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-unlicensed-care-location.title"));
+        testPage.selectRadio("providerLicenseExemptCareLocation", "Providers home");
+        testPage.clickContinue();
+        
+        // registration-unlicensed-relationship
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-unlicensed-relationship.title"));
+        testPage.selectRadio("providerLicenseExemptRelationship", "Relative");
+        testPage.clickContinue();
+        
+        // registration-basic-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-basic-info-intro.title"));
     }
 
 
