@@ -15,15 +15,15 @@
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::contact-info})}">
                     <th:block th:ref="contact-info">
                         <div class="form-card__content">
-                          <th:block
+                            <th:block th:replace="~{fragments/inputs/text ::
+                            text(inputName='providerResponseContactEmail',
+                            label=#{provider-response-contact-info.email},
+                            helpText=#{provider-response-contact-info.email-help})}" />
+                            <th:block
                             th:replace="~{fragments/inputs/phone :: phone(
                             inputName='providerResponseContactPhoneNumber',
                             label=#{provider-response-contact-info.phone},
                             helpText=#{provider-response-contact-info.phone-help})}"/>
-                          <th:block th:replace="~{fragments/inputs/text ::
-                            text(inputName='providerResponseContactEmail',
-                            label=#{provider-response-contact-info.email},
-                            helpText=#{provider-response-contact-info.email-help})}" />  
                         </div>
                         <div class="form-card__footer">
                             <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
