@@ -558,8 +558,6 @@ flow:
     beforeDisplayAction: FindApplicationData
     nextScreens:
       - name: info
-        condition: EnableProviderRegistration
-      - name: submit-complete
         condition: ProviderAgreedToCare
       - name: confirm-deny-care
   confirm-deny-care:
@@ -567,9 +565,6 @@ flow:
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
       - name: submit-complete-final
-  submit-complete:
-    nextScreens:
-      - name: info
   info:
     nextScreens:
       - name: service-address
