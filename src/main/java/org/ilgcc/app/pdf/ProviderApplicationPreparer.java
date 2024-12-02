@@ -2,6 +2,7 @@ package org.ilgcc.app.pdf;
 
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -40,19 +41,21 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         if (hasNotChosenProvider(submission)) {
             return prepareNoProviderData();
         }
-        if (expandExistingProviderFlowFlag) {
-            return prepareSubmittedDayCareData(submission);
-        } else {
-            return prepareSelectedDayCareData(submission);
-        }
 
+        if (providerAcceptsCare(submission)) {
+            return prepareProviderResponse(submission);
+        } else {
+            if (expandExistingProviderFlowFlag) {
+                return prepareFamilyIntendedProviderData(submission);
+            } else {
+                return prepareFamilySelectedDayCareData(submission);
+            }
+        }
     }
     //Because we are printing the PDF from the GCC flow we need to get the provider submission then pull the responses values from the provdier submission
-
-    private Map<String, SubmissionField> prepareSubmittedDayCareData(Submission submission) {
+    private Map<String, SubmissionField> prepareProviderResponse(Submission submission) {
         var results = new HashMap<String, SubmissionField>();
-        Map<String, Object> inputData = submission.getInputData();
-        boolean hasProviderResponse = inputData.containsKey("providerResponseSubmissionId");
+
         List<String> providerFields = List.of(
                 "providerResponseProviderNumber",
                 "providerResponseFirstName",
@@ -62,68 +65,53 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 "providerResponseContactEmail"
         );
 
-        if (hasProviderResponse) {
-            UUID providerId = UUID.fromString(inputData.get("providerResponseSubmissionId").toString());
-            Optional<Submission> providerSubmission = submissionRepositoryService.findById(providerId);
-            if (providerSubmission.isPresent()) {
-                boolean providerAgreesToCare = providerSubmission.get().getInputData()
-                        .getOrDefault("providerResponseAgreeToCare", "false").equals("true");
-                if (providerAgreesToCare) {
-                    Map<String, Object> providerInputData = providerSubmission.get().getInputData();
-                    for (String fieldName : providerFields) {
-                        results.put(fieldName,
-                                new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
-                    }
+        Submission providerSubmission = providerSubmissionFromId(submission).get();
+        Map<String, Object> providerInputData = providerSubmission.getInputData();
 
-                    results.putAll(prepareProviderAddressData(providerInputData));
+        for (String fieldName : providerFields) {
+            results.put(fieldName,
+                    new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
+        }
 
-                    results.put("providerSignature",
-                            new SingleField("providerSignature", providerSignature(providerInputData), null));
-                    try {
-                        Optional<LocalDate> providerSignatureDate = Optional.of(
-                                LocalDate.from(providerSubmission.get().getSubmittedAt()));
-                        results.put("providerSignatureDate",
-                                new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate),
-                                        null));
-                    } catch (NullPointerException e) {
-                        log.error(String.format("Provider Application: %s, does not have a submittedAt date.",
-                                providerSubmission.get().getId().toString()));
-                    }
-                } else {
-                    results.put("providerNameCorporate",
-                            new SingleField("providerNameCorporate",
-                                    inputData.getOrDefault("familyIntendedProviderName", "").toString(),
-                                    null));
-                    results.put("providerPhoneNumber",
-                            new SingleField("providerPhoneNumber",
-                                    inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(), null));
-                    results.put("providerEmail",
-                            new SingleField("providerEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(),
-                                    null));
-                    results.put("providerResponse",
-                            new SingleField("providerResponse", "Provider declined", null));
-                }
-            } else {
-                log.error(String.format("Family Application (%s) does not have corresponding provider application for id: %s",
-                        submission.getId(), providerId));
-            }
-        } else {
-            results.put("providerNameCorporate",
-                    new SingleField("providerNameCorporate", inputData.getOrDefault("familyIntendedProviderName", "").toString(),
+        results.putAll(prepareProviderAddressData(providerInputData));
+
+        results.put("providerLicenseNumber",
+                new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
+        results.put("providerSignature",
+                new SingleField("providerSignature", providerSignature(providerInputData), null));
+        try {
+            Optional<LocalDate> providerSignatureDate = Optional.of(
+                    LocalDate.from(providerSubmission.getSubmittedAt()));
+            results.put("providerSignatureDate",
+                    new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate),
                             null));
-            results.put("providerPhoneNumber",
-                    new SingleField("providerPhoneNumber",
-                            inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(), null));
-            results.put("providerEmail",
-                    new SingleField("providerEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
-            results.put("providerResponse",
-                    new SingleField("providerResponse", "No response from provider", null));
+        } catch (NullPointerException e) {
+            log.error(String.format("Provider Application: %s, does not have a submittedAt date.",
+                    providerSubmission.getId().toString()));
         }
 
         return results;
     }
 
-    private Map<String, SubmissionField> prepareSelectedDayCareData(Submission submission) {
+    private Map<String, SubmissionField> prepareFamilyIntendedProviderData(Submission submission) {
+        var results = new HashMap<String, SubmissionField>();
+        Map<String, Object> inputData = submission.getInputData();
+
+        results.put("providerNameCorporate",
+                new SingleField("providerNameCorporate", inputData.getOrDefault("familyIntendedProviderName", "").toString(),
+                        null));
+        results.put("providerPhoneNumber",
+                new SingleField("providerPhoneNumber",
+                        inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(), null));
+        results.put("providerEmail",
+                new SingleField("providerEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
+        results.put("providerResponse",
+                new SingleField("providerResponse", providerResponse(submission), null));
+
+        return results;
+    }
+
+    private Map<String, SubmissionField> prepareFamilySelectedDayCareData(Submission submission) {
         var results = new HashMap<String, SubmissionField>();
 
         var provider = ChildCareProvider.valueOf((String) submission.getInputData().get("dayCareChoice"));
@@ -136,6 +124,19 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         results.put("dayCareAddressState", new SingleField("dayCareAddressState", provider.getState(), null));
         results.put("dayCareAddressZip", new SingleField("dayCareAddressZip", provider.getZipcode(), null));
 
+        return results;
+    }
+
+    private Map<String, SubmissionField> prepareNoProviderData() {
+        var results = new HashMap<String, SubmissionField>();
+        results.put("providerNameCorporate",
+                new SingleField("providerNameCorporate", "No qualified provider",
+                        null));
+        results.put("dayCareIdNumber",
+                new SingleField("dayCareIdNumber", "460328258720008",
+                        null));
+        results.put("providerResponse",
+                new SingleField("providerResponse", "No provider chosen", null));
         return results;
     }
 
@@ -165,19 +166,6 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 
         return results;
     }
-    
-    private Map<String, SubmissionField> prepareNoProviderData() {
-        var results = new HashMap<String, SubmissionField>();
-        results.put("providerNameCorporate",
-                new SingleField("providerNameCorporate", "No qualified provider",
-                        null));
-        results.put("dayCareIdNumber",
-                new SingleField("dayCareIdNumber", "460328258720008",
-                        null));
-        results.put("providerResponse",
-                new SingleField("providerResponse", "No provider chosen", null));
-        return results;
-    }
 
     private String providerSignature(Map<String, Object> providerInputData) {
         String firstname = (String) providerInputData.getOrDefault("providerResponseFirstName", "");
@@ -189,5 +177,53 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         } else {
             return String.format("%s %s, %s", firstname, lastName, businessName);
         }
+    }
+
+    private String providerLicense(Map<String, Object> providerInputData) {
+        String providerHasStateLicense = (String) providerInputData.getOrDefault("providerCurrentlyLicensed", "false");
+        String providerLicenseNumber = (String) providerInputData.getOrDefault("providerLicenseNumber", "");
+        String providerLicenseState = (String) providerInputData.getOrDefault("providerLicenseState", "");
+        if (providerHasStateLicense.equalsIgnoreCase("true")) {
+            if (providerLicenseState.isEmpty()) {
+                return providerLicenseNumber;
+            } else {
+                return String.format("%s (%s)", providerLicenseNumber, providerLicenseState);
+            }
+        }
+        return "";
+
+    }
+
+    private Optional<Submission> providerSubmissionFromId(Submission submission) {
+        if (submission.getInputData().containsKey("providerResponseSubmissionId")) {
+            UUID providerId = UUID.fromString(submission.getInputData().get("providerResponseSubmissionId").toString());
+            return submissionRepositoryService.findById(providerId);
+        }
+
+        return Optional.empty();
+    }
+
+    private boolean providerAcceptsCare(Submission familySubmission) {
+        if (hasProviderResponse(familySubmission) && providerSubmissionFromId(familySubmission).isPresent()) {
+            Submission providerSubmission = providerSubmissionFromId(familySubmission).get();
+            Map<String, Object> providerInputData = providerSubmission.getInputData();
+            return providerInputData.getOrDefault("providerResponseAgreeToCare", "false").equals("true");
+        }
+        return false;
+    }
+
+    private String providerResponse(Submission familySubmission) {
+        Optional<Submission> providerSubmission = providerSubmissionFromId(familySubmission);
+        if (providerSubmission.isPresent()) {
+            Map<String, Object> providerInputData = providerSubmission.get().getInputData();
+            if (providerInputData.containsKey("providerResponseAgreeToCare")) {
+                if (providerInputData.get("providerResponseAgreeToCare").equals("false")) {
+                    return "Provider declined";
+                } else {
+                    return "true";
+                }
+            }
+        }
+        return "No response from provider";
     }
 }

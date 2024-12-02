@@ -61,6 +61,13 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withProviderStateLicense(){
+        submission.getInputData().put("providerCurrentlyLicensed", "true");
+        submission.getInputData().put("providerLicenseNumber", "123453646");
+        submission.getInputData().put("providerLicenseState", "IL");
+
+        return this;
+    }
     public SubmissionTestBuilder withDayCareProvider() {
         submission.getInputData().put("dayCareChoice", "OPEN_SESAME");
         return this;
