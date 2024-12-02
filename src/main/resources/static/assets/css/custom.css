@@ -687,6 +687,10 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   color: #5F5854;
 }
 
+div.move-40-up {
+  margin-top: -4.0rem;
+}
+
 /* THIS NEEDS TO BE HERE, IF IT'S REMOVED IT WILL BREAK JAVASCRIPT FOR SAME AS HOME ADDRESS FUNCTIONALITY */
 .hidden {
   display: none !important;
