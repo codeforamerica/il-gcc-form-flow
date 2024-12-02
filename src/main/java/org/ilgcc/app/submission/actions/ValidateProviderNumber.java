@@ -45,7 +45,7 @@ public class ValidateProviderNumber implements Action {
                         List.of(messageSource.getMessage("errors.provide-provider-number-length", null, locale)));
             }else if (!providerRepositoryService.isProviderIdValid(inputValue)) {
                 errorMessages.put(PROVIDER_NUMBER,
-                        List.of(messageSource.getMessage("provider-response-ccap-registration.error.invalid-number", null, locale)));
+                        List.of(messageSource.getMessage("provider-response-provider-number.error.invalid-number", null, locale)));
             }
         }
 
