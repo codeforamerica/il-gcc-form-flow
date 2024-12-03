@@ -1,8 +1,7 @@
 package org.ilgcc.app.data;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
@@ -23,17 +22,13 @@ public class ProviderRepositoryService {
     }
 
     public boolean isProviderIdValid(String providerId) {
-
         if (!Objects.isNull(providerId) && !providerId.isEmpty()) {
             try {
-                BigInteger providerIdNumber = new BigInteger(providerId);
-                if (!providerRepository.existsByStatusInAndProviderId(VALID_STATUSES, providerIdNumber)) {
-                    return false;
-                }
+                return providerRepository.existsByStatusInAndProviderIdAndDateOfLastApprovalAfter(VALID_STATUSES,
+                        new BigInteger(providerId), LocalDate.now().minusYears(3));
             } catch (NumberFormatException e) {
                 return false;
             }
-            return true;
         } else {
             return false;
         }
