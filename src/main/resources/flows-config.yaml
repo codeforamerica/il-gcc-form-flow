@@ -522,22 +522,18 @@ flow:
     nextScreens:
       - name: paid-by-ccap
         condition: EnableProviderRegistration
-      - name: ccap-registration
+      - name: provider-number
   paid-by-ccap:
     condition: EnableProviderRegistration
     nextScreens:
       - name: provider-number
         condition: IsPaidByCCAP
       - name: registration-start
-  provider-number:
-    condition: EnableProviderRegistration
-    nextScreens:
-      - name: confirmation-code
   registration-start:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-getting-started
-  ccap-registration:
+  provider-number:
     crossFieldValidationAction: ValidateProviderNumber
     beforeSaveAction: SaveApplicationId
     onPostAction: GenerateDummyClientSubmissionForDev
