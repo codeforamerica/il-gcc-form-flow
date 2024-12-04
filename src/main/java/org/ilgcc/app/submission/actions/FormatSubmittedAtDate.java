@@ -16,10 +16,10 @@ public class FormatSubmittedAtDate implements Action {
 
     @Override
     public void run(Submission submission) {
-        ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
-        ZonedDateTime submittedAt = submission.getSubmittedAt().atZoneSameInstant(chicagoTimeZone);
+        if (submission.getSubmittedAt() != null) {
+            ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
+            ZonedDateTime submittedAt = submission.getSubmittedAt().atZoneSameInstant(chicagoTimeZone);
 
-        if (submittedAt != null) {
             String formattedSubmittedAtDate = submittedAt.format(DATE_FORMAT);
             String formattedSubmittedAtTime = submittedAt.format(TIME_FORMAT);
             submission.getInputData().put("formattedSubmittedAtDate", formattedSubmittedAtDate);
