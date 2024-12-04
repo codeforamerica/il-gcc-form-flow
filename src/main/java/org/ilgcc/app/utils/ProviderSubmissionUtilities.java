@@ -158,6 +158,8 @@ public class ProviderSubmissionUtilities {
         LocalDate submittedAtLocalDate = submittedAt.toLocalDate();
         LocalDate expiresAtLocalDate = expiresAt.toLocalDate();
 
+        // If a holiday occurs after the submission and before/on the expiration date, we give the provider
+        // one extra day to respond
         for (var holiday : HOLIDAYS) {
             if ((holiday.isAfter(submittedAtLocalDate) && holiday.isBefore(expiresAtLocalDate)) || holiday.isEqual(
                     expiresAtLocalDate)) {
@@ -165,6 +167,8 @@ public class ProviderSubmissionUtilities {
             }
         }
 
+        // Because we might have had a holiday that pushes the expiration date into a weekend, we want to keep
+        // pushing the expiration 1 day at a time until it's a Monday
         while (WEEKENDS.contains(expiresAt.getDayOfWeek())) {
             expiresAt = expiresAt.plusDays(1);
         }
