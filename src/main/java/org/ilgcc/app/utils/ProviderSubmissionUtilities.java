@@ -1,10 +1,10 @@
 package org.ilgcc.app.utils;
 
-import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.Period;
@@ -22,8 +22,28 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ProviderSubmissionUtilities {
-    private final static Map<String, Integer> weekWithOffset = Map.of(
+    private final static Map<String, Integer> DAY_OF_WEEK_WITH_BUSINESS_DAYS_OFFSET = Map.of(
             "MONDAY", 3, "TUESDAY", 3, "WEDNESDAY", 5, "THURSDAY", 5, "FRIDAY", 5, "SATURDAY", 4, "SUNDAY", 3);
+
+    private final static List<DayOfWeek> WEEKENDS = List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
+
+    // From https://cms.illinois.gov/personnel/employeeresources/stateholidays.html
+    private final static List<LocalDate> HOLIDAYS = List.of(
+            LocalDate.of(2024, 12, 25),
+            LocalDate.of(2025, 1, 1),
+            LocalDate.of(2025, 1, 20),
+            LocalDate.of(2025, 2, 12),
+            LocalDate.of(2025, 2, 17),
+            LocalDate.of(2025, 5, 26),
+            LocalDate.of(2025, 6, 19),
+            LocalDate.of(2025, 7, 4),
+            LocalDate.of(2025, 9, 1),
+            LocalDate.of(2025, 10, 13),
+            LocalDate.of(2025, 11, 11),
+            LocalDate.of(2025, 11, 27),
+            LocalDate.of(2025, 11, 28),
+            LocalDate.of(2025, 12, 25)
+    );
 
     public static Optional<UUID> getClientId(Submission providerSubmission) {
         if (providerSubmission.getInputData().containsKey("familySubmissionId")) {
@@ -130,12 +150,35 @@ public class ProviderSubmissionUtilities {
 
     public static ZonedDateTime threeBusinessDaysFromSubmittedAtDate(OffsetDateTime submittedAtDate) {
         ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
-        ZonedDateTime submissionInChicagoTime = submittedAtDate.atZoneSameInstant(chicagoTimeZone);
-        Integer dayOffset = weekWithOffset.get(submissionInChicagoTime.getDayOfWeek().toString());
-        return submissionInChicagoTime.plusDays(dayOffset);
+        ZonedDateTime submittedAt = submittedAtDate.atZoneSameInstant(chicagoTimeZone);
+
+        Integer daysToOffset = DAY_OF_WEEK_WITH_BUSINESS_DAYS_OFFSET.get(submittedAt.getDayOfWeek().toString());
+        ZonedDateTime expiresAt = submittedAt.plusDays(daysToOffset);
+
+        LocalDate submittedAtLocalDate = submittedAt.toLocalDate();
+        LocalDate expiresAtLocalDate = expiresAt.toLocalDate();
+
+        // If a holiday occurs after the submission and before/on the expiration date, we give the provider
+        // one extra day to respond
+        for (var holiday : HOLIDAYS) {
+            if ((holiday.isAfter(submittedAtLocalDate) && holiday.isBefore(expiresAtLocalDate)) || holiday.isEqual(
+                    expiresAtLocalDate)) {
+                expiresAt = expiresAt.plusDays(1);
+            }
+        }
+
+        // Because we might have had a holiday that pushes the expiration date into a weekend, we want to keep
+        // pushing the expiration 1 day at a time until it's a Monday
+        while (WEEKENDS.contains(expiresAt.getDayOfWeek())) {
+            expiresAt = expiresAt.plusDays(1);
+        }
+
+        return expiresAt;
     }
 
-    public static boolean providerApplicationHasExpired(Submission submission, ZonedDateTime todaysDate){
-        return submission.getSubmittedAt() != null && MINUTES.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt()), todaysDate) > 0;
+    public static boolean providerApplicationHasExpired(Submission submission, ZonedDateTime todaysDate) {
+        return submission.getSubmittedAt() != null &&
+                MINUTES.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt()),
+                        todaysDate) > 0;
     }
 }
