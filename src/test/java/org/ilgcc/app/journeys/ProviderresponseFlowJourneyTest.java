@@ -38,8 +38,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
-        // ccap-registration
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-ccap-registration.title"));
+        // provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
         testPage.enter("providerResponseProviderNumber", "123456789012345");
         testPage.clickContinue();
 
@@ -90,8 +90,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
-        // ccap-registration
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-ccap-registration.title"));
+        // provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
         testPage.enter("providerResponseProviderNumber", "123456789012345");
         testPage.clickContinue();
 
@@ -178,8 +178,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
-        // ccap-registration
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-ccap-registration.title"));
+        // provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
         testPage.enter("providerResponseProviderNumber", "123456789012345");
         testPage.clickContinue();
 
@@ -265,8 +265,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
-        // ccap-registration
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-ccap-registration.title"));
+        // provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
         testPage.enter("providerResponseProviderNumber", "123456789012345");
         testPage.clickContinue();
 
@@ -311,8 +311,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
-        // ccap-registration
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-ccap-registration.title"));
+        // provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
         testPage.enter("providerResponseProviderNumber", "123456789012345");
         testPage.clickContinue();
 
@@ -356,8 +356,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
-        // ccap-registration
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-ccap-registration.title"));
+        // provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
         testPage.enter("providerResponseProviderNumber", "123456789012345");
         testPage.clickContinue();
 
