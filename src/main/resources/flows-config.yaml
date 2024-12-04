@@ -553,34 +553,13 @@ flow:
   response:
     beforeDisplayAction: FindApplicationData
     nextScreens:
-      - name: info
+      - name: provider-info
         condition: ProviderAgreedToCare
       - name: confirm-deny-care
   confirm-deny-care:
     beforeDisplayAction: FormatChildrenWhoNeedCareNames
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
-      - name: submit-complete-final
-  info:
-    nextScreens:
-      - name: service-address
-  service-address:
-    nextScreens:
-      - name: confirm-address
-  confirm-address:
-    nextScreens:
-      - name: contact-info
-  contact-info:
-    nextScreens:
-      - name: info-review
-  info-review:
-    afterSaveAction: UploadProviderSubmissionToS3
-    nextScreens:
-      - name: submit-complete-final
-  submit-complete-final:
-    nextScreens:
-      - name: registration-getting-started
-        condition: EnableProviderRegistration
       - name: submit-complete-final
   registration-getting-started:
     condition: EnableProviderRegistration
@@ -621,7 +600,60 @@ flow:
   registration-basic-info-intro:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: null
+      - name: provider-info
+  provider-info:
+    nextScreens:
+      - name: service-address
+  service-address:
+    nextScreens:
+      - name: confirm-address
+  confirm-address:
+    nextScreens:
+      - name: mailing-address
+        condition: EnableProviderRegistration
+      - name: contact-info
+  mailing-address:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: confirm-mailing-address
+  confirm-mailing-address:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: contact-info
+  contact-info:
+    nextScreens:
+      - name: info-review
+  info-review:
+    afterSaveAction: UploadProviderSubmissionToS3
+    nextScreens:
+      - name: registration-home-provider-ssn
+        condition: EnableProviderRegistration
+      - name: submit-complete-final
+  registration-home-provider-ssn:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-home-provider-dob
+  registration-home-provider-dob:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-tax-id
+  registration-tax-id:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-tax-id-ssn
+  registration-tax-id-ssn:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-service-languages
+  registration-service-languages:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-start-date
+  submit-complete-final:
+    nextScreens:
+      - name: registration-getting-started
+        condition: EnableProviderRegistration
+      - name: submit-complete-final
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:

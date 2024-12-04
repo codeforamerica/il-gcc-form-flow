@@ -204,7 +204,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickContinue();
 
-        //basic-info
+        //provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info.title"));
         testPage.enter("providerResponseBusinessName", "Business Name");
         testPage.enter("providerResponseFirstName", "First Name");
