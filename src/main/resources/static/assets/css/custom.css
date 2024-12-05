@@ -315,10 +315,6 @@ p.normal {
 
 /* Inherited from Starter App */
 /* ========================== */
-.reveal a {
-  display: flex;
-}
-
 .reveal svg {
   align-self: center;
   display: flex;
