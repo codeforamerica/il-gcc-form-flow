@@ -183,7 +183,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("providerResponseProviderNumber", "123456789012345");
         testPage.clickContinue();
 
-        // application-id
+        // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
