@@ -11,26 +11,64 @@
                 <th:block
                         th:with="providerSubmissionStatus=${T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).valueOf(session.clientSubmissionStatus)}">
                     <th:block
-                            th:replace="~{fragments/gcc-icons :: ${providerSubmissionStatus.getIcon()}}"></th:block>
-                    <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})}, subtext=#{${providerSubmissionStatus.getNoticeLabel()}})}"/>
-                    <div class="form-card__footer">
+                            th:if="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).ACTIVE)}">
                         <div>
-                            <th:block
-                                    th:if="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).ACTIVE)}">
+                            <img src="/assets/images/IDHS-logo.png"
+                                 th:alt="#{general.illinois.department.logo.text}" loading="lazy"
+                                 style="width: 168px; height: auto; padding-bottom: 20px">
+                        </div>
+                        <th:block
+                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})}, subtext=#{${providerSubmissionStatus.getNoticeLabel()}})}"/>
+                        <div class="spacing-below-60 move-40-up">
+                            <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
+                                controlId='r1',
+                                linkLabel=~{::revealLabel1},
+                                content=~{::revealContent1},
+                                forceShowContent='true')}">
+                                <th:block th:ref="revealLabel1">
+                                    <th:span
+                                            th:text="#{provider-response-submit-start.active.reveal-header-1}"></th:span>
+                                </th:block>
+                                <th:block th:ref="revealContent1">
+                                    <p th:text="#{provider-response-submit-start.active.reveal-body-1}"></p>
+                                </th:block>
+                            </th:block>
+                            <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
+                                controlId='r2',
+                                linkLabel=~{::revealLabel2},
+                                content=~{::revealContent2},
+                                forceShowContent='true')}">
+                                <th:block th:ref="revealLabel2">
+                                    <th:span
+                                            th:text="#{provider-response-submit-start.active.reveal-header-2}"></th:span>
+                                </th:block>
+                                <th:block th:ref="revealContent2">
+                                    <p th:utext="#{provider-response-submit-start.active.reveal-body-2}"></p>
+                                </th:block>
+                            </th:block>
+                        </div>
+                        <div class="form-card__footer">
+                            <div>
                                 <th:block
                                         th:replace="~{fragments/continueButton :: continue(text=#{${providerSubmissionStatus.getButtonLabel()}})}"/>
-                            </th:block>
-                            <th:block
-                                    th:unless="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).ACTIVE)}">
+                            </div>
+                        </div>
+                    </th:block>
+                    <th:block
+                            th:unless="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).ACTIVE)}">
+                        <th:block
+                                th:replace="~{fragments/gcc-icons :: ${providerSubmissionStatus.getIcon()}}"></th:block>
+                        <th:block
+                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})}, subtext=#{${providerSubmissionStatus.getNoticeLabel()}})}"/>
+                        <div class="form-card__footer">
+                            <div>
                                 <a th:href="'/'"
                                    th:text="#{${providerSubmissionStatus.getButtonLabel()}}"
                                    class="button button--primary"
                                    id="continue-link"></a>
-                            </th:block>
+                            </div>
                         </div>
-                    </div>
-                </th:block>
+                    </th:block>
             </main>
         </div>
     </section>
