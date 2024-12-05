@@ -654,7 +654,8 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   align-items: flex-start;
   gap: 15px;
   line-height: 25px;
-  word-wrap: break-word
+  word-wrap: break-word;
+  margin-bottom: 3rem;
 }
 
 .providerResponse {

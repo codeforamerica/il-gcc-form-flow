@@ -1,4 +1,4 @@
-<p th:if="${null != errorMessages}" th:fragment="validationError(inputName)" class="text--error"
+<p th:if="${null != errorMessages && null != errorMessages.get(inputName)}" th:fragment="validationError(inputName)" class="text--error"
    th:assert="${!#strings.isEmpty(inputName)}"
    th:title="#{error.error}"
    th:id="${inputName} + '-error-p'">
