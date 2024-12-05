@@ -121,7 +121,6 @@ org:
       enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
   generate-short-links: ${GENERATE_SHORT_LINKS_FLAG:false}
-  validate-provider-id: ${VALIDATE_PROVIDER_ID_FLAG:true}
   show-no-provider-flow: ${SHOW_NO_PROVIDER_FLOW:true}
   allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
   dts:
