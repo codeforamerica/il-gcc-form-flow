@@ -32,7 +32,7 @@
                                     <span th:text="#{contact-provider-message.email-message}"></span>
                                 </a>
                             </div>
-                            <div class="center"
+                            <div class="center hide-on-desktop"
                                  th:with="textMessageContent=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-provider-message.message-body', textLink, shortCode))}">
                                 <a th:id="contact-provider-by-text" th:href="${textMessageContent}"
                                    class="button button--wide">

@@ -638,6 +638,10 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
     margin-left: -3.5rem;
     margin-right: -3.5rem;
   }
+  
+  .hide-on-desktop {
+    display: none;
+  }
 }
 
 .providerResponse {
