@@ -40,7 +40,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "123456789012345");
+        testPage.enter("providerResponseProviderNumber", "12345678901");
         testPage.clickContinue();
 
         // confirmation-code
@@ -92,7 +92,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "123456789012345");
+        testPage.enter("providerResponseProviderNumber", "12345678901");
         testPage.clickContinue();
 
         // confirmation-code
@@ -180,7 +180,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "123456789012345");
+        testPage.enter("providerResponseProviderNumber", "12345678901");
         testPage.clickContinue();
 
         // application-id
@@ -267,7 +267,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "123456789012345");
+        testPage.enter("providerResponseProviderNumber", "12345678901");
         testPage.clickContinue();
 
         // application-id
@@ -313,7 +313,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "123456789012345");
+        testPage.enter("providerResponseProviderNumber", "12345678901");
         testPage.clickContinue();
 
         // application-id
@@ -358,7 +358,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "123456789012345");
+        testPage.enter("providerResponseProviderNumber", "12345678901");
         testPage.clickContinue();
 
         // application-id
@@ -370,5 +370,80 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         assertThat(testPage.getHeader()).isEqualTo(
                 getEnMessageWithParams("provider-response-submit-start.responded.header", new Object[]{"Dev Provider"}));
+    }
+
+
+    @Test
+    void ProviderresponseJourneyTest_ProviderNumberValidation() {
+
+        driver.navigate().to("http://localhost:%s/providerresponse/submit".formatted(localServerPort));
+
+        // submit-start when application is still active
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
+        testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
+
+        // provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
+        testPage.enter("providerResponseProviderNumber", "12345678903");
+        testPage.clickContinue();
+
+        // Errors
+        // Status = R
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
+
+        // Status = D
+        testPage.enter("providerResponseProviderNumber", "12345678904");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
+
+        // Status = W
+        testPage.enter("providerResponseProviderNumber", "12345678905");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
+
+        // Status = C
+        testPage.enter("providerResponseProviderNumber", "12345678906");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
+
+        // Status = A, 4 years old
+        testPage.enter("providerResponseProviderNumber", "12345678907");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
+
+        // Status = P, 5 years old
+        testPage.enter("providerResponseProviderNumber", "12345678908");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
+
+        // Doesn't exist at all
+        testPage.enter("providerResponseProviderNumber", "1234567891234");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
+
+        // Too short
+        testPage.enter("providerResponseProviderNumber", "12345");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-provider-number-length"))).isTrue();
+
+        // Too Long
+        testPage.enter("providerResponseProviderNumber", "12345123451234512345");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-provider-number-length"))).isTrue();
+
+        // Nothing
+        testPage.enter("providerResponseProviderNumber", " ");
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-provider-number"))).isTrue();
     }
 }
