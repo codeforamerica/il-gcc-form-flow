@@ -72,7 +72,12 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("dayCareChoice", "OPEN_SESAME");
         return this;
     }
-
+    public SubmissionTestBuilder withClientResponseConfirmationCode(String confirmationCode) {
+        Map<String, String> clientResponse = new HashMap<>();
+        clientResponse.put("clientResponseConfirmationCode", confirmationCode);
+        submission.getInputData().put("clientResponse", clientResponse);
+        return this;
+    }
     public SubmissionTestBuilder withParentDetails() {
         submission.getInputData().put("parentFirstName", "parent first");
         submission.getInputData().put("parentLastName", "parent last");
