@@ -154,6 +154,11 @@ inputFields:
   providerResponseServiceCity: PROVIDER_ADDRESS_SERVICE_CITY
   providerResponseServiceState: PROVIDER_ADDRESS_SERVICE_STATE
   providerResponseServiceZipCode: PROVIDER_ADDRESS_SERVICE_ZIP
+  providerMailingStreetAddress1: PROVIDER_ADDRESS_MAILING_STREET
+  providerMailingStreetAddress2: PROVIDER_ADDRESS_MAILING_APT
+  providerMailingCity: PROVIDER_ADDRESS_MAILING_CITY
+  providerMailingState: PROVIDER_ADDRESS_MAILING_STATE
+  providerMailingZipCode: PROVIDER_ADDRESS_MAILING_ZIP
   providerResponseContactPhoneNumber: PROVIDER_PHONE_NUMBER
   providerResponseContactEmail: PROVIDER_EMAIL
   providerLicenseNumber: PROVIDER_LICENSE_NUMBER

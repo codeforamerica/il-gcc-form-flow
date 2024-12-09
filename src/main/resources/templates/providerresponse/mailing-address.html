@@ -1,28 +1,102 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{provider-response.mailing-address.title})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: mail}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response.mailing-address.header})}"/>
+
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="form-card__content">
+                            <th:block th:replace="~{fragments/inputs/checkbox ::
+                 checkbox(inputName='providerMailingAddressSameAsServiceAddress',
+                   label=#{provider-response.mailing-address.same-as-home-address},
+                   value='yes'
+                 )}"/>
+
+                            <div id="address-fields" th:insert="~{fragments/inputs/overrides/address ::
+                                address(
+                                  streetAddressLabel=#{general.street-address},
+                                  streetAddress2Label=#{general.street-address-2},
+                                  cityLabel=#{general.city},
+                                  stateLabel=#{general.state},
+                                  zipCodeLabel=#{general.zip-code},
+                                  validate='true',
+                                  inputName='providerMailing'
+                                )}">
+
+                            </div>
+                        </div>
+                        <div class="form-card__footer">
+                            <th:block
+                                    th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
+<script th:inline="javascript">
+  $(document).ready(function () {
+    const $parentMailingAddressSameAsHomeCheckbox = $(
+        '#providerMailingAddressSameAsServiceAddress-yes')
+
+    //Mailing Address input fields
+    const $providerMailingStreetAddress1 = $('#providerMailingStreetAddress1')
+    const $providerMailingStreetAddress2 = $('#providerMailingStreetAddress2')
+    const $providerMailingCity = $('#providerMailingCity')
+    const $providerMailingState = $('#providerMailingState')
+    const $providerMailingZipCode = $('#providerMailingZipCode')
+
+    //Get Home Address
+    let inputData = [[${inputData}]];
+
+    function toggleMailingAddress() {
+      const $mailingAddressFields = $('#address-fields');
+      $mailingAddressFields.toggleClass('hidden');
+      if ($mailingAddressFields.is(':hidden')) {
+        copyMailingAddressFromHomeAddress(inputData);
+      }
+    }
+
+    //On page load
+    //We want to hide inputs if the
+    if ($parentMailingAddressSameAsHomeCheckbox.is(':checked')) {
+      toggleMailingAddress();
+    }
+    //On checkbox state change
+    $parentMailingAddressSameAsHomeCheckbox.change(function () {
+      toggleMailingAddress();
+    });
+
+    function copyMailingAddressFromHomeAddress(inputData) {
+      //Get providerResponseService address
+      const $providerResponseServiceStreetAddress1 = inputData['providerResponseServiceStreetAddress1']
+      const $providerResponseServiceStreetAddress2 = inputData['providerResponseServiceStreetAddress2']
+      const $providerResponseServiceCity = inputData['providerResponseServiceCity']
+      const $providerResponseServiceState = inputData['providerResponseServiceState']
+      const $providerResponseServiceZipCode = inputData['providerResponseServiceZipCode']
+
+      //verify Street Address1 is present in the home address, then copy the values to
+      if ($.trim($providerResponseServiceStreetAddress1) !== '') {
+        $providerMailingStreetAddress1.val($providerResponseServiceStreetAddress1);
+        $providerMailingStreetAddress2.val($providerResponseServiceStreetAddress2);
+        $providerMailingCity.val($providerResponseServiceCity);
+        $providerMailingState.val($providerResponseServiceState);
+        $providerMailingZipCode.val($providerResponseServiceZipCode);
+      }
+    }
+  });
+</script>
 </body>
 </html>
