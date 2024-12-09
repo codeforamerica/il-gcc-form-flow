@@ -33,9 +33,10 @@ public class ProviderApplicationPreparerFlagOnTest {
     private Submission providerSubmission;
 
     @Test
-    public void setsNoResponseWhenNoProviderSubmissionExists() {
+    public void setsNoResponseWhenNoProviderSubmissionExistsAndSubmissionIsExpired() {
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(5))
                 .withDayCareProvider()
                 .with("familyIntendedProviderName", "ProviderName")
                 .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
@@ -56,6 +57,22 @@ public class ProviderApplicationPreparerFlagOnTest {
         assertThat(result.get("dayCareAddressCity")).isEqualTo(null);
         assertThat(result.get("dayCareAddressState")).isEqualTo(null);
         assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
+    }
+    
+    @Test
+    public void shouldNotMapNoProviderResponseIfSubmissionHasNotExpired() {
+        familySubmission = new SubmissionTestBuilder()
+                .withFlow("gcc")
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(1))
+                .withDayCareProvider()
+                .with("familyIntendedProviderName", "ProviderName")
+                .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
+                .with("familyIntendedProviderEmail", "mail@test.com")
+                .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+        assertThat(result.get("providerResponse")).isEqualTo(
+                new SingleField("providerResponse", "", null));
     }
 
     @Test
@@ -199,7 +216,5 @@ public class ProviderApplicationPreparerFlagOnTest {
         assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
         assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
         assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
-
     }
-
 }

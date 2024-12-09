@@ -11,11 +11,16 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ChildCareProvider;
@@ -224,6 +229,11 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 }
             }
         }
-        return "No response from provider";
+        ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
+        ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
+        if (ProviderSubmissionUtilities.providerApplicationHasExpired(familySubmission, todaysDate)) {
+            return "No response from provider";
+        }
+        return "";
     }
 }
