@@ -36,7 +36,7 @@ public class ProviderApplicationPreparerFlagOnTest {
     public void setsNoResponseWhenNoProviderSubmissionExistsAndSubmissionIsExpired() {
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(5))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
                 .withDayCareProvider()
                 .with("familyIntendedProviderName", "ProviderName")
                 .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
