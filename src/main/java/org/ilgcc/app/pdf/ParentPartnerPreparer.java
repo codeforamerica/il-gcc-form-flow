@@ -26,6 +26,19 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
+
+        //PartnerLiveInHome
+        String parentHasPartner = (String) submission.getInputData().getOrDefault("parentHasPartner", "");
+        String parentHasQualifyingPartner = (String) submission.getInputData().getOrDefault("parentHasQualifyingPartner", "");
+        if(parentHasPartner.equals("true")){
+            if (parentHasQualifyingPartner.equals("true")) {
+                results.put("partnerLiveInHome", new SingleField("partnerLiveInHome", "true", null));
+
+            }else{
+                results.put("partnerLiveInHome", new SingleField("partnerLiveInHome", "false", null));
+            }
+        }
+
         //partner dob
         Optional<LocalDate> parentPartnerDateOfBirth = getDateInput(submission, "parentPartnerBirth");
         if (parentPartnerDateOfBirth.isPresent()) {
