@@ -148,4 +148,24 @@ public class ParentPartnerPreparerTest {
     assertThat(result.get("partnerEducationHighestLevel")).isEqualTo(new SingleField("partnerEducationHighestLevel", "BA degree", null));
   }
 
+  @Test
+  public void whenParentHasPartnerAndThePartnerQualifiesMapLiveInHomeToTrue(){
+    submission = new SubmissionTestBuilder()
+        .withParentDetails()
+        .with("parentHasPartner", "true")
+        .with("parentHasQualifyingPartner", "true")
+        .build();
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+    assertThat(result.get("partnerLiveInHome")).isEqualTo(new SingleField("partnerLiveInHome", "true", null));
+  }
+  @Test
+  public void whenParentHasPartnerAndThePartnerDoesNotQualifyMapLiveInHomeToFalse(){
+    submission = new SubmissionTestBuilder()
+        .withParentDetails()
+        .with("parentHasPartner", "true")
+        .with("parentHasQualifyingPartner", "false")
+        .build();
+    Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+    assertThat(result.get("partnerLiveInHome")).isEqualTo(new SingleField("partnerLiveInHome", "false", null));
+  }
 }
