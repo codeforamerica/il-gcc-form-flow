@@ -1,10 +1,12 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import formflow.library.data.Submission;
-import formflow.library.data.SubmissionRepository;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
@@ -22,19 +24,19 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
 class UploadProviderSubmissionToS3Test {
 
-  @MockBean
+  @MockitoBean
   private PdfService pdfService;
 
-  @MockBean
+  @MockitoBean
   private CloudFileRepository cloudFileRepository;
-  @MockBean
+  @MockitoBean
   PdfTransmissionJob pdfTransmissionJob;
   @Mock
   private EnqueueDocumentTransfer enqueueDocumentTransfer;
@@ -50,9 +52,9 @@ class UploadProviderSubmissionToS3Test {
   private SubmissionRepositoryService submissionRepositoryService;
   @Autowired
   private UserFileRepositoryService userFileRepositoryService;
-  @MockBean
+  @MockitoBean
   private UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
-  @MockBean
+  @MockitoBean
   private S3PresignService s3PresignService;
 
   UploadProviderSubmissionToS3Test() {

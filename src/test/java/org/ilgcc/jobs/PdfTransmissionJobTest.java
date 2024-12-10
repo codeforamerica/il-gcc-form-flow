@@ -10,11 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -36,11 +38,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
-import java.net.HttpURLConnection;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 
 @SpringBootTest(classes = IlGCCApplication.class)
@@ -54,19 +55,19 @@ class PdfTransmissionJobTest {
 
     private PdfTransmissionJob pdfTransmissionJob;
 
-    @MockBean
+    @MockitoBean
     private S3PresignService s3PresignService;
 
-    @SpyBean
+    @MockitoSpyBean
     private TransmissionRepositoryService transmissionRepositoryService;
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
 
-    @MockBean
+    @MockitoBean
     HttpUrlConnectionFactory httpUrlConnectionFactory;
 
-    @MockBean
+    @MockitoBean
     HttpURLConnection httpUrlConnection;
 
     @Autowired
