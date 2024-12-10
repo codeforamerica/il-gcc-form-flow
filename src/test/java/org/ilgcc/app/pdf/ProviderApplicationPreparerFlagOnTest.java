@@ -8,7 +8,6 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.time.OffsetDateTime;
 import java.util.Map;
-import java.util.UUID;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
@@ -217,4 +216,32 @@ public class ProviderApplicationPreparerFlagOnTest {
         assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
         assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
+
+    @Test
+    public void mapsApplicantConfirmationCodeToPdf(){
+        providerSubmission = new SubmissionTestBuilder()
+            .withFlow("providerresponse")
+            .withProviderSubmissionData()
+            .withProviderStateLicense()
+            .with("providerResponseAgreeToCare", "true")
+            .withClientResponseConfirmationCode("testConfirmationCode")
+            .build();
+
+        submissionRepositoryService.save(providerSubmission);
+        familySubmission = new SubmissionTestBuilder()
+            .withFlow("gcc")
+            .withDayCareProvider()
+            .withSubmittedAtDate(OffsetDateTime.now())
+            .with("familyIntendedProviderName", "ProviderName")
+            .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
+            .with("familyIntendedProviderEmail", "mail@test.com")
+            .with("providerResponseSubmissionId", providerSubmission.getId())
+
+            .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+        assertThat(result.get("clientResponseConfirmationCode")).isEqualTo(new SingleField("clientResponseConfirmationCode", "testConfirmationCode", null));
+
+    }
+
 }

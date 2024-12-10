@@ -78,6 +78,8 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                     new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
         }
 
+        Map<String, String> client = (Map<String, String>) providerSubmission.getInputData().getOrDefault("clientResponse", new HashMap<String, String>());
+        results.put("clientResponseConfirmationCode", new SingleField("clientResponseConfirmationCode", (String) client.getOrDefault("clientResponseConfirmationCode", ""), null));
         results.putAll(prepareProviderAddressData(providerInputData));
 
         results.put("providerLicenseNumber",
