@@ -6,7 +6,7 @@
       hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
       hasAutoComplete=${!#strings.isEmpty(autoComplete)},
       requiredInputsForFlow=${requiredInputs.get(flow)},
-      isRequiredInput=${(requiredInputsForFlow != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)},
+      isRequiredInput=${(requiredInputsForFlow != null && inputName != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)},
       hasError=${
         errorMessages != null &&
         errorMessages.get(inputName) != null &&

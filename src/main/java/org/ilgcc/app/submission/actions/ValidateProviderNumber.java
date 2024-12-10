@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.Map;
 import org.ilgcc.app.data.ProviderRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,9 +23,6 @@ public class ValidateProviderNumber implements Action {
     @Autowired
     ProviderRepositoryService providerRepositoryService;
 
-    @Value("${il-gcc.validate-provider-id}")
-    boolean validateProviderId;
-
     private final String PROVIDER_NUMBER = "providerResponseProviderNumber";
 
     @Override
@@ -34,20 +30,18 @@ public class ValidateProviderNumber implements Action {
         Map<String, List<String>> errorMessages = new HashMap<>();
         String inputValue = (String) formSubmission.getFormData().get(PROVIDER_NUMBER);
 
-        if (validateProviderId) {
-            Locale locale = LocaleContextHolder.getLocale();
+        Locale locale = LocaleContextHolder.getLocale();
 
-            if (inputValue == null || inputValue.isBlank()) {
-                errorMessages.put(PROVIDER_NUMBER,
-                        List.of(messageSource.getMessage("errors.provide-provider-number", null, locale)));
-            } else if (inputValue.length() < 8 || inputValue.length() > 15) {
-                errorMessages.put(PROVIDER_NUMBER,
-                        List.of(messageSource.getMessage("errors.provide-provider-number-length", null, locale)));
-            } else if (!providerRepositoryService.isProviderIdValid(inputValue)) {
-                errorMessages.put(PROVIDER_NUMBER,
-                        List.of(messageSource.getMessage("provider-response-provider-number.error.invalid-number", null,
-                                locale)));
-            }
+        if (inputValue == null || inputValue.isBlank()) {
+            errorMessages.put(PROVIDER_NUMBER,
+                    List.of(messageSource.getMessage("errors.provide-provider-number", null, locale)));
+        } else if (inputValue.length() < 8 || inputValue.length() > 15) {
+            errorMessages.put(PROVIDER_NUMBER,
+                    List.of(messageSource.getMessage("errors.provide-provider-number-length", null, locale)));
+        } else if (!providerRepositoryService.isProviderIdValid(inputValue)) {
+            errorMessages.put(PROVIDER_NUMBER,
+                    List.of(messageSource.getMessage("provider-response-provider-number.error.invalid-number", null,
+                            locale)));
         }
 
         return errorMessages;
