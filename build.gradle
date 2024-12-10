@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '3.3.5'
+    id 'org.springframework.boot' version '3.4.0'
     id 'io.spring.dependency-management' version '1.1.6'
     id 'java'
     id 'com.adarshr.test-logger' version '4.0.0'
@@ -48,7 +48,7 @@ repositories {
 }
 
 def profile = props.getProperty('SPRING_PROFILES_ACTIVE')
-def formFlowLibraryVersion = '1.5.2'
+def formFlowLibraryVersion = '1.6.0'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
@@ -79,7 +79,6 @@ dependencies {
     testImplementation 'io.percy:percy-java-selenium:2.1.0'
     testImplementation 'org.jsoup:jsoup:1.18.3'
     testImplementation 'org.awaitility:awaitility:4.2.2'
-    testImplementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
     testImplementation 'com.h2database:h2:2.3.232'
     testImplementation 'com.deque.html.axe-core:selenium:4.10.1'

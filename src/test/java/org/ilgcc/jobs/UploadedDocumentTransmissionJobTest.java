@@ -38,9 +38,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 
 @SpringBootTest(classes = IlGCCApplication.class)
@@ -54,7 +54,7 @@ class UploadedDocumentTransmissionJobTest {
     
     private UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
 
-    @MockBean
+    @MockitoBean
     private S3PresignService s3PresignService;
 
     @Autowired
@@ -66,10 +66,10 @@ class UploadedDocumentTransmissionJobTest {
     @Autowired
     UserFileRepositoryService userFileRepositoryService;
     
-    @MockBean
+    @MockitoBean
     HttpUrlConnectionFactory httpUrlConnectionFactory;
     
-    @MockBean
+    @MockitoBean
     HttpURLConnection httpUrlConnection;
     
     @Autowired
@@ -91,7 +91,7 @@ class UploadedDocumentTransmissionJobTest {
                 .build();
         submissionRepositoryService.save(submission);
 
-        testUserFile = new UserFile(UUID.randomUUID(), submission, OffsetDateTime.now(), "testFile.pdf", "testFile.pdf", "Application/pdf", 10F, false, null);
+        testUserFile = new UserFile(null, submission, OffsetDateTime.now(), "testFile.pdf", "testFile.pdf", "Application/pdf", 10F, false, null);
         userFileRepositoryService.save(testUserFile);
 
         Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
