@@ -34,6 +34,7 @@ inputFields:
   partnerProgramStart: PARTNER_EDUCATION_SCHOOL_TERM_BEGIN_DATE
   partnerProgramEnd: PARTNER_EDUCATION_SCHOOL_TERM_END_DATE
   parentPartnerInMilitaryReserveOrNationalGuard: PARTNER_MILITARY_NATIONAL_GUARD
+  partnerLiveInHome: PARTNER_LIVE_IN_HOME
   languageRead: APPLICANT_PRIMARY_LANGUAGE
 
   parentIsServing: APPLICANT_MILITARY_ACTIVE_DUTY
