@@ -28,7 +28,7 @@
                                  th:with="emailContent=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', emailLink, shortCode))}">
                                 <a target="_blank" th:id="contact-provider-by-email" th:href="${emailContent}"
                                    class="button button--wide">
-                                    <i class="icon-markunread"></i>
+                                    <i aria-hidden="true" class="icon-markunread"></i>
                                     <span th:text="#{contact-provider-message.email-message}"></span>
                                 </a>
                             </div>
@@ -36,19 +36,19 @@
                                  th:with="textMessageContent=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-provider-message.message-body', textLink, shortCode))}">
                                 <a target="_blank" th:id="contact-provider-by-text" th:href="${textMessageContent}"
                                    class="button button--wide">
-                                    <i class="icon-insert_comment"></i>
+                                    <i aria-hidden="true"  class="icon-insert_comment"></i>
                                     <span th:text="#{contact-provider-message.text-message}"></span>
                                 </a>
                             </div>
                             <div class="center">
                                 <a th:id="copy-message-to-clipboard" th:href="'#copied'"
                                    class="button button--wide" onclick="copyToClipboard()">
-                                    <i class="icon-">content_copy</i>
+                                    <i aria-hidden="true" class="icon-">content_copy</i>
                                     <span th:text="#{contact-provider-message.copy-message}"></span>
                                 </a>
                                 <div th:id="message-copied-to-clipboard"
                                      class="button button--wide fake-button hidden">
-                                    <i class="icon-check_circle"></i>
+                                    <i aria-hidden="true" class="icon-check_circle"></i>
                                     <span th:text="#{contact-provider-message.copied-message}"></span>
                                 </div>
                             </div>
