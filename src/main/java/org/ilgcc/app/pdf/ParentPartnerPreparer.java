@@ -38,6 +38,9 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
                 results.put("partnerLiveInHome", new SingleField("partnerLiveInHome", "false", null));
             }
         }
+        if(parentHasPartner.equals("false")){
+            results.put("partnerLiveInHome", new SingleField("partnerLiveInHome", "false", null));
+        }
 
         //partner dob
         Optional<LocalDate> parentPartnerDateOfBirth = getDateInput(submission, "parentPartnerBirth");
