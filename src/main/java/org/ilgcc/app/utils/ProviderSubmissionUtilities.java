@@ -4,6 +4,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepositoryService;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -180,5 +181,14 @@ public class ProviderSubmissionUtilities {
         return submission.getSubmittedAt() != null &&
                 MINUTES.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt()),
                         todaysDate) > 0;
+    }
+    public Optional<Submission> getProviderSubmissionFromId(SubmissionRepositoryService submissionRepositoryService,
+        Submission submission) {
+        if (submission.getInputData().containsKey("providerResponseSubmissionId")) {
+            UUID providerId = UUID.fromString(submission.getInputData().get("providerResponseSubmissionId").toString());
+            return submissionRepositoryService.findById(providerId);
+        }
+
+        return Optional.empty();
     }
 }

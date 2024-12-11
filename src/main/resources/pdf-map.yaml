@@ -159,7 +159,7 @@ inputFields:
   providerLicenseNumber: PROVIDER_LICENSE_NUMBER
   providerSignature: PROVIDER_SIGNATURE
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
-
+  providerType: PROVIDER_TYPE
   dayCareName: PROVIDER_NAME_CORPORATE
   dayCareIdNumber: PROVIDER_ID_NUMBER
   dayCareAddressStreet: PROVIDER_ADDRESS_SERVICE_STREET
