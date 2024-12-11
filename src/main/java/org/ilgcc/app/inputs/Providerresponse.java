@@ -20,30 +20,44 @@ public class Providerresponse extends FlowInputs {
 
     private String providerResponseBusinessName;
 
-    @NotBlank
+    @NotBlank(message = "{provider-response.errors.first-name}")
     private String providerResponseFirstName;
 
-    @NotBlank
+    @NotBlank(message = "{provider-response.errors.last-name}")
     private String providerResponseLastName;
 
-    @NotBlank
+    @NotBlank(message = "{provider-response.errors.street}")
     private String providerResponseServiceStreetAddress1;
 
     private String providerResponseServiceStreetAddress2;
 
-    @NotBlank
+    @NotBlank(message = "{provider-response.errors.city}")
     private String providerResponseServiceCity;
 
-    @NotBlank
+    @NotBlank(message = "{provider-response.errors.state}")
     private String providerResponseServiceState;
 
-    @NotBlank
+    @NotBlank(message = "{provider-response.errors.zip}")
     private String providerResponseServiceZipCode;
 
     private String useSuggestedProviderAddress;
 
     @Phone(message = "{errors.invalid-phone-number}")
     private String providerResponseContactPhoneNumber;
+
+    private String providerMailingStreetAddress1;
+
+    private String providerMailingStreetAddress2;
+
+    private String providerMailingCity;
+
+    private String providerMailingState;
+
+    private String providerMailingZipCode;
+
+    private String providerMailingAddressSameAsServiceAddress;
+
+    private String useSuggestedMailingAddress;
 
     private String providerPaidCcap;
 

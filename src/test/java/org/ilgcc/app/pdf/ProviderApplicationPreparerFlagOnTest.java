@@ -81,10 +81,15 @@ public class ProviderApplicationPreparerFlagOnTest {
                 .withProviderSubmissionData()
                 .with("providerResponseAgreeToCare", "true")
                 .with("useSuggestedProviderAddress", "true")
+                .with("useSuggestedMailingAddress", "true")
                 .with("providerResponseServiceStreetAddress1_validated", "123 Main Street")
                 .with("providerResponseServiceCity_validated", "De Kalb")
                 .with("providerResponseServiceState_validated", "IL")
                 .with("providerResponseServiceZipCode_validated", "60112-1234")
+                .with("providerMailingStreetAddress1_validated", "888 Main Street")
+                .with("providerMailingCity_validated", "Chicago")
+                .with("providerMailingState_validated", "IL")
+                .with("providerMailingZipCode_validated", "60115-1234")
                 .build();
 
         submissionRepositoryService.save(providerSubmission);
@@ -119,18 +124,23 @@ public class ProviderApplicationPreparerFlagOnTest {
                 new SingleField("providerResponseServiceState", "IL", null));
         assertThat(result.get("providerResponseServiceZipCode")).isEqualTo(
                 new SingleField("providerResponseServiceZipCode", "60112-1234", null));
+
+        assertThat(result.get("providerMailingStreetAddress1")).isEqualTo(
+                new SingleField("providerMailingStreetAddress1", "888 Main Street", null));
+        assertThat(result.get("providerMailingStreetAddress2")).isEqualTo(
+                new SingleField("providerMailingStreetAddress2", "", null));
+        assertThat(result.get("providerMailingCity")).isEqualTo(
+                new SingleField("providerMailingCity", "Chicago", null));
+        assertThat(result.get("providerMailingState")).isEqualTo(
+                new SingleField("providerMailingState", "IL", null));
+        assertThat(result.get("providerMailingZipCode")).isEqualTo(
+                new SingleField("providerMailingZipCode", "60115-1234", null));
+
         assertThat(result.get("providerResponseContactPhoneNumber")).isEqualTo(
                 new SingleField("providerResponseContactPhoneNumber", "(111) 222-3333", null));
         assertThat(result.get("providerResponseContactEmail")).isEqualTo(
                 new SingleField("providerResponseContactEmail", "mail@daycareplace.org", null));
 
-        assertThat(result.get("dayCareName")).isEqualTo(null);
-        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressApt")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressCity")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressState")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 
     @Test

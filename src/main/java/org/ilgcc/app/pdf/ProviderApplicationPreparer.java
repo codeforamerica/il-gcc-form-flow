@@ -81,6 +81,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         Map<String, String> client = (Map<String, String>) providerSubmission.getInputData().getOrDefault("clientResponse", new HashMap<String, String>());
         results.put("clientResponseConfirmationCode", new SingleField("clientResponseConfirmationCode", (String) client.getOrDefault("clientResponseConfirmationCode", ""), null));
         results.putAll(prepareProviderAddressData(providerInputData));
+        results.putAll(prepareProviderMailingAddressData(providerInputData));
 
         results.put("providerLicenseNumber",
                 new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
@@ -170,6 +171,33 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 new SingleField("providerResponseServiceState", inputData.getOrDefault(mailingState, "").toString(), null));
         results.put("providerResponseServiceZipCode",
                 new SingleField("providerResponseServiceZipCode", inputData.getOrDefault(mailingZipCode, "").toString(), null));
+
+        return results;
+    }
+
+    private Map<String, SubmissionField> prepareProviderMailingAddressData(Map<String, Object> inputData) {
+        var results = new HashMap<String, SubmissionField>();
+        var useSuggestedMailingAddress = inputData.getOrDefault("useSuggestedMailingAddress", "false").equals("true");
+
+        String mailingAddressStreet1 = useSuggestedMailingAddress ? "providerMailingStreetAddress1_validated"
+                : "providerMailingStreetAddress1";
+        String mailingAddressStreet2 = useSuggestedMailingAddress ? "" : "providerMailingStreetAddress2";
+        String mailingCity = useSuggestedMailingAddress ? "providerMailingCity_validated" : "providerMailingCity";
+        String mailingState =
+                useSuggestedMailingAddress ? "providerMailingState_validated" : "providerMailingState";
+        String mailingZipCode =
+                useSuggestedMailingAddress ? "providerMailingZipCode_validated" : "providerMailingZipCode";
+
+        results.put("providerMailingStreetAddress1", new SingleField("providerMailingStreetAddress1",
+                inputData.getOrDefault(mailingAddressStreet1, "").toString(), null));
+        results.put("providerMailingStreetAddress2", new SingleField("providerMailingStreetAddress2",
+                inputData.getOrDefault(mailingAddressStreet2, "").toString(), null));
+        results.put("providerMailingCity",
+                new SingleField("providerMailingCity", inputData.getOrDefault(mailingCity, "").toString(), null));
+        results.put("providerMailingState",
+                new SingleField("providerMailingState", inputData.getOrDefault(mailingState, "").toString(), null));
+        results.put("providerMailingZipCode",
+                new SingleField("providerMailingZipCode", inputData.getOrDefault(mailingZipCode, "").toString(), null));
 
         return results;
     }
