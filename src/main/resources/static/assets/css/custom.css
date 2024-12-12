@@ -41,6 +41,9 @@ html, body {
   }
 }
 
+.form-group--error fieldset .text--error {
+  margin-bottom: 2.5rem;
+}
 
 .page-wrapper {
   padding-bottom: 17.8rem;
