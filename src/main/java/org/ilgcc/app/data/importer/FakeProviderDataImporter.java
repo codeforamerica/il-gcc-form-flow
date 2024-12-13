@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@Profile({"dev", "demo", "test"})
+@Profile({"dev", "demo", "test", "staging"})
 public class FakeProviderDataImporter implements InitializingBean {
     @Autowired
     private ProviderRepository providerRepository;
