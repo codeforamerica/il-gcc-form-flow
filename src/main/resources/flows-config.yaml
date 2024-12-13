@@ -529,10 +529,7 @@ flow:
       - name: provider-number
         condition: IsPaidByCCAP
       - name: registration-start
-  registration-start:
-    condition: EnableProviderRegistration
-    nextScreens:
-      - name: registration-getting-started
+  #Existing Provider Flow
   provider-number:
     crossFieldValidationAction: ValidateProviderNumber
     beforeSaveAction: SaveApplicationId
@@ -546,21 +543,52 @@ flow:
       - name: response
         condition: IsConfirmationCodeActive
       - name: submit-start
-  registration-family-response-intro:
-    condition: EnableProviderRegistration
-    nextScreens:
-      - name: confirmation-code
   response:
     beforeDisplayAction: FindApplicationData
     nextScreens:
       - name: provider-info
         condition: ProviderAgreedToCare
       - name: confirm-deny-care
+  provider-info:
+    nextScreens:
+      - name: service-address
+  service-address:
+    nextScreens:
+      - name: confirm-address
+  confirm-address:
+    nextScreens:
+      - name: mailing-address
+        condition: EnableProviderRegistration
+      - name: contact-info
+  mailing-address:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: confirm-mailing-address
+  confirm-mailing-address:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: contact-info
+  contact-info:
+    nextScreens:
+      - name: info-review
+  info-review:
+    afterSaveAction: UploadProviderSubmissionToS3
+    nextScreens:
+      - name: submit-complete-final
   confirm-deny-care:
     beforeDisplayAction: FormatChildrenWhoNeedCareNames
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
       - name: submit-complete-final
+  #New Provider Type
+  registration-start:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-getting-started
+  registration-family-response-intro:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: confirmation-code
   registration-getting-started:
     condition: EnableProviderRegistration
     nextScreens:
@@ -600,31 +628,30 @@ flow:
   registration-basic-info-intro:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: provider-info
-  provider-info:
+      - name: registration-info
+  registration-info:
     nextScreens:
-      - name: service-address
-  service-address:
+      - name: registration-service-address
+  registration-service-address:
     nextScreens:
-      - name: confirm-address
-  confirm-address:
+      - name: registration-confirm-address
+  registration-confirm-address:
     nextScreens:
-      - name: mailing-address
+      - name: registration-mailing-address
         condition: EnableProviderRegistration
-      - name: contact-info
-  mailing-address:
+      - name: registration-contact-info
+  registration-mailing-address:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: confirm-mailing-address
-  confirm-mailing-address:
+      - name: registration-confirm-mailing-address
+  registration-confirm-mailing-address:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: contact-info
-  contact-info:
+      - name: registration-contact-info
+  registration-contact-info:
     nextScreens:
-      - name: info-review
-  info-review:
-    afterSaveAction: UploadProviderSubmissionToS3
+      - name: registration-info-review
+  registration-info-review:
     nextScreens:
       - name: registration-home-provider-ssn
         condition: EnableProviderRegistration
@@ -653,6 +680,10 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-start-date
+  registration-start-date:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: submit-complete-final
   submit-complete-final:
     nextScreens:
       - name: registration-getting-started

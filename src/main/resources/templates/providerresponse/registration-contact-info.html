@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{provider-response-contact-info.title})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: typing}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-contact-info.header})}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::contact-info})}">
+                    <th:block th:ref="contact-info">
+                        <div class="form-card__content">
+                            <th:block th:replace="~{fragments/inputs/text ::
+                            text(inputName='providerResponseContactEmail',
+                            label=#{provider-response-contact-info.email},
+                            helpText=#{provider-response-contact-info.email-help})}" />
+                            <th:block
+                            th:replace="~{fragments/inputs/phone :: phone(
+                            inputName='providerResponseContactPhoneNumber',
+                            label=#{provider-response-contact-info.phone},
+                            helpText=#{provider-response-contact-info.phone-help})}"/>
+                        </div>
+                        <div class="form-card__footer">
+                            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{general.inputs.continue})}"/>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

@@ -12,7 +12,7 @@
                 <th:block
                         th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-review.header})}"/>
                 <th:block
-                        th:replace="~{fragments/form :: form(action=|/flow/${flow}/${screen}/submit|, content=~{::info})}">
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::info})}">
                     <th:block th:ref="info">
                         <div class="form-card__content">
                             <p class="text--left"><strong
@@ -24,7 +24,7 @@
                                 <li id="full-name"
                                     th:text="|${inputData.get('providerResponseFirstName')} ${inputData.get('providerResponseLastName')}|"></li>
                             </ol>
-                            <a id="edit-parent-info-basic" th:href="|/flow/${flow}/provider-info|"
+                            <a id="edit-parent-info-basic" th:href="|/flow/${flow}/registration-info|"
                                th:text="#{provider-response-info-review.basic-info-edit}"></a>
                             <hr class="spacing-below-15 spacing-above-15">
 
@@ -41,7 +41,7 @@
                             <div id="zipcode"
                                  th:text="${inputData.get('providerResponseServiceZipCode')}"></div>
                             <br>
-                            <a id="edit-home-address" th:href="|/flow/${flow}/service-address|"
+                            <a id="edit-home-address" th:href="|/flow/${flow}/registration-service-address|"
                                th:text="#{provider-response-info-review.child-care-service-address-edit}"></a>
                             <hr class="spacing-below-15 spacing-above-15">
                             <p class="text--left"><strong
@@ -58,7 +58,7 @@
                                 <p th:text="#{general.none-added}"></p>
                             </div>
                             <a id="edit-parent-contact-info-basic"
-                               th:href="|/flow/${flow}/contact-info|"
+                               th:href="|/flow/${flow}/registration-contact-info|"
                                th:text="#{parent-info-review.contact.info.link}"></a>
                         </div>
                         <div class="form-card__footer">
