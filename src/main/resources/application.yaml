@@ -120,7 +120,7 @@ org:
     dashboard:
       enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
-  version: ${APTIBLE_GIT_REF:no-version-set}
+  app-version: ${APTIBLE_GIT_REF:no-version-set}
   latest-commit: ${APTIBLE_GIT_COMMIT_SHA:false}
   generate-short-links: ${GENERATE_SHORT_LINKS_FLAG:false}
   show-no-provider-flow: ${SHOW_NO_PROVIDER_FLOW:true}
