@@ -40,7 +40,6 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: staging
-          ignore-missing: true
 
       - name: Announce on Slack when deployed
         uses: ravsamhq/notify-slack-action@v2
