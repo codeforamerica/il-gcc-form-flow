@@ -165,6 +165,7 @@ inputFields:
   providerLicenseNumber: PROVIDER_LICENSE_NUMBER
   providerSignature: PROVIDER_SIGNATURE
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
+  providerType: PROVIDER_TYPE
   clientResponseConfirmationCode: APPLICATION_CONFIRMATION_CODE
 
   dayCareName: PROVIDER_NAME_CORPORATE
