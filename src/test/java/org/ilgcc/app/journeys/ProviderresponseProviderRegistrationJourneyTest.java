@@ -185,6 +185,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactPhoneNumber", "5555555555");
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
+        
+        // Temporary Confimation Code
+        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.clickContinue();
 
         // info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
