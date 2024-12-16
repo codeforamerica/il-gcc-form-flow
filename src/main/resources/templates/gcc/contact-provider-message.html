@@ -44,13 +44,8 @@
                                 <a th:id="copy-message-to-clipboard" th:href="'#copied'"
                                    class="button button--wide" onclick="copyToClipboard()">
                                     <i aria-hidden="true" class="icon-">content_copy</i>
-                                    <span th:text="#{contact-provider-message.copy-message}"></span>
+                                    <span th:text="#{contact-provider-message.copy-message}" aria-live="assertive"></span>
                                 </a>
-                                <div th:id="message-copied-to-clipboard"
-                                     class="button button--wide fake-button hidden">
-                                    <i aria-hidden="true" class="icon-check_circle"></i>
-                                    <span th:text="#{contact-provider-message.copied-message}"></span>
-                                </div>
                             </div>
                             <div class="form-card__footer">
                                 <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(
@@ -75,15 +70,21 @@
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
-<script th:inline="javascript">
+<script th:with="copiedMessage=${#messages.msg('contact-provider-message.copied-message')}" th:inline="javascript">
   function copyToClipboard() {
     const text = document.getElementById('providerMessageP1').textContent + "\n\n"
         + document.getElementById('providerMessageP2').textContent;
+    const copyLink = document.getElementById('copy-message-to-clipboard');
+    const copiedText = [[${copiedMessage}]];
     navigator.clipboard.writeText(text)
     .then(() => {
       // Flip the button to clicked state by removing the old button and showing the correct button
-      document.getElementById('copy-message-to-clipboard').remove();
-      document.getElementById('message-copied-to-clipboard').classList.remove("hidden");
+      copyLink.classList.add("fake-button");
+      let icon = copyLink.querySelector("i");
+      icon.classList.remove("icon-");
+      icon.classList.add("icon-check_circle");
+      icon.textContent = "";
+      copyLink.querySelector("span").textContent = copiedText;
     })
     .catch(err => {
       console.error('Failed to copy to clipboard: ', err);
