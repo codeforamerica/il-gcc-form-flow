@@ -28,6 +28,8 @@
            th:if="${hasHelpText}"
            th:id="${inputName + '-help-text'}"
            th:text="${fieldsetHelpText}"></p>
+        <th:block
+                th:replace="~{fragments/inputError :: validationError(inputName=${inputName})}"></th:block>
       </legend>
       <input type="hidden" th:id="${inputName} + 'Hidden'" th:name="${inputName} + '[]'" value="">
       <th:block th:if="${hasContent}">
@@ -46,8 +48,6 @@
             checkboxInSet(inputName=${inputName}, value='NONE', label=${noneOfTheAboveLabel}, noneOfTheAbove=true)}"/>
         </th:block>
       </th:block>
-      <th:block
-          th:replace="~{fragments/inputError :: validationError(inputName=${inputName})}"></th:block>
     </fieldset>
   </div>
 </th:block>

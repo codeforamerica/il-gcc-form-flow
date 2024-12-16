@@ -41,8 +41,8 @@ html, body {
   }
 }
 
-.form-group--error fieldset .text--error {
-  margin-bottom: 2.5rem;
+.form-group > fieldset > legend > p.text--help+p.text--error {
+  margin-top: 2.5rem;
 }
 
 .page-wrapper {
