@@ -44,15 +44,16 @@ public class Providerresponse extends FlowInputs {
 
     @Phone(message = "{errors.invalid-phone-number}")
     private String providerResponseContactPhoneNumber;
-
+    
+    @NotBlank
     private String providerMailingStreetAddress1;
-
+    
     private String providerMailingStreetAddress2;
-
+    @NotBlank
     private String providerMailingCity;
-
+    @NotBlank
     private String providerMailingState;
-
+    @NotBlank
     private String providerMailingZipCode;
 
     private String providerMailingAddressSameAsServiceAddress;
