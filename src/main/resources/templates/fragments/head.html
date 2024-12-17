@@ -1,6 +1,7 @@
 <head th:fragment="head" th:assert="${!#strings.isEmpty(title)}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="version" th:content="${@environment.getProperty('il-gcc.app-version')}">
     <title th:text="${errorMessages == null ? title : #messages.msg('errors.general-title')}"></title>
     <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
     <script>
