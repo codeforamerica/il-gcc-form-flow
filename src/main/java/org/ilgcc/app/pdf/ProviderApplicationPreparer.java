@@ -3,6 +3,7 @@ package org.ilgcc.app.pdf;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
+import static org.ilgcc.app.utils.SubmissionUtilities.parentMailingAddressIsHomeAddress;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -150,54 +151,37 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 
     private Map<String, SubmissionField> prepareProviderAddressData(Map<String, Object> inputData) {
         var results = new HashMap<String, SubmissionField>();
-        var useSuggestedParentAddress = inputData.getOrDefault("useSuggestedProviderAddress", "false").equals("true");
 
-        String mailingAddressStreet1 = useSuggestedParentAddress ? "providerResponseServiceStreetAddress1_validated"
-                : "providerResponseServiceStreetAddress1";
-        String mailingAddressStreet2 = useSuggestedParentAddress ? "" : "providerResponseServiceStreetAddress2";
-        String mailingCity = useSuggestedParentAddress ? "providerResponseServiceCity_validated" : "providerResponseServiceCity";
-        String mailingState =
-                useSuggestedParentAddress ? "providerResponseServiceState_validated" : "providerResponseServiceState";
-        String mailingZipCode =
-                useSuggestedParentAddress ? "providerResponseServiceZipCode_validated" : "providerResponseServiceZipCode";
+        Map<String, String> providerAddressMapped = SubmissionUtilities.addressObject(inputData, "providerResponseService", "useSuggestedProviderAddress");
 
         results.put("providerResponseServiceStreetAddress1", new SingleField("providerResponseServiceStreetAddress1",
-                inputData.getOrDefault(mailingAddressStreet1, "").toString(), null));
+                providerAddressMapped.get("address1"), null));
         results.put("providerResponseServiceStreetAddress2", new SingleField("providerResponseServiceStreetAddress2",
-                inputData.getOrDefault(mailingAddressStreet2, "").toString(), null));
+                providerAddressMapped.get("address2"), null));
         results.put("providerResponseServiceCity",
-                new SingleField("providerResponseServiceCity", inputData.getOrDefault(mailingCity, "").toString(), null));
+                new SingleField("providerResponseServiceCity", providerAddressMapped.get("city"), null));
         results.put("providerResponseServiceState",
-                new SingleField("providerResponseServiceState", inputData.getOrDefault(mailingState, "").toString(), null));
+                new SingleField("providerResponseServiceState", providerAddressMapped.get("state"), null));
         results.put("providerResponseServiceZipCode",
-                new SingleField("providerResponseServiceZipCode", inputData.getOrDefault(mailingZipCode, "").toString(), null));
+                new SingleField("providerResponseServiceZipCode", providerAddressMapped.get("zipCode"), null));
 
         return results;
     }
 
     private Map<String, SubmissionField> prepareProviderMailingAddressData(Map<String, Object> inputData) {
         var results = new HashMap<String, SubmissionField>();
-        var useSuggestedMailingAddress = inputData.getOrDefault("useSuggestedMailingAddress", "false").equals("true");
-
-        String mailingAddressStreet1 = useSuggestedMailingAddress ? "providerMailingStreetAddress1_validated"
-                : "providerMailingStreetAddress1";
-        String mailingAddressStreet2 = useSuggestedMailingAddress ? "" : "providerMailingStreetAddress2";
-        String mailingCity = useSuggestedMailingAddress ? "providerMailingCity_validated" : "providerMailingCity";
-        String mailingState =
-                useSuggestedMailingAddress ? "providerMailingState_validated" : "providerMailingState";
-        String mailingZipCode =
-                useSuggestedMailingAddress ? "providerMailingZipCode_validated" : "providerMailingZipCode";
+        Map<String, String> mailingAddressMapped = SubmissionUtilities.addressObject(inputData, "providerMailing", "useSuggestedMailingAddress");
 
         results.put("providerMailingStreetAddress1", new SingleField("providerMailingStreetAddress1",
-                inputData.getOrDefault(mailingAddressStreet1, "").toString(), null));
+                mailingAddressMapped.get("address1"), null));
         results.put("providerMailingStreetAddress2", new SingleField("providerMailingStreetAddress2",
-                inputData.getOrDefault(mailingAddressStreet2, "").toString(), null));
+                mailingAddressMapped.get("address2"), null));
         results.put("providerMailingCity",
-                new SingleField("providerMailingCity", inputData.getOrDefault(mailingCity, "").toString(), null));
+                new SingleField("providerMailingCity", mailingAddressMapped.get("city"), null));
         results.put("providerMailingState",
-                new SingleField("providerMailingState", inputData.getOrDefault(mailingState, "").toString(), null));
+                new SingleField("providerMailingState",mailingAddressMapped.get("state"), null));
         results.put("providerMailingZipCode",
-                new SingleField("providerMailingZipCode", inputData.getOrDefault(mailingZipCode, "").toString(), null));
+                new SingleField("providerMailingZipCode", mailingAddressMapped.get("zipCode"), null));
 
         return results;
     }
