@@ -67,7 +67,7 @@ public class Providerresponse extends FlowInputs {
     @NotBlank(message = "{registration-licensing-info.errors.license-number}")
     private String providerLicenseNumber;
 
-    @NotBlank(message = "{registration-licensing-info.errors.license-state}")
+    @NotBlank(message = "{errors.provide-state}")
     private String providerLicenseState;
 
     @NotBlank(message = "{registration-licensed-care-location.error}")
