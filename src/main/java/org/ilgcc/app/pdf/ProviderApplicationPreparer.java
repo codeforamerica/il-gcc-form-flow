@@ -242,7 +242,11 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         if (hasProviderResponse(familySubmission) && providerSubmissionFromId(familySubmission).isPresent()) {
             Submission providerSubmission = providerSubmissionFromId(familySubmission).get();
             Map<String, Object> providerInputData = providerSubmission.getInputData();
-            return providerInputData.getOrDefault("providerResponseAgreeToCare", "false").equals("true");
+            if(providerInputData.containsKey("providerResponseAgreeToCare")){
+                return providerInputData.get("providerResponseAgreeToCare").equals("true");
+            }
+
+            return true;
         }
         return false;
     }

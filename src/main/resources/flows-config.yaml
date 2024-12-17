@@ -538,6 +538,7 @@ flow:
       - name: confirmation-code
   confirmation-code:
     crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
+    onPostAction: GenerateDummyClientSubmissionForDev
     afterSaveAction: CheckClientSubmissionForProvider
     nextScreens:
       - name: response
@@ -656,6 +657,7 @@ flow:
       - name: temporary-provider-response-confirmation-code-fix
 #      - name: registration-info-review
   temporary-provider-response-confirmation-code-fix:
+    onPostAction: GenerateDummyClientSubmissionForDev
     nextScreens:
       - name: registration-info-review
   registration-info-review:
