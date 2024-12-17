@@ -20,24 +20,24 @@ public class Providerresponse extends FlowInputs {
 
     private String providerResponseBusinessName;
 
-    @NotBlank(message = "{provider-response.errors.first-name}")
+    @NotBlank(message = "{errors.provide-first-name}")
     private String providerResponseFirstName;
 
-    @NotBlank(message = "{provider-response.errors.last-name}")
+    @NotBlank(message = "{errors.provide-last-name}")
     private String providerResponseLastName;
 
-    @NotBlank(message = "{provider-response.errors.street}")
+    @NotBlank(message = "{errors.provide-street}")
     private String providerResponseServiceStreetAddress1;
 
     private String providerResponseServiceStreetAddress2;
 
-    @NotBlank(message = "{provider-response.errors.city}")
+    @NotBlank(message = "{errors.provide-city}")
     private String providerResponseServiceCity;
 
-    @NotBlank(message = "{provider-response.errors.state}")
+    @NotBlank(message = "{errors.provide-state}")
     private String providerResponseServiceState;
 
-    @NotBlank(message = "{provider-response.errors.zip}")
+    @NotBlank(message = "{errors.provide-zip}")
     private String providerResponseServiceZipCode;
 
     private String useSuggestedProviderAddress;
@@ -67,7 +67,7 @@ public class Providerresponse extends FlowInputs {
     @NotBlank(message = "{registration-licensing-info.errors.license-number}")
     private String providerLicenseNumber;
 
-    @NotBlank(message = "{registration-licensing-info.errors.license-state}")
+    @NotBlank(message = "{errors.provide-state}")
     private String providerLicenseState;
 
     @NotBlank(message = "{registration-licensed-care-location.error}")

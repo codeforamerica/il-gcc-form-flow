@@ -135,8 +135,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("provider-response.errors.first-name"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("provider-response.errors.last-name"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-first-name"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-last-name"))).isTrue();
 
         testPage.enter("providerResponseFirstName", "ProviderFirst");
         testPage.enter("providerResponseLastName", "ProviderLast");
@@ -146,9 +146,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-service-address.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("provider-response.errors.street"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("provider-response.errors.city"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("provider-response.errors.zip"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-street"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-city"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-zip"))).isTrue();
 
         testPage.enter("providerResponseServiceStreetAddress1", "972 Mission St");
         testPage.enter("providerResponseServiceStreetAddress2", "5th floor");
