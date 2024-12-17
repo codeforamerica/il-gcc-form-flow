@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -70,6 +71,36 @@ public class SubmissionUtilities {
         return submission.getInputData().get(FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATE_ADDRESS + inputName)
                 .equals("true") && submission.getInputData()
                 .containsKey(inputName + "StreetAddress1" + FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATED);
+    }
+
+    public static Map<String, String> getAddress(Map<String, Object> inputData, String addressPrefix) {
+        Map<String, String> addressLines = new HashMap<>();
+
+        String suggestedAddressKey = String.format("useSuggested%sAddress", capitalize(addressPrefix));
+
+        var useSmartyValidatedAddress = inputData.getOrDefault(suggestedAddressKey, "false").equals("true");
+
+        String addressStreet1Key = addressPrefix + (useSmartyValidatedAddress ? "StreetAddress1_validated"
+                : "StreetAddress1");
+        String addressStreet2Key = useSmartyValidatedAddress ? "" : addressPrefix + "StreetAddress2";
+        String cityKey = addressPrefix + (useSmartyValidatedAddress ? "City_validated"
+                : "City");
+        String stateKey = addressPrefix + (useSmartyValidatedAddress ? "State_validated"
+                : "State");
+        String zipCodeKey = addressPrefix + (useSmartyValidatedAddress ? "ZipCode_validated"
+                : "ZipCode");
+
+        addressLines.put("address1", inputData.getOrDefault(addressStreet1Key, "").toString());
+        addressLines.put("address2", inputData.getOrDefault(addressStreet2Key, "").toString());
+        addressLines.put("city", inputData.getOrDefault(cityKey, "").toString());
+        addressLines.put("state", inputData.getOrDefault(stateKey, "").toString());
+        addressLines.put("zipCode", inputData.getOrDefault(zipCodeKey, "").toString());
+
+        return addressLines;
+    }
+
+    private static String capitalize(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
     public static String applicantFirstName(Map<String, Object> inputData) {
@@ -227,19 +258,21 @@ public class SubmissionUtilities {
         if (inputData.containsKey("dayCareChoice")) {
             String dayCareChoice = (String) inputData.get("dayCareChoice");
             return ChildCareProvider.valueOf(dayCareChoice).getDisplayName();
-        } else if (inputData.containsKey("familyIntendedProviderName")){
+        } else if (inputData.containsKey("familyIntendedProviderName")) {
             return (String) inputData.get("familyIntendedProviderName");
         } else {
             return "";
         }
 
     }
-    
+
     public static boolean hasNotChosenProvider(Submission submission) {
-        return submission.getInputData().containsKey("hasChosenProvider") && submission.getInputData().get("hasChosenProvider").equals("false");
+        return submission.getInputData().containsKey("hasChosenProvider") && submission.getInputData().get("hasChosenProvider")
+                .equals("false");
     }
 
     public static boolean hasProviderResponse(Submission submission) {
-        return submission.getInputData().containsKey("providerResponseSubmissionId") && !submission.getInputData().get("providerResponseSubmissionId").toString().isEmpty();
+        return submission.getInputData().containsKey("providerResponseSubmissionId") && !submission.getInputData()
+                .get("providerResponseSubmissionId").toString().isEmpty();
     }
 }
