@@ -47,7 +47,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
             return prepareNoProviderData();
         }
 
-        if (providerAcceptsCare(submission)) {
+        if (useProviderResponse(submission)) {
             return prepareProviderResponse(submission);
         } else {
             if (expandExistingProviderFlowFlag) {
@@ -238,7 +238,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         return Optional.empty();
     }
 
-    private boolean providerAcceptsCare(Submission familySubmission) {
+    private boolean useProviderResponse(Submission familySubmission) {
         if (hasProviderResponse(familySubmission) && providerSubmissionFromId(familySubmission).isPresent()) {
             Submission providerSubmission = providerSubmissionFromId(familySubmission).get();
             Map<String, Object> providerInputData = providerSubmission.getInputData();
