@@ -106,6 +106,12 @@ main.slab {
   margin-right: 25px;
 }
 
+.button.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 60%;
+}
+
 /* Links and buttons */
 a, .button--link {
   color: var(--idhs-base-blue);
