@@ -152,7 +152,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
     private Map<String, SubmissionField> prepareProviderAddressData(Map<String, Object> inputData) {
         var results = new HashMap<String, SubmissionField>();
 
-        Map<String, String> providerAddressMapped = SubmissionUtilities.addressObject(inputData, "providerResponseService", "useSuggestedProviderAddress");
+        Map<String, String> providerAddressMapped = SubmissionUtilities.getAddress(inputData, "providerResponseService");
 
         results.put("providerResponseServiceStreetAddress1", new SingleField("providerResponseServiceStreetAddress1",
                 providerAddressMapped.get("address1"), null));
@@ -170,7 +170,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 
     private Map<String, SubmissionField> prepareProviderMailingAddressData(Map<String, Object> inputData) {
         var results = new HashMap<String, SubmissionField>();
-        Map<String, String> mailingAddressMapped = SubmissionUtilities.addressObject(inputData, "providerMailing", "useSuggestedMailingAddress");
+        Map<String, String> mailingAddressMapped = SubmissionUtilities.getAddress(inputData, "providerMailing");
 
         results.put("providerMailingStreetAddress1", new SingleField("providerMailingStreetAddress1",
                 mailingAddressMapped.get("address1"), null));

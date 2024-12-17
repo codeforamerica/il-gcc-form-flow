@@ -73,19 +73,21 @@ public class SubmissionUtilities {
                 .containsKey(inputName + "StreetAddress1" + FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATED);
     }
 
-    public static Map<String, String> addressObject(Map<String, Object> inputData, String addressPrefix, String useSuggestedKey) {
+    public static Map<String, String> getAddress(Map<String, Object> inputData, String addressPrefix) {
         Map<String, String> addressLines = new HashMap<>();
 
-        var useSuggestedMailingAddress = inputData.getOrDefault(useSuggestedKey, "false").equals("true");
+        String suggestedAddressKey = String.format("useSuggested%sAddress", capitalize(addressPrefix));
 
-        String addressStreet1Key = addressPrefix + (useSuggestedMailingAddress ? "StreetAddress1_validated"
+        var useSmartyValidatedAddress = inputData.getOrDefault(suggestedAddressKey, "false").equals("true");
+
+        String addressStreet1Key = addressPrefix + (useSmartyValidatedAddress ? "StreetAddress1_validated"
                 : "StreetAddress1");
-        String addressStreet2Key = useSuggestedMailingAddress ? "" : addressPrefix + "StreetAddress2";
-        String cityKey = addressPrefix + (useSuggestedMailingAddress ? "City_validated"
+        String addressStreet2Key = useSmartyValidatedAddress ? "" : addressPrefix + "StreetAddress2";
+        String cityKey = addressPrefix + (useSmartyValidatedAddress ? "City_validated"
                 : "City");
-        String stateKey = addressPrefix + (useSuggestedMailingAddress ? "State_validated"
+        String stateKey = addressPrefix + (useSmartyValidatedAddress ? "State_validated"
                 : "State");
-        String zipCodeKey = addressPrefix + (useSuggestedMailingAddress ? "ZipCode_validated"
+        String zipCodeKey = addressPrefix + (useSmartyValidatedAddress ? "ZipCode_validated"
                 : "ZipCode");
 
         addressLines.put("address1", inputData.getOrDefault(addressStreet1Key, "").toString());
@@ -95,6 +97,10 @@ public class SubmissionUtilities {
         addressLines.put("zipCode", inputData.getOrDefault(zipCodeKey, "").toString());
 
         return addressLines;
+    }
+
+    private static String capitalize(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
     public static String applicantFirstName(Map<String, Object> inputData) {

@@ -37,7 +37,7 @@
                                     th:text="#{provider-response-info-review.child-care-service-address}"></strong>
                             </p>
                             <th:block
-                                    th:with="serviceAddress = ${T(org.ilgcc.app.utils.SubmissionUtilities).addressObject(inputData, 'providerResponseService', 'useSuggestedProviderAddress')}">
+                                    th:with="serviceAddress = ${T(org.ilgcc.app.utils.SubmissionUtilities).getAddress(inputData, 'providerResponseService')}">
                                 <div id="provider-service-address-1"
                                      th:text="${serviceAddress.get('address1').toString()}"></div>
                                 <div id="provider-service-address-2"
@@ -58,7 +58,7 @@
                                     th:text="#{provider-response-info-review.mailing-address}"></strong>
                             </p>
                             <th:block
-                                    th:with="mailingAddress = ${T(org.ilgcc.app.utils.SubmissionUtilities).addressObject(inputData, 'providerMailing', 'useSuggestedMailingAddress')}">
+                                    th:with="mailingAddress = ${T(org.ilgcc.app.utils.SubmissionUtilities).getAddress(inputData, 'providerMailing')}">
                                 <div id="provider-mailing-address-1"
                                      th:text="${mailingAddress.get('address1').toString()}"></div>
                                 <div id="provider-mailing-address-2"
