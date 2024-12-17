@@ -185,20 +185,25 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
         
-        // Temporary Confimation Code
+        // Temporary Confirmation Code
         // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
-        // info-review
+        // registration-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
-        assertThat(testPage.findElementTextById("full-name")).isEqualTo("ProviderFirst ProviderLast");
-        assertThat(testPage.findElementTextById("address-1")).isEqualTo("972 Mission St");
-        assertThat(testPage.findElementTextById("city-state")).isEqualTo("San Francisco, CA");
-        assertThat(testPage.findElementTextById("zipcode")).isEqualTo("94103");
-        assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
-        assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
+        assertThat(testPage.findElementTextById("provider-full-name")).isEqualTo("ProviderFirst ProviderLast");
+        assertThat(testPage.findElementTextById("provider-service-address-1")).isEqualTo("972 Mission St");
+        assertThat(testPage.findElementTextById("provider-service-address-2")).isEqualTo("5th floor");
+        assertThat(testPage.findElementTextById("provider-service-city-state")).isEqualTo("San Francisco, CA");
+        assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("94103");
+        assertThat(testPage.findElementTextById("provider-mailing-address-1")).isEqualTo("972 Mission St");
+        assertThat(testPage.findElementTextById("provider-mailing-address-2")).isEqualTo("5th floor");
+        assertThat(testPage.findElementTextById("provider-mailing-city-state")).isEqualTo("San Francisco, CA");
+        assertThat(testPage.findElementTextById("provider-mailing-zipcode")).isEqualTo("94103");
+        assertThat(testPage.findElementTextById("provider-phone")).isEqualTo("(555) 555-5555");
+        assertThat(testPage.findElementTextById("provider-email")).isEqualTo("foo@bar.com");
         testPage.clickContinue();
 
         // registration-home-provider-ssn
