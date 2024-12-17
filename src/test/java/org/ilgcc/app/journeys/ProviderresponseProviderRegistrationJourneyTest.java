@@ -3,7 +3,6 @@ package org.ilgcc.app.journeys;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import formflow.library.data.SubmissionRepository;
-import jakarta.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
