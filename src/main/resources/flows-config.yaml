@@ -666,7 +666,7 @@ flow:
         condition: EnableProviderRegistration
       - name: submit-complete-final
   registration-home-provider-ssn:
-    condition: EnableProviderRegistration
+    condition: ProviderSsnRequired
     nextScreens:
       - name: registration-home-provider-dob
   registration-home-provider-dob:
