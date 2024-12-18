@@ -163,9 +163,10 @@ inputFields:
   providerResponseContactPhoneNumber: PROVIDER_PHONE_NUMBER
   providerResponseContactEmail: PROVIDER_EMAIL
   providerLicenseNumber: PROVIDER_LICENSE_NUMBER
+  providerType: PROVIDER_TYPE
+  providerIdentityCheckSSN: PROVIDER_SSN
   providerSignature: PROVIDER_SIGNATURE
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
-  providerType: PROVIDER_TYPE
   clientResponseConfirmationCode: APPLICATION_CONFIRMATION_CODE
 
   dayCareName: PROVIDER_NAME_CORPORATE
