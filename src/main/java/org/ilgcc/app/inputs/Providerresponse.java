@@ -40,7 +40,7 @@ public class Providerresponse extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String providerResponseServiceZipCode;
 
-    private String useSuggestedProviderAddress;
+    private String useSuggestedProviderResponseServiceAddress;
 
     @Phone(message = "{errors.invalid-phone-number}")
     private String providerResponseContactPhoneNumber;
@@ -58,7 +58,7 @@ public class Providerresponse extends FlowInputs {
 
     private String providerMailingAddressSameAsServiceAddress;
 
-    private String useSuggestedMailingAddress;
+    private String useSuggestedProviderMailingAddress;
 
     private String providerPaidCcap;
 

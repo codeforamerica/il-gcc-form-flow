@@ -19,7 +19,7 @@
                     header=#{parent-confirm-address.header},
                     notice=#{parent-confirm-address.note-suggested-addr},
                     addressInputToCheck='providerMailing',
-                    inputName='useSuggestedMailingAddress')}"/>
+                    inputName='useSuggestedProviderMailingAddress')}"/>
                             </th:block>
                             <th:block th:unless="${hasSuggestion}">
                                 <th:block th:replace="~{fragments/inputs/overrides/addressSuggestionNotFound ::
@@ -27,7 +27,7 @@
                     header=#{parent-confirm-address.header},
                     notice=#{parent-confirm-address.note-addr-not-found},
                     addressInputToCheck='providerMailing',
-                    inputName='useSuggestedMailingAddress',
+                    inputName='useSuggestedProviderMailingAddress',
                     editAddressURL='/flow/providerresponse/mailing-address')}"/>
                             </th:block>
                         </div>
