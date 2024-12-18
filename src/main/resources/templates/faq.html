@@ -129,16 +129,23 @@
                 <h3 class="h3" th:text="#{faq.questions-about-the-online-application.what-is-get-child-care-il-question}"></h3>
                 <p th:text="#{faq.questions-about-the-online-application.what-is-get-child-care-il-answer}"></p>
                 <h3 class="h3" th:text="#{faq.questions-about-the-online-application.who-can-use-the-online-application-question}"></h3>
-                <th:block th:with="providers=${T(org.ilgcc.app.utils.ChildCareProvider).values()}">
-                  <p th:text="#{faq.questions-about-the-online-application.starting-in-summer-2024(${#arrays.length(providers)})}"></p>
-                  <ul class="list--bulleted">
-                    <th:block th:each="provider : ${providers}">
-                      <li th:text="${provider.displayName}"></li>
-                    </th:block>
-                  </ul>
+                <th:block th:if="${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true'}">
+                  <p th:utext="#{faq.questions-about-the-online-application.starting-in-january-2025}"></p>
+                  <p th:text="#{faq.questions-about-the-online-application.the-online-application-2025}"></p>
+                </th:block>
+                <th:block th:unless="${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true'}">
+                  <th:block th:with="providers=${T(org.ilgcc.app.utils.ChildCareProvider).values()}">
+                    <p th:text="#{faq.questions-about-the-online-application.starting-in-summer-2024(${#arrays.length(providers)})}"></p>
+                    <ul class="list--bulleted">
+                      <th:block th:each="provider : ${providers}">
+                        <li th:text="${provider.displayName}"></li>
+                      </th:block>
+                    </ul>
+                  </th:block>
+                  <p th:text="#{faq.questions-about-the-online-application.the-online-application}"></p>
                 </th:block>
 
-                <p th:text="#{faq.questions-about-the-online-application.the-online-application}"></p>
+
                 <h3 class="h3" th:text="#{faq.questions-about-the-online-application.what-can-i-do}"></h3>
                 <p th:text="#{faq.questions-about-the-online-application.what-can-i-do.please-contact}"></p>
                 <p th:utext="#{faq.questions-about-the-online-application.what-can-i-do.local-agency-number}"></p>
