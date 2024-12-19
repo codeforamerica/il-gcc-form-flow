@@ -58,7 +58,10 @@ public class CheckClientSubmissionForProvider implements Action {
             Optional<Submission> clientSubmission = submissionRepositoryService.findById(clientSubmissionId);
             if (clientSubmission.isPresent()) {
                 Submission clientSubmissionInfo = clientSubmission.get();
-
+                submission.getInputData().put("shortCodeClientSubmissionId", clientSubmissionInfo.getId());
+                submissionRepositoryService.save(submission);
+                clientSubmissionInfo.getInputData().put("tempProviderResponseSubmissionId", submission.getId());
+                submissionRepositoryService.save(clientSubmissionInfo);
                 // Used to display the correct provider name, if available, for the first provider screen
                 httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, getProviderName(clientSubmissionInfo));
 
