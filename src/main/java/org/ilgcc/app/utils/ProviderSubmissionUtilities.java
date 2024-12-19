@@ -47,7 +47,7 @@ public class ProviderSubmissionUtilities {
     );
 
     public static Optional<UUID> getClientId(Submission providerSubmission) {
-        if (providerSubmission.getInputData().containsKey("familySubmissionId")) {
+        if (providerSubmission.getInputData().containsKey("familySubmissionId") || providerSubmission.getInputData().containsKey("clientResponseConfirmationCode")) {
             String applicantID = (String) providerSubmission.getInputData().get("familySubmissionId");
             return Optional.of(UUID.fromString(applicantID));
         }
@@ -188,7 +188,10 @@ public class ProviderSubmissionUtilities {
             UUID providerId = UUID.fromString(submission.getInputData().get("providerResponseSubmissionId").toString());
             return submissionRepositoryService.findById(providerId);
         }
-
+        if (submission.getInputData().containsKey("tempProviderResponseSubmissionId")) {
+            UUID providerId = UUID.fromString(submission.getInputData().get("tempProviderResponseSubmissionId").toString());
+            return submissionRepositoryService.findById(providerId);
+        }
         return Optional.empty();
     }
 }
