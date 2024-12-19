@@ -15,5 +15,5 @@ form-flow:
         creation-point: creation
 il-gcc:
   generate-short-links: ${GENERATE_SHORT_LINKS_FLAG:true}
-  show-no-provider-flow: ${SHOW_NO_PROVIDER_FLOW:true}
-  allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:true}
+  show-no-provider-flow: ${SHOW_NO_PROVIDER_FLOW:false}
+  allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
