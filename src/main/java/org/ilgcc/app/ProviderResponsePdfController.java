@@ -5,11 +5,9 @@ import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.pdf.PdfService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,19 +24,15 @@ public class ProviderResponsePdfController {
 
     private final PdfService pdfService;
     private final SubmissionRepositoryService submissionRepositoryService;
-    private final MessageSource messageSource;
 
-    public ProviderResponsePdfController(PdfService pdfService, SubmissionRepositoryService submissionRepositoryService,
-            MessageSource messageSource) {
+    public ProviderResponsePdfController(PdfService pdfService, SubmissionRepositoryService submissionRepositoryService) {
         this.pdfService = pdfService;
         this.submissionRepositoryService = submissionRepositoryService;
-        this.messageSource = messageSource;
     }
 
 
     @GetMapping({"{flow}/{submissionId}"})
-    ResponseEntity<?> downloadPdf(@PathVariable String flow, @PathVariable String submissionId, HttpServletRequest request,
-            Locale locale) throws IOException {
+    ResponseEntity<?> downloadPdf(@PathVariable String flow, @PathVariable String submissionId, HttpServletRequest request) throws IOException {
         log.info("GET downloadPdf (url: {}): flow: {}, submissionId: {}", sanitizeString(request.getRequestURI().toLowerCase()),
                 sanitizeString(flow),
                 sanitizeString(submissionId));
