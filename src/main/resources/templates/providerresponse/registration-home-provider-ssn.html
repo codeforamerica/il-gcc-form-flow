@@ -1,27 +1,41 @@
 <!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{registration-home-provider-ssn.title})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: socialSecurity}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeaderForSingleInputScreen ::
+              cardHeaderForSingleInputScreen(header=#{registration-home-provider-ssn.header}, subtext=#{registration-home-provider-ssn.subtext}, required='true')}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::providerLicensed})}">
+                    <th:block th:ref="providerLicensed">
+                        <th:block th:ref="inputContent">
+                            <div class="form-card__content">
+                                <th:block
+                                        th:replace="~{fragments/inputs/ssn :: ssn(inputName='providerIdentityCheckSSN', ariaLabel='header')}"/>
+                                <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                                  text=#{general.button.continue})}"/>
+                                <div class="display-flex">
+                                    <div class="spacing-right-10">
+                                        <th:block
+                                                th:replace="~{fragments/icons :: filledLock}"></th:block>
+                                    </div>
+                                    <p class="text--small"
+                                       th:utext="#{registration-home-provider-ssn.secure-footer}"></p>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>

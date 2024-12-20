@@ -87,5 +87,7 @@ public class Providerresponse extends FlowInputs {
     @NotBlank
     private String providerLicenseExemptRelationship;
 
+    private String providerIdentityCheckSSN;
+    
     private String providerType;
 }

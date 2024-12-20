@@ -668,7 +668,8 @@ flow:
         condition: EnableProviderRegistration
       - name: submit-complete-final
   registration-home-provider-ssn:
-    condition: EnableProviderRegistration
+    crossFieldValidationAction: ValidateHomeProviderSSN
+    condition: ProviderSsnRequired
     nextScreens:
       - name: registration-home-provider-dob
   registration-home-provider-dob:

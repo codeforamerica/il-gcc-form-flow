@@ -207,6 +207,15 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // registration-home-provider-ssn
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-ssn.title"));
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-ssn.error"))).isTrue();
+        testPage.enter("providerIdentityCheckSSN", "123456789");
+
+        testPage.clickContinue();
+        // registration-home-provider-dob
+
     }
 
 
