@@ -26,7 +26,8 @@ public class SetProviderType implements Action {
         String providerLicensedCareLocation = (String) inputData.getOrDefault("providerLicensedCareLocation", "");
         switch (providerLicensedCareLocation) {
             case "childCareCenter":
-                return ProviderType.LICENSED_DAY_CARE_HOME.name();
+                return ProviderType.LICENSED_DAY_CARE_CENTER.name();
+              
             case "childCareHome":
                 return ProviderType.LICENSED_DAY_CARE_HOME.name();
             case "groupChildCareHome":
@@ -53,7 +54,7 @@ public class SetProviderType implements Action {
                 if (providerLicenseExemptRelationship.equals("Relative")) {
                     return ProviderType.LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.name();
                 } else if (providerLicenseExemptRelationship.equals("Not related")) {
-                    return ProviderType.LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.name();
+                    return ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_CHILDS_HOME.name();
                 }
             }
         }
