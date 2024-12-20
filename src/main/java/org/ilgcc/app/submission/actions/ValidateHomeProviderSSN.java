@@ -30,7 +30,7 @@ public class ValidateHomeProviderSSN implements Action {
 
         Locale locale = LocaleContextHolder.getLocale();
 
-        String regex = "^\\d{3}-\\d{2}-\\d{4}"; // Matches exactly 9 digits
+        String regex = "^\\d{3}-\\d{2}-\\d{4}"; 
 
         Pattern pattern = Pattern.compile(regex);
         Matcher requiredSSNMatcher = pattern.matcher(inputValue);
