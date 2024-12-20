@@ -609,6 +609,7 @@ flow:
     nextScreens:
       - name: registration-licensed-care-location
   registration-licensed-care-location:
+    onPostAction: SetProviderType
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-basic-info-intro
@@ -623,6 +624,7 @@ flow:
     nextScreens:
       - name: registration-unlicensed-relationship
   registration-unlicensed-relationship:
+    onPostAction: SetProviderType
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-basic-info-intro
