@@ -70,7 +70,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.36'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.4.0'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.4.1'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
