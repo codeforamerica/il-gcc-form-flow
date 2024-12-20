@@ -1,0 +1,28 @@
+package org.ilgcc.app.utils.enums;
+
+import lombok.Getter;
+
+@Getter
+public enum ProviderType {
+
+    LICENSED_DAY_CARE_CENTER("LICENSED_DAY_CARE_CENTER_760"),
+    LICENSED_DAY_CARE_HOME("LICENSED_DAY_CARE_HOME_762"),
+    LICENSED_GROUP_CHILD_CARE_HOME("LICENSED_GROUP_DAY_CARE_HOME_763"),
+    LICENSE_EXEMPT_CHILD_CARE_CENTER("DAY_CARE_CENTER_EXEMPT_FROM_LICENSING_761"),
+    LICENSE_EXEMPT_RELATIVE_IN_PROVIDER_HOME("CARE_BY_RELATIVE_IN_CHILD_CARE_PROVIDERS_HOME_765"),
+    LICENSE_EXEMPT_NONRELATIVE_IN_PROVIDER_HOME("CARE_BY_NON_RELATIVE_IN_CHILD_CARE_PROVIDERS_HOME_764"),
+    LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME("CARE_BY_RELATIVE_IN_CHILDS_HOME_767"),
+    LICENSE_EXEMPT_NONRELATIVE_IN_CHILDS_HOME("CARE_BY_NON_RELATIVE_IN_CHILDS_HOME_766");
+
+    private final String pdfFieldName;
+
+    ProviderType(String pdfFieldName) {
+        this.pdfFieldName = pdfFieldName;
+    }
+
+    public static String setPdfFieldNameFromName(String name){
+        return ProviderType.valueOf(name).pdfFieldName;
+    }
+}
+
+
