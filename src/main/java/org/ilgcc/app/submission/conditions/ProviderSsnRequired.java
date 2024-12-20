@@ -2,17 +2,22 @@ package org.ilgcc.app.submission.conditions;
 
 import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
+import java.util.List;
+import org.ilgcc.app.utils.enums.ProviderType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProviderSsnRequired implements Condition {
-    // Licensed Child Care Home
-    // Licensed Group Child Care Home
-    // License-exempt Relative (In provider's)
-    // License-exempt Non-Relative (In providers Home)
-    // License-exempt Relative (In childs home)
-    // License-exempt Non-Relative (In childs home)
+
+    final static List providerTypesRequired = List.of(
+            ProviderType.LICENSED_DAY_CARE_HOME.name(),
+            ProviderType.LICENSED_GROUP_CHILD_CARE_HOME.name(),
+            ProviderType.LICENSE_EXEMPT_RELATIVE_IN_PROVIDER_HOME.name(),
+            ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_PROVIDER_HOME.name(),
+            ProviderType.LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.name(),
+            ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_CHILDS_HOME.name()
+    );
 
     @Value("${il-gcc.allow-provider-registration-flow}")
     private boolean enableProviderRegistration;
@@ -22,8 +27,8 @@ public class ProviderSsnRequired implements Condition {
         return enableProviderRegistration && displayScreen(submission);
     }
 
-    private Boolean displayScreen(Submission submission){
-        // suggested implementation: check if the provider type is in the list
-        return true;
+    private Boolean displayScreen(Submission submission) {
+        String providerType = (String) submission.getInputData().getOrDefault("providerType", "");
+        return providerTypesRequired.contains(providerType);
     }
 }
