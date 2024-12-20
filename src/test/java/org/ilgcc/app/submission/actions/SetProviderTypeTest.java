@@ -48,7 +48,7 @@ public class SetProviderTypeTest {
     }
 
     @Test
-    public void setsLicensedGroupChildCareHome() {
+    public void setLicensedGroupChildCareHome() {
         Submission submission = new SubmissionTestBuilder()
                 .with("providerCurrentlyLicensed", "true")
                 .with("providerLicensedCareLocation", "groupChildCareHome")
@@ -106,14 +106,14 @@ public class SetProviderTypeTest {
         Submission submission = new SubmissionTestBuilder()
                 .with("providerCurrentlyLicensed", "false")
                 .with("providerLicenseExemptType", "Self")
-                .with("providerLicenseExemptCareLocation", "Childs home")
+                .with("providerLicenseExemptCareLocation", "Providers home")
                 .with("providerLicenseExemptRelationship", "Not related")
                 .build();
 
         action.run(submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(
-                ProviderType.LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.name());
+                ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_PROVIDER_HOME.name());
     }
 
     @Test
@@ -122,12 +122,12 @@ public class SetProviderTypeTest {
                 .with("providerCurrentlyLicensed", "false")
                 .with("providerLicenseExemptType", "Self")
                 .with("providerLicenseExemptCareLocation", "Childs home")
-                .with("providerLicenseExemptRelationship", "Relative")
+                .with("providerLicenseExemptRelationship", "Not related")
                 .build();
 
         action.run(submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(
-                ProviderType.LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.name());
+                ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_CHILDS_HOME.name());
     }
 }
