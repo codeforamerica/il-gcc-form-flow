@@ -2,7 +2,9 @@ package org.ilgcc.app.submission.actions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
+import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.app.utils.enums.ProviderType;
 import org.junit.jupiter.api.Test;
@@ -15,10 +17,15 @@ public class SetProviderTypeTest {
     public void setsProviderTypeNullIfMissingData() {
         Submission submission = new SubmissionTestBuilder()
                 .with("providerCurrentlyLicensed", "")
-                .with("providerLicensedCareLocation", "")
                 .build();
 
-        action.run(submission);
+        Map<String, Object> formData = Map.of(
+                "providerLicensedCareLocation", ""
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.run(formSubmission, submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(null);
     }
@@ -27,10 +34,15 @@ public class SetProviderTypeTest {
     public void setsLicensedChildCareCenter() {
         Submission submission = new SubmissionTestBuilder()
                 .with("providerCurrentlyLicensed", "true")
-                .with("providerLicensedCareLocation", "childCareCenter")
                 .build();
 
-        action.run(submission);
+        Map<String, Object> formData = Map.of(
+                "providerLicensedCareLocation", "childCareCenter"
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.run(formSubmission, submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(ProviderType.LICENSED_DAY_CARE_CENTER.name());
     }
@@ -39,10 +51,15 @@ public class SetProviderTypeTest {
     public void setsLicensedChildCareHome() {
         Submission submission = new SubmissionTestBuilder()
                 .with("providerCurrentlyLicensed", "true")
-                .with("providerLicensedCareLocation", "childCareHome")
                 .build();
 
-        action.run(submission);
+        Map<String, Object> formData = Map.of(
+                "providerLicensedCareLocation", "childCareHome"
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.run(formSubmission, submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(ProviderType.LICENSED_DAY_CARE_HOME.name());
     }
@@ -51,10 +68,15 @@ public class SetProviderTypeTest {
     public void setLicensedGroupChildCareHome() {
         Submission submission = new SubmissionTestBuilder()
                 .with("providerCurrentlyLicensed", "true")
-                .with("providerLicensedCareLocation", "groupChildCareHome")
                 .build();
 
-        action.run(submission);
+        Map<String, Object> formData = Map.of(
+                "providerLicensedCareLocation", "groupChildCareHome"
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.run(formSubmission, submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(ProviderType.LICENSED_GROUP_CHILD_CARE_HOME.name());
     }
@@ -66,7 +88,11 @@ public class SetProviderTypeTest {
                 .with("providerLicenseExemptType", "License-exempt")
                 .build();
 
-        action.run(submission);
+        Map<String, Object> formData = Map.of();
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.run(formSubmission, submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(ProviderType.LICENSE_EXEMPT_CHILD_CARE_CENTER.name());
     }
@@ -77,10 +103,15 @@ public class SetProviderTypeTest {
                 .with("providerCurrentlyLicensed", "false")
                 .with("providerLicenseExemptType", "Self")
                 .with("providerLicenseExemptCareLocation", "Providers home")
-                .with("providerLicenseExemptRelationship", "Relative")
                 .build();
 
-        action.run(submission);
+        Map<String, Object> formData = Map.of(
+                "providerLicenseExemptRelationship", "Relative"
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.run(formSubmission, submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(
                 ProviderType.LICENSE_EXEMPT_RELATIVE_IN_PROVIDER_HOME.name());
@@ -92,10 +123,15 @@ public class SetProviderTypeTest {
                 .with("providerCurrentlyLicensed", "false")
                 .with("providerLicenseExemptType", "Self")
                 .with("providerLicenseExemptCareLocation", "Childs home")
-                .with("providerLicenseExemptRelationship", "Relative")
                 .build();
 
-        action.run(submission);
+        Map<String, Object> formData = Map.of(
+                "providerLicenseExemptRelationship", "Relative"
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.run(formSubmission, submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(
                 ProviderType.LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.name());
@@ -107,10 +143,15 @@ public class SetProviderTypeTest {
                 .with("providerCurrentlyLicensed", "false")
                 .with("providerLicenseExemptType", "Self")
                 .with("providerLicenseExemptCareLocation", "Providers home")
-                .with("providerLicenseExemptRelationship", "Not related")
                 .build();
 
-        action.run(submission);
+        Map<String, Object> formData = Map.of(
+                "providerLicenseExemptRelationship", "Not related"
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.run(formSubmission, submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(
                 ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_PROVIDER_HOME.name());
@@ -122,10 +163,15 @@ public class SetProviderTypeTest {
                 .with("providerCurrentlyLicensed", "false")
                 .with("providerLicenseExemptType", "Self")
                 .with("providerLicenseExemptCareLocation", "Childs home")
-                .with("providerLicenseExemptRelationship", "Not related")
                 .build();
 
-        action.run(submission);
+        Map<String, Object> formData = Map.of(
+                "providerLicenseExemptRelationship", "Not related"
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.run(formSubmission, submission);
 
         assertThat(submission.getInputData().get("providerType")).isEqualTo(
                 ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_CHILDS_HOME.name());
