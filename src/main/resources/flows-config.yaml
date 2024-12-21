@@ -615,6 +615,7 @@ flow:
       - name: registration-basic-info-intro
   registration-applicant:
     condition: EnableProviderRegistration
+    onPostAction: SetProviderType
     nextScreens:
       - name: registration-unlicensed-care-location
         condition: ProviderIsRegisteringForSelf

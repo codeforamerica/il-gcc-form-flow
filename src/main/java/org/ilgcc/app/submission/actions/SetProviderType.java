@@ -1,6 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
 import formflow.library.config.submission.Action;
+import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -12,22 +13,22 @@ import org.springframework.stereotype.Component;
 public class SetProviderType implements Action {
 
     @Override
-    public void run(Submission submission) {
+    public void run(FormSubmission formSubmission, Submission submission) {
         Map<String, Object> providerInputData = submission.getInputData();
+        Map<String, Object> formInputData = formSubmission.getFormData();
 
         if ("true".equals(providerInputData.get("providerCurrentlyLicensed"))) {
-            submission.getInputData().put("providerType", licensedProviderType(providerInputData));
+            submission.getInputData().put("providerType", licensedProviderType(formInputData));
         } else if ("false".equals(providerInputData.get("providerCurrentlyLicensed"))) {
-            submission.getInputData().put("providerType", unLicensedProviderType(providerInputData));
+            submission.getInputData().put("providerType", unLicensedProviderType(providerInputData, formInputData));
         }
     }
 
-    private String licensedProviderType(Map<String, Object> inputData) {
-        String providerLicensedCareLocation = (String) inputData.getOrDefault("providerLicensedCareLocation", "");
+    private String licensedProviderType(Map<String, Object> formInputData) {
+        String providerLicensedCareLocation = (String) formInputData.getOrDefault("providerLicensedCareLocation", "");
         switch (providerLicensedCareLocation) {
             case "childCareCenter":
                 return ProviderType.LICENSED_DAY_CARE_CENTER.name();
-              
             case "childCareHome":
                 return ProviderType.LICENSED_DAY_CARE_HOME.name();
             case "groupChildCareHome":
@@ -37,11 +38,11 @@ public class SetProviderType implements Action {
         }
     }
 
-    private String unLicensedProviderType(Map<String, Object> inputData) {
-        if ("License-exempt".equals(inputData.get("providerLicenseExemptType"))) {
+    private String unLicensedProviderType(Map<String, Object> inputData, Map<String, Object> formInputData) {
+        if ("License-exempt".equals(formInputData.get("providerLicenseExemptType"))) {
             return ProviderType.LICENSE_EXEMPT_CHILD_CARE_CENTER.name();
         } else if ("Self".equals(inputData.get("providerLicenseExemptType"))) {
-            String providerLicenseExemptRelationship = (String) inputData.getOrDefault(
+            String providerLicenseExemptRelationship = (String) formInputData.getOrDefault(
                     "providerLicenseExemptRelationship", "");
 
             if ("Providers home".equals(inputData.get("providerLicenseExemptCareLocation"))) {
