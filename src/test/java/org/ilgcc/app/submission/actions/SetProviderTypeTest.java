@@ -85,10 +85,9 @@ public class SetProviderTypeTest {
     public void setLicenseExemptChildCareCenter() {
         Submission submission = new SubmissionTestBuilder()
                 .with("providerCurrentlyLicensed", "false")
-                .with("providerLicenseExemptType", "License-exempt")
                 .build();
 
-        Map<String, Object> formData = Map.of();
+        Map<String, Object> formData = Map.of("providerLicenseExemptType", "License-exempt");
 
         FormSubmission formSubmission = new FormSubmission(formData);
 

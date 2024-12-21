@@ -39,7 +39,7 @@ public class SetProviderType implements Action {
     }
 
     private String unLicensedProviderType(Map<String, Object> inputData, Map<String, Object> formInputData) {
-        if ("License-exempt".equals(inputData.get("providerLicenseExemptType"))) {
+        if ("License-exempt".equals(formInputData.get("providerLicenseExemptType"))) {
             return ProviderType.LICENSE_EXEMPT_CHILD_CARE_CENTER.name();
         } else if ("Self".equals(inputData.get("providerLicenseExemptType"))) {
             String providerLicenseExemptRelationship = (String) formInputData.getOrDefault(
