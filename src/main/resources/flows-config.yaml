@@ -696,12 +696,41 @@ flow:
   registration-start-date:
     condition: EnableProviderRegistration
     nextScreens:
+      - name: registration-checks-trainings-intro
+  registration-checks-trainings-intro:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-checks-trainings-notice
+  registration-checks-trainings-notice:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-convictions
+  registration-convictions:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-convictions-info
+  registration-convictions-info:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-household-members
+  registration-household-members:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-household-add-person
+  registration-household-add-person:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-household-add-person-info
+  registration-household-add-person-info:
+    nextScreens:
       - name: submit-complete-final
   submit-complete-final:
     nextScreens:
       - name: registration-getting-started
         condition: EnableProviderRegistration
       - name: submit-complete-final
+  registration-household-delete-person:
+    nextScreens: null
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
