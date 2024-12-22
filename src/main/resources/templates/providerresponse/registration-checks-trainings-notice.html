@@ -1,24 +1,55 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{registration-checks-trainings-notice.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
+  <section class="slab slab--grey">
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
+        <th:block th:replace="~{fragments/gcc-icons :: applicationSearch}"></th:block>
+        <th:block
+                th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-checks-trainings-notice.header}, subtext=#{registration-checks-trainings-notice.subtext})}"/>
+        <div class="form-card__content">
+          <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
+                controlId='r1',
+                linkLabel=~{::revealLabel1},
+                content=~{::revealContent1},
+                forceShowContent='true')}">
+            <th:block th:ref="revealLabel1">
+              <th:span th:text="#{registration-checks-trainings-notice.accordion.label1}"></th:span>
+            </th:block>
+            <th:block th:ref="revealContent1">
+              <p th:text="#{registration-checks-trainings-notice.accordion.body1.ul1}"></p>
+              <ul class="list--bulleted">
+                <li th:text="#{registration-checks-trainings-notice.accordion.body1.li1}"></li>
+                <li th:text="#{registration-checks-trainings-notice.accordion.body1.li2}"></li>
+                <li th:text="#{registration-checks-trainings-notice.accordion.body1.li3}"></li>
+              </ul>
+            </th:block>
           </th:block>
-        </th:block>
+          <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
+                controlId='r2',
+                linkLabel=~{::revealLabel2},
+                content=~{::revealContent2},
+                forceShowContent='true')}">
+            <th:block th:ref="revealLabel2">
+              <th:span th:text="#{registration-checks-trainings-notice.accordion.label2}"></th:span>
+            </th:block>
+            <th:block th:ref="revealContent2">
+              <p th:text="#{registration-checks-trainings-notice.accordion.body2.ul1}"></p>
+              <ul class="list--bulleted">
+                <li th:text="#{registration-checks-trainings-notice.accordion.body2.li1}"></li>
+                <li th:text="#{registration-checks-trainings-notice.accordion.body2.li2}"></li>
+                <li th:text="#{registration-checks-trainings-notice.accordion.body2.li3}"></li>
+              </ul>
+            </th:block>
+          </th:block>
+        </div>
+        <div class="form-card__footer">
+          <th:block th:replace="~{fragments/continueButton :: continue}"/>
+        </div>
       </main>
     </div>
   </section>

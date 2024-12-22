@@ -183,8 +183,19 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
+        // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
         testPage.clickContinue();
+
+        // registration-checks-trainings-notice
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-notice.title"));
+        testPage.clickContinue();
+
+        // registration-convictions
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
+        testPage.clickContinue();
+
+
     }
 
     @Test
@@ -265,7 +276,16 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
+        // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
+
+        // registration-checks-trainings-notice
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-notice.title"));
+        testPage.clickContinue();
+
+        // registration-convictions
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
         testPage.clickContinue();
     }
 
@@ -343,7 +363,14 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
+        // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
+
+        // SKIPS registration-checks-trainings-notice
+
+        // registration-convictions
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
         testPage.clickContinue();
     }
 
@@ -414,7 +441,14 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
+        // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
+
+        // Skips registration-checks-trainings-notice
+
+        // registration-convictions
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
         testPage.clickContinue();
     }
     @Test
@@ -490,7 +524,14 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
+        // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
+
+        // Skips registration-checks-trainings-notice
+
+        // registration-convictions
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
         testPage.clickContinue();
     }
 
@@ -595,8 +636,19 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
+        // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
         testPage.clickContinue();
+
+        // registration-checks-trainings-notice
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-notice.title"));
+        testPage.clickContinue();
+
+        // registration-convictions
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
+        testPage.clickContinue();
+
+
     }
 
     private void createAValidLink() {

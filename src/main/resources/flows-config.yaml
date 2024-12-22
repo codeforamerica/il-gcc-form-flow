@@ -702,7 +702,7 @@ flow:
     nextScreens:
       - name: registration-checks-trainings-notice
   registration-checks-trainings-notice:
-    condition: EnableProviderRegistration
+    condition: BackgroundCheckOrTrainingRequired
     nextScreens:
       - name: registration-convictions
   registration-convictions:
