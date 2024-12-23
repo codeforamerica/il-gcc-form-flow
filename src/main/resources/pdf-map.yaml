@@ -165,6 +165,7 @@ inputFields:
   providerLicenseNumber: PROVIDER_LICENSE_NUMBER
   providerType: PROVIDER_TYPE
   providerIdentityCheckSSN: PROVIDER_SSN
+  providerIdentityCheckDateOfBirthDate: PROVIDER_DOB
   providerSignature: PROVIDER_SIGNATURE
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
   clientResponseConfirmationCode: APPLICATION_CONFIRMATION_CODE
