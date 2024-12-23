@@ -194,8 +194,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
         testPage.clickContinue();
-
-
     }
 
     @Test
@@ -647,8 +645,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
         testPage.clickContinue();
-
-
     }
 
     private void createAValidLink() {
