@@ -57,7 +57,7 @@ dependencies {
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
     implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.3.2'
     implementation 'org.apache.commons:commons-text:1.13.0'
-    implementation 'software.amazon.awssdk:s3:2.29.38'
+    implementation 'software.amazon.awssdk:s3:2.29.39'
 
     if (useLocalLibrary == 'true') {
         implementation fileTree(dir: "$rootDir/../form-flow/build/libs", include: '*.jar')
