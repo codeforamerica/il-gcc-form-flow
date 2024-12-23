@@ -193,9 +193,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
+        testPage.clickYes();
+
+        // registration-convictions-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions-info.title"));
         testPage.clickContinue();
-
-
     }
 
     @Test
@@ -286,7 +288,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickNo();
     }
 
     @Test
@@ -371,7 +373,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickYes();
     }
 
     @Test
@@ -449,7 +451,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickNo();
     }
     @Test
     void LicensedGroupChildCareCenterFlow() {
@@ -532,7 +534,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickYes();
     }
 
     @Test
@@ -646,7 +648,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickYes();
 
 
     }
