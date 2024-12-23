@@ -133,3 +133,6 @@ il-gcc:
   link-shortener:
     api-key: ${SHORT_IO_API_KEY}
     domain: ${SHORT_IO_DOMAIN}
+sendgrid:
+  public-key: ${SENDGRID_PUBLIC_KEY}
+  
