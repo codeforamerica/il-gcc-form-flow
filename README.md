@@ -1,19 +1,9 @@
-# Form Flow Starter Application
+# IL GCC Application
 
 Table of Contents
 =================
-<!--
-    **  This is not automatically generated. **
-    Update this section when you update sections now.
-    Please don't go more than three layers deep, so we can keep the TOC
-    a reasonable size.
--->
 
-* [What is the Form Flow Starter App](#what-is-the-form-flow-starter-app)
-    * [Static Pages](#static-pages)
-    * [Example Actions and Conditions](#example-actions-and-conditions)
-        * [Actions](#actions)
-        * [Conditions](#conditions)
+* [What is the IL GCC App](#what-is-the-il-gcc-app)
 * [Setup Instructions](#setup-instructions)
     * [Mac and Linux](#mac-and-linux)
     * [Windows](#windows)
@@ -34,11 +24,13 @@ Table of Contents
     * [Development Setup](#development-setup)
 * [Troubleshooting IntelliJ](#troubleshooting-intellij)
 
-# What is the Form Flow Starter App
+# What is the IL GCC App
 
-The starter app is a Spring Boot application that demonstrates the `form-flow` Java library. It
-can be customized to meet the needs of a web app, and is meant to be built upon. It's a plain,
-boring (but modern) Spring app that uses common, frequently-used libraries throughout.
+The IL GCC Application (aka Illinois Get Childcare App) is a Spring Boot application built on the `form-flow` Java library. It
+It's a plain, straightforward (but modern) Spring app that uses common, frequently-used libraries throughout. 
+
+The IL GCC Application has been built to allow residents of Illinois to apply online for child care benefits, and 
+to allow child care providers to respond online to these applications.
 
 It contains example code for a simple, generic application for public benefits. An applicant
 can fill out screens with their basic info, upload supporting documents, then submit it all.
@@ -50,140 +42,6 @@ dependencies. The codebase for the `form-flow` library is [open source](https://
 
 A detailed explanation of form flow concepts can be found in
 the [form flow library's readme](https://github.com/codeforamerica/form-flow).
-
-To experience the starter app for yourself, you can visit:
-[https://forms-starter.cfa-platforms.org/](https://forms-starter.cfa-platforms.org/)
-
-## Static Pages
-
-The starter app implements some purely static pages which differ from screens in that they take in
-no user input. They are purely for conveying information to the user, and they are not part of any 
-specific flow. For more information about static pages see the 
-[form-flow library documentation.](https://github.com/codeforamerica/form-flow#static-pages)
-
-This application has four static pages served up by
-the [StaticPageController](src/main/java/org/ilgcc/app/StaticPageController.java)
-class:
-
-* [index.html](src/main/resources/templates/index.html)
-* [faq.html](src/main/resources/templates/faq.html)
-* [privacy.html](src/main/resources/templates/privacy.html)
-* [disabledFeature.html](src/main/resources/templates/disabledFeature.html)
-
-## Example Actions and Conditions
-
-The starter app provides some examples of both Actions and Conditions. To learn more about creating
-your own actions or conditions we recommend reading the library's documentation for each linked in 
-their respective sections below.
-
-### Actions
-
-There are five types of actions that one can use.
-
-* `beforeSaveAction`
-* `onPostAction`
-* `crossFieldValidationAction`
-* `beforeDisplayAction`
-* `afterSaveAction`
-
-You can find more detailed information about each type of action in the Form Flow library's
-[readme](https://github.com/codeforamerica/form-flow#actions).
-
-#### UpdateIncomeAmountsBeforeSaving
-
-This action is a `beforeSaveAction` and is run after validation but before the data is
-stored in the database.
-The `UpdateIncomeAmountsBeforeSaving` will clear out any unused Income types, if they were
-updated. For example, a user fills out the income type page and submits values for their chosen
-input types. If they then decide to go back and change a value or add a new income type, this action
-will ensure that any previous values entered by the user are cleared out in the
-stored data as well.
-
-You can view the [UpdateIncomeAmountsBeforeSaving action here](https://github.com/codeforamerica/form-flow-starter-app/blob/main/src/main/java/org/ilgcc/app/submission/actions/UpdateIncomeAmountsBeforeSaving.java).
-
-#### UpdatePersonalInfoDates
-
-This is an `onPostAction` and is run just after the data is sent to the server, before any
-validation is done on it. The `UpdatePersonalInfoDates` action will do the following for both
-the `birth` and `movedToUSA` fields on the `Personal Info` page. It will take the three separate
-date fields associated with them (day, month, and year) and put an aggregated date string into a
-general date field (`birthDate` and `movedToUSADate`, respectively).
-
-You can view the [UpdatePersonalInfoDates action here](https://github.com/codeforamerica/form-flow-starter-app/blob/main/src/main/java/org/ilgcc/app/submission/actions/UpdatePersonalInfoDates.java).
-
-
-#### ValidateMovedToUSADate
-
-This is a `crossFieldValidationAction` and is run just after field level validation has occurred,
-but before the data is stored in the database.  `ValidateMovedToUSADate` will check to see if the
-client has indicated that they moved to the USA in the last year. If they have, then this action
-will check to see that they've entered values for `movedToUSA` day, month and year, as well as check
-to see that the resulting date is actually valid.
-
-You can view the [ValidateMovedToUSADate action here](https://github.com/codeforamerica/form-flow-starter-app/blob/main/src/main/java/org/ilgcc/app/submission/actions/ValidateMovedToUSADate.java).
-
-### Conditions
-
-Conditions are used either to determine navigation between screens or to determine whether
-elements should be displayed on a screen. If you would like to learn more about creating your own 
-conditions, please see the [form-flow library documentation](https://github.com/codeforamerica/form-flow#conditions).
-
-#### HasHousehold
-
-The `HasHousehold` condition is an example of a condition that is used to determine navigation
-between screens. In the starter app this condition is used to determine whether a user should be shown
-the `housemateInfo` screen if they have indicated that they have housemates. If they have indicated
-they do not have any housemates they will instead be taken to the `incomeInfo` essentially skipping
-the need to enter information about their housemates.
-
-Conditions that control screen navigation logic are configured in the `flows-config.yaml` file. This
-file defines navigational logic between screens. To learn more about configuring flows, please see
-the library documentation on [configuring flows](https://github.com/codeforamerica/form-flow#flow-and-subflow-configuration).
-
-You can view the [HasHousehold condition here](https://github.com/codeforamerica/form-flow-starter-app/blob/07bba8ce8cd5f70907f7098abe9b318b2bf69f50/src/main/java/org/ilgcc/app/submission/conditions/HasHousehold.java#L30).
-
-The corresponding YAML that indicates this condition should be used when determining what screen
-should follow the `housemates` screen looks like this:
-
-```yaml
-  housemates:
-    nextScreens:
-      - name: housemateInfo
-        condition: HasHousehold
-      - name: income
-```
-The above YAML indicates that the `housemateInfo` screen should be shown if the `HasHousehold`
-evaluates to `true` and the `income` screen should be shown if the `HasHousehold` evaluates to `false`.
-
-#### IncomeSelectedSelf
-
-The `IncomeSelectedSelf` condition is an example of a condition that is used to determine what element
-to display in a screen. In the starter app this condition is used to determine whether a user
-has indicated that they are entering income information about themselves or someone else. 
-
-If they have indicated that they are entering information about themselves, then the incomeTypes
-screen will show a header that says `What sources do you receive income from?`. If they 
-are entering income information for someone else, the header will instead read 
-`What sources does **persons name** receive income from?`.
-
-The condition is run within the incomeTypes screen's thymeleaf template file and uses the
-ConditionManager to determine whether the condition evaluates to true or false.
-
-The corresponding thymeleaf template code looks like this:
-
-```html
-<th:block
-    <!-- Here we define the condition selectedSelf using the condition manager. -->
-    th:with="selectedSelf=${conditionManager.runCondition('IncomeSelectedSelf', submission, uuid)},
-             houseHoldMemberName=${fieldData.householdMember}">
-    ... other content ...
-    <!-- Here we use the condition to determine what header message to display. -->
-    header=${selectedSelf ? #messages.msg('income-types.headerYou') : #messages.msg('income-types.headerPerson', houseHoldMemberName)}
-```
-
-You can view the full [incomeTypes template here](https://github.com/codeforamerica/form-flow-starter-app/blob/main/src/main/resources/templates/ubi/incomeTypes.html).
-
-You can view the [IncomeSelectedSelf condition here](https://github.com/codeforamerica/form-flow-starter-app/blob/main/src/main/java/org/ilgcc/app/submission/conditions/IncomeSelectedSelf.java).
 
 # Setup instructions
 
