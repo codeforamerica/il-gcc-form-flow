@@ -178,6 +178,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
         // registration-home-provider-dob
+
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
     }
 
     @Test
@@ -253,6 +260,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
         // registration-home-provider-dob
+
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
     }
 
     @Test
@@ -323,6 +337,14 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
         // registration-home-provider-dob
+
+
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
     }
 
     @Test
@@ -387,6 +409,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // skips registration-home-provider-ssn
 
         // registration-home-provider-dob
+
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
     }
     @Test
     void LicensedGroupChildCareCenterFlow() {
@@ -456,6 +485,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
         // registration-home-provider-dob
+
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
     }
 
     @Test
@@ -554,6 +590,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // Skips registration-home-provider-ssn
 
         // registration-home-provider-dob
+
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
     }
 
     private void createAValidLink() {
