@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/sendgrid-webhook")
 @Slf4j
-public class SendGridWebjookController {
+public class SendGridWebhookController {
 
     @Value("${sendgrid.public-key}")
     String sendGridPublicKey;
@@ -34,7 +34,8 @@ public class SendGridWebjookController {
     public void handleSendGridEvents(@RequestBody List<Map<String, Object>> events,
             @RequestHeader("X-Twilio-Email-Event-Webhook-Signature") String signature,
             @RequestHeader("X-Twilio-Email-Event-Webhook-Timestamp") String timestamp)
-            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
+            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException 
+    {
         
         if (!isValidSignature(convertPublicKeyToECDSA(sendGridPublicKey), signature, timestamp, events.toString().getBytes())) {
             log.error("Invalid signature for SendGrid events was provided. Ignoring events.");

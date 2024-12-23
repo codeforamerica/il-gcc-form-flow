@@ -25,6 +25,11 @@ public class SendFamilyConfirmationEmail implements Action {
 
     @Override
     public void run(Submission familySubmission) {
+        String familyConfirmationEmailSent = (String) familySubmission.getInputData().getOrDefault("familyConfirmationEmailSent", "false");
+        if (familyConfirmationEmailSent.equals("true")) {
+            log.info("Family confirmation email has already been sent for submission with ID: {}", familySubmission.getId());
+            return;
+        }
         String familyEmail = familySubmission.getInputData().get("parentContactEmail").toString();
         if (familyEmail == null || familyEmail.isEmpty()) {
             log.error("Family email was empty when attempting to send family confirmation email for submission with ID: {}", familySubmission.getId());
@@ -37,6 +42,7 @@ public class SendFamilyConfirmationEmail implements Action {
         String subject = messageSource.getMessage("email.family-confirmation.subject", new Object[]{familySubmissionShortCode}, locale);
         
         sendEmailJob.enqueueSendEmailJob(familyEmail, subject, EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(), getFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
+        familySubmission.getInputData().put("familyConfirmationEmailSent", "true");
     }
     
     private Content getFamilyConfirmationEmailBody(Submission familySubmission, String confirmationCode, Locale locale) {
