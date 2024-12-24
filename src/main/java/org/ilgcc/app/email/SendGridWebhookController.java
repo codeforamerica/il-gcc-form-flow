@@ -38,8 +38,6 @@ public class SendGridWebhookController {
             @RequestHeader("X-Twilio-Email-Event-Webhook-Timestamp") String timestamp)
             throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException 
     {
-        log.info("In the webhook - Received SendGrid events: {}", events);
-        
         if (!isValidSignature(convertPublicKeyToECDSA(sendGridPublicKey), signature, timestamp, events.toString().getBytes())) {
             log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
             return;
