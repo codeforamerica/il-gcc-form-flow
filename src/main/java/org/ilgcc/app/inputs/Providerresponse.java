@@ -90,4 +90,6 @@ public class Providerresponse extends FlowInputs {
     private String providerIdentityCheckSSN;
     
     private String providerType;
+
+    private String providerConviction;
 }

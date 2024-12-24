@@ -709,6 +709,8 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-convictions-info
+        condition: ProviderHasConviction
+      - name: registration-household-members
   registration-convictions-info:
     condition: EnableProviderRegistration
     nextScreens:

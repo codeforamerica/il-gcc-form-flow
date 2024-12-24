@@ -179,7 +179,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
         // registration-home-provider-dob
 
-
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -193,7 +192,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickYes();
+
+        // registration-convictions-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions-info.title"));
     }
 
     @Test
@@ -270,7 +272,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
         // registration-home-provider-dob
 
-
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -284,7 +285,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickNo();
+
+        // Skips registration-convictions-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-members.title"));
     }
 
     @Test
@@ -356,8 +360,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
         // registration-home-provider-dob
 
-
-
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -369,7 +371,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickYes();
+
+        // registration-convictions-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions-info.title"));
     }
 
     @Test
@@ -435,7 +440,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-home-provider-dob
 
-
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -447,8 +451,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickNo();
+
+        // Skips registration-convictions-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-members.title"));
     }
+
     @Test
     void LicensedGroupChildCareCenterFlow() {
         createAValidLink();
@@ -518,7 +526,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
         // registration-home-provider-dob
 
-
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -530,7 +537,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickYes();
+
+        // registration-convictions-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions-info.title"));
     }
 
     @Test
@@ -630,7 +640,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-home-provider-dob
 
-
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -644,7 +653,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-convictions
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickContinue();
+        testPage.clickYes();
+
+        // registration-convictions-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions-info.title"));
     }
 
     private void createAValidLink() {
