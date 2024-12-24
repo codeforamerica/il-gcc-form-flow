@@ -41,11 +41,11 @@ public class SendFamilyConfirmationEmail implements Action {
         Locale locale = familySubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag("es") : Locale.ENGLISH;
         String subject = messageSource.getMessage("email.family-confirmation.subject", new Object[]{familySubmissionShortCode}, locale);
         
-        sendEmailJob.enqueueSendEmailJob(familyEmail, subject, EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(), getFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
+        sendEmailJob.enqueueSendEmailJob(familyEmail, subject, EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(), createFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
         familySubmission.getInputData().put("familyConfirmationEmailSent", "true");
     }
     
-    private Content getFamilyConfirmationEmailBody(Submission familySubmission, String confirmationCode, Locale locale) {
+    private Content createFamilyConfirmationEmailBody(Submission familySubmission, String confirmationCode, Locale locale) {
         String parentFirstName = familySubmission.getInputData().get("parentFirstName").toString();
         String emailLink = familySubmission.getInputData().get("emailLink").toString();
         String ccrAndR = familySubmission.getInputData().get("ccrrName").toString();
