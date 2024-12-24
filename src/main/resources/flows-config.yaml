@@ -676,7 +676,7 @@ flow:
   registration-home-provider-dob:
     crossFieldValidationAction: ValidateHomeProviderDateOfBirth
     onPostAction: CreateProviderIdentityCheckDOB
-    condition: EnableProviderRegistration
+    condition: ProviderDOBRequired
     nextScreens:
       - name: registration-tax-id
   registration-tax-id:

@@ -178,6 +178,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
         // registration-home-provider-dob
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-dob.title"));
+        testPage.enter("providerIdentityCheckDateOfBirthMonth", "12");
+        testPage.enter("providerIdentityCheckDateOfBirthDay", "25");
+        testPage.enter("providerIdentityCheckDateOfBirthYear", "1985");
+        testPage.clickContinue();
 
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
@@ -271,6 +276,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
         // registration-home-provider-dob
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-dob.title"));
+        testPage.enter("providerIdentityCheckDateOfBirthMonth", "12");
+        testPage.enter("providerIdentityCheckDateOfBirthDay", "25");
+        testPage.enter("providerIdentityCheckDateOfBirthYear", "1985");
+        testPage.clickContinue();
 
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
@@ -524,7 +534,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerIdentityCheckSSN", "123456789");
 
         testPage.clickContinue();
-        // registration-home-provider-dob
 
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
