@@ -144,7 +144,7 @@ public class ProviderApplicationPreparerFlagOnTest {
                 new SingleField("providerResponseContactEmail", "mail@daycareplace.org", null));
 
         assertThat(result.get("providerIdentityCheckSSN")).isEqualTo(
-                new SingleField("providerIdentityCheckSSN", "123-23-24244", null));
+                new SingleField("providerIdentityCheckSSN", "123-23-2424", null));
         assertThat(result.get("providerConviction")).isEqualTo(
                 new SingleField("providerConviction", "true", null));
 
