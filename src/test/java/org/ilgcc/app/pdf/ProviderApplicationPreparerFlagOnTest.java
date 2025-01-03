@@ -90,7 +90,7 @@ public class ProviderApplicationPreparerFlagOnTest {
                 .with("providerMailingCity_validated", "Chicago")
                 .with("providerMailingState_validated", "IL")
                 .with("providerMailingZipCode_validated", "60115-1234")
-                .with("providerIdentityCheckSSN", "123-23-24244")
+                .with("providerIdentityCheckSSN", "123-23-2424")
                 .with("providerConviction", "true")
                 .build();
 
