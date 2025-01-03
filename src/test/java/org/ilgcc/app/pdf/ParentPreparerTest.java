@@ -3,7 +3,6 @@ package org.ilgcc.app.pdf;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import formflow.library.data.Submission;
-import formflow.library.data.Submission.SubmissionBuilder;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.List;
@@ -121,9 +120,7 @@ public class ParentPreparerTest {
     Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
     assertThat(result.get("parentEducation")).isEqualTo(new SingleField("parentEducation", "APPLICANT_EDUCATION_TYPE_HIGH_SCHOOL", null));
   }
-  //Paramaterized Test
-  //Add in a parent with a gender and write to the correct PDF field
-  //GenderTests
+
   @Test
   public void shouldSelectMaleCheckboxWhenApplicantIdentifiesAsMale(){
     submission = new SubmissionTestBuilder()
