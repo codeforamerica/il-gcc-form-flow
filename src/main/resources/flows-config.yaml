@@ -586,10 +586,6 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-getting-started
-  registration-family-response-intro:
-    condition: EnableProviderRegistration
-    nextScreens:
-      - name: confirmation-code
   registration-getting-started:
     condition: EnableProviderRegistration
     nextScreens:
@@ -726,7 +722,11 @@ flow:
   registration-household-add-person-info:
     condition: ProviderHouseholdRegistrationRequired
     nextScreens:
-      - name: submit-complete-final
+      - name: registration-family-response-intro
+  registration-family-response-intro:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: confirmation-code
   submit-complete-final:
     nextScreens:
       - name: registration-getting-started
