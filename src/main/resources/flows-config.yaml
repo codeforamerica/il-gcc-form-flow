@@ -716,14 +716,15 @@ flow:
     nextScreens:
       - name: registration-household-members
   registration-household-members:
-    condition: EnableProviderRegistration
+    condition: ProviderHouseholdRegistrationRequired
     nextScreens:
       - name: registration-household-add-person
   registration-household-add-person:
-    condition: EnableProviderRegistration
+    condition: ProviderHouseholdRegistrationRequired
     nextScreens:
       - name: registration-household-add-person-info
   registration-household-add-person-info:
+    condition: ProviderHouseholdRegistrationRequired
     nextScreens:
       - name: submit-complete-final
   submit-complete-final:
