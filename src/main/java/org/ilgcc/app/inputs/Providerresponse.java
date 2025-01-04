@@ -95,4 +95,6 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank(message = "{registration-convictions-info.error}")
     private String providerConvictionExplanation;
+
+    private String providerHouseholdLiveWithOthers;
 }

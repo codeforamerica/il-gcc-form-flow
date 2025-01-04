@@ -201,6 +201,20 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-household-members
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-members.title"));
+        testPage.clickNo();
+
+        // registration-family-response-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
+        testPage.goBack();
+
+        // registration-household-members
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-members.title"));
+        testPage.clickYes();
+
+        // registration-household-add-person
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+
+
     }
 
     @Test

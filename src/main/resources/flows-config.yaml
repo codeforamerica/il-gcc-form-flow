@@ -715,6 +715,8 @@ flow:
     condition: ProviderHouseholdRegistrationRequired
     nextScreens:
       - name: registration-household-add-person
+        condition: HasRegistrationHouseholdMembers
+      - name: registration-family-response-intro
   registration-household-add-person:
     condition: ProviderHouseholdRegistrationRequired
     nextScreens:
