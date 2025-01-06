@@ -36,7 +36,7 @@ class ValidateMonthYearActivitiesProgramTest {
         when(messageSource.getMessage("errors.invalid-date-format", null, Locale.getDefault()))
                 .thenReturn("Make sure the date you entered is in this format: mm/dd/yyyy");
         when(messageSource.getMessage("errors.invalid-min-date", null, Locale.getDefault()))
-                .thenReturn("Make sure the date you entered is after 01/01/1901.");
+                .thenReturn("Make sure the date you entered is after 01/01/1901");
     }
 
     @AfterEach
@@ -179,7 +179,7 @@ class ValidateMonthYearActivitiesProgramTest {
         FormSubmission submission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
         assertThat(errors).containsKey("activitiesProgramStart");
-        assertThat(errors.get("activitiesProgramStart")).contains("Make sure the date you entered is after 01/01/1901.");
+        assertThat(errors.get("activitiesProgramStart")).contains("Make sure the date you entered is after 01/01/1901");
     }
 
     @Test
@@ -195,7 +195,7 @@ class ValidateMonthYearActivitiesProgramTest {
         FormSubmission submission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
         assertThat(errors).containsKey("activitiesProgramEnd");
-        assertThat(errors.get("activitiesProgramEnd")).contains("Make sure the date you entered is after 01/01/1901.");
+        assertThat(errors.get("activitiesProgramEnd")).contains("Make sure the date you entered is after 01/01/1901");
     }
 
     @Test
