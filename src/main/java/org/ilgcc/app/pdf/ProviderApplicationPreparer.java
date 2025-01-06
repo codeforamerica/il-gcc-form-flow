@@ -69,7 +69,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 "providerResponseContactPhoneNumber",
                 "providerResponseContactEmail",
                 "providerIdentityCheckSSN",
-                "providerIdentityCheckDateOfBirthDate"
+                "providerIdentityCheckDateOfBirthDate",
                 "providerConviction"
         );
 

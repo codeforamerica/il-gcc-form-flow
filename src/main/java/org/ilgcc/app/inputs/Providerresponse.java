@@ -94,7 +94,13 @@ public class Providerresponse extends FlowInputs {
     private String providerIdentityCheckDateOfBirthDay;
     private String providerIdentityCheckDateOfBirthMonth;
     private String providerIdentityCheckDateOfBirthYear;
-    private String providerIdentityCheckDateOfBirthDate;}
+    private String providerIdentityCheckDateOfBirthDate;
+
+    // registration-start-date
+    private String providerCareStartDay;
+    private String providerCareStartMonth;
+    private String providerCareStartYear;
+    private String providerCareStartDate;
 
     private String providerConviction;
 }
