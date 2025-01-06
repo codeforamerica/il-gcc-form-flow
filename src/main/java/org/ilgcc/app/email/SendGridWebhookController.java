@@ -43,7 +43,17 @@ public class SendGridWebhookController {
             return;
         }
 
-        log.info("Received {} SendGrid events", events);
+        log.info("Received {} SendGrid events", sanitizeEvents(events));
+    }
+
+    /**
+     * Sanitize the events list by removing new-line characters.
+     *
+     * @param events: list of events to sanitize
+     * @return a sanitized string representation of the events
+     */
+    private String sanitizeEvents(List<Map<String, Object>> events) {
+        return events.toString().replaceAll("[\\r\\n]", "");
     }
 
     /**
