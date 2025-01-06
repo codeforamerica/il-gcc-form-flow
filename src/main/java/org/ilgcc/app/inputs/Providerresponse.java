@@ -103,6 +103,7 @@ public class Providerresponse extends FlowInputs {
     private String providerIdentityCheckDateOfBirthYear;
     private String providerIdentityCheckDateOfBirthDate;
 
+    @NotBlank
     private String providerTaxIdType;
 
     private String providerTaxIdSSN;
