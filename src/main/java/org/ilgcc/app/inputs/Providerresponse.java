@@ -111,6 +111,7 @@ public class Providerresponse extends FlowInputs {
     private String providerIdentityCheckDateOfBirthYear;
     private String providerIdentityCheckDateOfBirthDate;
 
+    @NotBlank
     private String providerTaxIdType;
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{registration-tax-id-ssn.error}")
     @Encrypted
