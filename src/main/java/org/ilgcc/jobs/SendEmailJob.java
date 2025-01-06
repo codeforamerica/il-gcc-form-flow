@@ -30,7 +30,7 @@ public class SendEmailJob {
         log.info("Enqueued {} email job with ID: {} for submission with ID: {}", emailType, jobId, submission.getId());
     }
 
-    @Job(name = "Send Document Transfer Service Request for Application PDF", retries = 3)
+    @Job(name = "Send Email Request", retries = 3)
     public void sendEmailRequest(String recipientAddress, String subject, String emailType, Content content, Submission submission)
             throws IOException {
         try {

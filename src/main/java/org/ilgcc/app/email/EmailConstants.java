@@ -20,7 +20,7 @@ public class EmailConstants {
         }
     }
 
-    public static final String FROM_ADDRESS = "ilccap@codeforamerica.org";
+    public static final String FROM_ADDRESS = "contact@getchildcareil.org";
     public static final String SENDER_NAME =
             "Child Care Assistance Program Applications - Code for America on behalf of Illinois Department of Human Services";
 }

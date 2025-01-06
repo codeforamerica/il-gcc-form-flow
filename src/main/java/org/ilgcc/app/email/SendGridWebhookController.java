@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/sendgrid-webhook")
 @Slf4j
-@Profile({"dev", "staging", "prod"})
+@Profile({"dev", "staging", "prod", "demo"})
 public class SendGridWebhookController {
 
     @Value("${sendgrid.public-key}")
