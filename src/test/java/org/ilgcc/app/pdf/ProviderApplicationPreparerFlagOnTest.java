@@ -90,6 +90,8 @@ public class ProviderApplicationPreparerFlagOnTest {
                 .with("providerMailingCity_validated", "Chicago")
                 .with("providerMailingState_validated", "IL")
                 .with("providerMailingZipCode_validated", "60115-1234")
+                .with("providerIdentityCheckSSN", "123-23-2424")
+                .with("providerConviction", "true")
                 .build();
 
         submissionRepositoryService.save(providerSubmission);
@@ -140,6 +142,11 @@ public class ProviderApplicationPreparerFlagOnTest {
                 new SingleField("providerResponseContactPhoneNumber", "(111) 222-3333", null));
         assertThat(result.get("providerResponseContactEmail")).isEqualTo(
                 new SingleField("providerResponseContactEmail", "mail@daycareplace.org", null));
+
+        assertThat(result.get("providerIdentityCheckSSN")).isEqualTo(
+                new SingleField("providerIdentityCheckSSN", "123-23-2424", null));
+        assertThat(result.get("providerConviction")).isEqualTo(
+                new SingleField("providerConviction", "true", null));
 
     }
 
