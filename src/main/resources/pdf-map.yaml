@@ -166,6 +166,7 @@ inputFields:
   providerType: PROVIDER_TYPE
   providerIdentityCheckSSN: PROVIDER_SSN
   providerConviction: PROVIDER_CONVICTION
+  providerConvictionExplanation: PROVIDER_CONVICTION_EXPLANATION
   providerIdentityCheckDateOfBirthDate: PROVIDER_DOB
   providerSignature: PROVIDER_SIGNATURE
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
