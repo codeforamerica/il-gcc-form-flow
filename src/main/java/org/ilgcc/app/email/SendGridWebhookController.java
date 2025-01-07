@@ -1,6 +1,7 @@
 package org.ilgcc.app.email;
 
-import com.sendgrid.Request;
+import com.sendgrid.helpers.eventwebhook.EventWebhook;
+import com.sendgrid.helpers.eventwebhook.EventWebhookHeader;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,10 +27,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.sendgrid.helpers.eventwebhook.EventWebhook;
-import com.sendgrid.helpers.eventwebhook.EventWebhookHeader;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -47,7 +48,12 @@ public class SendGridWebhookController {
 //            @RequestHeader("X-Twilio-Email-Event-Webhook-Timestamp") String timestamp)
 //            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
 //
-//        if (!isValidSignature(convertPublicKeyToECDSA(sendGridPublicKey), signature, timestamp, events.toString().getBytes())) {
+//        Security.addProvider(new BouncyCastleProvider());
+//        final EventWebhook ew = new EventWebhook();
+//        final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
+//        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, events.toString().getBytes(), signature, timestamp);
+//
+//        if (!valid) {
 //            log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
 //            return;
 //        }
@@ -55,53 +61,30 @@ public class SendGridWebhookController {
 //        log.info("Received {} SendGrid events", sanitizeEvents(events));
 //    }
 
-//    @PostMapping
-//    public void handleSendGridEvents(@RequestBody Map<String, Object> payload, HttpServletRequest request)
-//            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
-//
-//        Security.addProvider(new BouncyCastleProvider());
-//
-//        String signature = request.getHeader("X-Twilio-Email-Event-Webhook-Signature");
-//        String timestamp = request.getHeader("X-Twilio-Email-Event-Webhook-Timestamp");
-//
-//        log.info("timestamp: {}", timestamp);
-//        log.info("signature: {}", signature);
-//
-//        String requestBody;
-//        try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
-//            requestBody = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-//        }
-//
-//        final EventWebhook ew = new EventWebhook();
-//        final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
-//        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
-//
-//        if (!valid) {
-//            log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
-//            return;
-//        }
-//
-//        log.info("Received {} SendGrid events", requestBody.length());
-//    }
-
-
     @PostMapping
-    public void handleSendGridEvents(@RequestBody List<Map<String, Object>> events,
-            @RequestHeader("X-Twilio-Email-Event-Webhook-Signature") String signature,
-            @RequestHeader("X-Twilio-Email-Event-Webhook-Timestamp") String timestamp)
+    public void handleSendGridEvents(HttpServletRequest request)
             throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
+
+        String signature = request.getHeader(EventWebhookHeader.SIGNATURE.toString());
+        String timestamp = request.getHeader(EventWebhookHeader.TIMESTAMP.toString());
+
+        // Retrieve the raw body of the request
+        String requestBody;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
+            requestBody = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        }
 
         Security.addProvider(new BouncyCastleProvider());
         final EventWebhook ew = new EventWebhook();
         final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
-        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, events.toString().getBytes(), signature, timestamp);
-        
+        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
+
         if (!valid) {
             log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
             return;
         }
 
-        log.info("Received {} SendGrid events", sanitizeEvents(events));
+        log.info("Received {} SendGrid events", requestBody.length());
     }
 
     /**
@@ -114,70 +97,70 @@ public class SendGridWebhookController {
         return events.toString().replaceAll("[\\r\\n]", "");
     }
 
-    /**
-     * Convert the public key string to a ECPublicKey.
-     *
-     * @param publicKey: verification key in Mail Settings in SendGrid
-     * @return a public key using the ECDSA algorithm
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException
-     * @throws InvalidKeySpecException
-     */
-    private ECPublicKey convertPublicKeyToECDSA(String publicKey)
-            throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
-
-        log.info("Converting public key to ECDSA signature");
-        log.info(publicKey);
-
-        Security.addProvider(new BouncyCastleProvider());
-
-        byte[] publicKeyInBytes = Base64.getDecoder().decode(publicKey);
-        KeyFactory factory = KeyFactory.getInstance("ECDSA", "BC");
-        ECPublicKey ecPublicKey = (ECPublicKey) factory.generatePublic(new X509EncodedKeySpec(publicKeyInBytes));
-
-        log.info(ecPublicKey.toString());
-        log.info("Done converting public key to ECDSA signature");
-
-        return ecPublicKey;
-    }
-
-    /**
-     * Verify signed event webhook requests.
-     *
-     * @param publicKey: elliptic curve public key
-     * @param payload:   event payload string in the request body
-     * @param signature: value obtained from the 'X-Twilio-Email-Event-Webhook-Signature' header
-     * @param timestamp: value obtained from the 'X-Twilio-Email-Event-Webhook-Timestamp' header
-     * @return true or false if signature is valid
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException
-     * @throws InvalidKeyException
-     * @throws SignatureException
-     * @throws IOException
-     */
-    private boolean isValidSignature(ECPublicKey publicKey, String signature, String timestamp, byte[] payload)
-            throws IOException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
-
-        log.info("validating signature");
-        log.info(publicKey.toString());
-        log.info(signature);
-        log.info(timestamp);
-        log.info(payload.toString());
-
-        // prepend the payload with the timestamp
-        final ByteArrayOutputStream payloadWithTimestamp = new ByteArrayOutputStream();
-        payloadWithTimestamp.write(timestamp.getBytes());
-        payloadWithTimestamp.write(payload);
-
-        // create the signature object
-        final Signature signatureObject = Signature.getInstance("SHA256withECDSA", "BC");
-        signatureObject.initVerify(publicKey);
-        signatureObject.update(payloadWithTimestamp.toByteArray());
-
-        // decode the signature
-        final byte[] signatureInBytes = Base64.getDecoder().decode(signature);
-
-        // verify the signature
-        return signatureObject.verify(signatureInBytes);
-    }
+//    /**
+//     * Convert the public key string to a ECPublicKey.
+//     *
+//     * @param publicKey: verification key in Mail Settings in SendGrid
+//     * @return a public key using the ECDSA algorithm
+//     * @throws NoSuchAlgorithmException
+//     * @throws NoSuchProviderException
+//     * @throws InvalidKeySpecException
+//     */
+//    private ECPublicKey convertPublicKeyToECDSA(String publicKey)
+//            throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+//
+//        log.info("Converting public key to ECDSA signature");
+//        log.info(publicKey);
+//
+//        Security.addProvider(new BouncyCastleProvider());
+//
+//        byte[] publicKeyInBytes = Base64.getDecoder().decode(publicKey);
+//        KeyFactory factory = KeyFactory.getInstance("ECDSA", "BC");
+//        ECPublicKey ecPublicKey = (ECPublicKey) factory.generatePublic(new X509EncodedKeySpec(publicKeyInBytes));
+//
+//        log.info(ecPublicKey.toString());
+//        log.info("Done converting public key to ECDSA signature");
+//
+//        return ecPublicKey;
+//    }
+//
+//    /**
+//     * Verify signed event webhook requests.
+//     *
+//     * @param publicKey: elliptic curve public key
+//     * @param payload:   event payload string in the request body
+//     * @param signature: value obtained from the 'X-Twilio-Email-Event-Webhook-Signature' header
+//     * @param timestamp: value obtained from the 'X-Twilio-Email-Event-Webhook-Timestamp' header
+//     * @return true or false if signature is valid
+//     * @throws NoSuchAlgorithmException
+//     * @throws NoSuchProviderException
+//     * @throws InvalidKeyException
+//     * @throws SignatureException
+//     * @throws IOException
+//     */
+//    private boolean isValidSignature(ECPublicKey publicKey, String signature, String timestamp, byte[] payload)
+//            throws IOException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
+//
+//        log.info("validating signature");
+//        log.info(publicKey.toString());
+//        log.info(signature);
+//        log.info(timestamp);
+//        log.info(payload.toString());
+//
+//        // prepend the payload with the timestamp
+//        final ByteArrayOutputStream payloadWithTimestamp = new ByteArrayOutputStream();
+//        payloadWithTimestamp.write(timestamp.getBytes());
+//        payloadWithTimestamp.write(payload);
+//
+//        // create the signature object
+//        final Signature signatureObject = Signature.getInstance("SHA256withECDSA", "BC");
+//        signatureObject.initVerify(publicKey);
+//        signatureObject.update(payloadWithTimestamp.toByteArray());
+//
+//        // decode the signature
+//        final byte[] signatureInBytes = Base64.getDecoder().decode(signature);
+//
+//        // verify the signature
+//        return signatureObject.verify(signatureInBytes);
+//    }
 }
