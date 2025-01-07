@@ -21,7 +21,7 @@ public class UpdateEarliestCCAPStartDate extends VerifyDate {
         String childCCAPDate = DateUtilities.getFormattedDateFromMonthDateYearInputs(PREFIX, childSubflowData);
         String earliestCCAPStart = (String) submission.getInputData().get(INPUT_NAME);
         String earliestDate = getEarliestDate(childCCAPDate, earliestCCAPStart);
-        if (earliestCCAPStart == earliestDate) {
+        if (earliestCCAPStart.equals(earliestDate)) {
             submission.getInputData().put(INPUT_NAME, findEarliestCCAPDate(submission, id));
         }
     }

@@ -14,10 +14,16 @@ public class DateUtilities {
         String month = (String) data.get(prefix + "Month");
         String day = (String) data.get(prefix + "Day");
         String year = (String) data.get(prefix + "Year");
+        String formattedMonth = "";
+        String formattedDay = "";
 
-        String formattedMonth = String.format("%02d", Integer.parseInt(month));
-        String formattedDay = String.format("%02d", Integer.parseInt(day));
-
+        try {
+            formattedMonth = String.format("%02d", Integer.parseInt(month));
+            formattedDay = String.format("%02d", Integer.parseInt(day));
+        } catch (NumberFormatException e) {
+            formattedMonth = month;
+            formattedDay = day;
+        }
         return String.format("%s/%s/%s",
                 formattedMonth,
                 formattedDay,
@@ -40,12 +46,16 @@ public class DateUtilities {
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(dateStr);
 
-        if (matcher.matches()) {
-            int month = Integer.parseInt(matcher.group(1));
-            int day = Integer.parseInt(matcher.group(2));
-            int year = Integer.parseInt(matcher.group(3));
+        try {
+            if (matcher.matches()) {
+                int month = Integer.parseInt(matcher.group(1));
+                int day = Integer.parseInt(matcher.group(2));
+                int year = Integer.parseInt(matcher.group(3));
 
-            return Optional.of(LocalDate.of(year, month, day));
+                return Optional.of(LocalDate.of(year, month, day));
+            }
+        } catch (NumberFormatException e) {
+            return Optional.empty();
         }
 
         return Optional.empty();
