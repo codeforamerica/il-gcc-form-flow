@@ -16,7 +16,9 @@ public class SendGridWebhookSecurityConfig {
     @Bean("securityFilterChain")
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(csrf -> csrf.ignoringRequestMatchers("/sendgrid-webhook")).formLogin(AbstractHttpConfigurer::disable);
+        httpSecurity.csrf(csrf -> csrf.ignoringRequestMatchers("/sendgrid-webhook"))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/sendgrid-webhook").permitAll().anyRequest().authenticated())
+                .formLogin(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
     }
 }
