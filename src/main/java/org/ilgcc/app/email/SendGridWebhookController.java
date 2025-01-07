@@ -6,6 +6,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.Security;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.interfaces.ECPublicKey;
@@ -15,6 +16,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,8 +38,7 @@ public class SendGridWebhookController {
     public void handleSendGridEvents(@RequestBody List<Map<String, Object>> events,
             @RequestHeader("X-Twilio-Email-Event-Webhook-Signature") String signature,
             @RequestHeader("X-Twilio-Email-Event-Webhook-Timestamp") String timestamp)
-            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException 
-    {
+            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
         if (!isValidSignature(convertPublicKeyToECDSA(sendGridPublicKey), signature, timestamp, events.toString().getBytes())) {
             log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
             return;
@@ -67,6 +68,9 @@ public class SendGridWebhookController {
      */
     private ECPublicKey convertPublicKeyToECDSA(String publicKey)
             throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+
+        Security.addProvider(new BouncyCastleProvider());
+
         byte[] publicKeyInBytes = Base64.getDecoder().decode(publicKey);
         KeyFactory factory = KeyFactory.getInstance("ECDSA", "BC");
         return (ECPublicKey) factory.generatePublic(new X509EncodedKeySpec(publicKeyInBytes));
@@ -77,10 +81,8 @@ public class SendGridWebhookController {
      *
      * @param publicKey: elliptic curve public key
      * @param payload:   event payload string in the request body
-     * @param signature: value obtained from the
-     *                   'X-Twilio-Email-Event-Webhook-Signature' header
-     * @param timestamp: value obtained from the
-     *                   'X-Twilio-Email-Event-Webhook-Timestamp' header
+     * @param signature: value obtained from the 'X-Twilio-Email-Event-Webhook-Signature' header
+     * @param timestamp: value obtained from the 'X-Twilio-Email-Event-Webhook-Timestamp' header
      * @return true or false if signature is valid
      * @throws NoSuchAlgorithmException
      * @throws NoSuchProviderException
