@@ -103,6 +103,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("provider-mailing-zipcode")).isEqualTo("94103");
         assertThat(testPage.findElementTextById("provider-phone")).isEqualTo("(555) 555-5555");
         assertThat(testPage.findElementTextById("provider-email")).isEqualTo("foo@bar.com");
+        testPage.clickContinue();
+
+        //registration-tax-id.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        testPage.clickElementById("providerTaxIdType-SSN-label");
+        testPage.clickContinue();
     }
 
     @Test
@@ -390,11 +396,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-home-provider-ssn
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-ssn.title"));
+        testPage.enter("providerIdentityCheckSSN", "123456789");
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-ssn.error"))).isTrue();
-        testPage.enter("providerIdentityCheckSSN", "123456789");
-
+        //registration-tax-id.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
@@ -478,6 +485,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-info-review
         testPage.clickContinue();
 
+        //registration-tax-id.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        testPage.clickElementById("providerTaxIdType-SSN-label");
+        testPage.clickContinue();
+
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -496,7 +508,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
     @Test
-    void LicensedGroupChildCareCenterFlow() {
+    void LicensedGroupChildCareHomeFlow() {
         createAValidLink();
 
         // registration-licensing
@@ -561,6 +573,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-ssn.error"))).isTrue();
         testPage.enter("providerIdentityCheckSSN", "123456789");
 
+        testPage.clickContinue();
+
+        //registration-tax-id.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
@@ -676,6 +693,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("provider-mailing-zipcode")).isEqualTo("94103");
         assertThat(testPage.findElementTextById("provider-phone")).isEqualTo("(555) 555-5555");
         assertThat(testPage.findElementTextById("provider-email")).isEqualTo("foo@bar.com");
+        testPage.clickContinue();
+
+        //registration-tax-id.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
