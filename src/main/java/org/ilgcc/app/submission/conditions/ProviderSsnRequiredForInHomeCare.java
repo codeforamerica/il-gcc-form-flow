@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderSsnRequired implements Condition {
+public class ProviderSsnRequiredForInHomeCare implements Condition {
 
     final static List providerTypesRequired = List.of(
             ProviderType.LICENSED_DAY_CARE_HOME.name(),

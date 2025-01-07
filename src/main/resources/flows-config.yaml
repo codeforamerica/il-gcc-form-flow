@@ -663,11 +663,12 @@ flow:
   registration-info-review:
     nextScreens:
       - name: registration-home-provider-ssn
+        condition: ProviderSsnRequiredForInHomeCare
+      - name: registration-tax-id
         condition: EnableProviderRegistration
       - name: submit-complete-final
   registration-home-provider-ssn:
     crossFieldValidationAction: ValidateHomeProviderSSN
-    condition: ProviderSsnRequired
     nextScreens:
       - name: registration-home-provider-dob
   registration-home-provider-dob:
