@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/sendgrid-webhook")
@@ -84,7 +85,13 @@ public class SendGridWebhookController {
             return;
         }
 
-        log.info("Received SendGrid events {}", requestBody);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Map<String, Object> map = objectMapper.readValue(requestBody, Map.class);
+            log.info("Received SendGrid events {}", map);
+        } catch (Exception e) {
+           log.error("Error parsing JSON: " + requestBody, e);
+        }
     }
 
     /**
