@@ -55,33 +55,53 @@ public class SendGridWebhookController {
 //        log.info("Received {} SendGrid events", sanitizeEvents(events));
 //    }
 
+//    @PostMapping
+//    public void handleSendGridEvents(@RequestBody Map<String, Object> payload, HttpServletRequest request)
+//            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
+//
+//        Security.addProvider(new BouncyCastleProvider());
+//
+//        String signature = request.getHeader("X-Twilio-Email-Event-Webhook-Signature");
+//        String timestamp = request.getHeader("X-Twilio-Email-Event-Webhook-Timestamp");
+//
+//        log.info("timestamp: {}", timestamp);
+//        log.info("signature: {}", signature);
+//
+//        String requestBody;
+//        try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
+//            requestBody = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+//        }
+//
+//        final EventWebhook ew = new EventWebhook();
+//        final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
+//        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
+//
+//        if (!valid) {
+//            log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
+//            return;
+//        }
+//
+//        log.info("Received {} SendGrid events", requestBody.length());
+//    }
+
+
     @PostMapping
-    public void handleSendGridEvents(@RequestBody Map<String, Object> payload, HttpServletRequest request)
+    public void handleSendGridEvents(@RequestBody List<Map<String, Object>> events,
+            @RequestHeader("X-Twilio-Email-Event-Webhook-Signature") String signature,
+            @RequestHeader("X-Twilio-Email-Event-Webhook-Timestamp") String timestamp)
             throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
 
         Security.addProvider(new BouncyCastleProvider());
-
-        String signature = request.getHeader("X-Twilio-Email-Event-Webhook-Signature");
-        String timestamp = request.getHeader("X-Twilio-Email-Event-Webhook-Timestamp");
-
-        log.info("timestamp: {}", timestamp);
-        log.info("signature: {}", signature);
-
-        String requestBody;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
-            requestBody = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-        }
-
         final EventWebhook ew = new EventWebhook();
         final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
-        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
-
+        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, events.toString().getBytes(), signature, timestamp);
+        
         if (!valid) {
             log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
             return;
         }
 
-        log.info("Received {} SendGrid events", requestBody.length());
+        log.info("Received {} SendGrid events", sanitizeEvents(events));
     }
 
     /**
