@@ -1,6 +1,7 @@
 package org.ilgcc.app.email;
 
 import com.sendgrid.Request;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -27,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.sendgrid.helpers.eventwebhook.EventWebhook;
 import com.sendgrid.helpers.eventwebhook.EventWebhookHeader;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/sendgrid-webhook")
@@ -52,18 +56,21 @@ public class SendGridWebhookController {
 //    }
 
     @PostMapping
-    public void handleSendGridEvents(@RequestBody Request request)
+    public void handleSendGridEvents(@RequestBody Map<String, Object> payload, HttpServletRequest request)
             throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
 
         Security.addProvider(new BouncyCastleProvider());
 
-        String signature = request.getHeaders().get("X-Twilio-Email-Event-Webhook-Signature");
-        String timestamp = request.getHeaders().get("X-Twilio-Email-Event-Webhook-Timestamp");
+        String signature = request.getHeader("X-Twilio-Email-Event-Webhook-Signature");
+        String timestamp = request.getHeader("X-Twilio-Email-Event-Webhook-Timestamp");
 
         log.info("timestamp: {}", timestamp);
         log.info("signature: {}", signature);
-        
-        final byte[] requestBody = request.getBody().getBytes();
+
+        String requestBody;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
+            requestBody = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+        }
 
         final EventWebhook ew = new EventWebhook();
         final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
