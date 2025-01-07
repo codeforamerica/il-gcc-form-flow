@@ -62,7 +62,7 @@ public class SendGridWebhookController {
 //    }
 
     @PostMapping
-    public void handleSendGridEvents(HttpServletRequest request)
+    public void handleSendGridEvents(@RequestBody Map<String, Object> payload, HttpServletRequest request)
             throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
 
         String signature = request.getHeader(EventWebhookHeader.SIGNATURE.toString());
@@ -84,7 +84,7 @@ public class SendGridWebhookController {
             return;
         }
 
-        log.info("Received {} SendGrid events", requestBody.length());
+        log.info("Received {} SendGrid events", payload.toString());
     }
 
     /**
