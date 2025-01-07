@@ -69,11 +69,19 @@ public class SendGridWebhookController {
     private ECPublicKey convertPublicKeyToECDSA(String publicKey)
             throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
 
+        log.info("Converting public key to ECDSA signature");
+        log.info(publicKey);
+
         Security.addProvider(new BouncyCastleProvider());
 
         byte[] publicKeyInBytes = Base64.getDecoder().decode(publicKey);
         KeyFactory factory = KeyFactory.getInstance("ECDSA", "BC");
-        return (ECPublicKey) factory.generatePublic(new X509EncodedKeySpec(publicKeyInBytes));
+        ECPublicKey ecPublicKey = (ECPublicKey) factory.generatePublic(new X509EncodedKeySpec(publicKeyInBytes));
+
+        log.info(ecPublicKey.toString());
+        log.info("Done converting public key to ECDSA signature");
+
+        return ecPublicKey;
     }
 
     /**
@@ -92,6 +100,13 @@ public class SendGridWebhookController {
      */
     private boolean isValidSignature(ECPublicKey publicKey, String signature, String timestamp, byte[] payload)
             throws IOException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
+
+        log.info("validating signature");
+        log.info(publicKey.toString());
+        log.info(signature);
+        log.info(timestamp);
+        log.info(payload.toString());
+
         // prepend the payload with the timestamp
         final ByteArrayOutputStream payloadWithTimestamp = new ByteArrayOutputStream();
         payloadWithTimestamp.write(timestamp.getBytes());

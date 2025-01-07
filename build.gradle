@@ -58,7 +58,7 @@ dependencies {
     implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.3.2'
     implementation 'org.apache.commons:commons-text:1.13.0'
     implementation 'com.sendgrid:sendgrid-java:4.4.1'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.79'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
     implementation 'software.amazon.awssdk:s3:2.29.46'
 
     if (useLocalLibrary == 'true') {
