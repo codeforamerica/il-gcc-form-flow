@@ -81,7 +81,7 @@ public class SendGridWebhookController {
             return;
         }
 
-        log.info("Received {} SendGrid events", request.getBody());
+        log.info("Received {} SendGrid events", requestBody.length());
     }
 
     /**
