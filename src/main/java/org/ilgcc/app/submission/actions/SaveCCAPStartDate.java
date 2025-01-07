@@ -21,9 +21,8 @@ public class SaveCCAPStartDate extends VerifyDate {
         if (DateUtilities.isDateInvalid(currentChildStartDate)) {
             return;
         }
-        String key = String.format("%s%s", PREFIX, "Date");
-        String formattedDate = DTF.print(DTF.parseDateTime(currentChildStartDate));
-        childSubflowData.put(key, formattedDate);
+        String formattedDate = DateUtilities.getFormattedDateFromMonthDateYearInputs(PREFIX, childSubflowData);
+        childSubflowData.put(INPUT_NAME, formattedDate);
 
         String earliestCCAPStart = (String) submission.getInputData().getOrDefault(INPUT_NAME, "");
 
