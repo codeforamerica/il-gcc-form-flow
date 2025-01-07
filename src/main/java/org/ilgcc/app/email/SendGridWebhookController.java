@@ -1,5 +1,6 @@
 package org.ilgcc.app.email;
 
+import com.sendgrid.Request;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.sendgrid.helpers.eventwebhook.EventWebhook;
+import com.sendgrid.helpers.eventwebhook.EventWebhookHeader;
 
 @RestController
 @RequestMapping("/sendgrid-webhook")
@@ -34,17 +37,44 @@ public class SendGridWebhookController {
     @Value("${sendgrid.public-key}")
     String sendGridPublicKey;
 
+//    @PostMapping
+//    public void handleSendGridEvents(@RequestBody List<Map<String, Object>> events,
+//            @RequestHeader("X-Twilio-Email-Event-Webhook-Signature") String signature,
+//            @RequestHeader("X-Twilio-Email-Event-Webhook-Timestamp") String timestamp)
+//            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
+//
+//        if (!isValidSignature(convertPublicKeyToECDSA(sendGridPublicKey), signature, timestamp, events.toString().getBytes())) {
+//            log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
+//            return;
+//        }
+//
+//        log.info("Received {} SendGrid events", sanitizeEvents(events));
+//    }
+
     @PostMapping
-    public void handleSendGridEvents(@RequestBody List<Map<String, Object>> events,
-            @RequestHeader("X-Twilio-Email-Event-Webhook-Signature") String signature,
-            @RequestHeader("X-Twilio-Email-Event-Webhook-Timestamp") String timestamp)
+    public void handleSendGridEvents(@RequestBody Request request)
             throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException, IOException, SignatureException, InvalidKeyException {
-        if (!isValidSignature(convertPublicKeyToECDSA(sendGridPublicKey), signature, timestamp, events.toString().getBytes())) {
+
+        Security.addProvider(new BouncyCastleProvider());
+
+        String signature = request.getHeaders().get("X-Twilio-Email-Event-Webhook-Signature");
+        String timestamp = request.getHeaders().get("X-Twilio-Email-Event-Webhook-Timestamp");
+
+        log.info("timestamp: {}", timestamp);
+        log.info("signature: {}", signature);
+        
+        final byte[] requestBody = request.getBody().getBytes();
+
+        final EventWebhook ew = new EventWebhook();
+        final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
+        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
+
+        if (!valid) {
             log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
             return;
         }
 
-        log.info("Received {} SendGrid events", sanitizeEvents(events));
+        log.info("Received {} SendGrid events", request.getBody());
     }
 
     /**
