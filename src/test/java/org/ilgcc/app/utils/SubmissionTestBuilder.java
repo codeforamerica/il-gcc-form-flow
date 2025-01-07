@@ -553,6 +553,8 @@ public class SubmissionTestBuilder {
         child.put("ccapStartMonth", month);
         child.put("ccapStartDay", day);
 
+        child.put("ccapStartDate", DateUtilities.getFormattedDateFromMonthDateYearInputs("ccapStart", child));
+
         return this;
     }
 
