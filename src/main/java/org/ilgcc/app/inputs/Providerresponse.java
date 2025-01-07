@@ -5,6 +5,7 @@ import formflow.library.data.annotations.Phone;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public class Providerresponse extends FlowInputs {
 
@@ -105,4 +106,9 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank
     private String providerTaxIdType;
+
+    @NotBlank
+    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{registration-tax-id-ssn.error}")
+    private String providerTaxIdSSN;
+
 }
