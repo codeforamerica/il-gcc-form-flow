@@ -247,6 +247,8 @@ public class Gcc extends FlowInputs {
     // children-ccap-child-other-ed
     private String childAttendsOtherEd;
 
+    private String earliestChildcareStartDate;
+
     // activities-parent-type
     private List<String> activitiesParentChildcareReason;
     private String activitiesParentChildcareReason_other;

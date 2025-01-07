@@ -1,6 +1,5 @@
 package org.ilgcc.app.submission.actions;
 
-import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -11,22 +10,29 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SaveCCAPStartDate implements Action {
+public class SaveCCAPStartDate extends VerifyDate {
+    static final String PREFIX = "ccapStart";
+    static final String INPUT_NAME = "earliestChildcareStartDate";
 
-  @Override
-  public void run(Submission submission, String id) {
-    log.info(String.format("Running %s", this.getClass().getName()));
-    String prefix = "ccapStart";
-    Map<String, Object> childSubflowData = submission.getSubflowEntryByUuid("children", id);
-    String parentDateString = DateUtilities.getFormattedDateFromMonthDateYearInputs(prefix, childSubflowData);
+    @Override
+    public void run(Submission submission, String id) {
+        log.info(String.format("Running %s", this.getClass().getName()));
+        Map<String, Object> childSubflowData = submission.getSubflowEntryByUuid("children", id);
+        String currentChildStartDate = DateUtilities.getFormattedDateFromMonthDateYearInputs(PREFIX, childSubflowData);
 
-    DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
-    if (DateUtilities.isDateInvalid(parentDateString)) {
-      return;
+        if (DateUtilities.isDateInvalid(currentChildStartDate)) {
+            return;
+        }
+        String key = String.format("%s%s", PREFIX, "Date");
+        String formattedDate = DTF.print(DTF.parseDateTime(currentChildStartDate));
+        childSubflowData.put(key, formattedDate);
+
+        String earliestCCAPStart = (String) submission.getInputData().getOrDefault(INPUT_NAME, "");
+
+        if (earliestCCAPStart.isBlank()) {
+            submission.getInputData().put(INPUT_NAME, formattedDate);
+        } else {
+            submission.getInputData().put(INPUT_NAME, getEarliestDate(earliestCCAPStart, formattedDate));
+        }
     }
-    String key = String.format("%s%s", prefix, "Date");
-    String formattedDate = dtf.print(dtf.parseDateTime(parentDateString));
-    childSubflowData.put(key, formattedDate);
-  }
-
 }
