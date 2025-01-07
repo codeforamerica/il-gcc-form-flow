@@ -682,6 +682,8 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-tax-id-ssn
+        condition: NeedsSSNForTaxID
+      - name: registration-tax-id-ein
   registration-tax-id-ein:
     condition: EnableProviderRegistration
     nextScreens:
