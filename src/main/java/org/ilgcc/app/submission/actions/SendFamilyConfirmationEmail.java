@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class SendFamilyConfirmationEmail implements Action {
-    
+
     private final SendEmailJob sendEmailJob;
     private final MessageSource messageSource;
 
@@ -25,37 +25,45 @@ public class SendFamilyConfirmationEmail implements Action {
 
     @Override
     public void run(Submission familySubmission) {
-        String familyConfirmationEmailSent = (String) familySubmission.getInputData().getOrDefault("familyConfirmationEmailSent", "false");
+        String familyConfirmationEmailSent = (String) familySubmission.getInputData()
+                .getOrDefault("familyConfirmationEmailSent", "false");
         if (familyConfirmationEmailSent.equals("true")) {
             log.info("Family confirmation email has already been sent for submission with ID: {}", familySubmission.getId());
             return;
         }
         String familyEmail = familySubmission.getInputData().get("parentContactEmail").toString();
         if (familyEmail == null || familyEmail.isEmpty()) {
-            log.error("Family email was empty when attempting to send family confirmation email for submission with ID: {}", familySubmission.getId());
+            log.error("Family email was empty when attempting to send family confirmation email for submission with ID: {}",
+                    familySubmission.getId());
             return;
         }
 
         String familySubmissionShortCode = familySubmission.getShortCode();
-        
-        Locale locale = familySubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag("es") : Locale.ENGLISH;
-        String subject = messageSource.getMessage("email.family-confirmation.subject", new Object[]{familySubmissionShortCode}, locale);
-        
-        sendEmailJob.enqueueSendEmailJob(familyEmail, subject, EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(), createFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
+
+        Locale locale =
+                familySubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
+                        "es") : Locale.ENGLISH;
+        String subject = messageSource.getMessage("email.family-confirmation.subject", new Object[]{familySubmissionShortCode},
+                locale);
+
+        sendEmailJob.enqueueSendEmailJob(familyEmail, subject,
+                EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
+                createFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
         familySubmission.getInputData().put("familyConfirmationEmailSent", "true");
     }
-    
+
     private Content createFamilyConfirmationEmailBody(Submission familySubmission, String confirmationCode, Locale locale) {
         String parentFirstName = familySubmission.getInputData().get("parentFirstName").toString();
         String emailLink = familySubmission.getInputData().get("emailLink").toString();
         String ccrAndR = familySubmission.getInputData().get("ccrrName").toString();
         String submittedDate = SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission);
-        
+
         String p1 = messageSource.getMessage("email.family-confirmation.p1", new Object[]{parentFirstName}, locale);
         String p2 = messageSource.getMessage("email.family-confirmation.p2", null, locale);
         String p3 = messageSource.getMessage("email.family-confirmation.p3", new Object[]{emailLink}, locale);
         String p4 = messageSource.getMessage("email.family-confirmation.p4", new Object[]{ccrAndR}, locale);
-        String p5 = messageSource.getMessage("email.family-confirmation.p5", new Object[]{confirmationCode, submittedDate}, locale);
+        String p5 = messageSource.getMessage("email.family-confirmation.p5", new Object[]{confirmationCode, submittedDate},
+                locale);
         String p6 = messageSource.getMessage("email.family-confirmation.p6", null, locale);
         String p7 = messageSource.getMessage("email.family-confirmation.p7", null, locale);
         String p8 = messageSource.getMessage("email.family-confirmation.p8", null, locale);
