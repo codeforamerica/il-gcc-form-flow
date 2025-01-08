@@ -542,14 +542,19 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder addChildCareStartDate(int childIterationPosition, String ccapStartDate) {
+    public SubmissionTestBuilder addChildCareStartDate(int childIterationPosition, String year, String month, String day) {
         List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData()
                 .getOrDefault("children", emptyList());
         if (children.isEmpty()) {
             return this;
         }
         Map<String, Object> child = children.get(childIterationPosition);
-        child.put("ccapStartDate", (ccapStartDate));
+        child.put("ccapStartYear", year);
+        child.put("ccapStartMonth", month);
+        child.put("ccapStartDay", day);
+
+        child.put("ccapStartDate", DateUtilities.getFormattedDateFromMonthDateYearInputs("ccapStart", child));
+
         return this;
     }
 

@@ -548,6 +548,8 @@ flow:
   response:
     beforeDisplayAction: FindApplicationData
     nextScreens:
+      - name: registration-submit-intro
+        condition: ProviderIsRegistering
       - name: provider-info
         condition: ProviderAgreedToCare
       - name: confirm-deny-care
@@ -733,6 +735,26 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: confirmation-code
+  registration-submit-intro:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-terms
+  registration-terms:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-signature
+  registration-signature:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-submit-complete
+  registration-submit-complete:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-submit-next-steps
+  registration-submit-next-steps:
+    condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-submit-confirmation
   submit-complete-final:
     nextScreens:
       - name: registration-getting-started

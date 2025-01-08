@@ -26,10 +26,8 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         var results = new HashMap<String, SubmissionField>();
         int iteration = 1;
-        String earliestCCAPStart = "";
         for (var child : SubmissionUtilities.firstFourChildrenNeedingAssistance(submission)) {
             results.put("childFirstName_" + iteration,
                     new SingleField("childFirstName", (String) child.getOrDefault("childFirstName", ""), iteration));
@@ -52,11 +50,9 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
                     new SingleField("childCareChildInSchool", (String) child.getOrDefault("childAttendsOtherEd", ""), iteration));
             results.put("childRelationship_" + iteration,
                     new SingleField("childRelationship", (String) child.get("childRelationship"), iteration));
-            earliestCCAPStart = getEarliestCCAPStartDate(earliestCCAPStart, (String) child.getOrDefault("ccapStartDate", ""),
-                    formatter);
             iteration++;
         }
-        results.put("childcareStartDate", new SingleField("childcareStartDate", earliestCCAPStart, null));
+        results.put("childcareStartDate", new SingleField("childcareStartDate", submission.getInputData().getOrDefault("earliestChildcareStartDate", "").toString(), null));
         return results;
     }
 
@@ -87,42 +83,5 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
                     gender.stream().map(name -> GenderOption.getPdfValueByName(String.valueOf(name))).distinct().sorted()
                             .toList());
         }
-    }
-
-    private String getEarliestCCAPStartDate(String earliestCCAPStartDate, String childCCAPStartDate,
-            DateTimeFormatter formatter) {
-        if (earliestCCAPStartDate.isBlank()) {
-            return childCCAPStartDate;
-        }
-        if (childCCAPStartDate.isBlank()) {
-            return earliestCCAPStartDate;
-        }
-
-        Optional<LocalDate> earliestDate = Optional.of(
-                LocalDate.parse((addLeadingZerosToDateString(earliestCCAPStartDate)), formatter));
-        Optional<LocalDate> childcareStartDate = Optional.of(
-                LocalDate.parse(addLeadingZerosToDateString(childCCAPStartDate), formatter));
-        return earliestDate.get().isBefore(childcareStartDate.get()) ? earliestCCAPStartDate : childCCAPStartDate;
-    }
-
-    private String addLeadingZerosToDateString(String dateStr) {
-        String pattern = "(\\d{1,2})/(\\d{1,2})/(\\d{4})";
-        Pattern regex = Pattern.compile(pattern);
-        Matcher matcher = regex.matcher(dateStr);
-        try {
-            if (matcher.matches()) {
-                String month = matcher.group(1);
-                String day = matcher.group(2);
-                String year = matcher.group(3);
-
-                String formattedMonth = String.format("%02d", Integer.parseInt(month));
-                String formattedDay = String.format("%02d", Integer.parseInt(day));
-
-                return formattedMonth + "/" + formattedDay + "/" + year;
-            }
-        } catch (Exception e) {
-            return "";
-        }
-        return "";
     }
 }

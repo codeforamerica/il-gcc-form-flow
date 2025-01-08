@@ -83,24 +83,6 @@ public class NeedChildcareForChildrenPreparerTest {
     }
 
     @Test
-    public void shouldSetCCAPStartDateToTheStartDateOfAChildInNeedOfAssistance() {
-        submission = new SubmissionTestBuilder().withChild("Child", "NoChildcare", "No").withChild("Needs", "Childcare", "Yes")
-                .addChildCareStartDate(1, "1/1/2019").build();
-        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
-        assertThat(result.get("childcareStartDate")).isEqualTo(new SingleField("childcareStartDate", "1/1/2019", null));
-    }
-
-    @Test
-    public void shouldSetCCAPStartDateToTheStartDateOfEarliestCCAPStartDate() {
-        submission = new SubmissionTestBuilder().withChild("Child", "NoChildcare", "No").withChild("Needs", "Childcare", "Yes")
-                .addChildCareStartDate(0, "1/1/2019").withChild("Second", "Childcare", "Yes")
-                .addChildCareStartDate(1, "11/1/2009").withChild("Third", "Childcare", "Yes")
-                .addChildCareStartDate(2, "1/12/2024").build();
-        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
-        assertThat(result.get("childcareStartDate")).isEqualTo(new SingleField("childcareStartDate", "11/1/2009", null));
-    }
-
-    @Test
     public void setCorrectEthnicityRaceKeyInPDF() {
         submission = new SubmissionTestBuilder().withChild("Black Native American", "Child", "Yes")
                 .addChildDataArray(0, "childRaceEthnicity", List.of("BLACK", "NATIVE_AMERICAN"))
