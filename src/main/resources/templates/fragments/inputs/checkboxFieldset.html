@@ -31,6 +31,12 @@
         <th:block
                 th:replace="~{fragments/inputError :: validationError(inputName=${inputName})}"></th:block>
       </legend>
+      <legend th:if="${!hasLabel}" class="form-question no-label"
+              th:id="${inputName + '-legend'}"
+              th:inline="text">
+        <th:block
+                th:replace="~{fragments/inputError :: validationError(inputName=${inputName})}"></th:block>
+      </legend>
       <input type="hidden" th:id="${inputName} + 'Hidden'" th:name="${inputName} + '[]'" value="">
       <th:block th:if="${hasContent}">
         <th:block th:replace="${content}"/>
