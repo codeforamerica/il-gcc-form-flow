@@ -21,7 +21,7 @@ public class ValidateTaxIdSSN implements Action {
 
     public static final Locale locale = LocaleContextHolder.getLocale();
 
-    private final String INPUT_NAME = "providerTaxIdSSN";
+    private static final String INPUT_NAME = "providerTaxIdSSN";
 
     @Override
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
