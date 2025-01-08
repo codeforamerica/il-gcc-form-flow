@@ -467,7 +467,6 @@ flow:
   doc-upload-confirm:
     nextScreens: null
   children-delete:
-    onPostAction: UpdateEarliestCCAPStartDate
     nextScreens: null
   delete-person:
     nextScreens: null

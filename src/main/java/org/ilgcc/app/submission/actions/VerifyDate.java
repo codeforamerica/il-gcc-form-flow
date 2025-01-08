@@ -1,8 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
 import formflow.library.config.submission.Action;
-import java.time.LocalDate;
-import java.util.Optional;
+import java.util.Date;
 import org.ilgcc.app.utils.DateUtilities;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -48,16 +47,7 @@ abstract class VerifyDate implements Action {
                 .isAfter(latestSupportedDate.withTimeAtStartOfDay()));
     }
 
-    protected String getEarliestDate(String dateString1, String dateString2) {
-        if (dateString1.isBlank()) {
-            return dateString2;
-        }
-        if (dateString2.isBlank()) {
-            return dateString1;
-        }
-
-        Optional<LocalDate> earliestDate = DateUtilities.parseStringDate(dateString1);
-        Optional<LocalDate> childcareStartDate = DateUtilities.parseStringDate(dateString2);
-        return earliestDate.get().isBefore(childcareStartDate.get()) ? dateString1 : dateString2;
+    protected String getEarliestDate(String string1, String string2){
+        return DateUtilities.getEarliestDate(string1, string2);
     }
 }

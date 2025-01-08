@@ -22,7 +22,7 @@ public class SaveCCAPStartDate extends VerifyDate {
             return;
         }
         String formattedDate = DateUtilities.getFormattedDateFromMonthDateYearInputs(PREFIX, childSubflowData);
-        childSubflowData.put(INPUT_NAME, formattedDate);
+        childSubflowData.put(PREFIX + "Date", formattedDate);
 
         String earliestCCAPStart = (String) submission.getInputData().getOrDefault(INPUT_NAME, "");
 

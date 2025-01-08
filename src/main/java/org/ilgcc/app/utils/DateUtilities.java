@@ -60,4 +60,17 @@ public class DateUtilities {
 
         return Optional.empty();
     }
+
+    public static String getEarliestDate(String dateString1, String dateString2) {
+        if (dateString1.isBlank()) {
+            return dateString2;
+        }
+        if (dateString2.isBlank()) {
+            return dateString1;
+        }
+
+        Optional<LocalDate> earliestDate = DateUtilities.parseStringDate(dateString1);
+        Optional<LocalDate> childcareStartDate = DateUtilities.parseStringDate(dateString2);
+        return earliestDate.get().isBefore(childcareStartDate.get()) ? dateString1 : dateString2;
+    }
 }
