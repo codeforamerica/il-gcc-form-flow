@@ -3,6 +3,7 @@ package org.ilgcc.app.submission.actions;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.DateUtilities;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -32,10 +33,7 @@ public class ValidateChildrenCCAPStartDate extends VerifyDate {
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> inputData = formSubmission.getFormData();
     
-    String ccapStartingDate = String.format("%s/%s/%s",
-        (String) inputData.get("ccapStartMonth"),
-        (String) inputData.get("ccapStartDay"),
-        (String) inputData.get("ccapStartYear"));
+    String ccapStartingDate = DateUtilities.getFormattedDateFromMonthDateYearInputs("ccapStart", inputData);
     
     if (ccapStartingDate.replace("/", "").isBlank()) {
       return errorMessages;
