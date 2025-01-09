@@ -71,7 +71,8 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 "providerIdentityCheckSSN",
                 "providerConviction",
                 "providerConvictionExplanation",
-                "providerIdentityCheckDateOfBirthDate"
+                "providerIdentityCheckDateOfBirthDate",
+                "providerTaxIdEIN"
         );
 
         Submission providerSubmission = providerSubmissionFromId(submission).get();
