@@ -1,5 +1,5 @@
 <header
-        th:fragment="requiredCardHeader"
+        th:fragment="cardHeader"
         th:with="hasSubtext=${!#strings.isEmpty(subtext)},
             isRequiredInput=${(required != null && required)}"
         th:assert="${!#strings.isEmpty(header)}"
