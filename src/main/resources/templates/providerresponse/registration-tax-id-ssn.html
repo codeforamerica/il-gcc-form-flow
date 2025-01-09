@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{registration-tax-id-ssn.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,15 +8,32 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
+        <th:block th:replace="~{fragments/gcc-icons :: socialSecurity}"></th:block>
+        <th:block
+            th:replace="~{fragments/cardHeaderForSingleInputScreen ::
+              cardHeaderForSingleInputScreen(header=#{registration-tax-id-ssn.header}, subtext=#{registration-tax-id-ssn.helper}, required='true')}"/>
+        <th:block
+            th:replace="~{fragments/form :: form(action=${formAction}, content=~{::taxSSNContent})}">
+          <th:block th:ref="taxSSNContent">
+            <th:block th:ref="inputContent">
+              <div class="form-card__content">
+                <th:block
+                    th:replace="~{fragments/inputs/ssn :: ssn(inputName='providerTaxIdSSN', ariaLabel='header')}"/>
+                <div>
+
+                </div>
+                <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                                  text=#{general.button.continue})}"/>
+                <div class="display-flex spacing-above-15">
+                  <div class="spacing-right-10">
+                    <th:block
+                        th:replace="~{fragments/icons :: filledLock}"></th:block>
+                  </div>
+                  <p class="text--small"
+                     th:utext="#{registration-tax-id-ssn.linkText}"></p>
+                </div>
+              </div>
+            </th:block>
           </th:block>
         </th:block>
       </main>

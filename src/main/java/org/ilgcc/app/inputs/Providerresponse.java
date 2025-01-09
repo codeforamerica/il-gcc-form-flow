@@ -105,4 +105,6 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank
     private String providerTaxIdType;
+
+    private String providerTaxIdSSN;
 }
