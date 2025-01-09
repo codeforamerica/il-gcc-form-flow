@@ -9,7 +9,7 @@
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
                 <div class="text--centered">
-                    <th:block th:replace="~{fragments/gcc-icons :: clipboardWithEnvelope}"></th:block>
+                    <th:block th:replace="~{fragments/gcc-icons :: application-mail}"></th:block>
                     <p class="text--grey-dark" th:id="submit-intro-step" th:text="${#messages.msg('submit-intro.step', (@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true' ? '6' : '5'))}"></p>
                     <th:block
                             th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-intro.title})}"/>
