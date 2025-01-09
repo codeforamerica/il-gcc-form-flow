@@ -11,7 +11,7 @@
                 <th:block
                         th:with="response=${submission.getInputData.get('providerResponseAgreeToCare')}">
 
-                    <th:block th:replace="~{fragments/gcc-icons :: greenCheck}"></th:block>
+                    <th:block th:replace="~{fragments/gcc-icons :: check-mark}"></th:block>
                     <div th:if="${lockedSubmissionMessage}" class="notice--warning">
                         <p th:text="${lockedSubmissionMessage}"></p>
                     </div>
