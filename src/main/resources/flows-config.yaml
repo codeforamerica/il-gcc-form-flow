@@ -686,6 +686,7 @@ flow:
         condition: NeedsSSNForTaxID
       - name: registration-tax-id-ein
   registration-tax-id-ein:
+    crossFieldValidationAction: ValidateEIN
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-service-languages
