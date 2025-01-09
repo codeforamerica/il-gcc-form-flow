@@ -668,6 +668,7 @@ flow:
         condition: ProviderChoseEINAsTaxIdType
       - name: registration-service-languages
   registration-tax-id-ein:
+    crossFieldValidationAction: ValidateEIN
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-service-languages
