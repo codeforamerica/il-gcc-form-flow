@@ -10,7 +10,7 @@
       <main id="content" role="main" class="form-card spacing-above-35">
         <th:block th:replace="~{fragments/gcc-icons :: careFinancial}"></th:block>
         <th:block
-            th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-parent-type.header})}"/>
+            th:replace="~{fragments/requiredCardHeader :: requiredCardHeader(header=#{activities-parent-type.header}, required='true')}"/>
         <th:block
             th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">

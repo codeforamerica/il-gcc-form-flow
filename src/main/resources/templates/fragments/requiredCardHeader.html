@@ -1,0 +1,13 @@
+<header
+        th:fragment="requiredCardHeader"
+        th:with="hasSubtext=${!#strings.isEmpty(subtext)},
+            isRequiredInput=${(required != null && required)}"
+        th:assert="${!#strings.isEmpty(header)}"
+        class="form-card__header">
+    <h1 id="header" class="h2" >
+        <span th:text="${header + ' '}"></span><span th:if="${isRequiredInput}" class="required-input" th:text="#{general.required-field}"></span>
+    </h1>
+    <p id="header-help-message"
+       th:if="${hasSubtext}"
+       th:utext="${subtext}"></p>
+</header>

@@ -250,8 +250,10 @@ public class Gcc extends FlowInputs {
     private String earliestChildcareStartDate;
 
     // activities-parent-type
+    @NotEmpty(message = "{activities-type.error.required}")
     private List<String> activitiesParentChildcareReason;
     private String activitiesParentChildcareReason_other;
+    @NotEmpty(message = "{activities-type.error.required}")
     private List<String> activitiesParentPartnerChildcareReason;
     private String activitiesParentPartnerChildcareReason_other;
 
