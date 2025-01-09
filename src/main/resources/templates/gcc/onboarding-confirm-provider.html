@@ -9,7 +9,7 @@
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35"
             th:with="provider=${T(org.ilgcc.app.utils.ChildCareProvider).valueOf(inputData.get('dayCareChoice'))}">
-        <th:block th:replace="~{fragments/gcc-icons :: caring}"></th:block>
+        <th:block th:replace="~{fragments/gcc-icons :: care}"></th:block>
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-confirm-provider.header})}"/>
         <div class="form-card__content">
           <div class="grid__item address-validation spacing-below-60">
