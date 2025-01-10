@@ -68,7 +68,6 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 "providerResponseBusinessName",
                 "providerResponseContactPhoneNumber",
                 "providerResponseContactEmail",
-                "providerIdentityCheckSSN",
                 "providerConviction",
                 "providerConvictionExplanation",
                 "providerIdentityCheckDateOfBirthDate",
