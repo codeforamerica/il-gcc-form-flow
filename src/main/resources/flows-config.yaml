@@ -690,7 +690,6 @@ flow:
     nextScreens:
       - name: registration-service-languages
   registration-tax-id-ssn:
-    crossFieldValidationAction: ValidateTaxIdSSN
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-service-languages
