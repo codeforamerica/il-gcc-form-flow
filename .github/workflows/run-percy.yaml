@@ -40,9 +40,8 @@ jobs:
         run: chmod +x gradlew
       - name: Run multiple journey tests and send to Percy
         run: |
-          npx percy exec -- ./gradlew test --tests \
-            org.ilgcc.app.journeys.GccFlowJourneyTest.fullGccFlow \
-            org.ilgcc.app.journeys.ProviderresponseFlowJourneyTest.ProviderresponseJourneyTest_validLink \
-            org.ilgcc.app.journeys.ProviderresponseProviderRegistrationJourneyTest.LicenseExemptInProviderHomeFlow
+          npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.GccFlowJourneyTest.fullGccFlow
+          npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.ProviderresponseFlowJourneyTest.ProviderresponseJourneyTest_validLink
+          npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.ProviderresponseProviderRegistrationJourneyTest.LicenseExemptInProviderHomeFlow
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
