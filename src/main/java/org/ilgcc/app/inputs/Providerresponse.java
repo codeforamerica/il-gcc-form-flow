@@ -107,7 +107,7 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank
     private String providerTaxIdType;
-    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{eregistration-tax-id-ssn.error}")
+    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{registration-tax-id-ssn.error}")
     @Encrypted
     private String providerTaxIdSSN;
     @Pattern(regexp = "\\d{9}", message = "{registration-tax-id-ein.error}")
