@@ -38,11 +38,11 @@ jobs:
         run: npm install -g @percy/cli
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Run GCC journey test and send to Percy
-        run: PERCY_PARALLEL_TOTAL=3 PERCY_PARALLEL_NONCE=gcc npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.GccFlowJourneyTest.fullGccFlow
-      - name: Run Provider Journey Test with valid link
-        run: PERCY_PARALLEL_TOTAL=3 PERCY_PARALLEL_NONCE=provider_response npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.ProviderresponseFlowJourneyTest.ProviderresponseJourneyTest_validLink
-      - name: Run Provider Registration flow and send to Percy
-        run: PERCY_PARALLEL_TOTAL=3 PERCY_PARALLEL_NONCE=provider_registration npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.ProviderresponseProviderRegistrationJourneyTest.LicenseExemptInProviderHomeFlow
+      - name: Run multiple journey tests and send to Percy
+        run: |
+          npx percy exec -- ./gradlew test --tests \
+            org.ilgcc.app.journeys.GccFlowJourneyTest.fullGccFlow \
+            org.ilgcc.app.journeys.ProviderresponseFlowJourneyTest.ProviderresponseJourneyTest_validLink \
+            org.ilgcc.app.journeys.ProviderresponseProviderRegistrationJourneyTest.LicenseExemptInProviderHomeFlow
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
