@@ -23,17 +23,17 @@ public class SendEmailJob {
         this.sendGridEmailService = sendGridEmailService;
     }
 
-    public void enqueueSendEmailJob(String recipientAddress, String subject, String emailType, Content content,
+    public void enqueueSendEmailJob(String recipientAddress, String senderName, String subject, String emailType, Content content,
             Submission submission) {
-        JobId jobId = jobScheduler.enqueue(() -> sendEmailRequest(recipientAddress, subject, emailType, content, submission));
+        JobId jobId = jobScheduler.enqueue(() -> sendEmailRequest(recipientAddress, senderName, subject, emailType, content, submission));
         log.info("Enqueued {} email job with ID: {} for submission with ID: {}", emailType, jobId, submission.getId());
     }
 
     @Job(name = "Send Email Request", retries = 3)
-    public void sendEmailRequest(String recipientAddress, String subject, String emailType, Content content,
+    public void sendEmailRequest(String recipientAddress, String senderName, String subject, String emailType, Content content,
             Submission submission) throws IOException {
         try {
-            sendGridEmailService.sendEmail(recipientAddress, subject, content);
+            sendGridEmailService.sendEmail(recipientAddress, senderName, subject, content);
             log.info("Successfully sent the {} for submission with ID {} to Sendgrid.", emailType, submission.getId());
         } catch (IOException e) {
             log.error("There was an error when attempting to send the {} for submission with ID {}: {}", emailType,

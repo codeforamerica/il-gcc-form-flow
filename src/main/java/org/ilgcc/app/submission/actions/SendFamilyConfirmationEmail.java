@@ -46,7 +46,9 @@ public class SendFamilyConfirmationEmail implements Action {
         String subject = messageSource.getMessage("email.family-confirmation.subject", new Object[]{familySubmissionShortCode},
                 locale);
 
-        sendEmailJob.enqueueSendEmailJob(familyEmail, subject,
+        String senderName = messageSource.getMessage("email.sender-name", null, locale);
+
+        sendEmailJob.enqueueSendEmailJob(familyEmail, senderName, subject,
                 EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
                 createFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
         familySubmission.getInputData().put("familyConfirmationEmailSent", "true");
