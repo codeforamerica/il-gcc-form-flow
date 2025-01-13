@@ -26,10 +26,13 @@ public class SaveCCAPStartDate extends VerifyDate {
 
         String earliestCCAPStart = (String) submission.getInputData().getOrDefault(INPUT_NAME, "");
 
-        if (earliestCCAPStart.isBlank()) {
+        if (earliestCCAPStart == null || earliestCCAPStart.isBlank()) {
             submission.getInputData().put(INPUT_NAME, formattedDate);
         } else {
-            submission.getInputData().put(INPUT_NAME, getEarliestDate(earliestCCAPStart, formattedDate));
+            String earliestDate = getEarliestDate(earliestCCAPStart, formattedDate);
+            if (earliestDate != null) {
+                submission.getInputData().put(INPUT_NAME, earliestDate);
+            }
         }
     }
 }

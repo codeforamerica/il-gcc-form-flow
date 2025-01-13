@@ -35,8 +35,11 @@ public class RemoveIncompleteChildIterations implements Action {
     }
 
     protected void updateEarliestCCAPStartDate(Submission submission) {
-        submission.getInputData().put(INPUT_NAME, findEarliestCCAPDate(submission));
-        submissionRepositoryService.save(submission);
+        String earliestCCAPDate = findEarliestCCAPDate(submission);
+        if (earliestCCAPDate != null) {
+            submission.getInputData().put(INPUT_NAME, earliestCCAPDate);
+            submissionRepositoryService.save(submission);
+        }
     }
 
     private String findEarliestCCAPDate(Submission submission) {
@@ -54,9 +57,11 @@ public class RemoveIncompleteChildIterations implements Action {
     private String earliestDateOfMultipleChildren(List<Map<String, Object>> children) {
         String earliestChildCareDate = "";
         for (var child : children.stream().toList()) {
-            earliestChildCareDate = DateUtilities.getEarliestDate(earliestChildCareDate, child.get("ccapStartDate").toString());
+            Object ccapStartDate = child.get("ccapStartDate");
+            if (ccapStartDate != null) {
+                earliestChildCareDate = DateUtilities.getEarliestDate(earliestChildCareDate, ccapStartDate.toString());
+            }
         }
-        ;
 
         return earliestChildCareDate;
     }
