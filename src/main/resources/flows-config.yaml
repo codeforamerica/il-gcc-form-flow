@@ -453,6 +453,7 @@ flow:
     nextScreens:
       - name: submit-next-steps
   contact-provider-message:
+    beforeSaveAction: SendFamilyConfirmationEmail
     nextScreens:
       - name: submit-next-steps
         condition: ExpandExistingProviderFlowFlag

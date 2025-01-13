@@ -48,7 +48,7 @@ repositories {
 }
 
 def profile = props.getProperty('SPRING_PROFILES_ACTIVE')
-def formFlowLibraryVersion = '1.6.2'
+def formFlowLibraryVersion = '1.6.3'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
@@ -57,6 +57,8 @@ dependencies {
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
     implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.3.2'
     implementation 'org.apache.commons:commons-text:1.13.0'
+    implementation 'com.sendgrid:sendgrid-java:4.10.3'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
     implementation 'software.amazon.awssdk:s3:2.29.50'
 
     if (useLocalLibrary == 'true') {
