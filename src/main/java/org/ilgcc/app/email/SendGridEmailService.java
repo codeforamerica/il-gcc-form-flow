@@ -20,8 +20,8 @@ public class SendGridEmailService {
 
     private final SendGrid sendGrid = new SendGrid(System.getenv("SENDGRID_API_KEY"));
 
-    public Response sendEmail(String recipientAddress, String subject, Content content) throws IOException {
-        Email senderEmail = new Email(EmailConstants.FROM_ADDRESS, EmailConstants.SENDER_NAME);
+    public Response sendEmail(String recipientAddress, String senderName, String subject, Content content) throws IOException {
+        Email senderEmail = new Email(EmailConstants.FROM_ADDRESS, senderName);
         Email recipientEmail = new Email(recipientAddress);
         Mail mail = new Mail(senderEmail, subject, recipientEmail, content);
         Request request = new Request();
