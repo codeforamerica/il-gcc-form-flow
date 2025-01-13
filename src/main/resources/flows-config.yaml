@@ -685,6 +685,8 @@ flow:
       - name: registration-tax-id-ssn
         condition: NeedsSSNForTaxID
       - name: registration-tax-id-ein
+        condition: ProviderChoseEINAsTaxIdType
+      - name: registration-service-languages
   registration-tax-id-ein:
     condition: EnableProviderRegistration
     nextScreens:

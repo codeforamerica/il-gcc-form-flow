@@ -11,7 +11,7 @@
         <th:block th:replace="~{fragments/gcc-icons :: socialSecurity}"></th:block>
         <th:block
             th:replace="~{fragments/cardHeaderForSingleInputScreen ::
-              cardHeaderForSingleInputScreen(header=#{registration-tax-id-ssn.header}, subtext=#{registration-tax-id-ssn.helper}, required='true')}"/>
+              cardHeaderForSingleInputScreen(header=#{registration-tax-id-ssn.header}, subtext=#{registration-tax-id-ssn.helper})}"/>
         <th:block
             th:replace="~{fragments/form :: form(action=${formAction}, content=~{::taxSSNContent})}">
           <th:block th:ref="taxSSNContent">
