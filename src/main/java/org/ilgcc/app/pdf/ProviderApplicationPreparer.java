@@ -68,10 +68,10 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 "providerResponseBusinessName",
                 "providerResponseContactPhoneNumber",
                 "providerResponseContactEmail",
-                "providerIdentityCheckSSN",
                 "providerConviction",
                 "providerConvictionExplanation",
-                "providerIdentityCheckDateOfBirthDate"
+                "providerIdentityCheckDateOfBirthDate",
+                "providerTaxIdEIN"
         );
 
         Submission providerSubmission = providerSubmissionFromId(submission).get();

@@ -2,9 +2,11 @@ package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Phone;
+import formflow.library.inputs.Encrypted;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public class Providerresponse extends FlowInputs {
 
@@ -105,6 +107,9 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank
     private String providerTaxIdType;
-
+    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{registration-tax-id-ssn.error}")
+    @Encrypted
     private String providerTaxIdSSN;
+    @Pattern(regexp = "\\d{9}", message = "{registration-tax-id-ein.error}")
+    private String providerTaxIdEIN;
 }

@@ -1,7 +1,6 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import formflow.library.data.SubmissionRepository;
 import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Autowired
     SubmissionRepository repository;
 
-    private static String CONF_CODE = "A2123B";
+    private static final String CONF_CODE = "A2123B";
 
     @Test
     void BasicInfoFlow() {
@@ -105,10 +104,21 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("provider-email")).isEqualTo("foo@bar.com");
         testPage.clickContinue();
 
-        //registration-tax-id.title
+        //registration-tax-id
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
+
+        //registration-tax-id-ssn (test error)
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ssn.title"));
+        testPage.enter("providerTaxIdSSN", "222-22-222");
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-tax-id-ssn.error"))).isTrue();
+
+        //registration-tax-id-ssn
+        testPage.enter("providerTaxIdSSN", "333-22-2222");
+        testPage.clickContinue();
+
     }
 
     @Test
@@ -193,6 +203,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
+        //
+        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
+        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -312,7 +325,17 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //registration-tax-id
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
-        testPage.clickElementById("providerTaxIdType-SSN-label");
+        testPage.clickElementById("providerTaxIdType-FEIN-label");
+        testPage.clickContinue();
+
+        //registration-tax-id-ein (error)
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ein.title"));
+        testPage.enter("providerTaxIdEIN", "12345");
+        testPage.clickContinue();
+
+        //registration-tax-id-ein
+        assertThat(testPage.hasErrorText(getEnMessage("registration-tax-id-ein.error"))).isTrue();
+        testPage.enter("providerTaxIdEIN", "123456789");
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
@@ -404,6 +427,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
+        //
+        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
+        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -487,7 +513,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //registration-tax-id.title
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
-        testPage.clickElementById("providerTaxIdType-SSN-label");
+        testPage.clickElementById("providerTaxIdType-FEIN-label");
+        testPage.clickContinue();
+
+        //registration-tax-id-ein
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ein.title"));
+        testPage.enter("providerTaxIdEIN", "123456789");
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
@@ -700,6 +731,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
+
         // registration-checks-trainings-intro
         testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
@@ -723,6 +755,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-family-response-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
     }
+
 
     private void createAValidLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");

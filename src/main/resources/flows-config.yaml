@@ -685,12 +685,13 @@ flow:
       - name: registration-tax-id-ssn
         condition: NeedsSSNForTaxID
       - name: registration-tax-id-ein
+        condition: ProviderChoseEINAsTaxIdType
+      - name: registration-service-languages
   registration-tax-id-ein:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: null
+      - name: registration-service-languages
   registration-tax-id-ssn:
-    crossFieldValidationAction: ValidateTaxIdSSN
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-service-languages
