@@ -35,8 +35,11 @@ public class RemoveIncompleteChildIterations implements Action {
     }
 
     protected void updateEarliestCCAPStartDate(Submission submission) {
-        submission.getInputData().put(INPUT_NAME, findEarliestCCAPDate(submission));
-        submissionRepositoryService.save(submission);
+        String earliestCCAPDate = findEarliestCCAPDate(submission);
+        if (earliestCCAPDate != null) {
+            submission.getInputData().put(INPUT_NAME, earliestCCAPDate);
+            submissionRepositoryService.save(submission);
+        }
     }
 
     private String findEarliestCCAPDate(Submission submission) {
