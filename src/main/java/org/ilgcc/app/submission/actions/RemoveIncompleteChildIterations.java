@@ -57,9 +57,11 @@ public class RemoveIncompleteChildIterations implements Action {
     private String earliestDateOfMultipleChildren(List<Map<String, Object>> children) {
         String earliestChildCareDate = "";
         for (var child : children.stream().toList()) {
-            earliestChildCareDate = DateUtilities.getEarliestDate(earliestChildCareDate, child.get("ccapStartDate").toString());
+            Object ccapStartDate = child.get("ccapStartDate");
+            if (ccapStartDate != null) {
+                earliestChildCareDate = DateUtilities.getEarliestDate(earliestChildCareDate, ccapStartDate.toString());
+            }
         }
-        ;
 
         return earliestChildCareDate;
     }
