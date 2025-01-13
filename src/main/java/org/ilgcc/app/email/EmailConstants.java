@@ -4,10 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class EmailConstants {
+
     @Getter
     public enum EmailType {
-        FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"),
-        FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER("No Provider Family Confirmation Email");
+        FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"), FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER(
+                "No Provider Family Confirmation Email");
 
         private final String description;
 
@@ -21,6 +22,4 @@ public class EmailConstants {
     }
 
     public static final String FROM_ADDRESS = "contact@getchildcareil.org";
-    public static final String SENDER_NAME =
-            "Child Care Assistance Program Applications - Code for America on behalf of Illinois Department of Human Services";
 }
