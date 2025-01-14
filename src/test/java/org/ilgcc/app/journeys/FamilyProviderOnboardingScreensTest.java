@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.CountyOption;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
 public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
