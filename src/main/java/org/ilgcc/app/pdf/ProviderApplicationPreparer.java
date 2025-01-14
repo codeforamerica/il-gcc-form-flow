@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.UUID;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ChildCareProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +33,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
 
-    private final Boolean expandExistingProviderFlowFlag;
-
-    public ProviderApplicationPreparer(
-            @Value("${il-gcc.dts.expand-existing-provider-flow}") Boolean expandExistingProviderFlowFlag) {
-        this.expandExistingProviderFlowFlag = expandExistingProviderFlowFlag;
+    public ProviderApplicationPreparer() {
     }
 
     @Override
@@ -50,11 +45,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         if (useProviderResponse(submission)) {
             return prepareProviderResponse(submission);
         } else {
-            if (expandExistingProviderFlowFlag) {
-                return prepareFamilyIntendedProviderData(submission);
-            } else {
-                return prepareFamilySelectedDayCareData(submission);
-            }
+            return prepareFamilyIntendedProviderData(submission);
         }
     }
     //Because we are printing the PDF from the GCC flow we need to get the provider submission then pull the responses values from the provdier submission

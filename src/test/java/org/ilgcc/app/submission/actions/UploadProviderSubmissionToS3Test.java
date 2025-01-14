@@ -2,7 +2,6 @@ package org.ilgcc.app.submission.actions;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -82,13 +81,12 @@ class UploadProviderSubmissionToS3Test {
   }
 
   @Test
-  void whenFeatureFlagIsSetToTrueAndProviderSubmissionIsEnqueued() {
+  void ProviderSubmissionIsEnqueued() {
     uploadProviderSubmissionToS3 = new UploadProviderSubmissionToS3(
         pdfService,
         cloudFileRepository,
         pdfTransmissionJob,
         enqueueDocumentTransfer,
-        true,
         submissionRepositoryService,
         userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService);
     uploadProviderSubmissionToS3.run(providerSubmission);
@@ -98,26 +96,5 @@ class UploadProviderSubmissionToS3Test {
     verify(enqueueDocumentTransfer, times(1)).enqueueUploadedDocumentBySubmission(eq(userFileRepositoryService),
         eq(uploadedDocumentTransmissionJob), eq(s3PresignService), eq(familySubmission));
 
-  }
-  @Test
-  void whenFeatureFlagIsSetToFalseAndProviderSubmissionIsNotEnqueued(){
-    uploadProviderSubmissionToS3 = new UploadProviderSubmissionToS3(
-        pdfService,
-        cloudFileRepository,
-        pdfTransmissionJob,
-        enqueueDocumentTransfer,
-        false,
-        submissionRepositoryService,
-        userFileRepositoryService, uploadedDocumentTransmissionJob, s3PresignService);
-    uploadProviderSubmissionToS3.run(providerSubmission);
-
-    verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
-        eq(pdfTransmissionJob), eq(familySubmission), any());
-    verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(eq(userFileRepositoryService),
-        eq(uploadedDocumentTransmissionJob), eq(s3PresignService), eq(familySubmission));
-  }
-
-  private String generateExpectedPdfPath(Submission submission) {
-    return String.format("%s/%s.pdf", submission.getId(), submission.getId());
   }
 }

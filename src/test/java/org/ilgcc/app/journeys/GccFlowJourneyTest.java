@@ -35,22 +35,36 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // onboarding-getting-started
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
-        //onboarding-choose-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-choose-provider.title"));
-        testPage.clickElementById("dayCareChoice-OPEN_SESAME-label");
-        testPage.clickContinue();
-        //onboarding-confirm-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-confirm-provider.title"));
-        testPage.clickLink(getEnMessage("onboarding-confirm-provider.yes"));
-        //onboarding-language-preference
+        // onboarding-language-pref
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
         testPage.selectFromDropdown("languageRead", "English");
         testPage.selectFromDropdown("languageSpeak", "Español");
         testPage.clickContinue();
+        // onboarding-county
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
+        testPage.selectFromDropdown("applicationCounty", "DeKalb");
+        testPage.clickContinue();
+        // onboarding-chosen-provider
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
+        testPage.clickYes();
+
+        // onboarding-provider-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info.title"));
+        testPage.enter("familyIntendedProviderName", "ACME Daycare");
+        testPage.clickContinue();
+
+        // onboarding-provider-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info-review.title"));
+        assertThat(testPage.getTextBySelector("ol.list--bulleted > li").get(0)).isEqualTo("ACME Daycare");
+        testPage.clickContinue();
+
+        // onboarding-provider-info-confirm
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info-confirm.title"));
+        testPage.clickContinue();
 
         // parent-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
-        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 5");
+        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 6");
         testPage.clickContinue();
         // parent-info-basic-1
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
@@ -184,7 +198,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("parent-intro-family-info.continue"));
         //children-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
-        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 5");
+        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 6");
         testPage.clickContinue();
         // children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
@@ -280,7 +294,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-parent-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
-        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 3 of 5");
+        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 3 of 6");
         testPage.clickContinue();
         //activities-parent-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
@@ -600,7 +614,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //unearned-income-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
-        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 4 of 5");
+        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 4 of 6");
         testPage.clickContinue();
 
         //unearned-income-source
@@ -637,7 +651,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-intro.title"));
-        assertThat(testPage.findElementTextById("submit-intro-step")).isEqualTo("Step 5 of 5");
+        assertThat(testPage.findElementTextById("submit-intro-step")).isEqualTo("Step 5 of 6");
         testPage.clickContinue();
 
         // submit-ccap-terms
@@ -674,6 +688,19 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.goBack();
         testPage.goBack();
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // contact-provider-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
+        testPage.clickContinue();
+
+        // contact-provider-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
+        testPage.clickContinue();
+
+        // contact-provider-message
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
+        testPage.clickElementById("copy-message-to-clipboard");
+        testPage.clickButton(getEnMessage("general.continue-next-steps"));
 
         // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));

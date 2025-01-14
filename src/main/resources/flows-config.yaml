@@ -3,8 +3,6 @@ flow:
   onboarding-getting-started:
     nextScreens:
       - name: onboarding-language-pref
-        condition: ExpandExistingProviderFlowFlag
-      - name: onboarding-choose-provider
   onboarding-choose-provider:
     nextScreens:
       - name: pilot-offboard
@@ -20,8 +18,6 @@ flow:
   onboarding-provider-info:
     nextScreens:
       - name: onboarding-provider-info-review
-        condition: ExpandExistingProviderFlowFlag
-      - name: contact-provider-message
   onboarding-no-provider-intro:
     nextScreens:
       - name: parent-info-intro
@@ -52,8 +48,6 @@ flow:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
       - name: onboarding-county
-        condition: ExpandExistingProviderFlowFlag
-      - name: parent-info-intro
   parent-info-intro:
     nextScreens:
       - name: parent-info-basic-1
@@ -422,8 +416,6 @@ flow:
       - name: no-provider-intro
         condition: NoProviderChosenAndShowNoProviderFlow
       - name: contact-provider-intro
-        condition: ExpandExistingProviderFlowFlag
-      - name: submit-next-steps
   contact-provider-intro:
     nextScreens:
       - name: contact-provider-info
@@ -456,8 +448,6 @@ flow:
     beforeSaveAction: SendFamilyConfirmationEmail
     nextScreens:
       - name: submit-next-steps
-        condition: ExpandExistingProviderFlowFlag
-      - name: complete-next-steps
   complete-next-steps:
     nextScreens:
       - name: complete-submit-confirmation
