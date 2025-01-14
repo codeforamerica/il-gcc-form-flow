@@ -18,27 +18,6 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
           fetch-depth: 0
 
-      - name: Install Node.js (for npm)
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install Aptible CLI
-        run: npm install -g aptible-cli
-
-      - name: Authenticate with Aptible
-        env:
-          APTIBLE_USERNAME: ${{ secrets.APTIBLE_USERNAME }}
-          APTIBLE_PASSWORD: ${{ secrets.APTIBLE_PASSWORD }}
-        run: |
-          aptible login --email "$APTIBLE_USERNAME" --password "$APTIBLE_PASSWORD"
-
-      - name: Set environment variable in Aptible
-        run: |
-          aptible config:set \
-          GIT_REF="${{ github.event.inputs.branch }}" \
-          --app illinois-get-childcare-staging
-          
       - name: Deploy to Aptible
         uses: aptible/aptible-deploy-action@v4
         with:
@@ -61,6 +40,7 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: staging
+          ignore-missing: true
           ignore_missing: true
 
       - name: Announce on Slack when deployed
