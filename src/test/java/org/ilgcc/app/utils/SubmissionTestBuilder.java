@@ -69,7 +69,7 @@ public class SubmissionTestBuilder {
         return this;
     }
     public SubmissionTestBuilder withDayCareProvider() {
-        submission.getInputData().put("dayCareChoice", "OPEN_SESAME");
+        submission.getInputData().put("familyIntendedProviderName", "Open Sesame");
         return this;
     }
     public SubmissionTestBuilder withClientResponseConfirmationCode(String confirmationCode) {

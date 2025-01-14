@@ -20,7 +20,7 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder()
-                .with("dayCareChoice", PROVIDER_NAME)
+                .with("familyIntendedProviderName", PROVIDER_NAME)
                 .withParentDetails()
                 .with("parentPreferredName", "FirstName")
                 .withChild("First", "Child", "Yes")
@@ -46,7 +46,7 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder()
-                .with("dayCareChoice", PROVIDER_NAME)
+                .with("familyIntendedProviderName", PROVIDER_NAME)
                 .withParentDetails()
                 .with("parentPreferredName", "FirstName")
                 .withChild("First", "Child", "Yes")
