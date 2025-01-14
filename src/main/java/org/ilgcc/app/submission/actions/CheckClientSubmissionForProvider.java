@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.utils.ChildCareProvider;
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerApplicationHasExpired;
 
@@ -32,7 +31,6 @@ public class CheckClientSubmissionForProvider implements Action {
     private final SubmissionRepositoryService submissionRepositoryService;
 
     private final static String SESSION_KEY_SELECTED_PROVIDER_NAME = "selectedProviderName";
-    private final static String SESSION_KEY_SELECTED_PROVIDER_ID = "selectedProviderId";
     public final static String SESSION_KEY_CLIENT_SUBMISSION_STATUS = "clientSubmissionStatus";
     public final static String SESSION_KEY_CLIENT_SUBMISSION_ID = "clientSubmissionId";
     private final static String SESSION_KEY_CLIENT_CONFIRMATION_CODE = "confirmationCode";
@@ -63,7 +61,6 @@ public class CheckClientSubmissionForProvider implements Action {
                 httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, getProviderName(clientSubmissionInfo));
 
                 // To be used on subsequent screens to validate provider inputs == these values
-                httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_ID, getProviderId(clientSubmissionInfo));
                 httpSession.setAttribute(SESSION_KEY_CLIENT_CONFIRMATION_CODE, clientSubmissionInfo.getShortCode());
 
                 // In Prod, there should always be a submittedAt date, but for Staging it's possible to skip around in the flow and never submit
@@ -111,26 +108,6 @@ public class CheckClientSubmissionForProvider implements Action {
 
     private String getProviderName(Submission familySubmission) {
         Map<String, Object> inputData = familySubmission.getInputData();
-
-        if (inputData.containsKey("familyIntendedProviderName")) {
-            return (String) inputData.get("familyIntendedProviderName");
-        } else {
-            ChildCareProvider provider = ChildCareProvider.valueOf(
-                    inputData.get("dayCareChoice").toString());
-
-            return provider.getDisplayName();
-        }
-    }
-
-    private String getProviderId(Submission familySubmission) {
-        Map<String, Object> inputData = familySubmission.getInputData();
-
-        if (inputData.containsKey("dayCareChoice")) {
-            ChildCareProvider provider = ChildCareProvider.valueOf(
-                    familySubmission.getInputData().get("dayCareChoice").toString());
-            return provider.getIdNumber();
-        } else {
-            return "";
-        }
+        return (String) inputData.get("familyIntendedProviderName");
     }
 }

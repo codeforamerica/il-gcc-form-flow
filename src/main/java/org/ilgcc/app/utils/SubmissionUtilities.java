@@ -255,10 +255,7 @@ public class SubmissionUtilities {
     }
 
     public static String getProviderName(Map<String, Object> inputData) {
-        if (inputData.containsKey("dayCareChoice")) {
-            String dayCareChoice = (String) inputData.get("dayCareChoice");
-            return ChildCareProvider.valueOf(dayCareChoice).getDisplayName();
-        } else if (inputData.containsKey("familyIntendedProviderName")) {
+        if (inputData.containsKey("familyIntendedProviderName")) {
             return (String) inputData.get("familyIntendedProviderName");
         } else {
             return "";
@@ -267,8 +264,7 @@ public class SubmissionUtilities {
     }
 
     public static boolean hasNotChosenProvider(Submission submission) {
-        return submission.getInputData().containsKey("hasChosenProvider") && submission.getInputData().get("hasChosenProvider")
-                .equals("false");
+        return "false".equals(submission.getInputData().get("hasChosenProvider"));
     }
 
     public static boolean hasProviderResponse(Submission submission) {

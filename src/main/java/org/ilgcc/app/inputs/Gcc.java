@@ -21,9 +21,6 @@ public class Gcc extends FlowInputs {
     // onboarding-chosen-provider
     private String hasChosenProvider;
 
-    // onboarding-choose-provider
-    @NotBlank(message = "{errors.choose-provider}")
-    private String dayCareChoice;
     private String languageRead;
     private String languageSpeak;
 

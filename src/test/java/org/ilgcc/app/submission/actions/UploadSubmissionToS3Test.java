@@ -46,6 +46,8 @@ class UploadSubmissionToS3Test {
     byte[] pdfFiles = new byte[]{1, 2, 3, 4};
     when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
     submission.setSubmittedAt(OffsetDateTime.now());
+    submission.getInputData().put("hasChosenProvider","false");
+
     uploadSubmissionToS3.run(submission);
 
     verify(pdfService).getFilledOutPDF(submission);

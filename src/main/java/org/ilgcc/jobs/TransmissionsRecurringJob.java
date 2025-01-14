@@ -18,11 +18,9 @@ import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.enums.FileNameUtility;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@ConditionalOnProperty(name="il-gcc.dts.expand-existing-provider-flow", havingValue = "true")
 @Service
 public class TransmissionsRecurringJob {
 

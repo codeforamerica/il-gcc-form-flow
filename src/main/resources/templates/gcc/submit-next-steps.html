@@ -17,16 +17,13 @@
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
                             <th:block
-                                    th:with="expandExistingFlow=${@environment.getProperty('il-gcc.dts.expand-existing-provider-flow')}, hasChosenNoProvider=${submission.getInputData().getOrDefault('hasChosenProvider', 'true')}, ccrrName=${submission.getInputData().getOrDefault('ccrrName', '')}">
+                                    th:with="hasChosenNoProvider=${submission.getInputData().getOrDefault('hasChosenProvider', 'true')}, ccrrName=${submission.getInputData().getOrDefault('ccrrName', '')}">
                                 <th:block th:unless="${hasChosenNoProvider == 'true'}">
                                     <th:block
                                             th:utext="#{submit-next-steps.no-provider(${ccrrName})}"></th:block>
                                 </th:block>
                                 <th:block th:if="${hasChosenNoProvider == 'true'}">
-                                    <th:block th:if="${expandExistingFlow == 'true'}"
-                                              th:utext="#{submit-next-steps.notice-email-or-sms(${ccrrName})}"></th:block>
-                                    <th:block th:unless="${expandExistingFlow == 'true'}"
-                                              th:utext="#{submit-next-steps.notice}"></th:block>
+                                    <th:block th:utext="#{submit-next-steps.notice-email-or-sms(${ccrrName})}"></th:block>
                                 </th:block>
                             </th:block>
                         </div>

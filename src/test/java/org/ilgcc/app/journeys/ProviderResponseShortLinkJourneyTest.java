@@ -14,13 +14,14 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
     SubmissionRepository repository;
 
     private static String VALID_CONF_CODE="A2123B";
-    private static String PROVIDER_NAME="BROWN_BEAR_DAYCARE";
+    private static String PROVIDER_NAME="Brown Bear Daycare";
+
     @Test
     void activeApplicationShowsSuccess() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder()
-                .with("dayCareChoice", PROVIDER_NAME)
+                .with("familyIntendedProviderName", PROVIDER_NAME)
                 .withParentDetails()
                 .with("parentPreferredName", "FirstName")
                 .withChild("First", "Child", "Yes")
@@ -46,7 +47,7 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder()
-                .with("dayCareChoice", PROVIDER_NAME)
+                .with("familyIntendedProviderName", PROVIDER_NAME)
                 .withParentDetails()
                 .with("parentPreferredName", "FirstName")
                 .withChild("First", "Child", "Yes")

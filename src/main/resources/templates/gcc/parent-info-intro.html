@@ -10,7 +10,7 @@
       <main id="content" role="main" class="form-card spacing-above-35">
         <div class="text--centered">
           <th:block th:replace="~{fragments/gcc-icons :: person}"></th:block>
-          <p class="text--grey-dark" th:id="parent-info-intro-step" th:text="${#messages.msg('parent-info-intro.step', (@environment.getProperty('il-gcc.dts.expand-existing-provider-flow') == 'true' ? '6' : '5'))}"></p>
+          <p class="text--grey-dark" th:id="parent-info-intro-step" th:text="${#messages.msg('parent-info-intro.step', '6')}"></p>
           <th:block
               th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-intro.title})}"/>
         </div>

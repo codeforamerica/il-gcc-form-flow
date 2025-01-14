@@ -16,11 +16,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(
-        classes = IlGCCApplication.class,
-        properties = "il-gcc.dts.expand-existing-provider-flow=true"
+        classes = IlGCCApplication.class
 )
 @ActiveProfiles("test")
-public class ProviderApplicationPreparerFlagOnTest {
+public class ProviderApplicationPreparerTest {
 
     @Autowired
     private ProviderApplicationPreparer preparer;
