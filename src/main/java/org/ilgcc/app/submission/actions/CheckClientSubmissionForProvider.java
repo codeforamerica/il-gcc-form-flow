@@ -62,7 +62,6 @@ public class CheckClientSubmissionForProvider implements Action {
                 httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, getProviderName(clientSubmissionInfo));
 
                 // To be used on subsequent screens to validate provider inputs == these values
-                httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_ID, getProviderId(clientSubmissionInfo));
                 httpSession.setAttribute(SESSION_KEY_CLIENT_CONFIRMATION_CODE, clientSubmissionInfo.getShortCode());
 
                 // In Prod, there should always be a submittedAt date, but for Staging it's possible to skip around in the flow and never submit
@@ -111,9 +110,5 @@ public class CheckClientSubmissionForProvider implements Action {
     private String getProviderName(Submission familySubmission) {
         Map<String, Object> inputData = familySubmission.getInputData();
         return (String) inputData.get("familyIntendedProviderName");
-    }
-
-    private String getProviderId(Submission familySubmission) {
-        return "";
     }
 }
