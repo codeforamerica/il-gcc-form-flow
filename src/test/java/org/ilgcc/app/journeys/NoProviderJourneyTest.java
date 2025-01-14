@@ -9,12 +9,8 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.ChildcareReasonOption;
 import org.ilgcc.app.utils.CountyOption;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {
-        "SHOW_NO_PROVIDER_FLOW=true"
-})
-public class NoProviderJourneyWithExpandedFlowFlagTest extends AbstractBasePageTest {
+public class NoProviderJourneyTest extends AbstractBasePageTest {
     @Test
     void WhenApplicantSelectsNoProvider() {
         // Home page

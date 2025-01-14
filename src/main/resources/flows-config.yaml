@@ -6,9 +6,7 @@ flow:
   onboarding-chosen-provider:
     nextScreens:
       - name: onboarding-no-provider-intro
-        condition: NoProviderChosenAndShowNoProviderFlow
-      - name: offboarding-no-provider
-        condition: NoProviderChosenAndShowProviderFlagIsOff
+        condition: NoProviderChosen
       - name: onboarding-provider-info
   onboarding-provider-info:
     nextScreens:
@@ -17,8 +15,6 @@ flow:
     nextScreens:
       - name: parent-info-intro
   pilot-offboard:
-    nextScreens: null
-  offboarding-no-provider:
     nextScreens: null
   onboarding-provider-info-review:
     nextScreens:
@@ -406,7 +402,7 @@ flow:
     afterSaveAction: SendUploadedFileToDocumentTransferService
     nextScreens:
       - name: no-provider-intro
-        condition: NoProviderChosenAndShowNoProviderFlow
+        condition: NoProviderChosen
       - name: contact-provider-intro
   contact-provider-intro:
     nextScreens:

@@ -8,11 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.CountyOption;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {
-        "SHOW_NO_PROVIDER_FLOW=false"
-})
 public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
     @Test
@@ -61,8 +57,8 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
         testPage.clickNo();
 
-        // offboarding-no-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("offboarding-no-provider.title"));
+        // onboarding-no-provider-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-no-provider-intro.title"));
         testPage.goBack();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
