@@ -255,10 +255,7 @@ public class SubmissionUtilities {
     }
 
     public static String getProviderName(Map<String, Object> inputData) {
-        if (inputData.containsKey("dayCareChoice")) {
-            String dayCareChoice = (String) inputData.get("dayCareChoice");
-            return ChildCareProvider.valueOf(dayCareChoice).getDisplayName();
-        } else if (inputData.containsKey("familyIntendedProviderName")) {
+        if (inputData.containsKey("familyIntendedProviderName")) {
             return (String) inputData.get("familyIntendedProviderName");
         } else {
             return "";

@@ -22,7 +22,6 @@ import java.util.UUID;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.utils.ChildCareProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -110,22 +109,6 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 new SingleField("providerEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
         results.put("providerResponse",
                 new SingleField("providerResponse", providerResponse(submission), null));
-
-        return results;
-    }
-
-    private Map<String, SubmissionField> prepareFamilySelectedDayCareData(Submission submission) {
-        var results = new HashMap<String, SubmissionField>();
-
-        var provider = ChildCareProvider.valueOf((String) submission.getInputData().get("dayCareChoice"));
-
-        results.put("dayCareName", new SingleField("dayCareName", provider.getDisplayName(), null));
-        results.put("dayCareIdNumber", new SingleField("dayCareIdNumber", provider.getIdNumber(), null));
-        results.put("dayCareAddressStreet", new SingleField("dayCareAddressStreet", provider.getStreet(), null));
-        results.put("dayCareAddressApt", new SingleField("dayCareAddressApt", provider.getApt(), null));
-        results.put("dayCareAddressCity", new SingleField("dayCareAddressCity", provider.getCity(), null));
-        results.put("dayCareAddressState", new SingleField("dayCareAddressState", provider.getState(), null));
-        results.put("dayCareAddressZip", new SingleField("dayCareAddressZip", provider.getZipcode(), null));
 
         return results;
     }

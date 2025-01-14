@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.utils.ChildCareProvider;
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerApplicationHasExpired;
 
@@ -111,26 +110,10 @@ public class CheckClientSubmissionForProvider implements Action {
 
     private String getProviderName(Submission familySubmission) {
         Map<String, Object> inputData = familySubmission.getInputData();
-
-        if (inputData.containsKey("familyIntendedProviderName")) {
-            return (String) inputData.get("familyIntendedProviderName");
-        } else {
-            ChildCareProvider provider = ChildCareProvider.valueOf(
-                    inputData.get("dayCareChoice").toString());
-
-            return provider.getDisplayName();
-        }
+        return (String) inputData.get("familyIntendedProviderName");
     }
 
     private String getProviderId(Submission familySubmission) {
-        Map<String, Object> inputData = familySubmission.getInputData();
-
-        if (inputData.containsKey("dayCareChoice")) {
-            ChildCareProvider provider = ChildCareProvider.valueOf(
-                    familySubmission.getInputData().get("dayCareChoice").toString());
-            return provider.getIdNumber();
-        } else {
-            return "";
-        }
+        return "";
     }
 }

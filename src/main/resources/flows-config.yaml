@@ -3,11 +3,6 @@ flow:
   onboarding-getting-started:
     nextScreens:
       - name: onboarding-language-pref
-  onboarding-choose-provider:
-    nextScreens:
-      - name: pilot-offboard
-        condition: NoProviderChosen
-      - name: onboarding-confirm-provider
   onboarding-chosen-provider:
     nextScreens:
       - name: onboarding-no-provider-intro
@@ -31,9 +26,6 @@ flow:
   onboarding-provider-info-confirm:
     nextScreens:
       - name: parent-info-intro
-  onboarding-confirm-provider:
-    nextScreens:
-      - name: onboarding-language-pref
   onboarding-county:
     onPostAction: SetCCRRName
     nextScreens:
