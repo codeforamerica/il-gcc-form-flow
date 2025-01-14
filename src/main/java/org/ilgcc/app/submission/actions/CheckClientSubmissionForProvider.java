@@ -31,7 +31,6 @@ public class CheckClientSubmissionForProvider implements Action {
     private final SubmissionRepositoryService submissionRepositoryService;
 
     private final static String SESSION_KEY_SELECTED_PROVIDER_NAME = "selectedProviderName";
-    private final static String SESSION_KEY_SELECTED_PROVIDER_ID = "selectedProviderId";
     public final static String SESSION_KEY_CLIENT_SUBMISSION_STATUS = "clientSubmissionStatus";
     public final static String SESSION_KEY_CLIENT_SUBMISSION_ID = "clientSubmissionId";
     private final static String SESSION_KEY_CLIENT_CONFIRMATION_CODE = "confirmationCode";
