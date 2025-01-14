@@ -18,8 +18,13 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
           fetch-depth: 0
 
+      - name: Install Node.js (for npm)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
       - name: Install Aptible CLI
-        run: curl -sSL https://downloads.aptible.com/cli/install.sh | sh
+        run: npm install -g aptible-cli
 
       - name: Authenticate with Aptible
         env:
@@ -27,12 +32,13 @@ jobs:
           APTIBLE_PASSWORD: ${{ secrets.APTIBLE_PASSWORD }}
         run: |
           aptible login --email "$APTIBLE_USERNAME" --password "$APTIBLE_PASSWORD"
+
       - name: Set environment variable in Aptible
         run: |
           aptible config:set \
           GIT_REF="${{ github.event.inputs.branch }}" \
           --app illinois-get-childcare-staging
-
+          
       - name: Deploy to Aptible
         uses: aptible/aptible-deploy-action@v4
         with:
