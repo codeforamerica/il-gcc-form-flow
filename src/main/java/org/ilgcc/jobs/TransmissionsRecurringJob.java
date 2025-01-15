@@ -58,11 +58,13 @@ public class TransmissionsRecurringJob {
 
         List<Submission> expiredSubmissionsWithNoTransmission = submissionsWithoutTransmissions.stream()
                 .filter(submission -> providerApplicationHasExpired(submission, todaysDate)).toList();
+
+        log.info(String.format("Running the 'No provider response job' for %s expired submissions",
+                expiredSubmissionsWithNoTransmission.size()));
+        
         if (expiredSubmissionsWithNoTransmission.isEmpty()) {
             return;
         } else {
-            log.info(String.format("Running the 'No provider response job' for %s expired submissions",
-                    expiredSubmissionsWithNoTransmission.size()));
             for (Submission submission : expiredSubmissionsWithNoTransmission) {
                 if (!hasProviderResponse(submission)) {
                     enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
