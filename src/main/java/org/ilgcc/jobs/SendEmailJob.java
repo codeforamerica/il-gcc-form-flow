@@ -34,7 +34,7 @@ public class SendEmailJob {
             log.info("Enqueued {} email job with ID: {} for submission with ID: {}", emailType, jobId, submission.getId());
         } else {
             log.info("Emails disabled. Skipping enqueue {} email job for submission with ID: {}", emailType, submission.getId());
-            log.info("Would have sent: {} with a subject of: {} from: {}", content, subject, senderName); // Don't log recipient email for security reasons
+            log.info("Would have sent: {} with a subject of: {} from: {}", content.getValue(), subject, senderName); // Don't log recipient email for security reasons
         }
     }
 
