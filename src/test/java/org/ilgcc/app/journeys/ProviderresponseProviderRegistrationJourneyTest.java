@@ -77,7 +77,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-mailing-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
-        // contact-info
+        // registration-contact-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-contact-info.title"));
         testPage.enter("providerResponseContactPhoneNumber", "5555555555");
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
@@ -124,6 +124,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicenseExemptInProviderHomeFlow() {
         createAValidLink();
+        saveApplicationId();
+
+        testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
         // registration-licensing
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing.title"));
@@ -206,8 +209,14 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
-        // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+
+        // registration-service-languages
+//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        testPage.clickContinue();
+
+        // registration-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.clickContinue();
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -247,6 +256,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicenseExemptInChildHomeFlow() {
         createAValidLink();
+        saveApplicationId();
+
+        testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
         // registration-licensing
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing.title"));
@@ -338,8 +350,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerTaxIdEIN", "123456789");
         testPage.clickContinue();
 
-        // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+        // registration-service-languages
+//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        testPage.clickContinue();
+
+        // registration-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.clickContinue();
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -361,6 +378,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicensedChildCareHomeFlow() {
         createAValidLink();
+        saveApplicationId();
+
+        testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
         // registration-licensing
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing.title"));
@@ -430,8 +450,14 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
-        // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+
+        // registration-service-languages
+//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        testPage.clickContinue();
+
+        // registration-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.clickContinue();
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -455,6 +481,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicensedChildCareCenterFlow() {
         createAValidLink();
+        saveApplicationId();
+
+        testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
         // registration-licensing
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing.title"));
@@ -521,8 +550,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerTaxIdEIN", "123456789");
         testPage.clickContinue();
 
-        // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+        // registration-service-languages
+//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        testPage.clickContinue();
+
+        // registration-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.clickContinue();
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -541,6 +575,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicensedGroupChildCareHomeFlow() {
         createAValidLink();
+        saveApplicationId();
+
+        testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
         // registration-licensing
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing.title"));
@@ -611,8 +648,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
-        // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+        // registration-service-languages
+//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        testPage.clickContinue();
+
+        // registration-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.clickContinue();
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -636,6 +678,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicenseExemptChildCareCenter() {
         createAValidLink();
+        saveApplicationId();
+
+        testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
         // registration-licensing
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing.title"));
@@ -731,9 +776,15 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
+        testPage.clickContinue();
 
-        // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
+        // registration-service-languages
+//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        testPage.clickContinue();
+
+        // registration-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.clickContinue();
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -763,6 +814,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
                 .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
                 .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+                .with("earliestChildcareStartDate", "10/10/2011")
                 .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
 
         testPage.clickContinue();
@@ -788,6 +840,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-provide-care-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-provide-care-intro.title"));
+        testPage.clickContinue();
+    }
+
+    private void saveApplicationId(){
+        testPage.navigateToFlowScreen("providerresponse/confirmation-code");
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
     }
 }

@@ -5,11 +5,9 @@ import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
 
 import formflow.library.data.Submission;
-import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
-import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -18,19 +16,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
+public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer {
 
-    @Autowired
-    SubmissionRepositoryService submissionRepositoryService;
+    Submission providerSubmission;
 
     public ProviderApplicationPreparer() {
     }
@@ -47,9 +42,12 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
             return prepareFamilyIntendedProviderData(submission);
         }
     }
+
     //Because we are printing the PDF from the GCC flow we need to get the provider submission then pull the responses values from the provdier submission
     private Map<String, SubmissionField> prepareProviderResponse(Submission submission) {
         var results = new HashMap<String, SubmissionField>();
+
+        Map<String, Object> providerInputData = providerSubmission.getInputData();
 
         List<String> providerFields = List.of(
                 "providerResponseProviderNumber",
@@ -64,16 +62,15 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 "providerTaxIdEIN"
         );
 
-        Submission providerSubmission = providerSubmissionFromId(submission).get();
-        Map<String, Object> providerInputData = providerSubmission.getInputData();
-
         for (String fieldName : providerFields) {
             results.put(fieldName,
                     new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
         }
 
-        Map<String, String> client = (Map<String, String>) providerSubmission.getInputData().getOrDefault("clientResponse", new HashMap<String, String>());
-        results.put("clientResponseConfirmationCode", new SingleField("clientResponseConfirmationCode", (String) client.getOrDefault("clientResponseConfirmationCode", ""), null));
+        Map<String, String> client = (Map<String, String>) providerInputData.getOrDefault("clientResponse",
+                new HashMap<String, String>());
+        results.put("clientResponseConfirmationCode", new SingleField("clientResponseConfirmationCode",
+                (String) client.getOrDefault("clientResponseConfirmationCode", ""), null));
         results.putAll(prepareProviderAddressData(providerInputData));
         results.putAll(prepareProviderMailingAddressData(providerInputData));
 
@@ -156,7 +153,7 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
         results.put("providerMailingCity",
                 new SingleField("providerMailingCity", mailingAddressMapped.get("city"), null));
         results.put("providerMailingState",
-                new SingleField("providerMailingState",mailingAddressMapped.get("state"), null));
+                new SingleField("providerMailingState", mailingAddressMapped.get("state"), null));
         results.put("providerMailingZipCode",
                 new SingleField("providerMailingZipCode", mailingAddressMapped.get("zipCode"), null));
 
@@ -190,20 +187,12 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
 
     }
 
-    private Optional<Submission> providerSubmissionFromId(Submission submission) {
-        if (submission.getInputData().containsKey("providerResponseSubmissionId")) {
-            UUID providerId = UUID.fromString(submission.getInputData().get("providerResponseSubmissionId").toString());
-            return submissionRepositoryService.findById(providerId);
-        }
-
-        return Optional.empty();
-    }
-
     private boolean useProviderResponse(Submission familySubmission) {
-        if (hasProviderResponse(familySubmission) && providerSubmissionFromId(familySubmission).isPresent()) {
-            Submission providerSubmission = providerSubmissionFromId(familySubmission).get();
+        Optional<Submission> providerSubmissionOptional = setProviderSubmission(familySubmission);
+        if (providerSubmissionOptional.isPresent()) {
+            providerSubmission = providerSubmissionOptional.get();
             Map<String, Object> providerInputData = providerSubmission.getInputData();
-            if(providerInputData.containsKey("providerResponseAgreeToCare")){
+            if (providerInputData.containsKey("providerResponseAgreeToCare")) {
                 return providerInputData.get("providerResponseAgreeToCare").equals("true");
             }
 
@@ -213,9 +202,8 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
     }
 
     private String providerResponse(Submission familySubmission) {
-        Optional<Submission> providerSubmission = providerSubmissionFromId(familySubmission);
-        if (providerSubmission.isPresent()) {
-            Map<String, Object> providerInputData = providerSubmission.get().getInputData();
+        if (hasProviderResponse(familySubmission)) {
+            Map<String, Object> providerInputData = providerSubmission.getInputData();
             if (providerInputData.containsKey("providerResponseAgreeToCare")) {
                 if (providerInputData.get("providerResponseAgreeToCare").equals("false")) {
                     return "Provider declined";
