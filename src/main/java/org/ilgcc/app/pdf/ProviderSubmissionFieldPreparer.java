@@ -24,8 +24,8 @@ public class ProviderSubmissionFieldPreparer implements SubmissionFieldPreparer 
         return null;
     }
 
-    protected Optional<Map<String, Object>> setProviderInputData(Submission familySubmission) {
-        Optional<Submission> providerSubmission = setProviderSubmission(familySubmission);
+    protected Optional<Map<String, Object>> getProviderInputData(Submission familySubmission) {
+        Optional<Submission> providerSubmission = getProviderSubmission(familySubmission);
 
         if (providerSubmission.isPresent()) {
             return Optional.of(providerSubmission.get().getInputData());
@@ -34,7 +34,7 @@ public class ProviderSubmissionFieldPreparer implements SubmissionFieldPreparer 
         }
     }
 
-    protected Optional<Submission> setProviderSubmission(Submission familySubmission) {
+    protected Optional<Submission> getProviderSubmission(Submission familySubmission) {
         Optional<UUID> providerResponseUUID = getProviderSubmissionId(familySubmission);
         if (providerResponseUUID.isPresent()) {
             return submissionRepositoryService.findById(providerResponseUUID.get());

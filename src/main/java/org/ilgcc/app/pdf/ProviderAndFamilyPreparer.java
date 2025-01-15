@@ -15,7 +15,7 @@ public class ProviderAndFamilyPreparer extends ProviderSubmissionFieldPreparer {
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
         Map<String, Object> familyInputData = familySubmission.getInputData();
-        Optional<Map<String, Object>> providerInputData = setProviderInputData(familySubmission);
+        Optional<Map<String, Object>> providerInputData = getProviderInputData(familySubmission);
 
         results.put("childcareStartDate",
                 new SingleField("childcareStartDate", childcareStartDate(providerInputData, familyInputData), null));

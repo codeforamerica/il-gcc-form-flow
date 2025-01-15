@@ -22,7 +22,7 @@ public class ProviderTypePreparer extends ProviderSubmissionFieldPreparer {
             return results;
         }
 
-        Optional<Submission> providerSubmission = setProviderSubmission(familySubmission);
+        Optional<Submission> providerSubmission = getProviderSubmission(familySubmission);
 
         var providerInputData = providerSubmission.get().getInputData();
 

@@ -188,7 +188,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
     }
 
     private boolean useProviderResponse(Submission familySubmission) {
-        Optional<Submission> providerSubmissionOptional = setProviderSubmission(familySubmission);
+        Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
         if (providerSubmissionOptional.isPresent()) {
             providerSubmission = providerSubmissionOptional.get();
             Map<String, Object> providerInputData = providerSubmission.getInputData();

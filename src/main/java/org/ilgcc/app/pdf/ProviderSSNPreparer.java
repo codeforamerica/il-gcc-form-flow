@@ -21,7 +21,7 @@ public class ProviderSSNPreparer extends ProviderSubmissionFieldPreparer {
             return results;
         }
 
-        Optional<Submission> providerSubmission = setProviderSubmission(familySubmission);
+        Optional<Submission> providerSubmission = getProviderSubmission(familySubmission);
         var providerInputData = providerSubmission.get().getInputData();
         if (providerInputData.containsKey("providerIdentityCheckSSN")) {
             results.put("providerSSN",
