@@ -1,5 +1,7 @@
 package org.ilgcc.app.pdf;
 
+import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
+
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
@@ -16,10 +18,11 @@ public class ProviderTypePreparer extends ProviderSubmissionFieldPreparer {
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
-        Optional<Submission> providerSubmission = setProviderSubmission(familySubmission);
-        if (providerSubmission.isEmpty()) {
+        if (!hasProviderResponse(familySubmission)) {
             return results;
         }
+
+        Optional<Submission> providerSubmission = setProviderSubmission(familySubmission);
 
         var providerInputData = providerSubmission.get().getInputData();
 
