@@ -168,6 +168,12 @@ inputFields:
   providerConvictionExplanation: PROVIDER_CONVICTION_EXPLANATION
   providerIdentityCheckDateOfBirthDate: PROVIDER_DOB
   providerSSN: PROVIDER_SSN
+  providerLanguageEnglish: PROVIDER_LANGUAGE_ENGLISH
+  providerLanguageSpanish: PROVIDER_LANGUAGE_SPANISH
+  providerLanguagePolish: PROVIDER_LANGUAGE_POLISH
+  providerLanguageChinese: PROVIDER_LANGUAGE_CHINESE
+  providerLanguageOther: PROVIDER_LANGUAGE_OTHER
+  providerLanguageOtherDetail: PROVIDER_LANGUAGE_OTHER_DETAIL
   providerSignature: PROVIDER_SIGNATURE
   providerTaxIdEIN: PROVIDER_FEIN
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
