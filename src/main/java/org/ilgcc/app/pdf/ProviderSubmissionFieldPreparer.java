@@ -21,7 +21,7 @@ public class ProviderSubmissionFieldPreparer implements SubmissionFieldPreparer 
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
-        return prepareSubmissionFields(familySubmission, pdfMap);
+        return null;
     }
 
     protected Optional<Map<String, Object>> setProviderInputData(Submission familySubmission) {
