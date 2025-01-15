@@ -22,7 +22,7 @@
                           value=${option.getValue()},
                           label=${#strings.isEmpty(option.getLabel()) ? null : #messages.msg(option.getLabel())})}"/>
       </th:block>
-      <div class="question-with-follow-up">
+      <div class="question-with-follow-up spacing-below-15">
         <div class="question-with-follow-up__question">
           <th:block
               th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName=${inputName},value='other', label=#{registration-service-languages.provider-languages.other}, followUpId='#provider-languages-other-followUp')}"/>
