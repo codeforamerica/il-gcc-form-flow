@@ -5,13 +5,7 @@ import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.ilgcc.app.utils.GenderOption;
 import org.ilgcc.app.utils.RaceEthnicityOption;
 import org.ilgcc.app.utils.SubmissionUtilities;
@@ -52,7 +46,6 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
                     new SingleField("childRelationship", (String) child.get("childRelationship"), iteration));
             iteration++;
         }
-        results.put("childcareStartDate", new SingleField("childcareStartDate", submission.getInputData().getOrDefault("earliestChildcareStartDate", "").toString(), null));
         return results;
     }
 

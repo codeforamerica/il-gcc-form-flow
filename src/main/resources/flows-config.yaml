@@ -679,6 +679,9 @@ flow:
       - name: registration-start-date
   registration-start-date:
     condition: EnableProviderRegistration
+    beforeDisplayAction: SetProviderCareStartDate
+    onPostAction: CreateProviderCareStartDate
+    crossFieldValidationAction: ValidateProviderCareStartDate
     nextScreens:
       - name: registration-checks-trainings-intro
   registration-checks-trainings-intro:
