@@ -21,6 +21,6 @@ management:
       exposure:
         include: '*'
 il-gcc:
-  allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
+  enable-emails: ${ENABLE_EMAILS_FLAG:false}
   dts:
     processing-org: '4c-ccap-apps'

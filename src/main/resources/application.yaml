@@ -122,6 +122,7 @@ org:
 il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
   generate-short-links: ${GENERATE_SHORT_LINKS_FLAG:false}
+  enable-emails: ${ENABLE_EMAILS_FLAG:true}
   allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
