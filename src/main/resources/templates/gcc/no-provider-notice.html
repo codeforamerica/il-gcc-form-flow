@@ -9,7 +9,7 @@
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block
-                        th:replace="~{fragments/gcc-icons :: healthInsurance }"></th:block>
+                        th:replace="~{fragments/gcc-icons :: important-notice}"></th:block>
                 <th:block
                         th:replace="~{fragments/cardHeader :: cardHeader(header=#{no-provider-notice.header}, subtext=#{no-provider-notice.active.notice(${submission.getInputData().getOrDefault('ccrrName', '')})})}"/>
                 <div class="form-card__footer">
