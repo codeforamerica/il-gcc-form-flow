@@ -13,3 +13,5 @@ form-flow:
       gcc:
         prefix: DEMO-
         creation-point: creation
+il-gcc:
+  enable-emails: ${ENABLE_EMAILS_FLAG:false}

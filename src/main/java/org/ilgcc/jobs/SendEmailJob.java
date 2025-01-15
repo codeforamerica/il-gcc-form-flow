@@ -9,6 +9,7 @@ import org.ilgcc.app.email.SendGridEmailService;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -18,6 +19,9 @@ public class SendEmailJob {
     private final JobScheduler jobScheduler;
     private final SendGridEmailService sendGridEmailService;
 
+    @Value("${il-gcc.enable-emails}")
+    boolean emailsEnabled;
+
     public SendEmailJob(JobScheduler jobScheduler, SendGridEmailService sendGridEmailService) {
         this.jobScheduler = jobScheduler;
         this.sendGridEmailService = sendGridEmailService;
@@ -25,8 +29,13 @@ public class SendEmailJob {
 
     public void enqueueSendEmailJob(String recipientAddress, String senderName, String subject, String emailType, Content content,
             Submission submission) {
-        JobId jobId = jobScheduler.enqueue(() -> sendEmailRequest(recipientAddress, senderName, subject, emailType, content, submission));
-        log.info("Enqueued {} email job with ID: {} for submission with ID: {}", emailType, jobId, submission.getId());
+        if (emailsEnabled) {
+            JobId jobId = jobScheduler.enqueue(() -> sendEmailRequest(recipientAddress, senderName, subject, emailType, content, submission));
+            log.info("Enqueued {} email job with ID: {} for submission with ID: {}", emailType, jobId, submission.getId());
+        } else {
+            log.info("Emails disabled. Skipping enqueue {} email job for submission with ID: {}", emailType, submission.getId());
+            log.info("Would have sent: {} with a subject of: {} from: {}", content, subject, senderName); // Don't log recipient email for security reasons
+        }
     }
 
     @Job(name = "Send Email Request", retries = 3)
