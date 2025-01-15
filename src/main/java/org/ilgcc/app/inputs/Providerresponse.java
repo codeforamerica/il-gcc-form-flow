@@ -7,6 +7,7 @@ import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import java.util.List;
 
 public class Providerresponse extends FlowInputs {
 
@@ -120,4 +121,7 @@ public class Providerresponse extends FlowInputs {
     private String providerTaxIdEIN;
 
     private String providerTaxIdEAN;
+
+    private List<String> providerLanguagesOffered;
+    private String providerLanguagesOffered_other;
 }
