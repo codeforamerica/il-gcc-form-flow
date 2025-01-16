@@ -38,6 +38,9 @@ public class SendGridWebhookController {
         String signature = request.getHeader(EventWebhookHeader.SIGNATURE.toString());
         String timestamp = request.getHeader(EventWebhookHeader.TIMESTAMP.toString());
 
+        log.info("Signature: " + signature);
+        log.info("Timestamp: " + timestamp);
+        
         // Retrieve the raw body of the request
         String requestBody;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
