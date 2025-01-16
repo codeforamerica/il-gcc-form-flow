@@ -64,7 +64,8 @@ public class ProviderLanguagesPreparer implements SubmissionFieldPreparer {
             }
 
             if(!otherLanguages.isEmpty()){
-                results.put("providerLanguageOtherDetail", new SingleField("providerLanguageOtherDetail", otherLanguages.toString(), null));
+                String otherLanguagesList = String.join(", ", otherLanguages);
+                results.put("providerLanguageOtherDetail", new SingleField("providerLanguageOtherDetail", otherLanguagesList, null));
             }
             return results;
         }
