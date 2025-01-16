@@ -81,16 +81,17 @@ public class ProviderApplicationPreparer implements SubmissionFieldPreparer {
                 new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
         results.put("providerSignature",
                 new SingleField("providerSignature", providerSignature(providerInputData), null));
-        try {
-            Optional<LocalDate> providerSignatureDate = Optional.of(
-                    LocalDate.from(providerSubmission.getSubmittedAt()));
+            String formattedProviderSignatureDate = "";
+
+            if (providerSubmission.getSubmittedAt() != null) {
+                Optional<LocalDate> providerSignatureDate = Optional.of(
+                        LocalDate.from(providerSubmission.getSubmittedAt()));
+                formattedProviderSignatureDate =  formatToStringFromLocalDate(providerSignatureDate);
+            }
+
             results.put("providerSignatureDate",
-                    new SingleField("providerSignatureDate", formatToStringFromLocalDate(providerSignatureDate),
+                    new SingleField("providerSignatureDate", formattedProviderSignatureDate,
                             null));
-        } catch (NullPointerException e) {
-            log.error(String.format("Provider Application: %s, does not have a submittedAt date.",
-                    providerSubmission.getId().toString()));
-        }
 
         return results;
     }

@@ -19,6 +19,10 @@ public class TextUtilities {
 
 
   private static String reformatRecipientNumber(String recipient) {
+    if (recipient == null) {
+      return "";
+    }
+
     String formattedNumber = recipient.replaceAll("\\D", "");
     if (formattedNumber.isEmpty()) {
       return formattedNumber;
