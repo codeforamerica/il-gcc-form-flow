@@ -5,9 +5,7 @@ import com.sendgrid.helpers.eventwebhook.EventWebhookHeader;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -44,32 +42,22 @@ public class SendGridWebhookController {
         log.info("Timestamp: " + timestamp);
 
         // Retrieve the raw body of the request
-//        String requestBody;
-//        try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
-//            requestBody = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-//        }
-
-        StringBuilder requestBody = new StringBuilder();
-
-        try (InputStream inputStream = request.getInputStream()) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                requestBody.append(new String(buffer, 0, bytesRead, StandardCharsets.UTF_8));
-            }
+        String requestBody;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
+            requestBody = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         }
 
-        log.info("SendGrid Webhook Events request body: {}", requestBody.toString());
+        log.info("SendGrid Webhook Events request body: {}", requestBody);
 
-        if (!requestBody.toString().endsWith("\r\n")) {
+        if (!requestBody.endsWith("\r\n")) {
             log.info("SendGrid Webhook Events request body does not end with CRLF");
-            requestBody.append("\r\n");
+            requestBody = requestBody + "\r\n";
         }
 
         Security.addProvider(new BouncyCastleProvider());
         final EventWebhook ew = new EventWebhook();
         final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
-        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody.toString(), signature, timestamp);
+        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
 
         if (!valid) {
             log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
