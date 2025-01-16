@@ -44,6 +44,10 @@ public class SendGridWebhookController {
             requestBody = reader.lines().collect(Collectors.joining(System.lineSeparator()));
         }
 
+        if (!requestBody.endsWith("\r\n")) {
+            requestBody = requestBody + "\r\n";
+        }
+
         Security.addProvider(new BouncyCastleProvider());
         final EventWebhook ew = new EventWebhook();
         final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
