@@ -55,7 +55,7 @@ public class SendGridWebhookController {
             // Sendgrid's test API doesn't apparently have a trailing CRLF, so we can try again
             // But also raise this error here, and have an alert so if this ever happens in reality
             // we can debug further
-            log.error("Invalid signature for SendGrid events was provided. Removing CRLF modifier.");
+            log.warn("Invalid signature for SendGrid events was provided. Removing CRLF modifier.");
             valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
 
             if (!valid) {

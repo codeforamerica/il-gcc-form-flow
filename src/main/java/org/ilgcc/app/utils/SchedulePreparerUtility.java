@@ -109,6 +109,10 @@ public class SchedulePreparerUtility {
         String hourValue = (String) inputData.getOrDefault(baseKey + "Hour", "");
         String minuteValue = (String) inputData.getOrDefault(baseKey + "Minute", "");
 
+        if (hourValue.isBlank() || minuteValue.isBlank()) {
+            return "";
+        }
+
         try {
             int hourInt = Integer.parseInt(hourValue);
             int minuteInt = Integer.parseInt(minuteValue);
