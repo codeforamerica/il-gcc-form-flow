@@ -47,11 +47,21 @@ public class SendGridWebhookController {
         Security.addProvider(new BouncyCastleProvider());
         final EventWebhook ew = new EventWebhook();
         final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
-        final boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
+
+        // Sendgrid payloads should always end with a CRLF for validation
+        boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody  + "\r\n", signature, timestamp);
 
         if (!valid) {
-            log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
-            return;
+            // Sendgrid's test API doesn't apparently have a trailing CRLF, so we can try again
+            // But also raise this error here, and have an alert so if this ever happens in reality
+            // we can debug further
+            log.error("Invalid signature for SendGrid events was provided. Removing CRLF modifier.");
+            valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
+
+            if (!valid) {
+                log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
+                return;
+            }
         }
 
         log.info("Received SendGrid events {}", requestBody);
