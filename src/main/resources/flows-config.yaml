@@ -637,6 +637,8 @@ flow:
       - name: temporary-provider-response-confirmation-code-fix
 #      - name: registration-info-review
   temporary-provider-response-confirmation-code-fix:
+    crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
+    afterSaveAction: CheckClientSubmissionForProvider
     onPostAction: GenerateDummyClientSubmissionForDev
     nextScreens:
       - name: registration-info-review
