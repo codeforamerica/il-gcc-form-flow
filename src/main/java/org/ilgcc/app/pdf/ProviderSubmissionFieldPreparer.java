@@ -7,6 +7,7 @@ import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class ProviderSubmissionFieldPreparer implements SubmissionFieldPreparer 
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
-        return null;
+        return new HashMap<String, SubmissionField>();
     }
 
     protected Optional<Map<String, Object>> getProviderInputData(Submission familySubmission) {
