@@ -384,6 +384,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
         testPage.clickContinue();
+
+        //registration submit intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
+        testPage.clickContinue();
     }
 
     @Test
@@ -498,6 +502,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
         testPage.clickContinue();
+
+        //registration submit intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
+        testPage.clickContinue();
     }
 
     @Test
@@ -602,6 +610,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
+
+        //registration submit intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
         testPage.clickContinue();
     }
 
@@ -716,6 +728,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
+
+        //registration submit intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
         testPage.clickContinue();
     }
 
@@ -859,6 +875,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
+
+        //registration submit intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
         testPage.clickContinue();
     }
 
