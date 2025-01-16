@@ -676,6 +676,7 @@ flow:
     nextScreens:
       - name: registration-service-languages
   registration-service-languages:
+    crossFieldValidationAction: ValidateProviderLanguageInput
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-start-date

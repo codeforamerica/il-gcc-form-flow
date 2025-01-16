@@ -120,8 +120,6 @@ public class Providerresponse extends FlowInputs {
     @Pattern(regexp = "\\d{9}", message = "{registration-tax-id-ein.error}")
     private String providerTaxIdEIN;
 
-    private String providerTaxIdEAN;
-
     private List<String> providerLanguagesOffered;
     private String providerLanguagesOffered_other;
 }
