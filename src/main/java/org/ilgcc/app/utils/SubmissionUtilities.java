@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -268,7 +269,14 @@ public class SubmissionUtilities {
     }
 
     public static boolean hasProviderResponse(Submission submission) {
-        return submission.getInputData().containsKey("providerResponseSubmissionId") && !submission.getInputData()
-                .get("providerResponseSubmissionId").toString().isEmpty();
+        return getProviderSubmissionId(submission).isPresent();
+    }
+
+    public static Optional<UUID> getProviderSubmissionId(Submission familySubmission){
+        if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
+            return Optional.of(UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()));
+        }
+
+        return Optional.empty();
     }
 }
