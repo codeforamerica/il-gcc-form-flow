@@ -49,6 +49,7 @@ public class SendGridWebhookController {
 
         log.info("SendGrid Webhook Events request body: {}", requestBody);
 
+        log.info("SendGrid Webhook Events request body final chars {}", requestBody.substring(requestBody.length() - 4));
         if (!requestBody.endsWith("\r\n")) {
             log.info("SendGrid Webhook Events request body does not end with CRLF");
             requestBody = requestBody + "\r\n";
