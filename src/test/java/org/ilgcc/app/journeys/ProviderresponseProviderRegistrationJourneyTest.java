@@ -356,6 +356,17 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // Skips registration-convictions-info and household screens
         // registration-family-response-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
+        testPage.clickContinue();
+
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.clickContinue();
+
+        // response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
     }
 
     @Test
@@ -450,6 +461,17 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-family-response-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
+        testPage.clickContinue();
+
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.clickContinue();
+
+        // response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
     }
 
     @Test
@@ -536,6 +558,17 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // Skips registration-convictions-info and registration screens
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
+        testPage.clickContinue();
+
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.clickContinue();
+
+        // response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
     }
 
     @Test
@@ -631,6 +664,17 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-family-response-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
+        testPage.clickContinue();
+
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.clickContinue();
+
+        // response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
     }
 
     @Test
@@ -754,6 +798,17 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-family-response-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
+        testPage.clickContinue();
+
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.clickContinue();
+
+        // response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
     }
 
 

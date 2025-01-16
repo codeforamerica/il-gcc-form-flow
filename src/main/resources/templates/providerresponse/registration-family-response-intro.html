@@ -8,17 +8,23 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header='placeholder', subtext='placeholder')}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
+        <div class="text--centered">
+          <th:block th:replace="~{fragments/gcc-icons :: clipboardWithEnvelope}"></th:block>
+          <p class="text--grey-dark" th:id="registration-family-response-intro-step" th:text="#{general.step-header('4', '5')}"></p>
+          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-family-response-intro.title})}"/>
+        </div>
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <div class="boxed-content">
+                <p class="text--centered"><strong  th:id="registration-family-response-intro.box.header" th:text="#{registration-family-response-intro.box.header}"></strong></p>
+                <ol class="list--numbered">
+                  <li th:id="registration-family-response-intro.1" th:text="#{registration-family-response-intro.1}"></li>
+                  <li th:id="registration-family-response-intro.2" th:text="#{registration-family-response-intro.2}"></li>
+                </ol>
+              </div>
             </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+            <div class="form-card__footer text--centered">
+              <th:block th:replace="~{fragments/continueButton :: continue}"/>
             </div>
-          </th:block>
-        </th:block>
       </main>
     </div>
   </section>
