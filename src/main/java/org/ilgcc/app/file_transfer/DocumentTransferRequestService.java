@@ -35,7 +35,19 @@ public class DocumentTransferRequestService implements DocumentTransferRequest {
             DocumentTransferConfiguration documentTransferConfiguration,
             TransmissionRepositoryService transmissionRepositoryService, 
             HttpUrlConnectionFactory httpUrlConnectionFactory) {
+        // TODO: figure out if the URL needs to be updated as well
         this.documentTransferServiceUrl = documentTransferConfiguration.getUrl();
+        // TODO: change processing org to be based on the selected CCRRR.slug
+        // {
+        //  "source": {
+        //    "type": "url",
+        //    "url": "https://example.com/document.pdf"
+        //  },
+        //  "destination": {
+        //    "type": "onedrive",
+        //    "path": "/document/path"
+        //  }
+        //}
         this.processingOrg = documentTransferConfiguration.getProcessingOrg();
         this.transmissionRepositoryService = transmissionRepositoryService;
         this.httpUrlConnectionFactory = httpUrlConnectionFactory;
