@@ -59,7 +59,7 @@ public class SendGridWebhookController {
             valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
 
             if (!valid) {
-                log.error("Invalid signature for SendGrid events was provided. Ignoring events.");
+                log.error("Invalid signature for SendGrid events was provided. Ignoring events. Payload: {} Signature: {}, Timestamp: {}", requestBody, signature, timestamp);
                 return;
             }
         }
