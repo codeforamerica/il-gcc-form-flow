@@ -118,7 +118,7 @@ public class ProviderLanguagePreparerTest {
     }
 
     @Test
-    public void shouldSelectOtherCheckboxAndCopyInUserInputWhenOtherIsSelected() {
+    public void whenOtherIsIncludedAsProviderLanguageOfferedSelectOtherCheckbox() {
         String providerLanguagesOfferedOtherString = "test, double test, gibberish";
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
@@ -134,12 +134,11 @@ public class ProviderLanguagePreparerTest {
                 .build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
         assertThat(result.get("providerLanguageOther")).isEqualTo(new SingleField("providerLanguageOther", "true", null));
-        assertThat(result.get("providerLanguageOtherDetail")).isEqualTo(new SingleField("providerLanguageOtherDetail",
-            providerLanguagesOfferedOtherString, null));
+        assertThat(result.get("providerLanguageOtherDetail")).isEqualTo(null);
     }
 
     @Test
-    public void shouldSelectOtherCheckboxOtherLanguagesAndCopyInUserInputWhenOtherIsSelected() {
+    public void shouldSelectOtherCheckboxAndAllOtherLanguagesExceptManuallyInputedLanguagesWhenOtherProviderLanguagesAreSelected() {
         String providerLanguagesOfferedOtherString = "test, double gibberish";
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
@@ -156,16 +155,16 @@ public class ProviderLanguagePreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
         assertThat(result.get("providerLanguageOther")).isEqualTo(new SingleField("providerLanguageOther", "true", null));
         assertThat(result.get("providerLanguageOtherDetail")).isEqualTo(new SingleField("providerLanguageOtherDetail",
-            String.format("%s, %s", TAGALOG.getProviderLanguageOtherDetailPdfFieldValue(), providerLanguagesOfferedOtherString), null));
+            TAGALOG.getProviderLanguageOtherDetailPdfFieldValue(), null));
     }
 
     @Test
-    public void shouldSelectEnglishCheckboxOtherCheckboxOtherLanguagesAndCopyInUserInputWhenOtherIsSelected() {
+    public void shouldSelectLanguagesWithCheckboxesAndOtherLanguagesCheckboxesExceptManuallyInputedLanguagesWhenLanguagesWithCheckboxesAndOtherProviderLanguagesAreSelected() {
         String providerLanguagesOfferedOtherString = "test, double gibberish";
         providerSubmission = new SubmissionTestBuilder()
             .withFlow("providerresponse")
             .withProviderSubmissionData()
-            .with("providerLanguagesOffered[]", List.of("English", "Tagalog", "other"))
+            .with("providerLanguagesOffered[]", List.of("English", "Tagalog", "Spanish", "Hindi","other"))
             .with("providerLanguagesOffered_other", providerLanguagesOfferedOtherString)
             .build();
         submissionRepositoryService.save(providerSubmission);
@@ -176,9 +175,10 @@ public class ProviderLanguagePreparerTest {
                 .build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
         assertThat(result.get("providerLanguageEnglish")).isEqualTo(new SingleField("providerLanguageEnglish", "true", null));
+        assertThat(result.get("providerLanguageSpanish")).isEqualTo(new SingleField("providerLanguageSpanish", "true", null));
         assertThat(result.get("providerLanguageOther")).isEqualTo(new SingleField("providerLanguageOther", "true", null));
         assertThat(result.get("providerLanguageOtherDetail")).isEqualTo(new SingleField("providerLanguageOtherDetail",
-            String.format("%s, %s", TAGALOG.getProviderLanguageOtherDetailPdfFieldValue(), providerLanguagesOfferedOtherString), null));
+            String.format("%s, %s", TAGALOG.getProviderLanguageOtherDetailPdfFieldValue(), HINDI.getProviderLanguageOtherDetailPdfFieldValue()), null));
         assertThat(result.get("providerLanguageChinese")).isNotEqualTo(new SingleField("providerLanguageChinese", "true", null));
     }
 }

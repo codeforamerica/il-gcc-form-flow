@@ -119,6 +119,15 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerTaxIdSSN", "333-22-2222");
         testPage.clickContinue();
 
+        //registration-service-languages-error
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.error"))).isTrue();
+
+        //registration-service-languages
+        testPage.clickElementById("providerLanguagesOffered-English-label");
+        testPage.clickContinue();
+
     }
 
     @Test
@@ -210,13 +219,22 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
 
-        // registration-service-languages
-//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        //registration-service-languages-error
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.error"))).isTrue();
+
+        //registration-service-languages
+        testPage.clickElementById("providerLanguagesOffered-other");
+        testPage.enter("providerLanguagesOffered_other", "Test");
         testPage.clickContinue();
 
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
         testPage.clickContinue();
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -350,8 +368,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerTaxIdEIN", "123456789");
         testPage.clickContinue();
 
-        // registration-service-languages
-//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        //Test Prefer Not to Answer Implementation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickElementById("providerLanguagesOffered-English-label");
+        assertThat(testPage.findElementById("providerLanguagesOffered-English").isSelected()).isTrue();
+        testPage.clickElementById("none__checkbox-providerLanguagesOffered");
+        assertThat(testPage.findElementById("providerLanguagesOffered-English").isSelected()).isFalse() ;
         testPage.clickContinue();
 
         // registration-start-date
@@ -359,6 +381,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
         testPage.clickContinue();
 
@@ -462,12 +485,26 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
-        //
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
 
-        // registration-service-languages
-//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        //registration-service-languages
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickElementById("providerLanguagesOffered-Arabic-label");
+        testPage.clickElementById("providerLanguagesOffered-Chinese-label");
+        testPage.clickElementById("providerLanguagesOffered-Polish-label");
+        testPage.clickElementById("providerLanguagesOffered-Tagalog-label");
+        testPage.clickElementById("providerLanguagesOffered-other");
+        testPage.enter("providerLanguagesOffered_other", "Test");
+        testPage.clickContinue();
+        testPage.goBack();
+
+        assertThat(testPage.findElementById("providerLanguagesOffered-Arabic").isSelected()).isTrue();
+        assertThat(testPage.findElementById("providerLanguagesOffered-Tagalog").isSelected()).isTrue();
+        assertThat(testPage.findElementById("providerLanguagesOffered-Chinese").isSelected()).isTrue();
+        assertThat(testPage.findElementById("providerLanguagesOffered-English-label").isSelected()).isFalse();
+        assertThat(testPage.findElementById("providerLanguagesOffered-other").isSelected()).isTrue();
+        assertThat(testPage.getInputValue("providerLanguagesOffered_other")).isEqualTo("Test");
         testPage.clickContinue();
 
         // registration-start-date
@@ -475,6 +512,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
         testPage.clickContinue();
 
@@ -580,13 +618,21 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerTaxIdEIN", "123456789");
         testPage.clickContinue();
 
-        // registration-service-languages
-//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        //registration-service-languages-error
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.error"))).isTrue();
+
+        //registration-service-languages
+        testPage.clickElementById("providerLanguagesOffered-Polish-label");
         testPage.clickContinue();
 
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
         testPage.clickContinue();
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -693,13 +739,21 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
-        // registration-service-languages
-//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        //registration-service-languages-error
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.error"))).isTrue();
+
+        //registration-service-languages
+        testPage.clickElementById("providerLanguagesOffered-Hindi-label");
         testPage.clickContinue();
 
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
         testPage.clickContinue();
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -836,15 +890,22 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
+        //registration-tax-id-ssn.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ssn.title"));
+        testPage.enter("providerTaxIdSSN", "333-22-2222");
         testPage.clickContinue();
 
-        // registration-service-languages
-//        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.title"))).isTrue();
+        //registration-service-languages
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickElementById("providerLanguagesOffered-Spanish-label");
         testPage.clickContinue();
 
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
         testPage.clickContinue();
+
+        // registration-checks-trainings-intro
+        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
