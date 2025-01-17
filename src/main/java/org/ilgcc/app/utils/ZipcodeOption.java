@@ -3,6 +3,7 @@ package org.ilgcc.app.utils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public enum ZipcodeOption implements InputOption {
     zip_60001("60001", "BB", true),
@@ -387,8 +388,8 @@ public enum ZipcodeOption implements InputOption {
         return Arrays.stream(ZipcodeOption.values()).anyMatch(zip -> zip.value.equals(zipcode) && zip.active);
     }
 
-    public static String getOrganizationIdByZipCode(String zipcode) {
-        String caseloadCode = ZIPCODE_MAP.get(zipcode);
-        return caseloadCode != null ? caseloadCode : "";
+    public static Optional<String> getOrganizationIdByZipCode(String zipcode) {
+        Boolean hasZip = ZIPCODE_MAP.containsKey(zipcode);
+        return hasZip ? Optional.of(ZIPCODE_MAP.get(zipcode)) : Optional.empty();
     }
 }

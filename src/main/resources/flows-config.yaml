@@ -66,6 +66,7 @@ flow:
     nextScreens:
       - name: parent-comm-preference
   parent-comm-preference:
+    beforeDisplayAction: SetCCRR
     nextScreens:
       - name: parent-contact-info
   parent-contact-info:

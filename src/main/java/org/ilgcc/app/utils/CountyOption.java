@@ -52,7 +52,7 @@ public enum CountyOption implements InputOption {
     }
 
     public static Optional<ZipcodeOption> getZipCodeFromCountyName(String countyName) {
-        ZipcodeOption zipcodeOption = COUNTY_MAP.get(countyName);
-        return zipcodeOption != null ? Optional.of(zipcodeOption) : Optional.empty();
+        Boolean hasCounty = COUNTY_MAP.containsKey(countyName);
+        return hasCounty ? Optional.of(COUNTY_MAP.get(countyName)) : Optional.empty();
     }
 }
