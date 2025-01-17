@@ -13,13 +13,13 @@ public interface ApplicationRouterService {
      * @return The corresponding organization ID
      */
     default Optional<String> getOrganizationIdByZipCode(String zipCode){
-        String truncatedZip = zipCode.substring(0, 5);
+        final String truncatedZip = zipCode.substring(0, 5);
 
-        String orgId = ZipcodeOption.getOrganizationIdByZipCode(truncatedZip);
-        if(orgId.isBlank()){
+        final String caseloadCode = ZipcodeOption.getOrganizationIdByZipCode(truncatedZip);
+        if(caseloadCode.isBlank()){
             return Optional.empty();
         } else {
-            return Optional.of(orgId);
+            return Optional.of(caseloadCode);
         }
     };
 
