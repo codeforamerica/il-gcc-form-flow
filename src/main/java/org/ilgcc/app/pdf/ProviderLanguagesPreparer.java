@@ -1,34 +1,24 @@
 package org.ilgcc.app.pdf;
 
 import formflow.library.data.Submission;
-import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
-import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.enums.ProviderLanguagesOffered;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderLanguagesPreparer implements SubmissionFieldPreparer {
-
-    @Autowired
-    SubmissionRepositoryService submissionRepositoryService;
-    @Autowired
-    private ProviderSubmissionUtilities providerSubmissionUtilities;
+public class ProviderLanguagesPreparer extends ProviderSubmissionFieldPreparer {
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
-        Optional<Submission> providerSubmission = providerSubmissionUtilities.getProviderSubmissionFromId(
-                submissionRepositoryService, familySubmission);
+        Optional<Submission> providerSubmission = getProviderSubmission(familySubmission);
         if (providerSubmission.isEmpty()) {
             return results;
         }
