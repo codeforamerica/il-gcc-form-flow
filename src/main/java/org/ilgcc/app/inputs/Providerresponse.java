@@ -6,6 +6,7 @@ import formflow.library.inputs.Encrypted;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import java.util.List;
 
@@ -119,7 +120,7 @@ public class Providerresponse extends FlowInputs {
     private String providerTaxIdSSN;
     @Pattern(regexp = "\\d{9}", message = "{registration-tax-id-ein.error}")
     private String providerTaxIdEIN;
-
+    @NotEmpty(message = "{registration-service-languages.error}")
     private List<String> providerLanguagesOffered;
     private String providerLanguagesOffered_other;
 }
