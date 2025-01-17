@@ -215,7 +215,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
-        //
+
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
 
@@ -232,9 +232,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
         testPage.clickContinue();
-
-        // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -381,7 +378,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
         testPage.clickContinue();
 
@@ -512,7 +508,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
         testPage.clickContinue();
 
@@ -632,9 +627,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
-
-        // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
         testPage.clickContinue();
 
@@ -751,9 +743,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
         testPage.clickContinue();
-
-        // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
@@ -903,9 +892,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
         testPage.clickContinue();
-
-        // registration-checks-trainings-intro
-        testPage.navigateToFlowScreen("providerresponse/registration-checks-trainings-intro");
 
         // registration-checks-trainings-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));

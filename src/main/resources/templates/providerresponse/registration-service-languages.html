@@ -3,19 +3,18 @@
   screenWithOneInput(
     title=#{registration-service-languages.title},
     header=#{registration-service-languages.header},
+    iconFragment=~{fragments/gcc-icons :: language-preference},
     required='true',
     buttonLabel=#{general.inputs.continue},
     formAction=${formAction},
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
-    <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
 <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
   checkboxFieldset(inputName='providerLanguagesOffered',
   noneOfTheAboveLabel=#{general.inputs.prefer-not-to-answer},
   ariaLabel='header',
   content=~{::providerLanguagesContent})}">
     <th:block th:ref="providerLanguagesContent">
-      <!-- Copy the below input if you want to add more -->
       <th:block th:each="option : ${T(org.ilgcc.app.utils.enums.ProviderLanguagesOffered).values()}">
         <th:block th:replace="~{fragments/inputs/checkboxInSet ::
                           checkboxInSet(inputName=${inputName},
