@@ -40,7 +40,7 @@ public class ProviderResponsePdfController {
         Optional<Submission> optionalProviderSubmission = this.submissionRepositoryService.findById(
                 UUID.fromString(submissionId));
         if (optionalProviderSubmission.isEmpty()) {
-            log.error("Attempted to download PDF with provider submission id: {} but no submission was found",
+            log.warn("Attempted to download PDF with provider submission id: {} but no submission was found",
                     sanitizeString(submissionId));
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(String.format("Attempted to download PDF with provider submission id: %s but no submission was found",
@@ -48,11 +48,11 @@ public class ProviderResponsePdfController {
         }
 
         Submission providerSubmission = optionalProviderSubmission.get();
-        String providerResponseFamilyShortCode = providerSubmission.getInputData()
-                .getOrDefault("providerResponseFamilyShortCode", null).toString();
+        Object providerResponseFamilyShortCode = providerSubmission.getInputData()
+                .getOrDefault("providerResponseFamilyShortCode", null);
 
         if (providerResponseFamilyShortCode == null) {
-            log.error(
+            log.warn(
                     "Attempted to download PDF with provider submission id: {} but no providerResponseFamilyShortCode was found",
                     sanitizeString(submissionId));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
@@ -61,14 +61,14 @@ public class ProviderResponsePdfController {
         }
 
         Optional<Submission> optionalFamilySubmission = submissionRepositoryService.findByShortCode(
-                providerResponseFamilyShortCode);
+                providerResponseFamilyShortCode.toString());
         if (optionalFamilySubmission.isEmpty()) {
-            log.error(
+            log.warn(
                     "Attempted to download PDF with provider submission id: {} but no family submission was found with confirmation code: {}",
-                    sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode));
+                    sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString()));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
                     "Attempted to download PDF with provider submission id: %s but no family submission was found with confirmation code: %s",
-                    sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode)));
+                    sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString())));
         }
 
         Submission familySubmission = optionalFamilySubmission.get();
