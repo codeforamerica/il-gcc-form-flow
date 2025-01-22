@@ -33,7 +33,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         if (hasNotChosenProvider(submission)) {
-            return prepareNoProviderData();
+            return prepareNoProviderData(submission.getShortCode());
         }
 
         if (useProviderResponse(submission)) {
@@ -108,10 +108,13 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         results.put("providerResponse",
                 new SingleField("providerResponse", providerResponse(submission), null));
 
+        results.put("clientResponseConfirmationCode", new SingleField("clientResponseConfirmationCode",
+                submission.getShortCode(), null));
+
         return results;
     }
 
-    private Map<String, SubmissionField> prepareNoProviderData() {
+    private Map<String, SubmissionField> prepareNoProviderData(String shortCode) {
         var results = new HashMap<String, SubmissionField>();
         results.put("providerNameCorporate",
                 new SingleField("providerNameCorporate", "No qualified provider",
@@ -121,6 +124,10 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                         null));
         results.put("providerResponse",
                 new SingleField("providerResponse", "No provider chosen", null));
+
+        results.put("clientResponseConfirmationCode", new SingleField("clientResponseConfirmationCode",
+                shortCode, null));
+
         return results;
     }
 
