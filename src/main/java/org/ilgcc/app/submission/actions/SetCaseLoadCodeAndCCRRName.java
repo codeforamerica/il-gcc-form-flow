@@ -22,13 +22,13 @@ public class SetCaseLoadCodeAndCCRRName implements Action {
     @Autowired
     ApplicationRouterService applicationRouterService;
 
-    static private final String CASELOAD_INPUT_NAME = "caseloadCode";
+    private static final String CASELOAD_INPUT_NAME = "caseloadCode";
 
     // We use parent mailing instead of home because this is the validated address and unhoused people may have a mailing address
-    static private final String VALIDATED_ZIPCODE_INPUT_NAME = "parentMailingZipCode_validated";
-    static private final String UNVALIDATED_ZIPCODE_INPUT_NAME = "parentMailingZipCode";
-    static private final String APPLICATION_COUNTY_INPUT_NAME = "applicationCounty";
-    static private final String APPLICATION_ZIPCODE_INPUT_NAME = "applicationZipCode";
+    private static final String VALIDATED_ZIPCODE_INPUT_NAME = "parentMailingZipCode_validated";
+    private static final String UNVALIDATED_ZIPCODE_INPUT_NAME = "parentMailingZipCode";
+    private static final String APPLICATION_COUNTY_INPUT_NAME = "applicationCounty";
+    private static final String APPLICATION_ZIPCODE_INPUT_NAME = "applicationZipCode";
 
     @Override
     public void run(Submission submission) {
@@ -76,9 +76,7 @@ public class SetCaseLoadCodeAndCCRRName implements Action {
     }
 
     private void saveCaseLoadAndName(Submission submission, String caseLoadCode) {
-        Optional<CCRR> ccrr = CCRR.findCCRRByCaseLoadCode(caseLoadCode);
         submission.getInputData().put(CASELOAD_INPUT_NAME, caseLoadCode);
-
 //       TODO: Set CCRR Name here
         submissionRepositoryService.save(submission);
     }
