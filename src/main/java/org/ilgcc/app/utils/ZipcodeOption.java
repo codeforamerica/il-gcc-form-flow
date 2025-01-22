@@ -388,7 +388,7 @@ public enum ZipcodeOption implements InputOption {
         return Arrays.stream(ZipcodeOption.values()).anyMatch(zip -> zip.value.equals(zipcode) && zip.active);
     }
 
-    public static Optional<String> getOrganizationIdByZipCode(String zipcode) {
+    public static Optional<String> getCaseLoadCodeByZipCode(String zipcode) {
         Boolean hasZip = ZIPCODE_MAP.containsKey(zipcode);
         return hasZip ? Optional.of(ZIPCODE_MAP.get(zipcode)) : Optional.empty();
     }

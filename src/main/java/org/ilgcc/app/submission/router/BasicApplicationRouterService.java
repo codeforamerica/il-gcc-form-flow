@@ -11,7 +11,13 @@ public class BasicApplicationRouterService implements ApplicationRouterService {
     @Override
     public Optional<String> getOrganizationIdByZipCode(String zipCode) {
         final String truncatedZip = zipCode.substring(0, 5);
-        return ZipcodeOption.getOrganizationIdByZipCode(truncatedZip);
+        final Optional<String> caseloadCode = ZipcodeOption.getCaseLoadCodeByZipCode(truncatedZip);
+
+        if (caseloadCode.isPresent()) {
+            return CCRR.findOrgIdByCaseLoadCode(caseloadCode.get());
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

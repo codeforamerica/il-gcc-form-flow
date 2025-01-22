@@ -17,14 +17,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = IlGCCApplication.class)
 @ActiveProfiles("test")
-class SetCaseLoadCodeAndCCRRNameTest {
+class SetOrganizationIdAndCCRRNameTest {
 
     @Autowired
     ApplicationRouterService applicationRouterService;
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
-    private SetCaseLoadCodeAndCCRRName action = new SetCaseLoadCodeAndCCRRName();
+    private SetOrganizationIdAndCCRRName action = new SetOrganizationIdAndCCRRName();
 
     @BeforeEach
     void setUp() {
@@ -33,46 +33,31 @@ class SetCaseLoadCodeAndCCRRNameTest {
     }
 
     @Test
-    public void doesNotSetCaseLoadIfNoAddressComponents() {
+    public void doesNotSetOrganizationIdIfNoAddressComponents() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .build();
 
         action.run(submission);
 
-        assertThat(submission.getInputData().get("caseloadCode")).isNull();
+        assertThat(submission.getInputData().get("organizationId")).isNull();
     }
 
     @Test
-    public void setsCaseLoadFromValidatedParentMailingAddress() {
+    public void setsOrganizationIdFromParentHomeAddressIfNotValidated() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .withValidatedMailingAddress("123 Main St.", "Apt 2", "Chicago", "IL",
-                        ZipcodeOption.zip_60304.getValue() + "-1234")
-                .withMailingAddress("123 Main St.", "Apt 2", "Chicago", "IL", ZipcodeOption.zip_62479.getValue())
+                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", ZipcodeOption.zip_62479.getValue())
                 .with("applicationCounty", CountyOption.LEE.getValue())
                 .build();
 
         action.run(submission);
 
-        assertThat(submission.getInputData().get("caseloadCode").toString()).isEqualTo("GG");
+        assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("59522729391675");
     }
 
     @Test
-    public void setsCaseLoadFromParentMailingAddressIfNotValidated() {
-        Submission submission = new SubmissionTestBuilder()
-                .withFlow("gcc")
-                .withMailingAddress("123 Main St.", "Apt 2", "Chicago", "IL", ZipcodeOption.zip_62479.getValue())
-                .with("applicationCounty", CountyOption.LEE.getValue())
-                .build();
-
-        action.run(submission);
-
-        assertThat(submission.getInputData().get("caseloadCode").toString()).isEqualTo("QQ");
-    }
-
-    @Test
-    public void setsCaseLoadFromCountyWhenParentMailingAddressIsEmpty() {
+    public void setsOrganizationIdFromCountyWhenParentHomeAddressIsEmpty() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .with("applicationCounty", CountyOption.LEE.getValue())
@@ -80,11 +65,11 @@ class SetCaseLoadCodeAndCCRRNameTest {
 
         action.run(submission);
 
-        assertThat(submission.getInputData().get("caseloadCode").toString()).isEqualTo("BB");
+        assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("56522729391679");
     }
 
     @Test
-    public void setsCaseLoadFromApplicationZipCodeWhenNoOtherOptionExists() {
+    public void setsOrganizationIdFromApplicationZipCodeWhenNoOtherOptionExists() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .with("applicationZipCode", ZipcodeOption.zip_60304.getValue())
@@ -92,7 +77,7 @@ class SetCaseLoadCodeAndCCRRNameTest {
 
         action.run(submission);
 
-        assertThat(submission.getInputData().get("caseloadCode").toString()).isEqualTo("GG");
+        assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("47522729391670");
     }
 
 }

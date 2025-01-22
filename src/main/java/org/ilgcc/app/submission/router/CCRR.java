@@ -11,7 +11,7 @@ import org.ilgcc.app.utils.ZipcodeOption;
 public class CCRR {
 
     protected final String name;
-    protected final String providerId;
+    protected final String organizationId;
     protected final String SDA;
     protected final String caseloadCode;
     protected final String slug;
@@ -34,9 +34,9 @@ public class CCRR {
         return List.of(FOUR_C, PROJECT_CHILD, ILLINOIS_ACTION);
     }
 
-    public CCRR(String name, String providerId, String SDA, String caseloadCode, String slug) {
+    public CCRR(String name, String organizationId, String SDA, String caseloadCode, String slug) {
         this.name = name;
-        this.providerId = providerId;
+        this.organizationId = organizationId;
         this.SDA = SDA;
         this.caseloadCode = caseloadCode;
         this.slug = slug;
@@ -45,5 +45,10 @@ public class CCRR {
     public static Optional<CCRR> findCCRRByCaseLoadCode(String caseloadCode) {
         boolean caseloadPresent = CCRR_MAP.containsKey(caseloadCode);
         return caseloadPresent ? Optional.of(CCRR_MAP.get(caseloadCode)) : Optional.empty();
+    }
+
+    public static Optional<String> findOrgIdByCaseLoadCode(String caseloadCode) {
+        Optional<CCRR> ccrr = findCCRRByCaseLoadCode(caseloadCode);
+        return ccrr.isPresent() ? Optional.of(ccrr.get().organizationId) : Optional.empty();
     }
 }
