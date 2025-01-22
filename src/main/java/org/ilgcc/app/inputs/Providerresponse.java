@@ -123,4 +123,19 @@ public class Providerresponse extends FlowInputs {
     @NotEmpty(message = "{registration-service-languages.error}")
     private List<String> providerLanguagesOffered;
     private String providerLanguagesOffered_other;
+
+
+    // registration-household-add-person
+    @NotBlank
+    private String providerHouseholdMemberFirstName;
+    @NotBlank
+    private String providerHouseholdMemberLastName;
+
+    private String providerHouseholdMemberDateOfBirthDay;
+    private String providerHouseholdMemberDateOfBirthMonth;
+    private String providerHouseholdMemberDateOfBirthYear;
+    @NotBlank
+    private String providerHouseholdMemberRelationship;
+    @NotBlank
+    private String providerHouseholdMemberSSN;
 }

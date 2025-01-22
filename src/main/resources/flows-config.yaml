@@ -758,6 +758,12 @@ flow:
       - name: registration-doc-upload-submit-confirmation
   registration-doc-upload-submit-confirmation:
     nextScreens: null
+subflows:
+  providerHouseholdMembers:
+    entryScreen: registration-household-add-person
+    iterationStartScreen: registration-household-add-person-info
+    reviewScreen: registration-household-add-person
+    deleteConfirmationScreen: registration-household-delete-person
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:

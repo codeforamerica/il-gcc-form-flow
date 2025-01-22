@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{registration-household-add-person-info.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,14 +8,33 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-household-add-person-info.header})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:replace="~{fragments/inputs/text ::
+                text(inputName='providerHouseholdMemberFirstName',
+                label=#{registration-household-add-person-info.q1.first-name})}"/>
+              <th:block th:replace="~{fragments/inputs/text ::
+                text(inputName='providerHouseholdMemberLastName',
+                label=#{registration-household-add-person-info.q2.last-name})}"/>
+              <th:block th:replace="~{fragments/inputs/date ::
+                date(inputName='providerHouseholdMemberDateOfBirth',
+                label=#{registration-household-add-person-info.q3.dob},
+                required='true',
+                groupName='providerHouseholdMemberDateOfBirth')}"/>
+              <th:block th:replace="~{fragments/inputs/text ::
+                text(inputName='providerHouseholdMemberRelationship',
+                label=#{registration-household-add-person-info.q4.relationship},
+                helpText=#{registration-household-add-person-info.q4.relationship-helper})}" />
+              <th:block
+                th:replace="~{fragments/inputs/ssn :: ssn(
+                inputName='providerHouseholdMemberSSN',
+                label=#{registration-household-add-person-info.q5-ssn},
+                helpText=#{registration-household-add-person-info.q5.ssn-helper})}"/>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <th:block th:replace="~{fragments/continueButton :: continue}" />
             </div>
           </th:block>
         </th:block>
