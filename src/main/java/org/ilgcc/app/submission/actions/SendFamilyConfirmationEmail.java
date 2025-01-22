@@ -3,6 +3,7 @@ package org.ilgcc.app.submission.actions;
 import com.sendgrid.helpers.mail.objects.Content;
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepositoryService;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.EmailConstants;
@@ -17,10 +18,12 @@ public class SendFamilyConfirmationEmail implements Action {
 
     private final SendEmailJob sendEmailJob;
     private final MessageSource messageSource;
+    private final SubmissionRepositoryService submissionRepositoryService;
 
-    public SendFamilyConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource) {
+    public SendFamilyConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource, SubmissionRepositoryService submissionRepositoryService) {
         this.sendEmailJob = sendEmailJob;
         this.messageSource = messageSource;
+        this.submissionRepositoryService = submissionRepositoryService;
     }
 
     @Override
@@ -52,6 +55,7 @@ public class SendFamilyConfirmationEmail implements Action {
                 EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
                 createFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
         familySubmission.getInputData().put("familyConfirmationEmailSent", "true");
+        submissionRepositoryService.save(familySubmission);
     }
 
     private Content createFamilyConfirmationEmailBody(Submission familySubmission, String confirmationCode, Locale locale) {
