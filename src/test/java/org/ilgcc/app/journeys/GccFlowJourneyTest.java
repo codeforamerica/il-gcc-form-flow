@@ -775,7 +775,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
                 "PARTNER_SIGNATURE_DATE",
                 "APPLICANT_SIGNATURE_DATE",
                 "APPLICANT_NAME_FULL",
-                "RECEIVED_TIMESTAMP");
+                "RECEIVED_TIMESTAMP",
+                "APPLICATION_CONFIRMATION_CODE");
         for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
             if (!UNTESTABLE_FIELDS.contains(expectedField)) {
                 var actual = actualAcroFields.getField(expectedField);

@@ -23,7 +23,7 @@
             th:with="name=${session.entryToDelete.get('adultDependentFirstName') + ' ' + session.entryToDelete.get('adultDependentLastName')}"
             id="content" role="main" class="form-card spacing-above-35">
           <div class="form-card__content">
-            <th:block th:replace="~{fragments/gcc-icons :: delete}"></th:block>
+            <th:block th:replace="~{fragments/gcc-icons :: trash}"></th:block>
             <h1 class="h2" th:text="#{delete-confirmation.header(${name})}"></h1>
           </div>
           <div class="form-card__footer">

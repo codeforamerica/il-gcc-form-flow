@@ -9,7 +9,7 @@
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
         <div class="text--centered">
-          <th:block th:replace="~{fragments/gcc-icons :: incomeFamily}"></th:block>
+          <th:block th:replace="~{fragments/gcc-icons :: income-parents}"></th:block>
           <p class="text--grey-dark" th:id="unearned-income-intro-step" th:text="${#messages.msg('unearned-income-intro.step', '6')}"></p>
           <th:block
                   th:replace="~{fragments/cardHeader :: cardHeader(header=#{unearned-income-intro.header})}"/>

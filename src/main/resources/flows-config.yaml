@@ -66,6 +66,7 @@ flow:
     nextScreens:
       - name: parent-comm-preference
   parent-comm-preference:
+    beforeDisplayAction: SetOrganizationIdAndCCRRName
     nextScreens:
       - name: parent-contact-info
   parent-contact-info:
@@ -433,7 +434,7 @@ flow:
     nextScreens:
       - name: submit-next-steps
   contact-provider-message:
-    beforeSaveAction: SendFamilyConfirmationEmail
+    beforeDisplayAction: SendFamilyConfirmationEmail
     nextScreens:
       - name: submit-next-steps
   complete-next-steps:
@@ -748,6 +749,14 @@ flow:
         condition: EnableProviderRegistration
       - name: submit-complete-final
   registration-household-delete-person:
+    nextScreens: null
+  registration-doc-upload-recommended-docs:
+    nextScreens:
+      - name: registration-doc-upload-add-files
+  registration-doc-upload-add-files:
+    nextScreens:
+      - name: registration-doc-upload-submit-confirmation
+  registration-doc-upload-submit-confirmation:
     nextScreens: null
 landmarks:
   firstScreen: submit-start

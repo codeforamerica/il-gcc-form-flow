@@ -71,6 +71,8 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String parentHomeZipCode;
 
+    private String organizationId;
+
     // parent-mailing-address
     private Boolean parentMailingAddressSameAsHomeAddress;
     @NotBlank(message = "{errors.provide-street}")
