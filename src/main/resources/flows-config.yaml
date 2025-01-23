@@ -23,7 +23,6 @@ flow:
     nextScreens:
       - name: parent-info-intro
   onboarding-county:
-    onPostAction: SetCCRRName
     nextScreens:
       - name: onboarding-chosen-provider
   onboarding-zipcode:
