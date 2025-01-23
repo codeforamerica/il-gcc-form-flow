@@ -5,17 +5,75 @@ import formflow.library.data.Submission;
 import java.io.File;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
+import org.jodconverter.core.office.OfficeUtils;
+import org.jodconverter.local.JodConverter;
+import org.jodconverter.local.office.LocalOfficeManager;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 public class FileConversionProto implements Action {
 
+    private LocalOfficeManager officeManager = LocalOfficeManager.install();;
+
     public FileConversionProto() {
     }
 
     @Override
+//    public void run(Submission submission) {
+//
+//        String docFilePath = "/Users/mperlman@codeforamerica.org/Downloads/sample.doc"; // Path to the .doc file
+//        String outputDir = "tmp/";
+//        String outputFile = "sample-converted.pdf";
+//
+//        // Ensure the output directory exists
+//        File outputDirectory = new File(outputDir);
+//        if (!outputDirectory.exists()) {
+//            outputDirectory.mkdirs();
+//            outputDirectory.setWritable(true, false);
+//        }
+//
+//        try {
+//            System.out.println("Starting process...");
+//            // Start the process
+//            long start = new Date().getTime();
+//
+//            if (!officeManager.isRunning()) {
+//                officeManager.start();
+//            }
+//
+//            JodConverter.convert(new File(docFilePath)).to(new File(outputDir+outputFile)).execute();
+//
+//            // Wait for the process to complete
+//            System.out.println("Waiting...");
+//            long end = new Date().getTime();
+//
+//            long seconds = (end - start) / 1000;
+//            long minutes = seconds / 60;
+//            long hours = minutes / 60;
+//
+//            long remainingSeconds = seconds % 60;
+//            long remainingMinutes = minutes % 60;
+//            long days = hours / 24;
+//            long remainingHours = hours % 24;
+//
+//            System.out.println("The process took: ");
+//            System.out.printf("%d days, %d hours, %d minutes, %d seconds%n", days, remainingHours, remainingMinutes,
+//                    remainingSeconds);
+//
+////            officeManager.stop();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            // Stop the office process
+////            OfficeUtils.stopQuietly(officeManager);
+//        }
+//
+//    }
+//}
     public void run(Submission submission) {
+
         String docFilePath = "/Users/mperlman@codeforamerica.org/Downloads/sample.doc"; // Path to the .doc file
         String outputDir = "/Users/mperlman@codeforamerica.org/Downloads/sampleoutput/";   // Output directory for the PDF
 
@@ -35,8 +93,6 @@ public class FileConversionProto implements Action {
         try {
             // Use ProcessBuilder to execute the command
             ProcessBuilder processBuilder = new ProcessBuilder(command);
-            processBuilder.environment().putAll(System.getenv()); // Inherit parent environment
-            processBuilder.environment().put("HOME", System.getProperty("user.home"));
             processBuilder.redirectErrorStream(true); // Merge stderr with stdout
 
             System.out.println(String.join(" ", command));
@@ -46,7 +102,6 @@ public class FileConversionProto implements Action {
             long start = new Date().getTime();
 
             Process process = processBuilder.start();
-
 
             // Wait for the process to complete
             System.out.println("Waiting...");
@@ -69,6 +124,5 @@ public class FileConversionProto implements Action {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
