@@ -39,8 +39,6 @@ public class ValidateZipCode implements Action {
                 submission.getInputData().put(OUTPUT_NAME, "false");
             } else {
                 submission.getInputData().put(OUTPUT_NAME, "true");
-                // Once we implement CCRR this should be set dynamically
-                submission.getInputData().put("ccrrName", "4-C: Community Coordinated Child Care");
             }
         }
 

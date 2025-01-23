@@ -33,7 +33,7 @@ class SetOrganizationIdAndCCRRNameTest {
     }
 
     @Test
-    public void doesNotSetOrganizationIdIfNoAddressComponents() {
+    public void doesNotSetOrganizationIdOrNameIfNoAddressComponents() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .build();
@@ -41,6 +41,7 @@ class SetOrganizationIdAndCCRRNameTest {
         action.run(submission);
 
         assertThat(submission.getInputData().get("organizationId")).isNull();
+        assertThat(submission.getInputData().get("ccrrName")).isNull();
     }
 
     @Test
@@ -54,6 +55,7 @@ class SetOrganizationIdAndCCRRNameTest {
         action.run(submission);
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("59522729391675");
+        assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo("Project CHILD");
     }
 
     @Test
@@ -66,6 +68,7 @@ class SetOrganizationIdAndCCRRNameTest {
         action.run(submission);
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("56522729391679");
+        assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo("4C: Community Coordinated Child Care");
     }
 
     @Test
@@ -78,6 +81,7 @@ class SetOrganizationIdAndCCRRNameTest {
         action.run(submission);
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("47522729391670");
+        assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo("Illinois Action for Children");
     }
 
 }
