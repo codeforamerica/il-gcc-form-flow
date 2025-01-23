@@ -2,7 +2,6 @@ package org.ilgcc.app.submission.router;
 
 import java.util.Optional;
 import org.ilgcc.app.utils.ZipcodeOption;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

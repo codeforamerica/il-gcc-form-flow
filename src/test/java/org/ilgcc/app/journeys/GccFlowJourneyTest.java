@@ -703,7 +703,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
-        assertThat(testPage.getTextBySelector("ul").get(1).toString()).containsIgnoringCase("4C: Community Coordinated Child Care");
+        assertThat(testPage.getTextBySelector("ul").get(1).toString()).containsIgnoringCase(
+                "4C: Community Coordinated Child Care");
         testPage.clickContinue();
 
         // complete-submit-confirmation

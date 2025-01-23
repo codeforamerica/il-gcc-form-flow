@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ValidateZipCode implements Action {
+
     @Autowired
     MessageSource messageSource;
 
@@ -31,11 +32,11 @@ public class ValidateZipCode implements Action {
 
         String providedZipCode = formSubmission.getFormData().get("applicationZipCode").toString();
 
-        if(providedZipCode.isBlank() || !(providedZipCode.length()==5)) {
+        if (providedZipCode.isBlank() || !(providedZipCode.length() == 5)) {
             errorMessages.put(INPUT_NAME,
                     List.of(messageSource.getMessage("errors.provide-zip", null, locale)));
         } else {
-            if(!ZipcodeOption.isValidZipcodeOption(providedZipCode)){
+            if (!ZipcodeOption.isValidZipcodeOption(providedZipCode)) {
                 submission.getInputData().put(OUTPUT_NAME, "false");
             } else {
                 submission.getInputData().put(OUTPUT_NAME, "true");

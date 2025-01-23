@@ -17,7 +17,8 @@ public class CCRR {
     protected final String slug;
 
 
-    private static final CCRR FOUR_C = new CCRR("4C: Community Coordinated Child Care", "56522729391679", "2", "BB", "4c-ccap-apps");
+    private static final CCRR FOUR_C = new CCRR("4C: Community Coordinated Child Care", "56522729391679", "2", "BB",
+            "4c-ccap-apps");
     private static final CCRR PROJECT_CHILD = new CCRR("Project CHILD", "59522729391675", "15", "QQ", "project-child-ccap-apps");
     private static final CCRR ILLINOIS_ACTION = new CCRR("Illinois Action for Children", "47522729391670", "6", "GG",
             "illinois-action-for-children-ccap-apps");
@@ -58,10 +59,12 @@ public class CCRR {
         final boolean orgIdPresent = CCRR_MAP_BY_ORGANIZATIONAL_ID.containsKey(organizationId);
         return orgIdPresent ? Optional.of(CCRR_MAP_BY_ORGANIZATIONAL_ID.get(organizationId)) : Optional.empty();
     }
+
     public static Optional<String> findOrgIdByCaseLoadCode(String caseloadCode) {
         final Optional<CCRR> ccrr = findCCRRByCaseLoadCode(caseloadCode);
         return ccrr.isPresent() ? Optional.of(ccrr.get().organizationId) : Optional.empty();
     }
+
     public static String findCCRRNameByOrganizationalId(String organizationId) {
         final Optional<CCRR> ccrr = findCCRRByOrganizationalId(organizationId);
         return ccrr.isPresent() ? ccrr.get().name : "";
