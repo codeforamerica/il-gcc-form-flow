@@ -42,12 +42,12 @@
                 </a>
               </div>
               <div th:if="${addedProviderHouseholdMember}">
-                <th:block class="button spacing-left-0" th:replace="~{fragments/continueButton :: continue(text=#{registration-household-add-person.im-done}) }" />
-<!--                <a th:if="${addedProviderHouseholdMember}"-->
-<!--                   th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"-->
-<!--                   th:text="#{registration-household-add-person.im-done}"-->
-<!--                   class="button spacing-left-0"-->
-<!--                   id="done-adding-provider-dependent"></a>-->
+<!--                <th:block class="button spacing-left-0" th:replace="~{fragments/continueButton :: continue(text=#{registration-household-add-person.im-done}) }" />-->
+                <a th:if="${addedProviderHouseholdMember}"
+                   th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+                   th:text="#{registration-household-add-person.im-done}"
+                   class="button spacing-left-0"
+                   id="done-adding-provider-dependent"></a>
               </div>
             </div>
           </th:block>

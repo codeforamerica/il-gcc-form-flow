@@ -8,6 +8,7 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: person-head}"></th:block>
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-household-add-person-info.header})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
@@ -34,7 +35,7 @@
                 helpText=#{registration-household-add-person-info.q5.ssn-helper})}"/>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/continueButton :: continue}" />
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
             </div>
           </th:block>
         </th:block>

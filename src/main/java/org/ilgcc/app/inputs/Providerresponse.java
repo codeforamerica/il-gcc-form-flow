@@ -126,9 +126,9 @@ public class Providerresponse extends FlowInputs {
 
 
     // registration-household-add-person
-    @NotBlank
+    @NotBlank(message = "{registration-household-add-person-info.error.first-name}")
     private String providerHouseholdMemberFirstName;
-    @NotBlank
+    @NotBlank(message = "{registration-household-add-person-info.error.last-name}")
     private String providerHouseholdMemberLastName;
 
     private String providerHouseholdMemberDateOfBirthDay;
@@ -136,6 +136,6 @@ public class Providerresponse extends FlowInputs {
     private String providerHouseholdMemberDateOfBirthYear;
     @NotBlank
     private String providerHouseholdMemberRelationship;
-    @NotBlank
+    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{registration-household-add-person-info.error.ssn}")
     private String providerHouseholdMemberSSN;
 }
