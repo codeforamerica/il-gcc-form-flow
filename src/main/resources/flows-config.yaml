@@ -714,9 +714,10 @@ flow:
   registration-household-add-person:
     condition: ProviderHouseholdRegistrationRequired
     nextScreens:
-      - name: registration-household-add-person-info
+      - name: registration-family-response-intro
   registration-household-add-person-info:
     subflow: providerHouseholdMembers
+    crossFieldValidationAction: ValidateProviderHouseholdMemberBirthday
     nextScreens:
       - name: registration-household-add-person
   registration-family-response-intro:

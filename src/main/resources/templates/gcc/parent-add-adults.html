@@ -18,7 +18,7 @@
                   <strong th:text="#{parent-add-adults.your-adult-dependents}"></strong>
                   <ul class="subflow-list list--bulleted">
                     <li th:each="adultDependent, iter: ${inputData.adultDependents}"
-                        class="spacing-below-10">
+                        class="spacing-below-10"> `
                     <span class="space-between">
                       <span class="adultDependent-name" th:text="|${adultDependent.adultDependentFirstName} ${adultDependent.adultDependentLastName}|"/>
                       <span class="text--small spacing-below-0 spacing-right-25">
