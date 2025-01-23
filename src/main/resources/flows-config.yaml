@@ -1,6 +1,7 @@
 name: gcc
 flow:
   onboarding-getting-started:
+    beforeDisplayAction: FileConversionProto
     nextScreens:
       - name: onboarding-language-pref
   onboarding-chosen-provider:
