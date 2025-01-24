@@ -47,6 +47,7 @@ public class ProviderLanguagesPreparer extends ProviderSubmissionFieldPreparer {
         if (otherLanguages.isEmpty()) {
           results.put("providerLanguageOther", new SingleField("providerLanguageOther", "true", null));
         }
+        otherLanguages.add((String) providerInputData.getOrDefault("providerLanguagesOffered_other", ""));
       }
 
       if (!otherLanguages.isEmpty()) {
