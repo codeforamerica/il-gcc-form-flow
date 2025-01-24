@@ -35,7 +35,10 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
         Map<String, Object> inputData = submission.getInputData();
 
-        if (hasValidValue(inputData, UNVALIDATED_ZIPCODE_INPUT_NAME)) {
+        boolean experiencingHomelessness = inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
+                List.of("yes"));
+
+        if (!experiencingHomelessness && hasValidValue(inputData, UNVALIDATED_ZIPCODE_INPUT_NAME)) {
             final String unvalidatedZip = (String) submission.getInputData().get(UNVALIDATED_ZIPCODE_INPUT_NAME);
             final Optional<String> organizationId = applicationRouterService.getOrganizationIdByZipCode(unvalidatedZip);
 
@@ -43,12 +46,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
                 saveOrganizationIdAndName(submission, organizationId.get());
                 return;
             } else {
-                boolean experiencingHomelessness = inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
-                        List.of("yes"));
-
-                if (!experiencingHomelessness) {
-                    log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(), unvalidatedZip));
-                }
+                log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(), unvalidatedZip));
             }
         }
 
