@@ -118,7 +118,7 @@ public class ProviderLanguagePreparerTest {
     }
 
     @Test
-    public void whenOtherIsIncludedAsProviderLanguageOfferedSelectOtherCheckbox() {
+    public void whenOtherIsIncludedAsProviderLanguageOfferedSelectOtherCheckboxAndAddDetails() {
         String providerLanguagesOfferedOtherString = "test, double test, gibberish";
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
@@ -134,11 +134,11 @@ public class ProviderLanguagePreparerTest {
                 .build();
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
         assertThat(result.get("providerLanguageOther")).isEqualTo(new SingleField("providerLanguageOther", "true", null));
-        assertThat(result.get("providerLanguageOtherDetail")).isEqualTo(null);
+        assertThat(result.get("providerLanguageOtherDetail")).isEqualTo(new SingleField("providerLanguageOtherDetail", providerLanguagesOfferedOtherString, null));
     }
 
     @Test
-    public void shouldSelectOtherCheckboxAndAllOtherLanguagesExceptManuallyInputedLanguagesWhenOtherProviderLanguagesAreSelected() {
+    public void shouldSelectOtherCheckboxAndAllOtherLanguagesWhenOtherProviderLanguagesAreSelected() {
         String providerLanguagesOfferedOtherString = "test, double gibberish";
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
@@ -155,11 +155,11 @@ public class ProviderLanguagePreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
         assertThat(result.get("providerLanguageOther")).isEqualTo(new SingleField("providerLanguageOther", "true", null));
         assertThat(result.get("providerLanguageOtherDetail")).isEqualTo(new SingleField("providerLanguageOtherDetail",
-            TAGALOG.getProviderLanguageOtherDetailPdfFieldValue(), null));
+            String.format("%s, %s", TAGALOG.getProviderLanguageOtherDetailPdfFieldValue(), providerLanguagesOfferedOtherString) , null));
     }
 
     @Test
-    public void shouldSelectLanguagesWithCheckboxesAndOtherLanguagesCheckboxesExceptManuallyInputedLanguagesWhenLanguagesWithCheckboxesAndOtherProviderLanguagesAreSelected() {
+    public void shouldSelectLanguagesWithCheckboxesAndOtherLanguagesWhenOtherProviderLanguagesAreSelected() {
         String providerLanguagesOfferedOtherString = "test, double gibberish";
         providerSubmission = new SubmissionTestBuilder()
             .withFlow("providerresponse")
@@ -178,7 +178,7 @@ public class ProviderLanguagePreparerTest {
         assertThat(result.get("providerLanguageSpanish")).isEqualTo(new SingleField("providerLanguageSpanish", "true", null));
         assertThat(result.get("providerLanguageOther")).isEqualTo(new SingleField("providerLanguageOther", "true", null));
         assertThat(result.get("providerLanguageOtherDetail")).isEqualTo(new SingleField("providerLanguageOtherDetail",
-            String.format("%s, %s", TAGALOG.getProviderLanguageOtherDetailPdfFieldValue(), HINDI.getProviderLanguageOtherDetailPdfFieldValue()), null));
+            String.format("%s, %s, %s", TAGALOG.getProviderLanguageOtherDetailPdfFieldValue(), HINDI.getProviderLanguageOtherDetailPdfFieldValue(), providerLanguagesOfferedOtherString), null));
         assertThat(result.get("providerLanguageChinese")).isNotEqualTo(new SingleField("providerLanguageChinese", "true", null));
     }
 }
