@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{registration-terms.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,11 +8,89 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-terms.title}, subtext=#{registration-terms.subtext})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(buttonLabel=#{registration-terms.accordion.first.label}, content=~{::first})}">
+                <th:block th:ref="first">
+                  <ul class="list--bulleted">
+                    <li th:text="#{registration-terms.accordion.first.list-1}"></li>
+                    <li th:text="#{registration-terms.accordion.first.list-2}"></li>
+                    <li th:text="#{registration-terms.accordion.first.list-3}"></li>
+                    <li th:text="#{registration-terms.accordion.first.list-4}"></li>
+                  </ul>
+                </th:block>
+              </th:block>
+              <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(buttonLabel=#{registration-terms.accordion.second.label}, content=~{::second})}">
+                <th:block th:ref="second">
+                  <ul class="list--bulleted">
+                    <li th:text="#{registration-terms.accordion.second.list-1}"></li>
+                    <li th:text="#{registration-terms.accordion.second.list-2}"></li>
+                    <li th:text="#{registration-terms.accordion.second.list-3}"></li>
+                    <li th:text="#{registration-terms.accordion.second.list-4}"></li>
+                    <li th:text="#{registration-terms.accordion.second.list-5}"></li>
+                    <li th:text="#{registration-terms.accordion.second.list-6}"></li>
+                    <li th:text="#{registration-terms.accordion.second.list-7}"></li>
+                    <li th:text="#{registration-terms.accordion.second.list-8}"></li>
+                  </ul>
+                </th:block>
+              </th:block>
+              <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(buttonLabel=#{registration-terms.accordion.third.label}, content=~{::third})}">
+                <th:block th:ref="third">
+                  <ul class="list--bulleted">
+                    <li th:text="#{registration-terms.accordion.third.list-1}"></li>
+                    <li th:text="#{registration-terms.accordion.third.list-2}"></li>
+                    <li th:text="#{registration-terms.accordion.third.list-3}"></li>
+                    <li th:text="#{registration-terms.accordion.third.list-4}"></li>
+                  </ul>
+                </th:block>
+              </th:block>
+              <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(buttonLabel=#{registration-terms.accordion.fourth.label}, content=~{::fourth})}">
+                <th:block th:ref="fourth">
+                  <ul class="list--bulleted">
+                    <li th:text="#{registration-terms.accordion.fourth.list-1}"></li>
+                    <li th:text="#{registration-terms.accordion.fourth.list-2}"></li>
+                    <li th:text="#{registration-terms.accordion.fourth.list-3}"></li>
+                    <li th:text="#{registration-terms.accordion.fourth.list-4}"></li>
+                    <li>
+                      <span th:text="#{registration-terms.accordion.fourth.list-5}"></span>
+                      <ul class="list--bulleted padding-left-25 list--sublist padding-top-10">
+                        <li th:text="#{registration-terms.accordion.fourth.list-51}">
+                      </ul>
+                    </li>
+                    <li th:text="#{registration-terms.accordion.fourth.list-6}"></li>
+                  </ul>
+                </th:block>
+              </th:block>
+              <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(buttonLabel=#{registration-terms.accordion.fifth.label}, content=~{::fifth})}">
+                <th:block th:ref="fifth">
+                  <ul class="list--bulleted">
+                    <li th:text="#{registration-terms.accordion.fifth.list-1}"></li>
+                    <li th:text="#{registration-terms.accordion.fifth.list-2}"></li>
+                    <li th:text="#{registration-terms.accordion.fifth.list-3}"></li>
+                    <li>
+                      <span th:text="#{registration-terms.accordion.fifth.list-4}"></span>
+                       <ul class="list--bulleted padding-left-25 list--sublist padding-top-10">
+                         <li th:text="#{registration-terms.accordion.fifth.list-41}"></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </th:block>
+              </th:block>
+              <th:block th:replace="~{fragments/honeycrisp/accordion :: accordion(buttonLabel=#{registration-terms.accordion.sixth.label}, content=~{::sixth})}">
+                <th:block th:ref="sixth">
+                  <ul class="list--bulleted">
+                    <li th:text="#{registration-terms.accordion.sixth.list-1}"></li>
+                    <li th:text="#{registration-terms.accordion.sixth.list-2}"></li>
+                  </ul>
+                </th:block>
+              </th:block>
+              <th:block th:replace="~{fragments/inputs/checkboxMod ::
+                                checkboxMod(inputName='providerAgreesToLegalTerms',
+                                label=#{registration-terms.checkbox.label},
+                                value='true')}">
+              </th:block>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>

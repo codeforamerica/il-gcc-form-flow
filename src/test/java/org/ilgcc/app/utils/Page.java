@@ -2,6 +2,7 @@ package org.ilgcc.app.utils;
 
 import io.percy.selenium.Percy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.ById;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -72,6 +73,13 @@ public class Page {
     buttonToClick.click();
 
     waitForFooterToLoad();
+  }
+
+  public void clickCheckbox(String id) {
+    WebElement webElement = driver.findElements(new ById(id)).stream()
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("No checkbox found for id: " + id));
+    webElement.click();
   }
 
   public void clickButtonLink(String buttonLinkText) {
