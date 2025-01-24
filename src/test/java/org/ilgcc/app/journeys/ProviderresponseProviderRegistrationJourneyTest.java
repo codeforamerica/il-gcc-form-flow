@@ -410,7 +410,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //registration terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
-        testPage.clickCheckbox("agreesToRegistrationTerm-true");
+        testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
     }
 
@@ -547,7 +547,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //registration terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
-        testPage.clickCheckbox("agreesToRegistrationTerm-true");
+        testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
     }
 
@@ -666,7 +666,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //registration terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
-        testPage.clickCheckbox("agreesToRegistrationTerm-true");
+        testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
     }
 
@@ -794,7 +794,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //registration terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
-        testPage.clickCheckbox("agreesToRegistrationTerm-true");
+        testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
     }
 
@@ -950,7 +950,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //registration terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
-        testPage.clickCheckbox("agreesToRegistrationTerm-true");
+        testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
     }
 
