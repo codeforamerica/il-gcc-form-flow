@@ -2,6 +2,7 @@ package org.ilgcc.app.submission.actions;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.submission.router.ApplicationRouterService;
@@ -41,8 +42,16 @@ public class SetOrganizationIdAndCCRRName implements Action {
             if (organizationId.isPresent()) {
                 saveOrganizationIdAndName(submission, organizationId.get());
                 return;
+            } else {
+                boolean experiencingHomelessness = inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
+                        List.of("yes"));
+
+                if (!experiencingHomelessness) {
+                    log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(), unvalidatedZip));
+                }
             }
         }
+
 
         if (hasValidValue(inputData, APPLICATION_COUNTY_INPUT_NAME)) {
             final String applicationCounty = (String) submission.getInputData().get(APPLICATION_COUNTY_INPUT_NAME);
