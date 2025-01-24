@@ -134,7 +134,7 @@ public class Providerresponse extends FlowInputs {
     private String providerHouseholdMemberDateOfBirthDay;
     private String providerHouseholdMemberDateOfBirthMonth;
     private String providerHouseholdMemberDateOfBirthYear;
-    @NotBlank
+    @NotBlank(message = "{registration-household-add-person-info.error.relationship}")
     private String providerHouseholdMemberRelationship;
     @Encrypted
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{registration-household-add-person-info.error.ssn}")

@@ -35,7 +35,7 @@
             </div>
             <div class="form-card__footer">
               <div class="spacing-below-15">
-                <a id="add-adult-dependent" th:href="'/flow/' + ${flow} + '/registration-household-add-person-info'"
+                <a id="add-provider-household-member" th:href="'/flow/' + ${flow} + '/registration-household-add-person-info'"
                    class="button button--primary spacing-above-15">
                   <i class="icon-add"></i>
                   <span th:text="#{registration-household-add-person.add-a-person}"></span>
@@ -47,7 +47,7 @@
                    th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
                    th:text="#{registration-household-add-person.im-done}"
                    class="button spacing-left-0"
-                   id="done-adding-provider-dependent"></a>
+                   id="done-adding-provider-household-member"></a>
               </div>
             </div>
           </th:block>
