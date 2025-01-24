@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{'registration-household-add-person.title'})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{registration-household-add-person.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,14 +8,46 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header='placeholder', subtext='placeholder')}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: household-adults}"></th:block>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-household-add-person.header}, subtext=#{registration-household-add-person.subtext})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
+          <th:block th:ref="formContent" th:with="addedProviderHouseholdMember=${inputData.containsKey('providerHouseholdMembers') && inputData.get('providerHouseholdMembers').size() > 0}">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:if="${addedProviderHouseholdMember}">
+                <div class="boxed-content text--centered">
+                  <strong th:text="#{registration-household-add-person.box-header}"></strong>
+                  <ul class="subflow-list list--bulleted">
+                    <li th:each="providerHouseholdMember, iter: ${inputData.providerHouseholdMembers}"
+                        class="spacing-below-10">
+                    <span class="space-between">
+                      <span class="m" th:text="|${providerHouseholdMember.providerHouseholdMemberFirstName} ${providerHouseholdMember.providerHouseholdMemberLastName}|"/>
+                      <span class="text--small spacing-below-0 spacing-right-25">
+                        <a th:href="'/flow/' + ${flow} + '/providerHouseholdMembers/' + ${providerHouseholdMember.uuid} + '/deleteConfirmation'"
+                           th:text="#{general.delete}"
+                           class="subflow-delete"
+                           th:id="'delete-iteration-' + ${providerHouseholdMember.uuid}"></a>
+                      </span>
+                    </span>
+                    </li>
+                  </ul>
+                </div>
+              </th:block>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <div class="spacing-below-15">
+                <a id="add-provider-household-member" th:href="'/flow/' + ${flow} + '/registration-household-add-person-info'"
+                   class="button button--primary spacing-above-15">
+                  <i class="icon-add"></i>
+                  <span th:text="#{registration-household-add-person.add-a-person}"></span>
+                </a>
+              </div>
+              <div th:if="${addedProviderHouseholdMember}">
+                <a th:if="${addedProviderHouseholdMember}"
+                   th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+                   th:text="#{registration-household-add-person.im-done}"
+                   class="button spacing-left-0"
+                   id="done-adding-provider-household-member"></a>
+              </div>
             </div>
           </th:block>
         </th:block>

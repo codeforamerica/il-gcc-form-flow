@@ -200,6 +200,31 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("children", children);
         return this;
     }
+    public SubmissionTestBuilder withProviderHouseholdMember(
+        String firstName,
+        String lastName,
+        String dateOfBirthDay,
+        String dateOfBirthMonth,
+        String dateOfBirthYear,
+        String relationship,
+        String SSN) {
+        List<Map<String, Object>> providerHouseholdMembers = (List<Map<String, Object>>) submission.getInputData().getOrDefault("providerHouseholdMembers", new ArrayList<>());
+
+        Map<String, Object> providerHouseholdMember = new HashMap<>();
+        String uuid = "%s-%s".formatted(firstName, lastName).toLowerCase();
+        providerHouseholdMember.put("uuid", uuid);
+        providerHouseholdMember.put("providerHouseholdMemberFirstName", firstName);
+        providerHouseholdMember.put("providerHouseholdMemberLastName", lastName);
+        providerHouseholdMember.put("providerHouseholdMemberDateOfBirthMonth", dateOfBirthMonth);
+        providerHouseholdMember.put("providerHouseholdMemberDateOfBirthDay", dateOfBirthDay);
+        providerHouseholdMember.put("providerHouseholdMemberDateOfBirthYear", dateOfBirthYear);
+        providerHouseholdMember.put("providerHouseholdMemberRelationship", relationship);
+        providerHouseholdMember.put("providerHouseholdMemberSSN", SSN);
+        providerHouseholdMember.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
+        providerHouseholdMembers.add(providerHouseholdMember);
+        submission.getInputData().put("providerHouseholdMembers", providerHouseholdMembers);
+        return this;
+    }
 
     public SubmissionTestBuilder withJob(String subflow, String companyName, String employerStreetAddress, String employerCity,
             String employerState, String employerZipCode, String employerPhoneNumber, String isSelfEmployed) {
@@ -223,6 +248,7 @@ public class SubmissionTestBuilder {
         submission.getInputData().put(subflow, jobs);
         return this;
     }
+
 
     public SubmissionTestBuilder withPartnerJob(String subflow, String companyName, String employerStreetAddress,
             String employerCity, String employerState, String employerZipCode, String employerPhoneNumber,
