@@ -45,7 +45,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // onboarding-county
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
         testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
-        testPage.goBack();
+        testPage.clickLink(getEnMessage("onboarding-county.link"));
 
         // onboarding-zipcode
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
@@ -61,6 +61,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         testPage.enter("applicationZipCode", ZipcodeOption.zip_60001.getValue());
         testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
+        testPage.clickYes();
 
         // onboarding-provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info.title"));

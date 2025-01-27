@@ -41,7 +41,7 @@ class ValidateZipCodeWithSDA15ExpansionTest {
 
         action.runValidation(formSubmission, submission);
 
-        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo(false);
+        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("false");
     }
 
     @Test
@@ -58,7 +58,7 @@ class ValidateZipCodeWithSDA15ExpansionTest {
 
         action.runValidation(formSubmission, submission);
 
-        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo(true);
+        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("true");
     }
 
     @Test
@@ -74,7 +74,7 @@ class ValidateZipCodeWithSDA15ExpansionTest {
 
         action.runValidation(formSubmission, submission);
 
-        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo(true);
+        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("true");
     }
 
     @Test
@@ -90,6 +90,6 @@ class ValidateZipCodeWithSDA15ExpansionTest {
 
         action.runValidation(formSubmission, submission);
 
-        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo(false);
+        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("false");
     }
 }
