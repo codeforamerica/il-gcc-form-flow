@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
-import org.ilgcc.app.utils.ZipcodeOption;
 
 @Getter
 public class CCRR {
@@ -68,5 +67,10 @@ public class CCRR {
     public static String findCCRRNameByOrganizationalId(String organizationId) {
         final Optional<CCRR> ccrr = findCCRRByOrganizationalId(organizationId);
         return ccrr.isPresent() ? ccrr.get().name : "";
+    }
+
+    public static String getCCRRSlugByOrganizationId(String organizationId) {
+        final Optional<CCRR> ccrr = findCCRRByOrganizationalId(organizationId);
+        return ccrr.isPresent() ? ccrr.get().slug : "";
     }
 }

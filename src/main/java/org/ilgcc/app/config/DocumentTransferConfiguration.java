@@ -15,6 +15,4 @@ public class DocumentTransferConfiguration {
     public String consumerId;
     public String authToken;
     public Long presignedUrlDuration;
-    public String processingOrg;
-    public boolean expandExistingProviderFlow;
 }

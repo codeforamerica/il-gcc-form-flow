@@ -7,8 +7,8 @@ import static org.ilgcc.app.utils.SubmissionUtilities.getDashFormattedSubmittedA
 import formflow.library.data.Submission;
 import java.text.Normalizer;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.submission.router.CCRR;
 import org.ilgcc.app.utils.SubmissionUtilities;
-
 
 @Slf4j
 public class FileNameUtility {
@@ -28,7 +28,8 @@ public class FileNameUtility {
         return String.format("%s-%s-CCAP-Application-Form-%s.pdf", formattedApplicantName, dashFormattedSubmittedAtDate, suffix);
     }
 
-    public static String getFileNameForUploadedDocument(Submission submission, int fileNumber, int totalFiles, String fileExtension) {
+    public static String getFileNameForUploadedDocument(Submission submission, int fileNumber, int totalFiles,
+            String fileExtension) {
         String applicantNameLastToFirst = SubmissionUtilities.getApplicantNameLastToFirst(submission);
         String formattedApplicantName = formatApplicantNameForFileName(applicantNameLastToFirst);
         String dashFormattedSubmittedAtDate = SubmissionUtilities.getDashFormattedSubmittedAtDate(submission);
@@ -53,9 +54,9 @@ public class FileNameUtility {
         return String.join("-", nameParts);
     }
 
-    public static String getSharePointFilePath(Submission submission, String processingOrg) {
+    public static String getSharePointFilePath(Submission submission, boolean isProductionEnvironment) {
         return String.format("/%s/%s/%s",
-                processingOrg,
+                CCRR.getCCRRSlugByOrganizationId(submission.getInputData().getOrDefault("organizationId", "56522729391679").toString()) + (isProductionEnvironment ? "" : "-testing"),
                 getDashFormattedSubmittedAtDate(submission),
                 formatApplicantNameForFileName(getApplicantNameLastToFirst(submission) + "-" +
                         getDashFormattedSubmittedAtDateWithTime(submission)));

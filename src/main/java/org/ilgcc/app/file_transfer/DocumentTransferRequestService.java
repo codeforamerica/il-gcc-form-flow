@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -20,6 +21,8 @@ import org.ilgcc.app.config.DocumentTransferConfiguration;
 import org.ilgcc.app.data.Transmission;
 import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.utils.enums.FileNameUtility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,16 +30,17 @@ import org.springframework.stereotype.Service;
 public class DocumentTransferRequestService implements DocumentTransferRequest {
     
     private final String documentTransferServiceUrl;
-    private final String processingOrg;
     private final TransmissionRepositoryService transmissionRepositoryService;
     private final HttpUrlConnectionFactory httpUrlConnectionFactory;
+
+    @Autowired
+    Environment environment;
 
     public DocumentTransferRequestService(
             DocumentTransferConfiguration documentTransferConfiguration,
             TransmissionRepositoryService transmissionRepositoryService, 
             HttpUrlConnectionFactory httpUrlConnectionFactory) {
         this.documentTransferServiceUrl = documentTransferConfiguration.getUrl();
-        this.processingOrg = documentTransferConfiguration.getProcessingOrg();
         this.transmissionRepositoryService = transmissionRepositoryService;
         this.httpUrlConnectionFactory = httpUrlConnectionFactory;
     }
@@ -92,11 +96,15 @@ public class DocumentTransferRequestService implements DocumentTransferRequest {
 
         Map<String, Object> destinationMap = new HashMap<>();
         destinationMap.put("type", "onedrive");
-        destinationMap.put("path", FileNameUtility.getSharePointFilePath(submission, processingOrg));
+        destinationMap.put("path", FileNameUtility.getSharePointFilePath(submission, isProductionEnvironment()));
         destinationMap.put("filename", fileName);
         jsonRequestBodyMap.put("destination", destinationMap);
 
         Gson gson = new Gson();
         return gson.toJson(jsonRequestBodyMap);
+    }
+
+    private boolean isProductionEnvironment(){
+       return Arrays.asList(this.environment.getActiveProfiles()).contains("production");
     }
 }
