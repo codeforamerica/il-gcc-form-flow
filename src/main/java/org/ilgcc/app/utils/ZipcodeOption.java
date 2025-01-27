@@ -390,14 +390,9 @@ public enum ZipcodeOption implements InputOption {
     }
 
     public static Boolean isValidZipcodeOption(String zipcode, Boolean includeSDA15) {
-        Stream<ZipcodeOption> activeZipCodes = Arrays.stream(ZipcodeOption.values()).filter(zip -> zip.active);
-        if(includeSDA15){
-            activeZipCodes = activeZipCodes.filter(zip -> zip.caseloadCode.equals("BB") || zip.caseloadCode.equals("QQ"));
-        } else {
-            activeZipCodes = activeZipCodes.filter(zip -> zip.caseloadCode.equals("BB"));
-        }
-
-        return activeZipCodes.anyMatch(zip -> zip.value.equals(zipcode));
+        return Arrays.stream(ZipcodeOption.values()).filter(zip -> zip.active)
+                .filter(zip -> includeSDA15 ? zip.caseloadCode.equals("BB") || zip.caseloadCode.equals("QQ")
+                        : zip.caseloadCode.equals("BB")).anyMatch(zip -> zip.value.equals(zipcode));
     }
 
     public static Optional<String> getCaseLoadCodeByZipCode(String zipcode) {

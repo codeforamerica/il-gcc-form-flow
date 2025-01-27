@@ -40,7 +40,8 @@ public class ValidateZipCode implements Action {
             errorMessages.put(INPUT_NAME,
                     List.of(messageSource.getMessage("errors.provide-zip", null, locale)));
         } else {
-            submission.getInputData().put(OUTPUT_NAME, ZipcodeOption.isValidZipcodeOption(providedZipCode, enableSDA15Providers));
+            submission.getInputData()
+                    .put(OUTPUT_NAME, String.valueOf(ZipcodeOption.isValidZipcodeOption(providedZipCode, enableSDA15Providers)));
         }
 
         return errorMessages;

@@ -6,6 +6,8 @@ import formflow.library.data.SubmissionRepository;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.ilgcc.app.utils.CountyOption;
+import org.ilgcc.app.utils.ZipcodeOption;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +44,23 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         // onboarding-county
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.selectFromDropdown("applicationCounty", "DeKalb");
+        testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
+        testPage.goBack();
+
+        // onboarding-zipcode
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
+        testPage.enter("applicationZipCode", "40123234324");
         testPage.clickContinue();
-        // onboarding-chosen-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
-        testPage.clickYes();
+
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-zip"))).isTrue();
+        testPage.enter("applicationZipCode", "94114");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("pilot-offboard.title"));
+        testPage.goBack();
+
+        testPage.enter("applicationZipCode", ZipcodeOption.zip_60001.getValue());
+        testPage.clickContinue();
 
         // onboarding-provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info.title"));
