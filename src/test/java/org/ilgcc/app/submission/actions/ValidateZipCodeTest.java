@@ -13,20 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(
-        classes = IlGCCApplication.class,
-        properties = "il-gcc.enable-sda15-providers=false"
+        classes = IlGCCApplication.class
 )
-
+@TestPropertySource(properties = {"il-gcc.enable-sda15-providers=false"})
 @ActiveProfiles("test")
 class ValidateZipCodeTest {
 
     @Autowired
     MessageSource messageSource;
 
-    ValidateZipCode action = new ValidateZipCode();
-
+    @Autowired
+    ValidateZipCode action;
 
     @Test
     public void inactiveZipCodeReturnsFalse() {
