@@ -81,6 +81,6 @@ public class TransmissionsRecurringJob {
     }
 
     private boolean hasProviderResponse(Submission submission) {
-        return submission.getInputData().containsKey("providerResponseSubmissionId");
+        return submission.getInputData().containsKey("providerResponseSubmissionId") && submission.getSubmittedAt() != null;
     }
 }
