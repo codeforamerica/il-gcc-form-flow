@@ -195,6 +195,10 @@ flow:
   activities-employer-address:
     subflow: jobs
     nextScreens:
+      - name: activities-employer-start-date
+  activities-employer-start-date:
+    subflow: jobs
+    nextScreens:
       - name: activities-self-employment
   activities-self-employment:
     subflow: jobs
@@ -277,6 +281,10 @@ flow:
     nextScreens:
       - name: activities-partner-employer-address
   activities-partner-employer-address:
+    subflow: partnerJobs
+    nextScreens:
+      - name: activities-partner-employer-start-date
+  activities-partner-employer-start-date:
     subflow: partnerJobs
     nextScreens:
       - name: activities-partner-self-employment

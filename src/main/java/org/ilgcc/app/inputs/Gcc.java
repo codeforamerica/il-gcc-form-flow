@@ -269,11 +269,16 @@ public class Gcc extends FlowInputs {
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String employerZipCode;
 
+    //activities-employer-start-date
+    private String activitiesJobStartDay;
+    private String activitiesJobStartMonth;
+    private String activitiesJobStartYear;
     //activities-self-employment
     private String isSelfEmployed;
 
     // activities-work-schedule-vary
     private String activitiesWorkVary;
+
 
     // activities-job-weekly-schedule
     @NotEmpty(message = "{activities-job-weekly-schedule.validation}")
@@ -468,6 +473,11 @@ public class Gcc extends FlowInputs {
     private String partnerEmployerState;
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String partnerEmployerZipCode;
+
+    //activities-partner-employer-start-date
+    private String activitiesPartnerJobStartDay;
+    private String activitiesPartnerJobStartMonth;
+    private String activitiesPartnerJobStartYear;
 
     // parent-partner-info-bachelors
     private String partnerHasBachelorsDegree;
