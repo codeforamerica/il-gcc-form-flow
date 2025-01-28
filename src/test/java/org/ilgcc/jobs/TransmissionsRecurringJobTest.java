@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
+import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
@@ -71,6 +72,9 @@ public class TransmissionsRecurringJobTest {
     @InjectMocks
     private TransmissionsRecurringJob transmissionsRecurringJob;
 
+    @Mock
+    private SubmissionRepositoryService submissionRepositoryService;
+
     private Submission expiredSubmission;
     private Submission transmittedSubmission;
     private Submission unsubmittedSubmission;
@@ -88,7 +92,8 @@ public class TransmissionsRecurringJobTest {
                 pdfService,
                 cloudFileRepository,
                 pdfTransmissionJob,
-                enqueueDocumentTransfer
+                enqueueDocumentTransfer,
+                submissionRepositoryService
         );
     }
 
