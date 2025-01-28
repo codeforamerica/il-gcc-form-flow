@@ -1,6 +1,5 @@
 package org.ilgcc.app.config;
 
-import java.net.URL;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
