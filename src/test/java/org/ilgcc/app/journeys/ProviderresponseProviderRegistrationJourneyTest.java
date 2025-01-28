@@ -1026,7 +1026,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         //registration terms
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("P"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
 
