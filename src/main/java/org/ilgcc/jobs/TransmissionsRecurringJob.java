@@ -2,6 +2,7 @@ package org.ilgcc.jobs;
 
 
 import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
@@ -9,6 +10,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerApplicationHasExpired;
@@ -32,12 +35,13 @@ public class TransmissionsRecurringJob {
     private final CloudFileRepository cloudFileRepository;
     private final PdfTransmissionJob pdfTransmissionJob;
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
+    private final SubmissionRepositoryService submissionRepositoryService;
 
     public TransmissionsRecurringJob(S3PresignService s3PresignService,
             TransmissionRepositoryService transmissionRepositoryService, UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, PdfService pdfService,
             CloudFileRepository cloudFileRepository, PdfTransmissionJob pdfTransmissionJob,
-            EnqueueDocumentTransfer enqueueDocumentTransfer) {
+            EnqueueDocumentTransfer enqueueDocumentTransfer, SubmissionRepositoryService submissionRepositoryService) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
         this.userFileRepositoryService = userFileRepositoryService;
@@ -81,6 +85,13 @@ public class TransmissionsRecurringJob {
     }
 
     private boolean hasProviderResponse(Submission submission) {
-        return submission.getInputData().containsKey("providerResponseSubmissionId") && submission.getSubmittedAt() != null;
+        String providerResponseSubmissionId = (String) submission.getInputData().get("providerResponseSubmissionId");
+
+        if (providerResponseSubmissionId != null) {
+            Optional<Submission> providerSubmission = submissionRepositoryService.findById(UUID.fromString(providerResponseSubmissionId));
+            return providerSubmission.isPresent() && providerSubmission.get().getSubmittedAt() != null;
+        }
+        
+        return false;
     }
 }
