@@ -14,7 +14,6 @@ import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.time.OffsetDateTime;
 import java.util.Date;
-import java.util.UUID;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.Transmission;
 import org.ilgcc.app.data.TransmissionRepository;
@@ -73,7 +72,7 @@ public class TransmissionsRecurringJobTest {
     @InjectMocks
     private TransmissionsRecurringJob transmissionsRecurringJob;
 
-    @Mock
+    @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
 
     private Submission expiredSubmission;
@@ -81,6 +80,7 @@ public class TransmissionsRecurringJobTest {
     private Submission unsubmittedSubmission;
     private Submission unexpiredSubmission;
     private Submission expiredUntransmittedSubmissionWithProviderResponse;
+    private Submission providerSubmission;
 
     @BeforeEach
     void setUp() {
@@ -155,7 +155,7 @@ public class TransmissionsRecurringJobTest {
         transmittedSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
-                .with("providerResponseSubmissionId", UUID.randomUUID().toString())
+                .with("providerResponseSubmissionId", "4e477c74-8529-4cd0-a02b-2d67e5b5b171")
                 .withFlow("gcc")
                 .build();
         submissionRepository.save(transmittedSubmission);
@@ -169,11 +169,15 @@ public class TransmissionsRecurringJobTest {
 
     @Test
     void enqueueDocumentTransferIsNotCalledOnExpiredUntransmittedSubmission() {
+
+        providerSubmission = new SubmissionTestBuilder().withProviderSubmissionData().withSubmittedAtDate(OffsetDateTime.now().minusDays(2)).build();
+        submissionRepository.save(providerSubmission);
+
         expiredUntransmittedSubmissionWithProviderResponse = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
                 .withFlow("gcc")
-                .with("providerResponseSubmissionId", UUID.randomUUID().toString())
+                .with("providerResponseSubmissionId", providerSubmission.getId().toString())
                 .build();
         submissionRepository.save(expiredUntransmittedSubmissionWithProviderResponse);
 
