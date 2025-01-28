@@ -473,7 +473,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //registration signature
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
         testPage.enter("providerSignedName", "test name");
-        testPage.clickContinue();
+        testPage.clickSubmit();
     }
 
     @Test
@@ -615,7 +615,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //registration signature
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
         testPage.enter("providerSignedName", "test name");
-        testPage.clickContinue();
+        testPage.clickSubmit();
     }
 
     @Test
@@ -739,7 +739,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //registration signature
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
         testPage.enter("providerSignedName", "test name");
-        testPage.clickContinue();
+        testPage.clickSubmit();
     }
 
     @Test
@@ -872,7 +872,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //registration signature
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
         testPage.enter("providerSignedName", "test name");
-        testPage.clickContinue();
+        testPage.clickSubmit();
     }
 
     @Test
@@ -1033,7 +1033,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //registration signature
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
         testPage.enter("providerSignedName", "test name");
-        testPage.clickContinue();
+        testPage.clickSubmit();
     }
 
 
