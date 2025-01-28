@@ -85,8 +85,8 @@ public class TransmissionsRecurringJob {
         }
     }
 
-    private boolean hasProviderResponse(Submission submission) {
-        String providerResponseSubmissionId = (String) submission.getInputData().get("providerResponseSubmissionId");
+    private boolean hasProviderResponse(Submission familySubmission) {
+        String providerResponseSubmissionId = (String) familySubmission.getInputData().get("providerResponseSubmissionId");
 
         if (providerResponseSubmissionId != null) {
             Optional<Submission> providerSubmission = submissionRepositoryService.findById(UUID.fromString(providerResponseSubmissionId));
