@@ -14,6 +14,7 @@ import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.time.OffsetDateTime;
 import java.util.Date;
+import java.util.UUID;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.Transmission;
 import org.ilgcc.app.data.TransmissionRepository;
@@ -154,7 +155,7 @@ public class TransmissionsRecurringJobTest {
         transmittedSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
-                .with("providerResponseSubmissionId", "123124")
+                .with("providerResponseSubmissionId", UUID.randomUUID().toString())
                 .withFlow("gcc")
                 .build();
         submissionRepository.save(transmittedSubmission);
@@ -172,7 +173,7 @@ public class TransmissionsRecurringJobTest {
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
                 .withFlow("gcc")
-                .with("providerResponseSubmissionId", "123124")
+                .with("providerResponseSubmissionId", UUID.randomUUID().toString())
                 .build();
         submissionRepository.save(expiredUntransmittedSubmissionWithProviderResponse);
 
