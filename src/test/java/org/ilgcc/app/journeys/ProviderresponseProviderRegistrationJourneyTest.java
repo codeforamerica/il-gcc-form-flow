@@ -412,6 +412,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
+
+        //registration signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
+        testPage.clickContinue();
     }
 
     @Test
@@ -549,6 +554,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
+
+        //registration signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
+        testPage.clickContinue();
     }
 
     @Test
@@ -667,6 +677,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //registration terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
+        testPage.clickContinue();
+
+        //registration signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
         testPage.clickContinue();
     }
 
@@ -795,6 +810,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //registration terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
+        testPage.clickContinue();
+
+        //registration signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
         testPage.clickContinue();
     }
 
@@ -949,8 +969,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         //registration terms
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("P"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
+        testPage.clickContinue();
+
+        //registration signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
         testPage.clickContinue();
     }
 

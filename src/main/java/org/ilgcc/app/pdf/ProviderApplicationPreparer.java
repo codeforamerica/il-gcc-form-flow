@@ -80,15 +80,15 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 new SingleField("providerSignature", providerSignature(providerInputData), null));
             String formattedProviderSignatureDate = "";
 
-            if (providerSubmission.getSubmittedAt() != null) {
-                Optional<LocalDate> providerSignatureDate = Optional.of(
-                        LocalDate.from(providerSubmission.getSubmittedAt()));
-                formattedProviderSignatureDate =  formatToStringFromLocalDate(providerSignatureDate);
-            }
+        if (providerSubmission.getSubmittedAt() != null) {
+            Optional<LocalDate> providerSignatureDate = Optional.of(
+                    LocalDate.from(providerSubmission.getSubmittedAt()));
+            formattedProviderSignatureDate =  formatToStringFromLocalDate(providerSignatureDate);
+        }
 
-            results.put("providerSignatureDate",
-                    new SingleField("providerSignatureDate", formattedProviderSignatureDate,
-                            null));
+        results.put("providerSignatureDate",
+                new SingleField("providerSignatureDate", formattedProviderSignatureDate,
+                        null));
 
         return results;
     }
@@ -169,6 +169,10 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
     }
 
     private String providerSignature(Map<String, Object> providerInputData) {
+        String providerSignature =  (String) providerInputData.getOrDefault("providerSignedName", "");
+        if (!providerSignature.isEmpty()) {
+            return providerSignature;
+        }
         String firstname = (String) providerInputData.getOrDefault("providerResponseFirstName", "");
         String lastName = (String) providerInputData.getOrDefault("providerResponseLastName", "");
         String businessName = (String) providerInputData.getOrDefault("providerResponseBusinessName", "");

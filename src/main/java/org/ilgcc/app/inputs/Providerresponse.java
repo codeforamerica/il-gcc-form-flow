@@ -128,4 +128,7 @@ public class Providerresponse extends FlowInputs {
     @NotEmpty(message = "{registration-service-languages.error}")
     private List<String> providerLanguagesOffered;
     private String providerLanguagesOffered_other;
+
+    @NotBlank(message = "{errors.validate.provider-signed-name}")
+    private String providerSignedName;
 }
