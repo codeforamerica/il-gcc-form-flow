@@ -23,7 +23,6 @@ flow:
     nextScreens:
       - name: parent-info-intro
   onboarding-county:
-    onPostAction: SetCCRRName
     nextScreens:
       - name: onboarding-chosen-provider
   onboarding-zipcode:
@@ -714,11 +713,12 @@ flow:
   registration-household-add-person:
     condition: ProviderHouseholdRegistrationRequired
     nextScreens:
-      - name: registration-household-add-person-info
-  registration-household-add-person-info:
-    condition: ProviderHouseholdRegistrationRequired
-    nextScreens:
       - name: registration-family-response-intro
+  registration-household-add-person-info:
+    subflow: providerHouseholdMembers
+    crossFieldValidationAction: ValidateProviderHouseholdMemberBirthday
+    nextScreens:
+      - name: registration-household-add-person
   registration-family-response-intro:
     condition: EnableProviderRegistration
     nextScreens:
@@ -758,6 +758,12 @@ flow:
       - name: registration-doc-upload-submit-confirmation
   registration-doc-upload-submit-confirmation:
     nextScreens: null
+subflows:
+  providerHouseholdMembers:
+    entryScreen: registration-household-add-person
+    iterationStartScreen: registration-household-add-person-info
+    reviewScreen: registration-household-add-person
+    deleteConfirmationScreen: registration-household-delete-person
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:

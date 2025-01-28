@@ -320,3 +320,11 @@ subflowInfo:
 
       partnerEmployerTravelTimeHours: PARTNER_EMPLOYER_TRAVEL_TIME_HOURS
       partnerEmployerTravelTimeMins: PARTNER_EMPLOYER_TRAVEL_TIME_MINS
+  providerHouseholdMembers:
+    totalIterations: 5
+    inputFields:
+      providerHouseholdMemberFirstName: PROVIDER_HH_MEMBER_FIRST_NAME
+      providerHouseholdMemberLastName: PROVIDER_HH_MEMBER_LAST_NAME
+      providerHouseholdMemberDateOfBirth: PROVIDER_HH_MEMBER_DATE_OF_BIRTH
+      providerHouseholdMemberRelationship: PROVIDER_HH_MEMBER_RELATIONSHIP_TO_PROVIDER
+      providerHouseholdMemberSSN: PROVIDER_HH_MEMBER_SSN

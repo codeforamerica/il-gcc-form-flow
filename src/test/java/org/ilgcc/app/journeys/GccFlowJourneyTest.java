@@ -6,6 +6,8 @@ import formflow.library.data.SubmissionRepository;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.ilgcc.app.utils.CountyOption;
+import org.ilgcc.app.utils.ZipcodeOption;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +44,24 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         // onboarding-county
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.selectFromDropdown("applicationCounty", "DeKalb");
+        testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
+        testPage.clickLink(getEnMessage("onboarding-county.link"));
+
+        // onboarding-zipcode
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
+        testPage.enter("applicationZipCode", "40123234324");
         testPage.clickContinue();
-        // onboarding-chosen-provider
+
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-zip"))).isTrue();
+        testPage.enter("applicationZipCode", "94114");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("pilot-offboard.title"));
+        testPage.goBack();
+
+        testPage.enter("applicationZipCode", ZipcodeOption.zip_60001.getValue());
+        testPage.clickContinue();
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
         testPage.clickYes();
 
@@ -678,9 +695,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
         uploadJpgFile();
         // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
-        await().atMost(5, TimeUnit.SECONDS).until(
-                () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
-        );
+        await().atMost(5, TimeUnit.SECONDS)
+                .until(() -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")));
 
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
@@ -704,15 +720,15 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
+        assertThat(testPage.getTextBySelector("ul").get(1).toString()).containsIgnoringCase(
+                "4C: Community Coordinated Child Care");
         testPage.clickContinue();
 
         // complete-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(
-                getEnMessage("complete-submit-confirmation.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
         testPage.clickElementById("surveyDifficulty-very-easy");
         testPage.clickButton(getEnMessage("submit-confirmation.button.feedback"));
-        assertThat(testPage.getTitle()).isEqualTo(
-                getEnMessage("complete-submit-confirmation.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
         assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo(
                 getEnMessage("submit-confirmation.survey.complete"));
 
@@ -730,10 +746,9 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
 //         regenerateExpectedPDF(pdfFile); // uncomment and run test to regenerate the test pdf
 
-        try (FileInputStream actualIn = new FileInputStream(pdfFile);
-                PdfReader actualReader = new PdfReader(actualIn);
-                FileInputStream expectedIn = new FileInputStream("src/test/resources/output/test_filled_ccap.pdf");
-                PdfReader expectedReader = new PdfReader(expectedIn)) {
+        try (FileInputStream actualIn = new FileInputStream(pdfFile); PdfReader actualReader = new PdfReader(
+                actualIn); FileInputStream expectedIn = new FileInputStream(
+                "src/test/resources/output/test_filled_ccap.pdf"); PdfReader expectedReader = new PdfReader(expectedIn)) {
             AcroFields actualAcroFields = actualReader.getAcroFields();
             AcroFields expectedAcroFields = expectedReader.getAcroFields();
 
@@ -744,8 +759,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
             for (String expectedField : missMatches) {
                 var actual = actualAcroFields.getField(expectedField);
                 var expected = expectedAcroFields.getField(expectedField);
-                assertThat(actual)
-                        .withFailMessage("Expected %s to be %s but was %s".formatted(expectedField, expected, actual))
+                assertThat(actual).withFailMessage("Expected %s to be %s but was %s".formatted(expectedField, expected, actual))
                         .isEqualTo(expected);
             }
             assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
@@ -759,8 +773,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
      * If there are changes to the expected PDF, it can be regenerated with this method.
      */
     private static void regenerateExpectedPDF(File pdfFile) {
-        try (FileInputStream regeneratedPDF = new FileInputStream(pdfFile);
-                FileOutputStream testPDF = new FileOutputStream("src/test/resources/output/test_filled_ccap.pdf")) {
+        try (FileInputStream regeneratedPDF = new FileInputStream(pdfFile); FileOutputStream testPDF = new FileOutputStream(
+                "src/test/resources/output/test_filled_ccap.pdf")) {
             testPDF.write(regeneratedPDF.readAllBytes());
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -792,8 +806,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
     private File getDownloadedPDF() throws IOException {
         // There should only be one
-        String downloadUrl = repository.findAll().stream()
-                .findFirst()
+        String downloadUrl = repository.findAll().stream().findFirst()
                 .map(submission -> "%s/download/gcc/%s".formatted(baseUrl, submission.getId()))
                 .orElseThrow(() -> new RuntimeException("Couldn't get url for pdf download"));
         driver.get(downloadUrl);

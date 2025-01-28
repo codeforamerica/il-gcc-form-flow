@@ -1,25 +1,42 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{registration-household-add-person-delete.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
   <section class="slab">
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
+      <th:block th:if="${noEntryToDelete != null}">
+        <main id="content" role="main" class="form-card spacing-above-35">
+          <th:block
+              th:replace="~{fragments/cardHeader :: cardHeader(header=#{delete-confirmation-back-redirect.header})}"/>
+          <div class="form-card__footer" th:with="subflowIsEmpty=${subflowIsEmpty != null}">
+            <a class="button button--primary"
+               th:href="${subflowIsEmpty ? entryScreen : reviewScreen}"
+               th:text="#{delete-confirmation-back-redirect.button}"></a>
+          </div>
+        </main>
+      </th:block>
+      <th:block th:if="${noEntryToDelete == null}">
+        <main
+            th:with="name=${session.entryToDelete.get('providerHouseholdMemberFirstName') + ' ' + session.entryToDelete.get('providerHouseholdMemberLastName')}"
+            id="content" role="main" class="form-card spacing-above-35">
+          <div class="form-card__content">
+            <th:block th:replace="~{fragments/gcc-icons :: trash}"></th:block>
+            <h1 class="h2" th:text="#{registration-household-add-person-delete.header(${name})}"></h1>
+          </div>
+          <div class="form-card__footer">
+            <form method="post"
+                  th:action="'/flow/' + ${flow} + '/' + ${subflow} + '/' + ${param.uuid} + '/delete'">
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton( text=#{registration-household-add-person-delete.button.yes-delete})}"/>
+            </form>
+            <a class="button spacing-above-35" th:href="'/flow/' + ${flow} + '/registration-household-add-person'"
+               id="keep-provider-household-member"
+               th:text="#{registration-household-add-person-delete.button.no-keep}"></a>
+          </div>
+        </main>
+      </th:block>
     </div>
   </section>
 </div>

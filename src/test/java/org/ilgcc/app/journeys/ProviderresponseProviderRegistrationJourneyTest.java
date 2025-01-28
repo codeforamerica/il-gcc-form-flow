@@ -264,8 +264,65 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-household-add-person
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+        testPage.clickElementById("add-provider-household-member");
 
+        //registration-household-add-person-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person-info.title"));
+        testPage.clickContinue();
 
+        //registration-household-add-person-info-error
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.first-name"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.last-name"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.dob"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.relationship"))).isTrue();
+
+        testPage.enter("providerHouseholdMemberDateOfBirthDay", "10");
+        testPage.enter("providerHouseholdMemberSSN", "333");
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.date"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.dob"))).isFalse();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.ssn"))).isTrue();
+
+        testPage.enter("providerHouseholdMemberFirstName", "First_Name_Test");
+        testPage.enter("providerHouseholdMemberLastName", "Last_Name_Test");
+        testPage.enter("providerHouseholdMemberRelationship", "Aunt");
+        testPage.enter("providerHouseholdMemberDateOfBirthDay", "9");
+        testPage.enter("providerHouseholdMemberDateOfBirthMonth", "10");
+        testPage.enter("providerHouseholdMemberDateOfBirthYear", "2009");
+        testPage.enter("providerHouseholdMemberSSN", "333-33-3333");
+        testPage.clickContinue();
+
+        // registration-household-add-person
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+        testPage.clickElementById("add-provider-household-member");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person-info.title"));
+        testPage.enter("providerHouseholdMemberFirstName", "Tester");
+        testPage.enter("providerHouseholdMemberLastName", "Lastenson");
+        testPage.enter("providerHouseholdMemberRelationship", "Brother");
+        testPage.enter("providerHouseholdMemberDateOfBirthDay", "2");
+        testPage.enter("providerHouseholdMemberDateOfBirthMonth", "1");
+        testPage.enter("providerHouseholdMemberDateOfBirthYear", "1999");
+        testPage.enter("providerHouseholdMemberSSN", "888-33-3333");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+
+        assertThat(testPage.findElementsByClass("m").get(1).getText()).isEqualTo("Tester Lastenson");
+        testPage.findElementsByClass("subflow-delete").get(1).click();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person-delete.title"));
+        testPage.clickButton(getEnMessage("registration-household-add-person-delete.button.yes-delete"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+        assertThat(testPage.findElementsByClass("m").getFirst().getText()).isEqualTo("First_Name_Test Last_Name_Test");
+        assertThat(testPage.findElementById("done-adding-provider-household-member").getText()).isEqualTo(getEnMessage("registration-household-add-person.im-done"));
+        testPage.clickElementById("done-adding-provider-household-member");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
     }
 
     @Test
@@ -969,7 +1026,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         //registration terms
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("P"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
 

@@ -6,16 +6,16 @@ import static org.awaitility.Awaitility.await;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
-import org.ilgcc.app.utils.CountyOption;
 import org.junit.jupiter.api.Test;
 
-public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
+public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
     @Test
-    void fullGccFlowWithNewProviderWorkFeatureFlagOn() {
+    void NoProviderFullFlow() {
         // Home page
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
         testPage.clickButton(getEnMessage("index.apply-now"));
+
         // onboarding-getting-started
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
@@ -28,29 +28,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         // onboarding-county
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.clickLink(getEnMessage("onboarding-county.link"));
-
-        // onboarding-zipcode
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
-        testPage.clickLink(getEnMessage("onboarding-zipcode.link"));
-
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
-        testPage.goBack();
-
-        // onboarding-zipcode
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
-        testPage.enter("applicationZipCode", "40123234324");
-        testPage.clickContinue();
-
-        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-zip"))).isTrue();
-        testPage.enter("applicationZipCode", "94114");
-        testPage.clickContinue();
-
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("pilot-offboard.title"));
-        testPage.goBack();
-
-        testPage.enter("applicationZipCode", "61367");
+        testPage.selectFromDropdown("applicationCounty", "DeKalb");
         testPage.clickContinue();
 
         // onboarding-chosen-provider
@@ -59,42 +37,16 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         // onboarding-no-provider-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-no-provider-intro.title"));
-        testPage.goBack();
-
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
-        testPage.clickYes();
-
-        // onboarding-provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info.title"));
-        testPage.enter("familyIntendedProviderName", "Provider Name");
-        testPage.enter("familyIntendedProviderEmail", "mail@mail.com");
-        testPage.enter("familyIntendedProviderPhoneNumber", "(415) 456-7890");
-        testPage.clickContinue();
-
-        // onboarding-provider-info-review
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info-review.title"));
-        testPage.clickLink(getEnMessage("onboarding-provider-info-review.link"));
-
-        // onboarding-provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info.title"));
-        testPage.clickContinue();
-
-        // onboarding-provider-info-review
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info-review.title"));
-        testPage.clickContinue();
-
-        // onboarding-provider-info-confirm
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info-confirm.title"));
-        testPage.clickContinue();
+        testPage.clickButton(getEnMessage("onboarding-no-provider-intro.continue"));
 
         // parent-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
-
-        // parent-info-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
+        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 6");
         testPage.clickContinue();
+
         // parent-info-basic-1
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
+        testPage.enter("parentFirstName", "parent first");
         testPage.enter("parentLastName", "parent last");
         testPage.enter("parentPreferredName", "Preferred Parent First");
         testPage.enter("parentOtherLegalName", "Parent Other Legal Name");
@@ -105,52 +57,35 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.clickElementById("parentGender-MALE-label");
         testPage.clickContinue();
 
-        // parent-info-basic-1
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
-        assertThat(testPage.findElementsByClass("notice--toolbar").size()).isEqualTo(1);
-        testPage.enter("parentFirstName", "parent first");
-        testPage.clickContinue();
         // parent-info-service
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-service.title"));
         testPage.clickContinue();
+
         // parent-info-disability
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-disability.title"));
         testPage.clickYes();
-        // parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
-        assertThat(testPage.getSelectValue("parentHomeState")).isEqualTo(getEnMessage("state.il"));
 
-        testPage.enter("parentHomeStreetAddress1", "972 Mission St");
-        testPage.enter("parentHomeStreetAddress2", "5th floor");
-        testPage.enter("parentHomeCity", "San Francisco");
-        testPage.selectFromDropdown("parentHomeState", "CA - California");
-        testPage.enter("parentHomeZipCode", "94103");
+        // parent-home-address
+        testPage.enter("parentHomeStreetAddress1", "10921 S Nagle Ave");
+        testPage.enter("parentHomeCity", "Worth");
+        testPage.selectFromDropdown("parentHomeState", getEnMessage("state.il"));
+        testPage.enter("parentHomeZipCode", "60482");
         testPage.clickContinue();
+
         // parent-mailing-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
-        testPage.goBack();
-        //parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
-        testPage.clickElementById("parentHomeExperiencingHomelessness-yes");
+        testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
         testPage.clickContinue();
-        //parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
-        testPage.clickButton(getEnMessage("parent-no-permanent-address.has-place-to-get-mail"));
-        // parent-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
-        testPage.enter("parentMailingStreetAddress1", "972 Mission St");
-        testPage.enter("parentMailingStreetAddress2", "5th floor");
-        testPage.enter("parentMailingCity", "San Francisco");
-        testPage.selectFromDropdown("parentMailingState", "CA - California");
-        testPage.enter("parentMailingZipCode", "94103");
-        testPage.clickContinue();
+
         // parent-confirm-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
+
         // parent-comm-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
         testPage.selectRadio("parentContactPreferredCommunicationMethod", "email");
         testPage.clickContinue();
+
         // parent-contact-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-contact-info.title"));
         testPage.enter("parentContactEmail", "test@email.org");
@@ -159,12 +94,15 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         //parent-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-review.title"));
         testPage.clickContinue();
+
         //parent-have-a-partner
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-have-a-partner.title"));
         testPage.clickYes();
+
         // parent-qualifying-partner
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-qualifying-partner.title"));
         testPage.clickYes();
+
         //parent-partner-info-basic
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-basic.title"));
         testPage.enter("parentPartnerFirstName", "partner");
@@ -180,47 +118,49 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.enter("parentPartnerPhoneNumber", "3333333333");
         testPage.enter("parentPartnerEmail", "partnerEmail@test.com");
         testPage.clickContinue();
+
         // parent-partner-info-service
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-service.title"));
         testPage.selectRadio("parentPartnerIsServing", "No");
         testPage.selectRadio("parentPartnerInMilitaryReserveOrNationalGuard", "Yes");
         testPage.clickContinue();
+
         // parent-partner-info-disability
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-partner-info-disability.title"));
         testPage.clickYes();
+
         // parent-other-family
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-other-family.title"));
         testPage.clickYes();
+
         // parent-add-adults
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-add-adults.title"));
         testPage.clickButton(getEnMessage("parent-add-adults.add-member"));
+
         // parent-add-adult-details
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-add-adults-detail.title"));
         testPage.enter("adultDependentFirstName", "ada");
         testPage.enter("adultDependentLastName", "dolt");
         testPage.clickContinue();
-        // delete-person
-        testPage.clickLink("delete");
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("delete-confirmation.title"));
-        testPage.clickButton(getEnMessage("delete-confirmation.yes"));
 
         // parent-add-adults
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-add-adults.title"));
-        testPage.clickButton(getEnMessage("parent-add-adults.add-member"));
-        testPage.enter("adultDependentFirstName", "adaa");
-        testPage.enter("adultDependentLastName", "doltt");
-        testPage.clickContinue();
         testPage.clickButton(getEnMessage("parent-add-adults.im-done"));
+
         // parent-intro-family-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-intro-family-info.title"));
         testPage.clickButton(getEnMessage("parent-intro-family-info.continue"));
-        //children-info-intro
+
+        // children-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
+        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 6");
         testPage.clickContinue();
+
         // children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
         testPage.clickButton(getEnMessage("children-add.add-button"));
-        //children-info-basic
+
+        // children-info-basic
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-basic.title"));
         testPage.enter("childFirstName", "mugully");
         testPage.enter("childLastName", "glopklin");
@@ -230,6 +170,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
         testPage.selectRadio("needFinancialAssistanceForChild", "No");
         testPage.clickContinue();
+
         testPage.clickButton(getEnMessage("children-add.add-button"));
         testPage.enter("childFirstName", "child");
         testPage.enter("childLastName", "mcchild");
@@ -239,7 +180,8 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.fosterchild"));
         testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
         testPage.clickContinue();
-        //children-ccap-info
+
+        // children-ccap-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
         testPage.clickElementById("childGender-MALE");
         testPage.clickElementById("childGender-TRANSGENDER");
@@ -247,24 +189,24 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.selectRadio("childIsUsCitizen", "Yes");
         testPage.clickElementById("none__checkbox-childRaceEthnicity");
         testPage.clickContinue();
-        //children-ccap-in-care
+
+        // children-ccap-in-care
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-in-care.title"));
         testPage.clickNo();
-        //children-ccap-start-date (Test No logic)
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-start-date.when-did.title"));
-        testPage.goBack();
-        //children-ccap-start-date (Test Yes Logic)
-        testPage.clickYes();
+
+        // children-ccap-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-start-date.when-did.title"));
         testPage.enter("ccapStartMonth", "11");
         testPage.enter("ccapStartDay", "1");
         testPage.enter("ccapStartYear", "2010");
         testPage.clickContinue();
+
         //children-ccap-weekly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-weekly-schedule.title"));
         testPage.clickElementById("childcareWeeklySchedule-Thursday");
         testPage.clickElementById("childcareWeeklySchedule-Friday");
         testPage.clickContinue();
+
         //children-childcare-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-hourly-schedule.title"));
         testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
@@ -284,34 +226,20 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("childcareEndTimeFridayAmPm", "PM");
 
         testPage.clickContinue();
+
         //children-ccap-child-other-ed
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
         testPage.clickYes();
+
         //children-add (with children listed)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
-        // Add an incomplete iteration and assert that it is removed
-        testPage.clickButton(getEnMessage("children-add.add-button"));
-        testPage.enter("childFirstName", "ShouldBe");
-        testPage.enter("childLastName", "Removed");
-        testPage.enter("childDateOfBirthMonth", "1");
-        testPage.enter("childDateOfBirthDay", "1");
-        testPage.enter("childDateOfBirthYear", "2022");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
-        testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
-        testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
-        // Go back to the children-add page and assert that the incomplete iteration is removed
-        testPage.goBack();
-        testPage.goBack();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
-        List<String> li = testPage.getTextBySelector(".child-name");
-        assertThat(li).doesNotContain("ShouldBe Removed");
-        assertThat(li).containsExactly("mugully glopklin", "child mcchild");
         testPage.clickButton(getEnMessage("children-add.thats-all"));
 
         //activities-parent-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
+        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 3 of 6");
         testPage.clickContinue();
+
         //activities-parent-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-other");
@@ -321,21 +249,25 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.clickElementById("activitiesParentPartnerChildcareReason-WORKING");
         testPage.clickElementById("activitiesParentPartnerChildcareReason-SCHOOL");
         testPage.clickContinue();
-        //activities-add-ed-program (client should be directed to this page if working is not checked)
+
+        //activities-add-ed-program
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
         testPage.clickElementById("activitiesParentChildcareReason-WORKING");
         testPage.clickContinue();
+
         //activities-add-jobs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
         testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
         // Add First Job
+
         //activities-employer-name
         assertThat(testPage.getTitle()).isEqualTo("Activities Employer Name");
         testPage.enter("companyName", "testCompany");
         testPage.clickContinue();
         //activities-employer-address
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-address.title"));
         testPage.enter("employerPhoneNumber", "3333333");
         testPage.enter("employerCity", "Chicago");
@@ -349,6 +281,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.enter("employerZipCode", "60423");
         testPage.clickContinue();
         //activities-self-employment
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-self-employment.title"));
         testPage.clickYes();
 
@@ -405,12 +338,6 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
         assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isFalse();
 
-        // Add Fourth Job
-        testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
-        addPrimaryParentJob("4");
-        addPrimaryParentJobSchedule("4");
-
-        assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isTrue();
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
         //activities-add-ed-program
@@ -486,13 +413,16 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.enter("activitiesProgramEndMonth", "02");
         testPage.enter("activitiesProgramEndDay", "");
         testPage.clickContinue();
+
         //activities-partner-add-job
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-add-jobs.title"));
         testPage.clickButton("Add a job");
+
         //activities-partner-employer-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-employer-name.title"));
         testPage.enter("partnerCompanyName", "testPartnerCompany");
         testPage.clickContinue();
+
         //activities--partner-employer-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-employer-address.title"));
         testPage.enter("partnerEmployerPhoneNumber", "4444");
@@ -500,12 +430,10 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         testPage.enter("partnerEmployerState", "IL - Illinois");
         testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
         testPage.enter("partnerEmployerZipCode", "6042");
-        testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
-        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-zipcode"))).isTrue();
         testPage.enter("partnerEmployerPhoneNumber", "4333333333");
         testPage.enter("partnerEmployerZipCode", "92453");
         testPage.clickContinue();
+
         //activities-partner-self-employment
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-self-employment.title"));
         testPage.clickNo();
@@ -566,12 +494,8 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         });
 
         assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isFalse();
-        testPage.clickButton("Add a job");
-
-        addParentPartnerJob("4");
-        addParentPartnerJobSchedule("4");
-        assertThat(testPage.findElementById("add-parent-job").getAttribute("class").contains("disabled")).isTrue();
         testPage.clickButton(getEnMessage("activities-partner-add-jobs.this-is-all-their-jobs"));
+
         // activities-partner-ed
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
@@ -630,6 +554,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
 
         //unearned-income-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 4 of 6");
         testPage.clickContinue();
 
         //unearned-income-source
@@ -646,13 +571,16 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         //unearned-income-assets
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-assets.title"));
         testPage.clickElementById("unearnedIncomeAssetsMoreThanOneMillionDollars-true");
+
         //unearned-income-child-support
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-child-support.title"));
         testPage.clickElementById("doesAnyoneInHouseholdPayChildSupport-true");
+
         //unearned-income-child-support-amount
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-child-support-account.title"));
         testPage.enter("amountYourHouseholdPaysInChildSupport", "1453");
         testPage.clickContinue();
+
         //unearned-income-programs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-programs.title"));
         testPage.clickElementById("unearnedIncomePrograms-CASH_ASSISTANCE");
@@ -676,18 +604,10 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         // submit-sign-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-sign-name.title"));
         testPage.enter("signedName", "parent first parent last");
-        testPage.enter("partnerSignedName", "partner parent");
+        testPage.enter("partnerSignedName", "Partner first Partner last");
         testPage.clickButton(getEnMessage("submit-sign-name.submit-application"));
 
         // submit-complete
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.button.do-this-later"));
-
-        // contact-provider-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
-
-        // submit-complete
-        testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
         testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
 
@@ -699,7 +619,7 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
         assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
         uploadJpgFile();
-        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
+
         await().atMost(5, TimeUnit.SECONDS).until(
                 () -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none"))
         );
@@ -710,39 +630,21 @@ public class FamilyProviderOnboardingScreensTest extends AbstractBasePageTest {
         // Done with adding documents
         testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
 
-        //contact-provider-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
+        // no-provider-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("no-provider-intro.title"));
         testPage.clickContinue();
 
-        //contact-provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
-        testPage.clickElementById("print-application-in-person");
-
-        //confirm-delivery
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-delivery.title"));
-        testPage.clickButton("Yes, continue");
-
-        //submit-provider-agreement-handoff
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-provider-agreement-handoff.title"));
-        testPage.goBack();
-
-        //confirm-delivery
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-delivery.title"));
-        testPage.clickButton("No, go back");
-
-        //contact-provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
+        // no-provider-notice
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("no-provider-notice.title"));
         testPage.clickContinue();
 
-        //contact-provider-message
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
-        testPage.clickElementById("copy-message-to-clipboard");
-        testPage.clickButton(getEnMessage("general.continue-next-steps"));
-        
+        // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
+        assertThat(testPage.getTextBySelector("ul").get(1).toString()).containsIgnoringCase(
+                "Illinois Action for Children");
         testPage.clickContinue();
 
+        // complete-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
-
     }
 }

@@ -9,12 +9,14 @@ import java.util.Locale;
 import java.util.Map;
 import org.ilgcc.app.utils.ZipcodeOption;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ValidateZipCode implements Action {
+
     @Autowired
     MessageSource messageSource;
 
@@ -22,6 +24,9 @@ public class ValidateZipCode implements Action {
 
     private final String INPUT_NAME = "applicationZipCode";
     private static final String OUTPUT_NAME = "hasValidZipCode";
+
+    @Value("${il-gcc.enable-sda15-providers}")
+    boolean enableSDA15Providers;
 
 
     @Override
@@ -31,17 +36,12 @@ public class ValidateZipCode implements Action {
 
         String providedZipCode = formSubmission.getFormData().get("applicationZipCode").toString();
 
-        if(providedZipCode.isBlank() || !(providedZipCode.length()==5)) {
+        if (providedZipCode.isBlank() || !(providedZipCode.length() == 5)) {
             errorMessages.put(INPUT_NAME,
                     List.of(messageSource.getMessage("errors.provide-zip", null, locale)));
         } else {
-            if(!ZipcodeOption.isValidZipcodeOption(providedZipCode)){
-                submission.getInputData().put(OUTPUT_NAME, "false");
-            } else {
-                submission.getInputData().put(OUTPUT_NAME, "true");
-                // Once we implement CCRR this should be set dynamically
-                submission.getInputData().put("ccrrName", "4-C: Community Coordinated Child Care");
-            }
+            submission.getInputData()
+                    .put(OUTPUT_NAME, String.valueOf(ZipcodeOption.isValidZipcodeOption(providedZipCode, enableSDA15Providers)));
         }
 
         return errorMessages;
