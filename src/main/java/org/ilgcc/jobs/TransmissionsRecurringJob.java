@@ -50,6 +50,7 @@ public class TransmissionsRecurringJob {
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
+        this.submissionRepositoryService = submissionRepositoryService;
     }
 
     @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
@@ -91,7 +92,7 @@ public class TransmissionsRecurringJob {
             Optional<Submission> providerSubmission = submissionRepositoryService.findById(UUID.fromString(providerResponseSubmissionId));
             return providerSubmission.isPresent() && providerSubmission.get().getSubmittedAt() != null;
         }
-        
+
         return false;
     }
 }
