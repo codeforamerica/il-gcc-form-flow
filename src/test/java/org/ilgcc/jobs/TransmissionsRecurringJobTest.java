@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
+import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
@@ -71,11 +72,15 @@ public class TransmissionsRecurringJobTest {
     @InjectMocks
     private TransmissionsRecurringJob transmissionsRecurringJob;
 
+    @Autowired
+    private SubmissionRepositoryService submissionRepositoryService;
+
     private Submission expiredSubmission;
     private Submission transmittedSubmission;
     private Submission unsubmittedSubmission;
     private Submission unexpiredSubmission;
     private Submission expiredUntransmittedSubmissionWithProviderResponse;
+    private Submission providerSubmission;
 
     @BeforeEach
     void setUp() {
@@ -88,7 +93,8 @@ public class TransmissionsRecurringJobTest {
                 pdfService,
                 cloudFileRepository,
                 pdfTransmissionJob,
-                enqueueDocumentTransfer
+                enqueueDocumentTransfer,
+                submissionRepositoryService
         );
     }
 
@@ -149,7 +155,7 @@ public class TransmissionsRecurringJobTest {
         transmittedSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
-                .with("providerResponseSubmissionId", "123124")
+                .with("providerResponseSubmissionId", "4e477c74-8529-4cd0-a02b-2d67e5b5b171")
                 .withFlow("gcc")
                 .build();
         submissionRepository.save(transmittedSubmission);
@@ -163,11 +169,15 @@ public class TransmissionsRecurringJobTest {
 
     @Test
     void enqueueDocumentTransferIsNotCalledOnExpiredUntransmittedSubmission() {
+
+        providerSubmission = new SubmissionTestBuilder().withProviderSubmissionData().withSubmittedAtDate(OffsetDateTime.now().minusDays(2)).build();
+        submissionRepository.save(providerSubmission);
+
         expiredUntransmittedSubmissionWithProviderResponse = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
                 .withFlow("gcc")
-                .with("providerResponseSubmissionId", "123124")
+                .with("providerResponseSubmissionId", providerSubmission.getId().toString())
                 .build();
         submissionRepository.save(expiredUntransmittedSubmissionWithProviderResponse);
 
