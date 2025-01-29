@@ -163,6 +163,16 @@ public class SubmissionUtilities {
         String year = (String) submission.getInputData().get("%sYear".formatted(inputName));
         String month = (String) submission.getInputData().get("%sMonth".formatted(inputName));
         String day = (String) submission.getInputData().get("%sDay".formatted(inputName));
+        return getFormatedDateStringWithOptionalDayField(year, month, day);
+    }
+    public static String getDateInputWithDayOptionalFromSubflow(HashMap<String, Object> subflowInstance, String inputName) {
+        String year = (String) subflowInstance.get("%sYear".formatted(inputName));
+        String month = (String) subflowInstance.get("%sMonth".formatted(inputName));
+        String day = (String) subflowInstance.get("%sDay".formatted(inputName));
+        return getFormatedDateStringWithOptionalDayField(year, month, day);
+    }
+
+    public static String getFormatedDateStringWithOptionalDayField(String year, String month, String day) {
         if (year == null && month == null && day == null || (year + month + day).isBlank()) {
             return "";
         } else if (year == null || month == null) {
