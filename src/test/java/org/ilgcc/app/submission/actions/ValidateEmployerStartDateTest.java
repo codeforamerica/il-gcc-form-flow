@@ -38,7 +38,7 @@ class ValidateEmployerStartDateTest {
     }
 
     @Test
-    void shouldNotErrorWhenDateIsMissing() {
+    void shouldNotErrorWhenJobStartDateIsMissing() {
         Map<String, Object> formData = Map.of(
                 "activitiesJobStartMonth", "",
                 "activitiesJobStartDay", "",
@@ -52,7 +52,7 @@ class ValidateEmployerStartDateTest {
     }
 
     @Test
-    void shouldErrorWhenMonthIsPresentAndYearIsMissing() {
+    void shouldErrorWhenJobStartMonthIsPresentAndYearIsMissing() {
         Map<String, Object> formData = Map.of(
                 "activitiesJobStartMonth", "01",
                 "activitiesJobStartDay", "",
@@ -66,7 +66,7 @@ class ValidateEmployerStartDateTest {
     }
 
     @Test
-    void shouldErrorWhenMonthIsMissingAndYearIsPresent() {
+    void shouldErrorWhenJobStartMonthIsMissingAndYearIsPresent() {
         Map<String, Object> formData = Map.of(
                 "activitiesJobStartMonth", "",
                 "activitiesJobStartDay", "",
@@ -81,7 +81,7 @@ class ValidateEmployerStartDateTest {
 
 
     @Test
-    void shouldErrorWhenDateHasNonValuePresent() {
+    void shouldErrorWhenJobStartDateHasNonValuePresent() {
         Map<String, Object> formData = Map.of(
                 "activitiesJobStartMonth", "a",
                 "activitiesJobStartDay", "",
@@ -95,7 +95,7 @@ class ValidateEmployerStartDateTest {
     }
 
     @Test
-    void shouldErrorWhenEmployerDateIsBefore1901() {
+    void shouldErrorWhenJobStartDateIsBefore1901() {
         Map<String, Object> formData = Map.of(
                 "activitiesJobStartMonth", "01",
                 "activitiesJobStartDay", "",
@@ -109,7 +109,7 @@ class ValidateEmployerStartDateTest {
     }
 
     @Test
-    void shouldAllowEmployerDateToBeInTheFuture() {
+    void shouldAllowJobStartDateToBeInTheFuture() {
         DateTime present = DateTime.now();
         Map<String, Object> formData = Map.of(
                 "activitiesJobStartMonth", "01",

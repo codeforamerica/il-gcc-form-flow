@@ -38,7 +38,7 @@ class ValidatePartnerEmployerStartDateTest {
     }
 
     @Test
-    void shouldNotErrorWhenDateIsMissing() {
+    void shouldNotErrorWhenPartnerJobStartDateIsMissing() {
         Map<String, Object> formData = Map.of(
                 "activitiesPartnerJobStartMonth", "",
                 "activitiesPartnerJobStartDay", "",
@@ -52,7 +52,7 @@ class ValidatePartnerEmployerStartDateTest {
     }
 
     @Test
-    void shouldErrorWhenMonthIsPresentAndYearIsMissing() {
+    void shouldErrorWhenParnerJobStartMonthIsPresentAndYearIsMissing() {
         Map<String, Object> formData = Map.of(
                 "activitiesPartnerJobStartMonth", "01",
                 "activitiesPartnerJobStartDay", "",
@@ -66,7 +66,7 @@ class ValidatePartnerEmployerStartDateTest {
     }
 
     @Test
-    void shouldErrorWhenMonthIsMissingAndYearIsPresent() {
+    void shouldErrorWhenPartnerJobStartMonthIsMissingAndYearIsPresent() {
         Map<String, Object> formData = Map.of(
                 "activitiesPartnerJobStartMonth", "",
                 "activitiesPartnerJobStartDay", "",
@@ -81,7 +81,7 @@ class ValidatePartnerEmployerStartDateTest {
 
 
     @Test
-    void shouldErrorWhenDateHasNonValuePresent() {
+    void shouldErrorWhenPartnerJobDateIncludesHasANonNumberPresent() {
         Map<String, Object> formData = Map.of(
                 "activitiesPartnerJobStartMonth", "a",
                 "activitiesPartnerJobStartDay", "",
@@ -95,7 +95,7 @@ class ValidatePartnerEmployerStartDateTest {
     }
 
     @Test
-    void shouldErrorWhenEmployerDateIsBefore1901() {
+    void shouldErrorWhenPartnerJobStartDateIsBefore1901() {
         Map<String, Object> formData = Map.of(
                 "activitiesPartnerJobStartMonth", "01",
                 "activitiesPartnerJobStartDay", "",
@@ -109,7 +109,7 @@ class ValidatePartnerEmployerStartDateTest {
     }
 
     @Test
-    void shouldAllowEmployerDateToBeInTheFuture() {
+    void shouldNotAllowPartnerJobStartDateToBeInTheFuture() {
         DateTime present = DateTime.now();
         Map<String, Object> formData = Map.of(
                 "activitiesPartnerJobStartMonth", "01",
