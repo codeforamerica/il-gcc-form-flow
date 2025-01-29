@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.ilgcc.app.submission.actions.FormatSubmittedAtDate;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +26,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer {
 
+    private final FormatSubmittedAtDate formatSubmittedAtDate;
     Submission providerSubmission;
 
-    public ProviderApplicationPreparer() {
+    public ProviderApplicationPreparer(FormatSubmittedAtDate formatSubmittedAtDate) {
+        this.formatSubmittedAtDate = formatSubmittedAtDate;
     }
 
     @Override
@@ -78,16 +81,9 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
         results.put("providerSignature",
                 new SingleField("providerSignature", providerSignature(providerInputData), null));
-            String formattedProviderSignatureDate = "";
-
-        if (providerSubmission.getSubmittedAt() != null) {
-            Optional<LocalDate> providerSignatureDate = Optional.of(
-                    LocalDate.from(providerSubmission.getSubmittedAt()));
-            formattedProviderSignatureDate =  formatToStringFromLocalDate(providerSignatureDate);
-        }
 
         results.put("providerSignatureDate",
-                new SingleField("providerSignatureDate", formattedProviderSignatureDate,
+                new SingleField("providerSignatureDate", providerSignatureDate(providerSubmission.getSubmittedAt()),
                         null));
 
         return results;
@@ -182,6 +178,15 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         } else {
             return String.format("%s %s, %s", firstname, lastName, businessName);
         }
+    }
+
+    private String providerSignatureDate(OffsetDateTime submittedAt) {
+        if (submittedAt != null) {
+            Optional<LocalDate> providerSignatureDate = Optional.of(
+                    LocalDate.from(submittedAt));
+            return formatToStringFromLocalDate(providerSignatureDate);
+        }
+        return "";
     }
 
     private String providerLicense(Map<String, Object> providerInputData) {

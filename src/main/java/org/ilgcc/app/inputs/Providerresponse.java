@@ -129,10 +129,6 @@ public class Providerresponse extends FlowInputs {
     private List<String> providerLanguagesOffered;
     private String providerLanguagesOffered_other;
 
-    // registration signature
-    @NotBlank(message = "{errors.validate.provider-signed-name}")
-    private String providerSignedName;
-
     // registration-household-add-person
     @NotBlank(message = "{registration-household-add-person-info.error.first-name}")
     private String providerHouseholdMemberFirstName;
@@ -147,4 +143,8 @@ public class Providerresponse extends FlowInputs {
     @Encrypted
     @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{registration-household-add-person-info.error.ssn}")
     private String providerHouseholdMemberSSN;
+
+    // registration-signature
+    @NotBlank(message = "{errors.validate.provider-signed-name}")
+    private String providerSignedName;
 }
