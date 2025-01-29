@@ -26,12 +26,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer {
 
-    private final FormatSubmittedAtDate formatSubmittedAtDate;
     Submission providerSubmission;
-
-    public ProviderApplicationPreparer(FormatSubmittedAtDate formatSubmittedAtDate) {
-        this.formatSubmittedAtDate = formatSubmittedAtDate;
-    }
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
@@ -79,9 +74,9 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
 
         results.put("providerLicenseNumber",
                 new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
+
         results.put("providerSignature",
                 new SingleField("providerSignature", providerSignature(providerInputData), null));
-
         results.put("providerSignatureDate",
                 new SingleField("providerSignatureDate", providerSignatureDate(providerSubmission.getSubmittedAt()),
                         null));
