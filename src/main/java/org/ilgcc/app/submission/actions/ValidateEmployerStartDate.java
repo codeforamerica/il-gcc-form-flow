@@ -21,25 +21,26 @@ public class ValidateEmployerStartDate extends VerifyDate {
   @Autowired
   MessageSource messageSource;
   private final String APPLICANT_JOB_START = "activitiesJobStart";
-  
+  private final String PARTNER_JOB_START = "activitiesPartnerJobStart";
   @Override
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
     log.info("Running ValidateEmployerStartDate");
-    
+
+    String inputName = formSubmission.getFormData().containsKey(APPLICANT_JOB_START + "Year") ? APPLICANT_JOB_START : PARTNER_JOB_START;
     Locale locale = LocaleContextHolder.getLocale();
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> inputData = formSubmission.getFormData();
-    inputData.getOrDefault(APPLICANT_JOB_START, new ArrayList<>());
-    String employerStartDate = DateUtilities.getFormattedDateFromMonthDateYearInputs("activitiesJobStart", inputData);
+    inputData.getOrDefault(inputName, new ArrayList<>());
+    String employerStartDate = DateUtilities.getFormattedDateFromMonthDateYearInputs(inputName, inputData);
 
     if (employerStartDate.replace("/", "").isBlank()) {
       return errorMessages;
     }
     
     if (this.isDateInvalid(employerStartDate)) {
-        errorMessages.put(APPLICANT_JOB_START, List.of(messageSource.getMessage("activities-employer-start-date.error", null, locale)));
+        errorMessages.put(inputName, List.of(messageSource.getMessage("activities-employer-start-date.error", null, locale)));
     } else if (this.isBeforeMinDate(employerStartDate)) {
-        errorMessages.put(APPLICANT_JOB_START, List.of(messageSource.getMessage("activities-employer-start-date.error", null, locale)));
+        errorMessages.put(inputName, List.of(messageSource.getMessage("activities-employer-start-date.error", null, locale)));
     }
     
     return errorMessages;

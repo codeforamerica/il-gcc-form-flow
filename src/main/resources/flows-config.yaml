@@ -286,7 +286,7 @@ flow:
     nextScreens:
       - name: activities-partner-employer-start-date
   activities-partner-employer-start-date:
-    crossFieldValidationAction: ValidatePartnerEmployerStartDate
+    crossFieldValidationAction: ValidateEmployerStartDate
     subflow: partnerJobs
     nextScreens:
       - name: activities-partner-self-employment

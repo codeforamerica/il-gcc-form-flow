@@ -122,4 +122,90 @@ class ValidateEmployerStartDateTest {
         assertThat(errors).containsKey("activitiesJobStart");
         assertThat(errors.get("activitiesJobStart")).contains("Enter a valid month and year.");
     }
+
+    @Test
+    void shouldNotErrorWhenPartnerJobStartDateIsMissing() {
+        Map<String, Object> formData = Map.of(
+            "activitiesPartnerJobStartMonth", "",
+            "activitiesPartnerJobStartDay", "",
+            "activitiesPartnerJobStartYear", ""
+        );
+
+        FormSubmission submission = new FormSubmission(formData);
+        Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
+
+        assertThat(errors).doesNotContainKey("activitiesPartnerJobStart");
+    }
+
+    @Test
+    void shouldErrorWhenParnerJobStartMonthIsPresentAndYearIsMissing() {
+        Map<String, Object> formData = Map.of(
+            "activitiesPartnerJobStartMonth", "01",
+            "activitiesPartnerJobStartDay", "",
+            "activitiesPartnerJobStartYear", ""
+        );
+        FormSubmission submission = new FormSubmission(formData);
+        Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
+
+        assertThat(errors).containsKey("activitiesPartnerJobStart");
+        assertThat(errors.get("activitiesPartnerJobStart")).contains("Enter a valid month and year.");
+    }
+
+    @Test
+    void shouldErrorWhenPartnerJobStartMonthIsMissingAndYearIsPresent() {
+        Map<String, Object> formData = Map.of(
+            "activitiesPartnerJobStartMonth", "",
+            "activitiesPartnerJobStartDay", "",
+            "activitiesPartnerJobStartYear", "2024"
+        );
+        FormSubmission submission = new FormSubmission(formData);
+        Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
+
+        assertThat(errors).containsKey("activitiesPartnerJobStart");
+        assertThat(errors.get("activitiesPartnerJobStart")).contains("Enter a valid month and year.");
+    }
+
+
+    @Test
+    void shouldErrorWhenPartnerJobDateIncludesHasANonNumberPresent() {
+        Map<String, Object> formData = Map.of(
+            "activitiesPartnerJobStartMonth", "a",
+            "activitiesPartnerJobStartDay", "",
+            "activitiesPartnerJobStartYear", "2024"
+        );
+        FormSubmission submission = new FormSubmission(formData);
+        Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
+
+        assertThat(errors).containsKey("activitiesPartnerJobStart");
+        assertThat(errors.get("activitiesPartnerJobStart")).contains("Enter a valid month and year.");
+    }
+
+    @Test
+    void shouldErrorWhenPartnerJobStartDateIsBefore1901() {
+        Map<String, Object> formData = Map.of(
+            "activitiesPartnerJobStartMonth", "01",
+            "activitiesPartnerJobStartDay", "",
+            "activitiesPartnerJobStartYear", "1700"
+        );
+        FormSubmission submission = new FormSubmission(formData);
+        Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
+
+        assertThat(errors).containsKey("activitiesPartnerJobStart");
+        assertThat(errors.get("activitiesPartnerJobStart")).contains("Enter a valid month and year.");
+    }
+
+    @Test
+    void shouldNotAllowPartnerJobStartDateToBeInTheFuture() {
+        DateTime present = DateTime.now();
+        Map<String, Object> formData = Map.of(
+            "activitiesPartnerJobStartMonth", "01",
+            "activitiesPartnerJobStartDay", "",
+            "activitiesPartnerJobStartYear", Integer.toString(present.plusYears(1).getYear())
+        );
+        FormSubmission submission = new FormSubmission(formData);
+        Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
+
+        assertThat(errors).containsKey("activitiesPartnerJobStart");
+        assertThat(errors.get("activitiesPartnerJobStart")).contains("Enter a valid month and year.");
+    }
 }
