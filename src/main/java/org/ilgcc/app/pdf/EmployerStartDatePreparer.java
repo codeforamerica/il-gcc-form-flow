@@ -15,31 +15,25 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EmployerStartDatePreparer implements SubmissionFieldPreparer {
+    private final static String APPLICANT_EMPLOYER_INPUT_NAME = "activitiesJobStart";
+    private final static String PARTNER_EMPLOYER_INPUT_NAME = "activitiesPartnerJobStart";
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
-
-        int iteration = 1;
-        var jobs = ((List<Map<String, Object>>) submission.getInputData().getOrDefault("jobs", emptyList())).stream().toList();
-        for (var job : jobs) {
-            var activitiesJobStart = getDateInputWithDayOptionalFromSubflow((HashMap<String, Object>) job, "activitiesJobStart");
-            if(!activitiesJobStart.isEmpty()){
-                results.put("activitiesJobStart" + "_" +iteration,
-                    new SingleField("activitiesJobStart", activitiesJobStart, iteration));
+        var employerStartDateInputNames = List.of(APPLICANT_EMPLOYER_INPUT_NAME, PARTNER_EMPLOYER_INPUT_NAME);
+        for (var employerStartDateInputName: employerStartDateInputNames){
+            int iteration = 1;
+            String subflowName = employerStartDateInputName.equals(APPLICANT_EMPLOYER_INPUT_NAME) ? "jobs" : "partnerJobs";
+            var jobs = ((List<Map<String, Object>>) submission.getInputData().getOrDefault(subflowName, emptyList())).stream().toList();
+            for (var job : jobs) {
+                var jobStart = getDateInputWithDayOptionalFromSubflow((HashMap<String, Object>) job, employerStartDateInputName);
+                if(!jobStart.isEmpty()){
+                    results.put(employerStartDateInputName + "_" +iteration,
+                        new SingleField(employerStartDateInputName, jobStart, iteration));
+                }
+                iteration++;
             }
-            iteration++;
-        }
-
-        int partnerIteration = 1;
-        var partnerJobs = ((List<Map<String, Object>>) submission.getInputData().getOrDefault("partnerJobs", emptyList())).stream().toList();
-        for (var partnerJob : partnerJobs) {
-            var activitiesJobStart = getDateInputWithDayOptionalFromSubflow((HashMap<String, Object>) partnerJob, "activitiesPartnerJobStart");
-            if(!activitiesJobStart.isEmpty()){
-                results.put("activitiesPartnerJobStart" + "_" +partnerIteration,
-                    new SingleField("activitiesPartnerJobStart", activitiesJobStart, partnerIteration));
-            }
-            partnerIteration++;
         }
         return results;
     }
