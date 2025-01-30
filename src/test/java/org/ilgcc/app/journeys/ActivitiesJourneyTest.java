@@ -45,6 +45,12 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.enter("employerPhoneNumber", "3333333333");
         testPage.enter("employerZipCode", "60423");
         testPage.clickContinue();
+        //activities-employer-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-start-date.title"));
+        testPage.enter("activitiesJobStartYear", "2000");
+        testPage.enter("activitiesJobStartDay", "08");
+        testPage.enter("activitiesJobStartMonth", "10");
+        testPage.clickContinue();
         //activities-self-employment
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-self-employment.title"));
         testPage.clickYes();
@@ -195,6 +201,12 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-zipcode"))).isTrue();
         testPage.enter("employerPhoneNumber", "3333333333");
         testPage.enter("employerZipCode", "60423");
+        testPage.clickContinue();
+        //activities-employer-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-start-date.title"));
+        testPage.enter("activitiesJobStartYear", "2000");
+        testPage.enter("activitiesJobStartDay", "08");
+        testPage.enter("activitiesJobStartMonth", "10");
         testPage.clickContinue();
         //activities-self-employment
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-self-employment.title"));
@@ -432,6 +444,12 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.enter("employerPhoneNumber", "3333333333");
         testPage.enter("employerZipCode", "60423");
         testPage.clickContinue();
+        //activities-employer-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-start-date.title"));
+        testPage.enter("activitiesJobStartYear", "2000");
+        testPage.enter("activitiesJobStartDay", "08");
+        testPage.enter("activitiesJobStartMonth", "10");
+        testPage.clickContinue();
         //activities-self-employment
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-self-employment.title"));
         testPage.clickYes();
@@ -562,6 +580,9 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-zipcode"))).isTrue();
         testPage.enter("partnerEmployerPhoneNumber", "4333333333");
         testPage.enter("partnerEmployerZipCode", "92453");
+        testPage.clickContinue();
+        //activities-partner-employer-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-employer-start-date.title"));
         testPage.clickContinue();
         //activities-partner-self-employment
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-self-employment.title"));

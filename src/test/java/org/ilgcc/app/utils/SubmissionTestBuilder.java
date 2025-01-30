@@ -248,7 +248,32 @@ public class SubmissionTestBuilder {
         submission.getInputData().put(subflow, jobs);
         return this;
     }
+    public SubmissionTestBuilder withJob(String subflow, HashMap<String, Object> fields) {
+        List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get(subflow);
+        if (jobs == null) {
+            jobs = new ArrayList<>();
+        }
+        if (!fields.isEmpty()) {
+            jobs.add(fields);
+        }
+        submission.getInputData().put(subflow, jobs);
+        return this;
+    }
 
+    public SubmissionTestBuilder addJobWithStartDate(String activitiesJobStartDay, String activitiesJobStartMonth, String activitiesJobStartYear) {
+        var job = new HashMap<String, Object>();
+        job.put("activitiesJobStartDay", activitiesJobStartDay);
+        job.put("activitiesJobStartMonth", activitiesJobStartMonth);
+        job.put("activitiesJobStartYear", activitiesJobStartYear);
+        return withJob("jobs", job);
+    }
+    public SubmissionTestBuilder addPartnerJobWithStartDate(String activitiesPartnerJobStartDay, String activitiesPartnerJobStartMonth, String activitiesPartnerJobStartYear) {
+        var job = new HashMap<String, Object>();
+        job.put("activitiesPartnerJobStartDay", activitiesPartnerJobStartDay);
+        job.put("activitiesPartnerJobStartMonth", activitiesPartnerJobStartMonth);
+        job.put("activitiesPartnerJobStartYear", activitiesPartnerJobStartYear);
+        return withJob("partnerJobs", job);
+    }
 
     public SubmissionTestBuilder withPartnerJob(String subflow, String companyName, String employerStreetAddress,
             String employerCity, String employerState, String employerZipCode, String employerPhoneNumber,
