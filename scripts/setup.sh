@@ -19,7 +19,7 @@ fi
 
 echo '--- Installing brew packages ---'
 brew install --cask temurin@21
-brew install jenv gradle postgresql@14 node
+brew install jenv gradle postgresql@14 node libreoffice
 
 # Install jenv in either the .bashrc or zshrc, whichever is present
 if [ -f ~/.bashrc ]; then
