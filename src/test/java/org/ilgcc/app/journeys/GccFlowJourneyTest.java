@@ -349,6 +349,16 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("employerPhoneNumber", "3333333333");
         testPage.enter("employerZipCode", "60423");
         testPage.clickContinue();
+        //activities-employer-start-date
+        testPage.enter("activitiesJobStartMonth", "10");
+        testPage.enter("activitiesJobStartDay", "1");
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("activities-employer-start-date.error"))).isTrue();
+        testPage.enter("activitiesJobStartYear", "1899");
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("activities-employer-start-date.error"))).isTrue();
+        testPage.enter("activitiesJobStartYear", "2000");
+        testPage.clickContinue();
         //activities-self-employment
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-self-employment.title"));
         testPage.clickYes();
@@ -506,6 +516,23 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-zipcode"))).isTrue();
         testPage.enter("partnerEmployerPhoneNumber", "4333333333");
         testPage.enter("partnerEmployerZipCode", "92453");
+        testPage.clickContinue();
+        //activities-partner-employer-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-employer-start-date.title"));
+        testPage.clickContinue();
+        //activities-partner-self-employment
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-self-employment.title"));
+        testPage.goBack();
+        //activities-partner-employer-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-employer-start-date.title"));
+        testPage.enter("activitiesPartnerJobStartYear", "2000");
+        testPage.enter("activitiesPartnerJobStartDay", "08");
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("activities-employer-start-date.error"))).isTrue();
+        testPage.enter("activitiesPartnerJobStartMonth", "1901");
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("activities-employer-start-date.error"))).isTrue();
+        testPage.enter("activitiesPartnerJobStartMonth", "10");
         testPage.clickContinue();
         //activities-partner-self-employment
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-self-employment.title"));
