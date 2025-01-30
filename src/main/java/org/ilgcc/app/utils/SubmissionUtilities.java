@@ -175,7 +175,7 @@ public class SubmissionUtilities {
     public static String getFormatedDateStringWithOptionalDayField(String year, String month, String day) {
         if (year == null && month == null && day == null || (year + month + day).isBlank()) {
             return "";
-        } else if (year == null || month == null) {
+        } else if (year == null || month == null || year.isEmpty() || month.isEmpty()) {
             throw new IllegalArgumentException("Date must be complete if specified");
         } else if (day == null || day.isEmpty()) {
             return month + "/" + year;
