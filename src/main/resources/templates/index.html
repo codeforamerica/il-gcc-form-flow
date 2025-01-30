@@ -101,6 +101,29 @@
         </div>
       </div>
     </section>
+    <section class="slab slab--tan">
+      <div class="grid">
+        <div class="width-one-whole">
+          <h2 th:text="#{index.are-you-a-child-care-provider.header}"></h2>
+        </div>
+        <div width="one-half">
+          <p class="normal" th:text="#{index.are-you-a-child-care-provider.subheader}"></p>
+        </div>
+        <th:block th:replace="~{fragments/inputs/text ::
+          text(inputName='',
+          label=#{},
+          helpText=#{},
+          placeholder=#{})}" />
+        <a
+            th:with="otherLang=${#locale.getLanguage().equals('es') ? 'en' : 'es'}"
+            th:href="|/flow/gcc/onboarding-getting-started?lang=${otherLang}|"
+            th:text="#{index.apply-now-other-language} + ' →'"
+            th:lang="${otherLang}"
+            id="secondary-apply-now"
+            class="button--small button"></a>
+      </div>
+
+    </section>
   </main>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
