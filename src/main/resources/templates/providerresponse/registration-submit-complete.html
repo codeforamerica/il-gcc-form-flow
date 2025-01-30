@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}">
-<head th:replace="~{fragments/head :: head(title=#{submit-complete.title})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{registration-submit-complete.title})}"></head>
 <body>
 <div class="page-wrapper">
     <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -19,13 +19,13 @@
                         <p th:utext="#{submit-complete.info-box.pg-2}"></p>
                     </div>
                     <div class="form-card__footer">
-                        <th:block th:id="skip-and-finish" th:class="button"
+                        <th:block th:id="continue-link" th:class="button"
                                   th:replace="~{fragments/continueButton :: continue(text=#{submit-complete.yes-add-document-now})}"/>
                         <th:block>
                             <a th:href="'/flow/' + ${flow} + '/registration-submit-next-steps'"
-                               data-mixpanel="skip-add-recommended-docs"
+                               data-mixpanel="skip-to-next-steps-link"
                                class="button"
-                               id="skip-add-recommended-docs"
+                               id="skip-to-next-steps-link"
                                th:text="#{submit-complete.button.do-this-later}"></a>
                         </th:block>
 
