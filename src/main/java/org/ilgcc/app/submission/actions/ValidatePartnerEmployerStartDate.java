@@ -24,7 +24,7 @@ public class ValidatePartnerEmployerStartDate extends VerifyDate {
 
   @Override
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
-    log.info("Running ValidateJobStartDate");
+    log.info("Running ValidatePartnerEmployerStartDate");
     
     Locale locale = LocaleContextHolder.getLocale();
     Map<String, List<String>> errorMessages = new HashMap<>();
