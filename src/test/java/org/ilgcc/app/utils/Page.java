@@ -99,6 +99,11 @@ public class Page {
     waitForFooterToLoad();
   }
 
+  public void clickSubmit() {
+    clickButton("Submit application");
+    waitForFooterToLoad();
+  }
+
   public void clickYes() {
     clickButton("Yes");
     waitForFooterToLoad();

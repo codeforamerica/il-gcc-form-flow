@@ -767,4 +767,5 @@ subflows:
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
+    - registration-submit-complete
     - submit-complete-final
