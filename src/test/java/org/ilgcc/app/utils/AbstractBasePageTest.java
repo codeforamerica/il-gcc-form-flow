@@ -235,6 +235,7 @@ public abstract class AbstractBasePageTest {
         testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
         testPage.enter("partnerEmployerZipCode", "6042" + postFix);
         testPage.clickContinue();
+        //activities-partner-employer-start-date
         testPage.clickContinue();
         //activities-partner-self-employment
         testPage.clickNo();
