@@ -48,7 +48,7 @@ repositories {
 }
 
 def profile = props.getProperty('SPRING_PROFILES_ACTIVE')
-def formFlowLibraryVersion = '1.6.5'
+def formFlowLibraryVersion = '1.6.6'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
