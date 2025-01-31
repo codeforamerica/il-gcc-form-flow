@@ -7,7 +7,7 @@
 
     const $respondToApplicationLink = $('#secondary-test-apply-now')
     function updateRespondToApplicationLink(value) {
-      $respondToApplicationLink.attr("href", '/providerresponse/submit' + '/' + value)
+      $respondToApplicationLink.attr("href", '/providerresponse/submit' + '/' + encodeURIComponent(value))
     }
 
     $homepageProviderResponseLink.change(function () {
