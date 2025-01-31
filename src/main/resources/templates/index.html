@@ -3,11 +3,17 @@
 <head th:replace="~{fragments/head :: head(title=#{index.title})}"></head>
 <script th:inline="javascript">
   $(document).ready(function () {
+    const domain = window.location.origin
+    const providerResponsePath = '/providerresponse/submit'
     const $homepageProviderResponseLink = $('#homepage-provider-response-link')
 
     const $respondToApplicationLink = $('#secondary-test-apply-now')
     function updateRespondToApplicationLink(value) {
-      $respondToApplicationLink.attr("href", '/providerresponse/submit' + '/' + encodeURIComponent(value))
+      if (value.trim().length === 0){
+        $respondToApplicationLink.attr("href", (domain + providerResponsePath))
+      }else {
+        $respondToApplicationLink.attr("href",  (domain + providerResponsePath + '/' + encodeURIComponent(value)))
+      }
     }
 
     $homepageProviderResponseLink.change(function () {
@@ -129,7 +135,7 @@
             </label>
             <input type="text" class="text-input" id="homepage-provider-response-link">
             <a
-                th:href="'/providerresponse/submit/'"
+                th:href="'/providerresponse/submit'"
                 id="secondary-test-apply-now"
                 class="button--big button">
               <span th:text="#{index.respond-to-application.button}"></span>
