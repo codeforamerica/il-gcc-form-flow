@@ -748,7 +748,7 @@ flow:
   registration-submit-complete:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: registration-submit-next-steps
+      - name: registration-doc-upload-recommended-docs
   registration-submit-next-steps:
     condition: EnableProviderRegistration
     nextScreens:
@@ -777,5 +777,8 @@ subflows:
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
-    - registration-submit-complete
     - submit-complete-final
+    - registration-submit-complete
+    - registration-submit-next-steps
+    - registration-doc-upload-recommended-docs
+    - registration-doc-upload-add-files

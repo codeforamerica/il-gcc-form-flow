@@ -1,27 +1,92 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{registration-doc-upload-recommended-docs.title})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{doc-upload-recommended-docs.header}, subtext=#{doc-upload-recommended-docs.subheader})}"/>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="form-card__content"
+                             th:with="providerType=${submission.getInputData().getOrDefault('providerType', '')}, providerTaxIdType=${submission.getInputData().getOrDefault('providerTaxIdType', '')}">
+                            <div class="spacing-below-60"
+                                 th:if="${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).ssnCardRequired(providerType, providerTaxIdType)}"
+                                 th:id="ssn-recommendation">
+                                <th:block
+                                        th:replace="~{fragments/gcc-icons :: licensed-provider}"></th:block>
+                                <h2 class="h3 spacing-below-0 spacing-above-0"
+                                    th:text="#{registration-doc-upload-recommended-docs.ssn.header}"></h2>
+                                <p th:text="#{registration-doc-upload-recommended-docs.ssn.body}"></p>
+                            </div>
+                            <div class="spacing-below-60"
+                                 th:if="${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).idCardRequired(providerType)}"
+                                 th:id="id-recommendation">
+                                <th:block
+                                        th:replace="~{fragments/gcc-icons :: licensed-provider}"></th:block>
+                                <h2 class="h3 spacing-below-0 spacing-above-0"
+                                    th:text="#{registration-doc-upload-recommended-docs.id.header}"></h2>
+                                <p th:text="#{registration-doc-upload-recommended-docs.id.body}"></p>
+                            </div>
+                            <div class="spacing-below-60"
+                                 th:if="${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).childCareLicenseRequired(providerType)}"
+                                 th:id="child-care-license-recommendation">
+                                <th:block
+                                        th:replace="~{fragments/gcc-icons :: registered-provider}"></th:block>
+                                <h2 class="h3 spacing-below-0 spacing-above-0"
+                                    th:text="#{registration-doc-upload-recommended-docs.child-care-license.header}"></h2>
+                                <p th:text="#{registration-doc-upload-recommended-docs.child-care-license.body}"></p>
+                            </div>
+                            <div class="spacing-below-60" th:id="w9-recommendation">
+                                <th:block
+                                        th:replace="~{fragments/gcc-icons :: w-9}"></th:block>
+                                <h2 class="h3 spacing-below-0 spacing-above-0"
+                                    th:text="#{registration-doc-upload-recommended-docs.w9.header}"></h2>
+                                <p th:text="#{registration-doc-upload-recommended-docs.w9.body}"></p>
+                            </div>
+                            <div class="spacing-below-60"
+                                 th:if="${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).einIRSLetter(providerTaxIdType)}"
+                                 th:id="ein-recommendation">
+                                <th:block
+                                        th:replace="~{fragments/gcc-icons :: income}"></th:block>
+                                <h2 class="h3 spacing-below-0 spacing-above-0"
+                                    th:text="#{registration-doc-upload-recommended-docs.ein.header}"></h2>
+                                <p th:text="#{registration-doc-upload-recommended-docs.ein.body}"></p>
+                            </div>
+                            <div class="spacing-below-60"
+                                 th:if="${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).licenseExemptLetterRequired(providerType)}"
+                                 th:id="license-exempt-letter-recommendation">
+                                <th:block
+                                        th:replace="~{fragments/gcc-icons :: income}"></th:block>
+                                <h2 class="h3 spacing-below-0 spacing-above-0"
+                                    th:text="#{registration-doc-upload-recommended-docs.license-exempt.header}"></h2>
+                                <p th:text="#{registration-doc-upload-recommended-docs.license-exempt.body}"></p>
+                            </div>
+                        </div>
+                        <div class="notice-grey">
+                            <p th:text="#{doc-upload-recommended-docs.jobs.allowed-documents}"></p>
+                        </div>
+                        <div class="form-card__footer">
+                            <th:block
+                                    th:replace="~{fragments/continueButton :: continue(text=#{doc-upload-recommended-docs.submit})}"/>
+                            <th:block>
+                                <a th:href="'/flow/' + ${flow} + '/registration-submit-next-steps'"
+                                   data-mixpanel="skip-doc-upload"
+                                   class="button"
+                                   id="skip-doc-upload"
+                                   th:text="#{doc-upload-recommended-docs.skip}"></a>
+                            </th:block>
+                        </div>
+                    </th:block>
+                </th:block>
+            </main>
+        </div>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
