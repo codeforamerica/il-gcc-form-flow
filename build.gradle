@@ -61,13 +61,13 @@ dependencies {
     implementation 'org.bouncycastle:bcprov-jdk18on:1.80'
     implementation 'software.amazon.awssdk:s3:2.30.10'
 
-//    if (useLocalLibrary == 'true') {
+    if (useLocalLibrary == 'true') {
         implementation fileTree(dir: "$rootDir/../form-flow/build/libs", include: '*.jar')
         println "📦 Using local library"
-//    } else {
-//        implementation "org.codeforamerica.platform:form-flow:${formFlowLibraryVersion}"
-//        println "📚Using form flow library ${formFlowLibraryVersion}"
-//    }
+    } else {
+        implementation "org.codeforamerica.platform:form-flow:${formFlowLibraryVersion}"
+        println "📚Using form flow library ${formFlowLibraryVersion}"
+    }
 
     compileOnly 'org.projectlombok:lombok:1.18.36'
 
