@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head(title=#{index.title})}"></head>
+<script th:inline="javascript">
+  $(document).ready(function () {
+    const $homepageProviderResponseLink = $('#homepage-provider-response-link')
+
+    const $respondToApplicationLink = $('#secondary-test-apply-now')
+    function updateRespondToApplicationLink(value) {
+      $respondToApplicationLink.attr("href", '/providerresponse/submit' + '/' + value)
+    }
+
+    $homepageProviderResponseLink.change(function () {
+      updateRespondToApplicationLink($homepageProviderResponseLink.val());
+    });
+  });
+</script>
 <body class="template--index template--static-page">
 <div class="page-wrapper">
   <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
@@ -106,21 +120,29 @@
         <div class="width-one-whole">
           <h2 th:text="#{index.are-you-a-child-care-provider.header}"></h2>
         </div>
-        <div width="one-half">
+
+        <div class="width-one-half">
           <p class="normal" th:text="#{index.are-you-a-child-care-provider.subheader}"></p>
+          <div class="form-group spacing-above-25">
+            <label class="form-question" for="homepage-provider-response-link">
+              <span th:text="#{index.enter-confirmation-code.input-header}"></span>
+            </label>
+            <input type="text" class="text-input" id="homepage-provider-response-link">
+            <a
+                th:href="'/providerresponse/submit/'"
+                id="secondary-test-apply-now"
+                class="button--big button">
+              <span th:text="#{index.respond-to-application.button}"></span>
+            </a>
+            <div class="width-one-half is-desktop-hidden">
+              <img src="/assets/images/mother_baby_smiling.svg" loading="lazy" alt="" class="img-right">
+            </div>
+          </div>
         </div>
-        <th:block th:replace="~{fragments/inputs/text ::
-          text(inputName='',
-          label=#{},
-          helpText=#{},
-          placeholder=#{})}" />
-        <a
-            th:with="otherLang=${#locale.getLanguage().equals('es') ? 'en' : 'es'}"
-            th:href="|/flow/gcc/onboarding-getting-started?lang=${otherLang}|"
-            th:text="#{index.apply-now-other-language} + ' →'"
-            th:lang="${otherLang}"
-            id="secondary-apply-now"
-            class="button--small button"></a>
+        <div class="width-one-half is-tablet-hidden">
+          <img src="/assets/images/mother_baby_smiling.svg" loading="lazy" alt="" class="img-center">
+        </div>
+
       </div>
 
     </section>
