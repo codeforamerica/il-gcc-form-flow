@@ -1,26 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head(title=#{index.title})}"></head>
-<script th:inline="javascript">
-  $(document).ready(function () {
-    const domain = window.location.origin
-    const providerResponsePath = '/providerresponse/submit'
-    const $homepageProviderResponseLink = $('#homepage-provider-response-link')
-
-    const $respondToApplicationLink = $('#secondary-test-apply-now')
-    function updateRespondToApplicationLink(value) {
-      if (value.trim().length === 0){
-        $respondToApplicationLink.attr("href", (domain + providerResponsePath))
-      }else {
-        $respondToApplicationLink.attr("href",  (domain + providerResponsePath + '/' + encodeURIComponent(value)))
-      }
-    }
-
-    $homepageProviderResponseLink.change(function () {
-      updateRespondToApplicationLink($homepageProviderResponseLink.val());
-    });
-  });
-</script>
 <body class="template--index template--static-page">
 <div class="page-wrapper">
   <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
@@ -156,4 +136,23 @@
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
+<script th:inline="javascript">
+  $(document).ready(function () {
+    const domain = window.location.origin
+    const providerResponsePath = '/providerresponse/submit'
+    const $homepageProviderResponseLink = $('#homepage-provider-response-link')
+
+    const $respondToApplicationLink = $('#secondary-test-apply-now')
+    function updateRespondToApplicationLink(value) {
+      if (value.trim().length === 0){
+        $respondToApplicationLink.attr("href", (domain + providerResponsePath))
+      }else {
+        $respondToApplicationLink.attr("href",  (domain + providerResponsePath + '/' + encodeURIComponent(value)))
+      }
+    }
+    $homepageProviderResponseLink.change(function () {
+      updateRespondToApplicationLink($homepageProviderResponseLink.val());
+    });
+  });
+</script>
 </html>
