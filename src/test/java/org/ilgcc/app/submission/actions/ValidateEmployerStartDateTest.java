@@ -131,8 +131,7 @@ class ValidateEmployerStartDateTest {
         FormSubmission submission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
 
-        assertThat(errors).containsKey("activitiesJobStart");
-        assertThat(errors.get("activitiesJobStart")).contains("Enter a valid month and year.");
+        assertThat(errors).doesNotContainKey("activitiesJobStart");
     }
 
     @Test
@@ -207,7 +206,7 @@ class ValidateEmployerStartDateTest {
     }
 
     @Test
-    void shouldNotAllowPartnerJobStartDateToBeInTheFuture() {
+    void shouldAllowPartnerJobStartDateToBeInTheFuture() {
         DateTime present = DateTime.now();
         Map<String, Object> formData = Map.of(
             "activitiesPartnerJobStartMonth", "01",
@@ -217,7 +216,6 @@ class ValidateEmployerStartDateTest {
         FormSubmission submission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
 
-        assertThat(errors).containsKey("activitiesPartnerJobStart");
-        assertThat(errors.get("activitiesPartnerJobStart")).contains("Enter a valid month and year.");
+        assertThat(errors).doesNotContainKey("activitiesPartnerJobStart");
     }
 }
