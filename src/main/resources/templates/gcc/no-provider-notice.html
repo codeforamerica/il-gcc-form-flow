@@ -11,7 +11,7 @@
                 <th:block
                         th:replace="~{fragments/gcc-icons :: important-notice}"></th:block>
                 <th:block
-                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{no-provider-notice.header}, subtext=#{no-provider-notice.active.notice(${submission.getInputData().getOrDefault('ccrrName', '')})})}"/>
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{no-provider-notice.header}, subtext=${#messages.msg('no-provider-notice.active.notice',#messages.msg('illinois-cares-for-kids-link'), submission.getInputData().getOrDefault('ccrrName', ''))})}"/>
                 <div class="form-card__footer">
                     <div>
                         <th:block th:replace="~{fragments/continueButton :: continue}"/>

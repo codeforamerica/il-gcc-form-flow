@@ -12,7 +12,7 @@
         <th:block
             th:replace="~{fragments/cardHeader :: cardHeader(
             header=#{onboarding-no-provider-intro.header},
-            subtext=#{onboarding-no-provider-intro.subtext})}"/>
+            subtext=${#messages.msg('onboarding-no-provider-intro.subtext', #messages.msg('illinois-cares-for-kids-link'))})}"/>
         <div class="form-card__content">
 
         </div>

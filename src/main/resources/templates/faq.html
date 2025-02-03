@@ -122,7 +122,7 @@
 
                 <!-- How do I find child care provider that accepts CCAP -->
                 <h3 id="how-do-i-find-child-care-provider-that-accepts-ccap" class="h3" th:text="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.header}"></h3>
-                <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-are-looking-for-a-child-care-provider}"></p>
+                <p th:utext="${#messages.msg('faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-are-looking-for-a-child-care-provider', #messages.msg('illinois-cares-for-kids-link'))}"></p>
                 <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-have-a-friend-relative}"></p>
 
                 <h2 th:id="questions-about-the-online-application" class="h2" th:text="#{faq.questions-about-the-online-application.header}"></h2>
