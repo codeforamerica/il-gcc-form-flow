@@ -36,7 +36,13 @@ public class ValidateEmployerStartDate extends VerifyDate {
     if (employerStartDate.replace("/", "").isBlank()) {
       return errorMessages;
     }
-    
+
+    //Changes that day in the employerStartDate string to 1 in the event that no day was entered.
+    if (inputData.get(inputName + "Day").toString().isEmpty()){
+      employerStartDate = DateUtilities.formatDateStringFromMonthDayYear((String) inputData.get(inputName+"Month"), "1", (String) inputData.get(inputName + "Year"));
+    }
+
+
     if (this.isDateInvalid(employerStartDate)) {
         errorMessages.put(inputName, List.of(messageSource.getMessage("activities-employer-start-date.error", null, locale)));
     } else if (this.isBeforeMinDate(employerStartDate)) {

@@ -93,6 +93,18 @@ class ValidateEmployerStartDateTest {
         assertThat(errors).containsKey("activitiesJobStart");
         assertThat(errors.get("activitiesJobStart")).contains("Enter a valid month and year.");
     }
+    @Test
+    void shouldNotErrorWhenJobStartDateHasMonthAndYearPresent() {
+        Map<String, Object> formData = Map.of(
+            "activitiesJobStartMonth", "10",
+            "activitiesJobStartDay", "",
+            "activitiesJobStartYear", "2024"
+        );
+        FormSubmission submission = new FormSubmission(formData);
+        Map<String, List<String>> errors = validator.runValidation(submission, new Submission());
+
+        assertThat(errors).doesNotContainKey("activitiesJobStart");
+    }
 
     @Test
     void shouldErrorWhenJobStartDateIsBefore1901() {

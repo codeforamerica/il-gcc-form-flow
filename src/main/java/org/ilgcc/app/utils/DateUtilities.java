@@ -14,6 +14,10 @@ public class DateUtilities {
         String month = (String) data.get(prefix + "Month");
         String day = (String) data.get(prefix + "Day");
         String year = (String) data.get(prefix + "Year");
+        return formatDateStringFromMonthDayYear(month, day, year);
+    }
+
+    public static String formatDateStringFromMonthDayYear(String month, String day, String year) {
         String formattedMonth = "";
         String formattedDay = "";
 
@@ -25,9 +29,9 @@ public class DateUtilities {
             formattedDay = day;
         }
         return String.format("%s/%s/%s",
-                formattedMonth,
-                formattedDay,
-                year);
+            formattedMonth,
+            formattedDay,
+            year);
     }
 
     public static boolean isDateInvalid(String date) {
