@@ -301,6 +301,9 @@ p.normal {
   font-weight: bold;
 }
 
+.registration-submit-header header{
+  margin-bottom: 0;
+}
 .eligibility-table th:first-child,
 .eligibility-table td:first-child {
   text-align: left;
