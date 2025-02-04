@@ -641,16 +641,6 @@ flow:
       - name: registration-contact-info
   registration-contact-info:
     nextScreens:
-      # Temporary until we have a way to download PDF in providerresponse flow
-      # Confirmation code is needed to DL PDF since its how we get the family submission
-      # TODO: change this when we've figured out above comments and delete the temporary-provider-response-confirmation-code-fix screen
-      - name: temporary-provider-response-confirmation-code-fix
-#      - name: registration-info-review
-  temporary-provider-response-confirmation-code-fix:
-    crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
-    afterSaveAction: CheckClientSubmissionForProvider
-    onPostAction: GenerateDummyClientSubmissionForDev
-    nextScreens:
       - name: registration-info-review
   registration-info-review:
     nextScreens:
