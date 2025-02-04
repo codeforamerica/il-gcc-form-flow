@@ -753,6 +753,8 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-submit-confirmation
+  registration-submit-confirmation:
+      nextScreens: null
   submit-complete-final:
     nextScreens:
       - name: registration-getting-started

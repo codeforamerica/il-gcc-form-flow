@@ -8,11 +8,23 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header='placeholder', subtext='placeholder')}"/>
+        <th:block th:replace="~{fragments/gcc-icons :: next-steps}"></th:block>
+        <div class="from-card__header registration-submit-header">
+          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-submit-next-steps.header})}" />
+        </div>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
+            <div class="form-card__content spacing-above-0">
+              <div class="spacing-below-35">
+                <ol class="list--numbered">
+                  <li th:text="#{registration-submit-next-steps.list-1}"></li>
+                  <li th:text="#{registration-submit-next-steps.list-2}"></li>
+                  <li th:text="#{registration-submit-next-steps.list-3}"></li>
+                </ol>
+              </div>
+              <div class="notice notice--warning">
+                <p th:utext="#{registration-submit-next-steps.notice}"></p>
+              </div>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
