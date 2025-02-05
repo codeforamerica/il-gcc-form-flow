@@ -12,11 +12,11 @@
           <th:block th:ref="docUpload">
             <div class="form-card__content"
                  th:with="providerType=${submission.getInputData().getOrDefault('providerType', '')},
-                          provdierTaxIdType=${submission.getInputData().getOrDefault('providerTaxIdType', '')},
-                          showSocialSecurityCardRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).ssnCardRequired(providerType, provdierTaxIdType)},
+                          providerTaxIdType=${submission.getInputData().getOrDefault('providerTaxIdType', '')},
+                          showSocialSecurityCardRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).ssnCardRequired(providerType, providerTaxIdType)},
                           showIdCardRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).idCardRequired(providerType)},
                           showChildCareLicenseRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).childCareLicenseRequired(providerType)},
-                          showEinIRSLetterInfo=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).einIRSLetter(provdierTaxIdType)},
+                          showEinIRSLetterInfo=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).einIRSLetter(providerTaxIdType)},
                           showLicenseExemptLetterRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).licenseExemptLetterRequired(providerType)}">
                 <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
                   controlId='r1',
@@ -28,28 +28,28 @@
                     <th:span th:text="#{registration-doc-upload-add-files.accordion-1.title}"></th:span>
                   </th:block>
                   <th:block th:ref="revealContent1">
-                    <div th:if="${showSocialSecurityCardRequired}" th:id="show-ssn-card-required">
-                      <h2 class="h4 spacing-below-0 spacing-above-0" th:text="#{registration-doc-upload-add-files.ssn.header}"></h2>
+                    <div th:if="${showSocialSecurityCardRequired}" th:id="show-ssn-card-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.ssn.header}"></h2>
                       <p th:text="#{registration-doc-upload-add-files.ssn.body}"></p>
                     </div>
-                    <div th:if="${showIdCardRequired}" th:id="show-id-card-required">
-                      <h2 class="h4 spacing-below-0 spacing-above-0" th:text="#{registration-doc-upload-add-files.id.header}"></h2>
+                    <div th:if="${showIdCardRequired}" th:id="show-id-card-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.id.header}"></h2>
                       <p th:text="#{registration-doc-upload-add-files.id.body}"></p>
                     </div>
-                    <div th:if="${showChildCareLicenseRequired}" th:id="show-child-care-license-required">
-                      <h2 class="h4 spacing-below-0 spacing-above-0" th:text="#{registration-doc-upload-add-files.child-care-license.header}"></h2>
+                    <div th:if="${showChildCareLicenseRequired}" th:id="show-child-care-license-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.child-care-license.header}"></h2>
                       <p th:text="#{registration-doc-upload-add-files.child-care-license.body}"></p>
                     </div>
-                    <div th:id="show-w9-tax-form-required">
-                      <h2 class="h4 spacing-below-0 spacing-above-0" th:text="#{registration-doc-upload-add-files.w9.header}"></h2>
+                    <div th:id="show-w9-tax-form-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.w9.header}"></h2>
                       <p th:text="#{registration-doc-upload-add-files.w9.body}"></p>
                     </div>
-                    <div th:if="${showEinIRSLetterInfo}" th:id="show-irs-letter-required">
-                      <h2 class="h4 spacing-below-0 spacing-above-0" th:text="#{registration-doc-upload-add-files.ein.header}"></h2>
+                    <div th:if="${showEinIRSLetterInfo}" th:id="show-irs-letter-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.ein.header}"></h2>
                       <p th:text="#{registration-doc-upload-add-files.ein.body}"></p>
                     </div>
-                    <div th:if="${showLicenseExemptLetterRequired}" th:id="show-license-exempt-letter-required">
-                      <h2 class="h4 spacing-below-0 spacing-above-0" th:text="#{registration-doc-upload-add-files.license-exempt.header}"></h2>
+                    <div th:if="${showLicenseExemptLetterRequired}" th:id="show-license-exempt-letter-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.license-exempt.header}"></h2>
                       <p th:text="#{registration-doc-upload-add-files.license-exempt.body}"></p>
                     </div>
                   </th:block>
