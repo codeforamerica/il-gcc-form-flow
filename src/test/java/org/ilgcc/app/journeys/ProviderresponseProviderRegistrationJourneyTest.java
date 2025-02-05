@@ -83,12 +83,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         assertThat(testPage.findElementTextById("provider-full-name")).isEqualTo("ProviderFirst ProviderLast");
@@ -188,13 +182,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         // registration-home-provider-ssn
@@ -439,13 +428,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         // registration-home-provider-ssn
@@ -602,13 +586,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         // registration-home-provider-ssn
@@ -761,13 +740,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         //registration-tax-id.title
@@ -902,13 +876,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         // registration-home-provider-ssn
@@ -1072,12 +1041,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-contact-info.title"));
         testPage.enter("providerResponseContactPhoneNumber", "5555555555");
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
-        testPage.clickContinue();
-
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // registration-info-review
