@@ -3,7 +3,7 @@
     th:assert="${!#strings.isEmpty(inputName)}">
   <div th:id="${'dropzone-' + inputName}">
     <div class="dropzone needsclick" th:id="${'document-upload-' + inputName}">
-      <div th:id="${'max-files-reached-' + inputName}">
+      <div th:id="${'max-files-reached-' + inputName}" class="display-flex">
         <div class='max-files spacing-below-35 display-none' id="max-files"
              th:text='#{upload-documents.error-maximum-number-of-files}'></div>
       </div>
