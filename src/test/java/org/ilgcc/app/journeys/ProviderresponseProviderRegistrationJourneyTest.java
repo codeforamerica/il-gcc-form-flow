@@ -356,6 +356,20 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isTrue();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
 
         // registration-submit-next-steps
@@ -527,6 +541,20 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
 
         // registration-submit-next-steps
@@ -681,6 +709,20 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isTrue();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
 
         // registration-submit-next-steps
@@ -817,6 +859,20 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
 
         // registration-submit-next-steps
@@ -962,6 +1018,20 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isTrue();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
 
         // registration-submit-next-steps
@@ -1139,6 +1209,20 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isTrue();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isFalse();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isFalse();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
 
         // registration-submit-next-steps

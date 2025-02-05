@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{registration-doc-upload-add-files.title})}"></head>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/doc-upload-head :: head(title=#{registration-doc-upload-add-files.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,14 +7,58 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header='placeholder', subtext='placeholder')}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-doc-upload-add-files.header})}"/>
+        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::docUpload})}">
+          <th:block th:ref="docUpload">
+            <div class="form-card__content"
+                 th:with="providerType=${submission.getInputData().getOrDefault('providerType', '')},
+                          providerTaxIdType=${submission.getInputData().getOrDefault('providerTaxIdType', '')},
+                          showSocialSecurityCardRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).ssnCardRequired(providerType, providerTaxIdType)},
+                          showIdCardRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).idCardRequired(providerType)},
+                          showChildCareLicenseRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).childCareLicenseRequired(providerType)},
+                          showEinIRSLetterInfo=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).einIRSLetter(providerTaxIdType)},
+                          showLicenseExemptLetterRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).licenseExemptLetterRequired(providerType)}">
+                <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
+                  controlId='r1',
+                  linkLabel=~{::revealLabel1},
+                  content=~{::revealContent1},
+                  forceShowContent='true')}">
+                  <th:block th:ref="revealLabel1">
+                    <th:i class="icon-">&#xE862;</th:i>
+                    <th:span th:text="#{registration-doc-upload-add-files.accordion-1.title}"></th:span>
+                  </th:block>
+                  <th:block th:ref="revealContent1">
+                    <div th:if="${showSocialSecurityCardRequired}" th:id="show-ssn-card-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.ssn.header}"></h2>
+                      <p th:text="#{registration-doc-upload-add-files.ssn.body}"></p>
+                    </div>
+                    <div th:if="${showIdCardRequired}" th:id="show-id-card-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.id.header}"></h2>
+                      <p th:text="#{registration-doc-upload-add-files.id.body}"></p>
+                    </div>
+                    <div th:if="${showChildCareLicenseRequired}" th:id="show-child-care-license-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.child-care-license.header}"></h2>
+                      <p th:text="#{registration-doc-upload-add-files.child-care-license.body}"></p>
+                    </div>
+                    <div th:id="show-w9-tax-form-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.w9.header}"></h2>
+                      <p th:text="#{registration-doc-upload-add-files.w9.body}"></p>
+                    </div>
+                    <div th:if="${showEinIRSLetterInfo}" th:id="show-irs-letter-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.ein.header}"></h2>
+                      <p th:text="#{registration-doc-upload-add-files.ein.body}"></p>
+                    </div>
+                    <div th:if="${showLicenseExemptLetterRequired}" th:id="show-license-exempt-letter-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.license-exempt.header}"></h2>
+                      <p th:text="#{registration-doc-upload-add-files.license-exempt.body}"></p>
+                    </div>
+                  </th:block>
+                </th:block>
+              <th:block th:replace="~{fragments/inputs/overrides/fileUploader :: fileUploader(inputName='providerUploadDocuments')}"></th:block>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{registration-doc-upload-add-files.confirmation}, classes='button', isHidden=true)}"/>
             </div>
           </th:block>
         </th:block>
@@ -24,5 +67,6 @@
   </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
+<script defer>FormFlowDZ.hideContinueIfNoFiles("providerUploadDocuments", "form-submit-button")</script>
 </body>
 </html>
