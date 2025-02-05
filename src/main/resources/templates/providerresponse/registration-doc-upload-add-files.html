@@ -17,7 +17,7 @@
                           showIdCardRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).idCardRequired(providerType)},
                           showChildCareLicenseRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).childCareLicenseRequired(providerType)},
                           showEinIRSLetterInfo=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).einIRSLetter(provdierTaxIdType)},
-                          showLicenseExemptLetterRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).licenseExemptLetterRequired(provdierTaxIdType)}">
+                          showLicenseExemptLetterRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).licenseExemptLetterRequired(providerType)}">
                 <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
                   controlId='r1',
                   linkLabel=~{::revealLabel1},
