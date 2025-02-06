@@ -61,6 +61,9 @@ html, body {
   background-size: 25rem;
 }
 
+.slab--tan {
+  background-color: #FFE8CE;
+}
 @media only screen and (min-width: 600px) {
   .slab--hero {
     background-image: none;
@@ -298,6 +301,9 @@ p.normal {
   font-weight: bold;
 }
 
+.registration-submit-header header{
+  margin-bottom: 0;
+}
 .eligibility-table th:first-child,
 .eligibility-table td:first-child {
   text-align: left;

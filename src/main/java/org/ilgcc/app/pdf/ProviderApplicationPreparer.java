@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.ilgcc.app.submission.actions.FormatSubmittedAtDate;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +27,6 @@ import org.springframework.stereotype.Component;
 public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer {
 
     Submission providerSubmission;
-
-    public ProviderApplicationPreparer() {
-    }
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
@@ -76,19 +74,12 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
 
         results.put("providerLicenseNumber",
                 new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
+
         results.put("providerSignature",
                 new SingleField("providerSignature", providerSignature(providerInputData), null));
-            String formattedProviderSignatureDate = "";
-
-            if (providerSubmission.getSubmittedAt() != null) {
-                Optional<LocalDate> providerSignatureDate = Optional.of(
-                        LocalDate.from(providerSubmission.getSubmittedAt()));
-                formattedProviderSignatureDate =  formatToStringFromLocalDate(providerSignatureDate);
-            }
-
-            results.put("providerSignatureDate",
-                    new SingleField("providerSignatureDate", formattedProviderSignatureDate,
-                            null));
+        results.put("providerSignatureDate",
+                new SingleField("providerSignatureDate", providerSignatureDate(providerSubmission.getSubmittedAt()),
+                        null));
 
         return results;
     }
@@ -169,6 +160,10 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
     }
 
     private String providerSignature(Map<String, Object> providerInputData) {
+        String providerSignature =  (String) providerInputData.getOrDefault("providerSignedName", "");
+        if (!providerSignature.isEmpty()) {
+            return providerSignature;
+        }
         String firstname = (String) providerInputData.getOrDefault("providerResponseFirstName", "");
         String lastName = (String) providerInputData.getOrDefault("providerResponseLastName", "");
         String businessName = (String) providerInputData.getOrDefault("providerResponseBusinessName", "");
@@ -178,6 +173,15 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         } else {
             return String.format("%s %s, %s", firstname, lastName, businessName);
         }
+    }
+
+    private String providerSignatureDate(OffsetDateTime submittedAt) {
+        if (submittedAt != null) {
+            Optional<LocalDate> providerSignatureDate = Optional.of(
+                    LocalDate.from(submittedAt));
+            return formatToStringFromLocalDate(providerSignatureDate);
+        }
+        return "";
     }
 
     private String providerLicense(Map<String, Object> providerInputData) {

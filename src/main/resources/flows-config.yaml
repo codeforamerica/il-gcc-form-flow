@@ -195,6 +195,11 @@ flow:
   activities-employer-address:
     subflow: jobs
     nextScreens:
+      - name: activities-employer-start-date
+  activities-employer-start-date:
+    crossFieldValidationAction: ValidateEmployerStartDate
+    subflow: jobs
+    nextScreens:
       - name: activities-self-employment
   activities-self-employment:
     subflow: jobs
@@ -277,6 +282,11 @@ flow:
     nextScreens:
       - name: activities-partner-employer-address
   activities-partner-employer-address:
+    subflow: partnerJobs
+    nextScreens:
+      - name: activities-partner-employer-start-date
+  activities-partner-employer-start-date:
+    crossFieldValidationAction: ValidateEmployerStartDate
     subflow: partnerJobs
     nextScreens:
       - name: activities-partner-self-employment
@@ -631,16 +641,6 @@ flow:
       - name: registration-contact-info
   registration-contact-info:
     nextScreens:
-      # Temporary until we have a way to download PDF in providerresponse flow
-      # Confirmation code is needed to DL PDF since its how we get the family submission
-      # TODO: change this when we've figured out above comments and delete the temporary-provider-response-confirmation-code-fix screen
-      - name: temporary-provider-response-confirmation-code-fix
-#      - name: registration-info-review
-  temporary-provider-response-confirmation-code-fix:
-    crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
-    afterSaveAction: CheckClientSubmissionForProvider
-    onPostAction: GenerateDummyClientSubmissionForDev
-    nextScreens:
       - name: registration-info-review
   registration-info-review:
     nextScreens:
@@ -738,11 +738,13 @@ flow:
   registration-submit-complete:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: registration-submit-next-steps
+      - name: registration-doc-upload-recommended-docs
   registration-submit-next-steps:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-submit-confirmation
+  registration-submit-confirmation:
+      nextScreens: null
   submit-complete-final:
     nextScreens:
       - name: registration-getting-started
@@ -768,3 +770,7 @@ landmarks:
   firstScreen: submit-start
   afterSubmitPages:
     - submit-complete-final
+    - registration-submit-complete
+    - registration-submit-next-steps
+    - registration-doc-upload-recommended-docs
+    - registration-doc-upload-add-files

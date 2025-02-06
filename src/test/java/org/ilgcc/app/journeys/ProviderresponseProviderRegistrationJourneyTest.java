@@ -83,12 +83,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         assertThat(testPage.findElementTextById("provider-full-name")).isEqualTo("ProviderFirst ProviderLast");
@@ -188,13 +182,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         // registration-home-provider-ssn
@@ -322,7 +311,77 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementById("done-adding-provider-household-member").getText()).isEqualTo(getEnMessage("registration-household-add-person.im-done"));
         testPage.clickElementById("done-adding-provider-household-member");
 
+        // registration-family-response-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
+        testPage.clickContinue();
+
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.clickContinue();
+
+        // response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
+
+        // registration-submit-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
+        testPage.clickContinue();
+
+        // registration-terms
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
+        testPage.clickCheckbox("providerAgreesToLegalTerms-true");
+        testPage.clickContinue();
+
+        // registration-signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
+        testPage.clickSubmit();
+
+        // registration-submit-complete
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
+        testPage.clickButton(getEnMessage("submit-complete.button.do-this-later"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.goBack();
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        assertThat(testPage.elementDoesNotExistById("ssn-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("id-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("child-care-license-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+
     }
 
     @Test
@@ -383,13 +442,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         // registration-home-provider-ssn
@@ -461,14 +515,50 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.selectRadio("providerResponseAgreeToCare", "true");
         testPage.clickContinue();
 
-        //registration submit intro
+        // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
         testPage.clickContinue();
 
-        //registration terms
+        // registration-terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
+
+        // registration-signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
+        testPage.clickSubmit();
+
+        // registration-submit-complete
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        assertThat(testPage.elementDoesNotExistById("ssn-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("id-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("child-care-license-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
     }
 
     @Test
@@ -524,13 +614,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         // registration-home-provider-ssn
@@ -598,14 +683,50 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.selectRadio("providerResponseAgreeToCare", "true");
         testPage.clickContinue();
 
-        //registration submit intro
+        // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
         testPage.clickContinue();
 
-        //registration terms
+        // registration-terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
+
+        // registration-signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
+        testPage.clickSubmit();
+
+        // registration-submit-complete
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        assertThat(testPage.elementDoesNotExistById("ssn-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("id-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("child-care-license-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
     }
 
     @Test
@@ -661,13 +782,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         //registration-tax-id.title
@@ -717,14 +833,50 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.selectRadio("providerResponseAgreeToCare", "true");
         testPage.clickContinue();
 
-        //registration submit intro
+        // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
         testPage.clickContinue();
 
-        //registration terms
+        // registration-terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
+
+        // registration-signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
+        testPage.clickSubmit();
+
+        // registration-submit-complete
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        assertThat(testPage.elementDoesNotExistById("ssn-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("id-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("child-care-license-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
     }
 
     @Test
@@ -780,13 +932,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
         // registration-home-provider-ssn
@@ -845,14 +992,50 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.selectRadio("providerResponseAgreeToCare", "true");
         testPage.clickContinue();
 
-        //registration submit intro
+        // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
         testPage.clickContinue();
 
-        //registration terms
+        // registration-terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
+
+        // registration-signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
+        testPage.clickSubmit();
+
+        // registration-submit-complete
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        assertThat(testPage.elementDoesNotExistById("ssn-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("id-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("child-care-license-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
     }
 
     @Test
@@ -930,12 +1113,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseContactEmail", "foo@bar.com");
         testPage.clickContinue();
 
-        // Temporary Confirmation Code
-        // TODO - Remove this when we have a solution for downloading the PDF in the provider response flow
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
-        testPage.clickContinue();
-
         // registration-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         assertThat(testPage.findElementTextById("provider-full-name")).isEqualTo("ProviderFirst ProviderLast");
@@ -1001,14 +1178,55 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.selectRadio("providerResponseAgreeToCare", "true");
         testPage.clickContinue();
 
-        //registration submit intro
+        // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
         testPage.clickContinue();
 
-        //registration terms
+        // registration-terms
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
         testPage.clickCheckbox("providerAgreesToLegalTerms-true");
         testPage.clickContinue();
+
+        // registration-signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
+        testPage.clickSubmit();
+
+        // registration-submit-complete
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
+        testPage.clickButton(getEnMessage("submit-complete.button.do-this-later"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.goBack();
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        assertThat(testPage.elementDoesNotExistById("ssn-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("id-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("child-care-license-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isFalse();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isFalse();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
     }
 
 

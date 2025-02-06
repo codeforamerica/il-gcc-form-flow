@@ -280,8 +280,15 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("employerPhoneNumber", "3333333333");
         testPage.enter("employerZipCode", "60423");
         testPage.clickContinue();
-        //activities-self-employment
 
+        //activities-employer-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-employer-start-date.title"));
+        testPage.enter("activitiesJobStartYear", "1988");
+        testPage.enter("activitiesJobStartDay", "30");
+        testPage.enter("activitiesJobStartMonth", "1");
+        testPage.clickContinue();
+
+        //activities-self-employment
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-self-employment.title"));
         testPage.clickYes();
 
@@ -434,6 +441,12 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("partnerEmployerZipCode", "92453");
         testPage.clickContinue();
 
+        //activities-partner-employer-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-employer-start-date.title"));
+        testPage.enter("activitiesPartnerJobStartYear", "2000");
+        testPage.enter("activitiesPartnerJobStartDay", "08");
+        testPage.enter("activitiesPartnerJobStartMonth", "10");
+        testPage.clickContinue();
         //activities-partner-self-employment
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-self-employment.title"));
         testPage.clickNo();
@@ -640,7 +653,7 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
-        assertThat(testPage.getTextBySelector("ul").get(1).toString()).containsIgnoringCase(
+        assertThat(testPage.getTextBySelector("ul").get(1)).containsIgnoringCase(
                 "Illinois Action for Children");
         testPage.clickContinue();
 

@@ -19,7 +19,7 @@
     <section class="slab slab--white">
       <div class="grid">
         <nav class="grid__item width-one-third" th:with="sections = ${ {
-        'general-questions', 'questions-about-the-online-application', 'questions-about-child-care', 'questions-about-the-process'} }">
+        'general-questions', 'questions-about-the-online-application', 'questions-about-child-care', 'questions-about-the-process', 'questions-about-being-a-child-care-provider'} }">
           <p class="h3" th:text="#{faq.toc.header}"></p>
           <div class="spacing-below-15" th:each="section : ${sections}">
             <a th:href="'#' + ${section}" th:text="#{'faq.' + ${section} + '.header'}"></a>
@@ -122,7 +122,7 @@
 
                 <!-- How do I find child care provider that accepts CCAP -->
                 <h3 id="how-do-i-find-child-care-provider-that-accepts-ccap" class="h3" th:text="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.header}"></h3>
-                <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-are-looking-for-a-child-care-provider}"></p>
+                <p th:utext="${#messages.msg('faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-are-looking-for-a-child-care-provider', #messages.msg('illinois-cares-for-kids-link'))}"></p>
                 <p th:utext="#{faq.how-do-i-find-child-care-provider-that-accepts-ccap.if-you-have-a-friend-relative}"></p>
 
                 <h2 th:id="questions-about-the-online-application" class="h2" th:text="#{faq.questions-about-the-online-application.header}"></h2>
@@ -234,6 +234,12 @@
                 <p th:text="#{faq.questions-about-the-process.how-do-i-maintain-benefits.a-renewal-form}"></p>
                 <h3 class="h3" th:text="#{faq.questions-about-the-process.how-long-will-it-take}"></h3>
                 <p th:text="#{faq.questions-about-the-process.how-long-will-it-take.you-should-get-an-application-response}"></p>
+                <h2 id="questions-about-being-a-child-care-provider" class="h2" th:text="#{faq.questions-about-being-a-child-care-provider.header}"></h2>
+                <h3 class="h3" th:text="#{faq.questions-about-being-a-child-care-provider.can-I-have-other-jobs}"></h3>
+                <p th:text="#{faq.questions-about-being-a-child-care-provider.can-I-have-other-jobs.answer}"></p>
+                <h3 class="h3" th:text="#{faq.questions-about-being-a-child-care-provider.how-do-ccap-payments-work}"></h3>
+                <p th:text="#{faq.questions-about-being-a-child-care-provider.how-do-ccap-payments-work.answer-1}"></p>
+                <p th:utext="#{faq.questions-about-being-a-child-care-provider.how-do-ccap-payments-work.answer-2}"></p>
               </div>
             </div>
           </div>

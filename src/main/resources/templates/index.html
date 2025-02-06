@@ -8,7 +8,8 @@
     <section class="slab slab--light-purple slab--hero">
       <div class="grid">
         <div class="notice--warning spacing-below-35">
-          <p th:utext="'<span aria-hidden=true>🌱 </span>' + ${#messages.msg('index.notice-html-sda2')}"></p>
+          <p th:unless="${@environment.getProperty('il-gcc.enable-sda15-providers') == 'true'}" th:utext="'<span aria-hidden=true>🌱 </span>' + ${#messages.msg('index.notice-html-sda2')}"></p>
+          <p th:if="${@environment.getProperty('il-gcc.enable-sda15-providers') == 'true'}" th:utext="'<span aria-hidden=true>🌱 </span>' + ${#messages.msg('index.notice-html-sda15')}"></p>
         </div>
         <div class="tracking-home-language-links width-one-half">
           <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>
@@ -101,8 +102,58 @@
         </div>
       </div>
     </section>
+    <section class="slab slab--tan">
+      <div class="grid">
+        <div class="width-one-whole">
+          <h2 th:text="#{index.are-you-a-child-care-provider.header}"></h2>
+        </div>
+
+        <div class="width-one-half">
+          <p class="normal" th:text="#{index.are-you-a-child-care-provider.subheader}"></p>
+          <div class="form-group spacing-above-25">
+            <label class="form-question" for="homepage-provider-response-link">
+              <span th:text="#{index.enter-confirmation-code.input-header}"></span>
+            </label>
+            <input type="text" class="text-input" id="homepage-provider-response-link">
+            <a
+                th:href="'/providerresponse/submit'"
+                id="route-to-provider-response"
+                class="button--big button">
+              <span th:text="#{index.respond-to-application.button}"></span>
+            </a>
+            <div class="width-one-half is-desktop-hidden">
+              <img src="/assets/images/mother_baby_smiling.svg" loading="lazy" alt="" class="img-right">
+            </div>
+          </div>
+        </div>
+        <div class="width-one-half is-tablet-hidden">
+          <img src="/assets/images/mother_baby_smiling.svg" loading="lazy" alt="" class="img-center">
+        </div>
+
+      </div>
+
+    </section>
   </main>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>
+<script th:inline="javascript">
+  $(document).ready(function () {
+    const domain = window.location.origin
+    const providerResponsePath = '/providerresponse/submit'
+    const $homepageProviderResponseLink = $('#homepage-provider-response-link')
+
+    const $respondToApplicationLink = $('#route-to-provider-response')
+    function updateRespondToApplicationLink(value) {
+      if (value.trim().length === 0){
+        $respondToApplicationLink.attr("href", (domain + providerResponsePath))
+      }else {
+        $respondToApplicationLink.attr("href",  (domain + providerResponsePath + '/' + encodeURIComponent(value)))
+      }
+    }
+    $homepageProviderResponseLink.change(function () {
+      updateRespondToApplicationLink($homepageProviderResponseLink.val());
+    });
+  });
+</script>
 </html>

@@ -279,6 +279,7 @@ subflowInfo:
 
       applicantEmployerTravelTimeHours: APPLICANT_EMPLOYER_TRAVEL_TIME_HOURS
       applicantEmployerTravelTimeMins: APPLICANT_EMPLOYER_TRAVEL_TIME_MINS
+      activitiesJobStart: APPLICANT_EMPLOYER_START_DATE
   parentPartnerJobs:
     totalIterations: 4
     inputFields:
@@ -320,6 +321,7 @@ subflowInfo:
 
       partnerEmployerTravelTimeHours: PARTNER_EMPLOYER_TRAVEL_TIME_HOURS
       partnerEmployerTravelTimeMins: PARTNER_EMPLOYER_TRAVEL_TIME_MINS
+      activitiesPartnerJobStart: PARTNER_EMPLOYER_START_DATE
   providerHouseholdMembers:
     totalIterations: 5
     inputFields:

@@ -1,27 +1,39 @@
 <!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{registration-submit-complete.title})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: documents}"></th:block>
+                <div>
+                    <header class="form-card__header spacing-below-0">
+                        <h1 id="header-doc-upload" class="h2"
+                            th:utext="#{submit-complete.header}"></h1>
+                    </header>
+                    <div class="form-card__content notice notice--gray">
+                        <div th:utext="#{submit-complete.info-box.pg-1}"></div>
+                        <p th:utext="#{submit-complete.info-box.pg-2}"></p>
+                    </div>
+                    <div class="form-card__footer">
+                        <th:block th:id="continue-link" th:class="button"
+                                  th:replace="~{fragments/continueButton :: continue(text=#{submit-complete.yes-add-document-now})}"/>
+                        <th:block>
+                            <a th:href="'/flow/' + ${flow} + '/registration-submit-next-steps'"
+                               data-mixpanel="skip-to-next-steps-link"
+                               class="button"
+                               id="skip-to-next-steps-link"
+                               th:text="#{submit-complete.button.do-this-later}"></a>
+                        </th:block>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>

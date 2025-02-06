@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{activities-partner-employer-start-date.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
+  <section class="slab">
+    <div class="grid">
+      <th:block th:replace="~{fragments/goBack :: goBackLink}"/>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${fieldData.partnerCompanyName})}"/>
+        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{activities-partner-employer-start-date.header}, subtext=#{activities-employer-start-date.help-text})}"/>
+        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+          <th:block th:ref="formContent">
+            <div class="form-card__content">
+              <th:block th:replace="~{fragments/inputs/date ::
+                date(inputName='activitiesPartnerJobStart',
+                label=#{activities-employer-start-date.input-header},
+                groupName='activitiesPartnerJobStart')}"/>
+            </div>
+            <div class="form-card__footer">
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+            </div>
+          </th:block>
+        </th:block>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

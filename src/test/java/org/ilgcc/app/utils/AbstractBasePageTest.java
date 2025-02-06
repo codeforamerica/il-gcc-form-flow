@@ -189,7 +189,11 @@ public abstract class AbstractBasePageTest {
         testPage.enter("employerPhoneNumber", "333333333" + postFix);
         testPage.enter("employerZipCode", "6042" + postFix);
         testPage.clickContinue();
-
+        //activities-employer-start-date
+        testPage.enter("activitiesJobStartDay", "05");
+        testPage.enter("activitiesJobStartMonth", "04");
+        testPage.enter("activitiesJobStartYear", "2025");
+        testPage.clickContinue();
         //activities-self-employment
         testPage.clickNo();
 
@@ -230,6 +234,8 @@ public abstract class AbstractBasePageTest {
         testPage.enter("partnerEmployerState", "IL - Illinois");
         testPage.enter("partnerEmployerStreetAddress", "123 Partner Employer Address");
         testPage.enter("partnerEmployerZipCode", "6042" + postFix);
+        testPage.clickContinue();
+        //activities-partner-employer-start-date
         testPage.clickContinue();
         //activities-partner-self-employment
         testPage.clickNo();
