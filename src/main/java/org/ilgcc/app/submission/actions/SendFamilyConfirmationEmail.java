@@ -31,12 +31,12 @@ public class SendFamilyConfirmationEmail implements Action {
         String familyConfirmationEmailSent = (String) familySubmission.getInputData()
                 .getOrDefault("familyConfirmationEmailSent", "false");
         if (familyConfirmationEmailSent.equals("true")) {
-            log.info("Family confirmation email has already been sent for submission with ID: {}", familySubmission.getId());
+            log.warn("Family confirmation email has already been sent for submission with ID: {}", familySubmission.getId());
             return;
         }
         String familyEmail = familySubmission.getInputData().get("parentContactEmail").toString();
         if (familyEmail == null || familyEmail.isEmpty()) {
-            log.error("Family email was empty when attempting to send family confirmation email for submission with ID: {}",
+            log.warn("Family email was empty when attempting to send family confirmation email for submission with ID: {}",
                     familySubmission.getId());
             return;
         }
