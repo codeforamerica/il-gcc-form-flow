@@ -29,9 +29,6 @@ public class ProviderSubmissionUtilities {
 
     // From https://cms.illinois.gov/personnel/employeeresources/stateholidays.html
     private final static List<LocalDate> HOLIDAYS = List.of(
-            LocalDate.of(2024, 12, 25),
-            LocalDate.of(2025, 1, 1),
-            LocalDate.of(2025, 1, 20),
             LocalDate.of(2025, 2, 12),
             LocalDate.of(2025, 2, 17),
             LocalDate.of(2025, 5, 26),
