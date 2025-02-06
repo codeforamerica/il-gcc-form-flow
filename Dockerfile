@@ -1,5 +1,8 @@
 FROM eclipse-temurin:21-jdk-alpine
 
+# Install LibreOffice (which includes soffice)
+RUN apk add --no-cache libreoffice libreoffice-common
+
 RUN mkdir /opt/il-gcc /opt/pdf-fonts
 COPY . /opt/il-gcc
 COPY src/main/resources/pdf-fonts/* /opt/pdf-fonts/

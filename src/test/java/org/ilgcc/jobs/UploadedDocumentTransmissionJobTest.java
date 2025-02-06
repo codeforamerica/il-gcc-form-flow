@@ -91,7 +91,7 @@ class UploadedDocumentTransmissionJobTest {
                 .build();
         submissionRepositoryService.save(submission);
 
-        testUserFile = new UserFile(null, submission, OffsetDateTime.now(), "testFile.pdf", "testFile.pdf", "Application/pdf", 10F, false, null);
+        testUserFile = new UserFile(UUID.randomUUID(), submission, OffsetDateTime.now(), "testFile.pdf", "testFile.pdf", "Application/pdf", 10F, false, null, null);
         userFileRepositoryService.save(testUserFile);
 
         Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
