@@ -42,7 +42,21 @@ public class ProviderSubmissionUtilities {
             LocalDate.of(2025, 11, 11),
             LocalDate.of(2025, 11, 27),
             LocalDate.of(2025, 11, 28),
-            LocalDate.of(2025, 12, 25)
+            LocalDate.of(2025, 12, 25),
+            LocalDate.of(2026, 1, 1),
+            LocalDate.of(2026, 1, 19),
+            LocalDate.of(2026, 2, 12),
+            LocalDate.of(2026, 2, 16),
+            LocalDate.of(2026, 5, 25),
+            LocalDate.of(2026, 6, 19),
+            LocalDate.of(2026, 7, 3),
+            LocalDate.of(2026, 9, 7),
+            LocalDate.of(2026, 10, 12),
+            LocalDate.of(2026, 11, 3),
+            LocalDate.of(2026, 11, 11),
+            LocalDate.of(2026, 11, 26),
+            LocalDate.of(2026, 11, 27),
+            LocalDate.of(2026, 12, 25)
     );
 
     public static Optional<UUID> getClientId(Submission providerSubmission) {
