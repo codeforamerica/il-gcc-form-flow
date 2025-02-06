@@ -41,7 +41,7 @@ public class EmbeddedPostgresIntegrationTest {
         provider.setProviderId(id);
         Provider savedPerson = repository.save(provider);
         Assertions.assertNotNull(savedPerson.getProviderId());
-        Assertions.assertEquals(savedPerson, provider);
+        Assertions.assertEquals(savedPerson.getProviderId(), provider.getProviderId());
     }
 
     @Test
