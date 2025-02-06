@@ -35,8 +35,8 @@ public class County implements Serializable {
     @Column(name = "fips_county_code")
     private Integer fipsCountyCode;
 
-    @Column(name = "dpa_count_code")
-    private Integer dpaCountCode;
+    @Column(name = "dpa_county_code")
+    private Integer dpaCountyCode;
 
     @Column(name = "caseload_code")
     private String caseloadCode;
