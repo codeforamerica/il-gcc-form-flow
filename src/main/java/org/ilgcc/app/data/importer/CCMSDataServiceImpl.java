@@ -10,7 +10,6 @@ import org.ilgcc.app.data.Provider;
 import org.ilgcc.app.data.ProviderRepository;
 import org.ilgcc.app.data.ResourceOrganization;
 import org.ilgcc.app.data.ResourceOrganizationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +19,6 @@ public class CCMSDataServiceImpl implements CCMSDataService {
     private final CountyRepository countyRepository;
     private final ResourceOrganizationRepository resourceOrganizationRepository;
 
-    @Autowired
     public CCMSDataServiceImpl(ProviderRepository providerRepository, CountyRepository countyRepository, ResourceOrganizationRepository resourceOrganizationRepository) {
         this.providerRepository = providerRepository;
         this.countyRepository = countyRepository;
@@ -45,5 +43,10 @@ public class CCMSDataServiceImpl implements CCMSDataService {
     @Override
     public List<ResourceOrganization> getResourceOrganizationsByCaseloadCode(String caseloadCode) {
         return resourceOrganizationRepository.findByCaseloadCode(caseloadCode);
+    }
+
+    @Override
+    public Optional<ResourceOrganization> getOrganizationById(BigInteger organizationId) {
+        return resourceOrganizationRepository.findById(organizationId);
     }
 }
