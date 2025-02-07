@@ -384,14 +384,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-doc-upload-add-files.title
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
-        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isFalse();
-        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
-        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
-        
         uploadJpgFile("providerUploadDocuments");
         
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
@@ -560,6 +552,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         
         // registration-doc-upload-add-files
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
         assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
         uploadJpgFile("providerUploadDocuments");
 
