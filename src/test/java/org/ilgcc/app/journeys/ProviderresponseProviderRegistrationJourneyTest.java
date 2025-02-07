@@ -384,10 +384,15 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-doc-upload-add-files.title
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        
         uploadJpgFile("providerUploadDocuments");
-        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
-        await().atMost(5, TimeUnit.SECONDS)
-                .until(() -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")));
         
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
@@ -557,9 +562,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
         assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
         uploadJpgFile("providerUploadDocuments");
-        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
-        await().atMost(5, TimeUnit.SECONDS)
-                .until(() -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")));
 
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
@@ -728,9 +730,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
         assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
         uploadJpgFile("providerUploadDocuments");
-        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
-        await().atMost(5, TimeUnit.SECONDS)
-                .until(() -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")));
 
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
@@ -881,9 +880,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
         uploadJpgFile("providerUploadDocuments");
-        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
-        await().atMost(5, TimeUnit.SECONDS)
-                .until(() -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")));
 
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
@@ -1043,9 +1039,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
         assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
         uploadJpgFile("providerUploadDocuments");
-        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
-        await().atMost(5, TimeUnit.SECONDS)
-                .until(() -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")));
 
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
@@ -1237,9 +1230,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
         assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isFalse();
         uploadJpgFile("providerUploadDocuments");
-        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
-        await().atMost(5, TimeUnit.SECONDS)
-                .until(() -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")));
 
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));

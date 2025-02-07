@@ -5,6 +5,7 @@ import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import formflow.library.data.UserFileRepository;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.data.TransmissionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -152,6 +153,9 @@ public abstract class AbstractBasePageTest {
         uploadFile(UPLOADED_JPG_FILE_NAME, dzName);
         assertThat(driver.findElement(By.id("dropzone-" + dzName)).getText().replace("\n", ""))
                 .contains(UPLOADED_JPG_FILE_NAME);
+        // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
+        await().atMost(5, TimeUnit.SECONDS)
+                .until(() -> !(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")));
     }
 
     private void waitUntilFileIsUploaded() {
