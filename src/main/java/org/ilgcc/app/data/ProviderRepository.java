@@ -16,4 +16,5 @@ public interface ProviderRepository extends JpaRepository<Provider, BigInteger> 
             + "AND date_of_last_approval >= :threeYearsAgo", nativeQuery = true)
     boolean existsByStatusInAndProviderIdAndDateOfLastApprovalAfter(@Param("statuses") List<String> statuses,
             @Param("providerId") BigInteger providerId, @Param("threeYearsAgo") LocalDate threeYearsAgo);
+
 }
