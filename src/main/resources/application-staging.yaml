@@ -13,7 +13,11 @@ form-flow:
       gcc:
         prefix: STG-
         creation-point: creation
-management:
+  uploads:
+    max-file-size: '40'
+    file-conversion:
+      max-coversion-size: '10'
+  anagement:
   endpoint:
     health:
       enabled: true
