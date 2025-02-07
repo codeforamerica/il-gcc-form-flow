@@ -5,7 +5,19 @@ import static org.ilgcc.app.utils.ZipcodeOption.zip_60115;
 import static org.ilgcc.app.utils.ZipcodeOption.zip_60530;
 import static org.ilgcc.app.utils.ZipcodeOption.zip_61015;
 import static org.ilgcc.app.utils.ZipcodeOption.zip_61053;
-import static org.ilgcc.app.utils.ZipcodeOption.zip_61243;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_61071;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62011;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62401;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62410;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62413;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62421;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62432;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62434;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62439;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62446;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62476;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62807;
+import static org.ilgcc.app.utils.ZipcodeOption.zip_62814;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +30,19 @@ public enum CountyOption implements InputOption {
     LEE("Lee", zip_60530),
     MCHENRY("McHenry", zip_60050),
     OGLE("Ogle", zip_61015),
-    WHITESIDE("Whiteside", zip_61243);
+    WHITESIDE("Whiteside", zip_61071),
+    MARION("Marion", zip_62807),
+    JEFFERSON("Jefferson", zip_62814),
+    EFFINGHAM("Effingham", zip_62401),
+    FAYETTE("Fayette", zip_62011),
+    CRAWFORD("Crawford", zip_62413),
+    WAYNE("Wayne", zip_62446),
+    RICHLAND("Richland", zip_62421),
+    LAWRENCE("Lawrence", zip_62439),
+    CLAY("Clay", zip_62434),
+    WABASH("Wabash", zip_62410),
+    JASPER("Jasper", zip_62432),
+    EDWARDS("Edwards", zip_62476);
 
     private final String value;
     private final ZipcodeOption zipcodeOption;

@@ -3,6 +3,8 @@ package org.ilgcc.app.data;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -12,6 +14,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.stereotype.Component;
 
 
@@ -55,4 +59,9 @@ public class Provider implements Serializable {
 
     @Column(name = "date_of_last_approval")
     private OffsetDateTime dateOfLastApproval;
+
+    @JoinColumn(name = "resource_org_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
+    private ResourceOrganization resourceOrganization;
 }
