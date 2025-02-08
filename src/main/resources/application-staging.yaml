@@ -16,7 +16,7 @@ form-flow:
   uploads:
     max-file-size: '40'
     file-conversion:
-      max-coversion-size: '10'
+      max-conversion-size: '10'
   anagement:
   endpoint:
     health:
