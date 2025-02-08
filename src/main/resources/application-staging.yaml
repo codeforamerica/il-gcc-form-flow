@@ -14,9 +14,9 @@ form-flow:
         prefix: STG-
         creation-point: creation
   uploads:
-    max-file-size: '40'
+    max-file-size: ${UPLOADS_MAX_FILE_SIZE:10}
     file-conversion:
-      max-conversion-size: '10'
+      max-conversion-size: ${UPLOADS_MAX_CONVERSION_SIZE:10}
 management:
   endpoint:
     health:
