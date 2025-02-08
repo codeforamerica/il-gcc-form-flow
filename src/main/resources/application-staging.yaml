@@ -17,7 +17,7 @@ form-flow:
     max-file-size: '40'
     file-conversion:
       max-conversion-size: '10'
-  anagement:
+management:
   endpoint:
     health:
       enabled: true
