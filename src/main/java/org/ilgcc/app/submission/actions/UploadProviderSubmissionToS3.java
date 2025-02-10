@@ -51,7 +51,7 @@ public class UploadProviderSubmissionToS3 implements Action {
     @Override
     public void run(Submission providerSubmission) {
         var clientId = ProviderSubmissionUtilities.getClientId(providerSubmission);
-        if (clientId != null && clientId.isPresent()) {
+        if (clientId.isPresent()) {
             Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(clientId.get());
             if (familySubmissionOptional.isPresent()) {
                 log.info("Provider submitted response for client ID {}, enqueuing transfer of documents.", clientId.get());

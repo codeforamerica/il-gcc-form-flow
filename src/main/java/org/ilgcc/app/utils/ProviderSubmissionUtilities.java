@@ -64,7 +64,7 @@ public class ProviderSubmissionUtilities {
             String applicantID = (String) providerSubmission.getInputData().get("familySubmissionId");
             return Optional.of(UUID.fromString(applicantID));
         }
-        return null;
+        return Optional.empty();
     }
 
     public static Map<String, String> getApplicantSubmissionForProviderResponse(Optional<Submission> applicantSubmission) {
