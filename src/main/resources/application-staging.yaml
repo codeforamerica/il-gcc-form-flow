@@ -17,6 +17,7 @@ form-flow:
     max-file-size: ${UPLOADS_MAX_FILE_SIZE:10}
     file-conversion:
       max-conversion-size: ${UPLOADS_MAX_CONVERSION_SIZE:10}
+      max-pages: ${UPLOADS_MAX_PAGES:50}
 management:
   endpoint:
     health:
