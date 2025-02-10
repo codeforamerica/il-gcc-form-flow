@@ -27,7 +27,8 @@ public class CCMSDataServiceImpl implements CCMSDataService {
 
     @Override
     public Optional<County> getCountyByZipCode(String zipCode) {
-        return countyRepository.findById(zipCode);
+        final String truncatedZip = zipCode.substring(0, 5);
+        return countyRepository.findByZipCode(truncatedZip);
     }
 
     @Override

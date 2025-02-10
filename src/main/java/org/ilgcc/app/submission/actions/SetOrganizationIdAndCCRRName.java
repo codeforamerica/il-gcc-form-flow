@@ -5,6 +5,8 @@ import formflow.library.data.Submission;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.ilgcc.app.data.County;
+import org.ilgcc.app.data.importer.CCMSDataServiceImpl;
 import org.ilgcc.app.submission.router.ApplicationRouterService;
 import formflow.library.data.SubmissionRepositoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +26,15 @@ public class SetOrganizationIdAndCCRRName implements Action {
     @Autowired
     ApplicationRouterService applicationRouterService;
 
+    @Autowired
+    CCMSDataServiceImpl ccmsDataServiceImpl;
+
     private static final String ORGANIZATION_ID_INPUT = "organizationId";
     private static final String UNVALIDATED_ZIPCODE_INPUT_NAME = "parentHomeZipCode";
     private static final String APPLICATION_COUNTY_INPUT_NAME = "applicationCounty";
     private static final String APPLICATION_ZIPCODE_INPUT_NAME = "applicationZipCode";
+
+    private static final String APPLICANT_COUNTY_INPUT_NAME = "applicantAddressCounty";
 
     @Override
     public void run(Submission submission) {
@@ -44,6 +51,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
             if (organizationId.isPresent()) {
                 saveOrganizationIdAndName(submission, organizationId.get());
+                saveCountyFromZip(submission, unvalidatedZip);
                 return;
             } else {
                 log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(), unvalidatedZip));
@@ -58,6 +66,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
             if (zipCode.isPresent()) {
                 Optional<String> organizationId = applicationRouterService.getOrganizationIdByZipCode(zipCode.get().getValue());
                 saveOrganizationIdAndName(submission, organizationId.get());
+                saveCounty(submission, applicationCounty);
                 return;
             }
         }
@@ -67,6 +76,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
             final Optional<String> organizationId = applicationRouterService.getOrganizationIdByZipCode(applicationZipCode);
             if (organizationId.isPresent()) {
                 saveOrganizationIdAndName(submission, organizationId.get());
+                saveCountyFromZip(submission, applicationZipCode);
                 return;
             }
         }
@@ -80,6 +90,20 @@ public class SetOrganizationIdAndCCRRName implements Action {
         submissionRepositoryService.save(submission);
     }
 
+    private void saveCountyFromZip(Submission submission, String zipCode){
+        Optional<County> county = ccmsDataServiceImpl.getCountyByZipCode(zipCode);
+        if(county.isPresent()){
+            saveCounty(submission, county.get().getCounty());
+        } else {
+            log.info(String.format("could not assign a zip code to this application: %s", submission.getId()));
+        }
+
+    }
+
+    private void saveCounty(Submission submission, String county){
+        submission.getInputData().put(APPLICANT_COUNTY_INPUT_NAME, county);
+        submissionRepositoryService.save(submission);
+    }
     private boolean hasValidValue(Map<String, Object> inputData, String inputKey) {
         return !inputData.getOrDefault(inputKey, "").toString().isBlank();
     }
