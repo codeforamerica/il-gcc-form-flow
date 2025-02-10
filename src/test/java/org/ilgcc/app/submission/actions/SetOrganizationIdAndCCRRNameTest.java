@@ -41,7 +41,7 @@ class SetOrganizationIdAndCCRRNameTest {
         action.applicationRouterService = applicationRouterService;
         action.submissionRepositoryService = submissionRepositoryService;
         action.ccmsDataServiceImpl=ccmsDataServiceImpl;
-        County cookCounty = new County("60304", "city" , "Cook", 123, 123, "AA" );
+        County cookCounty = new County(Long.parseLong("60304"), "city" , "Cook", 123, 123, "AA" );
         when(ccmsDataServiceImpl.getCountyByZipCode("60304")).thenReturn(Optional.of(cookCounty));
     }
 
@@ -65,7 +65,7 @@ class SetOrganizationIdAndCCRRNameTest {
                 .with("applicationCounty", CountyOption.LEE.getValue())
                 .build();
 
-        County jasperCounty = new County("62479", "city" , "Jasper", 123, 123, "AA" );
+        County jasperCounty = new County(Long.parseLong("62479"), "city" , "Jasper", 123, 123, "AA" );
         when(ccmsDataServiceImpl.getCountyByZipCode("62479")).thenReturn(Optional.of(jasperCounty));
 
         action.run(submission);

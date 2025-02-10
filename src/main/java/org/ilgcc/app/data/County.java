@@ -24,7 +24,7 @@ public class County implements Serializable {
 
     @Id
     @Column(name = "zip_code")
-    private String zipCode;
+    private Long zipCode;
 
     @Column(name = "city")
     private String city;
