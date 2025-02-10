@@ -552,7 +552,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         
         // registration-doc-upload-add-files
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
         assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
