@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import org.ilgcc.app.IlGCCApplication;
@@ -41,7 +42,7 @@ class SetOrganizationIdAndCCRRNameTest {
         action.applicationRouterService = applicationRouterService;
         action.submissionRepositoryService = submissionRepositoryService;
         action.ccmsDataServiceImpl=ccmsDataServiceImpl;
-        County cookCounty = new County(Long.parseLong("60304"), "city" , "Cook", 123, 123, "AA" );
+        County cookCounty = new County(new BigInteger("60304"), "city" , "Cook", 123, 123, "AA" );
         when(ccmsDataServiceImpl.getCountyByZipCode("60304")).thenReturn(Optional.of(cookCounty));
     }
 
@@ -65,7 +66,7 @@ class SetOrganizationIdAndCCRRNameTest {
                 .with("applicationCounty", CountyOption.LEE.getValue())
                 .build();
 
-        County jasperCounty = new County(Long.parseLong("62479"), "city" , "Jasper", 123, 123, "AA" );
+        County jasperCounty = new County(new BigInteger("62479"), "city" , "Jasper", 123, 123, "AA" );
         when(ccmsDataServiceImpl.getCountyByZipCode("62479")).thenReturn(Optional.of(jasperCounty));
 
         action.run(submission);

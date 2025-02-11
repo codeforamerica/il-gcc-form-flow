@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import java.math.BigInteger;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class County implements Serializable {
 
     @Id
     @Column(name = "zip_code")
-    private Long zipCode;
+    private BigInteger zipCode;
 
     @Column(name = "city")
     private String city;
