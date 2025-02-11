@@ -54,10 +54,10 @@ public class SetOrganizationIdAndCCRRName implements Action {
                 saveCountyFromZip(submission, unvalidatedZip);
                 return;
             } else {
-                log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(), unvalidatedZip));
+                log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(),
+                        unvalidatedZip));
             }
         }
-
 
         if (hasValidValue(inputData, APPLICATION_COUNTY_INPUT_NAME)) {
             final String applicationCounty = (String) submission.getInputData().get(APPLICATION_COUNTY_INPUT_NAME);
@@ -90,9 +90,9 @@ public class SetOrganizationIdAndCCRRName implements Action {
         submissionRepositoryService.save(submission);
     }
 
-    private void saveCountyFromZip(Submission submission, String zipCode){
+    private void saveCountyFromZip(Submission submission, String zipCode) {
         Optional<County> county = ccmsDataServiceImpl.getCountyByZipCode(zipCode);
-        if(county.isPresent()){
+        if (county.isPresent()) {
             saveCounty(submission, county.get().getCounty());
         } else {
             log.info(String.format("could not assign a zip code to this application: %s", submission.getId()));
@@ -100,10 +100,11 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
     }
 
-    private void saveCounty(Submission submission, String county){
+    private void saveCounty(Submission submission, String county) {
         submission.getInputData().put(APPLICANT_COUNTY_INPUT_NAME, county);
         submissionRepositoryService.save(submission);
     }
+
     private boolean hasValidValue(Map<String, Object> inputData, String inputKey) {
         return !inputData.getOrDefault(inputKey, "").toString().isBlank();
     }
