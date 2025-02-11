@@ -68,7 +68,7 @@ public class EnqueueDocumentTransfer {
             log.info("Finding all uploaded and converted files of type {}", CONTENT_TYPE);
             userFiles = userFileRepositoryService.findAllOrderByOriginalName(submission, CONTENT_TYPE);
         } else {
-            userFiles = userFileRepositoryService.findAllOrderedByOriginalName(submission);
+            userFiles = userFileRepositoryService.findAllOrderByOriginalName(submission);
         }
 
         if (!userFiles.isEmpty()) {
