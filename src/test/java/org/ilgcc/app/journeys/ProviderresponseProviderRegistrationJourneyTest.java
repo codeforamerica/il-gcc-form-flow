@@ -1,8 +1,11 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+
 import formflow.library.data.SubmissionRepository;
 import java.time.OffsetDateTime;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
@@ -381,6 +384,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-doc-upload-add-files.title
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        uploadJpgFile("providerUploadDocuments");
+        
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
 
     }
 
@@ -542,7 +549,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-
+        
         // registration-doc-upload-add-files
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
         assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
@@ -551,12 +558,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
-        testPage.goBack();
+        assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
+        uploadJpgFile("providerUploadDocuments");
 
-        // registration-doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
-
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
+        testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
+        
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
     }
@@ -719,12 +727,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
         assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
-        testPage.goBack();
+        uploadJpgFile("providerUploadDocuments");
 
-        // registration-doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
-
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
+        testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
+        
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
     }
@@ -869,11 +877,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
-        testPage.goBack();
+        uploadJpgFile("providerUploadDocuments");
 
-        // registration-doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
+        testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
 
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
@@ -1028,12 +1036,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
         assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
-        testPage.goBack();
+        uploadJpgFile("providerUploadDocuments");
 
-        // registration-doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
-
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
+        testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
+        
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
     }
@@ -1219,12 +1227,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
         assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
         assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isFalse();
-        testPage.goBack();
+        uploadJpgFile("providerUploadDocuments");
 
-        // registration-doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
-
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
+        testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
+        
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
     }

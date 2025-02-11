@@ -21,6 +21,7 @@ import static org.ilgcc.app.utils.CountyOption.WHITESIDE;
 
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,27 +35,28 @@ public class CountyOptionUtils {
 
     @PostConstruct
     public void init() {
-        countyOptions = new ArrayList<>();
-        countyOptions.add(CARROLL);
-        countyOptions.add(DEKALB);
-        countyOptions.add(LEE);
-        countyOptions.add(MCHENRY);
-        countyOptions.add(OGLE);
-        countyOptions.add(WHITESIDE);
+        List<CountyOption> unsortedCountyOptions = new ArrayList<>();
+        unsortedCountyOptions.add(CARROLL);
+        unsortedCountyOptions.add(DEKALB);
+        unsortedCountyOptions.add(LEE);
+        unsortedCountyOptions.add(MCHENRY);
+        unsortedCountyOptions.add(OGLE);
+        unsortedCountyOptions.add(WHITESIDE);
         if (enableSDA15Providers) {
-            countyOptions.add(MARION);
-            countyOptions.add(JEFFERSON);
-            countyOptions.add(EFFINGHAM);
-            countyOptions.add(FAYETTE);
-            countyOptions.add(CRAWFORD);
-            countyOptions.add(WAYNE);
-            countyOptions.add(RICHLAND);
-            countyOptions.add(LAWRENCE);
-            countyOptions.add(CLAY);
-            countyOptions.add(WABASH);
-            countyOptions.add(JASPER);
-            countyOptions.add(EDWARDS);
+            unsortedCountyOptions.add(MARION);
+            unsortedCountyOptions.add(JEFFERSON);
+            unsortedCountyOptions.add(EFFINGHAM);
+            unsortedCountyOptions.add(FAYETTE);
+            unsortedCountyOptions.add(CRAWFORD);
+            unsortedCountyOptions.add(WAYNE);
+            unsortedCountyOptions.add(RICHLAND);
+            unsortedCountyOptions.add(LAWRENCE);
+            unsortedCountyOptions.add(CLAY);
+            unsortedCountyOptions.add(WABASH);
+            unsortedCountyOptions.add(JASPER);
+            unsortedCountyOptions.add(EDWARDS);
         }
+        countyOptions = unsortedCountyOptions.stream().sorted(Comparator.comparing(CountyOption::getLabel)).toList();
     }
 
     public static List<CountyOption> getActiveCountyOptions() {

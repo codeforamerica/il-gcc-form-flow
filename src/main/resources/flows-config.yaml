@@ -759,7 +759,9 @@ flow:
     nextScreens:
       - name: registration-doc-upload-submit-confirmation
   registration-doc-upload-submit-confirmation:
-    nextScreens: null
+    condition: EnableProviderRegistration
+    nextScreens: 
+      - name: registration-submit-next-steps
 subflows:
   providerHouseholdMembers:
     entryScreen: registration-household-add-person
@@ -774,3 +776,4 @@ landmarks:
     - registration-submit-next-steps
     - registration-doc-upload-recommended-docs
     - registration-doc-upload-add-files
+    - registration-doc-upload-submit-confirmation
