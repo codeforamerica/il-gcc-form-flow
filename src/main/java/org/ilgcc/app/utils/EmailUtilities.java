@@ -2,7 +2,6 @@ package org.ilgcc.app.utils;
 
 import static java.util.stream.Collectors.joining;
 
-import formflow.library.data.Submission;
 import java.util.HashMap;
 import java.util.Map;
 import org.yaml.snakeyaml.util.UriEncoder;

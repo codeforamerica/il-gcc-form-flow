@@ -3,13 +3,14 @@ package org.ilgcc.app.email;
 import lombok.Getter;
 
 @Getter
-// EmailMessage
 public class EmailConstants {
 
     @Getter
     public enum EmailType {
-        FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"), FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER(
-                "No Provider Family Confirmation Email");
+        FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"),
+        FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER(
+                "No Provider Family Confirmation Email"),
+        PROVIDER_CONFIRMATION_EMAIL("Provider Response Confirmation Email");
 
         private final String description;
 
@@ -20,8 +21,6 @@ public class EmailConstants {
         public String getDescription() {
             return description;
         }
-
-        // set the body
 
     }
 

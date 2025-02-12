@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ProviderSubmissionUtilities {
+
     private final static Map<String, Integer> DAY_OF_WEEK_WITH_BUSINESS_DAYS_OFFSET = Map.of(
             "MONDAY", 3, "TUESDAY", 3, "WEDNESDAY", 5, "THURSDAY", 5, "FRIDAY", 5, "SATURDAY", 4, "SUNDAY", 3);
 
@@ -104,7 +105,7 @@ public class ProviderSubmissionUtilities {
         }
         return children;
     }
-    
+
     public static String formatChildNamesAsCommaSeperatedList(Submission applicantSubmission) {
         List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission);
         List<String> childNames = new ArrayList<>();
@@ -112,6 +113,27 @@ public class ProviderSubmissionUtilities {
             String firstName = (String) child.get("childFirstName");
             String lastName = (String) child.get("childLastName");
             childNames.add(String.format("%s %s", firstName, lastName));
+        }
+        if (childNames.isEmpty()) {
+            return "";
+        } else if (childNames.size() == 1) {
+            return childNames.get(0); // Single name, no 'and'
+        } else if (childNames.size() == 2) {
+            return String.join(" and ", childNames); // Two childNames, join with 'and'
+        } else {
+            // More than 2 childNames, use comma for all but the last one
+            String last = childNames.remove(childNames.size() - 1); // Remove and keep the last name
+            return String.join(", ", childNames) + " and " + last; // Join remaining with commas, append 'and last'
+        }
+    }
+
+    public static String formatChildInitialsAsCommaSeparatedList(Submission applicantSubmission) {
+        List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission);
+        List<String> childNames = new ArrayList<>();
+        for (var child : children) {
+            String firstName = (String) child.get("childFirstName");
+            String lastName = (String) child.get("childLastName");
+            childNames.add(String.format("%s %s", firstName.substring(0, 1), lastName.substring(0, 1)));
         }
         if (childNames.isEmpty()) {
             return "";
