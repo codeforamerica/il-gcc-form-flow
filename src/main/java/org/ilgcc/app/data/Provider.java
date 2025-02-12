@@ -64,4 +64,18 @@ public class Provider implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     private ResourceOrganization resourceOrganization;
+
+    @Override
+    public String toString() {
+        return "Provider{" +
+                "providerId=" + providerId +
+                ", type='" + type + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", status='" + status + '\'' +
+                ", dateOfLastApproval=" + dateOfLastApproval +
+                ", resourceOrganization=" + resourceOrganization +
+                '}';
+    }
 }

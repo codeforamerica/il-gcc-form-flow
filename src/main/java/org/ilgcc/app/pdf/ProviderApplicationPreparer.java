@@ -35,14 +35,14 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         }
 
         if (useProviderResponse(submission)) {
-            return prepareProviderResponse(submission);
+            return prepareProviderResponse();
         } else {
             return prepareFamilyIntendedProviderData(submission);
         }
     }
 
-    //Because we are printing the PDF from the GCC flow we need to get the provider submission then pull the responses values from the provdier submission
-    private Map<String, SubmissionField> prepareProviderResponse(Submission submission) {
+    //Because we are printing the PDF from the GCC flow we need to get the provider submission then pull the responses values from the provider submission
+    private Map<String, SubmissionField> prepareProviderResponse() {
         var results = new HashMap<String, SubmissionField>();
 
         Map<String, Object> providerInputData = providerSubmission.getInputData();

@@ -396,7 +396,7 @@ public enum ZipcodeOption implements InputOption {
     }
 
     public static Optional<String> getCaseLoadCodeByZipCode(String zipcode) {
-        Boolean hasZip = ZIPCODE_MAP.containsKey(zipcode);
+        boolean hasZip = ZIPCODE_MAP.containsKey(zipcode);
         return hasZip ? Optional.of(ZIPCODE_MAP.get(zipcode)) : Optional.empty();
     }
 }
