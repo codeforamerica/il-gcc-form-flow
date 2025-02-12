@@ -67,7 +67,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
             return;
         }
 
-        String providerSubmissionShortCode = providerSubmission.getShortCode();
+        String familySubmissionConfirmationId = familySubmission.getShortCode();
 
         Locale locale =
                 providerSubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
@@ -76,7 +76,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         String senderName = messageSource.getMessage("provider-response.response-email.senderName", null, locale);
 
         String subject = messageSource.getMessage("provider-response.response-email.subject", null, locale);
-        Content body = createProviderResponseConfirmationEmailBody(providerSubmission, familySubmission, providerSubmissionShortCode, locale);
+        Content body = createProviderResponseConfirmationEmailBody(providerSubmission, familySubmission, familySubmissionConfirmationId, locale);
 
         sendEmailJob.enqueueSendEmailJob(familyEmailAddress, senderName, subject,
                 EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
@@ -89,7 +89,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         //how do we set provider response
         String providerName = getProviderResponseName(providerSubmission);
         String ccapStartDate = (String) familySubmission.getInputData().getOrDefault("earliestChildcareStartDate", "");
-        String ccrrName = providerSubmission.getInputData().get("ccrrName").toString();
+        String ccrrName = familySubmission.getInputData().get("ccrrName").toString();
         String ccrrPhoneNumber = (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", "");
 
         String p1 = messageSource.getMessage("provider-response.response-email.p1", null, locale);
