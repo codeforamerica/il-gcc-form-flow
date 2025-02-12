@@ -49,7 +49,7 @@ public class EmbeddedPostgresIntegrationTest {
         County county = new County();
         county.setCounty("Test County");
         county.setCity("Test City");
-        county.setZipCode("12345");
+        county.setZipCode(new BigInteger("12345"));
         County savedCounty = countyRepository.save(county);
 
         Optional<County> byId = countyRepository.findById("12345");

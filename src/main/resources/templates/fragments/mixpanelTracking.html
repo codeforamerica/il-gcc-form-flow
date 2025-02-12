@@ -21,6 +21,10 @@
         'number_of_adult': `[[ ${T(org.ilgcc.app.utils.SubmissionUtilities).getMixpanelValue(submission, "adultDependents")} ]]`,
     }
 
+    if (`[[ ${session.confirmationCode != null} ]]` === 'true') {
+      tracking_params['family_confirmation_code'] = `[[ ${session.confirmationCode} ]]`;
+    }
+
     const intercepted_param = window.location.href.includes("?intercepted=") ? window.location.href.split("?intercepted=")[1].split('&')[0] : null
 
     if (intercepted_param) {
