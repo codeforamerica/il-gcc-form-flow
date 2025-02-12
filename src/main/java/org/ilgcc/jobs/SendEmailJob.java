@@ -27,6 +27,8 @@ public class SendEmailJob {
         this.sendGridEmailService = sendGridEmailService;
     }
 
+
+// change this to take an EmailMessage
     public void enqueueSendEmailJob(String recipientAddress, String senderName, String subject, String emailType, Content content,
             Submission submission) {
         if (emailsEnabled) {

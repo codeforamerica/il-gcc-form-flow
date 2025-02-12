@@ -3,6 +3,7 @@ package org.ilgcc.app.email;
 import lombok.Getter;
 
 @Getter
+// EmailMessage
 public class EmailConstants {
 
     @Getter
@@ -19,6 +20,9 @@ public class EmailConstants {
         public String getDescription() {
             return description;
         }
+
+        // set the body
+
     }
 
     public static final String FROM_ADDRESS = "contact@getchildcareil.org";

@@ -149,4 +149,6 @@ public class Providerresponse extends FlowInputs {
     // registration-signature
     @NotBlank(message = "{errors.validate.provider-signed-name}")
     private String providerSignedName;
+
+    private String providerConfirmationEmailSent;
 }
