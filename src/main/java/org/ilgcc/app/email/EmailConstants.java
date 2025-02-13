@@ -8,7 +8,7 @@ public class EmailConstants {
     @Getter
     public enum EmailType {
         FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"), FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER(
-                "No Provider Family Confirmation Email");
+                "No Provider Family Confirmation Email"), PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL("Provider Agrees to Care Family Email");
 
         private final String description;
 

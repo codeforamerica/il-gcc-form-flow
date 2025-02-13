@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.EmailConstants;
+import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
@@ -79,7 +80,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         Content body = createProviderResponseConfirmationEmailBody(providerSubmission, familySubmission, familySubmissionConfirmationId, locale);
 
         sendEmailJob.enqueueSendEmailJob(familyEmailAddress, senderName, subject,
-                EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
+                EmailConstants.EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL.getDescription(),
                 body, providerSubmission);
         providerSubmission.getInputData().put("providerResponseFamilyConfirmationEmailSent", "true");
         submissionRepositoryService.save(providerSubmission);
@@ -88,13 +89,12 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
     private Content createProviderResponseConfirmationEmailBody(Submission providerSubmission, Submission familySubmission,String confirmationCode, Locale locale) {
         //how do we set provider response
         String providerName = getProviderResponseName(providerSubmission);
-        String ccapStartDate = (String) familySubmission.getInputData().getOrDefault("earliestChildcareStartDate", "");
         String ccrrName = familySubmission.getInputData().get("ccrrName").toString();
         String ccrrPhoneNumber = (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", "");
 
         String p1 = messageSource.getMessage("provider-response.response-email.p1", null, locale);
         String p2 = providerName.isBlank() ? messageSource.getMessage("provider-response.response-email.p2-no-provider-name", new Object[]{ccrrName}, locale) : messageSource.getMessage("provider-response.response-email.p2-has-provider-name", new Object[]{providerName, ccrrName}, locale);
-        String p3 = messageSource.getMessage("provider-response.response-email.p3", new Object[]{getChildrenInitialsFromApplication(familySubmission), ccapStartDate}, locale);
+        String p3 = messageSource.getMessage("provider-response.response-email.p3", new Object[]{getChildrenInitialsFromApplication(familySubmission), getCCAPDate(familySubmission, providerSubmission)}, locale);
         String p4 = messageSource.getMessage("provider-response.response-email.p4", new Object[]{confirmationCode}, locale);
         String p5 = messageSource.getMessage("provider-response.response-email.p5", new Object[]{ccrrName, ccrrPhoneNumber}, locale);
         String p6 = messageSource.getMessage("provider-response.response-email.footer.p1", null, locale);
@@ -121,5 +121,17 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
             childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
         }
         return String.join(", ", childrenInitials);
+    }
+
+    private String getCCAPDate(Submission familySubmission, Submission providerSubmission) {
+        String providerCareStartDate = (String) providerSubmission.getInputData().getOrDefault("providerCareStartDate", "");
+
+        if (!providerCareStartDate.isBlank()) {
+            return DateUtilities.convertDateToFullWordMonthPattern(providerCareStartDate);
+        }else {
+            String familyEarliestChildcareStartDate = (String) familySubmission.getInputData().getOrDefault("earliestChildcareStartDate", "");
+            return DateUtilities.convertDateToFullWordMonthPattern(familyEarliestChildcareStartDate);
+        }
+
     }
 }
