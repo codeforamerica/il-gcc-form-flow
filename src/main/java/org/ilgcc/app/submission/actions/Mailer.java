@@ -9,7 +9,6 @@ import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-@Component
 abstract class Mailer implements Action {
 
     static MessageSource messageSource;
@@ -37,8 +36,9 @@ abstract class Mailer implements Action {
         return submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
     }
 
-    protected void sendEmail(ILGCCEmail email) {
+    protected void sendEmail(ILGCCEmail email, Submission submission) {
         sendEmailJob.enqueueSendEmailJob(email);
+        updateEmailStatus(submission);
     }
 
     protected Boolean skipEmailSend(Submission submission) {
