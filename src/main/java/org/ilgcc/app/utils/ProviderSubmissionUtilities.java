@@ -89,7 +89,7 @@ public class ProviderSubmissionUtilities {
     public static List<Map<String, String>> getChildrenDataForProviderResponse(Submission applicantSubmission) {
         List<Map<String, String>> children = new ArrayList<>();
 
-        if (SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission).size() > 0) {
+        if (!SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission).isEmpty()) {
             for (var child : SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission)) {
                 Map<String, String> childObject = new HashMap<>();
                 String firstName = (String) child.get("childFirstName");
@@ -194,5 +194,36 @@ public class ProviderSubmissionUtilities {
         return submission.getSubmittedAt() != null &&
                 MINUTES.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt()),
                         todaysDate) > 0;
+    }
+
+    public static String getCCAPStartDateFromProviderOrFamilyChildcareStartDate(Submission familySubmission, Submission providerSubmission) {
+        String providerCareStartDate = (String) providerSubmission.getInputData().getOrDefault("providerCareStartDate", "");
+
+        if (!providerCareStartDate.isBlank()) {
+            return DateUtilities.convertDateToFullWordMonthPattern(providerCareStartDate);
+        }else {
+            String familyEarliestChildcareStartDate = (String) familySubmission.getInputData().getOrDefault("earliestChildcareStartDate", "");
+            return DateUtilities.convertDateToFullWordMonthPattern(familyEarliestChildcareStartDate);
+        }
+    }
+    public static String getChildrenInitialsFromApplication(Submission familySubmission) {
+        List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(familySubmission);
+        var childrenInitials = new ArrayList<String>();
+        if (children.isEmpty()) {
+            return "";
+        }
+        for (var child : children) {
+            String firstName = (String) child.get("childFirstName");
+            String lastName = (String) child.get("childLastName");
+            childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
+        }
+        return String.join(", ", childrenInitials);
+    }
+    public static String getProviderResponseName(Submission providerSubmission) {
+        String providerResponseBusinessName  = (String) providerSubmission.getInputData().getOrDefault("providerResponseBusinessName", "");
+        if (!providerResponseBusinessName.isEmpty()) {
+            return providerResponseBusinessName;
+        }
+        return (String) providerSubmission.getInputData().getOrDefault("providerResponseFirstName", "");
     }
 }

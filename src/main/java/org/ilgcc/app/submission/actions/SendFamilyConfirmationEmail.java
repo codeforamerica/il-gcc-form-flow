@@ -49,7 +49,7 @@ public class SendFamilyConfirmationEmail implements Action {
         String subject = messageSource.getMessage("email.family-confirmation.subject", new Object[]{familySubmissionShortCode},
                 locale);
 
-        String senderName = messageSource.getMessage("email.sender-name", null, locale);
+        String senderName = messageSource.getMessage("email.general.sender-name", null, locale);
 
         sendEmailJob.enqueueSendEmailJob(familyEmail, senderName, subject,
                 EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
@@ -72,8 +72,8 @@ public class SendFamilyConfirmationEmail implements Action {
                 locale);
         String p6 = messageSource.getMessage("email.family-confirmation.p6", null, locale);
         String p7 = messageSource.getMessage("email.family-confirmation.p7", null, locale);
-        String p8 = messageSource.getMessage("email.family-confirmation.p8", null, locale);
-        String p9 = messageSource.getMessage("email.footer", null, locale);
+        String p8 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
+        String p9 = messageSource.getMessage("email.general.footer.cfa", null, locale);
         return new Content("text/html", p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9);
     }
 }

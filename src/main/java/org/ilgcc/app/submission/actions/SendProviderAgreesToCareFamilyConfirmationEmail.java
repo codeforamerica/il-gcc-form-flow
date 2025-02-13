@@ -5,17 +5,12 @@ import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.EmailConstants;
-import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
-import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -60,7 +55,6 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
             return;
         }
         Submission familySubmission = familySubmissionOptional.get();
-        //If provider failed to provide an email
         String familyEmailAddress = (String) familySubmission.getInputData().getOrDefault("parentContactEmail", "");
         if (familyEmailAddress.isEmpty()) {
             log.warn("No parentContactEmail was found to send confirmation email about the provider agreeing to care for the provider submission with ID: {}",
@@ -74,9 +68,9 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
                 providerSubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
                         "es") : Locale.ENGLISH;
 
-        String senderName = messageSource.getMessage("provider-response.response-email.senderName", null, locale);
+        String senderName = messageSource.getMessage("email.general.sender-name", null, locale);
 
-        String subject = messageSource.getMessage("provider-response.response-email.subject", null, locale);
+        String subject = messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale);
         Content body = createProviderResponseConfirmationEmailBody(providerSubmission, familySubmission, familySubmissionConfirmationId, locale);
 
         sendEmailJob.enqueueSendEmailJob(familyEmailAddress, senderName, subject,
@@ -87,51 +81,21 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
     }
 
     private Content createProviderResponseConfirmationEmailBody(Submission providerSubmission, Submission familySubmission,String confirmationCode, Locale locale) {
-        //how do we set provider response
-        String providerName = getProviderResponseName(providerSubmission);
+        String providerName = ProviderSubmissionUtilities.getProviderResponseName(providerSubmission);
         String ccrrName = familySubmission.getInputData().get("ccrrName").toString();
         String ccrrPhoneNumber = (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", "");
 
-        String p1 = messageSource.getMessage("provider-response.response-email.p1", null, locale);
-        String p2 = providerName.isBlank() ? messageSource.getMessage("provider-response.response-email.p2-no-provider-name", new Object[]{ccrrName}, locale) : messageSource.getMessage("provider-response.response-email.p2-has-provider-name", new Object[]{providerName, ccrrName}, locale);
-        String p3 = messageSource.getMessage("provider-response.response-email.p3", new Object[]{getChildrenInitialsFromApplication(familySubmission), getCCAPDate(familySubmission, providerSubmission)}, locale);
-        String p4 = messageSource.getMessage("provider-response.response-email.p4", new Object[]{confirmationCode}, locale);
-        String p5 = messageSource.getMessage("provider-response.response-email.p5", new Object[]{ccrrName, ccrrPhoneNumber}, locale);
-        String p6 = messageSource.getMessage("provider-response.response-email.footer.p1", null, locale);
-        String p7 = messageSource.getMessage("provider-response.response-email.footer.p2", null, locale);
+        String p1 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale);
+        String p2 = providerName.isBlank() ? messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-no-provider-name", new Object[]{ccrrName}, locale) : messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name", new Object[]{providerName, ccrrName}, locale);
+        String p3 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
+            new Object[]{
+                ProviderSubmissionUtilities.getChildrenInitialsFromApplication(familySubmission),
+                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission, providerSubmission)
+            }, locale);
+        String p4 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p4", new Object[]{confirmationCode}, locale);
+        String p5 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p5", new Object[]{ccrrName, ccrrPhoneNumber}, locale);
+        String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
+        String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
         return new Content("text/html", p1 + p2 + p3 + p4 + p5 + p6 + p7);
-    }
-
-    private String getProviderResponseName(Submission providerSubmission) {
-        String providerResponseBusinessName  = (String) providerSubmission.getInputData().getOrDefault("providerResponseBusinessName", "");
-        if (!providerResponseBusinessName.isEmpty()) {
-            return providerResponseBusinessName;
-        }
-        return (String) providerSubmission.getInputData().getOrDefault("providerResponseFirstName", "");
-    }
-    private String getChildrenInitialsFromApplication(Submission familySubmission) {
-        List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(familySubmission);
-        var childrenInitials = new ArrayList<String>();
-        if (children.isEmpty()) {
-            return "";
-        }
-        for (var child : children) {
-            String firstName = (String) child.get("childFirstName");
-            String lastName = (String) child.get("childLastName");
-            childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
-        }
-        return String.join(", ", childrenInitials);
-    }
-
-    private String getCCAPDate(Submission familySubmission, Submission providerSubmission) {
-        String providerCareStartDate = (String) providerSubmission.getInputData().getOrDefault("providerCareStartDate", "");
-
-        if (!providerCareStartDate.isBlank()) {
-            return DateUtilities.convertDateToFullWordMonthPattern(providerCareStartDate);
-        }else {
-            String familyEarliestChildcareStartDate = (String) familySubmission.getInputData().getOrDefault("earliestChildcareStartDate", "");
-            return DateUtilities.convertDateToFullWordMonthPattern(familyEarliestChildcareStartDate);
-        }
-
     }
 }
