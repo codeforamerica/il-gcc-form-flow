@@ -1,12 +1,14 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.County;
 import org.ilgcc.app.data.ResourceOrganization;
@@ -69,7 +71,7 @@ class SetOrganizationIdAndCCRRNameTest {
         ResourceOrganization org = new ResourceOrganization();
         org.setName("Project CHILD");
         org.setResourceOrgId(new BigInteger("59522729391675"));
-        when(applicationRouterService.getOrganizationIdByZipCode(any())).thenReturn(Optional.of(org));
+        when(applicationRouterService.getOrganizationIdByZipCode("62479")).thenReturn(Optional.of(org));
 
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
@@ -133,8 +135,8 @@ class SetOrganizationIdAndCCRRNameTest {
         ResourceOrganization org = new ResourceOrganization();
         org.setName("4C: Community Coordinated Child Care");
         org.setResourceOrgId(new BigInteger("56522729391679"));
-        when(applicationRouterService.getOrganizationIdByZipCode(any())).thenReturn(Optional.of(org));
-
+        when(applicationRouterService.getOrganizationIdByZipCode("94114")).thenReturn(Optional.empty());
+        when(applicationRouterService.getOrganizationIdByZipCode("60530")).thenReturn(Optional.of(org));
 
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
@@ -155,7 +157,7 @@ class SetOrganizationIdAndCCRRNameTest {
         ResourceOrganization org = new ResourceOrganization();
         org.setName("Illinois Action for Children");
         org.setResourceOrgId(new BigInteger("47522729391670"));
-        when(applicationRouterService.getOrganizationIdByZipCode(any())).thenReturn(Optional.of(org));
+        when(applicationRouterService.getOrganizationIdByZipCode("60304")).thenReturn(Optional.of(org));
 
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
