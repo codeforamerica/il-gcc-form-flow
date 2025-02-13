@@ -1,16 +1,16 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Optional;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.data.County;
 import org.ilgcc.app.data.ResourceOrganization;
+import org.ilgcc.app.data.importer.CCMSDataServiceImpl;
 import org.ilgcc.app.submission.router.ApplicationRouterService;
 import org.ilgcc.app.utils.CountyOption;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
@@ -22,6 +22,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(classes = IlGCCApplication.class)
 @ActiveProfiles("test")
@@ -32,15 +33,20 @@ class SetOrganizationIdAndCCRRNameTest {
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
+
+    @MockitoBean
+    CCMSDataServiceImpl ccmsDataServiceImpl;
+
     private SetOrganizationIdAndCCRRName action = new SetOrganizationIdAndCCRRName();
-
-
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         action.applicationRouterService = applicationRouterService;
         action.submissionRepositoryService = submissionRepositoryService;
+        action.ccmsDataServiceImpl=ccmsDataServiceImpl;
+        County cookCounty = new County(new BigInteger("60304"), "city" , "Cook", 123, 123, "AA" );
+        when(ccmsDataServiceImpl.getCountyByZipCode("60304")).thenReturn(Optional.of(cookCounty));
     }
 
     @Test
@@ -71,10 +77,15 @@ class SetOrganizationIdAndCCRRNameTest {
                 .with("applicationCounty", CountyOption.LEE.getValue())
                 .build();
 
+        County jasperCounty = new County(new BigInteger("62479"), "city" , "Jasper", 123, 123, "AA" );
+        when(ccmsDataServiceImpl.getCountyByZipCode("62479")).thenReturn(Optional.of(jasperCounty));
+
         action.run(submission);
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("59522729391675");
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo("Project CHILD");
+        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo("Jasper");
+
     }
 
     @Test
@@ -94,6 +105,7 @@ class SetOrganizationIdAndCCRRNameTest {
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("56522729391679");
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo("4C: Community Coordinated Child Care");
+        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo("Lee");
     }
 
     @Test
@@ -113,6 +125,7 @@ class SetOrganizationIdAndCCRRNameTest {
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("47522729391670");
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo("Illinois Action for Children");
+        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo("Cook");
     }
 
     @Test
@@ -133,6 +146,7 @@ class SetOrganizationIdAndCCRRNameTest {
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("56522729391679");
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo("4C: Community Coordinated Child Care");
+        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo("Lee");
     }
 
     @Test
@@ -153,6 +167,7 @@ class SetOrganizationIdAndCCRRNameTest {
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("47522729391670");
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo("Illinois Action for Children");
+        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo("Cook");
     }
 
 }
