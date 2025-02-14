@@ -30,6 +30,8 @@ public class FakeResourceOrganization implements InitializingBean {
             org.setResourceOrgId(new BigInteger("56522729391679"));
             org.setName("4C: Community Coordinated Child Care");
             org.setSda(Short.valueOf("2"));
+            org.setPhone("123456789");
+            org.setEmail("test@gmail.com");
             org.setCaseloadCode("BB");
             resourceOrganizationRepository.save(org);
         }
@@ -40,6 +42,8 @@ public class FakeResourceOrganization implements InitializingBean {
             org.setName("Project CHILD");
             org.setSda(Short.valueOf("15"));
             org.setCaseloadCode("QQ");
+            org.setPhone("123456789");
+            org.setEmail("test@gmail.com");
             resourceOrganizationRepository.save(org);
         }
 
@@ -49,6 +53,8 @@ public class FakeResourceOrganization implements InitializingBean {
             org.setName("Illinois Action for Children");
             org.setSda(Short.valueOf("6"));
             org.setCaseloadCode("GG");
+            org.setPhone("123456789");
+            org.setEmail("test@gmail.com");
             resourceOrganizationRepository.save(org);
         }
 
