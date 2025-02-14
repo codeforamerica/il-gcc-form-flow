@@ -50,7 +50,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
             final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(unvalidatedZip);
 
             if (org.isPresent()) {
-                saveOrganizationIdAndName(submission, org.get());
+                saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
                 saveCountyFromZip(submission, unvalidatedZip);
                 return;
             } else {
@@ -66,7 +66,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
             if (zipCode.isPresent()) {
                 Optional<ResourceOrganization> organization = applicationRouterService.getOrganizationIdByZipCode(zipCode.get().getValue());
                 if (organization.isPresent()) {
-                    saveOrganizationIdAndName(submission, organization.get());
+                    saveOrganizationIdAndNameAndPhoneNumber(submission, organization.get());
                     saveCounty(submission, applicationCounty);
                     return;
                 } else {
@@ -79,7 +79,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
             final String applicationZipCode = (String) submission.getInputData().get(APPLICATION_ZIPCODE_INPUT_NAME);
             final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(applicationZipCode);
             if (org.isPresent()) {
-                saveOrganizationIdAndName(submission, org.get());
+                saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
                 saveCountyFromZip(submission, applicationZipCode);
                 return;
             }
@@ -88,9 +88,10 @@ public class SetOrganizationIdAndCCRRName implements Action {
         log.info("Could not assign a caseload number to this application");
     }
 
-    private void saveOrganizationIdAndName(Submission submission, ResourceOrganization org) {
+    private void saveOrganizationIdAndNameAndPhoneNumber(Submission submission, ResourceOrganization org) {
         submission.getInputData().put(ORGANIZATION_ID_INPUT, org.getResourceOrgId());
-        submission.getInputData().put("ccrrName", org.getName());
+        submission.getInputData().put("ccrrName",  org.getName());
+        submission.getInputData().put("ccrrPhoneNumber", CCRR.findCCRRPhoneNumberByOrganizationId(org.getResourceOrgId()));
         submissionRepositoryService.save(submission);
     }
 

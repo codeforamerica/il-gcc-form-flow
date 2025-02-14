@@ -22,8 +22,12 @@ public class SetProviderCareStartDate implements Action {
     @Override
     public void run(Submission providerSubmission) {
         Optional<UUID> clientID = ProviderSubmissionUtilities.getClientId(providerSubmission);
-        if (clientID != null && clientID.isPresent()) {
+        if (clientID.isPresent()) {
             Optional<Submission> clientSubmission = submissionRepositoryService.findById(clientID.get());
+            if (clientSubmission.isEmpty()) {
+                log.warn("No client submission found for this id: {}", clientID.get());
+                return;
+            }
             Optional<LocalDate> earliestDate = getEarliestChildCCAPDate(clientSubmission.get());
             if(earliestDate.isPresent()){
                 providerSubmission.getInputData().put("providerCareStartDay", earliestDate.get().getDayOfMonth());

@@ -48,4 +48,17 @@ public class ResourceOrganization {
 
     @OneToMany(mappedBy = "resourceOrganization", fetch =FetchType.LAZY)
     private Set<Provider> providers;
+
+    @Override
+    public String toString() {
+        return "ResourceOrganization{" +
+                "sda=" + sda +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                ", caseloadCode='" + caseloadCode + '\'' +
+                ", resourceOrgId=" + resourceOrgId +
+                '}';
+    }
 }
