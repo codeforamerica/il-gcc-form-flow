@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public class ILGCCEmail {
     public static final String FROM_ADDRESS = "contact@getchildcareil.org";
+    public static final String EMAIL_SENDER_KEY = "email.sender-name";
 
     private Email senderEmail;
     private String subject;
@@ -39,6 +40,7 @@ public class ILGCCEmail {
         FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"),
         FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER(
                 "No Provider Family Confirmation Email"),
+        PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL("Provider Agrees to Care Family Email"),
         PROVIDER_CONFIRMATION_EMAIL("Provider confirmation email");
 
         protected final String description;

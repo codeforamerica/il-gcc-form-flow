@@ -1,13 +1,14 @@
 package org.ilgcc.app.submission.actions;
 
+import com.sendgrid.helpers.mail.objects.Content;
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.util.Locale;
 import org.ilgcc.app.email.ILGCCEmail;
+import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Component;
 
 abstract class Mailer implements Action {
 
@@ -28,12 +29,30 @@ abstract class Mailer implements Action {
     }
 
 
-    protected static String getSenderName(Locale locale) {
-        return messageSource.getMessage("email.sender-name", null, locale);
+    protected static String setSenderName(Locale locale) {
+        return messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale);
     }
 
-    protected static String getRecipientEmail(Submission submission) {
+    protected static String setRecipientName(Submission submission) {
         return submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+    }
+
+    protected String setSubject(Submission submission, Locale locale) {
+        return messageSource.getMessage("email.family-confirmation.subject", null, locale);
+    }
+
+    protected Content setBodyCopy(Submission submission, Locale locale){
+        return new Content();
+    }
+
+
+    protected ILGCCEmail prepareEmailCopy(Submission submission, EmailType emailType){
+        Locale locale =
+                submission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
+                        "es") : Locale.ENGLISH;
+
+        return new ILGCCEmail(setSenderName(locale), setRecipientName(submission), setSubject(submission, locale), setBodyCopy(submission, locale), emailType,submission.getId());
+
     }
 
     protected void sendEmail(ILGCCEmail email, Submission submission) {
