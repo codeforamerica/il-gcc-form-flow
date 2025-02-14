@@ -6,10 +6,13 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatter;
 
 public class DateUtilities {
-
+    private final static String FULL_DATE_INPUT = "MM/dd/yyyy";
+    private final static String FULL_DATE_FORMAT_OUTPUT_PATTER = "MMMM dd, yyyy";
+    private final static String MONTH_YEAR_INPUT = "MM/yyyy";
+    private final static String MONTH_YEAR_OUTPUT_PATTERN = "MMMM yyyy";
     public static String getFormattedDateFromMonthDateYearInputs(String prefix, Map<String, Object> data) {
         String month = (String) data.get(prefix + "Month");
         String day = (String) data.get(prefix + "Day");
@@ -36,7 +39,7 @@ public class DateUtilities {
 
     public static boolean isDateInvalid(String date) {
         try {
-            DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
+            org.joda.time.format.DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
 
             dtf.parseDateTime(date);
         } catch (Exception e) {
@@ -76,5 +79,31 @@ public class DateUtilities {
         Optional<LocalDate> earliestDate = DateUtilities.parseStringDate(dateString1);
         Optional<LocalDate> childcareStartDate = DateUtilities.parseStringDate(dateString2);
         return earliestDate.get().isBefore(childcareStartDate.get()) ? dateString1 : dateString2;
+    }
+
+    public static String convertDateToFullWordMonthPattern(String dateStr){
+        String fullDatePattern = "(\\d{1,2})/(\\d{1,2})/(\\d{4})";
+        Pattern fullDateRegex = Pattern.compile(fullDatePattern);
+        Matcher fullDateMatcher = fullDateRegex.matcher(dateStr);
+
+        if (fullDateMatcher.matches()) {
+            return replaceMonthIntegerWithWord(dateStr, FULL_DATE_INPUT, FULL_DATE_FORMAT_OUTPUT_PATTER);
+        }
+
+        String MonthYearDatePattern = "(\\d{1,2})/(\\d{4})";
+        Pattern MonthYearRegex = Pattern.compile(MonthYearDatePattern);
+        Matcher MonthYearMatcher = MonthYearRegex.matcher(dateStr);
+        if (MonthYearMatcher.matches()) {
+            return replaceMonthIntegerWithWord(dateStr, MONTH_YEAR_INPUT, MONTH_YEAR_OUTPUT_PATTERN);
+        }
+        return "";
+    }
+
+    public static String replaceMonthIntegerWithWord(String dateStr, String inputFormat, String outputFormat) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(inputFormat);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(outputFormat);
+
+        LocalDate date = LocalDate.parse(dateStr, inputFormatter);
+        return date.format(outputFormatter);
     }
 }

@@ -50,7 +50,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
             final Optional<String> organizationId = applicationRouterService.getOrganizationIdByZipCode(unvalidatedZip);
 
             if (organizationId.isPresent()) {
-                saveOrganizationIdAndName(submission, organizationId.get());
+                saveOrganizationIdAndNameAndPhoneNumber(submission, organizationId.get());
                 saveCountyFromZip(submission, unvalidatedZip);
                 return;
             } else {
@@ -65,7 +65,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
             if (zipCode.isPresent()) {
                 Optional<String> organizationId = applicationRouterService.getOrganizationIdByZipCode(zipCode.get().getValue());
-                saveOrganizationIdAndName(submission, organizationId.get());
+                saveOrganizationIdAndNameAndPhoneNumber(submission, organizationId.get());
                 saveCounty(submission, applicationCounty);
                 return;
             }
@@ -75,7 +75,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
             final String applicationZipCode = (String) submission.getInputData().get(APPLICATION_ZIPCODE_INPUT_NAME);
             final Optional<String> organizationId = applicationRouterService.getOrganizationIdByZipCode(applicationZipCode);
             if (organizationId.isPresent()) {
-                saveOrganizationIdAndName(submission, organizationId.get());
+                saveOrganizationIdAndNameAndPhoneNumber(submission, organizationId.get());
                 saveCountyFromZip(submission, applicationZipCode);
                 return;
             }
@@ -84,9 +84,10 @@ public class SetOrganizationIdAndCCRRName implements Action {
         log.info("Could not assign a caseload number to this application");
     }
 
-    private void saveOrganizationIdAndName(Submission submission, String organizationId) {
+    private void saveOrganizationIdAndNameAndPhoneNumber(Submission submission, String organizationId) {
         submission.getInputData().put(ORGANIZATION_ID_INPUT, organizationId);
         submission.getInputData().put("ccrrName", CCRR.findCCRRNameByOrganizationalId(organizationId));
+        submission.getInputData().put("ccrrPhoneNumber", CCRR.findCCRRPhoneNumberByOrganizationId(organizationId));
         submissionRepositoryService.save(submission);
     }
 
