@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.data.County;
+import org.ilgcc.app.data.ResourceOrganization;
 import org.ilgcc.app.data.importer.CCMSDataServiceImpl;
 import org.ilgcc.app.submission.router.ApplicationRouterService;
 import formflow.library.data.SubmissionRepositoryService;
@@ -47,10 +48,10 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
         if (!experiencingHomelessness && hasValidValue(inputData, UNVALIDATED_ZIPCODE_INPUT_NAME)) {
             final String unvalidatedZip = (String) submission.getInputData().get(UNVALIDATED_ZIPCODE_INPUT_NAME);
-            final Optional<String> organizationId = applicationRouterService.getOrganizationIdByZipCode(unvalidatedZip);
+            final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(unvalidatedZip);
 
-            if (organizationId.isPresent()) {
-                saveOrganizationIdAndNameAndPhoneNumber(submission, organizationId.get());
+            if (org.isPresent()) {
+                saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
                 saveCountyFromZip(submission, unvalidatedZip);
                 return;
             } else {
@@ -64,18 +65,22 @@ public class SetOrganizationIdAndCCRRName implements Action {
             final Optional<ZipcodeOption> zipCode = CountyOption.getZipCodeFromCountyName(applicationCounty);
 
             if (zipCode.isPresent()) {
-                Optional<String> organizationId = applicationRouterService.getOrganizationIdByZipCode(zipCode.get().getValue());
-                saveOrganizationIdAndNameAndPhoneNumber(submission, organizationId.get());
-                saveCounty(submission, applicationCounty);
-                return;
+                Optional<ResourceOrganization> organization = applicationRouterService.getOrganizationIdByZipCode(zipCode.get().getValue());
+                if (organization.isPresent()) {
+                    saveOrganizationIdAndNameAndPhoneNumber(submission, organization.get());
+                    saveCounty(submission, applicationCounty);
+                    return;
+                } else {
+                    log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(), zipCode));
+                }
             }
         }
 
         if (hasValidValue(inputData, APPLICATION_ZIPCODE_INPUT_NAME)) {
             final String applicationZipCode = (String) submission.getInputData().get(APPLICATION_ZIPCODE_INPUT_NAME);
-            final Optional<String> organizationId = applicationRouterService.getOrganizationIdByZipCode(applicationZipCode);
-            if (organizationId.isPresent()) {
-                saveOrganizationIdAndNameAndPhoneNumber(submission, organizationId.get());
+            final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(applicationZipCode);
+            if (org.isPresent()) {
+                saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
                 saveCountyFromZip(submission, applicationZipCode);
                 return;
             }
@@ -84,10 +89,10 @@ public class SetOrganizationIdAndCCRRName implements Action {
         log.info("Could not assign a caseload number to this application");
     }
 
-    private void saveOrganizationIdAndNameAndPhoneNumber(Submission submission, String organizationId) {
-        submission.getInputData().put(ORGANIZATION_ID_INPUT, organizationId);
-        submission.getInputData().put("ccrrName", CCRR.findCCRRNameByOrganizationalId(organizationId));
-        submission.getInputData().put("ccrrPhoneNumber", CCRR.findCCRRPhoneNumberByOrganizationId(organizationId));
+    private void saveOrganizationIdAndNameAndPhoneNumber(Submission submission, ResourceOrganization org) {
+        submission.getInputData().put(ORGANIZATION_ID_INPUT, org.getResourceOrgId());
+        submission.getInputData().put("ccrrName",  org.getName());
+        submission.getInputData().put("ccrrPhoneNumber", org.getPhone());
         submissionRepositoryService.save(submission);
     }
 
