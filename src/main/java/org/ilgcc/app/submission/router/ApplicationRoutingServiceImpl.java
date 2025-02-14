@@ -21,7 +21,7 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
 
     @Override
     public Optional<ResourceOrganization> getOrganizationIdByZipCode(String zipCode) {
-        if (zipCode == null || zipCode.length() > 5) {
+        if (zipCode == null || zipCode.length() < 5) {
             return Optional.empty();
         }
         final String truncatedZip = zipCode.substring(0, 5);
