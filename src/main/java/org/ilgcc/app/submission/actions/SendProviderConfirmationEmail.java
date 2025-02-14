@@ -8,14 +8,11 @@ import formflow.library.data.SubmissionRepositoryService;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.email.ILGCCEmail.EmailType;
-import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value.Str;
 
 @Slf4j
 public class SendProviderConfirmationEmail extends Mailer {

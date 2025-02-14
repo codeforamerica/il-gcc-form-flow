@@ -17,11 +17,11 @@ import org.springframework.context.MessageSource;
 @Slf4j
 abstract class Mailer implements Action {
 
-    static MessageSource messageSource;
+    protected static MessageSource messageSource;
 
-    static SubmissionRepositoryService submissionRepositoryService;
+    protected final SubmissionRepositoryService submissionRepositoryService;
 
-    static SendEmailJob sendEmailJob;
+    protected final SendEmailJob sendEmailJob;
 
     protected static String EMAIL_SENT_STATUS_INPUT_NAME;
     protected static String RECIPIENT_EMAIL_INPUT_NAME;
