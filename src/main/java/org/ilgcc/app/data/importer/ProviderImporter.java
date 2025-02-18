@@ -23,7 +23,7 @@ public class ProviderImporter {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HH.mm.ss");
     private static final DateTimeFormatter dateColumnFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
-    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, date_of_last_approval, status) VALUES\n";
+    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, date_of_last_approval, resource_org_id, status) VALUES\n";
     private static final String SQL_BEGIN = "BEGIN;\n";
     private static final String SQL_COMMIT = "COMMIT;\n\n";
 
@@ -38,15 +38,16 @@ public class ProviderImporter {
             "\tstate = excluded.state,\n" +
             "\tzip_code = excluded.zip_code,\n" +
             "\tdate_of_last_approval = excluded.date_of_last_approval,\n" +
+            "\tresource_org_id = excluded.resource_org_id,\n" +
             "\tstatus = excluded.status;\n";
 
     private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", "Provider Type", "RSRCE_NAME", "DO_BUSN_AS_NAME",
             "STR_ADR", "CITY", "ST", "ZIP", "Date of Last Approval", "Maintaining R&R", "Provider Status");
 
-    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of("Maintaining R&R");
+    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of("460328258720008");
     private static final List<String> DATE_COLUMN_HEADERS = List.of("Date of Last Approval");
 
-    private static final List<String> EXCLUDED_IDS = List.of("460328258720008");
+    private static final List<String> EXCLUDED_IDS = List.of();
 
     public static void main(String[] args) {
         String fileNameAndPath = args[0];
