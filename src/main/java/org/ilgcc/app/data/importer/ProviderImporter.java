@@ -44,10 +44,10 @@ public class ProviderImporter {
     private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", "Provider Type", "RSRCE_NAME", "DO_BUSN_AS_NAME",
             "STR_ADR", "CITY", "ST", "ZIP", "Date of Last Approval", "Maintaining R&R", "Provider Status");
 
-    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of("460328258720008");
+    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of();
     private static final List<String> DATE_COLUMN_HEADERS = List.of("Date of Last Approval");
 
-    private static final List<String> EXCLUDED_IDS = List.of();
+    private static final List<String> EXCLUDED_IDS = List.of("460328258720008");
 
     public static void main(String[] args) {
         String fileNameAndPath = args[0];
