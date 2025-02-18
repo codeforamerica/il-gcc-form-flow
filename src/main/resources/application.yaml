@@ -120,7 +120,7 @@ org:
     job-scheduler:
       enabled: true
     background-job-server:
-      enabled: true
+      enabled: ${JOBRUNR_SERVER_ENABLED:true}
     dashboard:
       enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
