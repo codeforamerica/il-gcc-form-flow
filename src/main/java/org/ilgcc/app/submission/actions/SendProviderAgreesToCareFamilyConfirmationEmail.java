@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.email.EmailConstants;
+import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
@@ -74,7 +74,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         Content body = createProviderResponseConfirmationEmailBody(providerSubmission, familySubmission, familySubmissionConfirmationId, locale);
 
         sendEmailJob.enqueueSendEmailJob(familyEmailAddress, senderName, subject,
-                EmailConstants.EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL.getDescription(),
+                ILGCCEmail.EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL.getDescription(),
                 body, providerSubmission);
         providerSubmission.getInputData().put("providerResponseFamilyConfirmationEmailSent", "true");
         submissionRepositoryService.save(providerSubmission);

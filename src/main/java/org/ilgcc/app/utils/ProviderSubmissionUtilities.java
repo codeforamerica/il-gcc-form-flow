@@ -86,6 +86,22 @@ public class ProviderSubmissionUtilities {
         return String.format("%s %s", firstName, lastName);
     }
 
+    public static Map<String, String> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
+        Map<String, String> applicationData = new HashMap<>();
+
+        applicationData.put("providerName", getProviderResponseName(providerSubmission));
+
+        applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
+        applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
+        applicationData.put("childrenInitials", ProviderSubmissionUtilities.getChildrenInitialsFromApplication(familySubmission));
+        applicationData.put("ccapStartDate",
+                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
+                        providerSubmission));
+        applicationData.put("confirmationCode", familySubmission.getShortCode());
+
+        return applicationData;
+    }
+
     public static List<Map<String, String>> getChildrenDataForProviderResponse(Submission applicantSubmission) {
         List<Map<String, String>> children = new ArrayList<>();
 
@@ -206,6 +222,7 @@ public class ProviderSubmissionUtilities {
             return DateUtilities.convertDateToFullWordMonthPattern(familyEarliestChildcareStartDate);
         }
     }
+
     public static String getChildrenInitialsFromApplication(Submission familySubmission) {
         List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(familySubmission);
         var childrenInitials = new ArrayList<String>();
@@ -217,7 +234,17 @@ public class ProviderSubmissionUtilities {
             String lastName = (String) child.get("childLastName");
             childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
         }
-        return String.join(", ", childrenInitials);
+        if (childrenInitials.isEmpty()) {
+            return "";
+        } else if (childrenInitials.size() == 1) {
+            return childrenInitials.get(0); // Single name, no 'and'
+        } else if (childrenInitials.size() == 2) {
+            return String.join(" and ", childrenInitials); // Two childrenInitials, join with 'and'
+        } else {
+            // More than 2 childrenInitials, use comma for all but the last one
+            String last = childrenInitials.remove(childrenInitials.size() - 1); // Remove and keep the last name
+            return String.join(", ", childrenInitials) + " and " + last; // Join remaining with commas, append 'and last'
+        }
     }
     public static String getProviderResponseName(Submission providerSubmission) {
         String providerResponseBusinessName  = (String) providerSubmission.getInputData().getOrDefault("providerResponseBusinessName", "");

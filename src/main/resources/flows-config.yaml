@@ -536,6 +536,7 @@ flow:
   response:
     beforeDisplayAction: FindApplicationData
     onPostAction: SendProviderAgreesToCareFamilyConfirmationEmail
+    afterSaveAction: SendProviderConfirmationEmail
     nextScreens:
       - name: registration-submit-intro
         condition: ProviderIsRegistering
