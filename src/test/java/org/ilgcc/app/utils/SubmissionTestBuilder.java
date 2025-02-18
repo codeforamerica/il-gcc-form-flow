@@ -36,7 +36,13 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withFlow(String flow){
+    public SubmissionTestBuilder withCCRR() {
+        submission.getInputData().put("ccrrPhoneNumber", "(603) 555-1244");
+        submission.getInputData().put("ccrrName", "Sample Test CCRRR");
+        return this;
+    }
+
+    public SubmissionTestBuilder withFlow(String flow) {
         submission.setFlow(flow);
         return this;
     }

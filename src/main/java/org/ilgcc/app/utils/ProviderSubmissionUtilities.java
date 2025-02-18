@@ -237,7 +237,17 @@ public class ProviderSubmissionUtilities {
             String lastName = (String) child.get("childLastName");
             childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
         }
-        return String.join(", ", childrenInitials);
+        if (childrenInitials.isEmpty()) {
+            return "";
+        } else if (childrenInitials.size() == 1) {
+            return childrenInitials.get(0); // Single name, no 'and'
+        } else if (childrenInitials.size() == 2) {
+            return String.join(" and ", childrenInitials); // Two childrenInitials, join with 'and'
+        } else {
+            // More than 2 childrenInitials, use comma for all but the last one
+            String last = childrenInitials.remove(childrenInitials.size() - 1); // Remove and keep the last name
+            return String.join(", ", childrenInitials) + " and " + last; // Join remaining with commas, append 'and last'
+        }
     }
 
     public static String getProviderResponseName(Submission providerSubmission) {
