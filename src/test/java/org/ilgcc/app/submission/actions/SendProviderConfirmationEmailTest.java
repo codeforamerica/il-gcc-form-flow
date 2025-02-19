@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -41,6 +42,8 @@ public class SendProviderConfirmationEmailTest {
 
     private SendProviderConfirmationEmail action;
 
+    private Locale locale = Locale.ENGLISH;
+
 
     @BeforeEach
     void setUp() {
@@ -72,43 +75,48 @@ public class SendProviderConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailData() {
-        Optional<Map<String, String>> emailDataOptional = action.getEmailData(providerSubmission);
+        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
 
         assertThat(emailDataOptional.isPresent()).isTrue();
 
-        Map<String, String> emailData = emailDataOptional.get();
+        Map<String, Object> emailData = emailDataOptional.get();
 
         assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
-        assertThat(emailData.get("childrenInitials")).isEqualTo("F.C. and S.C.");
+        assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
         assertThat(emailData.get("providerName")).isEqualTo("BusinessName");
-        assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRRR");
+        assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
         assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
         assertThat(emailData.get("ccapStartDate")).isEqualTo("January 10, 2025");
     }
 
     @Test
     void correctlySetsEmailSubject() {
-        Optional<Map<String, String>> emailDataOptional = action.getEmailData(providerSubmission);
-        Map<String, String> emailData = emailDataOptional.get();
+        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
+        Map<String, Object> emailData = emailDataOptional.get();
 
         assertThat(action.setSubject(emailData, Locale.ENGLISH)).isEqualTo("Your CCAP confirmation code: ABC123");
     }
 
     @Test
     void correctlySetsEmailBody() {
-        Optional<Map<String, String>> emailDataOptional = action.getEmailData(providerSubmission);
-        Map<String, String> emailData = emailDataOptional.get();
+        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
+        Map<String, Object> emailData = emailDataOptional.get();
 
-        String emailCopy = action.setBodyCopy(emailData, Locale.ENGLISH);
+        String emailCopy = action.setBodyCopy(emailData, locale);
 
+        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation.p1", null, locale));
         assertThat(emailCopy).contains(
-                "Thank you for completing a family's Child Care Assistance Program (CCAP) application. Your response has been submitted to Sample Test CCRRR for processing.");
-        assertThat(emailCopy).contains(
-                "<strong>Response:</strong> You agreed to care for F.C. and S.C. with a start date of January 10, 2025 or pending approval.");
-        assertThat(emailCopy).contains("ABC123");
-        assertThat(emailCopy).contains(
-                "<strong>Next steps:You will receive a letter or email about the status of the family's application within 13-15 business days. If you want an update on the application, call Sample Test CCRRR at");
-        assertThat(emailCopy).contains("(603) 555-1244");
+                messageSource.getMessage("email.provider-confirmation.p2", new Object[]{"Sample Test CCRR"},
+                        locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation.p3",
+                new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation.p4",
+                new Object[]{"ABC123"}, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation.p5",
+                new Object[]{"Sample Test CCRR", "(603) 555-1244"},
+                locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
 
     @Test

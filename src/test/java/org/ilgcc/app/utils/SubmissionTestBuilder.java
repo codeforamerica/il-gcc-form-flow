@@ -63,7 +63,7 @@ public class SubmissionTestBuilder {
 
     public SubmissionTestBuilder withCCRR() {
         submission.getInputData().put("ccrrPhoneNumber", "(603) 555-1244");
-        submission.getInputData().put("ccrrName", "Sample Test CCRRR");
+        submission.getInputData().put("ccrrName", "Sample Test CCRR");
         return this;
     }
 

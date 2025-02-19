@@ -87,13 +87,14 @@ public class ProviderSubmissionUtilities {
         return String.format("%s %s", firstName, lastName);
     }
 
-    public static Map<String, String> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
-        Map<String, String> applicationData = new HashMap<>();
+    public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
+        Map<String, Object> applicationData = new HashMap<>();
 
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
         applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
         applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
-        applicationData.put("childrenInitials", ProviderSubmissionUtilities.getChildrenInitialsFromApplication(familySubmission));
+        applicationData.put("childrenInitialsList",
+                ProviderSubmissionUtilities.getChildrenInitialsListFromApplication(familySubmission));
         applicationData.put("ccapStartDate",
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
                         providerSubmission));
@@ -225,27 +226,28 @@ public class ProviderSubmissionUtilities {
         }
     }
 
-    public static String getChildrenInitialsFromApplication(Submission familySubmission) {
+    public static List<String> getChildrenInitialsListFromApplication(Submission familySubmission) {
         List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(familySubmission);
-        var childrenInitials = new ArrayList<String>();
-        if (children.isEmpty()) {
-            return "";
-        }
+        List<String> childrenInitials = new ArrayList<String>();
         for (var child : children) {
             String firstName = (String) child.get("childFirstName");
             String lastName = (String) child.get("childLastName");
             childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
         }
-        if (childrenInitials.isEmpty()) {
+        return childrenInitials;
+    }
+
+    public static String formatListIntoReadableString(List<String> dataList, String joiner) {
+        if (dataList.isEmpty()) {
             return "";
-        } else if (childrenInitials.size() == 1) {
-            return childrenInitials.get(0); // Single name, no 'and'
-        } else if (childrenInitials.size() == 2) {
-            return String.join(" and ", childrenInitials); // Two childrenInitials, join with 'and'
+        } else if (dataList.size() == 1) {
+            return dataList.get(0); // Single name, no 'and'
+        } else if (dataList.size() == 2) {
+            return String.join(" " + joiner + " ", dataList); // if only 2 elements join with 'and'
         } else {
-            // More than 2 childrenInitials, use comma for all but the last one
-            String last = childrenInitials.remove(childrenInitials.size() - 1); // Remove and keep the last name
-            return String.join(", ", childrenInitials) + " and " + last; // Join remaining with commas, append 'and last'
+            // More than 2 elements in list, use comma for all but the last one
+            String last = dataList.remove(dataList.size() - 1);
+            return String.join(", ", dataList) + " " + joiner + " " + last; // Join remaining with commas, append 'and last'
         }
     }
 

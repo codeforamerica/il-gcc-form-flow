@@ -1,5 +1,8 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.formatListIntoReadableString;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getChildrenInitialsListFromApplication;
+
 import com.sendgrid.helpers.mail.objects.Content;
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
@@ -88,8 +91,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         String p1 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale);
         String p2 = providerName.isBlank() ? messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-no-provider-name", new Object[]{ccrrName}, locale) : messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name", new Object[]{providerName, ccrrName}, locale);
         String p3 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
-            new Object[]{
-                ProviderSubmissionUtilities.getChildrenInitialsFromApplication(familySubmission),
+            new Object[]{formatListIntoReadableString(getChildrenInitialsListFromApplication(familySubmission), messageSource.getMessage("general.and", null, locale)),
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission, providerSubmission)
             }, locale);
         String p4 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p4", new Object[]{confirmationCode}, locale);

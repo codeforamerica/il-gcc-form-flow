@@ -1,11 +1,13 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.formatListIntoReadableString;
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getCombinedDataForEmails;
 
 import com.sendgrid.helpers.mail.objects.Content;
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -41,7 +43,7 @@ public class SendProviderConfirmationEmail implements Action {
             Locale locale =
                     submission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
                             "es") : Locale.ENGLISH;
-            Optional<Map<String, String>> emailData = getEmailData(submission);
+            Optional<Map<String, Object>> emailData = getEmailData(submission);
 
             if (emailData.isEmpty()) {
                 return;
@@ -62,7 +64,7 @@ public class SendProviderConfirmationEmail implements Action {
         return emailSent || !providerAgreedToCare;
     }
 
-    protected Optional<Map<String, String>> getEmailData(Submission providerSubmission) {
+    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission) {
         Optional<Submission> familySubmission = getFamilyApplication(providerSubmission);
         if (familySubmission.isPresent()) {
             return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
@@ -81,17 +83,17 @@ public class SendProviderConfirmationEmail implements Action {
         return submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
     }
 
-    protected String setSubject(Map<String, String> emailData, Locale locale) {
+    protected String setSubject(Map<String, Object> emailData, Locale locale) {
         return messageSource.getMessage("email.family-confirmation.subject", new Object[]{emailData.get("confirmationCode")},
                 locale);
     }
 
-    protected String setBodyCopy(Map<String, String> emailData, Locale locale) {
+    protected String setBodyCopy(Map<String, Object> emailData, Locale locale) {
         String p1 = messageSource.getMessage("email.provider-confirmation.p1", null, locale);
         String p2 = messageSource.getMessage("email.provider-confirmation.p2", new Object[]{emailData.get("ccrrName")},
                 locale);
         String p3 = messageSource.getMessage("email.provider-confirmation.p3",
-                new Object[]{emailData.get("childrenInitials"), emailData.get("ccapStartDate")}, locale);
+                new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"), messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
         String p4 = messageSource.getMessage("email.provider-confirmation.p4",
                 new Object[]{emailData.get("confirmationCode")}, locale);
         String p5 = messageSource.getMessage("email.provider-confirmation.p5",
