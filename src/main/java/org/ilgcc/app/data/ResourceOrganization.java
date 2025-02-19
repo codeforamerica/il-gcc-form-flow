@@ -34,8 +34,17 @@ public class ResourceOrganization {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "street_address")
+    private String streetAddress;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "state")
+    private String state;
+
+    @Column(name = "zip_code")
+    private String zipCode;
 
     @Column(name = "phone")
     private String phone;
@@ -52,13 +61,14 @@ public class ResourceOrganization {
     @Override
     public String toString() {
         return "ResourceOrganization{" +
-                "sda=" + sda +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", name='" + name + '\'' +
+                "resourceOrgId=" + resourceOrgId +
                 ", caseloadCode='" + caseloadCode + '\'' +
-                ", resourceOrgId=" + resourceOrgId +
+                ", name='" + name + '\'' +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", sda=" + sda +
                 '}';
     }
 }

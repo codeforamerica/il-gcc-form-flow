@@ -1,7 +1,6 @@
 package org.ilgcc.app.data.importer;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,22 +12,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CountyAndZipCodeImporter {
+public class ResourceOrganizationImporter {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HH.mm.ss");
 
     private static final String SQL_BEGIN = "BEGIN;\n";
 
-    private static final String SQL_TRUNCATE = "\nTRUNCATE TABLE zip_codes;\n";
+    private static final String SQL_TRUNCATE = "\n\tTRUNCATE TABLE resource_organizations;\n";
 
-    private static final String SQL_INSERT = "\tINSERT INTO zip_codes (zip_code, city, county, fips_county_code, dpa_county_code, caseload_code) VALUES\n";
+    private static final String SQL_INSERT = "\tINSERT INTO resource_organizations (resource_org_id, name, street_address, city, state, zip_code, caseload_code, phone) VALUES\n";
 
     private static final String SQL_COMMIT = "COMMIT;\n\n";
 
-    private static final List<String> COLUMN_HEADERS = List.of("ZIP", "CITY_NAME", "CNTY_NAME", "FIPS_CNTY_CD", "DPA_CNTY_CD",
-            "CSLD_CD");
+    private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", "RSRCE_LONG_NAME", "ADR", "CITY", "ST", "ZIP",
+            "CSLD_CD", "TELE_NUM");
 
-    private static final List<String> INTEGER_HEADERS = List.of("ZIP", "FIPS_CNTY_CD", "DPA_CNTY_CD");
+    private static final List<String> INTEGER_HEADERS = List.of("RSRCE_ID");
 
     public static void main(String[] args) {
         String fileNameAndPath = args[0];
@@ -41,7 +40,7 @@ public class CountyAndZipCodeImporter {
             List<String> lines = Files.readAllLines(Paths.get(fileNameAndPath));
             System.out.println("\n\nThere are " + lines.size() + " rows in " + fileNameAndPath);
 
-            if (!COLUMN_HEADERS.equals(Arrays.asList(lines.get(0).split(",")))) {
+            if (!COLUMN_HEADERS.equals(Arrays.asList(lines.getFirst().split(",")))) {
                 System.out.println("Column headers have changed. Unable to generate SQL because the data format has changed.");
                 return;
             }
@@ -58,7 +57,7 @@ public class CountyAndZipCodeImporter {
 
             LocalDateTime now = LocalDateTime.now();
             String timestamp = now.format(formatter);
-            String sqlFileName = "county-zip-code-data-" + timestamp + ".sql";
+            String sqlFileName = "resource-organization-data-" + timestamp + ".sql";
             System.out.println("SQL will be written to " + sqlFileName);
 
             Path path = Paths.get(sqlFileName);
@@ -68,17 +67,17 @@ public class CountyAndZipCodeImporter {
             Files.write(path, SQL_TRUNCATE.getBytes(), StandardOpenOption.APPEND);
             Files.write(path, SQL_INSERT.getBytes(), StandardOpenOption.APPEND);
 
-            Set<String> zipCodesAdded = new HashSet<>();
+            Set<String> resourceOrgIdsAdded = new HashSet<>();
             for (int j = 1; j < lines.size(); j++) {
                 String line = lines.get(j);
                 String[] values = line.split(","); // Split by comma
 
                 StringBuilder sb = new StringBuilder("\t(");
 
-                if (zipCodesAdded.contains(values[0])) {
-                    System.out.println("Skipping zip code because it is duplicated: " + values[0]);
+                if (resourceOrgIdsAdded.contains(values[0])) {
+                    System.out.println("Skipping resource organization because it is duplicated: " + values[0]);
                 } else {
-                    zipCodesAdded.add(values[0]);
+                    resourceOrgIdsAdded.add(values[0]);
                     for (int i = 0; i < values.length; i++) {
                         StringBuilder valueToInsert = new StringBuilder();
                         if (values[i] == null || values[i].isBlank()) {
