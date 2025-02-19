@@ -33,7 +33,8 @@ public class SendGridEmailService {
     }
 
     public Response sendEmail(ILGCCEmail ilgccEmail) throws IOException {
-        Mail mail = new Mail(ilgccEmail.getSenderEmail(), ilgccEmail.getSubject(), ilgccEmail.getRecipientEmail(), ilgccEmail.getBody());
+        Mail mail = new Mail(ilgccEmail.getSenderEmail(), ilgccEmail.getSubject(), ilgccEmail.getRecipientEmail(),
+                ilgccEmail.getBody());
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");

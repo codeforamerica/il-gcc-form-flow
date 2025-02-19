@@ -43,7 +43,7 @@ public class SendProviderConfirmationEmail implements Action {
                             "es") : Locale.ENGLISH;
             Optional<Map<String, String>> emailData = getEmailData(submission);
 
-            if(emailData.isEmpty()){
+            if (emailData.isEmpty()) {
                 return;
             }
 
@@ -56,16 +56,10 @@ public class SendProviderConfirmationEmail implements Action {
 
     protected Boolean skipEmailSend(Submission submission) {
         boolean emailSent = submission.getInputData().getOrDefault(EMAIL_SENT_STATUS_INPUT_NAME, "false").equals("true");
-        if(emailSent){
-            return true;
-        } else {
-            boolean providerAgreedToCare = submission.getInputData().getOrDefault("providerResponseAgreeToCare", "false").equals("true");
-            if(providerAgreedToCare){
-                return true;
-            } else {
-                return false;
-            }
-        }
+        boolean providerAgreedToCare = submission.getInputData().getOrDefault("providerResponseAgreeToCare", "false")
+                .equals("true");
+
+        return emailSent || !providerAgreedToCare;
     }
 
     protected Optional<Map<String, String>> getEmailData(Submission providerSubmission) {
@@ -73,7 +67,7 @@ public class SendProviderConfirmationEmail implements Action {
         if (familySubmission.isPresent()) {
             return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
         } else {
-            log.warn("Could not send Email. No family submission is associated with the familSubmissionID: {}",
+            log.warn("Could not send Email. No family submission is associated with the providerSubmissionId: {}",
                     providerSubmission.getId());
             return Optional.empty();
         }

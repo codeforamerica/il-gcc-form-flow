@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ProviderSubmissionUtilities {
+
     private final static Map<String, Integer> DAY_OF_WEEK_WITH_BUSINESS_DAYS_OFFSET = Map.of(
             "MONDAY", 3, "TUESDAY", 3, "WEDNESDAY", 5, "THURSDAY", 5, "FRIDAY", 5, "SATURDAY", 4, "SUNDAY", 3);
 
@@ -90,7 +91,6 @@ public class ProviderSubmissionUtilities {
         Map<String, String> applicationData = new HashMap<>();
 
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
-
         applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
         applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
         applicationData.put("childrenInitials", ProviderSubmissionUtilities.getChildrenInitialsFromApplication(familySubmission));
@@ -120,7 +120,7 @@ public class ProviderSubmissionUtilities {
         }
         return children;
     }
-    
+
     public static String formatChildNamesAsCommaSeperatedList(Submission applicantSubmission) {
         List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission);
         List<String> childNames = new ArrayList<>();
@@ -212,13 +212,15 @@ public class ProviderSubmissionUtilities {
                         todaysDate) > 0;
     }
 
-    public static String getCCAPStartDateFromProviderOrFamilyChildcareStartDate(Submission familySubmission, Submission providerSubmission) {
+    public static String getCCAPStartDateFromProviderOrFamilyChildcareStartDate(Submission familySubmission,
+            Submission providerSubmission) {
         String providerCareStartDate = (String) providerSubmission.getInputData().getOrDefault("providerCareStartDate", "");
 
         if (!providerCareStartDate.isBlank()) {
             return DateUtilities.convertDateToFullWordMonthPattern(providerCareStartDate);
-        }else {
-            String familyEarliestChildcareStartDate = (String) familySubmission.getInputData().getOrDefault("earliestChildcareStartDate", "");
+        } else {
+            String familyEarliestChildcareStartDate = (String) familySubmission.getInputData()
+                    .getOrDefault("earliestChildcareStartDate", "");
             return DateUtilities.convertDateToFullWordMonthPattern(familyEarliestChildcareStartDate);
         }
     }
@@ -246,8 +248,10 @@ public class ProviderSubmissionUtilities {
             return String.join(", ", childrenInitials) + " and " + last; // Join remaining with commas, append 'and last'
         }
     }
+
     public static String getProviderResponseName(Submission providerSubmission) {
-        String providerResponseBusinessName  = (String) providerSubmission.getInputData().getOrDefault("providerResponseBusinessName", "");
+        String providerResponseBusinessName = (String) providerSubmission.getInputData()
+                .getOrDefault("providerResponseBusinessName", "");
         if (!providerResponseBusinessName.isEmpty()) {
             return providerResponseBusinessName;
         }

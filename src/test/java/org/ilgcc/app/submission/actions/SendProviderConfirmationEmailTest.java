@@ -50,7 +50,6 @@ public class SendProviderConfirmationEmailTest {
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withCCRR()
                 .withShortCode("ABC123")
-                .with("providerResponseAgreeToCare", "true")
                 .build();
 
         submissionRepositoryService.save(familySubmission);
@@ -63,6 +62,7 @@ public class SendProviderConfirmationEmailTest {
                 .with("providerResponseLastName", "ProviderLast")
                 .with("providerResponseBusinessName", "BusinessName")
                 .with("providerCareStartDate", "01/10/2025")
+                .with("providerResponseAgreeToCare", "true")
                 .build();
 
         submissionRepositoryService.save(providerSubmission);
