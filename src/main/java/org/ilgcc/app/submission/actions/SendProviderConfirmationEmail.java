@@ -30,11 +30,10 @@ public class SendProviderConfirmationEmail implements Action {
 
     protected final SendEmailJob sendEmailJob;
 
-    public SendProviderConfirmationEmail(SendEmailJob sendEmailJob, SubmissionRepositoryService submissionRepositoryService,
-            MessageSource messageSource) {
+    public SendProviderConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource, SubmissionRepositoryService submissionRepositoryService) {
         this.sendEmailJob = sendEmailJob;
-        this.submissionRepositoryService = submissionRepositoryService;
         this.messageSource = messageSource;
+        this.submissionRepositoryService = submissionRepositoryService;
     }
 
     @Override

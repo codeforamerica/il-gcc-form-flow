@@ -70,7 +70,7 @@ public class SendProviderConfirmationEmailTest {
 
         submissionRepositoryService.save(providerSubmission);
 
-        action = new SendProviderConfirmationEmail(sendEmailJob, submissionRepositoryService, messageSource);
+        action = new SendProviderConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @Test
