@@ -6,7 +6,6 @@ import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import org.ilgcc.app.utils.enums.FileNameUtility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -28,6 +27,20 @@ public class FileNameUtilityTest {
     })
     void getApplicantNameForFileNameShouldReturnValidString(String input, String expected) {
         assertEquals(expected, FileNameUtility.formatApplicantNameForFileName(input));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Alex, Alex",
+            "Gonzalez, Gonzalez",
+            "Mc'Donald Paul, McDonald Paul",
+            "Cortés Medrano, Cortes Medrano",
+            "Rahman Al-Saud , Rahman Al-Saud",
+            "Müller Jürgen, Muller Jurgen",
+            "Miller-Williams, Miller-Williams",
+    })
+    void removeNonSpaceOrDashCharactersShouldReturnValidString(String input, String expected) {
+        assertEquals(expected, FileNameUtility.removeNonSpaceOrDashCharacters(input));
     }
     
     @Test

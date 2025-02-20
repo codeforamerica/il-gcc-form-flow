@@ -8,7 +8,7 @@ import formflow.library.data.Submission;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.utils.enums.FileNameUtility;
+import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.PdfTransmissionJob;
 import org.springframework.stereotype.Component;
