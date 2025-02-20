@@ -11,7 +11,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
-import org.ilgcc.app.utils.enums.FileNameUtility;
+import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.PdfTransmissionJob;
 import org.ilgcc.jobs.UploadedDocumentTransmissionJob;

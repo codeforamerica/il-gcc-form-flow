@@ -1,6 +1,6 @@
 package org.ilgcc.app.data.ccms;
 
-import static org.ilgcc.app.utils.enums.FileNameUtility.getCCMSFileNameForApplicationPDF;
+import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import formflow.library.data.Submission;
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.DateUtilities;
-import org.ilgcc.app.utils.enums.FileNameUtility;
+import org.ilgcc.app.utils.FileNameUtility;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package org.ilgcc.app.utils.enums;
+package org.ilgcc.app.utils;
 
 import static org.ilgcc.app.utils.SubmissionUtilities.getApplicantNameLastToFirst;
 import static org.ilgcc.app.utils.SubmissionUtilities.getDashFormattedSubmittedAtDate;
@@ -8,7 +8,6 @@ import formflow.library.data.Submission;
 import java.text.Normalizer;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.submission.router.CCRR;
-import org.ilgcc.app.utils.SubmissionUtilities;
 
 @Slf4j
 public class FileNameUtility {

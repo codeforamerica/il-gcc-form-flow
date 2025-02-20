@@ -18,7 +18,7 @@ import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerApplicatio
 
 import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.file_transfer.S3PresignService;
-import org.ilgcc.app.utils.enums.FileNameUtility;
+import org.ilgcc.app.utils.FileNameUtility;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.springframework.stereotype.Service;

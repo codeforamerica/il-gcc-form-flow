@@ -13,8 +13,6 @@ import org.ilgcc.app.data.Transmission;
 import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.file_transfer.DocumentTransferRequestService;
 import org.ilgcc.app.file_transfer.S3PresignService;
-import org.ilgcc.app.utils.enums.FileNameUtility;
-import org.ilgcc.app.utils.enums.TransmissionStatus;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
