@@ -17,8 +17,10 @@ import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class SendProviderConfirmationEmail implements Action {
 
     protected static String EMAIL_SENT_STATUS_INPUT_NAME = "providerConfirmationEmailSent";
