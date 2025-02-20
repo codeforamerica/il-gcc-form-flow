@@ -116,7 +116,7 @@ public class SendProviderConfirmationEmail implements Action {
     }
 
     private Optional<Submission> getFamilyApplication(Submission providerSubmission) {
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getClientId(providerSubmission);
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isEmpty()) {
             log.warn("No family submission is associated with the provider submission with ID: {}",
                     providerSubmission.getId());

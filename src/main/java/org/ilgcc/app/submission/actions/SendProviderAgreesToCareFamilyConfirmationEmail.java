@@ -46,7 +46,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
             log.warn("Provider agrees to care confirmation email has already been sent for submission with ID: {}", providerSubmission.getId());
             return;
         }
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getClientId(providerSubmission);
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isEmpty()) {
             log.warn("No family submission is associated with the provider submission with ID: {}", providerSubmission.getId());
             return;

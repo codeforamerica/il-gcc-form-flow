@@ -522,12 +522,12 @@ flow:
   provider-number:
     crossFieldValidationAction: ValidateProviderNumber
     beforeSaveAction: ConnectProviderApplicationToFamilyApplication
-    onPostAction: GenerateDummyClientSubmissionForDev
+    onPostAction: GenerateDummyFamilySubmissionForDev
     nextScreens:
       - name: confirmation-code
   confirmation-code:
     crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
-    onPostAction: GenerateDummyClientSubmissionForDev
+    onPostAction: GenerateDummyFamilySubmissionForDev
     afterSaveAction: CheckFamilySubmissionForProvider
     nextScreens:
       - name: response
