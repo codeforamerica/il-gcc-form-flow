@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ProviderSubmissionUtilities {
+
     private final static Map<String, Integer> DAY_OF_WEEK_WITH_BUSINESS_DAYS_OFFSET = Map.of(
             "MONDAY", 3, "TUESDAY", 3, "WEDNESDAY", 5, "THURSDAY", 5, "FRIDAY", 5, "SATURDAY", 4, "SUNDAY", 3);
 
@@ -86,6 +87,22 @@ public class ProviderSubmissionUtilities {
         return String.format("%s %s", firstName, lastName);
     }
 
+    public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
+        Map<String, Object> applicationData = new HashMap<>();
+
+        applicationData.put("providerName", getProviderResponseName(providerSubmission));
+        applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
+        applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
+        applicationData.put("childrenInitialsList",
+                ProviderSubmissionUtilities.getChildrenInitialsListFromApplication(familySubmission));
+        applicationData.put("ccapStartDate",
+                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
+                        providerSubmission));
+        applicationData.put("confirmationCode", familySubmission.getShortCode());
+
+        return applicationData;
+    }
+
     public static List<Map<String, String>> getChildrenDataForProviderResponse(Submission applicantSubmission) {
         List<Map<String, String>> children = new ArrayList<>();
 
@@ -104,7 +121,7 @@ public class ProviderSubmissionUtilities {
         }
         return children;
     }
-    
+
     public static String formatChildNamesAsCommaSeperatedList(Submission applicantSubmission) {
         List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission);
         List<String> childNames = new ArrayList<>();
@@ -196,31 +213,47 @@ public class ProviderSubmissionUtilities {
                         todaysDate) > 0;
     }
 
-    public static String getCCAPStartDateFromProviderOrFamilyChildcareStartDate(Submission familySubmission, Submission providerSubmission) {
+    public static String getCCAPStartDateFromProviderOrFamilyChildcareStartDate(Submission familySubmission,
+            Submission providerSubmission) {
         String providerCareStartDate = (String) providerSubmission.getInputData().getOrDefault("providerCareStartDate", "");
 
         if (!providerCareStartDate.isBlank()) {
             return DateUtilities.convertDateToFullWordMonthPattern(providerCareStartDate);
-        }else {
-            String familyEarliestChildcareStartDate = (String) familySubmission.getInputData().getOrDefault("earliestChildcareStartDate", "");
+        } else {
+            String familyEarliestChildcareStartDate = (String) familySubmission.getInputData()
+                    .getOrDefault("earliestChildcareStartDate", "");
             return DateUtilities.convertDateToFullWordMonthPattern(familyEarliestChildcareStartDate);
         }
     }
-    public static String getChildrenInitialsFromApplication(Submission familySubmission) {
+
+    public static List<String> getChildrenInitialsListFromApplication(Submission familySubmission) {
         List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(familySubmission);
-        var childrenInitials = new ArrayList<String>();
-        if (children.isEmpty()) {
-            return "";
-        }
+        List<String> childrenInitials = new ArrayList<String>();
         for (var child : children) {
             String firstName = (String) child.get("childFirstName");
             String lastName = (String) child.get("childLastName");
             childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
         }
-        return String.join(", ", childrenInitials);
+        return childrenInitials;
     }
+
+    public static String formatListIntoReadableString(List<String> dataList, String joiner) {
+        if (dataList.isEmpty()) {
+            return "";
+        } else if (dataList.size() == 1) {
+            return dataList.get(0); // Single name, no 'and'
+        } else if (dataList.size() == 2) {
+            return String.join(" " + joiner + " ", dataList); // if only 2 elements join with 'and'
+        } else {
+            // More than 2 elements in list, use comma for all but the last one
+            String last = dataList.remove(dataList.size() - 1);
+            return String.join(", ", dataList) + " " + joiner + " " + last; // Join remaining with commas, append 'and last'
+        }
+    }
+
     public static String getProviderResponseName(Submission providerSubmission) {
-        String providerResponseBusinessName  = (String) providerSubmission.getInputData().getOrDefault("providerResponseBusinessName", "");
+        String providerResponseBusinessName = (String) providerSubmission.getInputData()
+                .getOrDefault("providerResponseBusinessName", "");
         if (!providerResponseBusinessName.isEmpty()) {
             return providerResponseBusinessName;
         }
