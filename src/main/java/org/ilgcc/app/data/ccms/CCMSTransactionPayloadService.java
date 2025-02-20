@@ -41,7 +41,7 @@ public class CCMSTransactionPayloadService {
         this.pdfService = pdfService;
     }
 
-    public CCMSTransaction generatePayload(Submission familySubmission) {
+    public CCMSTransaction generatePayloadAndUploadToS3(Submission familySubmission) {
         CCMSTransaction ccmsTransaction = new CCMSTransaction(
                 "application",
                 familySubmission.getId(),

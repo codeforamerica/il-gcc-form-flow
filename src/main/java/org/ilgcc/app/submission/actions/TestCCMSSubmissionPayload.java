@@ -31,7 +31,7 @@ public class TestCCMSSubmissionPayload implements Action {
     @SneakyThrows
     @Override
     public void run(Submission submission) {
-        payloadService.generatePayload(submission);
+        payloadService.generatePayloadAndUploadToS3(submission);
         CloudFile cloudFile = cloudFileRepository.get(submission.getInputData().get("ccmsPayloadPath").toString());
         CCMSTransaction ccmsTransactionAfter = objectMapper.readValue(cloudFile.getFileBytes(), CCMSTransaction.class);
         String appSubmissionResponse = client.sendRequest("appSubmission", ccmsTransactionAfter);

@@ -118,7 +118,7 @@ public class CCMSTransactionPayloadServiceTest {
                         Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedPngPath)))
         );
 
-        CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generatePayload(submission);
+        CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generatePayloadAndUploadToS3(submission);
         assertThat(ccmsTransaction).isNotNull();
         assertThat(ccmsTransaction.getTransmissionType()).isEqualTo("application");
         assertThat(ccmsTransaction.getSubmissionId()).isEqualTo(submission.getId());
