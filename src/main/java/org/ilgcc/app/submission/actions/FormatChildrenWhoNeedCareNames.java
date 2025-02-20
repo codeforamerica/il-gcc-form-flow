@@ -17,7 +17,7 @@ public class FormatChildrenWhoNeedCareNames implements Action {
     
     @Override
     public void run(Submission providerSubmission) {
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getClientId(providerSubmission);
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isPresent()) {
             Submission familySubmission = submissionRepositoryService.findById(familySubmissionId.get()).get();
             String formattedChildrenNames = ProviderSubmissionUtilities.formatChildNamesAsCommaSeperatedList(familySubmission);

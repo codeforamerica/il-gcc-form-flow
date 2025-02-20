@@ -22,7 +22,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GenerateDummyClientSubmissionForDev implements Action {
+public class GenerateDummyFamilySubmissionForDev implements Action {
     
     private final SubmissionRepositoryService submissionRepositoryService;
     private final SubmissionRepository submissionRepository;
@@ -31,7 +31,7 @@ public class GenerateDummyClientSubmissionForDev implements Action {
     @Autowired
     Environment env;
 
-    public GenerateDummyClientSubmissionForDev(SubmissionRepositoryService submissionRepositoryService,
+    public GenerateDummyFamilySubmissionForDev(SubmissionRepositoryService submissionRepositoryService,
             SubmissionRepository submissionRepository, HttpSession httpSession) {
         this.submissionRepositoryService = submissionRepositoryService;
         this.submissionRepository = submissionRepository;
@@ -43,20 +43,20 @@ public class GenerateDummyClientSubmissionForDev implements Action {
         String[] activeProfiles = env.getActiveProfiles();
         boolean isDevProfile = Arrays.asList(activeProfiles).contains("dev");
         if (isDevProfile) {
-            Optional<Submission> existingDummyClientSubmision = submissionRepositoryService.findByShortCode("DEV-123ABC");
-            existingDummyClientSubmision.ifPresent(submissionRepository::delete);
+            Optional<Submission> existingDummyFamilySubmision = submissionRepositoryService.findByShortCode("DEV-123ABC");
+            existingDummyFamilySubmision.ifPresent(submissionRepository::delete);
 
             Map<String, Object> inputData = createFamilySubmission(submission);
 
-            Submission dummyClientSubmission = new Submission();
-            dummyClientSubmission.setSubmittedAt(OffsetDateTime.now().minusDays(1));
-            dummyClientSubmission.setFlow("gcc");
-            dummyClientSubmission.setShortCode("DEV-123ABC");
-            dummyClientSubmission.setInputData(inputData);
+            Submission dummyFamilySubmission = new Submission();
+            dummyFamilySubmission.setSubmittedAt(OffsetDateTime.now().minusDays(1));
+            dummyFamilySubmission.setFlow("gcc");
+            dummyFamilySubmission.setShortCode("DEV-123ABC");
+            dummyFamilySubmission.setInputData(inputData);
             
-            submissionRepositoryService.save(dummyClientSubmission);
+            submissionRepositoryService.save(dummyFamilySubmission);
 
-            httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, dummyClientSubmission.getId());
+            httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, dummyFamilySubmission.getId());
         }
     }
 

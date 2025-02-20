@@ -60,20 +60,20 @@ public class ProviderSubmissionUtilities {
             LocalDate.of(2026, 12, 25)
     );
 
-    public static Optional<UUID> getClientId(Submission providerSubmission) {
+    public static Optional<UUID> getFamilySubmissionId(Submission providerSubmission) {
         if (providerSubmission.getInputData().containsKey("familySubmissionId")) {
-            String applicantID = (String) providerSubmission.getInputData().get("familySubmissionId");
-            return Optional.of(UUID.fromString(applicantID));
+            String familySubmissionId = (String) providerSubmission.getInputData().get("familySubmissionId");
+            return Optional.of(UUID.fromString(familySubmissionId));
         }
         return Optional.empty();
     }
 
-    public static Map<String, String> getApplicantSubmissionForProviderResponse(Optional<Submission> applicantSubmission) {
+    public static Map<String, String> getFamilySubmissionForProviderResponse(Optional<Submission> familySubmission) {
         Map<String, String> applicationData = new HashMap<>();
 
-        if (applicantSubmission.isPresent()) {
-            Map<String, Object> applicantInputs = applicantSubmission.get().getInputData();
-            applicationData.put("clientResponseConfirmationCode", applicantSubmission.get().getShortCode());
+        if (familySubmission.isPresent()) {
+            Map<String, Object> applicantInputs = familySubmission.get().getInputData();
+            applicationData.put("clientResponseConfirmationCode", familySubmission.get().getShortCode());
             applicationData.put("clientResponseParentName", getApplicantName(applicantInputs));
         }
 

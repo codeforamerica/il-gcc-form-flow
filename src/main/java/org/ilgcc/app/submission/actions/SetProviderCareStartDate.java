@@ -21,7 +21,7 @@ public class SetProviderCareStartDate implements Action {
 
     @Override
     public void run(Submission providerSubmission) {
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getClientId(providerSubmission);
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isPresent()) {
             Optional<Submission> familySubmission = submissionRepositoryService.findById(familySubmissionId.get());
             if (familySubmission.isEmpty()) {
