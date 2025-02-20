@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_STATUS;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 
 import formflow.library.config.submission.Action;
@@ -47,7 +47,7 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
 
             if (familySubmission.isPresent()) {
                 httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.get().getId());
-                httpSession.removeAttribute(SESSION_KEY_FAMILY_SUBMISSION_STATUS);
+                httpSession.removeAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS);
 
                 providerSubmission.getInputData().put("familySubmissionId", familySubmission.get().getId());
             } else {

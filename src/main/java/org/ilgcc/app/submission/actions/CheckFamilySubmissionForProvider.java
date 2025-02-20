@@ -4,7 +4,7 @@ package org.ilgcc.app.submission.actions;
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerApplicationHasExpired;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_CONFIRMATION_CODE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
-import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_STATUS;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_SELECTED_PROVIDER_NAME;
 
 import formflow.library.config.submission.Action;
@@ -44,7 +44,7 @@ public class CheckFamilySubmissionForProvider implements Action {
     public void run(Submission submission) {
 
         UUID familySubmissionId = (UUID) httpSession.getAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID);
-        String providerSubmissionStatus = (String) httpSession.getAttribute(SESSION_KEY_FAMILY_SUBMISSION_STATUS);
+        String providerSubmissionStatus = (String) httpSession.getAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS);
 
         if (familySubmissionId != null && providerSubmissionStatus != null) {
             return;
@@ -71,7 +71,7 @@ public class CheckFamilySubmissionForProvider implements Action {
                 ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
                 ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
                 if (providerApplicationHasExpired(familySubmission, todaysDate)) {
-                    httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED.name());
+                    httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS, ProviderSubmissionStatus.EXPIRED.name());
                 } else {
                     boolean hasResponse = false;
                     if (familySubmission.getInputData().get("providerResponseSubmissionId") != null) {
@@ -86,16 +86,16 @@ public class CheckFamilySubmissionForProvider implements Action {
                         }
                     }
                     if (hasResponse) {
-                        httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_STATUS, ProviderSubmissionStatus.RESPONDED.name());
+                        httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS, ProviderSubmissionStatus.RESPONDED.name());
                     } else {
-                        httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE.name());
+                        httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE.name());
                     }
                 }
             }
         } else {
             // If we don't have a client submission, we use the Active status but without any
             // data pre-loaded.
-            httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE.name());
+            httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE.name());
 
             Locale locale = LocaleContextHolder.getLocale();
             String placeholderProviderName = messageSource.getMessage("provider-response-submit-start.provider-placeholder", null,

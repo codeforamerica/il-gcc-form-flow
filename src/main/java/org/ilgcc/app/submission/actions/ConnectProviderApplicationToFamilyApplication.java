@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ConnectProviderAndFamilyApplications implements Action {
+public class ConnectProviderApplicationToFamilyApplication implements Action {
 
     private final HttpSession httpSession;
 
 
-    public ConnectProviderAndFamilyApplications(HttpSession httpSession) {
+    public ConnectProviderApplicationToFamilyApplication(HttpSession httpSession) {
         this.httpSession = httpSession;
     }
 

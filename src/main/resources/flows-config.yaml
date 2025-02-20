@@ -521,7 +521,7 @@ flow:
   #Existing Provider Flow
   provider-number:
     crossFieldValidationAction: ValidateProviderNumber
-    beforeSaveAction: ConnectProviderAndFamilyApplications
+    beforeSaveAction: ConnectProviderApplicationToFamilyApplication
     onPostAction: GenerateDummyClientSubmissionForDev
     nextScreens:
       - name: confirmation-code
