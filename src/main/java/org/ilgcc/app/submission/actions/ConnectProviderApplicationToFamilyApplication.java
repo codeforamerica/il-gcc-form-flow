@@ -5,6 +5,7 @@ import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMI
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import jakarta.servlet.http.HttpSession;
+import java.math.BigInteger;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,8 @@ public class ConnectProviderApplicationToFamilyApplication implements Action {
         }
 
         String providerNumber = (String) providerSubmission.getInputData().getOrDefault("providerResponseProviderNumber", "");
-        String cleanProviderNumber = providerNumber.replaceFirst("^0+", "");
-        providerSubmission.getInputData().put("providerResponseProviderNumber", cleanProviderNumber);
+        if (!providerNumber.isEmpty()) {
+            providerSubmission.getInputData().put("providerResponseProviderNumber", new BigInteger(providerNumber));
+        }
     }
 }
