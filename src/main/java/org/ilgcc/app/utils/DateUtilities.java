@@ -1,11 +1,14 @@
 package org.ilgcc.app.utils;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.joda.time.format.DateTimeFormat;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtilities {
@@ -39,10 +42,9 @@ public class DateUtilities {
 
     public static boolean isDateInvalid(String date) {
         try {
-            org.joda.time.format.DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
-
-            dtf.parseDateTime(date);
-        } catch (Exception e) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            LocalDate.parse(date, dtf);
+        } catch (DateTimeParseException e) {
             return true;
         }
         return false;
@@ -105,5 +107,11 @@ public class DateUtilities {
 
         LocalDate date = LocalDate.parse(dateStr, inputFormatter);
         return date.format(outputFormatter);
+    }
+    
+    public static String formatDateToYearMonthDayHourCST(OffsetDateTime submittedAt) {
+        ZonedDateTime centralTime = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return centralTime.format(formatter);
     }
 }

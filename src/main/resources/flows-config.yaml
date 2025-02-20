@@ -409,6 +409,7 @@ flow:
     nextScreens:
       - name: doc-upload-submit-confirmation
   doc-upload-submit-confirmation:
+    beforeSaveAction: TestCCMSSubmissionPayload
     afterSaveAction: SendUploadedFileToDocumentTransferService
     nextScreens:
       - name: no-provider-intro

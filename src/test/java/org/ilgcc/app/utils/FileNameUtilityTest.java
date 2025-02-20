@@ -29,6 +29,20 @@ public class FileNameUtilityTest {
     void getApplicantNameForFileNameShouldReturnValidString(String input, String expected) {
         assertEquals(expected, FileNameUtility.formatApplicantNameForFileName(input));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Alex, Alex",
+            "Gonzalez, Gonzalez",
+            "Mc'Donald Paul, McDonald Paul",
+            "Cortés Medrano, Cortes Medrano",
+            "Rahman Al-Saud , Rahman Al-Saud",
+            "Müller Jürgen, Muller Jurgen",
+            "Miller-Williams, Miller-Williams",
+    })
+    void removeNonSpaceOrDashCharactersShouldReturnValidString(String input, String expected) {
+        assertEquals(expected, FileNameUtility.removeNonSpaceOrDashCharacters(input));
+    }
     
     @Test
     void getFileNameForPdfShouldReturnValidString() {
