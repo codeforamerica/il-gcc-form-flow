@@ -507,7 +507,7 @@ landmarks:
 name: providerresponse
 flow:
   submit-start:
-    beforeDisplayAction: CheckClientSubmissionForProvider
+    beforeDisplayAction: CheckFamilySubmissionForProvider
     nextScreens:
       - name: paid-by-ccap
         condition: EnableProviderRegistration
@@ -521,14 +521,14 @@ flow:
   #Existing Provider Flow
   provider-number:
     crossFieldValidationAction: ValidateProviderNumber
-    beforeSaveAction: SaveApplicationId
+    beforeSaveAction: ConnectProviderAndFamilyApplications
     onPostAction: GenerateDummyClientSubmissionForDev
     nextScreens:
       - name: confirmation-code
   confirmation-code:
     crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
     onPostAction: GenerateDummyClientSubmissionForDev
-    afterSaveAction: CheckClientSubmissionForProvider
+    afterSaveAction: CheckFamilySubmissionForProvider
     nextScreens:
       - name: response
         condition: IsConfirmationCodeActive

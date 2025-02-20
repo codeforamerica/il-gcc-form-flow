@@ -1,5 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
+
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
@@ -54,7 +56,7 @@ public class GenerateDummyClientSubmissionForDev implements Action {
             
             submissionRepositoryService.save(dummyClientSubmission);
 
-            httpSession.setAttribute("clientSubmissionId", dummyClientSubmission.getId());
+            httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, dummyClientSubmission.getId());
         }
     }
 

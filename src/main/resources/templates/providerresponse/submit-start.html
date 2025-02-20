@@ -9,7 +9,7 @@
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block
-                        th:with="providerSubmissionStatus=${T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).valueOf(session.clientSubmissionStatus)}">
+                        th:with="providerSubmissionStatus=${T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).valueOf(session.familySubmissionStatus)}">
                     <th:block
                             th:if="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).ACTIVE)}">
                         <div>

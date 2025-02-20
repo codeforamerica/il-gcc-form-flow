@@ -1,7 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.ilgcc.app.submission.actions.CheckClientSubmissionForProvider.SESSION_KEY_CLIENT_SUBMISSION_ID;
-import static org.ilgcc.app.submission.actions.CheckClientSubmissionForProvider.SESSION_KEY_CLIENT_SUBMISSION_STATUS;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_STATUS;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
@@ -43,13 +43,13 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
                 .getOrDefault("providerResponseFamilyShortCode", "");
 
         if (!providerProvidedConfirmationCode.isBlank()) {
-            Optional<Submission> clientSubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode);
+            Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode);
 
-            if (clientSubmission.isPresent()) {
-                httpSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_ID, clientSubmission.get().getId());
-                httpSession.removeAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS);
+            if (familySubmission.isPresent()) {
+                httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.get().getId());
+                httpSession.removeAttribute(SESSION_KEY_FAMILY_SUBMISSION_STATUS);
 
-                providerSubmission.getInputData().put("familySubmissionId", clientSubmission.get().getId());
+                providerSubmission.getInputData().put("familySubmissionId", familySubmission.get().getId());
             } else {
                 setErrorMessages(errorMessages);
             }
