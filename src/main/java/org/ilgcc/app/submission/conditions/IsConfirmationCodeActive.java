@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.conditions;
 
-import static org.ilgcc.app.submission.actions.CheckClientSubmissionForProvider.SESSION_KEY_CLIENT_SUBMISSION_STATUS;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 
 import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
@@ -19,7 +19,7 @@ public class IsConfirmationCodeActive implements Condition {
 
     @Override
     public Boolean run(Submission submission) {
-        String providerSubmissionStatus = (String) httpSession.getAttribute(SESSION_KEY_CLIENT_SUBMISSION_STATUS);
+        String providerSubmissionStatus = (String) httpSession.getAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS);
         return providerSubmissionStatus != null && ProviderSubmissionStatus.ACTIVE.equals(ProviderSubmissionStatus.valueOf(providerSubmissionStatus));
     }
 }

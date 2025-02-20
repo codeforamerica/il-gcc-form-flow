@@ -127,12 +127,12 @@ public class ValidateHourlySchedule implements Action {
         AtomicBoolean minuteDataIsInvalid = new AtomicBoolean(false);
         if (inputtedData.containsKey(fieldName + "Minute")) {
             try {
-                int minuteValue = Integer.valueOf(inputtedData.get(fieldName + "Minute").toString());
+                int minuteValue = Integer.parseInt(inputtedData.get(fieldName + "Minute").toString());
                 if (minuteValue < 0 || minuteValue > 59) {
                     minuteDataIsInvalid.set(true);
                 }
-            } catch (Exception e) {
-                log.error("Unable to parse minute value: " + inputtedData.get(fieldName + "Minute").toString());
+            } catch (NumberFormatException e) {
+                log.warn("Unable to parse minute value: " + inputtedData.get(fieldName + "Minute").toString());
                 return true;
             }
         }

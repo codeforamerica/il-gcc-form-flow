@@ -5,7 +5,6 @@ import static org.awaitility.Awaitility.await;
 
 import formflow.library.data.SubmissionRepository;
 import java.time.OffsetDateTime;
-import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
@@ -130,7 +129,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicenseExemptInProviderHomeFlow() {
         createAValidLink();
-        saveApplicationId();
+        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -394,7 +393,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicenseExemptInChildHomeFlow() {
         createAValidLink();
-        saveApplicationId();
+        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -572,7 +571,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicensedChildCareHomeFlow() {
         createAValidLink();
-        saveApplicationId();
+        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -740,7 +739,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicensedChildCareCenterFlow() {
         createAValidLink();
-        saveApplicationId();
+        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -890,7 +889,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicensedGroupChildCareHomeFlow() {
         createAValidLink();
-        saveApplicationId();
+        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -1049,7 +1048,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void LicenseExemptChildCareCenter() {
         createAValidLink();
-        saveApplicationId();
+        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -1273,7 +1272,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
     }
 
-    private void saveApplicationId(){
+    private void submitFamilyConfirmationCode(){
         testPage.navigateToFlowScreen("providerresponse/confirmation-code");
         testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
