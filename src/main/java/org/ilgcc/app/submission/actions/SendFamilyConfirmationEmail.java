@@ -6,7 +6,7 @@ import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.email.EmailConstants;
+import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
@@ -52,7 +52,7 @@ public class SendFamilyConfirmationEmail implements Action {
         String senderName = messageSource.getMessage("email.general.sender-name", null, locale);
 
         sendEmailJob.enqueueSendEmailJob(familyEmail, senderName, subject,
-                EmailConstants.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
+                ILGCCEmail.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
                 createFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
         familySubmission.getInputData().put("familyConfirmationEmailSent", "true");
         submissionRepositoryService.save(familySubmission);

@@ -1,5 +1,6 @@
 package org.ilgcc.app.utils;
 
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_SUBMISSION_MAP;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.MOCK;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -58,7 +59,7 @@ public abstract class AbstractMockMvcTest {
 
   @BeforeEach
   protected void setUp() {
-    session.setAttribute("submissionMap", new HashMap<>());
+    session.setAttribute(SESSION_KEY_SUBMISSION_MAP, new HashMap<>());
     this.mockMvc = MockMvcBuilders
         .webAppContextSetup(this.webApplicationContext)
         .apply(sharedHttpSession()) // use this session across requests

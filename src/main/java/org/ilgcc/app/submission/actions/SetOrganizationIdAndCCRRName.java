@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.data.County;
 import org.ilgcc.app.data.ResourceOrganization;
-import org.ilgcc.app.data.importer.CCMSDataServiceImpl;
+import org.ilgcc.app.data.CCMSDataServiceImpl;
 import org.ilgcc.app.submission.router.ApplicationRouterService;
 import formflow.library.data.SubmissionRepositoryService;
 import lombok.extern.slf4j.Slf4j;

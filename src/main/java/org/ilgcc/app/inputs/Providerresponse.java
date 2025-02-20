@@ -7,7 +7,9 @@ import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import java.math.BigInteger;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,8 +18,9 @@ public class Providerresponse extends FlowInputs {
     private String familySubmissionId;
 
     MultipartFile providerUploadDocuments;
-    @NotBlank(message = "{errors.provide-provider-number}")
-    private String providerResponseProviderNumber;
+
+    @NotNull(message = "{errors.provide-provider-number}")
+    private BigInteger providerResponseProviderNumber;
 
     private String providerResponseFamilyShortCode;
 
@@ -149,4 +152,6 @@ public class Providerresponse extends FlowInputs {
     // registration-signature
     @NotBlank(message = "{errors.validate.provider-signed-name}")
     private String providerSignedName;
+
+    private String providerConfirmationEmailSent;
 }

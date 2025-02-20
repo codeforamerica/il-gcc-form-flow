@@ -13,13 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_SUBMISSION_MAP;
 
 @Slf4j
 @Controller
 public class ProviderLinkController {
-
-    private final static String SESSION_KEY_CLIENT_SUBMISSION_ID = "clientSubmissionId";
-    private final static String SESSION_KEY_SUBMISSION_MAP = "submissionMap";
 
     private final SubmissionRepositoryService submissionRepositoryService;
 
@@ -35,7 +34,7 @@ public class ProviderLinkController {
      * @return
      */
     @GetMapping(value = {"providerresponse/submit","providerresponse/submit/{confirmationCode}"})
-    String loadClientSubmission(HttpSession session, HttpServletRequest request,
+    String loadFamilySubmission(HttpSession session, HttpServletRequest request,
             @PathVariable(required = false) String confirmationCode,
             @RequestParam(name = "utm_medium", required = false) String utmMedium) {
 
@@ -65,7 +64,7 @@ public class ProviderLinkController {
                 s.setUrlParams(urlParams);
                 submissionRepositoryService.save(s);
 
-                newSession.setAttribute(SESSION_KEY_CLIENT_SUBMISSION_ID, s.getId());
+                newSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, s.getId());
             } else {
                 log.error("Unable to load submission for code " + sanitizedConfirmationCode);
                 return "redirect:/error";

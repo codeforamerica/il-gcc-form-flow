@@ -1,5 +1,8 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.formatListIntoReadableString;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getChildrenInitialsListFromApplication;
+
 import com.sendgrid.helpers.mail.objects.Content;
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
@@ -9,7 +12,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.email.EmailConstants;
+import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
@@ -43,7 +46,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
             log.warn("Provider agrees to care confirmation email has already been sent for submission with ID: {}", providerSubmission.getId());
             return;
         }
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getClientId(providerSubmission);
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isEmpty()) {
             log.warn("No family submission is associated with the provider submission with ID: {}", providerSubmission.getId());
             return;
@@ -74,7 +77,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         Content body = createProviderResponseConfirmationEmailBody(providerSubmission, familySubmission, familySubmissionConfirmationId, locale);
 
         sendEmailJob.enqueueSendEmailJob(familyEmailAddress, senderName, subject,
-                EmailConstants.EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL.getDescription(),
+                ILGCCEmail.EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL.getDescription(),
                 body, providerSubmission);
         providerSubmission.getInputData().put("providerResponseFamilyConfirmationEmailSent", "true");
         submissionRepositoryService.save(providerSubmission);
@@ -88,8 +91,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         String p1 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale);
         String p2 = providerName.isBlank() ? messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-no-provider-name", new Object[]{ccrrName}, locale) : messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name", new Object[]{providerName, ccrrName}, locale);
         String p3 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
-            new Object[]{
-                ProviderSubmissionUtilities.getChildrenInitialsFromApplication(familySubmission),
+            new Object[]{formatListIntoReadableString(getChildrenInitialsListFromApplication(familySubmission), messageSource.getMessage("general.and", null, locale)),
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission, providerSubmission)
             }, locale);
         String p4 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p4", new Object[]{confirmationCode}, locale);

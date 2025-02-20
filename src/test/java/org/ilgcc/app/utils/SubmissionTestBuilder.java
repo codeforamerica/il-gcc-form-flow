@@ -61,6 +61,12 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withCCRR() {
+        submission.getInputData().put("ccrrPhoneNumber", "(603) 555-1244");
+        submission.getInputData().put("ccrrName", "Sample Test CCRR");
+        return this;
+    }
+
     public SubmissionTestBuilder withProviderStateLicense(){
         submission.getInputData().put("providerCurrentlyLicensed", "true");
         submission.getInputData().put("providerLicenseNumber", "123453646");

@@ -17,10 +17,10 @@ public class FormatChildrenWhoNeedCareNames implements Action {
     
     @Override
     public void run(Submission providerSubmission) {
-        Optional<UUID> clientID = ProviderSubmissionUtilities.getClientId(providerSubmission);
-        if (clientID.isPresent()) {
-            Submission clientSubmission = submissionRepositoryService.findById(clientID.get()).get();
-            String formattedChildrenNames = ProviderSubmissionUtilities.formatChildNamesAsCommaSeperatedList(clientSubmission);
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+        if (familySubmissionId.isPresent()) {
+            Submission familySubmission = submissionRepositoryService.findById(familySubmissionId.get()).get();
+            String formattedChildrenNames = ProviderSubmissionUtilities.formatChildNamesAsCommaSeperatedList(familySubmission);
             providerSubmission.getInputData().put("childrenWhoNeedCareNames", formattedChildrenNames);
         }
     }
