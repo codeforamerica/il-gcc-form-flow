@@ -12,7 +12,7 @@ import java.util.Optional;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.County;
 import org.ilgcc.app.data.ResourceOrganization;
-import org.ilgcc.app.data.importer.CCMSDataServiceImpl;
+import org.ilgcc.app.data.CCMSDataServiceImpl;
 import org.ilgcc.app.submission.router.ApplicationRouterService;
 import org.ilgcc.app.utils.CountyOption;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
