@@ -32,7 +32,8 @@ public class SendProviderConfirmationEmail implements Action {
 
     protected final SendEmailJob sendEmailJob;
 
-    public SendProviderConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource, SubmissionRepositoryService submissionRepositoryService) {
+    public SendProviderConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
+            SubmissionRepositoryService submissionRepositoryService) {
         this.sendEmailJob = sendEmailJob;
         this.messageSource = messageSource;
         this.submissionRepositoryService = submissionRepositoryService;
@@ -62,7 +63,7 @@ public class SendProviderConfirmationEmail implements Action {
         boolean providerAgreedToCare = submission.getInputData().getOrDefault("providerResponseAgreeToCare", "false")
                 .equals("true");
 
-        return emailSent || !providerAgreedToCare || getRecipientEmail(submission).isBlank();
+        return emailSent || !providerAgreedToCare;
     }
 
     protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission) {
@@ -94,7 +95,8 @@ public class SendProviderConfirmationEmail implements Action {
         String p2 = messageSource.getMessage("email.provider-confirmation.p2", new Object[]{emailData.get("ccrrName")},
                 locale);
         String p3 = messageSource.getMessage("email.provider-confirmation.p3",
-                new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"), messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
+                new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
+                        messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
         String p4 = messageSource.getMessage("email.provider-confirmation.p4",
                 new Object[]{emailData.get("confirmationCode")}, locale);
         String p5 = messageSource.getMessage("email.provider-confirmation.p5",
