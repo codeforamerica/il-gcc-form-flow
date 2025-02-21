@@ -52,8 +52,7 @@ public class DocumentTransferRequestService implements DocumentTransferRequest {
         HttpURLConnection httpUrlConnection = httpUrlConnectionFactory.createHttpURLConnection(new URI(documentTransferServiceUrl).toURL());
         String jsonString = createJsonRequestBody(presignedUrl, submission, fileName);
 
-        try {
-            OutputStream os = httpUrlConnection.getOutputStream();
+        try (OutputStream os = httpUrlConnection.getOutputStream()) {
             byte[] input = jsonString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
             
