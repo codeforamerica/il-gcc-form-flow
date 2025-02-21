@@ -1,6 +1,6 @@
 package org.ilgcc.app.file_transfer;
 
-import static org.ilgcc.app.utils.enums.TransmissionStatus.*;
+import static org.ilgcc.app.utils.enums.TransmissionStatus.Complete;
 
 import com.google.gson.Gson;
 import formflow.library.data.Submission;
@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,11 +47,13 @@ public class DocumentTransferRequestService implements DocumentTransferRequest {
     
     @Override
     public void sendDocumentTransferServiceRequest(String presignedUrl, Submission submission, String fileName, UUID transmissionId)
-            throws IOException {
+            throws IOException, URISyntaxException {
         Transmission transmission = transmissionRepositoryService.findById(transmissionId);
-        HttpURLConnection httpUrlConnection = httpUrlConnectionFactory.createHttpURLConnection(new URL(documentTransferServiceUrl));
+        HttpURLConnection httpUrlConnection = httpUrlConnectionFactory.createHttpURLConnection(new URI(documentTransferServiceUrl).toURL());
         String jsonString = createJsonRequestBody(presignedUrl, submission, fileName);
-        try (OutputStream os = httpUrlConnection.getOutputStream()) {
+
+        try {
+            OutputStream os = httpUrlConnection.getOutputStream();
             byte[] input = jsonString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
             
