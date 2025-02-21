@@ -62,7 +62,7 @@ public class SendProviderConfirmationEmail implements Action {
         boolean providerAgreedToCare = submission.getInputData().getOrDefault("providerResponseAgreeToCare", "false")
                 .equals("true");
 
-        return emailSent || !providerAgreedToCare;
+        return emailSent || !providerAgreedToCare || getRecipientEmail(submission).isBlank();
     }
 
     protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission) {
