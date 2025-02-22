@@ -1,6 +1,7 @@
 package org.ilgcc.app.data;
 
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,10 @@ public class TransactionRepositoryService {
     
     public Transaction getBySubmissionId(UUID submissionId) {
         return transactionRepository.findBySubmissionId(submissionId);
+    }
+    
+    public List<Transaction> getTransactionsWithoutWorkItemIds() {
+        return transactionRepository.findByWorkItemIdIsNull();
     }
     
     public Transaction createTransaction(UUID transactionId, UUID submissionId) {
