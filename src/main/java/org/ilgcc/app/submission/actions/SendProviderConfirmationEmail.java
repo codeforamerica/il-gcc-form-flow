@@ -17,6 +17,7 @@ import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -25,6 +26,8 @@ public class SendProviderConfirmationEmail implements Action {
 
     protected static String EMAIL_SENT_STATUS_INPUT_NAME = "providerConfirmationEmailSent";
     protected static String RECIPIENT_EMAIL_INPUT_NAME = "providerResponseContactEmail";
+
+    protected static Locale locale;
 
     protected static MessageSource messageSource;
 
@@ -42,14 +45,13 @@ public class SendProviderConfirmationEmail implements Action {
     @Override
     public void run(Submission submission) {
         if (!skipEmailSend(submission)) {
-            Locale locale =
-                    submission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
-                            "es") : Locale.ENGLISH;
             Optional<Map<String, Object>> emailData = getEmailData(submission);
 
             if (emailData.isEmpty()) {
                 return;
             }
+
+            locale = LocaleContextHolder.getLocale();
 
             ILGCCEmail email = ILGCCEmail.createProviderConfirmationEmail(getSenderName(locale), getRecipientEmail(submission),
                     setSubject(emailData.get(), locale), new Content("text/html", setBodyCopy(emailData.get(), locale)),

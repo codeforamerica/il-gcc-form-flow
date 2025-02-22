@@ -68,7 +68,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         String familySubmissionConfirmationId = familySubmission.getShortCode();
 
         Locale locale =
-                providerSubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
+                familySubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
                         "es") : Locale.ENGLISH;
 
         String senderName = messageSource.getMessage("email.general.sender-name", null, locale);
