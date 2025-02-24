@@ -134,6 +134,7 @@ class SetOrganizationIdAndCCRRNameTest {
     public void setsOrganizationIdFromCountyWhenInvalidZipCode() {
         ResourceOrganization org = new ResourceOrganization();
         org.setName("4C: Community Coordinated Child Care");
+        org.setPhone("(312)333-3333");
         org.setResourceOrgId(new BigInteger("56522729391679"));
         when(applicationRouterService.getOrganizationIdByZipCode("94114")).thenReturn(Optional.empty());
         when(applicationRouterService.getOrganizationIdByZipCode("60530")).thenReturn(Optional.of(org));
@@ -148,6 +149,7 @@ class SetOrganizationIdAndCCRRNameTest {
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo("56522729391679");
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo("4C: Community Coordinated Child Care");
+        assertThat(submission.getInputData().get("ccrrPhoneNumber").toString()).isEqualTo("(312)333-3333");
         assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo("Lee");
     }
 
