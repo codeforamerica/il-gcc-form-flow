@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -108,7 +109,7 @@ class UploadedDocumentTransmissionJobTest {
     }
 
     @Test
-    void enqueuePdfTransmissionJobShouldSetTransmissionStatusToCompleteWhenSuccessful() throws IOException {
+    void enqueuePdfTransmissionJobShouldSetTransmissionStatusToCompleteWhenSuccessful() throws IOException, URISyntaxException {
         when(s3PresignService.generatePresignedUrl(objectPath)).thenReturn("https://www.test.com");
         when(httpUrlConnectionFactory.createHttpURLConnection(any(URL.class))).thenReturn(httpUrlConnection);
         when(httpUrlConnection.getOutputStream()).thenReturn(mock(OutputStream.class));
@@ -127,7 +128,7 @@ class UploadedDocumentTransmissionJobTest {
     }
 
     @Test
-    void enqueuePdfTransmissionJobShouldSetTransmissionStatusToFailedWhenAnErrorOccurs() throws IOException {
+    void enqueuePdfTransmissionJobShouldSetTransmissionStatusToFailedWhenAnErrorOccurs() throws IOException, URISyntaxException {
         when(s3PresignService.generatePresignedUrl(objectPath)).thenReturn("https://www.test.com");
         when(httpUrlConnectionFactory.createHttpURLConnection(any(URL.class))).thenReturn(httpUrlConnection);
         when(httpUrlConnection.getOutputStream()).thenReturn(mock(OutputStream.class));

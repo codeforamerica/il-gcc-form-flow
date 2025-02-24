@@ -6,6 +6,7 @@ import static org.jobrunr.scheduling.JobBuilder.aJob;
 import formflow.library.data.Submission;
 import formflow.library.data.UserFile;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -48,7 +49,7 @@ public class UploadedDocumentTransmissionJob {
     }
     
     public void sendUploadedDocumentTransferRequest(Submission submission, UserFile userFile, String fileName, UUID uploadedDocumentTransmissionId)
-            throws IOException {
+            throws IOException, URISyntaxException {
         String presignedUrl = s3PresignService.generatePresignedUrl(userFile.getRepositoryPath());
         log.info("Enqueuing uploaded document transfer job for file with ID: {} in submission with ID: {}", userFile.getFileId(), submission.getId());
         documentTransferRequestService.sendDocumentTransferServiceRequest(presignedUrl, submission, fileName, uploadedDocumentTransmissionId);
