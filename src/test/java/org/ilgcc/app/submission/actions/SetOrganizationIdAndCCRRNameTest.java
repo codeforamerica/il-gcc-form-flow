@@ -8,7 +8,7 @@ import static org.ilgcc.app.data.FakeResourceOrganization.FOUR_C_TEST_DATA;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import org.ilgcc.app.IlGCCApplication;
-import org.ilgcc.app.data.importer.CCMSDataServiceImpl;
+import org.ilgcc.app.data.CCMSDataServiceImpl;
 import org.ilgcc.app.submission.router.ApplicationRouterService;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.BeforeEach;
