@@ -63,11 +63,12 @@ public class SendFamilyConfirmationEmail implements Action {
         String emailLink = familySubmission.getInputData().get("emailLink").toString();
         String ccrAndR = familySubmission.getInputData().get("ccrrName").toString();
         String submittedDate = SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission);
+        String ccrrPhoneNumber = (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", "");
 
         String p1 = messageSource.getMessage("email.family-confirmation.p1", new Object[]{parentFirstName}, locale);
         String p2 = messageSource.getMessage("email.family-confirmation.p2", null, locale);
         String p3 = messageSource.getMessage("email.family-confirmation.p3", new Object[]{emailLink}, locale);
-        String p4 = messageSource.getMessage("email.family-confirmation.p4", new Object[]{ccrAndR}, locale);
+        String p4 = messageSource.getMessage("email.family-confirmation.p4", new Object[]{ccrAndR, ccrrPhoneNumber}, locale);
         String p5 = messageSource.getMessage("email.family-confirmation.p5", new Object[]{confirmationCode, submittedDate},
                 locale);
         String p6 = messageSource.getMessage("email.family-confirmation.p6", null, locale);
