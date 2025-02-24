@@ -33,7 +33,6 @@ public class SetOrganizationIdAndCCRRName implements Action {
     private static final String UNVALIDATED_ZIPCODE_INPUT_NAME = "parentHomeZipCode";
     private static final String APPLICATION_COUNTY_INPUT_NAME = "applicationCounty";
     private static final String APPLICATION_ZIPCODE_INPUT_NAME = "applicationZipCode";
-
     private static final String APPLICANT_COUNTY_INPUT_NAME = "applicantAddressCounty";
 
     @Override
@@ -61,26 +60,24 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
         if (hasValidValue(inputData, APPLICATION_COUNTY_INPUT_NAME)) {
             final String applicationCounty = (String) submission.getInputData().get(APPLICATION_COUNTY_INPUT_NAME);
-            final Optional<ZipcodeOption> zipCode = CountyOption.getZipCodeFromCountyName(applicationCounty);
+            Optional<ResourceOrganization> organization = applicationRouterService.getOrganizationByCountyName(applicationCounty);
 
-            if (zipCode.isPresent()) {
-                Optional<ResourceOrganization> organization = applicationRouterService.getOrganizationIdByZipCode(zipCode.get().getValue());
-                if (organization.isPresent()) {
-                    saveOrganizationIdAndNameAndPhoneNumber(submission, organization.get());
-                    saveCounty(submission, applicationCounty);
-                    return;
-                } else {
-                    log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(), zipCode));
-                }
+            if (organization.isPresent()) {
+                saveOrganizationIdAndNameAndPhoneNumber(submission, organization.get());
+                return;
+            } else {
+                log.info(
+                        String.format("Submission: %s has a countyName %s without a matching organization id", submission.getId(),
+                                applicationCounty));
             }
         }
 
         if (hasValidValue(inputData, APPLICATION_ZIPCODE_INPUT_NAME)) {
             final String applicationZipCode = (String) submission.getInputData().get(APPLICATION_ZIPCODE_INPUT_NAME);
-            final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(applicationZipCode);
+            final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(
+                    applicationZipCode);
             if (org.isPresent()) {
                 saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
-                saveCountyFromZip(submission, applicationZipCode);
                 return;
             }
         }
@@ -90,7 +87,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
     private void saveOrganizationIdAndNameAndPhoneNumber(Submission submission, ResourceOrganization org) {
         submission.getInputData().put(ORGANIZATION_ID_INPUT, org.getResourceOrgId());
-        submission.getInputData().put("ccrrName",  org.getName());
+        submission.getInputData().put("ccrrName", org.getName());
         submission.getInputData().put("ccrrPhoneNumber", org.getPhone());
         submissionRepositoryService.save(submission);
     }
@@ -98,16 +95,12 @@ public class SetOrganizationIdAndCCRRName implements Action {
     private void saveCountyFromZip(Submission submission, String zipCode) {
         Optional<County> county = ccmsDataServiceImpl.getCountyByZipCode(zipCode);
         if (county.isPresent()) {
-            saveCounty(submission, county.get().getCounty());
+            submission.getInputData().put(APPLICANT_COUNTY_INPUT_NAME, county);
+            submissionRepositoryService.save(submission);
         } else {
             log.info(String.format("could not assign a zip code to this application: %s", submission.getId()));
         }
 
-    }
-
-    private void saveCounty(Submission submission, String county) {
-        submission.getInputData().put(APPLICANT_COUNTY_INPUT_NAME, county);
-        submissionRepositoryService.save(submission);
     }
 
     private boolean hasValidValue(Map<String, Object> inputData, String inputKey) {
