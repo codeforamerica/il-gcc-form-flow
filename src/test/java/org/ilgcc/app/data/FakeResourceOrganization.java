@@ -20,78 +20,61 @@ public class FakeResourceOrganization implements InitializingBean {
     private ResourceOrganizationRepository resourceOrganizationRepository;
     @Autowired
     private CountyRepository countyRepository;
-
     public static ResourceOrganization FOUR_C_TEST_DATA;
-    public static ResourceOrganization PROJECT_CHILD_TEST_DATA;
-    public static ResourceOrganization OUT_OF_SCOPE_DATA;
-
-    public static County ACTIVE_OUT_OF_SCOPE_COUNTY;
-    public static County ACTIVE_PROJECT_CHILD_COUNTY;
     public static County ACTIVE_FOUR_C_COUNTY;
-
+    public static ResourceOrganization PROJECT_CHILD_TEST_DATA;
+    public static County ACTIVE_PROJECT_CHILD_COUNTY;
+    public static ResourceOrganization OUT_OF_SCOPE_DATA;
+    public static County ACTIVE_OUT_OF_SCOPE_COUNTY;
 
     @Override
     public void afterPropertiesSet() {
         log.info("Starting creating fake provider data.");
 
-        if (!resourceOrganizationRepository.existsById(new BigInteger("56522729391679"))) {
-            FOUR_C_TEST_DATA = new ResourceOrganization();
-            FOUR_C_TEST_DATA.setResourceOrgId(new BigInteger("56522729391679"));
-            FOUR_C_TEST_DATA.setName("4C: Community Coordinated Child Care");
-            FOUR_C_TEST_DATA.setSda(Short.valueOf("2"));
-            FOUR_C_TEST_DATA.setPhone("123456789");
-            FOUR_C_TEST_DATA.setEmail("test@gmail.com");
-            FOUR_C_TEST_DATA.setCaseloadCode("BB");
-            resourceOrganizationRepository.save(FOUR_C_TEST_DATA);
-        }
+        FOUR_C_TEST_DATA = new ResourceOrganization();
+        FOUR_C_TEST_DATA.setResourceOrgId(new BigInteger("12345678901234"));
+        FOUR_C_TEST_DATA.setName("4C: Community Coordinated Child Care");
+        FOUR_C_TEST_DATA.setSda(Short.valueOf("2"));
+        FOUR_C_TEST_DATA.setPhone("123456789");
+        FOUR_C_TEST_DATA.setEmail("test@gmail.com");
+        FOUR_C_TEST_DATA.setCaseloadCode("BB");
+        resourceOrganizationRepository.save(FOUR_C_TEST_DATA);
 
-        if (!countyRepository.existsById(zip_60001.getValue())) {
-            ACTIVE_FOUR_C_COUNTY = new County();
-            ACTIVE_FOUR_C_COUNTY.setCounty("DeKalb");
-            ACTIVE_FOUR_C_COUNTY.setZipCode(new BigInteger(zip_60001.getValue()));
-            ACTIVE_FOUR_C_COUNTY.setCaseloadCode("BB");
-            countyRepository.save(ACTIVE_FOUR_C_COUNTY);
-        }
+        ACTIVE_FOUR_C_COUNTY = new County();
+        ACTIVE_FOUR_C_COUNTY.setCounty("DeKalb");
+        ACTIVE_FOUR_C_COUNTY.setZipCode(new BigInteger(zip_60001.getValue()));
+        ACTIVE_FOUR_C_COUNTY.setCaseloadCode("BB");
+        countyRepository.save(ACTIVE_FOUR_C_COUNTY);
 
+        PROJECT_CHILD_TEST_DATA = new ResourceOrganization();
+        PROJECT_CHILD_TEST_DATA.setResourceOrgId(new BigInteger("12345678901235"));
+        PROJECT_CHILD_TEST_DATA.setName("Project CHILD");
+        PROJECT_CHILD_TEST_DATA.setSda(Short.valueOf("15"));
+        PROJECT_CHILD_TEST_DATA.setCaseloadCode("QQ");
+        PROJECT_CHILD_TEST_DATA.setPhone("123456789");
+        PROJECT_CHILD_TEST_DATA.setEmail("test@gmail.com");
+        resourceOrganizationRepository.save(PROJECT_CHILD_TEST_DATA);
 
-        if (!resourceOrganizationRepository.existsById(new BigInteger("56522729391679"))) {
-            PROJECT_CHILD_TEST_DATA = new ResourceOrganization();
-            PROJECT_CHILD_TEST_DATA.setResourceOrgId(new BigInteger("56522729391679"));
-            PROJECT_CHILD_TEST_DATA.setName("Project CHILD");
-            PROJECT_CHILD_TEST_DATA.setSda(Short.valueOf("15"));
-            PROJECT_CHILD_TEST_DATA.setCaseloadCode("QQ");
-            PROJECT_CHILD_TEST_DATA.setPhone("123456789");
-            PROJECT_CHILD_TEST_DATA.setEmail("test@gmail.com");
-            resourceOrganizationRepository.save(PROJECT_CHILD_TEST_DATA);
-        }
+        ACTIVE_PROJECT_CHILD_COUNTY = new County();
+        ACTIVE_PROJECT_CHILD_COUNTY.setCounty("Ramsey");
+        ACTIVE_PROJECT_CHILD_COUNTY.setZipCode(new BigInteger(zip_62863.getValue()));
+        ACTIVE_PROJECT_CHILD_COUNTY.setCaseloadCode("QQ");
+        countyRepository.save(ACTIVE_PROJECT_CHILD_COUNTY);
 
+        OUT_OF_SCOPE_DATA = new ResourceOrganization();
+        OUT_OF_SCOPE_DATA.setResourceOrgId(new BigInteger("12345678901236"));
+        OUT_OF_SCOPE_DATA.setName("Illinois Action for Children");
+        OUT_OF_SCOPE_DATA.setSda(Short.valueOf("6"));
+        OUT_OF_SCOPE_DATA.setCaseloadCode("GG");
+        OUT_OF_SCOPE_DATA.setPhone("123456789");
+        OUT_OF_SCOPE_DATA.setEmail("test@gmail.com");
+        resourceOrganizationRepository.save(OUT_OF_SCOPE_DATA);
 
-        if (!countyRepository.existsById(zip_62863.getValue())) {
-            ACTIVE_PROJECT_CHILD_COUNTY = new County();
-            ACTIVE_PROJECT_CHILD_COUNTY.setCounty("Ramsey");
-            ACTIVE_PROJECT_CHILD_COUNTY.setZipCode(new BigInteger(zip_62863.getValue()));
-            ACTIVE_PROJECT_CHILD_COUNTY.setCaseloadCode("QQ");
-            countyRepository.save(ACTIVE_PROJECT_CHILD_COUNTY);
-        }
-
-        if (!resourceOrganizationRepository.existsById(new BigInteger("47522729391670"))) {
-            OUT_OF_SCOPE_DATA = new ResourceOrganization();
-            OUT_OF_SCOPE_DATA.setResourceOrgId(new BigInteger("47522729391670"));
-            OUT_OF_SCOPE_DATA.setName("Illinois Action for Children");
-            OUT_OF_SCOPE_DATA.setSda(Short.valueOf("6"));
-            OUT_OF_SCOPE_DATA.setCaseloadCode("GG");
-            OUT_OF_SCOPE_DATA.setPhone("123456789");
-            OUT_OF_SCOPE_DATA.setEmail("test@gmail.com");
-            resourceOrganizationRepository.save(OUT_OF_SCOPE_DATA);
-        }
-
-        if (!countyRepository.existsById(zip_60482.getValue())) {
-            ACTIVE_OUT_OF_SCOPE_COUNTY = new County();
-            ACTIVE_OUT_OF_SCOPE_COUNTY.setCounty("DeKalb");
-            ACTIVE_OUT_OF_SCOPE_COUNTY.setZipCode(new BigInteger(zip_60482.getValue()));
-            ACTIVE_OUT_OF_SCOPE_COUNTY.setCaseloadCode("GG");
-            countyRepository.save(ACTIVE_OUT_OF_SCOPE_COUNTY);
-        }
+        ACTIVE_OUT_OF_SCOPE_COUNTY = new County();
+        ACTIVE_OUT_OF_SCOPE_COUNTY.setCounty("Chicago");
+        ACTIVE_OUT_OF_SCOPE_COUNTY.setZipCode(new BigInteger(zip_60482.getValue()));
+        ACTIVE_OUT_OF_SCOPE_COUNTY.setCaseloadCode("GG");
+        countyRepository.save(ACTIVE_OUT_OF_SCOPE_COUNTY);
 
 
     }

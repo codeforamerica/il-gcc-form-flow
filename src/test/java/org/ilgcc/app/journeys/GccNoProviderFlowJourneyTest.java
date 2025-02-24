@@ -2,6 +2,8 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.ilgcc.app.data.FakeResourceOrganization.ACTIVE_PROJECT_CHILD_COUNTY;
+import static org.ilgcc.app.data.FakeResourceOrganization.PROJECT_CHILD_TEST_DATA;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -69,7 +71,7 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentHomeStreetAddress1", "10921 S Nagle Ave");
         testPage.enter("parentHomeCity", "Worth");
         testPage.selectFromDropdown("parentHomeState", getEnMessage("state.il"));
-        testPage.enter("parentHomeZipCode", "60482");
+        testPage.enter("parentHomeZipCode", ACTIVE_PROJECT_CHILD_COUNTY.getZipCode().toString());
         testPage.clickContinue();
 
         // parent-mailing-address
@@ -654,7 +656,7 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
         assertThat(testPage.getTextBySelector("ul").get(1)).containsIgnoringCase(
-                "Illinois Action for Children");
+                PROJECT_CHILD_TEST_DATA.getName());
         testPage.clickContinue();
 
         // complete-submit-confirmation

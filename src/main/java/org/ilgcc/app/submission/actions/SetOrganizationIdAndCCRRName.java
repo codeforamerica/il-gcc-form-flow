@@ -11,8 +11,6 @@ import org.ilgcc.app.data.CCMSDataServiceImpl;
 import org.ilgcc.app.submission.router.ApplicationRouterService;
 import formflow.library.data.SubmissionRepositoryService;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.utils.CountyOption;
-import org.ilgcc.app.utils.ZipcodeOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,11 +44,12 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
         if (!experiencingHomelessness && hasValidValue(inputData, UNVALIDATED_ZIPCODE_INPUT_NAME)) {
             final String unvalidatedZip = (String) submission.getInputData().get(UNVALIDATED_ZIPCODE_INPUT_NAME);
+            saveCountyFromZip(submission, unvalidatedZip);
+
             final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(unvalidatedZip);
 
             if (org.isPresent()) {
                 saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
-                saveCountyFromZip(submission, unvalidatedZip);
                 return;
             } else {
                 log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(),
@@ -95,7 +94,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
     private void saveCountyFromZip(Submission submission, String zipCode) {
         Optional<County> county = ccmsDataServiceImpl.getCountyByZipCode(zipCode);
         if (county.isPresent()) {
-            submission.getInputData().put(APPLICANT_COUNTY_INPUT_NAME, county);
+            submission.getInputData().put(APPLICANT_COUNTY_INPUT_NAME, county.get().getCounty());
             submissionRepositoryService.save(submission);
         } else {
             log.info(String.format("could not assign a zip code to this application: %s", submission.getId()));
