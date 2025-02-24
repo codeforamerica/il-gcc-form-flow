@@ -11,7 +11,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
-import org.ilgcc.app.utils.enums.FileNameUtility;
+import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.PdfTransmissionJob;
 import org.ilgcc.jobs.UploadedDocumentTransmissionJob;
@@ -50,11 +50,11 @@ public class UploadProviderSubmissionToS3 implements Action {
 
     @Override
     public void run(Submission providerSubmission) {
-        var clientId = ProviderSubmissionUtilities.getClientId(providerSubmission);
-        if (clientId.isPresent()) {
-            Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(clientId.get());
+        var familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+        if (familySubmissionId.isPresent()) {
+            Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(familySubmissionId.get());
             if (familySubmissionOptional.isPresent()) {
-                log.info("Provider submitted response for client ID {}, enqueuing transfer of documents.", clientId.get());
+                log.info("Provider submitted response for family submission {}, enqueuing transfer of documents.", familySubmissionId.get());
                 Submission familySubmission = familySubmissionOptional.get();
                 familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
                 submissionRepositoryService.save(familySubmission);
@@ -63,7 +63,7 @@ public class UploadProviderSubmissionToS3 implements Action {
                 enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                     uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
             } else {
-                log.error(String.format("We can not find a match for your family submission: %s", clientId.get()));
+                log.error(String.format("We can not find a match for your family submission: %s", familySubmissionId.get()));
             }
         } else {
             log.error(String.format("Family Submission Id is Blank for the provider submission: %s.", providerSubmission.getId().toString()));

@@ -17,12 +17,17 @@ import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class SendProviderConfirmationEmail implements Action {
 
     protected static String EMAIL_SENT_STATUS_INPUT_NAME = "providerConfirmationEmailSent";
     protected static String RECIPIENT_EMAIL_INPUT_NAME = "providerResponseContactEmail";
+
+    protected static Locale locale;
 
     protected static MessageSource messageSource;
 
@@ -30,7 +35,8 @@ public class SendProviderConfirmationEmail implements Action {
 
     protected final SendEmailJob sendEmailJob;
 
-    public SendProviderConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource, SubmissionRepositoryService submissionRepositoryService) {
+    public SendProviderConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
+            SubmissionRepositoryService submissionRepositoryService) {
         this.sendEmailJob = sendEmailJob;
         this.messageSource = messageSource;
         this.submissionRepositoryService = submissionRepositoryService;
@@ -39,14 +45,13 @@ public class SendProviderConfirmationEmail implements Action {
     @Override
     public void run(Submission submission) {
         if (!skipEmailSend(submission)) {
-            Locale locale =
-                    submission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
-                            "es") : Locale.ENGLISH;
             Optional<Map<String, Object>> emailData = getEmailData(submission);
 
             if (emailData.isEmpty()) {
                 return;
             }
+
+            locale = LocaleContextHolder.getLocale();
 
             ILGCCEmail email = ILGCCEmail.createProviderConfirmationEmail(getSenderName(locale), getRecipientEmail(submission),
                     setSubject(emailData.get(), locale), new Content("text/html", setBodyCopy(emailData.get(), locale)),
@@ -92,7 +97,8 @@ public class SendProviderConfirmationEmail implements Action {
         String p2 = messageSource.getMessage("email.provider-confirmation.p2", new Object[]{emailData.get("ccrrName")},
                 locale);
         String p3 = messageSource.getMessage("email.provider-confirmation.p3",
-                new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"), messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
+                new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
+                        messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
         String p4 = messageSource.getMessage("email.provider-confirmation.p4",
                 new Object[]{emailData.get("confirmationCode")}, locale);
         String p5 = messageSource.getMessage("email.provider-confirmation.p5",
@@ -114,7 +120,7 @@ public class SendProviderConfirmationEmail implements Action {
     }
 
     private Optional<Submission> getFamilyApplication(Submission providerSubmission) {
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getClientId(providerSubmission);
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isEmpty()) {
             log.warn("No family submission is associated with the provider submission with ID: {}",
                     providerSubmission.getId());

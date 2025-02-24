@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.SubmissionUtilities;
-import org.ilgcc.app.utils.enums.FileNameUtility;
+import org.ilgcc.app.utils.FileNameUtility;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

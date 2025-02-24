@@ -93,7 +93,7 @@ public class CheckFamilySubmissionForProvider implements Action {
                 }
             }
         } else {
-            // If we don't have a client submission, we use the Active status but without any
+            // If we don't have a family submission, we use the Active status but without any
             // data pre-loaded.
             httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS, ProviderSubmissionStatus.ACTIVE.name());
 

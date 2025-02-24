@@ -4,6 +4,7 @@ import static org.ilgcc.app.utils.enums.TransmissionStatus.Queued;
 import static org.ilgcc.app.utils.enums.TransmissionType.APPLICATION_PDF;
 import formflow.library.data.Submission;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -13,8 +14,6 @@ import org.ilgcc.app.data.Transmission;
 import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.file_transfer.DocumentTransferRequestService;
 import org.ilgcc.app.file_transfer.S3PresignService;
-import org.ilgcc.app.utils.enums.FileNameUtility;
-import org.ilgcc.app.utils.enums.TransmissionStatus;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
@@ -50,7 +49,7 @@ public class PdfTransmissionJob {
     }
 
     @Job(name = "Send Document Transfer Service Request for Application PDF", retries = 5)
-    public void sendPdfTransferRequest(String presignedUrl, Submission submission, String fileName, UUID transmissionId) throws IOException {
+    public void sendPdfTransferRequest(String presignedUrl, Submission submission, String fileName, UUID transmissionId) throws IOException, URISyntaxException {
         documentTransferRequestService.sendDocumentTransferServiceRequest(presignedUrl, submission, fileName, transmissionId);
     }
 }

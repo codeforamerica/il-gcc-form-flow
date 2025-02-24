@@ -46,7 +46,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
             log.warn("Provider agrees to care confirmation email has already been sent for submission with ID: {}", providerSubmission.getId());
             return;
         }
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getClientId(providerSubmission);
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isEmpty()) {
             log.warn("No family submission is associated with the provider submission with ID: {}", providerSubmission.getId());
             return;
@@ -68,7 +68,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         String familySubmissionConfirmationId = familySubmission.getShortCode();
 
         Locale locale =
-                providerSubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
+                familySubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
                         "es") : Locale.ENGLISH;
 
         String senderName = messageSource.getMessage("email.general.sender-name", null, locale);
