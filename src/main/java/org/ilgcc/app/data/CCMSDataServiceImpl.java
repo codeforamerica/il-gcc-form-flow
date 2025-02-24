@@ -1,6 +1,7 @@
 package org.ilgcc.app.data;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,16 @@ public class CCMSDataServiceImpl implements CCMSDataService {
         } catch (Exception e) {
             log.error(String.format("Could not map the zip code (%s) to a county", zipCode));
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<County> getCountyByCountyName(String countyName) {
+        try {
+            return countyRepository.findByCounty(countyName);
+        } catch (Exception e) {
+            log.error(String.format("Could not find a County with the county name (%s)", countyName));
+            return Collections.emptyList();
         }
     }
 

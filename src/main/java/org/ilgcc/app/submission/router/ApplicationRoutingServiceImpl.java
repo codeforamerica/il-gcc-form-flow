@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
-
+    private final List<String> activeCaseLoadCodes = List.of("BB", "QQ");
     private final CCMSDataService ccmsDataService;
 
     @Autowired
@@ -26,9 +26,22 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
         }
         final String truncatedZip = zipCode.substring(0, 5);
         Optional<County> countyByZipCode = ccmsDataService.getCountyByZipCode(truncatedZip);
-        if (countyByZipCode.isPresent()) {
-            County county = countyByZipCode.get();
-            List<ResourceOrganization> resourceOrganizationsByCaseloadCode = ccmsDataService.getResourceOrganizationsByCaseloadCode(county.getCaseloadCode());
+        if (countyByZipCode.isPresent() && activeCaseLoadCodes.contains(countyByZipCode.get().getCaseloadCode())) {
+            List<ResourceOrganization> resourceOrganizationsByCaseloadCode = ccmsDataService.getResourceOrganizationsByCaseloadCode(countyByZipCode.get().getCaseloadCode());
+            return resourceOrganizationsByCaseloadCode.stream().filter((r) -> !r.getCaseloadCode().equals("SITE")).findFirst();
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<ResourceOrganization> getOrganizationByCountyName(String countyName) {
+        if(countyName == null || countyName.isBlank()){
+            return Optional.empty();
+        }
+        List<County> counties = ccmsDataService.getCountyByCountyName(countyName);
+        Optional<County> firstCounty = counties.stream().filter((c) -> c != null).findFirst();
+        if (firstCounty.isPresent() && activeCaseLoadCodes.contains(firstCounty.get().getCaseloadCode())) {
+            List<ResourceOrganization> resourceOrganizationsByCaseloadCode = ccmsDataService.getResourceOrganizationsByCaseloadCode(firstCounty.get().getCaseloadCode());
             return resourceOrganizationsByCaseloadCode.stream().filter((r) -> !r.getCaseloadCode().equals("SITE")).findFirst();
         }
         return Optional.empty();
