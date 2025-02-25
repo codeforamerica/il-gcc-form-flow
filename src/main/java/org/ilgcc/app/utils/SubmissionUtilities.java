@@ -6,6 +6,7 @@ import static java.util.Collections.emptyList;
 import formflow.library.data.Submission;
 import formflow.library.inputs.FieldNameMarkers;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.ActivitySchedules.LocalTimeRange;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -179,6 +181,27 @@ public class SubmissionUtilities {
             return month + "/" + year;
         } else {
             return formatToStringFromLocalDate(Optional.of(LocalDate.of(parseInt(year), parseInt(month), parseInt(day))));
+        }
+    }
+
+
+    public static Optional<LocalTime> getTimeInput(Map<String, Object> inputData, String inputName) {
+        String rawValue = (String) inputData.getOrDefault(inputName, "");
+        if (rawValue.isBlank()) {
+            return Optional.empty();
+        } else {
+            LocalTime time = LocalTime.parse((String) inputData.get(inputName));
+            return Optional.of(time);
+        }
+    }
+
+    public static Optional<LocalTimeRange> getTimeRangeInput(Map<String, Object> inputData, String inputName, String suffix) {
+        Optional<LocalTime> start = getTimeInput(inputData, "%sStartTime%s".formatted(inputName, suffix));
+        Optional<LocalTime> end = getTimeInput(inputData, "%sEndTime%s".formatted(inputName, suffix));
+        if (start.isEmpty() && end.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(new LocalTimeRange(start.orElseThrow(), end.orElseThrow()));
         }
     }
 
