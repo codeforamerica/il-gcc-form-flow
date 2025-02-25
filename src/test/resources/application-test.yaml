@@ -11,7 +11,7 @@ form-flow:
     virus-scanning:
       enabled: false
   address-validation:
-    disabled: true
+    enabled: false
     smarty:
       auth-id: 'test-id'
       auth-token: 'test-token'

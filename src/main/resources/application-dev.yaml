@@ -3,6 +3,8 @@ form-flow:
     show-stack-trace: true
   aws:
     s3_bucket_name: ${AWS_BUCKET}
+  address-validation:
+    enabled: ${ADDRESS_VALIDATION_ENABLED:false}
   short-code:
     short-code-configs:
       gcc:
