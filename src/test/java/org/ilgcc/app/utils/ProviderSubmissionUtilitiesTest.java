@@ -13,16 +13,16 @@ class ProviderSubmissionUtilitiesTest {
     @Test
     void formatChildNamesAsCommaSeparatedList() {
         Submission singleChildName = new SubmissionTestBuilder().withChild("John", "Doe", "Yes").build();
-        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(singleChildName)).isEqualTo("John Doe");
+        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(singleChildName, "and")).isEqualTo("John Doe");
 
         Submission twoChildren = new SubmissionTestBuilder().withChild("John", "Doe", "Yes").withChild("Jane", "Doe", "Yes")
                 .build();
-        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(twoChildren)).isEqualTo(
+        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(twoChildren, "and")).isEqualTo(
                 "John Doe and Jane Doe");
 
         Submission threeChildren = new SubmissionTestBuilder().withChild("John", "Doe", "Yes").withChild("Jane", "Doe", "Yes")
                 .withChild("June", "Doe", "Yes").build();
-        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(threeChildren)).isEqualTo(
+        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(threeChildren, "and")).isEqualTo(
                 "John Doe, Jane Doe and June Doe");
     }
 
