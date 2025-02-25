@@ -22,6 +22,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.awaitility.Awaitility.await;
+import static org.ilgcc.app.data.FakeResourceOrganization.ACTIVE_FOUR_C_COUNTY;
 
 @Slf4j
 public class GccFlowJourneyTest extends AbstractBasePageTest {
@@ -106,28 +107,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // parent-info-disability
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-disability.title"));
         testPage.clickYes();
-        // parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
-        assertThat(testPage.getSelectValue("parentHomeState")).isEqualTo(getEnMessage("state.il"));
-
-        testPage.enter("parentHomeStreetAddress1", "972 Mission St");
-        testPage.enter("parentHomeStreetAddress2", "5th floor");
-        testPage.enter("parentHomeCity", "San Francisco");
-        testPage.selectFromDropdown("parentHomeState", "CA - California");
-        testPage.enter("parentHomeZipCode", "94103");
-        testPage.clickContinue();
-        // parent-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
-        testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
-        // Click it twice so it populates the mailing address fields
-        testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
-        // Check that JS is correct populating fields when selecting same as home address
-        assertThat(testPage.getInputValue("parentMailingStreetAddress1")).isEqualTo("972 Mission St");
-        assertThat(testPage.getInputValue("parentMailingStreetAddress2")).isEqualTo("5th floor");
-        assertThat(testPage.getInputValue("parentMailingCity")).isEqualTo("San Francisco");
-        assertThat(testPage.getSelectValue("parentMailingState")).isEqualTo(getEnMessage("state.ca"));
-        assertThat(testPage.getInputValue("parentMailingZipCode")).isEqualTo("94103");
-        testPage.goBack();
         //parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
         testPage.clickElementById("parentHomeExperiencingHomelessness-yes");
@@ -142,7 +121,34 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentMailingCity", "San Francisco");
         testPage.selectFromDropdown("parentMailingState", "CA - California");
         testPage.enter("parentMailingZipCode", "94103");
+
+        testPage.goBack();
+        testPage.goBack();
+
+        // parent-home-address
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
+        // unchecks experiencing homeless checkbox
+        testPage.clickElementById("parentHomeExperiencingHomelessness-yes");
+
+        testPage.enter("parentHomeStreetAddress1", "123 Main St");
+        testPage.enter("parentHomeStreetAddress2", "5th floor");
+        testPage.enter("parentHomeCity", "Sycamore");
+        testPage.selectFromDropdown("parentHomeState", "IL - Illinois");
+        testPage.enter("parentHomeZipCode", ACTIVE_FOUR_C_COUNTY.getZipCode().toString());
         testPage.clickContinue();
+        // parent-mailing-address
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
+        testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
+        // Click it twice so it populates the mailing address fields
+        testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
+        // Check that JS is correct populating fields when selecting same as home address
+        assertThat(testPage.getInputValue("parentMailingStreetAddress1")).isEqualTo("123 Main St");
+        assertThat(testPage.getInputValue("parentMailingStreetAddress2")).isEqualTo("5th floor");
+        assertThat(testPage.getInputValue("parentMailingCity")).isEqualTo("Sycamore");
+        assertThat(testPage.getSelectValue("parentMailingState")).isEqualTo(getEnMessage("state.il"));
+        assertThat(testPage.getInputValue("parentMailingZipCode")).isEqualTo("60001");
+        testPage.clickContinue();
+
         // parent-confirm-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));

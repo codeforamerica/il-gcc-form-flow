@@ -15,6 +15,14 @@ public interface CCMSDataService {
     Optional<County> getCountyByZipCode(String zipCode);
 
     /**
+     * Retrieves a county based on the given county name.
+     *
+     * @param countyName the county we are searching for
+     * @return a List of Counties containing the matching counties if found, or an empty list not found
+     */
+    List<County> getCountyByCountyName(String countyName);
+
+    /**
      * Retrieves a provider based on the given provider ID.
      *
      * @param providerId the unique identifier of the provider
