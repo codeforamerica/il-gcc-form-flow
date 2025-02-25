@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Test;
 class ProviderSubmissionUtilitiesTest {
 
     @Test
-    void formatChildNamesAsCommaSeperatedList() {
+    void formatChildNamesAsCommaSeparatedList() {
         Submission singleChildName = new SubmissionTestBuilder().withChild("John", "Doe", "Yes").build();
-        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeperatedList(singleChildName)).isEqualTo("John Doe");
+        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(singleChildName, "and")).isEqualTo("John Doe");
 
         Submission twoChildren = new SubmissionTestBuilder().withChild("John", "Doe", "Yes").withChild("Jane", "Doe", "Yes")
                 .build();
-        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeperatedList(twoChildren)).isEqualTo(
+        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(twoChildren, "and")).isEqualTo(
                 "John Doe and Jane Doe");
 
         Submission threeChildren = new SubmissionTestBuilder().withChild("John", "Doe", "Yes").withChild("Jane", "Doe", "Yes")
                 .withChild("June", "Doe", "Yes").build();
-        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeperatedList(threeChildren)).isEqualTo(
+        assertThat(ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(threeChildren, "and")).isEqualTo(
                 "John Doe, Jane Doe and June Doe");
     }
 
