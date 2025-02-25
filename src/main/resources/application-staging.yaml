@@ -32,3 +32,8 @@ il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
   dts:
     processing-org: '4c-ccap-apps-testing'
+  ccms-api:
+    api-subscription-key: ${OCP_APIM_SUBSCRIPTION_KEY}
+    base-url: ${CCMS_API_BASE_URL}
+    username: ${CCMS_API_USERNAME}
+    password: ${CCMS_API_PASSWORD}

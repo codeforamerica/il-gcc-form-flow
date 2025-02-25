@@ -29,7 +29,7 @@ il-gcc:
   dts:
     processing-org: '4c-ccap-apps-testing'
   ccms-api:
-    api-subscription-key: ${CCMS_API_SUBSCRIPTION_KEY}
+    api-subscription-key: ${OCP_APIM_SUBSCRIPTION_KEY}
     base-url: ${CCMS_API_BASE_URL}
     username: ${CCMS_API_USERNAME}
     password: ${CCMS_API_PASSWORD}
