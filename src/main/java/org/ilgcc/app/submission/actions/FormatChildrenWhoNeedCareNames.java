@@ -29,7 +29,7 @@ public class FormatChildrenWhoNeedCareNames implements Action {
             Locale locale = LocaleContextHolder.getLocale();
             String joiner = messageSource.getMessage("general.and", null, locale);
 
-            String formattedChildrenNames = ProviderSubmissionUtilities.formatChildNamesAsCommaSeperatedList(familySubmission, joiner);
+            String formattedChildrenNames = ProviderSubmissionUtilities.formatChildNamesAsCommaSeparatedList(familySubmission, joiner);
             providerSubmission.getInputData().put("childrenWhoNeedCareNames", formattedChildrenNames);
         }
     }

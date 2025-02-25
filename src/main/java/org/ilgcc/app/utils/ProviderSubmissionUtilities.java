@@ -122,7 +122,7 @@ public class ProviderSubmissionUtilities {
         return children;
     }
 
-    public static String formatChildNamesAsCommaSeperatedList(Submission applicantSubmission, String joiner) {
+    public static String formatChildNamesAsCommaSeparatedList(Submission applicantSubmission, String joiner) {
         List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission);
         List<String> childNames = new ArrayList<>();
         for (var child : children) {
