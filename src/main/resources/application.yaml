@@ -138,6 +138,11 @@ il-gcc:
   link-shortener:
     api-key: ${SHORT_IO_API_KEY}
     domain: ${SHORT_IO_DOMAIN}
+  ccms-api:
+    api-subscription-key: ${OCP_APIM_SUBSCRIPTION_KEY}
+    base-url: ${CCMS_API_BASE_URL}
+    username: ${CCMS_API_USERNAME}
+    password: ${CCMS_API_PASSWORD}
 sendgrid:
   public-key: ${SENDGRID_PUBLIC_KEY}
   
