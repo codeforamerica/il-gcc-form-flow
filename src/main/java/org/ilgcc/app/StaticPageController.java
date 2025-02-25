@@ -13,54 +13,64 @@ import java.util.HashMap;
  */
 @Controller
 public class StaticPageController {
-  
-  FormFlowConfigurationProperties formFlowConfigurationProperties;
 
-  public StaticPageController(FormFlowConfigurationProperties formFlowConfigurationProperties) {
-    this.formFlowConfigurationProperties = formFlowConfigurationProperties;
-  }
+    FormFlowConfigurationProperties formFlowConfigurationProperties;
 
-  /**
-   * Renders the website index page.
-   *
-   * @param httpSession The current HTTP session, not null.
-   * @return the static page template.
-   */
-  @GetMapping("/")
-  ModelAndView getIndex(HttpSession httpSession) {
-    httpSession.invalidate(); // For dev, reset session if you visit home
+    public StaticPageController(FormFlowConfigurationProperties formFlowConfigurationProperties) {
+        this.formFlowConfigurationProperties = formFlowConfigurationProperties;
+    }
 
-    HashMap<String, Object> model = new HashMap<>();
-    return new ModelAndView("index", model);
-  }
+    /**
+     * Renders the website index page.
+     *
+     * @param httpSession The current HTTP session, not null.
+     * @return the static page template.
+     */
+    @GetMapping("/")
+    ModelAndView getIndex(HttpSession httpSession) {
+        httpSession.invalidate(); // For dev, reset session if you visit home
 
-  /**
-   * Renders the website faq page.
-   *
-   * @return the static page template
-   */
-  @GetMapping("/faq")
-  String getFaq() {
-    return "faq";
-  }
+        HashMap<String, Object> model = new HashMap<>();
+        return new ModelAndView("index", model);
+    }
 
-  /**
-   * Renders the website privacy page.
-   *
-   * @return the static page template
-   */
-  @GetMapping("/privacy")
-  String getPrivacy() {
-    return "privacy";
-  }
+    /**
+     * Renders the website faq page.
+     *
+     * @return the static page template
+     */
+    @GetMapping("/faq")
+    String getFaq() {
+        return "faq";
+    }
 
-  /**
-   * Renders the page to redirect to when a flow is disabled.
-   *
-   * @return the static page template
-   */
-  @GetMapping("/disabledFeature")
-  String getDisabled() {
-    return "disabledFeature";
-  }
+    /**
+     * Renders the website privacy page.
+     *
+     * @return the static page template
+     */
+    @GetMapping("/privacy")
+    String getPrivacy() {
+        return "privacy";
+    }
+
+    /**
+     * Renders the page to redirect to when a flow is disabled.
+     *
+     * @return the static page template
+     */
+    @GetMapping("/disabledFeature")
+    String getDisabled() {
+        return "disabledFeature";
+    }
+
+    /**
+     * Renders the error invalid code screen
+     *
+     * @return the static page template
+     */
+    @GetMapping("/error-invalid-code")
+    String getInvalidCode() {
+        return "error-invalid-code";
+    }
 }
