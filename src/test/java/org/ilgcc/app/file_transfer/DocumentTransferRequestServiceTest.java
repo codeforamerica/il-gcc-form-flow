@@ -8,8 +8,8 @@ import com.google.gson.JsonObject;
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
 import org.ilgcc.app.IlGCCApplication;
-import org.ilgcc.app.submission.router.CCRR;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.enums.CCRRSlug;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ class DocumentTransferRequestServiceTest {
         when(environment.getActiveProfiles()).thenReturn(profiles);
 
         submission = new SubmissionTestBuilder().withFlow("gcc").withSubmittedAtDate(OffsetDateTime.now()).withParentDetails()
-                .build();
+            .build();
         String requestBody = service.createJsonRequestBody(presignedUrl, submission, fileName);
         assertThat(extractPathFromRequestBody(requestBody)).containsIgnoringCase("4c-ccap-apps-testing");
     }
@@ -48,8 +48,8 @@ class DocumentTransferRequestServiceTest {
         profiles[0] = "test";
         when(environment.getActiveProfiles()).thenReturn(profiles);
         submission = new SubmissionTestBuilder().withFlow("gcc").withSubmittedAtDate(OffsetDateTime.now()).with("organizationId",
-                        CCRR.PROJECT_CHILD.getOrganizationId()).withParentDetails()
-                .build();
+                CCRRSlug.PROJECT_CHILD.getOrgId()).withParentDetails()
+            .build();
         String requestBody = service.createJsonRequestBody(presignedUrl, submission, fileName);
         assertThat(extractPathFromRequestBody(requestBody)).containsIgnoringCase("project-child-ccap-apps-testing");
     }
@@ -59,11 +59,11 @@ class DocumentTransferRequestServiceTest {
         profiles[0] = "test";
         when(environment.getActiveProfiles()).thenReturn(profiles);
         submission = new SubmissionTestBuilder().withFlow("gcc").withSubmittedAtDate(OffsetDateTime.now()).with("organizationId",
-                        CCRR.ILLINOIS_ACTION.getOrganizationId()).withParentDetails()
-                .build();
+                CCRRSlug.ILLINOIS_ACTION.getOrgId()).withParentDetails()
+            .build();
         String requestBody = service.createJsonRequestBody(presignedUrl, submission, fileName);
         assertThat(extractPathFromRequestBody(requestBody)).containsIgnoringCase(
-                "illinois-action-for-children-ccap-apps-testing");
+            "illinois-action-for-children-ccap-apps-testing");
     }
 
     @Test
@@ -71,8 +71,8 @@ class DocumentTransferRequestServiceTest {
         profiles[0] = "test";
         when(environment.getActiveProfiles()).thenReturn(profiles);
         submission = new SubmissionTestBuilder().withFlow("gcc").withSubmittedAtDate(OffsetDateTime.now()).with("organizationId",
-                        CCRR.FOUR_C.getOrganizationId()).withParentDetails()
-                .build();
+                CCRRSlug.FOUR_C.getOrgId()).withParentDetails()
+            .build();
         String requestBody = service.createJsonRequestBody(presignedUrl, submission, fileName);
         assertThat(extractPathFromRequestBody(requestBody)).containsIgnoringCase("4c-ccap-apps-testing");
     }
@@ -82,7 +82,7 @@ class DocumentTransferRequestServiceTest {
         profiles[0] = "production";
         when(environment.getActiveProfiles()).thenReturn(profiles);
         submission = new SubmissionTestBuilder().withFlow("gcc").withSubmittedAtDate(OffsetDateTime.now()).withParentDetails()
-                .build();
+            .build();
         String requestBody = service.createJsonRequestBody(presignedUrl, submission, fileName);
         assertThat(extractPathFromRequestBody(requestBody)).containsIgnoringCase("4c-ccap-apps");
     }
@@ -92,8 +92,8 @@ class DocumentTransferRequestServiceTest {
         profiles[0] = "production";
         when(environment.getActiveProfiles()).thenReturn(profiles);
         submission = new SubmissionTestBuilder().withFlow("gcc").withSubmittedAtDate(OffsetDateTime.now()).with("organizationId",
-                        CCRR.PROJECT_CHILD.getOrganizationId()).withParentDetails()
-                .build();
+                CCRRSlug.PROJECT_CHILD.getOrgId()).withParentDetails()
+            .build();
         String requestBody = service.createJsonRequestBody(presignedUrl, submission, fileName);
         assertThat(extractPathFromRequestBody(requestBody)).containsIgnoringCase("project-child-ccap-apps");
     }
@@ -103,8 +103,8 @@ class DocumentTransferRequestServiceTest {
         profiles[0] = "production";
         when(environment.getActiveProfiles()).thenReturn(profiles);
         submission = new SubmissionTestBuilder().withFlow("gcc").withSubmittedAtDate(OffsetDateTime.now()).with("organizationId",
-                        CCRR.ILLINOIS_ACTION.getOrganizationId()).withParentDetails()
-                .build();
+                CCRRSlug.ILLINOIS_ACTION.getOrgId()).withParentDetails()
+            .build();
         String requestBody = service.createJsonRequestBody(presignedUrl, submission, fileName);
         assertThat(extractPathFromRequestBody(requestBody)).containsIgnoringCase("illinois-action-for-children-ccap-apps");
     }
@@ -114,8 +114,8 @@ class DocumentTransferRequestServiceTest {
         profiles[0] = "production";
         when(environment.getActiveProfiles()).thenReturn(profiles);
         submission = new SubmissionTestBuilder().withFlow("gcc").withSubmittedAtDate(OffsetDateTime.now()).with("organizationId",
-                        CCRR.FOUR_C.getOrganizationId()).withParentDetails()
-                .build();
+                CCRRSlug.FOUR_C.getOrgId()).withParentDetails()
+            .build();
         String requestBody = service.createJsonRequestBody(presignedUrl, submission, fileName);
         assertThat(extractPathFromRequestBody(requestBody)).containsIgnoringCase("4c-ccap-apps");
     }
@@ -125,9 +125,9 @@ class DocumentTransferRequestServiceTest {
         JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
 
         return jsonObject
-                .getAsJsonObject("destination")
-                .get("path")
-                .getAsString();
+            .getAsJsonObject("destination")
+            .get("path")
+            .getAsString();
 
     }
 

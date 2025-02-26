@@ -7,7 +7,7 @@ import static org.ilgcc.app.utils.SubmissionUtilities.getDashFormattedSubmittedA
 import formflow.library.data.Submission;
 import java.text.Normalizer;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.submission.router.CCRR;
+import org.ilgcc.app.utils.enums.CCRRSlug;
 
 @Slf4j
 public class FileNameUtility {
@@ -66,7 +66,7 @@ public class FileNameUtility {
 
     public static String getSharePointFilePath(Submission submission, boolean isProductionEnvironment) {
         return String.format("/%s/%s/%s",
-                CCRR.getCCRRSlugByOrganizationId(submission.getInputData().getOrDefault("organizationId", "56522729391679").toString()) + (isProductionEnvironment ? "" : "-testing"),
+                CCRRSlug.getCCRRSlugFromOrgId(submission.getInputData().getOrDefault("organizationId", "56522729391679").toString()) + (isProductionEnvironment ? "" : "-testing"),
                 getDashFormattedSubmittedAtDate(submission),
                 formatApplicantNameForFileName(getApplicantNameLastToFirst(submission) + "-" +
                         getDashFormattedSubmittedAtDateWithTime(submission)));
