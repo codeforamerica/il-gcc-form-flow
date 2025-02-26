@@ -246,6 +246,10 @@ public class Gcc extends FlowInputs {
     // children-ccap-child-other-ed
     private String childAttendsOtherEd;
 
+    // children-school-weekly-schedule
+    private String childOtherEdHoursDescription;
+
+
     private String earliestChildcareStartDate;
 
     // activities-parent-type
