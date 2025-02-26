@@ -1,0 +1,30 @@
+<th:block th:fragment="surveyQuestion"
+          th:assert="${!#strings.isEmpty(inputName)}, ${!#strings.isEmpty(label)}">
+    <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                                radioFieldset(inputName=${inputName},
+                                label=${#messages.msg(label)},
+                                content=~{::radioContent})}">
+        <th:block th:ref="radioContent">
+            <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName=${inputName},
+                                      value='very-easy',
+                                      label=#{general-survey-question.very-easy})}"/>
+            <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName=${inputName},
+                                      value='easy',
+                                      label=#{general-survey-question.easy})}"/>
+            <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName=${inputName},
+                                      value='neither',
+                                      label=#{general-survey-question.neither})}"/>
+            <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName=${inputName},
+                                      value='difficult',
+                                      label=#{general-survey-question.difficult})}"/>
+            <th:block th:replace="~{fragments/inputs/radio :: radio(
+                                      inputName=${inputName},
+                                      value='very-difficult',
+                                      label=#{general-survey-question.very-difficult})}"/>
+        </th:block>
+    </th:block>
+</th:block>

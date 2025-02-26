@@ -5,9 +5,9 @@
             submittedDate=${inputData.getOrDefault('formattedSubmittedAtDate', 'No Date')},
             submittedTime=${inputData.getOrDefault('formattedSubmittedAtTime', 'No time')},
             hasSubmittedSurvey=${
-                inputData.containsKey('surveyDifficulty') ||
+                inputData.containsKey('surveyFamilyDifficulty') || inputData.containsKey('surveyProviderDifficulty') ||
                 inputData.containsKey('surveyAdditionalComments')}">
-<head th:replace="~{fragments/head :: head(title=#{complete-submit-confirmation.title})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{registration-submit-complete.title})}"></head>
 <body>
 <div class="page-wrapper">
     <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -17,25 +17,16 @@
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block th:replace="~{fragments/gcc-icons :: check-mark}"></th:block>
                 <th:block th:replace="~{fragments/cardHeader :: cardHeader(
-                    header=#{complete-submit-confirmation.header},
-                    subtext=#{submit-confirmation.general.subtext(${submittedDate}, ${submittedTime}, ${submission.getShortCode()})})}"/>
+                    header=#{registration-submit-confirmation.header},
+                     subtext=#{submit-confirmation.general.subtext(${submittedDate}, ${submittedTime}, ${session.confirmationCode})})}"/>
                 <th:block
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
                             <hr>
-                            <ul class="list--checkmark list--material-download">
-                                <li>
-                                    <a id="download-application"
-                                       th:href="'/download/gcc/' + ${submission.getId()}"
-                                       data-mixpanel="download-pdf"
-                                       th:text="#{complete-submit-confirmation.download-text}"></a>
-                                    <span
-                                            th:text="#{complete-submit-confirmation.rest-of-download-paragraph}"></span>
-                                </li>
-                            </ul>
                             <ul class="list--checkmark list--material-phone-in-talk">
                                 <li th:utext="#{submit-confirmation.general.call-text}"></li>
+                            </ul>
                             </ul>
                             <hr>
                             <p th:text="#{submit-confirmation.general.experience}"></p>
@@ -49,9 +40,12 @@
                                 </div>
                             </th:block>
                             <th:block th:unless="${hasSubmittedSurvey}">
-                                <th:block th:replace="~{fragments/inputs/surveyQuestion :: surveyQuestion(inputName='surveyDifficulty', label='complete-submit-confirmation.survey.label')}"/>
+                                <th:block
+                                        th:replace="~{fragments/inputs/surveyQuestion :: surveyQuestion(inputName='providerSurveyFamilyDifficulty', label='registration-submit-confirmation.q1')}"/>
+                                <th:block
+                                        th:replace="~{fragments/inputs/surveyQuestion :: surveyQuestion(inputName='providerSurveyProviderDifficulty', label='registration-submit-confirmation.q2')}"/>
                                 <th:block th:replace="~{fragments/inputs/textArea ::
-                                  textArea(inputName='surveyAdditionalComments',
+                                  textArea(inputName='providerSurveyAdditionalComments',
                                   label=#{submit-confirmation.general.comments.label},
                                   rows='2',
                                   maxLength='1000')}"/>
