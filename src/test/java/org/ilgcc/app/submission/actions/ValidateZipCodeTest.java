@@ -27,6 +27,22 @@ class ValidateZipCodeTest {
     ValidateZipCode action;
 
     @Test
+    public void inactiveZipCodeReturnsFalse() {
+        Submission submission = new SubmissionTestBuilder()
+                .build();
+
+        Map<String, Object> formData = Map.of(
+                "applicationZipCode", ZipcodeOption.zip_60647.getValue()
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.runValidation(formSubmission, submission);
+
+        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("false");
+    }
+
+    @Test
     public void activeZipCodeReturnsTrue() {
         Submission submission = new SubmissionTestBuilder()
                 .build();
@@ -56,5 +72,22 @@ class ValidateZipCodeTest {
         action.runValidation(formSubmission, submission);
 
         assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("false");
+    }
+
+    @Test
+    public void sda15ZipCodeReturnsTrue() {
+        Submission submission = new SubmissionTestBuilder()
+                .build();
+
+        Map<String, Object> formData = Map.of(
+                "applicationZipCode", ZipcodeOption.zip_62811.getValue()
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+
+        action.runValidation(formSubmission, submission);
+
+        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("true");
     }
 }
