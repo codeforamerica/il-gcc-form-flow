@@ -71,7 +71,7 @@ class DocumentTransferRequestServiceTest {
         profiles[0] = "test";
         when(environment.getActiveProfiles()).thenReturn(profiles);
         submission = new SubmissionTestBuilder().withFlow("gcc").withSubmittedAtDate(OffsetDateTime.now()).with("organizationId",
-                CCRRSlug.FOUR_C).withParentDetails()
+                CCRRSlug.FOUR_C.getOrgId()).withParentDetails()
             .build();
         String requestBody = service.createJsonRequestBody(presignedUrl, submission, fileName);
         assertThat(extractPathFromRequestBody(requestBody)).containsIgnoringCase("4c-ccap-apps-testing");
