@@ -446,4 +446,11 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-provider-number"))).isTrue();
     }
+
+    @Test
+    void ProviderresponseJourneyTest_ConfirmationCodeInLinkInvalid() {
+        driver.navigate().to("http://localhost:%s/providerresponse/submit/sdfsjlfjsdf".formatted(localServerPort));
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("error-invalid-code.title"));
+    }
 }

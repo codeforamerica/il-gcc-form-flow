@@ -67,7 +67,7 @@ public class ProviderLinkController {
                 newSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, s.getId());
             } else {
                 log.error("Unable to load submission for code " + sanitizedConfirmationCode);
-                return "redirect:/error";
+                return "redirect:/error-invalid-code";
             }
         }
 
