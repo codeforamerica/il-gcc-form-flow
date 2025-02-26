@@ -129,13 +129,7 @@
                 <h3 class="h3" th:text="#{faq.questions-about-the-online-application.what-is-get-child-care-il-question}"></h3>
                 <p th:text="#{faq.questions-about-the-online-application.what-is-get-child-care-il-answer}"></p>
                 <h3 class="h3" th:text="#{faq.questions-about-the-online-application.who-can-use-the-online-application-question}"></h3>
-                <th:block th:unless="${@environment.getProperty('il-gcc.enable-sda15-providers') == 'true'}">
-                  <p th:utext="#{faq.questions-about-the-online-application.starting-in-january-2025}"></p>
-                  <p th:text="#{faq.questions-about-the-online-application.the-online-application-2025}"></p>
-                </th:block>
-                <th:block th:if="${@environment.getProperty('il-gcc.enable-sda15-providers') == 'true'}">
-                  <p th:utext="#{faq.questions-about-the-online-application.sda15-expansion.counties}"></p>
-                </th:block>
+                <p th:utext="#{faq.questions-about-the-online-application.sda15-expansion.counties}"></p>
 
                 <h3 class="h3" th:text="#{faq.questions-about-the-online-application.what-can-i-do}"></h3>
                 <p th:text="#{faq.questions-about-the-online-application.what-can-i-do.please-contact}"></p>
