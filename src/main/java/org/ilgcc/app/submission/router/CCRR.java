@@ -12,6 +12,7 @@ public class CCRR {
                 return ccrrSlug.getValue();
             }
         }
+        log.warn("No Slug found for organizationId: {}.  Rerouting to FOUR_C.", organizationId);
         return CCRRSlug.FOUR_C.getValue();
     }
     
