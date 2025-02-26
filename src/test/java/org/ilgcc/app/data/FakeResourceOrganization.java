@@ -56,7 +56,7 @@ public class FakeResourceOrganization implements InitializingBean {
         resourceOrganizationRepository.save(PROJECT_CHILD_TEST_DATA);
 
         ACTIVE_PROJECT_CHILD_COUNTY = new County();
-        ACTIVE_PROJECT_CHILD_COUNTY.setCounty("Ramsey");
+        ACTIVE_PROJECT_CHILD_COUNTY.setCounty("RamSey");
         ACTIVE_PROJECT_CHILD_COUNTY.setZipCode(new BigInteger(zip_62863.getValue()));
         ACTIVE_PROJECT_CHILD_COUNTY.setCaseloadCode("QQ");
         countyRepository.save(ACTIVE_PROJECT_CHILD_COUNTY);
