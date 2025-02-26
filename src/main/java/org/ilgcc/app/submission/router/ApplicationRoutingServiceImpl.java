@@ -38,7 +38,7 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
         if(countyName == null || countyName.isBlank()){
             return Optional.empty();
         }
-        List<County> counties = ccmsDataService.getCountyByCountyName(countyName.toUpperCase());
+        List<County> counties = ccmsDataService.getCountyByCountyName(countyName);
         Optional<County> activeCounty = counties.stream().filter((c) -> c != null && activeCaseLoadCodes.contains(c.getCaseloadCode())).findFirst();
         if (activeCounty.isPresent()) {
             List<ResourceOrganization> resourceOrganizationsByCaseloadCode = ccmsDataService.getResourceOrganizationsByCaseloadCode(activeCounty.get().getCaseloadCode());
