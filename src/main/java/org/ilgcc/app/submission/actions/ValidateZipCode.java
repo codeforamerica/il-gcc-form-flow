@@ -25,10 +25,6 @@ public class ValidateZipCode implements Action {
     private final String INPUT_NAME = "applicationZipCode";
     private static final String OUTPUT_NAME = "hasValidZipCode";
 
-    @Value("${il-gcc.enable-sda15-providers}")
-    boolean enableSDA15Providers;
-
-
     @Override
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
         Locale locale = LocaleContextHolder.getLocale();
@@ -41,7 +37,7 @@ public class ValidateZipCode implements Action {
                     List.of(messageSource.getMessage("errors.provide-zip", null, locale)));
         } else {
             submission.getInputData()
-                    .put(OUTPUT_NAME, String.valueOf(ZipcodeOption.isValidZipcodeOption(providedZipCode, enableSDA15Providers)));
+                    .put(OUTPUT_NAME, String.valueOf(ZipcodeOption.isValidZipcodeOption(providedZipCode)));
         }
 
         return errorMessages;

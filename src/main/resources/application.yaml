@@ -129,7 +129,6 @@ il-gcc:
   generate-short-links: ${GENERATE_SHORT_LINKS_FLAG:false}
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
   allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
-  enable-sda15-providers: ${ENABLE_SDA15_PROVIDERS:false}
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}

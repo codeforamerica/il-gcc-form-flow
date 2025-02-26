@@ -13,12 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(
         classes = IlGCCApplication.class
 )
-@TestPropertySource(properties = {"il-gcc.enable-sda15-providers=false"})
 @ActiveProfiles("test")
 class ValidateZipCodeTest {
 
@@ -35,22 +33,6 @@ class ValidateZipCodeTest {
 
         Map<String, Object> formData = Map.of(
                 "applicationZipCode", ZipcodeOption.zip_60647.getValue()
-        );
-
-        FormSubmission formSubmission = new FormSubmission(formData);
-
-        action.runValidation(formSubmission, submission);
-
-        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("false");
-    }
-
-    @Test
-    public void sda15ZipCodeReturnsFalse() {
-        Submission submission = new SubmissionTestBuilder()
-                .build();
-
-        Map<String, Object> formData = Map.of(
-                "applicationZipCode", ZipcodeOption.zip_62811.getValue()
         );
 
         FormSubmission formSubmission = new FormSubmission(formData);
@@ -90,5 +72,22 @@ class ValidateZipCodeTest {
         action.runValidation(formSubmission, submission);
 
         assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("false");
+    }
+
+    @Test
+    public void sda15ZipCodeReturnsTrue() {
+        Submission submission = new SubmissionTestBuilder()
+                .build();
+
+        Map<String, Object> formData = Map.of(
+                "applicationZipCode", ZipcodeOption.zip_62811.getValue()
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+
+        action.runValidation(formSubmission, submission);
+
+        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("true");
     }
 }
