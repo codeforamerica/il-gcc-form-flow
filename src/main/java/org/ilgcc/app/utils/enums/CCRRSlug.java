@@ -15,4 +15,13 @@ public enum CCRRSlug {
     this.orgId = orgId;
     this.value = value;
   }
+
+  public static String getCCRRSlugFromOrgId(String orgId) {
+    for (CCRRSlug ccrr : CCRRSlug.values()) {
+      if (ccrr.getOrgId().equals(orgId)){
+        return ccrr.getValue();
+      }
+    }
+    return CCRRSlug.FOUR_C.getValue();
+  }
 }
