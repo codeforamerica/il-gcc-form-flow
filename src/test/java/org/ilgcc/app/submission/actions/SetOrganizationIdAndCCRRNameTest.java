@@ -43,7 +43,7 @@ class SetOrganizationIdAndCCRRNameTest {
     public void setsResourceOrgBasedOnApplicationCountyIfNoHomeAddress() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .with("applicationCounty", ACTIVE_FOUR_C_COUNTY.getCounty())
+                .with("applicationCounty", "DEKALB")
                 .build();
 
         action.run(submission);
