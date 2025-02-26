@@ -16,7 +16,7 @@ public class ParentAddressTest extends AbstractMockMvcTest {
   void testNoPermanentAddress() throws Exception {
     var screen = postToParentHomeAddressPage(true);
 
-    assertThat(screen.getHeader()).isEqualTo("Okay, we just need a place to send you mail about your case.");
+    assertThat(screen.getHeader()).isEqualTo("Okay, we just need a place to send you mail about your application.");
   }
 
   private FormScreen postToParentHomeAddressPage(String streetAddress, String city, String state, String zipcode) throws Exception {
