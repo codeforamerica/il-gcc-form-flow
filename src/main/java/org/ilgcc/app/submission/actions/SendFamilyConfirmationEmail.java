@@ -60,7 +60,7 @@ public class SendFamilyConfirmationEmail implements Action {
 
     private Content createFamilyConfirmationEmailBody(Submission familySubmission, String confirmationCode, Locale locale) {
         String parentFirstName = familySubmission.getInputData().get("parentFirstName").toString();
-        String emailLink = familySubmission.getInputData().get("emailLink").toString();
+        String emailLink = familySubmission.getInputData().get("shareableLink").toString();
         String ccrAndR = familySubmission.getInputData().get("ccrrName").toString();
         String submittedDate = SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission);
         String ccrrPhoneNumber = (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", "");
