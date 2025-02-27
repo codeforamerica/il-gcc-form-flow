@@ -44,8 +44,8 @@ public class CCMSTransactionPayloadService {
                 FileNameUtility.removeNonSpaceOrDashCharacters(familySubmission.getInputData().get("parentLastName").toString()),
                 familySubmission.getInputData().get("parentBirthDate").toString(),
                 getTransactionFiles(familySubmission),
-                DateUtilities.formatDateToYearMonthDayHourCST(OffsetDateTime.now()),
-                DateUtilities.formatDateToYearMonthDayHourCST(familySubmission.getSubmittedAt())
+                DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime.now()),
+                DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(familySubmission.getSubmittedAt()) 
         );
     }
 

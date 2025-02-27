@@ -133,6 +133,6 @@ public class CCMSTransactionPayloadServiceTest {
             assertThat(testFiles.contains(file)).isTrue();
         });
         assertThat(ccmsTransaction.getWebSubmissionTimestamp()).isEqualTo(
-                DateUtilities.formatDateToYearMonthDayHourCST(submission.getSubmittedAt()));
+                DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(submission.getSubmittedAt()));
     }
 }

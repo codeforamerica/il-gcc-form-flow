@@ -50,6 +50,7 @@ public class CCMSSubmissionPayloadTransactionJob {
     public void sendCCMSTransaction(Submission submission) throws JsonProcessingException {
         CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(submission);
         JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
-        transactionRepositoryService.createTransaction(UUID.fromString(response.get("submission_id").asText()), submission.getId());
+        log.info("Received response from CCMS when sending transaction payload: {}", response);
+        transactionRepositoryService.createTransaction(UUID.fromString(response.get("transactionId").asText()), submission.getId());
     }
 }
