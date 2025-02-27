@@ -36,8 +36,12 @@ public class CCMSApiClient {
                 .bodyValue(requestBody)
                 .retrieve()
                 .onStatus(status -> !status.is2xxSuccessful(), apiResponse -> {
-                    log.error("Received an error response from CCMS when attempting to send transaction payload: {}",
-                            apiResponse.statusCode());
+                    try {
+                        log.error("Received an error response {} from CCMS when attempting to send transaction payload: {}",
+                                apiResponse.statusCode(), objectMapper.writeValueAsString(requestBody));
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
                     return apiResponse.createException();
                 })
                 .bodyToMono(String.class)
