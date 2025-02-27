@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(
         classes = IlGCCApplication.class
@@ -74,6 +75,9 @@ public class TransmissionsRecurringJobTest {
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
+    
+    @MockitoBean
+    private CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
 
     private Submission expiredSubmission;
     private Submission transmittedSubmission;
@@ -94,7 +98,8 @@ public class TransmissionsRecurringJobTest {
                 cloudFileRepository,
                 pdfTransmissionJob,
                 enqueueDocumentTransfer,
-                submissionRepositoryService
+                submissionRepositoryService,
+                ccmsSubmissionPayloadTransactionJob
         );
     }
 
