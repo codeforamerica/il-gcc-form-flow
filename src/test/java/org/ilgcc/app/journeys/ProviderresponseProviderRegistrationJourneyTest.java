@@ -1,7 +1,6 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 
 import formflow.library.data.SubmissionRepository;
 import java.time.OffsetDateTime;
