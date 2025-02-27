@@ -760,10 +760,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // complete-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
         testPage.clickElementById("surveyDifficulty-very-easy");
-        testPage.clickButton(getEnMessage("submit-confirmation.button.feedback"));
+        testPage.clickButton(getEnMessage("submit-confirmation.general.button.feedback"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
         assertThat(testPage.getCssSelectorText(".notice--success")).isEqualTo(
-                getEnMessage("submit-confirmation.survey.complete"));
+                getEnMessage("submit-confirmation.general.survey.complete"));
 
         // Download PDF and verify fields
         verifyPDF();

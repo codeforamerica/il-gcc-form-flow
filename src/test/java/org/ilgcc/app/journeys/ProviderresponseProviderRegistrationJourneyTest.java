@@ -386,7 +386,16 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         uploadJpgFile("providerUploadDocuments");
         
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
+        testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.clickContinue();
+
+        // registration-submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
 
     }
 
@@ -566,6 +575,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.clickContinue();
+
+        // registration-submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
     }
 
     @Test
@@ -734,6 +747,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.clickContinue();
+
+        // registration-submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
     }
 
     @Test
@@ -884,6 +901,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.clickContinue();
+
+        // registration-submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
     }
 
     @Test
@@ -1043,6 +1064,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.clickContinue();
+
+        // registration-submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
     }
 
     @Test
@@ -1234,6 +1259,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.clickContinue();
+
+        // registration-submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
     }
 
 
