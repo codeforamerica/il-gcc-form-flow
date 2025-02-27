@@ -5,6 +5,7 @@ import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_ENDPOINT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import formflow.library.data.Submission;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class CCMSSubmissionPayloadTransactionJob {
     }
 
     public void enqueueSubmissionCCMSPayloadTransactionJobInOneHour(Submission submission) {
-        JobId jobId = jobScheduler.schedule(Instant.now(),
+        JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofHours(1)),
                 () -> sendCCMSTransaction(submission));
         log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}", jobId, submission.getId());
     }
