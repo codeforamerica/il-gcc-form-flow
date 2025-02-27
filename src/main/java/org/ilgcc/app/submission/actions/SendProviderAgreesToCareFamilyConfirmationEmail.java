@@ -39,33 +39,37 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         if (providerAgreesToCare.equals("false")){
             return;
         }
+
         //Check that the provider response to the family email was sent.
         String providerResponseFamilyConfirmationEmailSent = (String) providerSubmission.getInputData()
                 .getOrDefault("providerResponseFamilyConfirmationEmailSent", "false");
+
         if (providerResponseFamilyConfirmationEmailSent.equals("true")) {
-            log.warn("Provider agrees to care confirmation email has already been sent for submission with ID: {}", providerSubmission.getId());
+            log.warn("Provider agrees to care family confirmation email has already been sent for provider submission: {}", providerSubmission.getId());
             return;
         }
         Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isEmpty()) {
-            log.warn("No family submission is associated with the provider submission with ID: {}", providerSubmission.getId());
+            log.warn("No family submission is associated with the provider submission: {}", providerSubmission.getId());
             return;
         }
         Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(familySubmissionId.get());
 
         if (familySubmissionOptional.isEmpty()) {
-            log.warn("No family submission is associated with the familSubmissionID: {}", providerSubmission.getId());
-            return;
-        }
-        Submission familySubmission = familySubmissionOptional.get();
-        String familyEmailAddress = (String) familySubmission.getInputData().getOrDefault("parentContactEmail", "");
-        if (familyEmailAddress.isEmpty()) {
-            log.warn("No parentContactEmail was found to send confirmation email about the provider agreeing to care for the provider submission with ID: {}",
-                providerSubmission.getId());
+            log.warn("No family submission is associated with the familySubmissionId: {}", familySubmissionId.get());
             return;
         }
 
-        String familySubmissionConfirmationId = familySubmission.getShortCode();
+        Submission familySubmission = familySubmissionOptional.get();
+        String familyEmailAddress = (String) familySubmission.getInputData().getOrDefault("parentContactEmail", "");
+        if (familyEmailAddress.isEmpty()) {
+            log.warn(
+                    "No parentContactEmail was found to send confirmation email about the provider agreeing to care for the provider submission: {} and family submission: {}",
+                    providerSubmission.getId(), familySubmissionId.get());
+            return;
+        }
+
+        String familySubmissionConfirmationCode = familySubmission.getShortCode();
 
         Locale locale =
                 familySubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
@@ -74,11 +78,13 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         String senderName = messageSource.getMessage("email.general.sender-name", null, locale);
 
         String subject = messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale);
-        Content body = createProviderResponseConfirmationEmailBody(providerSubmission, familySubmission, familySubmissionConfirmationId, locale);
+        Content body = createProviderResponseConfirmationEmailBody(providerSubmission, familySubmission, familySubmissionConfirmationCode, locale);
 
-        sendEmailJob.enqueueSendEmailJob(familyEmailAddress, senderName, subject,
-                ILGCCEmail.EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL.getDescription(),
-                body, providerSubmission);
+        ILGCCEmail email = ILGCCEmail.createProviderAgreesToCareFamilyConfirmationEmail(senderName, familyEmailAddress, subject, body,
+                providerSubmission.getId());
+
+        sendEmailJob.enqueueSendEmailJob(email);
+
         providerSubmission.getInputData().put("providerResponseFamilyConfirmationEmailSent", "true");
         submissionRepositoryService.save(providerSubmission);
     }

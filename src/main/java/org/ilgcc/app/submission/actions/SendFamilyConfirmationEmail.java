@@ -28,15 +28,18 @@ public class SendFamilyConfirmationEmail implements Action {
 
     @Override
     public void run(Submission familySubmission) {
+
         String familyConfirmationEmailSent = (String) familySubmission.getInputData()
                 .getOrDefault("familyConfirmationEmailSent", "false");
+
         if (familyConfirmationEmailSent.equals("true")) {
-            log.warn("Family confirmation email has already been sent for submission with ID: {}", familySubmission.getId());
+            log.warn("Family confirmation email has already been sent for submission: {}", familySubmission.getId());
             return;
         }
+
         String familyEmail = familySubmission.getInputData().get("parentContactEmail").toString();
         if (familyEmail == null || familyEmail.isEmpty()) {
-            log.warn("Family email was empty when attempting to send family confirmation email for submission with ID: {}",
+            log.warn("Family email was empty when attempting to send family confirmation email for submission: {}",
                     familySubmission.getId());
             return;
         }
@@ -51,9 +54,12 @@ public class SendFamilyConfirmationEmail implements Action {
 
         String senderName = messageSource.getMessage("email.general.sender-name", null, locale);
 
-        sendEmailJob.enqueueSendEmailJob(familyEmail, senderName, subject,
-                ILGCCEmail.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
-                createFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
+        ILGCCEmail email = ILGCCEmail.createFamilyConfirmationEmail(senderName, familyEmail,
+               subject, createFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale),
+                familySubmission.getId());
+
+        sendEmailJob.enqueueSendEmailJob(email);
+
         familySubmission.getInputData().put("familyConfirmationEmailSent", "true");
         submissionRepositoryService.save(familySubmission);
     }

@@ -34,6 +34,16 @@ public class ILGCCEmail {
         return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.PROVIDER_CONFIRMATION_EMAIL, submissionId);
     }
 
+    public static ILGCCEmail createFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
+            Content body, UUID submissionId) {
+        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.FAMILY_CONFIRMATION_EMAIL, submissionId);
+    }
+
+    public static ILGCCEmail createProviderAgreesToCareFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
+            Content body, UUID submissionId) {
+        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL, submissionId);
+    }
+
     @Getter
     public enum EmailType {
         FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"), FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER(
