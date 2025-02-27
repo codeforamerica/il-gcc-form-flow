@@ -5,8 +5,8 @@
             submittedDate=${inputData.getOrDefault('formattedSubmittedAtDate', 'No Date')},
             submittedTime=${inputData.getOrDefault('formattedSubmittedAtTime', 'No time')},
             hasSubmittedSurvey=${
-                inputData.containsKey('surveyFamilyDifficulty') || inputData.containsKey('surveyProviderDifficulty') ||
-                inputData.containsKey('surveyAdditionalComments')}">
+                inputData.containsKey('providerSurveyFamilyDifficulty') || inputData.containsKey('providerSurveyProviderDifficulty') ||
+                inputData.containsKey('providerSurveyAdditionalComments')}">
 <head th:replace="~{fragments/head :: head(title=#{registration-submit-complete.title})}"></head>
 <body>
 <div class="page-wrapper">
