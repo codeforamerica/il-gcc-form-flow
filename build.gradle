@@ -59,7 +59,7 @@ dependencies {
     implementation 'org.apache.commons:commons-text:1.13.0'
     implementation 'com.sendgrid:sendgrid-java:4.10.3'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.80'
-    implementation 'software.amazon.awssdk:s3:2.30.28'
+    implementation 'software.amazon.awssdk:s3:2.30.29'
 
     if (useLocalLibrary == 'true') {
         implementation fileTree(dir: "$rootDir/../form-flow/build/libs", include: '*.jar')
