@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class UploadSubmissionToS3Test {
+class UploadSubmissionToS3AndEnqueueCCMSPayloadTest {
 
   @MockitoBean
   private PdfService pdfService;
@@ -31,7 +31,7 @@ class UploadSubmissionToS3Test {
   private CloudFileRepository cloudFileRepository;
 
   @Autowired
-  private UploadSubmissionToS3 uploadSubmissionToS3;
+  private UploadSubmissionToS3AndEnqueueCCMSPayload uploadSubmissionToS3AndEnqueueCCMSPayload;
 
   private Submission submission;
 
@@ -50,7 +50,7 @@ class UploadSubmissionToS3Test {
     submission.setSubmittedAt(OffsetDateTime.now());
     submission.getInputData().put("hasChosenProvider","false");
 
-    uploadSubmissionToS3.run(submission);
+    uploadSubmissionToS3AndEnqueueCCMSPayload.run(submission);
 
     verify(pdfService).getFilledOutPDF(submission);
     verify(cloudFileRepository).upload(eq(generateExpectedPdfPath(submission)), any(MultipartFile.class));

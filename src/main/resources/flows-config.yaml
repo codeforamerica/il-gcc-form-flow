@@ -400,7 +400,7 @@ flow:
       - name: submit-sign-name
   submit-sign-name:
     beforeSaveAction: GenerateShortLinks
-    afterSaveAction: UploadSubmissionToS3
+    afterSaveAction: UploadSubmissionToS3AndEnqueueCCMSPayload
     nextScreens:
       - name: submit-complete
   submit-complete:

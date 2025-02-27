@@ -138,6 +138,8 @@ il-gcc:
     base-url: ${CCMS_API_BASE_URL}
     username: ${CCMS_API_USERNAME}
     password: ${CCMS_API_PASSWORD}
+ccms-integration-enabled: true
+dts-integration-enabled: true
 sendgrid:
   public-key: ${SENDGRID_PUBLIC_KEY}
   
