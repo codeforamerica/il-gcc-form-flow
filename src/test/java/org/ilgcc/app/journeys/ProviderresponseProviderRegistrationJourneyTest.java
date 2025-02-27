@@ -21,7 +21,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     private static final String CONF_CODE = "A2123B";
 
     @Test
-    void BasicInfoFlow() {
+    void basicInfoFlow() {
         createAValidLink();
 
         testPage.navigateToFlowScreen("providerresponse/registration-basic-info-intro");
@@ -127,7 +127,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
     @Test
-    void LicenseExemptInProviderHomeFlow() {
+    void licenseExemptInProviderHomeFlow() {
         createAValidLink();
         submitFamilyConfirmationCode();
 
@@ -319,7 +319,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // response
@@ -391,7 +390,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
     @Test
-    void LicenseExemptInChildHomeFlow() {
+    void licenseExemptInChildHomeFlow() {
         createAValidLink();
         submitFamilyConfirmationCode();
 
@@ -513,7 +512,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // response
@@ -569,7 +567,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
     @Test
-    void LicensedChildCareHomeFlow() {
+    void licensedChildCareHomeFlow() {
         createAValidLink();
         submitFamilyConfirmationCode();
 
@@ -682,7 +680,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // response
@@ -737,7 +734,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
     @Test
-    void LicensedChildCareCenterFlow() {
+    void licensedChildCareCenterFlow() {
         createAValidLink();
         submitFamilyConfirmationCode();
 
@@ -832,7 +829,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // response
@@ -887,7 +883,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
     @Test
-    void LicensedGroupChildCareHomeFlow() {
+    void licensedGroupChildCareHomeFlow() {
         createAValidLink();
         submitFamilyConfirmationCode();
 
@@ -991,7 +987,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // response
@@ -1046,7 +1041,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
     @Test
-    void LicenseExemptChildCareCenter() {
+    void licenseExemptChildCareCenter() {
         createAValidLink();
         submitFamilyConfirmationCode();
 
@@ -1177,7 +1172,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
 
         // response
@@ -1274,7 +1268,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
     private void submitFamilyConfirmationCode(){
         testPage.navigateToFlowScreen("providerresponse/confirmation-code");
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
         testPage.clickContinue();
     }
 }
