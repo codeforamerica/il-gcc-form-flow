@@ -230,16 +230,9 @@ public class SubmissionUtilities {
         return YYYY_MM_DD_HH_MM_AMPM_DASHES.format(submission.getSubmittedAt());
     }
 
-    public static String convertToAbsoluteURLForEmailAndText(UriComponentsBuilder builder, String shortCode, String utmMedium) {
-        return builder
-                .path("providerresponse/submit/" + shortCode + (utmMedium != null ? "?utm_medium=" + utmMedium : ""))
-                .build()
-                .toUriString();
-    }
-
-    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String utmMedium, String baseUrl) {
+    public static String convertToAbsoluteURLForEmailAndText(String shortCode, String baseUrl) {
         UriComponentsBuilder builder = ServletUriComponentsBuilder.fromUriString(baseUrl);
-        return convertToAbsoluteURLForEmailAndText(builder, shortCode, utmMedium);
+        return builder.path("s/" + shortCode).build().toUriString();
     }
 
     public static String getProviderName(Map<String, Object> inputData) {

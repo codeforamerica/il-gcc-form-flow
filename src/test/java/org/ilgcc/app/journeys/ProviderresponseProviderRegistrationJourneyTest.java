@@ -1249,7 +1249,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         driver.navigate()
-                .to("http://localhost:%s/providerresponse/submit/%s?utm_medium=test".formatted(localServerPort, CONF_CODE));
+                .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
 
         // submit-start
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));

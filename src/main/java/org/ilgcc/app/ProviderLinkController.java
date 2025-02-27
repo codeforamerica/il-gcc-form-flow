@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_SUBMISSION_MAP;
 
@@ -30,13 +29,11 @@ public class ProviderLinkController {
      * @param session
      * @param request
      * @param confirmationCode The confirmation code used to look up the submission
-     * @param utmMedium        The utm_medium param, likely email vs message vs blank
      * @return
      */
-    @GetMapping(value = {"providerresponse/submit","providerresponse/submit/{confirmationCode}"})
+    @GetMapping(value = {"s/{confirmationCode}", "providerresponse/submit", "providerresponse/submit/{confirmationCode}"})
     String loadFamilySubmission(HttpSession session, HttpServletRequest request,
-            @PathVariable(required = false) String confirmationCode,
-            @RequestParam(name = "utm_medium", required = false) String utmMedium) {
+            @PathVariable(required = false) String confirmationCode) {
 
         session.invalidate();
 
@@ -46,8 +43,8 @@ public class ProviderLinkController {
 
         String sanitizedConfirmationCode =
                 (confirmationCode != null) ? confirmationCode.replace('\n', '_').replace('\r', '_') : null;
-        String sanitizedUtmMedium = (utmMedium != null) ? utmMedium.replace('\n', '_').replace('\r', '_') : null;
-        log.info("Loading submission for code " + sanitizedConfirmationCode + " from medium " + sanitizedUtmMedium);
+
+        log.info("Loading submission for code " + sanitizedConfirmationCode);
 
         if (sanitizedConfirmationCode != null) {
             Optional<Submission> submission = submissionRepositoryService.findByShortCode(sanitizedConfirmationCode);
@@ -55,11 +52,9 @@ public class ProviderLinkController {
                 Submission s = submission.get();
                 Map<String, String> urlParams = s.getUrlParams();
                 if (urlParams == null) {
-                    urlParams = new HashMap<String, String>();
+                    urlParams = new HashMap<>();
                 }
 
-                // TODO: Is this necessary? We probably want to save/set these on the *new* Submission for the provider
-                urlParams.put("utm_medium", sanitizedUtmMedium);
                 urlParams.put("conf_code", sanitizedConfirmationCode);
                 s.setUrlParams(urlParams);
                 submissionRepositoryService.save(s);

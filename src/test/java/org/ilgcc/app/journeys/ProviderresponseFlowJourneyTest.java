@@ -32,7 +32,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         driver.navigate()
-            .to("http://localhost:%s/providerresponse/submit/%s?utm_medium=test".formatted(localServerPort, CONF_CODE));
+            .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -84,7 +84,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         driver.navigate()
-                .to("http://localhost:%s/providerresponse/submit/%s?utm_medium=test".formatted(localServerPort, CONF_CODE));
+                .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -449,7 +449,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
     @Test
     void ProviderresponseJourneyTest_ConfirmationCodeInLinkInvalid() {
-        driver.navigate().to("http://localhost:%s/providerresponse/submit/sdfsjlfjsdf".formatted(localServerPort));
+        driver.navigate().to("http://localhost:%s/s/sdfsjlfjsdf".formatted(localServerPort));
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("error-invalid-code.title"));
     }
