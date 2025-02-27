@@ -31,7 +31,7 @@ public class ProviderLinkController {
      * @param confirmationCode The confirmation code used to look up the submission
      * @return
      */
-    @GetMapping(value = {"s/{confirmationCode}", "providerresponse/submit", "providerresponse/submit/{confirmationCode}"})
+    @GetMapping(value = {"s/{confirmationCode}", "providerresponse/submit/{confirmationCode}"})
     String loadFamilySubmission(HttpSession session, HttpServletRequest request,
             @PathVariable(required = false) String confirmationCode) {
 

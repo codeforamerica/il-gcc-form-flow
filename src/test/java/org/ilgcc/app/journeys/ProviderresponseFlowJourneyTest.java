@@ -172,7 +172,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit".formatted(localServerPort));
+        driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -259,7 +259,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit".formatted(localServerPort));
+        driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -305,7 +305,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit".formatted(localServerPort));
+        driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -350,7 +350,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit".formatted(localServerPort));
+        driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -376,7 +376,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     @Test
     void ProviderresponseJourneyTest_ProviderNumberValidation() {
 
-        driver.navigate().to("http://localhost:%s/providerresponse/submit".formatted(localServerPort));
+        driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
