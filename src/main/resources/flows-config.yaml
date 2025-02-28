@@ -519,6 +519,8 @@ flow:
     beforeSaveAction: ConnectProviderApplicationToFamilyApplication
     onPostAction: GenerateDummyFamilySubmissionForDev
     nextScreens:
+      - name: response
+        condition: ShouldSkipConfirmationCode
       - name: confirmation-code
   confirmation-code:
     crossFieldValidationAction: ValidateConfirmationCodeAndSaveId

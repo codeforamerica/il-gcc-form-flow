@@ -43,7 +43,7 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
                 .getOrDefault("providerResponseFamilyShortCode", "");
 
         if (!providerProvidedConfirmationCode.isBlank()) {
-            Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode);
+            Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode.toUpperCase());
 
             if (familySubmission.isPresent()) {
                 httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.get().getId());

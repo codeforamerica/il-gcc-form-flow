@@ -60,6 +60,7 @@ public class CheckFamilySubmissionForProvider implements Action {
 
                 // To be used on subsequent screens to validate provider inputs == these values
                 httpSession.setAttribute(SESSION_KEY_FAMILY_CONFIRMATION_CODE, familySubmission.getShortCode());
+                httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.getId());
 
                 // In Prod, there should always be a submittedAt date, but for Staging it's possible to skip around in the flow and never submit
                 LocalDate submittedAtDate =
