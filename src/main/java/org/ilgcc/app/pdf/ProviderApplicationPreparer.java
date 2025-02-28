@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.submission.actions.FormatSubmittedAtDate;
+import org.ilgcc.app.utils.AddressUtilities;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -125,7 +126,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
     private Map<String, SubmissionField> prepareProviderAddressData(Map<String, Object> inputData) {
         var results = new HashMap<String, SubmissionField>();
 
-        Map<String, String> providerAddressMapped = SubmissionUtilities.getAddress(inputData, "providerResponseService");
+        Map<String, String> providerAddressMapped = AddressUtilities.getAddress(inputData, "providerResponseService");
 
         results.put("providerResponseServiceStreetAddress1", new SingleField("providerResponseServiceStreetAddress1",
                 providerAddressMapped.get("address1"), null));
@@ -143,7 +144,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
 
     private Map<String, SubmissionField> prepareProviderMailingAddressData(Map<String, Object> inputData) {
         var results = new HashMap<String, SubmissionField>();
-        Map<String, String> mailingAddressMapped = SubmissionUtilities.getAddress(inputData, "providerMailing");
+        Map<String, String> mailingAddressMapped = AddressUtilities.getAddress(inputData, "providerMailing");
 
         results.put("providerMailingStreetAddress1", new SingleField("providerMailingStreetAddress1",
                 mailingAddressMapped.get("address1"), null));
