@@ -292,7 +292,17 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         //children-ccap-child-other-ed
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
+        testPage.clickNo();
+        //children-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+        testPage.goBack();
+        //children-ccap-child-other-ed
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
         testPage.clickYes();
+        //children-school-weekly-schedule
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-school-weekly-schedule.title"));
+        testPage.enter("childOtherEdHoursDescription", "M-F (8am - 5pm)");
+        testPage.clickContinue();
         //children-add (with children listed)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
         // Add an incomplete iteration and assert that it is removed

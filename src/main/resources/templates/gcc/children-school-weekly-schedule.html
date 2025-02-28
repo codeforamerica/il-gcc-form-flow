@@ -1,10 +1,9 @@
-
 <div>
   <th:block
       th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
     title=#{children-school-weekly-schedule.title},
-    header=${#messages.msg('children-school-weekly-schedule.header', submission.getInputData.get('childFirstName', ''))},
+    header=#{children-school-weekly-schedule.header(${fieldData.get('childFirstName')})},
     buttonLabel=#{general.button.continue},
     formAction=${formAction},
     iconFragment=~{fragments/gcc-icons :: schedule-childcare},
