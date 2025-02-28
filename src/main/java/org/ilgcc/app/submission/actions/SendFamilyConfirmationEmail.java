@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail;
+import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -72,8 +73,8 @@ public class SendFamilyConfirmationEmail implements Action {
 
         if (recipientEmail.isBlank()) {
             log.warn(
-                    "SendFamilyConfirmationEmail: Skipping email send because there is no email associated with the submission: {}",
-                    emailData.get("confirmationCode"));
+                    "{}: Skipping email send because there is no email associated with the submission: {}",
+                    EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(), emailData.get("familySubmissionId"));
         }
 
         return recipientEmail;
@@ -102,7 +103,7 @@ public class SendFamilyConfirmationEmail implements Action {
     }
 
     protected void sendEmail(ILGCCEmail email, Submission submission) {
-        log.info("SendFamilyConfirmationEmail: About to enqueue the Send Email Job for submissionId: {}", submission.getId());
+        log.info("{}: About to enqueue the Send Email Job for submissionId: {}",  EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(), submission.getId());
         sendEmailJob.enqueueSendEmailJob(email);
         updateEmailStatus(submission);
     }

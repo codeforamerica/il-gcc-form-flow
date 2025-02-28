@@ -92,6 +92,7 @@ public class ProviderSubmissionUtilities {
 
         applicationData.put("providerResponseContactEmail", providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
+        applicationData.put("providerSubmissionId", providerSubmission.getId());
         applicationData.put("ccapStartDate",
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
                         providerSubmission));
@@ -110,6 +111,7 @@ public class ProviderSubmissionUtilities {
         applicationData.put("childrenInitialsList",
                 ProviderSubmissionUtilities.getChildrenInitialsListFromApplication(familySubmission));
         applicationData.put("confirmationCode", familySubmission.getShortCode());
+        applicationData.put("familySubmissionId", familySubmission.getId());
         applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));
         applicationData.put("emailLink", familySubmission.getInputData().getOrDefault("emailLink", ""));
         applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
