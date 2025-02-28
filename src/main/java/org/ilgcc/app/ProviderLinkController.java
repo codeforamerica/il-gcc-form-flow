@@ -4,6 +4,8 @@ import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_CAME_FROM_HOME_PAGE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_SUBMISSION_MAP;
 
@@ -33,8 +38,9 @@ public class ProviderLinkController {
      */
     @GetMapping(value = {"s", "s/{confirmationCode}", "providerresponse/submit/{confirmationCode}"})
     String loadFamilySubmission(HttpSession session, HttpServletRequest request,
-            @PathVariable(required = false) String confirmationCode) {
-
+            @PathVariable(required = false) String confirmationCode,
+            @RequestHeader(value = "Referer", required = false) String referer
+    ) throws URISyntaxException {
         session.invalidate();
 
         // create a new session and populate it with an empty FFL submission map
@@ -47,7 +53,7 @@ public class ProviderLinkController {
         log.info("Loading submission for code " + sanitizedConfirmationCode);
 
         if (sanitizedConfirmationCode != null) {
-            Optional<Submission> submission = submissionRepositoryService.findByShortCode(sanitizedConfirmationCode);
+            Optional<Submission> submission = submissionRepositoryService.findByShortCode(sanitizedConfirmationCode.toUpperCase());
             if (submission.isPresent()) {
                 Submission s = submission.get();
                 Map<String, String> urlParams = s.getUrlParams();
@@ -60,6 +66,8 @@ public class ProviderLinkController {
                 submissionRepositoryService.save(s);
 
                 newSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, s.getId());
+
+                checkRefererValue(referer, newSession);
             } else {
                 log.error("Unable to load submission for code " + sanitizedConfirmationCode);
                 return "redirect:/error-invalid-code";
@@ -67,5 +75,14 @@ public class ProviderLinkController {
         }
 
         return "redirect:/flow/providerresponse/submit-start";
+    }
+
+    private static void checkRefererValue(String referer, HttpSession newSession) throws URISyntaxException {
+        if (referer != null) {
+            URI refererUri = new URI(referer);
+            if (("/").equals(refererUri.getPath())) {
+                newSession.setAttribute(SESSION_KEY_CAME_FROM_HOME_PAGE, true);
+            }
+        }
     }
 }

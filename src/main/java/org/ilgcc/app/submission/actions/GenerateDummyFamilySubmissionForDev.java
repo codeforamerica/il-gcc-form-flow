@@ -53,8 +53,8 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
             dummyFamilySubmission.setFlow("gcc");
             dummyFamilySubmission.setShortCode("DEV-123ABC");
             dummyFamilySubmission.setInputData(inputData);
-            
-            submissionRepositoryService.save(dummyFamilySubmission);
+
+            dummyFamilySubmission = submissionRepositoryService.save(dummyFamilySubmission);
 
             httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, dummyFamilySubmission.getId());
         }

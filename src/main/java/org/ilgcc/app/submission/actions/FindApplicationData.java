@@ -20,12 +20,14 @@ public class FindApplicationData implements Action {
     @Override
     public void run(Submission providerSubmission) {
         Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
-        if(familySubmissionId.isPresent()){
-           Optional<Submission> familySubmission = submissionRepositoryService.findById(familySubmissionId.get());
-           providerSubmission.getInputData().put("clientResponse", ProviderSubmissionUtilities.getFamilySubmissionForProviderResponse(familySubmission));
+        if (familySubmissionId.isPresent()) {
+            Optional<Submission> familySubmission = submissionRepositoryService.findById(familySubmissionId.get());
+            providerSubmission.getInputData()
+                    .put("clientResponse", ProviderSubmissionUtilities.getFamilySubmissionForProviderResponse(familySubmission));
 
-           providerSubmission.getInputData().put("clientResponseChildren", ProviderSubmissionUtilities.getChildrenDataForProviderResponse(familySubmission.get()));
-           submissionRepositoryService.save(providerSubmission);
+            providerSubmission.getInputData().put("clientResponseChildren",
+                    ProviderSubmissionUtilities.getChildrenDataForProviderResponse(familySubmission.get()));
+            submissionRepositoryService.save(providerSubmission);
         }
     }
 }
