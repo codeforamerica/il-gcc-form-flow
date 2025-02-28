@@ -1,52 +1,15 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{parent-home-address.title})}"></head>
-<body>
-<div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: location}"></th:block>
-        <th:block
-            th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-home-address.title})}"/>
-        <th:block
-            th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-              <th:block th:replace="~{fragments/inputs/checkbox ::
-                 checkbox(inputName='parentHomeExperiencingHomelessness',
-                   label=#{parent-home-address.homelessness},
-                   value='yes'
-                 )}"/>
-              <div id="address-fields" th:insert="~{fragments/inputs/overrides/address ::
-                address(
-                  streetAddressLabel=#{general.street-address},
-                  streetAddress2Label=#{general.street-address-2},
-                  cityLabel=#{general.city},
-                  stateLabel=#{general.state},
-                  zipCodeLabel=#{general.zip-code},
-                  autoCompleteStreetAddress1='address-line1',
-                  autoCompleteStreetAddress2='address-line2',
-                  autoCompleteCity='address-level2',
-                  autoCompleteState='address-level1',
-                  autoCompleteZipCode='postal-code',
-                  validate='false',
-                  inputName='parentHome'
-                )}"></div>
-            </div>
-            <div class="form-card__footer">
-              <th:block
-                  th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
+<th:block
+        th:replace="~{fragments/screens/enter-address ::
+      screen(
+        title='parent-home-address.title',
+        header='parent-home-address.title',
+        iconFragment=~{fragments/gcc-icons :: location},
+        homelessInputName='parentHomeExperiencingHomelessness',
+        validate='true',
+        addressGroupInputPrefix='parentHome'
+      )}">
+</th:block>
+
 <script th:inline="javascript">
   $(document).ready(function () {
     const $homelessnessCheckbox = $('#parentHomeExperiencingHomelessness-yes')
