@@ -59,8 +59,8 @@ flow:
     nextScreens: null
   parent-mailing-address:
     nextScreens:
-      - name: parent-confirm-address
-  parent-confirm-address:
+      - name: confirm-parent-mailing-address
+  confirm-parent-mailing-address:
     beforeDisplayAction: SetEditAddressRedirect
     nextScreens:
       - name: parent-comm-preference
