@@ -18,12 +18,13 @@
 
 <script th:inline="javascript">
   $(document).ready(function () {
-    const providerFamilyCode = $('#providerResponseFamilyShortCode')
+    const providerFamilyCode = document.getElementById("providerResponseFamilyShortCode");
 
-    if(!providerFamilyCode.text()){
+    if (!providerFamilyCode.textContent) {
       var confirmationCode = [[${session.confirmationCode}]];
-      if(confirmationCode){
-        providerFamilyCode.val(confirmationCode)
+      if (confirmationCode) {
+        providerFamilyCode.value = confirmationCode;
+        providerFamilyCode.readOnly = true;
       }
     }
   });
