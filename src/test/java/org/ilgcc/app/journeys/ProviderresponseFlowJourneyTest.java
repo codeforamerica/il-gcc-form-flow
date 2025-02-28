@@ -289,7 +289,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
         testPage.enter("providerResponseFamilyShortCode", "a2123b");
         testPage.clickContinue();
-
+        // Confirmation codes that are correct but incorrect casing should still pass validation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
     }
 
