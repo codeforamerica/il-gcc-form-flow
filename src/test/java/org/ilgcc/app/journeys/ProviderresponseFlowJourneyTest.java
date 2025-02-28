@@ -277,11 +277,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
-        testPage.enter("providerResponseFamilyShortCode", "a2123b");
-        testPage.clickContinue();
-
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
-        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
         testPage.enter("providerResponseFamilyShortCode", "123");
         testPage.clickContinue();
 
@@ -292,6 +287,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
+        testPage.enter("providerResponseFamilyShortCode", "a2123b");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
     }
 
     @Test
