@@ -163,6 +163,12 @@ flow:
     condition: IsFiveOrOlder
     subflow: children
     nextScreens:
+      - name: children-school-weekly-schedule
+        condition: ChildAttendsOtherSchoolDuringDay
+      - name: children-add
+  children-school-weekly-schedule:
+    subflow: children
+    nextScreens:
       - name: children-add
   activities-parent-intro:
     nextScreens:
