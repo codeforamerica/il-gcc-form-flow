@@ -1,13 +1,16 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getFamilySubmissionDataForEmails;
+
 import com.sendgrid.helpers.mail.objects.Content;
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail;
-import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -16,11 +19,17 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SendFamilyConfirmationEmail implements Action {
 
+    protected static String EMAIL_SENT_STATUS_INPUT_NAME = "familyConfirmationEmailSent";
+    protected static String RECIPIENT_EMAIL_INPUT_NAME = "parentContactEmail";
+
+    protected static Locale locale;
+
     private final SendEmailJob sendEmailJob;
-    private final MessageSource messageSource;
+    private static MessageSource messageSource;
     private final SubmissionRepositoryService submissionRepositoryService;
 
-    public SendFamilyConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource, SubmissionRepositoryService submissionRepositoryService) {
+    public SendFamilyConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
+            SubmissionRepositoryService submissionRepositoryService) {
         this.sendEmailJob = sendEmailJob;
         this.messageSource = messageSource;
         this.submissionRepositoryService = submissionRepositoryService;
@@ -28,53 +37,78 @@ public class SendFamilyConfirmationEmail implements Action {
 
     @Override
     public void run(Submission familySubmission) {
-        String familyConfirmationEmailSent = (String) familySubmission.getInputData()
-                .getOrDefault("familyConfirmationEmailSent", "false");
-        if (familyConfirmationEmailSent.equals("true")) {
-            log.warn("Family confirmation email has already been sent for submission with ID: {}", familySubmission.getId());
-            return;
-        }
-        String familyEmail = familySubmission.getInputData().get("parentContactEmail").toString();
-        if (familyEmail == null || familyEmail.isEmpty()) {
-            log.warn("Family email was empty when attempting to send family confirmation email for submission with ID: {}",
+        if (!skipEmailSend(familySubmission)) {
+            Optional<Map<String, Object>> emailData = getEmailData(familySubmission);
+
+            if (emailData.isEmpty()) {
+                return;
+            }
+
+            locale = emailData.get().get("familyPreferredLanguage").equals("Spanish") ? Locale.forLanguageTag(
+                    "es") : Locale.ENGLISH;
+
+            ILGCCEmail email = ILGCCEmail.createFamilyConfirmationEmail(getSenderName(locale),
+                    getRecipientEmail(familySubmission),
+                    setSubject(emailData.get(), locale), new Content("text/html", setBodyCopy(emailData.get(), locale)),
                     familySubmission.getId());
-            return;
+            sendEmail(email, familySubmission);
         }
-
-        String familySubmissionShortCode = familySubmission.getShortCode();
-
-        Locale locale =
-                familySubmission.getInputData().getOrDefault("languageRead", "English").equals("Spanish") ? Locale.forLanguageTag(
-                        "es") : Locale.ENGLISH;
-        String subject = messageSource.getMessage("email.family-confirmation.subject", new Object[]{familySubmissionShortCode},
-                locale);
-
-        String senderName = messageSource.getMessage("email.general.sender-name", null, locale);
-
-        sendEmailJob.enqueueSendEmailJob(familyEmail, senderName, subject,
-                ILGCCEmail.EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(),
-                createFamilyConfirmationEmailBody(familySubmission, familySubmissionShortCode, locale), familySubmission);
-        familySubmission.getInputData().put("familyConfirmationEmailSent", "true");
-        submissionRepositoryService.save(familySubmission);
     }
 
-    private Content createFamilyConfirmationEmailBody(Submission familySubmission, String confirmationCode, Locale locale) {
-        String parentFirstName = familySubmission.getInputData().get("parentFirstName").toString();
-        String emailLink = familySubmission.getInputData().get("shareableLink").toString();
-        String ccrAndR = familySubmission.getInputData().get("ccrrName").toString();
-        String submittedDate = SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission);
-        String ccrrPhoneNumber = (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", "");
+    protected Boolean skipEmailSend(Submission submission) {
+        return submission.getInputData().getOrDefault(EMAIL_SENT_STATUS_INPUT_NAME, "false").equals("true");
+    }
 
-        String p1 = messageSource.getMessage("email.family-confirmation.p1", new Object[]{parentFirstName}, locale);
+    protected Optional<Map<String, Object>> getEmailData(Submission familySubmission) {
+        return Optional.of(getFamilySubmissionDataForEmails(familySubmission));
+    }
+
+    protected static String getSenderName(Locale locale) {
+        return messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale);
+    }
+
+    protected static String getRecipientEmail(Submission submission) {
+        String recipientEmail = submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+
+        if (recipientEmail.isBlank()) {
+            log.warn(
+                    "SendFamilyConfirmationEmail: Skipping email send because there is no email associated with the submission: {}",
+                    submission.getId());
+        }
+
+        return recipientEmail;
+    }
+
+    protected String setSubject(Map<String, Object> emailData, Locale locale) {
+        return messageSource.getMessage("email.family-confirmation.subject", new Object[]{emailData.get("confirmationCode")},
+                locale);
+    }
+
+    protected String setBodyCopy(Map<String, Object> emailData, Locale locale) {
+        String p1 = messageSource.getMessage("email.family-confirmation.p1", new Object[]{emailData.get("parentFirstName")},
+                locale);
         String p2 = messageSource.getMessage("email.family-confirmation.p2", null, locale);
-        String p3 = messageSource.getMessage("email.family-confirmation.p3", new Object[]{emailLink}, locale);
-        String p4 = messageSource.getMessage("email.family-confirmation.p4", new Object[]{ccrAndR, ccrrPhoneNumber}, locale);
-        String p5 = messageSource.getMessage("email.family-confirmation.p5", new Object[]{confirmationCode, submittedDate},
+        String p3 = messageSource.getMessage("email.family-confirmation.p3", new Object[]{emailData.get("emailLink")}, locale);
+        String p4 = messageSource.getMessage("email.family-confirmation.p4",
+                new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
+        String p5 = messageSource.getMessage("email.family-confirmation.p5",
+                new Object[]{emailData.get("confirmationCode"), emailData.get("submittedDate")},
                 locale);
         String p6 = messageSource.getMessage("email.family-confirmation.p6", null, locale);
         String p7 = messageSource.getMessage("email.family-confirmation.p7", null, locale);
         String p8 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p9 = messageSource.getMessage("email.general.footer.cfa", null, locale);
-        return new Content("text/html", p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9);
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
+    }
+
+    protected void sendEmail(ILGCCEmail email, Submission submission) {
+        log.info("SendFamilyConfirmationEmail: About to enqueue the Send Email Job for submissionId: {}", submission.getId());
+        sendEmailJob.enqueueSendEmailJob(email);
+        updateEmailStatus(submission);
+    }
+
+    private void updateEmailStatus(Submission submission) {
+        submission.getInputData().putIfAbsent(EMAIL_SENT_STATUS_INPUT_NAME, "true");
+        submissionRepositoryService.save(submission);
     }
 }

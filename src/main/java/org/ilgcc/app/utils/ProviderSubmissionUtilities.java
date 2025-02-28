@@ -91,14 +91,26 @@ public class ProviderSubmissionUtilities {
         Map<String, Object> applicationData = new HashMap<>();
 
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
+        applicationData.put("ccapStartDate",
+                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
+                        providerSubmission));
+        applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission));
+
+        return applicationData;
+    }
+
+    public static Map<String, Object> getFamilySubmissionDataForEmails(Submission familySubmission) {
+        Map<String, Object> applicationData = new HashMap<>();
+
+        applicationData.put("parentFirstName", (String) familySubmission.getInputData().get("parentFirstName"));
         applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
         applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
         applicationData.put("childrenInitialsList",
                 ProviderSubmissionUtilities.getChildrenInitialsListFromApplication(familySubmission));
-        applicationData.put("ccapStartDate",
-                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
-                        providerSubmission));
         applicationData.put("confirmationCode", familySubmission.getShortCode());
+        applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));
+        applicationData.put("emailLink", familySubmission.getInputData().getOrDefault("emailLink", ""));
+        applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
 
         return applicationData;
     }
