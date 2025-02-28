@@ -49,7 +49,8 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
     void setUp() {
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "Yes")
+                .with("parentFirstName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "Yes")
+                .with("parentContactEmail", "familyemail@test.com")
                 .with("languageRead", "English")
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withCCRR()
@@ -75,6 +76,14 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
     }
 
     @Test
+    void correctlySetsEmailRecipient(){
+        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
+        Map<String, Object> emailData = emailDataOptional.get();
+
+        assertThat(action.getRecipientEmail(emailData)).isEqualTo("familyemail@test.com");
+    }
+
+    @Test
     void correctlySetsEmailData() {
         Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
 
@@ -82,11 +91,13 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
         Map<String, Object> emailData = emailDataOptional.get();
 
-        assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
-        assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
-        assertThat(emailData.get("providerName")).isEqualTo("BusinessName");
+        assertThat(emailData.get("parentContactEmail")).isEqualTo("familyemail@test.com");
+        assertThat(emailData.get("parentFirstName")).isEqualTo("FirstName");
         assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
         assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
+        assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
+        assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+        assertThat(emailData.get("providerName")).isEqualTo("BusinessName");
         assertThat(emailData.get("ccapStartDate")).isEqualTo("January 10, 2025");
         assertThat(emailData.get("familyPreferredLanguage")).isEqualTo("English");
     }

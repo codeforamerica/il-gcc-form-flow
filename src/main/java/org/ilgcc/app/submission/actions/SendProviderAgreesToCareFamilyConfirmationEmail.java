@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail;
+import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
@@ -52,7 +53,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
                     "es") : Locale.ENGLISH;
 
             ILGCCEmail email = ILGCCEmail.createProviderAgreesToCareFamilyConfirmationEmail(getSenderName(locale),
-                    getRecipientEmail(providerSubmission),
+                    getRecipientEmail(emailData.get()),
                     setSubject(emailData.get(), locale), new Content("text/html", setBodyCopy(emailData.get(), locale)),
                     providerSubmission.getId());
             sendEmail(email, providerSubmission);
@@ -73,8 +74,8 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
             return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
         } else {
             log.warn(
-                    "SendProviderAgreesToCareFamilyConfirmationEmail: Skipping email send because there is no family submission associated with the provider submission with ID : {}",
-                    providerSubmission.getId());
+                    "{}: Skipping email send because there is no family submission associated with the provider submission with ID : {}",
+                    EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL.getDescription(), providerSubmission.getId());
             return Optional.empty();
         }
     }
@@ -83,13 +84,13 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         return messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale);
     }
 
-    protected static String getRecipientEmail(Submission submission) {
-        String recipientEmail = submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+    protected static String getRecipientEmail(Map<String, Object> emailData) {
+        String recipientEmail = emailData.get(RECIPIENT_EMAIL_INPUT_NAME).toString();
 
         if (recipientEmail.isBlank()) {
             log.warn(
-                    "SendProviderAgreesToCareFamilyConfirmationEmail: Skipping email send because there is no email associated with the submission: {}",
-                    submission.getId());
+                    "{}: Skipping email send because there is no email associated with the submission: {}",
+                    EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL.getDescription(), emailData.get("familySubmissionId"));
         }
 
         return recipientEmail;
@@ -122,8 +123,8 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
     }
 
     protected void sendEmail(ILGCCEmail email, Submission submission) {
-        log.info("SendProviderAgreesToCareFamilyConfirmationEmail: About to enqueue the Send Email Job for submissionId: {}",
-                submission.getId());
+        log.info("{}: About to enqueue the Send Email Job for submissionId: {}",
+                EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL.getDescription(), submission.getId());
         sendEmailJob.enqueueSendEmailJob(email);
         updateEmailStatus(submission);
     }
