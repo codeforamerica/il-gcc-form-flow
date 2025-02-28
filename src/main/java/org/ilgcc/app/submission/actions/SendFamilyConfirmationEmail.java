@@ -68,7 +68,15 @@ public class SendFamilyConfirmationEmail implements Action {
     }
 
     protected static String getRecipientEmail(Submission submission) {
-        return submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+        String recipientEmail = submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+
+        if (recipientEmail.isBlank()) {
+            log.warn(
+                    "SendFamilyConfirmationEmail: Skipping email send because there is no email associated with the submission: {}",
+                    submission.getId());
+        }
+
+        return recipientEmail;
     }
 
     protected String setSubject(Map<String, Object> emailData, Locale locale) {
@@ -94,6 +102,7 @@ public class SendFamilyConfirmationEmail implements Action {
     }
 
     protected void sendEmail(ILGCCEmail email, Submission submission) {
+        log.info("SendFamilyConfirmationEmail: About to enqueue the Send Email Job for submissionId: {}", submission.getId());
         sendEmailJob.enqueueSendEmailJob(email);
         updateEmailStatus(submission);
     }
@@ -102,6 +111,4 @@ public class SendFamilyConfirmationEmail implements Action {
         submission.getInputData().putIfAbsent(EMAIL_SENT_STATUS_INPUT_NAME, "true");
         submissionRepositoryService.save(submission);
     }
-
-
 }

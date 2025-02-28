@@ -72,7 +72,8 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         if (familySubmission.isPresent()) {
             return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
         } else {
-            log.warn("Could not send Email. No family submission is associated with the providerSubmissionId: {}",
+            log.warn(
+                    "SendProviderAgreesToCareFamilyConfirmationEmail: Skipping email send because there is no family submission associated with the provider submission with ID : {}",
                     providerSubmission.getId());
             return Optional.empty();
         }
@@ -83,7 +84,15 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
     }
 
     protected static String getRecipientEmail(Submission submission) {
-        return submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+        String recipientEmail = submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+
+        if (recipientEmail.isBlank()) {
+            log.warn(
+                    "SendProviderAgreesToCareFamilyConfirmationEmail: Skipping email send because there is no email associated with the submission: {}",
+                    submission.getId());
+        }
+
+        return recipientEmail;
     }
 
     protected String setSubject(Map<String, Object> emailData, Locale locale) {
@@ -94,7 +103,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         String p1 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale);
 
         String providerName = emailData.get("providerName").toString();
-        String p2 =  providerName.isEmpty() ? messageSource.getMessage(
+        String p2 = providerName.isEmpty() ? messageSource.getMessage(
                 "email.response-email-for-family.provider-agrees.p2-no-provider-name", new Object[]{emailData.get("ccrrName")},
                 locale)
                 : messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name",
@@ -102,7 +111,8 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         String p3 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
                 new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
                         messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
-        String p4 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p4", new Object[]{emailData.get("confirmationCode")},
+        String p4 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p4",
+                new Object[]{emailData.get("confirmationCode")},
                 locale);
         String p5 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p5",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
@@ -111,24 +121,24 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail implements Action {
         return p1 + p2 + p3 + p4 + p5 + p6 + p7;
     }
 
-        protected void sendEmail (ILGCCEmail email, Submission submission){
-            sendEmailJob.enqueueSendEmailJob(email);
-            updateEmailStatus(submission);
-        }
-
-        private void updateEmailStatus (Submission submission){
-            submission.getInputData().putIfAbsent(EMAIL_SENT_STATUS_INPUT_NAME, "true");
-            submissionRepositoryService.save(submission);
-        }
-
-        private Optional<Submission> getFamilyApplication (Submission providerSubmission){
-            Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
-            if (familySubmissionId.isEmpty()) {
-                log.warn("No family submission is associated with the provider submission with ID: {}",
-                        providerSubmission.getId());
-                return Optional.empty();
-            }
-
-            return submissionRepositoryService.findById(familySubmissionId.get());
-        }
+    protected void sendEmail(ILGCCEmail email, Submission submission) {
+        log.info("SendProviderAgreesToCareFamilyConfirmationEmail: About to enqueue the Send Email Job for submissionId: {}",
+                submission.getId());
+        sendEmailJob.enqueueSendEmailJob(email);
+        updateEmailStatus(submission);
     }
+
+    private void updateEmailStatus(Submission submission) {
+        submission.getInputData().putIfAbsent(EMAIL_SENT_STATUS_INPUT_NAME, "true");
+        submissionRepositoryService.save(submission);
+    }
+
+    private Optional<Submission> getFamilyApplication(Submission providerSubmission) {
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+        if (familySubmissionId.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return submissionRepositoryService.findById(familySubmissionId.get());
+    }
+}

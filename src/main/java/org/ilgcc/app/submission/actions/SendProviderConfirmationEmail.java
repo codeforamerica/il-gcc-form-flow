@@ -73,7 +73,8 @@ public class SendProviderConfirmationEmail implements Action {
         if (familySubmission.isPresent()) {
             return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
         } else {
-            log.warn("Could not send Email. No family submission is associated with the providerSubmissionId: {}",
+            log.warn(
+                    "SendProviderConfirmationEmail: Skipping email send because there is no family submission associated with the provider submission with ID : {}",
                     providerSubmission.getId());
             return Optional.empty();
         }
@@ -84,7 +85,14 @@ public class SendProviderConfirmationEmail implements Action {
     }
 
     protected static String getRecipientEmail(Submission submission) {
-        return submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+        String recipientEmail = submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+
+        if (recipientEmail.isBlank()) {
+            log.warn(
+                    "SendProviderConfirmationEmail: Skipping email send because there is no email associated with the submission: {}",
+                    submission.getId());
+        }
+        return recipientEmail;
     }
 
     protected String setSubject(Map<String, Object> emailData, Locale locale) {
@@ -108,6 +116,7 @@ public class SendProviderConfirmationEmail implements Action {
     }
 
     protected void sendEmail(ILGCCEmail email, Submission submission) {
+        log.info("SendProviderConfirmationEmail: About to enqueue the Send Email Job for submissionId: {}", submission.getId());
         sendEmailJob.enqueueSendEmailJob(email);
         updateEmailStatus(submission);
     }
@@ -120,7 +129,6 @@ public class SendProviderConfirmationEmail implements Action {
     private Optional<Submission> getFamilyApplication(Submission providerSubmission) {
         Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isEmpty()) {
-            log.warn("No family submission is associated with the provider submission with ID: {}", providerSubmission.getId());
             return Optional.empty();
         }
 
