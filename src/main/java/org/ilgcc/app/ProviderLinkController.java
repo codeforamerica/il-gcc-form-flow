@@ -69,7 +69,6 @@ public class ProviderLinkController {
 
                 if (referer != null) {
                     URI refererUri = new URI(referer);
-                    String refererPath = refererUri.getPath();
                     if (("/").equals(refererUri.getPath())) {
                         newSession.setAttribute(SESSION_KEY_CAME_FROM_HOME_PAGE, true);
                     }
