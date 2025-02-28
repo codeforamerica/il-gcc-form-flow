@@ -54,7 +54,7 @@ public class SendProviderConfirmationEmail implements Action {
             locale = LocaleContextHolder.getLocale();
 
             ILGCCEmail email = ILGCCEmail.createProviderConfirmationEmail(getSenderName(locale),
-                    getRecipientEmail(providerSubmission), setSubject(emailData.get(), locale),
+                    getRecipientEmail(emailData.get()), setSubject(emailData.get(), locale),
                     new Content("text/html", setBodyCopy(emailData.get(), locale)), providerSubmission.getId());
             sendEmail(email, providerSubmission);
         }
@@ -84,13 +84,13 @@ public class SendProviderConfirmationEmail implements Action {
         return messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale);
     }
 
-    protected static String getRecipientEmail(Submission submission) {
-        String recipientEmail = submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+    protected static String getRecipientEmail(Map<String, Object> emailData) {
+        String recipientEmail = emailData.get(RECIPIENT_EMAIL_INPUT_NAME).toString();
 
         if (recipientEmail.isBlank()) {
             log.warn(
                     "SendProviderConfirmationEmail: Skipping email send because there is no email associated with the submission: {}",
-                    submission.getId());
+                    emailData.get("confirmationCode"));
         }
         return recipientEmail;
     }

@@ -48,7 +48,7 @@ public class SendFamilyConfirmationEmail implements Action {
                     "es") : Locale.ENGLISH;
 
             ILGCCEmail email = ILGCCEmail.createFamilyConfirmationEmail(getSenderName(locale),
-                    getRecipientEmail(familySubmission),
+                    getRecipientEmail(emailData.get()),
                     setSubject(emailData.get(), locale), new Content("text/html", setBodyCopy(emailData.get(), locale)),
                     familySubmission.getId());
             sendEmail(email, familySubmission);
@@ -67,13 +67,13 @@ public class SendFamilyConfirmationEmail implements Action {
         return messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale);
     }
 
-    protected static String getRecipientEmail(Submission submission) {
-        String recipientEmail = submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+    protected static String getRecipientEmail(Map<String, Object> emailData) {
+        String recipientEmail = emailData.get(RECIPIENT_EMAIL_INPUT_NAME).toString();
 
         if (recipientEmail.isBlank()) {
             log.warn(
                     "SendFamilyConfirmationEmail: Skipping email send because there is no email associated with the submission: {}",
-                    submission.getId());
+                    emailData.get("confirmationCode"));
         }
 
         return recipientEmail;

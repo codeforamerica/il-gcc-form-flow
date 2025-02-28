@@ -51,6 +51,7 @@ public class SendFamilyConfirmationEmailTest {
                 .with("parentFirstName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "Yes")
                 .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 0, 0, 0, 0, ZoneOffset.ofTotalSeconds(0)))
                 .withCCRR()
+                .with("parentContactEmail", "familyemail@test.com")
                 .with("emailLink", "tempEmailLink")
                 .withShortCode("ABC123")
                 .build();
@@ -58,6 +59,14 @@ public class SendFamilyConfirmationEmailTest {
         submissionRepositoryService.save(familySubmission);
 
         action = new SendFamilyConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
+    }
+
+    @Test
+    void correctlySetsEmailRecipient(){
+        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(familySubmission);
+        Map<String, Object> emailData = emailDataOptional.get();
+
+        assertThat(action.getRecipientEmail(emailData)).isEqualTo("familyemail@test.com");
     }
 
     @Test
@@ -69,6 +78,7 @@ public class SendFamilyConfirmationEmailTest {
         Map<String, Object> emailData = emailDataOptional.get();
 
         assertThat(emailData.get("parentFirstName")).isEqualTo("FirstName");
+        assertThat(emailData.get("parentContactEmail")).isEqualTo("familyemail@test.com");
         assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
         assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
         assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));

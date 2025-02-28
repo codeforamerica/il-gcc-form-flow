@@ -74,6 +74,14 @@ public class SendProviderConfirmationEmailTest {
     }
 
     @Test
+    void correctlySetsEmailRecipient(){
+        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
+        Map<String, Object> emailData = emailDataOptional.get();
+
+        assertThat(action.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
+    }
+
+    @Test
     void correctlySetsEmailData() {
         Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
 
@@ -87,6 +95,7 @@ public class SendProviderConfirmationEmailTest {
         assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
         assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
         assertThat(emailData.get("ccapStartDate")).isEqualTo("January 10, 2025");
+        assertThat(emailData.get("providerResponseContactEmail")).isEqualTo("provideremail@test.com");
     }
 
     @Test
