@@ -163,6 +163,12 @@ flow:
     condition: IsFiveOrOlder
     subflow: children
     nextScreens:
+      - name: children-school-weekly-schedule
+        condition: ChildAttendsOtherSchoolDuringDay
+      - name: children-add
+  children-school-weekly-schedule:
+    subflow: children
+    nextScreens:
       - name: children-add
   activities-parent-intro:
     nextScreens:
@@ -429,10 +435,6 @@ flow:
   submit-next-steps:
     nextScreens:
       - name: complete-submit-confirmation
-  submit-confirmation:
-    beforeDisplayAction: FormatSubmittedAtDate
-    nextScreens:
-      - name: submit-confirmation
   next-steps-pdf-delivery:
     nextScreens:
       - name: complete-submit-confirmation
@@ -489,7 +491,6 @@ landmarks:
   afterSubmitPages:
     - submit-complete
     - submit-next-steps
-    - submit-confirmation
     - doc-upload-recommended-docs
     - doc-upload-add-files
     - doc-upload-submit-confirmation
@@ -746,7 +747,9 @@ flow:
     nextScreens:
       - name: registration-submit-confirmation
   registration-submit-confirmation:
-      nextScreens: null
+    beforeDisplayAction: FormatSubmittedAtDate
+    nextScreens:
+      - name: registration-submit-confirmation
   submit-complete-final:
     nextScreens:
       - name: registration-getting-started
@@ -775,6 +778,7 @@ landmarks:
   afterSubmitPages:
     - submit-complete-final
     - registration-submit-complete
+    - registration-submit-confirmation
     - registration-submit-next-steps
     - registration-doc-upload-recommended-docs
     - registration-doc-upload-add-files

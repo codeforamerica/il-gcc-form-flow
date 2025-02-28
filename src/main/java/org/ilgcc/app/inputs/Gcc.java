@@ -246,6 +246,9 @@ public class Gcc extends FlowInputs {
     // children-ccap-child-other-ed
     private String childAttendsOtherEd;
 
+    // children-school-weekly-schedule
+    private String childOtherEdHoursDescription;
+
     private String earliestChildcareStartDate;
 
     // activities-parent-type
@@ -629,7 +632,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.validate.signed-name}")
     private String partnerSignedName;
 
-    // submit-confirmation
+    // complete-submit-confirmation
     private String surveyDifficulty;
     private String surveyAdditionalComments;
     private String providerResponseSubmissionId;

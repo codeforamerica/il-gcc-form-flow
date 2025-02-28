@@ -126,7 +126,6 @@ org:
       enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
-  generate-short-links: ${GENERATE_SHORT_LINKS_FLAG:false}
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
   allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
   dts:
@@ -134,9 +133,6 @@ il-gcc:
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
     auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
     presigned-url-Duration: 5 # Minutes
-  link-shortener:
-    api-key: ${SHORT_IO_API_KEY}
-    domain: ${SHORT_IO_DOMAIN}
   ccms-api:
     api-subscription-key: ${OCP_APIM_SUBSCRIPTION_KEY}
     base-url: ${CCMS_API_BASE_URL}

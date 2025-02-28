@@ -115,7 +115,7 @@
             </label>
             <input type="text" class="text-input" id="homepage-provider-response-link">
             <a
-                th:href="'/providerresponse/submit'"
+                th:href="'/s'"
                 id="route-to-provider-response"
                 class="button--big button">
               <span th:text="#{index.respond-to-application.button}"></span>
@@ -139,15 +139,16 @@
 <script th:inline="javascript">
   $(document).ready(function () {
     const domain = window.location.origin
-    const providerResponsePath = '/providerresponse/submit'
     const $homepageProviderResponseLink = $('#homepage-provider-response-link')
 
+    const providerResponsePath = '/s'
     const $respondToApplicationLink = $('#route-to-provider-response')
     function updateRespondToApplicationLink(value) {
-      if (value.trim().length === 0){
+      if (value.trim().length === 0) {
         $respondToApplicationLink.attr("href", (domain + providerResponsePath))
-      }else {
-        $respondToApplicationLink.attr("href",  (domain + providerResponsePath + '/' + encodeURIComponent(value)))
+      } else {
+        $respondToApplicationLink.attr("href",
+                (domain + providerResponsePath + '/' + encodeURIComponent(value)))
       }
     }
     $homepageProviderResponseLink.change(function () {

@@ -136,4 +136,18 @@ public class NeedChildcareForChildrenPreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
         assertThat(result.get("childGender_1")).isEqualTo(new SingleField("childGender", "", 1));
     }
+
+    @Test
+    public void childCareChildSchoolHoursIsFilledIfPresent() {
+        submission = new SubmissionTestBuilder().withChild("Childcare", "Hours", "Yes")
+            .withChild("Tester", "LastName","Yes")
+            .withDescriptionOfChildAttendsOtherSchoolDuringTheDay(0, "")
+            .withDescriptionOfChildAttendsOtherSchoolDuringTheDay(1, "testValue")
+            .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("childOtherEdHoursDescription_1")).isEqualTo(new SingleField("childOtherEdHoursDescription", "", 1));
+        assertThat(result.get("childOtherEdHoursDescription_2")).isEqualTo(new SingleField("childOtherEdHoursDescription", "testValue", 2));
+
+    }
 }

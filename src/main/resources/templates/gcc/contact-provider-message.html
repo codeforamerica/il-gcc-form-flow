@@ -15,17 +15,17 @@
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
                     <th:block th:ref="content">
                         <div class="form-card__content"
-                             th:with="shortCode=${submission.getShortCode()}, emailLink=${submission.getInputData().get('emailLink')}, textLink=${submission.getInputData().get('textLink')}, clipboardLink=${submission.getInputData().get('clipboardLink')}, ccpName=${T(org.ilgcc.app.utils.SubmissionUtilities).getProviderName(inputData)}">
+                             th:with="shortCode=${submission.getShortCode()}, shareableLink=${submission.getInputData().get('shareableLink')}, ccpName=${T(org.ilgcc.app.utils.SubmissionUtilities).getProviderName(inputData)}">
                             <p th:utext="${#messages.msg('contact-provider-message.below-we-prepared', ccpName)}"></p>
                             <p th:utext="${#messages.msg('contact-provider-message.it-includes', shortCode)}"></p>
                             <div class="notice--warning notice--gray confirmation-example">
                                 <p id="providerMessageP1"
                                    th:text="${#messages.msg('contact-provider-message.message-p1', shortCode)}"></p>
                                 <p id="providerMessageP2"
-                                   th:text="${#messages.msg('contact-provider-message.message-p2', clipboardLink)}"></p>
+                                   th:text="${#messages.msg('contact-provider-message.message-p2', shareableLink)}"></p>
                             </div>
                             <div class="center"
-                                 th:with="emailContent=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', emailLink, shortCode))}">
+                                 th:with="emailContent=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', shareableLink, shortCode))}">
                                 <a target="_blank" th:id="contact-provider-by-email" th:href="${emailContent}"
                                    class="button button--wide">
                                     <i aria-hidden="true" class="icon-markunread"></i>
@@ -33,7 +33,7 @@
                                 </a>
                             </div>
                             <div class="center hide-on-desktop"
-                                 th:with="textMessageContent=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-provider-message.message-body', textLink, shortCode))}">
+                                 th:with="textMessageContent=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-provider-message.message-body', shareableLink, shortCode))}">
                                 <a target="_blank" th:id="contact-provider-by-text" th:href="${textMessageContent}"
                                    class="button button--wide">
                                     <i aria-hidden="true"  class="icon-insert_comment"></i>
