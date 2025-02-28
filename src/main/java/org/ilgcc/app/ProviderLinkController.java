@@ -67,12 +67,7 @@ public class ProviderLinkController {
 
                 newSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, s.getId());
 
-                if (referer != null) {
-                    URI refererUri = new URI(referer);
-                    if (("/").equals(refererUri.getPath())) {
-                        newSession.setAttribute(SESSION_KEY_CAME_FROM_HOME_PAGE, true);
-                    }
-                }
+                checkRefererValue(referer, newSession);
             } else {
                 log.error("Unable to load submission for code " + sanitizedConfirmationCode);
                 return "redirect:/error-invalid-code";
@@ -80,5 +75,14 @@ public class ProviderLinkController {
         }
 
         return "redirect:/flow/providerresponse/submit-start";
+    }
+
+    private static void checkRefererValue(String referer, HttpSession newSession) throws URISyntaxException {
+        if (referer != null) {
+            URI refererUri = new URI(referer);
+            if (("/").equals(refererUri.getPath())) {
+                newSession.setAttribute(SESSION_KEY_CAME_FROM_HOME_PAGE, true);
+            }
+        }
     }
 }
