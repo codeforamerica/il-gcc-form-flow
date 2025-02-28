@@ -53,9 +53,9 @@ public class SendProviderConfirmationEmail implements Action {
 
             locale = LocaleContextHolder.getLocale();
 
-            ILGCCEmail email = ILGCCEmail.createProviderConfirmationEmail(getSenderName(locale), getRecipientEmail(providerSubmission),
-                    setSubject(emailData.get(), locale), new Content("text/html", setBodyCopy(emailData.get(), locale)),
-                    providerSubmission.getId());
+            ILGCCEmail email = ILGCCEmail.createProviderConfirmationEmail(getSenderName(locale),
+                    getRecipientEmail(providerSubmission), setSubject(emailData.get(), locale),
+                    new Content("text/html", setBodyCopy(emailData.get(), locale)), providerSubmission.getId());
             sendEmail(email, providerSubmission);
         }
     }
@@ -94,16 +94,14 @@ public class SendProviderConfirmationEmail implements Action {
 
     protected String setBodyCopy(Map<String, Object> emailData, Locale locale) {
         String p1 = messageSource.getMessage("email.provider-confirmation.p1", null, locale);
-        String p2 = messageSource.getMessage("email.provider-confirmation.p2", new Object[]{emailData.get("ccrrName")},
-                locale);
-        String p3 = messageSource.getMessage("email.provider-confirmation.p3",
-                new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
+        String p2 = messageSource.getMessage("email.provider-confirmation.p2", new Object[]{emailData.get("ccrrName")}, locale);
+        String p3 = messageSource.getMessage("email.provider-confirmation.p3", new Object[]{
+                formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
                         messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
-        String p4 = messageSource.getMessage("email.provider-confirmation.p4",
-                new Object[]{emailData.get("confirmationCode")}, locale);
-        String p5 = messageSource.getMessage("email.provider-confirmation.p5",
-                new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")},
+        String p4 = messageSource.getMessage("email.provider-confirmation.p4", new Object[]{emailData.get("confirmationCode")},
                 locale);
+        String p5 = messageSource.getMessage("email.provider-confirmation.p5",
+                new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
         String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
         return p1 + p2 + p3 + p4 + p5 + p6 + p7;
@@ -122,8 +120,7 @@ public class SendProviderConfirmationEmail implements Action {
     private Optional<Submission> getFamilyApplication(Submission providerSubmission) {
         Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isEmpty()) {
-            log.warn("No family submission is associated with the provider submission with ID: {}",
-                    providerSubmission.getId());
+            log.warn("No family submission is associated with the provider submission with ID: {}", providerSubmission.getId());
             return Optional.empty();
         }
 

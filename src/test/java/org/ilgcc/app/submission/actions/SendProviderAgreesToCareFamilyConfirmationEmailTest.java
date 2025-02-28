@@ -62,7 +62,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
                 .withFlow("providerresponse")
                 .with("familySubmissionId", familySubmission.getId().toString())
                 .with("providerResponseContactEmail", "provideremail@test.com")
-                .with("prxoviderResponseFirstName", "ProviderFirst")
+                .with("providerResponseFirstName", "ProviderFirst")
                 .with("providerResponseLastName", "ProviderLast")
                 .with("providerResponseBusinessName", "BusinessName")
                 .with("providerCareStartDate", "01/10/2025")
