@@ -1,23 +1,20 @@
 <div>
   <th:block
       th:replace="~{fragments/screens/screenWithOneInput ::
-  screenWithOneInput(
-    title=#{children-school-weekly-schedule.title},
-    header=#{children-school-weekly-schedule.header(${fieldData.get('childFirstName')})},
-    buttonLabel=#{general.button.continue},
-    formAction=${formAction},
-    iconFragment=~{fragments/gcc-icons :: schedule-childcare},
-    inputContent=~{::inputContent})}">
+    screenWithOneInput(
+      title=#{children-school-weekly-schedule.title},
+      header=#{children-school-weekly-schedule.header(${fieldData.get('childFirstName')})},
+      buttonLabel=#{general.button.continue},
+      formAction=${formAction},
+      iconFragment=~{fragments/gcc-icons :: schedule-childcare},
+      inputContent=~{::inputContent})}">
     <th:block th:ref="inputContent">
       <input type="hidden" th:name="current_uuid" th:value="${fieldData.get('uuid')}">
       <th:block th:replace="~{fragments/inputs/textArea ::
-                                  textArea(inputName='childOtherEdHoursDescription',
-                                  ariaLabel='header',
-                                  rows='2',
-                                  maxLength='50')}"/>
+                    textArea(inputName='childOtherEdHoursDescription',
+                    ariaLabel='header',
+                    rows='2',
+                    maxLength='50')}"/>
     </th:block>
   </th:block>
 </div>
-
-
-
