@@ -43,9 +43,9 @@ public class SendProviderConfirmationEmail implements Action {
     }
 
     @Override
-    public void run(Submission submission) {
-        if (!skipEmailSend(submission)) {
-            Optional<Map<String, Object>> emailData = getEmailData(submission);
+    public void run(Submission providerSubmission) {
+        if (!skipEmailSend(providerSubmission)) {
+            Optional<Map<String, Object>> emailData = getEmailData(providerSubmission);
 
             if (emailData.isEmpty()) {
                 return;
@@ -53,10 +53,10 @@ public class SendProviderConfirmationEmail implements Action {
 
             locale = LocaleContextHolder.getLocale();
 
-            ILGCCEmail email = ILGCCEmail.createProviderConfirmationEmail(getSenderName(locale), getRecipientEmail(submission),
+            ILGCCEmail email = ILGCCEmail.createProviderConfirmationEmail(getSenderName(locale), getRecipientEmail(providerSubmission),
                     setSubject(emailData.get(), locale), new Content("text/html", setBodyCopy(emailData.get(), locale)),
-                    submission.getId());
-            sendEmail(email, submission);
+                    providerSubmission.getId());
+            sendEmail(email, providerSubmission);
         }
     }
 

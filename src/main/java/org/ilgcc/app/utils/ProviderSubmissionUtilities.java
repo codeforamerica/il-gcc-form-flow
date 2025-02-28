@@ -99,6 +99,7 @@ public class ProviderSubmissionUtilities {
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
                         providerSubmission));
         applicationData.put("confirmationCode", familySubmission.getShortCode());
+        applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));
 
         return applicationData;
     }
