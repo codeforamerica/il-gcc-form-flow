@@ -44,6 +44,8 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
                     new SingleField("childCareChildInSchool", (String) child.getOrDefault("childAttendsOtherEd", ""), iteration));
             results.put("childRelationship_" + iteration,
                     new SingleField("childRelationship", (String) child.get("childRelationship"), iteration));
+            results.put("childOtherEdHoursDescription_" + iteration,
+                new SingleField("childOtherEdHoursDescription", (String) child.getOrDefault("childOtherEdHoursDescription", ""), iteration));
             iteration++;
         }
         return results;

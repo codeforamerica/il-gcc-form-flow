@@ -210,6 +210,7 @@ subflowInfo:
       childUSCitizen: CHILD_US_CITIZEN
       childCareChildInSchool: CHILD_CARE_CHILD_IN_SCHOOL
       childRelationship: CHILD_RELATIONSHIP_TO_PARENT
+      childOtherEdHoursDescription: CHILD_CARE_CHILD_SCHOOL_HOURS
       childCareScheduleMondayStart: CHILD_CARE_SCHEDULE_MONDAY_START
       childCareScheduleMondayStartAmPm: CHILD_CARE_SCHEDULE_MONDAY_START_AM_PM
       childCareScheduleTuesdayStart: CHILD_CARE_SCHEDULE_TUESDAY_START
