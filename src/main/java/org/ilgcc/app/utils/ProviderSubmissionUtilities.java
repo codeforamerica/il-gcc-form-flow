@@ -113,7 +113,7 @@ public class ProviderSubmissionUtilities {
         applicationData.put("confirmationCode", familySubmission.getShortCode());
         applicationData.put("familySubmissionId", familySubmission.getId());
         applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));
-        applicationData.put("emailLink", familySubmission.getInputData().getOrDefault("emailLink", ""));
+        applicationData.put("shareableLink", familySubmission.getInputData().getOrDefault("shareableLink", ""));
         applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
 
         return applicationData;

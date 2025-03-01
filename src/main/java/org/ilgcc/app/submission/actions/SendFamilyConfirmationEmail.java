@@ -89,7 +89,7 @@ public class SendFamilyConfirmationEmail implements Action {
         String p1 = messageSource.getMessage("email.family-confirmation.p1", new Object[]{emailData.get("parentFirstName")},
                 locale);
         String p2 = messageSource.getMessage("email.family-confirmation.p2", null, locale);
-        String p3 = messageSource.getMessage("email.family-confirmation.p3", new Object[]{emailData.get("emailLink")}, locale);
+        String p3 = messageSource.getMessage("email.family-confirmation.p3", new Object[]{emailData.get("shareableLink")}, locale);
         String p4 = messageSource.getMessage("email.family-confirmation.p4",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
         String p5 = messageSource.getMessage("email.family-confirmation.p5",

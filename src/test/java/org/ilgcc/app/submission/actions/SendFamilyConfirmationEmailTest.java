@@ -52,7 +52,7 @@ public class SendFamilyConfirmationEmailTest {
                 .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 0, 0, 0, 0, ZoneOffset.ofTotalSeconds(0)))
                 .withCCRR()
                 .with("parentContactEmail", "familyemail@test.com")
-                .with("emailLink", "tempEmailLink")
+                .with("shareableLink", "tempEmailLink")
                 .withShortCode("ABC123")
                 .build();
 
@@ -84,7 +84,7 @@ public class SendFamilyConfirmationEmailTest {
         assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
         assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
         assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
-        assertThat(emailData.get("emailLink")).isEqualTo("tempEmailLink");
+        assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
     }
 
     @Test
