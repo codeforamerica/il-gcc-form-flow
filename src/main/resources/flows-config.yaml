@@ -54,6 +54,9 @@ flow:
     nextScreens:
       - name: parent-no-permanent-address
         condition: ParentIsExperiencingHomelessness
+      - name: confirm-parent-home-address
+  confirm-parent-home-address:
+    nextScreens:
       - name: parent-mailing-address
   parent-no-permanent-address:
     nextScreens: null

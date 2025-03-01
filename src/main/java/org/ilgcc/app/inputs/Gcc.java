@@ -71,7 +71,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-zip}")
     private String parentHomeZipCode;
 
-    private String organizationId;
+    private String useSuggestedParentHomeAddress;
 
     // parent-mailing-address
     private Boolean parentMailingAddressSameAsHomeAddress;
@@ -95,6 +95,8 @@ public class Gcc extends FlowInputs {
     private String parentContactPhoneNumber;
     @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
     private String parentContactEmail;
+
+    private String organizationId;
 
     // parent-has-a-partner
     private String parentHasPartner;
