@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.ilgcc.app.utils.SubmissionUtilities.parentIsExperiencingHomelessness;
-import static org.ilgcc.app.utils.SubmissionUtilities.parentMailingAddressIsHomeAddress;
+import static org.ilgcc.app.utils.AddressUtilities.parentIsExperiencingHomelessness;
+import static org.ilgcc.app.utils.AddressUtilities.parentMailingAddressIsHomeAddress;
 
 @Component
 public class FormatParentConfirmationAddress implements Action {

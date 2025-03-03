@@ -14,7 +14,7 @@
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-              <div th:unless="${T(org.ilgcc.app.utils.SubmissionUtilities).parentIsExperiencingHomelessness(fieldData)}">
+              <div th:unless="${T(org.ilgcc.app.utils.AddressUtilities).parentIsExperiencingHomelessness(fieldData)}">
                 <th:block th:replace="~{fragments/inputs/checkbox ::
                  checkbox(inputName='parentMailingAddressSameAsHomeAddress',
                    label=#{parent-mailing-address.same-as-home-address},

@@ -20,7 +20,7 @@
             <hr class="spacing-below-15 spacing-above-15">
 
             <p class="text--left"><strong th:text="#{parent-info-review.home.address}"></strong></p>
-            <div th:unless="${T(org.ilgcc.app.utils.SubmissionUtilities).parentIsExperiencingHomelessness(fieldData)}">
+            <div th:unless="${T(org.ilgcc.app.utils.AddressUtilities).parentIsExperiencingHomelessness(fieldData)}">
               <th:block th:each="addressLine : ${inputData.get('homeAddressLines')}">
                 <div th:id="${addressLine.getKey()}" th:text="${addressLine.getValue()}"></div>
               </th:block>
