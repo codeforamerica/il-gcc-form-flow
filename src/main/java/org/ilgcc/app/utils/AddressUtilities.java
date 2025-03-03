@@ -41,6 +41,37 @@ public class AddressUtilities {
 
     public static String useSuggestedAddressKey(String suggestedAddressKey, String addressGroupInputPrefix) {
         return String.format(suggestedAddressKey, capitalize(addressGroupInputPrefix));
+
+    }
+
+    public static Boolean hasValidAddressSuggestion(Submission submission, String addressPrefix){
+        // check if there is the validate marker
+        // compare the validated data against the unvalidated data
+      return false;
+    }
+
+    private Boolean hasMatchingState(String validatedState, String inputtedState){
+        return validatedState.equals(inputtedState);
+    }
+
+    private Boolean hasMatchingCity(String validatedCity, String inputtedCity){
+        return validatedCity.equals(inputtedCity);
+    }
+
+    private Boolean hasMatchingStreetAddress(String validatedStreetAddress, String inputtedStreetAddress1, String inputtedStreetAddress2){
+        // check that both addresses exist
+        // concatenate inputtedStreet addresses
+        // cinoare agaubst validated street address
+        return false;
+    }
+
+    private Boolean hasMatchingZipCode(String validatedZip, String inputtedZip){
+        if(validatedZip.isBlank() && inputtedZip.isBlank()){
+            return true;
+        }
+        final String truncatedZip = inputtedZip.substring(0, 5);
+
+        return validatedZip.equals(truncatedZip);
     }
 
     public static Map<String, String> getAddress(Map<String, Object> inputData, String addressPrefix) {

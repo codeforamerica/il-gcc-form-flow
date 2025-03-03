@@ -27,6 +27,7 @@ public class SaveValidatedAddress implements Action {
 
         if (useSmartyValidatedAddress) {
             addressKeys.stream().forEach(key -> {
+                //Todo: Rather than overriding, all values we will only update the ones that are different. Difference will be determined by AddressUtilities.
                 String addressKey =  addressGroupInputPrefix + key;
                 String addressValidatedKey = addressKey + UNVALIDATED_FIELD_MARKER_VALIDATED;
                 submission.getInputData().put(addressKey, submission.getInputData().get(addressValidatedKey));
