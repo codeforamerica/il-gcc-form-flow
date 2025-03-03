@@ -8,6 +8,15 @@ import java.util.Map;
 
 public class AddressUtilities {
 
+    public static final String suggestedAddressKey = "useSuggested%sAddress";
+    private static final String streetAddress1Key = "StreetAddress1";
+    private static final String streetAddress2Key = "StreetAddress2";
+    private static final String cityKey = "City";
+    private static final String stateKey = "State";
+    private static final String zipCodeKey = "ZipCode";
+
+    public static final List<String> addressKeys = List.of(streetAddress1Key, streetAddress2Key, cityKey, stateKey, zipCodeKey);
+
     /**
      * @param inputData a JSON object of user inputs
      * @return true or false
@@ -28,6 +37,10 @@ public class AddressUtilities {
         return submission.getInputData().get(FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATE_ADDRESS + inputName)
                 .equals("true") && submission.getInputData()
                 .containsKey(inputName + "StreetAddress1" + FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATED);
+    }
+
+    public static String useSuggestedAddressKey(String suggestedAddressKey, String addressGroupInputPrefix) {
+        return String.format(suggestedAddressKey, capitalize(addressGroupInputPrefix));
     }
 
     public static Map<String, String> getAddress(Map<String, Object> inputData, String addressPrefix) {
