@@ -1,0 +1,11 @@
+<th:block
+    th:replace="~{fragments/screens/registration-submit-confirmation ::
+      screen(
+        title=#{registration-submit-confirmation.existing-provider.title},
+        header=#{registration-submit-confirmation.existing-provider.header},
+        surveyDifficultyInputName='providerSurveyProviderDifficulty',
+        surveyDifficultyInputLabel=#{registration-submit-confirmation.existing-provider.experience-question},
+        surveyAdditionalCommentsInputName='providerSurveyAdditionalComments',
+        surveyAdditionalCommentsLabel=#{submit-confirmation.general.comments.label},
+        experienceQuestion=#{registration-submit-confirmation.existing-provider.experience-question})}">
+</th:block>

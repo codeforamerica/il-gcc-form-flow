@@ -563,12 +563,12 @@ flow:
     beforeSaveAction: SendProviderConfirmationEmail
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
-      - name: submit-complete-final
+      - name: registration-submit-confirmation-existing
   confirm-deny-care:
     beforeDisplayAction: FormatChildrenWhoNeedCareNames
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
-      - name: submit-complete-final
+      - name: registration-submit-confirmation-existing
   #New Provider Type
   registration-start:
     condition: EnableProviderRegistration
@@ -744,11 +744,11 @@ flow:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: registration-submit-confirmation
-  submit-complete-final:
+  registration-submit-confirmation-existing:
     nextScreens:
       - name: registration-getting-started
         condition: EnableProviderRegistration
-      - name: submit-complete-final
+      - name: registration-submit-confirmation-existing
   registration-household-delete-person:
     nextScreens: null
   registration-doc-upload-recommended-docs:
@@ -770,9 +770,9 @@ subflows:
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
-    - submit-complete-final
     - registration-submit-complete
     - registration-submit-confirmation
+    - registration-submit-confirmation-existing
     - registration-submit-next-steps
     - registration-doc-upload-recommended-docs
     - registration-doc-upload-add-files
