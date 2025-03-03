@@ -1,73 +1,15 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
-      th:with="
-
-            submittedDate=${inputData.getOrDefault('formattedSubmittedAtDate', 'No Date')},
-            submittedTime=${inputData.getOrDefault('formattedSubmittedAtTime', 'No time')},
-            hasSubmittedSurvey=${
-                inputData.containsKey('providerSurveyFamilyDifficulty') || inputData.containsKey('providerSurveyProviderDifficulty') ||
-                inputData.containsKey('providerSurveyAdditionalComments')}">
-<head th:replace="~{fragments/head :: head(title=#{registration-submit-confirmation.title})}"></head>
-<body>
-<div class="page-wrapper">
-    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-    <section class="slab">
-        <div class="grid">
-            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-            <main id="content" role="main" class="form-card spacing-above-35">
-                <th:block th:replace="~{fragments/gcc-icons :: check-mark}"></th:block>
-                <th:block th:replace="~{fragments/cardHeader :: cardHeader(
-                    header=#{registration-submit-confirmation.header},
-                     subtext=#{submit-confirmation.general.subtext(${submittedDate}, ${submittedTime}, ${session.confirmationCode})})}"/>
-                <th:block
-                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-                    <th:block th:ref="formContent">
-                        <div class="form-card__content">
-                            <hr>
-                            <ul class="list--checkmark list--material-phone-in-talk">
-                                <li th:utext="#{submit-confirmation.general.call-text}"></li>
-                            </ul>
-                            </ul>
-                            <hr>
-                            <p th:text="#{submit-confirmation.general.experience}"></p>
-                            <th:block th:if="${hasSubmittedSurvey}">
-                                <div class="notice--success">
-                                    <ul class="list--checkmark list--material-checkmark spacing-above-0">
-                                        <li>
-                                            <span th:text="#{submit-confirmation.general.survey.complete}"></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </th:block>
-                            <th:block th:unless="${hasSubmittedSurvey}">
-                                <th:block
-                                        th:replace="~{fragments/inputs/surveyQuestion :: surveyQuestion(inputName='providerSurveyFamilyDifficulty', label='registration-submit-confirmation.q1')}"/>
-                                <th:block
-                                        th:replace="~{fragments/inputs/surveyQuestion :: surveyQuestion(inputName='providerSurveyProviderDifficulty', label='registration-submit-confirmation.q2')}"/>
-                                <th:block th:replace="~{fragments/inputs/textArea ::
-                                  textArea(inputName='providerSurveyAdditionalComments',
-                                  label=#{submit-confirmation.general.comments.label},
-                                  rows='2',
-                                  maxLength='1000')}"/>
-                            </th:block>
-                        </div>
-                        <div class="form-card__footer">
-                            <th:block th:if="${hasSubmittedSurvey}">
-                                <a th:text="#{submit-confirmation.general.button.return}" href="/"
-                                   id="return-to-home"
-                                   class="button--primary button"></a>
-                            </th:block>
-                            <th:block th:unless="${hasSubmittedSurvey}">
-                                <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
-                                    text=#{submit-confirmation.general.button.feedback})}"/>
-                            </th:block>
-                        </div>
-                    </th:block>
-                </th:block>
-            </main>
-        </div>
-    </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+<th:block th:with="isExistingProvider=${submission.getInputData.getOrDefault('providerPaidCcap', 'false').equals('true')}">
+    <th:block
+        th:replace="~{fragments/screens/registration-submit-confirmation ::
+      screen(
+        title=#{registration-submit-confirmation.title},
+        header=${isExistingProvider ? #messages.msg('registration-submit-confirmation.existing-provider.header') : #messages.msg('registration-submit-confirmation.new-provider.header')},
+        surveyDifficultyInputName='providerSurveyProviderDifficulty',
+        surveyDifficultyInputLabel=${isExistingProvider ? 'registration-submit-confirmation.existing-provider.experience-question' : 'registration-submit-confirmation.new-provider.experience-question'},
+        includedNotice=${isExistingProvider},
+        notice=#{'registration-submit-confirmation.existing-provider.notice'},
+        surveyAdditionalCommentsInputName='providerSurveyAdditionalComments',
+        surveyAdditionalCommentsLabel=#{submit-confirmation.general.comments.label},
+        experienceQuestion=${isExistingProvider ? #messages.msg('registration-submit-confirmation.existing-provider.experience-question') : #messages.msg('registration-submit-confirmation.new-provider.experience-question')})}">
+    </th:block>
+</th:block>

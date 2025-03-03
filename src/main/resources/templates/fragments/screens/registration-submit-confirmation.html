@@ -16,6 +16,11 @@
                 <div th:replace="~{fragments/goBack :: goBackLink}"></div>
                 <main id="content" role="main" class="form-card spacing-above-35">
                     <th:block th:replace="~{fragments/gcc-icons :: check-mark}"></th:block>
+                    <div th:if="${lockedSubmissionMessage}" class="notice--warning">
+                        <p th:text="${lockedSubmissionMessage}"></p></div>
+                    <div th:if="${includedNotice}" class="notice notice--gray spacing-above-35">
+                        <p th:text="${notice}"></p>
+                    </div>
                     <th:block th:replace="~{fragments/cardHeader :: cardHeader(
                     header=${header},
                      subtext=#{submit-confirmation.general.subtext(${submittedDate}, ${submittedTime}, ${session.confirmationCode})})}"/>
@@ -39,8 +44,6 @@
                                     </div>
                                 </th:block>
                                 <th:block th:unless="${hasSubmittedSurvey}">
-                                    <th:block
-                                        th:replace="~{fragments/inputs/surveyQuestion :: surveyQuestion(inputName='providerSurveyFamilyDifficulty', label='registration-submit-confirmation.q1')}"/>
                                     <th:block
                                         th:replace="~{fragments/inputs/surveyQuestion :: surveyQuestion(inputName=${surveyDifficultyInputName}, label=${surveyDifficultyInputLabel})}"/>
                                     <th:block th:replace="~{fragments/inputs/textArea ::
