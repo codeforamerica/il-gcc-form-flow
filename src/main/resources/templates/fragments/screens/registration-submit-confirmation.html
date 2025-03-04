@@ -28,11 +28,10 @@
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                         <th:block th:ref="formContent">
                             <div class="form-card__content">
-                                <hr>
-                                <ul class="list--checkmark list--material-phone-in-talk">
-                                    <li th:utext="#{submit-confirmation.general.call-text}"></li>
-                                </ul>
-                                <hr>
+                                <hr class="response-line-margins">
+                                    <th:block th:replace="~{fragments/gcc-icons :: phone-call}"></th:block>
+                                    <p th:utext="#{submit-confirmation.general.call-text}"></p>
+                                <hr class="response-line-margins">
                                 <p th:text="#{submit-confirmation.general.experience}"></p>
                                 <th:block th:if="${hasSubmittedSurvey}">
                                     <div class="notice--success">

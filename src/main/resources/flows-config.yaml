@@ -743,9 +743,6 @@ flow:
   registration-submit-confirmation:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
-      - name: registration-submit-confirmation
-  registration-submit-confirmation\:
-    nextScreens:
       - name: registration-getting-started
         condition: EnableProviderRegistration
       - name: registration-submit-confirmation
