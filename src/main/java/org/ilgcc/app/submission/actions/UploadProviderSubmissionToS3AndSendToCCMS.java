@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class UploadProviderSubmissionToS3 implements Action {
+public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
 
     private final PdfService pdfService;
     private final CloudFileRepository cloudFileRepository;
@@ -33,12 +33,10 @@ public class UploadProviderSubmissionToS3 implements Action {
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final S3PresignService s3PresignService;
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
-    @Value("${ccms-integration-enabled}")
     private boolean CCMMS_INTEGRATION_ENABLED;
-    @Value("${dts-integration-enabled}")
     private boolean DTS_INTEGRATION_ENABLED;
 
-    public UploadProviderSubmissionToS3(PdfService pdfService,
+    public UploadProviderSubmissionToS3AndSendToCCMS(PdfService pdfService,
             CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob,
             EnqueueDocumentTransfer enqueueDocumentTransfer,
@@ -46,7 +44,9 @@ public class UploadProviderSubmissionToS3 implements Action {
             UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob,
             S3PresignService s3PresignService,
-            CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob) {
+            CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
+            @Value("${ccms-integration-enabled:false}") boolean ccmmsIntegrationEnabled,
+            @Value("${dts-integration-enabled:true}") boolean dtsIntegrationEnabled) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
@@ -56,6 +56,8 @@ public class UploadProviderSubmissionToS3 implements Action {
         this.uploadedDocumentTransmissionJob = uploadedDocumentTransmissionJob;
         this.s3PresignService = s3PresignService;
         this.ccmsSubmissionPayloadTransactionJob = ccmsSubmissionPayloadTransactionJob;
+        CCMMS_INTEGRATION_ENABLED = ccmmsIntegrationEnabled;
+        DTS_INTEGRATION_ENABLED = dtsIntegrationEnabled;
     }
 
     @Override
@@ -70,7 +72,6 @@ public class UploadProviderSubmissionToS3 implements Action {
                 familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
                 submissionRepositoryService.save(familySubmission);
                 if (DTS_INTEGRATION_ENABLED) {
-                    log.info("GOT TO PROVIDER UPLOAD DTS");
                     enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
                             familySubmission, FileNameUtility.getFileNameForPdf(familySubmission, "Provider-Responded"));
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,

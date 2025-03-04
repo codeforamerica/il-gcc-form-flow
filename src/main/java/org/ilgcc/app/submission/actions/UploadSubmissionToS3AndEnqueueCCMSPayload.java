@@ -24,33 +24,33 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
     private final PdfTransmissionJob pdfTransmissionJob;
     private final CCMSSubmissionPayloadTransactionJob CCMSSubmissionPayloadTransactionJob;
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
-    @Value("${ccms-integration-enabled}")
     private boolean CCMMS_INTEGRATION_ENABLED;
-    @Value("${dts-integration-enabled}")
-    private boolean DTS_INTEGRATION__ENABLED;
+    private boolean DTS_INTEGRATION_ENABLED;
 
     public UploadSubmissionToS3AndEnqueueCCMSPayload(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob,
             CCMSSubmissionPayloadTransactionJob CCMSSubmissionPayloadTransactionJob,
-            EnqueueDocumentTransfer enqueueDocumentTransfer) {
+            EnqueueDocumentTransfer enqueueDocumentTransfer,
+            @Value("${ccms-integration-enabled:false}") boolean ccmmsIntegrationEnabled,
+            @Value("${dts-integration-enabled:true}") boolean dtsIntegrationEnabled) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
         this.CCMSSubmissionPayloadTransactionJob = CCMSSubmissionPayloadTransactionJob;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
+        CCMMS_INTEGRATION_ENABLED = ccmmsIntegrationEnabled;
+        DTS_INTEGRATION_ENABLED = dtsIntegrationEnabled;
     }
 
     @Override
     public void run(Submission submission) {
         if (hasNotChosenProvider(submission)) {
-            if (DTS_INTEGRATION__ENABLED) {
-                log.info("GOT TO PROVIDER UPLOAD DTS");
+            if (DTS_INTEGRATION_ENABLED) {
                 enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
                         submission, FileNameUtility.getFileNameForPdf(submission, "Form-Family"));
             }
 
             if (CCMMS_INTEGRATION_ENABLED) {
-                log.info("GOT TO PROVIDER UPLOAD CCMS");
                 CCMSSubmissionPayloadTransactionJob.enqueueSubmissionCCMSPayloadTransactionJobInOneHour(submission);
             }
         }

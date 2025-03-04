@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum CCMSRequestHeaders {
 
-    OCP_APIM_SUBSCRIPTION_KEY("Ocp-Apim-Subscription-Key");
+    OCP_APIM_SUBSCRIPTION_KEY("Ocp-Apim-Subscription-Key"),
+    CORRELATION_ID("CorrelationId");
 
     private final String value;
 

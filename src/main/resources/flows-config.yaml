@@ -569,12 +569,12 @@ flow:
       - name: info-review
   info-review:
     beforeSaveAction: SendProviderConfirmationEmail
-    afterSaveAction: UploadProviderSubmissionToS3
+    afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: registration-submit-confirmation
   confirm-deny-care:
     beforeDisplayAction: FormatChildrenWhoNeedCareNames
-    afterSaveAction: UploadProviderSubmissionToS3
+    afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: registration-submit-confirmation
   #New Provider Type

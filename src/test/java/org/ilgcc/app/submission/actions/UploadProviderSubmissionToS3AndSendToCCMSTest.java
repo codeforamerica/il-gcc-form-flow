@@ -5,7 +5,6 @@ import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
@@ -14,14 +13,13 @@ import formflow.library.pdf.PdfService;
 import java.time.OffsetDateTime;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.PdfTransmissionJob;
 import org.ilgcc.jobs.UploadedDocumentTransmissionJob;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -29,7 +27,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class UploadProviderSubmissionToS3Test {
+class UploadProviderSubmissionToS3AndSendToCCMSTest {
 
     @MockitoBean
     private PdfService pdfService;
@@ -41,8 +39,7 @@ class UploadProviderSubmissionToS3Test {
     @Mock
     private EnqueueDocumentTransfer enqueueDocumentTransfer;
 
-    @InjectMocks
-    private UploadProviderSubmissionToS3 uploadProviderSubmissionToS3;
+    private UploadProviderSubmissionToS3AndSendToCCMS uploadProviderSubmissionToS3AndSendToCCMS;
 
     @MockitoBean
     private CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
@@ -62,8 +59,6 @@ class UploadProviderSubmissionToS3Test {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .withParentDetails()
@@ -83,7 +78,7 @@ class UploadProviderSubmissionToS3Test {
 
     @Test
     void ProviderSubmissionIsEnqueued() {
-        uploadProviderSubmissionToS3 = new UploadProviderSubmissionToS3(
+        uploadProviderSubmissionToS3AndSendToCCMS = new UploadProviderSubmissionToS3AndSendToCCMS(
                 pdfService,
                 cloudFileRepository,
                 pdfTransmissionJob,
@@ -92,8 +87,10 @@ class UploadProviderSubmissionToS3Test {
                 userFileRepositoryService,
                 uploadedDocumentTransmissionJob,
                 s3PresignService, 
-                ccmsSubmissionPayloadTransactionJob);
-        uploadProviderSubmissionToS3.run(providerSubmission);
+                ccmsSubmissionPayloadTransactionJob,
+                true,
+                true);
+        uploadProviderSubmissionToS3AndSendToCCMS.run(providerSubmission);
 
         verify(enqueueDocumentTransfer, times(1)).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
                 eq(pdfTransmissionJob), eq(familySubmission), any());
