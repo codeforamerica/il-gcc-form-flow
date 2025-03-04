@@ -233,6 +233,10 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
         testPage.clickYes();
 
+        //children-school-weekly-schedule
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-school-weekly-schedule.title"));
+        testPage.clickContinue();
+
         //children-add (with children listed)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
         testPage.clickButton(getEnMessage("children-add.thats-all"));

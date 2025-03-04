@@ -61,7 +61,7 @@ public class ProviderResponsePdfController {
         }
 
         Optional<Submission> optionalFamilySubmission = submissionRepositoryService.findByShortCode(
-                providerResponseFamilyShortCode.toString());
+                providerResponseFamilyShortCode.toString().toUpperCase());
         if (optionalFamilySubmission.isEmpty()) {
             log.warn(
                     "Attempted to download PDF with provider submission id: {} but no family submission was found with confirmation code: {}",

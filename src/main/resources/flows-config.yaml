@@ -163,6 +163,12 @@ flow:
     condition: IsFiveOrOlder
     subflow: children
     nextScreens:
+      - name: children-school-weekly-schedule
+        condition: ChildAttendsOtherSchoolDuringDay
+      - name: children-add
+  children-school-weekly-schedule:
+    subflow: children
+    nextScreens:
       - name: children-add
   activities-parent-intro:
     nextScreens:
@@ -519,6 +525,8 @@ flow:
     beforeSaveAction: ConnectProviderApplicationToFamilyApplication
     onPostAction: GenerateDummyFamilySubmissionForDev
     nextScreens:
+      - name: response
+        condition: ShouldSkipConfirmationCode
       - name: confirmation-code
   confirmation-code:
     crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
@@ -530,7 +538,7 @@ flow:
       - name: submit-start
   response:
     beforeDisplayAction: FindApplicationData
-    onPostAction: SendProviderAgreesToCareFamilyConfirmationEmail
+    afterSaveAction: SendProviderAgreesToCareFamilyConfirmationEmail
     nextScreens:
       - name: registration-submit-intro
         condition: ProviderIsRegistering

@@ -90,15 +90,31 @@ public class ProviderSubmissionUtilities {
     public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
         Map<String, Object> applicationData = new HashMap<>();
 
+        applicationData.put("providerResponseContactEmail", providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
+        applicationData.put("providerSubmissionId", providerSubmission.getId());
+        applicationData.put("ccapStartDate",
+                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
+                        providerSubmission));
+        applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission));
+
+        return applicationData;
+    }
+
+    public static Map<String, Object> getFamilySubmissionDataForEmails(Submission familySubmission) {
+        Map<String, Object> applicationData = new HashMap<>();
+
+        applicationData.put("parentContactEmail", (String) familySubmission.getInputData().get("parentContactEmail"));
+        applicationData.put("parentFirstName", (String) familySubmission.getInputData().get("parentFirstName"));
         applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
         applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
         applicationData.put("childrenInitialsList",
                 ProviderSubmissionUtilities.getChildrenInitialsListFromApplication(familySubmission));
-        applicationData.put("ccapStartDate",
-                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
-                        providerSubmission));
         applicationData.put("confirmationCode", familySubmission.getShortCode());
+        applicationData.put("familySubmissionId", familySubmission.getId());
+        applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));
+        applicationData.put("shareableLink", familySubmission.getInputData().getOrDefault("shareableLink", ""));
+        applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
 
         return applicationData;
     }

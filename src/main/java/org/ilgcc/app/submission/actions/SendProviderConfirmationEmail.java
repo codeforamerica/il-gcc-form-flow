@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail;
+import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
@@ -43,9 +44,9 @@ public class SendProviderConfirmationEmail implements Action {
     }
 
     @Override
-    public void run(Submission submission) {
-        if (!skipEmailSend(submission)) {
-            Optional<Map<String, Object>> emailData = getEmailData(submission);
+    public void run(Submission providerSubmission) {
+        if (!skipEmailSend(providerSubmission)) {
+            Optional<Map<String, Object>> emailData = getEmailData(providerSubmission);
 
             if (emailData.isEmpty()) {
                 return;
@@ -53,10 +54,10 @@ public class SendProviderConfirmationEmail implements Action {
 
             locale = LocaleContextHolder.getLocale();
 
-            ILGCCEmail email = ILGCCEmail.createProviderConfirmationEmail(getSenderName(locale), getRecipientEmail(submission),
-                    setSubject(emailData.get(), locale), new Content("text/html", setBodyCopy(emailData.get(), locale)),
-                    submission.getId());
-            sendEmail(email, submission);
+            ILGCCEmail email = ILGCCEmail.createProviderConfirmationEmail(getSenderName(locale),
+                    getRecipientEmail(emailData.get()), setSubject(emailData.get(), locale),
+                    new Content("text/html", setBodyCopy(emailData.get(), locale)), providerSubmission.getId());
+            sendEmail(email, providerSubmission);
         }
     }
 
@@ -73,8 +74,9 @@ public class SendProviderConfirmationEmail implements Action {
         if (familySubmission.isPresent()) {
             return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
         } else {
-            log.warn("Could not send Email. No family submission is associated with the providerSubmissionId: {}",
-                    providerSubmission.getId());
+            log.warn(
+                    "{}: Skipping email send because there is no family submission associated with the provider submission with ID : {}",
+                    EmailType.PROVIDER_CONFIRMATION_EMAIL.getDescription(), providerSubmission.getId());
             return Optional.empty();
         }
     }
@@ -83,8 +85,15 @@ public class SendProviderConfirmationEmail implements Action {
         return messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale);
     }
 
-    protected static String getRecipientEmail(Submission submission) {
-        return submission.getInputData().getOrDefault(RECIPIENT_EMAIL_INPUT_NAME, "").toString();
+    protected static String getRecipientEmail(Map<String, Object> emailData) {
+        String recipientEmail = emailData.get(RECIPIENT_EMAIL_INPUT_NAME).toString();
+
+        if (recipientEmail.isBlank()) {
+            log.warn(
+                    "{}: Skipping email send because there is no email associated with the submission: {}",
+                    EmailType.PROVIDER_CONFIRMATION_EMAIL.getDescription(), emailData.get("providerSubmissionId"));
+        }
+        return recipientEmail;
     }
 
     protected String setSubject(Map<String, Object> emailData, Locale locale) {
@@ -94,22 +103,22 @@ public class SendProviderConfirmationEmail implements Action {
 
     protected String setBodyCopy(Map<String, Object> emailData, Locale locale) {
         String p1 = messageSource.getMessage("email.provider-confirmation.p1", null, locale);
-        String p2 = messageSource.getMessage("email.provider-confirmation.p2", new Object[]{emailData.get("ccrrName")},
-                locale);
-        String p3 = messageSource.getMessage("email.provider-confirmation.p3",
-                new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
+        String p2 = messageSource.getMessage("email.provider-confirmation.p2", new Object[]{emailData.get("ccrrName")}, locale);
+        String p3 = messageSource.getMessage("email.provider-confirmation.p3", new Object[]{
+                formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
                         messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
-        String p4 = messageSource.getMessage("email.provider-confirmation.p4",
-                new Object[]{emailData.get("confirmationCode")}, locale);
-        String p5 = messageSource.getMessage("email.provider-confirmation.p5",
-                new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")},
+        String p4 = messageSource.getMessage("email.provider-confirmation.p4", new Object[]{emailData.get("confirmationCode")},
                 locale);
+        String p5 = messageSource.getMessage("email.provider-confirmation.p5",
+                new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
         String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
         return p1 + p2 + p3 + p4 + p5 + p6 + p7;
     }
 
     protected void sendEmail(ILGCCEmail email, Submission submission) {
+        log.info("{}: About to enqueue the Send Email Job for submissionId: {}",
+                EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(), submission.getId());
         sendEmailJob.enqueueSendEmailJob(email);
         updateEmailStatus(submission);
     }
@@ -122,8 +131,6 @@ public class SendProviderConfirmationEmail implements Action {
     private Optional<Submission> getFamilyApplication(Submission providerSubmission) {
         Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isEmpty()) {
-            log.warn("No family submission is associated with the provider submission with ID: {}",
-                    providerSubmission.getId());
             return Optional.empty();
         }
 
