@@ -741,8 +741,6 @@ flow:
   registration-submit-confirmation:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
-      - name: registration-getting-started
-        condition: EnableProviderRegistration
       - name: registration-submit-confirmation
   registration-household-delete-person:
     nextScreens: null
