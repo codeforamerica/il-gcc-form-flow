@@ -125,7 +125,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
     @Test
-    public void ExistingProviderBasicflow() throws InterruptedException {
+    public void ExistingProviderBasicflow() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
@@ -149,8 +149,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-
-        testPage.navigateToFlowScreen("providerresponse/confirmation-code");
+        testPage.enter("providerResponseProviderNumber", "12345678901");
+        testPage.clickContinue();
 
         //confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
