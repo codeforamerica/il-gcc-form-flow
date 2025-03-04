@@ -125,7 +125,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
     @Test
-    public void ExistingProviderBasicflow(){
+    public void ExistingProviderBasicflow() throws InterruptedException {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()

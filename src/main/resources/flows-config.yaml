@@ -569,9 +569,6 @@ flow:
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
       - name: registration-submit-confirmation
-  submit-complete-final:
-    nextScreens:
-      - name: submit-start
   #New Provider Type
   registration-start:
     condition: EnableProviderRegistration
@@ -647,8 +644,6 @@ flow:
       - name: registration-home-provider-ssn
         condition: ProviderSsnRequiredForInHomeCare
       - name: registration-tax-id
-        condition: EnableProviderRegistration
-      - name: submit-complete-final
   registration-home-provider-ssn:
     crossFieldValidationAction: ValidateHomeProviderSSN
     nextScreens:
