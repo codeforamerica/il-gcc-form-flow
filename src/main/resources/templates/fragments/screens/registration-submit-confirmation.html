@@ -1,0 +1,75 @@
+<th:block th:fragment="screen">
+
+    <!DOCTYPE html>
+    <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org"
+          th:with="
+            submittedDate=${inputData.getOrDefault('formattedSubmittedAtDate', 'No Date')},
+            submittedTime=${inputData.getOrDefault('formattedSubmittedAtTime', 'No time')},
+            hasSubmittedSurvey=${
+                inputData.containsKey(surveyDifficultyInputName) || inputData.containsKey(surveyAdditionalCommentsInputName)}">
+    <head th:replace="~{fragments/head :: head(title=${title})}"></head>
+    <body>
+    <div class="page-wrapper">
+        <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+        <section class="slab">
+            <div class="grid">
+                <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+                <main id="content" role="main" class="form-card spacing-above-35">
+                    <th:block th:replace="~{fragments/gcc-icons :: check-mark}"></th:block>
+                    <div th:if="${lockedSubmissionMessage}" class="notice--warning">
+                        <p th:text="${lockedSubmissionMessage}"></p></div>
+                    <div th:if="${includedNotice}" class="notice notice--gray spacing-above-35">
+                        <p th:text="${notice}"></p>
+                    </div>
+                    <th:block th:replace="~{fragments/cardHeader :: cardHeader(
+                    header=${header},
+                     subtext=#{submit-confirmation.general.subtext(${submittedDate}, ${submittedTime}, ${session.confirmationCode})})}"/>
+                    <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                        <th:block th:ref="formContent">
+                            <div class="form-card__content">
+                                <hr class="response-line-margins">
+                                    <th:block th:replace="~{fragments/gcc-icons :: phone-call}"></th:block>
+                                    <p th:utext="#{submit-confirmation.general.call-text}"></p>
+                                <hr class="response-line-margins">
+                                <p th:text="#{submit-confirmation.general.experience}"></p>
+                                <th:block th:if="${hasSubmittedSurvey}">
+                                    <div class="notice--success">
+                                        <ul class="list--checkmark list--material-checkmark spacing-above-0">
+                                            <li>
+                                                <span th:text="#{submit-confirmation.general.survey.complete}"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </th:block>
+                                <th:block th:unless="${hasSubmittedSurvey}">
+                                    <th:block
+                                        th:replace="~{fragments/inputs/surveyQuestion :: surveyQuestion(inputName=${surveyDifficultyInputName}, label=${surveyDifficultyInputLabel})}"/>
+                                    <th:block th:replace="~{fragments/inputs/textArea ::
+                                  textArea(inputName=${surveyAdditionalCommentsInputName},
+                                  label=${surveyAdditionalCommentsLabel},
+                                  rows='2',
+                                  maxLength='1000')}"/>
+                                </th:block>
+                            </div>
+                            <div class="form-card__footer">
+                                <th:block th:if="${hasSubmittedSurvey}">
+                                    <a th:text="#{submit-confirmation.general.button.return}" href="/"
+                                       id="return-to-home"
+                                       class="button--primary button"></a>
+                                </th:block>
+                                <th:block th:unless="${hasSubmittedSurvey}">
+                                    <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                                    text=#{submit-confirmation.general.button.feedback})}"/>
+                                </th:block>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </main>
+            </div>
+        </section>
+    </div>
+    <th:block th:replace="~{fragments/footer :: footer}"/>
+    </body>
+    </html>
+</th:block>

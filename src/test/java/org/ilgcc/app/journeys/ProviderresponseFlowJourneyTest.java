@@ -68,7 +68,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-deny-care.title"));
         testPage.clickButton(getEnMessage("provider-response-confirm-deny-care.confirm-button"));
 
-        //submit-complete-final
+        //registration-submit-confirmation displays submit-complete-final screen
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
         assertThat(testPage.elementDoesNotExistById("continue-link")).isFalse();
     }
@@ -152,7 +152,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
         testPage.clickButton("Continue");
 
-        //submit-complete-final
+        //registration-submit-confirmation displays submit-complete-final screen
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
@@ -240,7 +240,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
         testPage.clickButton("Continue");
 
-        //submit-complete-final
+        //registration-submit-confirmation displays submit-complete-final screen
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));

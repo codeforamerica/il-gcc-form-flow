@@ -571,12 +571,12 @@ flow:
     beforeSaveAction: SendProviderConfirmationEmail
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
-      - name: submit-complete-final
+      - name: registration-submit-confirmation
   confirm-deny-care:
     beforeDisplayAction: FormatChildrenWhoNeedCareNames
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
-      - name: submit-complete-final
+      - name: registration-submit-confirmation
   #New Provider Type
   registration-start:
     condition: EnableProviderRegistration
@@ -652,8 +652,6 @@ flow:
       - name: registration-home-provider-ssn
         condition: ProviderSsnRequiredForInHomeCare
       - name: registration-tax-id
-        condition: EnableProviderRegistration
-      - name: submit-complete-final
   registration-home-provider-ssn:
     crossFieldValidationAction: ValidateHomeProviderSSN
     nextScreens:
@@ -752,11 +750,6 @@ flow:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: registration-submit-confirmation
-  submit-complete-final:
-    nextScreens:
-      - name: registration-getting-started
-        condition: EnableProviderRegistration
-      - name: submit-complete-final
   registration-household-delete-person:
     nextScreens: null
   registration-doc-upload-recommended-docs:

@@ -710,7 +710,9 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
     margin-bottom: 0px;
   }
 }
-
+.response-line-margins{
+  margin: 35px 0;
+}
 #confirmation-code-help-text {
   font-size: 1.6rem;
   color: #5F5854;
