@@ -1,5 +1,9 @@
-<th:block th:with="isExistingProvider=${submission.getInputData.getOrDefault('providerPaidCcap', 'false').equals('true')}">
-    <th:block
+<th:block th:with="isExistingProvider=${submission.getInputData().getOrDefault('providerPaidCcap', 'true').equals('true')},
+                   displaySubmitCompleteFinalScreen=${submission.getInputData().getOrDefault('providerPaidCcap', '').equals('')}">
+    <th:block th:if="${displaySubmitCompleteFinalScreen}">
+        <th:block th:replace="~{fragments/screens/submit-complete-final-fragment :: screen}"></th:block>
+    </th:block>
+    <th:block th:unless="${displaySubmitCompleteFinalScreen}"
         th:replace="~{fragments/screens/registration-submit-confirmation ::
       screen(
         title=#{registration-submit-confirmation.title},

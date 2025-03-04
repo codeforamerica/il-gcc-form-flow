@@ -569,6 +569,9 @@ flow:
     afterSaveAction: UploadProviderSubmissionToS3
     nextScreens:
       - name: registration-submit-confirmation
+  submit-complete-final:
+    nextScreens:
+      - name: submit-start
   #New Provider Type
   registration-start:
     condition: EnableProviderRegistration
@@ -767,6 +770,7 @@ subflows:
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
+    - submit-complete-final
     - registration-submit-complete
     - registration-submit-confirmation
     - registration-submit-next-steps

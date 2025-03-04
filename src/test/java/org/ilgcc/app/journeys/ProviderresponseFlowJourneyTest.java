@@ -68,8 +68,9 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-deny-care.title"));
         testPage.clickButton(getEnMessage("provider-response-confirm-deny-care.confirm-button"));
 
-        //registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        //registration-submit-confirmation displays submit-complete-final screen
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        assertThat(testPage.elementDoesNotExistById("continue-link")).isFalse();
     }
     @Test
     void ProviderresponseJourneyTest_validLink() {
@@ -151,8 +152,12 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
         testPage.clickButton("Continue");
 
-        //registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        //registration-submit-confirmation displays submit-complete-final screen
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        testPage.goBack();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        testPage.findElementById("respond-to-another-app-button").click();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
 
     }
 
@@ -235,10 +240,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
         testPage.clickButton("Continue");
 
-        //registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-registration-submit-confirmation.title"));
+        //registration-submit-confirmation displays submit-complete-final screen
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
         testPage.goBack();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-registration-submit-confirmation.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
         testPage.findElementById("respond-to-another-app-button").click();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
     }
