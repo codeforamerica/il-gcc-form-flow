@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true", "il-gcc.validate-provider-id=false"})
+@TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true"})
 public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBasePageTest {
 
     @Autowired
