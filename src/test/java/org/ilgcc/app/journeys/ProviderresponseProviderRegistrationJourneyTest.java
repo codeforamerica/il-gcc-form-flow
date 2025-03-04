@@ -1,7 +1,6 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 
 import formflow.library.data.SubmissionRepository;
 import java.time.OffsetDateTime;
@@ -123,7 +122,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //registration-service-languages
         testPage.clickElementById("providerLanguagesOffered-English-label");
         testPage.clickContinue();
-
     }
 
     @Test
@@ -396,6 +394,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
 
     }
 
@@ -579,6 +578,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
+
     }
 
     @Test
@@ -751,6 +752,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
     }
 
     @Test
@@ -905,6 +907,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
     }
 
     @Test
@@ -1068,6 +1071,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
     }
 
     @Test
@@ -1263,6 +1267,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
     }
 
 
