@@ -7,22 +7,18 @@
     <section class="slab">
         <div class="grid">
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-            <main id="content" role="main" class="form-card spacing-above-35">
-                <th:block th:replace="~{fragments/gcc-icons :: mail-sent-success}"></th:block>
+            <main id="content" role="main" class="form-card">
+                <th:block th:replace="~{fragments/gcc-icons :: important-notice}"></th:block>
                 <th:block
-                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{contact-provider-message.header})}"/>
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{contact-provider-message.header}, noSpacingBelow=true)}"/>
                 <th:block
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
                     <th:block th:ref="content">
                         <div class="form-card__content"
                              th:with="shortCode=${submission.getShortCode()}, shareableLink=${submission.getInputData().get('shareableLink')}, ccpName=${T(org.ilgcc.app.utils.SubmissionUtilities).getProviderName(inputData)}">
-                            <p th:utext="${#messages.msg('contact-provider-message.below-we-prepared', ccpName)}"></p>
-                            <p th:utext="${#messages.msg('contact-provider-message.it-includes', shortCode)}"></p>
+                            <p th:utext="${#messages.msg('contact-provider-message.body')}"></p>
                             <div class="notice--warning notice--gray confirmation-example">
-                                <p id="providerMessageP1"
-                                   th:text="${#messages.msg('contact-provider-message.message-p1', shortCode)}"></p>
-                                <p id="providerMessageP2"
-                                   th:text="${#messages.msg('contact-provider-message.message-p2', shareableLink)}"></p>
+                                <div id="providerMessage" th:utext="${#messages.msg('contact-provider-message.message', shareableLink, shortCode)}"></div>
                             </div>
                             <div class="center"
                                  th:with="emailContent=${T(org.ilgcc.app.utils.EmailUtilities).generateWellFormedEmail(inputData.get('familyIntendedProviderEmail'), #messages.msg('contact-provider-message.message-subject'), #messages.msg('contact-provider-message.message-body', shareableLink, shortCode))}">
@@ -60,7 +56,7 @@
                         </div>
                         <div class="form-card__footer">
                             <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
-                    text=#{general.continue-next-steps}, classes='button button--primary disabled')}"/>
+                    text=#{general.button.continue}, classes='button button--primary disabled')}"/>
                         </div>
                     </th:block>
                 </th:block>
@@ -72,8 +68,11 @@
 </body>
 <script th:with="copiedMessage=${#messages.msg('contact-provider-message.copied-message')}" th:inline="javascript">
   function copyToClipboard() {
-    const text = document.getElementById('providerMessageP1').textContent + "\n\n"
-        + document.getElementById('providerMessageP2').textContent;
+    const text = document.getElementById('providerMessage').innerHTML.replace(/<p>/g, '')
+    .replace(/<strong>/g, '')
+    .replace(/<\/strong>/g, '')
+    .replace(/<\/p>/g, '\n\n');
+
     const copyLink = document.getElementById('copy-message-to-clipboard');
     const copiedText = [[${copiedMessage}]];
     navigator.clipboard.writeText(text)
