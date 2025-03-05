@@ -8,16 +8,15 @@
         <div class="grid">
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
-                <th:block th:replace="~{fragments/gcc-icons :: check-mark}"></th:block>
+                <th:block th:replace="~{fragments/gcc-icons :: important-notice}"></th:block>
                 <th:block
                         th:with="providerName=${inputData.getOrDefault('familyIntendedProviderName', '')}">
+
                     <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-provider-info-confirm.header(${providerName})})}"/>
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-provider-info-confirm.header}, subtext=#{onboarding-provider-info-confirm.subheader})}"/>
 
-                    <div class="form-card__content">
-                        <p th:utext="#{onboarding-provider-info-confirm.notice(${providerName})}"></p>
+                    <div class="notice--warning spacing-below-60" th:text="#{onboarding-provider-info-confirm.notice}"></div>
 
-                    </div>
                     <div class="form-card__footer">
                         <th:block th:replace="~{fragments/continueButton :: continue}"/>
                     </div>
