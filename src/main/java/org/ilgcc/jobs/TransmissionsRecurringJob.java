@@ -50,8 +50,8 @@ public class TransmissionsRecurringJob {
             EnqueueDocumentTransfer enqueueDocumentTransfer,
             SubmissionRepositoryService submissionRepositoryService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransaction,
-            @Value("${ccms-integration-enabled:false}") boolean CCMMS_INTEGRATION_ENABLED,
-            @Value("${dts-integration-enabled:true}") boolean DTS_INTEGRATION_ENABLED) {
+            @Value("${il-gcc.ccms-integration-enabled:false}") boolean CCMMS_INTEGRATION_ENABLED,
+            @Value("${il-gcc.dts-integration-enabled:true}") boolean DTS_INTEGRATION_ENABLED) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
         this.userFileRepositoryService = userFileRepositoryService;

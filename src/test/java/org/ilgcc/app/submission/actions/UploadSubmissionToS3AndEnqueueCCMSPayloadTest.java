@@ -1,5 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.awaitility.Awaitility.await;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
@@ -9,10 +10,10 @@ import formflow.library.data.Submission;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,10 +41,9 @@ class UploadSubmissionToS3AndEnqueueCCMSPayloadTest {
     submission = new Submission();
     submission.setId(UUID.randomUUID());
   }
-
-  @Disabled
+  
   @Test
-  void whenRun_thenPdfIsZippedAndUploadedToS3() throws IOException, InterruptedException {
+  void whenRun_thenPdfIsZippedAndUploadedToS3() throws IOException {
 
     byte[] pdfFiles = new byte[]{1, 2, 3, 4};
     when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
@@ -52,8 +52,10 @@ class UploadSubmissionToS3AndEnqueueCCMSPayloadTest {
 
     uploadSubmissionToS3AndEnqueueCCMSPayload.run(submission);
 
-    verify(pdfService).getFilledOutPDF(submission);
-    verify(cloudFileRepository).upload(eq(generateExpectedPdfPath(submission)), any(MultipartFile.class));
+    await().atMost(Duration.ofSeconds(10)).untilAsserted(() -> {
+      verify(pdfService).getFilledOutPDF(submission);
+      verify(cloudFileRepository).upload(eq(generateExpectedPdfPath(submission)), any(MultipartFile.class));
+    });
   }
 
   private String generateExpectedPdfPath(Submission submission) {

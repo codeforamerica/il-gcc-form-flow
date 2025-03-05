@@ -45,8 +45,8 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob,
             S3PresignService s3PresignService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
-            @Value("${ccms-integration-enabled:false}") boolean ccmmsIntegrationEnabled,
-            @Value("${dts-integration-enabled:true}") boolean dtsIntegrationEnabled) {
+            @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmmsIntegrationEnabled,
+            @Value("${il-gcc.dts-integration-enabled:true}") boolean dtsIntegrationEnabled) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
@@ -77,9 +77,9 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                             uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }
-            if (CCMMS_INTEGRATION_ENABLED) {
-                ccmsSubmissionPayloadTransactionJob.enqueueSubmissionCCMSPayloadTransactionJobInOneHour(familySubmission);
-            }
+                if (CCMMS_INTEGRATION_ENABLED) {
+                    ccmsSubmissionPayloadTransactionJob.enqueueSubmissionCCMSPayloadTransactionJobInOneHour(familySubmission);
+                }
             } else {
                 log.error(String.format("We can not find a match for your family submission: %s", familySubmissionId.get()));
             }

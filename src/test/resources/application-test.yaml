@@ -53,12 +53,9 @@ org:
       enabled: false
 il-gcc:
   enable-emails: false
+  ccms-integration-enabled: true
+  dts-integration-enabled: true
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
     auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
-  link-shortener:
-    api-key: ${SHORT_IO_API_KEY:''}
-    domain: ${SHORT_IO_DOMAIN:''}
-ccms-integration-enabled: true
-dts-integration-enabled: true

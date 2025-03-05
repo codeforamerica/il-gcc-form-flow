@@ -31,8 +31,8 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
             PdfTransmissionJob pdfTransmissionJob,
             CCMSSubmissionPayloadTransactionJob CCMSSubmissionPayloadTransactionJob,
             EnqueueDocumentTransfer enqueueDocumentTransfer,
-            @Value("${ccms-integration-enabled:false}") boolean ccmmsIntegrationEnabled,
-            @Value("${dts-integration-enabled:true}") boolean dtsIntegrationEnabled) {
+            @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmmsIntegrationEnabled,
+            @Value("${il-gcc.dts-integration-enabled:true}") boolean dtsIntegrationEnabled) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
