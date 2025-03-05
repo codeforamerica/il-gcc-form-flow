@@ -18,6 +18,8 @@ form-flow:
     file-conversion:
       max-conversion-size: ${UPLOADS_MAX_CONVERSION_SIZE:10}
       max-pages: ${UPLOADS_MAX_PAGES:50}
+  validation:
+    ssn-pattern: "\\d{3}-\\d{2}-\\d{4}"
 management:
   endpoint:
     health:
