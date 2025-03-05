@@ -13,9 +13,9 @@
                         th:with="providerName=${inputData.getOrDefault('familyIntendedProviderName', '')}">
 
                     <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-provider-info-confirm.header}, subtext=#{activities-next-work-schedule.subheader})}"/>
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-provider-info-confirm.header}, subtext=#{onboarding-provider-info-confirm.subheader})}"/>
 
-                    <div class="notice--warning spacing-below-60" th:text="#{activities-next-work-schedule.notice}"></div>
+                    <div class="notice--warning spacing-below-60" th:text="#{onboarding-provider-info-confirm.notice}"></div>
 
                     <div class="form-card__footer">
                         <th:block th:replace="~{fragments/continueButton :: continue}"/>
