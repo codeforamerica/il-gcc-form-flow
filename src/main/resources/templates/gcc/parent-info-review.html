@@ -21,7 +21,6 @@
                     <a id="edit-parent-info-basic" th:href="|/flow/${flow}/parent-info-basic-1|"
                        th:text="#{parent-info-review.personal.information.link}"></a>
                     <hr class="spacing-below-15 spacing-above-15">
-
                     <p class="text--left"><strong
                             th:text="#{parent-info-review.home.address}"></strong></p>
                     <th:block
@@ -53,7 +52,6 @@
                     <th:block
                             th:with="parentMailingAddress = ${T(org.ilgcc.app.utils.AddressUtilities).formatAddressAsMultiline(inputData, 'parentMailing')}">
                         <th:block th:if="${!parentMailingAddress.isEmpty()}">
-                            <p th:text="${parentMailingAddress}"></p>
                             <div id="mailing-street-address-1"
                                  th:text="${parentMailingAddress.get('StreetAddress1').toString()}"></div>
                             <div id="mailing-street-address-2"
