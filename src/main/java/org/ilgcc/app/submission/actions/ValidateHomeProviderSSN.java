@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,9 +20,6 @@ public class ValidateHomeProviderSSN implements Action {
 
     @Autowired
     MessageSource messageSource;
-
-    @Autowired
-    Environment env;
 
     @Value("${form-flow.validation.ssn-pattern:^(?!000|666|9\\d{2})\\d{3}-(?!00)\\d{2}-(?!0000)\\d{4}$}")
     String regex;
