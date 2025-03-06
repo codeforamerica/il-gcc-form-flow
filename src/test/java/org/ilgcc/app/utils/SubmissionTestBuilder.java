@@ -84,12 +84,18 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("clientResponse", clientResponse);
         return this;
     }
-    public SubmissionTestBuilder withParentDetails() {
+
+    public SubmissionTestBuilder withParentBasicInfo(){
         submission.getInputData().put("parentFirstName", "parent first");
         submission.getInputData().put("parentLastName", "parent last");
         submission.getInputData().put("parentBirthMonth", "12");
         submission.getInputData().put("parentBirthDay", "25");
         submission.getInputData().put("parentBirthYear", "1985");
+
+        return this;
+    }
+    public SubmissionTestBuilder withParentDetails() {
+        withParentBasicInfo();
 
         submission.getInputData().put("parentHomeStreetAddress1", "972 Mission St");
         submission.getInputData().put("parentHomeStreetAddress2", "5th floor");
