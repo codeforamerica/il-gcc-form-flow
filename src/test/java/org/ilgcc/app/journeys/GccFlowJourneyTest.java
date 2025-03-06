@@ -759,7 +759,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // contact-provider-message
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
         testPage.clickElementById("copy-message-to-clipboard");
-        testPage.clickButton(getEnMessage("general.continue-next-steps"));
+        testPage.clickButton(getEnMessage("general.button.continue"));
 
         // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));

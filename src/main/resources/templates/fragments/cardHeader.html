@@ -1,9 +1,11 @@
 <header
         th:fragment="cardHeader"
         th:with="hasSubtext=${!#strings.isEmpty(subtext)},
-            isRequiredInput=${(required != null && required)}"
+            isRequiredInput=${(required != null && required)},
+            noSpacingBelow=${(noSpacingBelow != null && noSpacingBelow)}"
         th:assert="${!#strings.isEmpty(header)}"
-        class="form-card__header">
+        th:class="'form-card__header' + ${noSpacingBelow ? ' spacing-below-0' : ''}">
+
     <h1 id="header" class="h2" >
         <span th:text="${header + ' '}"></span><span th:if="${isRequiredInput}" class="required-input" th:text="#{general.required-field}"></span>
     </h1>
