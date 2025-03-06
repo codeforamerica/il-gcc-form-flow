@@ -114,7 +114,8 @@ public class ProviderImporter {
             String sqlFileName = "providers-data-" + timestamp + ".sql";
             System.out.println("SQL will be written to " + sqlFileName);
 
-            Path path = Paths.get(sqlFileName);
+            Path directoryPath = ImporterUtils.createDataImportDirectory();
+            Path path = directoryPath.resolve(sqlFileName);
 
             // Create the file and write content to it
             Files.write(path, SQL_BEGIN.getBytes(), StandardOpenOption.CREATE);
