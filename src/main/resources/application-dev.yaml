@@ -10,8 +10,6 @@ form-flow:
       gcc:
         prefix: DEV-
         creation-point: creation
-  validation:
-    ssn-pattern: "\\d{3}-\\d{2}-\\d{4}"
 management:
   endpoints:
     enabled-by-default: true
