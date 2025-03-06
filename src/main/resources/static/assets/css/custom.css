@@ -304,6 +304,11 @@ p.normal {
 .registration-submit-header header{
   margin-bottom: 0;
 }
+
+.registration-submit-confirmation-header header{
+  margin-bottom: 3rem;
+}
+
 .eligibility-table th:first-child,
 .eligibility-table td:first-child {
   text-align: left;
