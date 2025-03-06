@@ -79,7 +79,6 @@ flow:
     nextScreens:
       - name: parent-info-review
   parent-info-review:
-    beforeDisplayAction: FormatParentConfirmationAddress
     nextScreens:
       - name: parent-have-a-partner
   parent-have-a-partner:
