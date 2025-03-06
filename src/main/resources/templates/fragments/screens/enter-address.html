@@ -1,4 +1,7 @@
-<th:block th:fragment="screen">
+<th:block th:fragment="screen" th:with="
+    hasHomelessInput=${!#strings.isEmpty(homelessInputName)},
+    hasSameAsPreviousAddressInput=${!#strings.isEmpty(sameAsPreviousAddressInputName)}
+">
     <!DOCTYPE html>
     <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
     <head th:replace="~{fragments/head :: head(title=${#messages.msg(title)})}"></head>
@@ -16,7 +19,15 @@
                             th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                         <th:block th:ref="formContent">
                             <div class="form-card__content">
-                                <th:block th:if="${homelessInputName}" th:replace="~{fragments/inputs/checkbox :: checkbox(inputName=${homelessInputName}, label=#{parent-home-address.homelessness}, value='yes')}"/>
+                                <th:block th:if="${hasSameAsPreviousAddressInput}">
+                                    <th:block th:unless="${currentlyUnhoused}">
+                                            <th:block th:replace="~{fragments/inputs/checkbox :: checkbox (inputName=${sameAsPreviousAddressInputName}, label=#{parent-mailing-address.same-as-home-address},
+                                    value='yes'
+                                    )}"/></th:block>
+                                </th:block>
+                                <th:block th:if="${hasHomelessInput}">
+                                    <th:block th:replace="~{fragments/inputs/checkbox :: checkbox(inputName=${homelessInputName}, label=#{parent-home-address.homelessness}, value='yes')}"/>
+                                </th:block>
                                 <div id="address-fields" th:insert="~{fragments/inputs/overrides/address ::
                                     address(
                                       streetAddressLabel=#{general.street-address},
