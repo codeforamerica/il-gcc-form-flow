@@ -53,4 +53,9 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
                 providerId);
         return resourceOrganizationByProviderId.map(ResourceOrganization::getResourceOrgId);
     }
+
+    @Override
+    public Optional<List<County>> getCountiesByCaseLoadCode(String caseloadCode) {
+        return Optional.empty();
+    }
 }

@@ -1,7 +1,9 @@
 package org.ilgcc.app.submission.router;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
+import org.ilgcc.app.data.County;
 import org.ilgcc.app.data.ResourceOrganization;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +34,6 @@ public interface ApplicationRouterService {
      * @return The corresponding organization ID
      */
     Optional<BigInteger> getOrganizationIdByProviderId(BigInteger providerId);
+
+    Optional<List<County>> getCountiesByCaseLoadCode(String caseLoadCode);
 }
