@@ -86,7 +86,7 @@ public class Gcc extends FlowInputs {
     private String parentMailingState;
     @NotBlank(message = "{errors.provide-zip}")
     private String parentMailingZipCode;
-    private String useSuggestedParentAddress;
+    private String useSuggestedParentMailingAddress;
     private String parentConfirmSuggestedAddress;
     // parent-comm-preference
     @NotBlank(message = "{errors.invalid-communication-preference}")
