@@ -108,7 +108,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ssn.title"));
         testPage.enter("providerTaxIdSSN", "222-22-222");
         testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("registration-tax-id-ssn.error"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-ssn"))).isTrue();
 
         //registration-tax-id-ssn
         testPage.enter("providerTaxIdSSN", "333-22-2222");
@@ -277,7 +277,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-ssn.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-ssn.error"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-ssn"))).isTrue();
         testPage.enter("providerIdentityCheckSSN", "123456789");
 
         testPage.clickContinue();
@@ -359,7 +359,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.date"))).isTrue();
         assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.dob"))).isFalse();
-        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.ssn"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-ssn"))).isTrue();
 
         testPage.enter("providerHouseholdMemberFirstName", "First_Name_Test");
         testPage.enter("providerHouseholdMemberLastName", "Last_Name_Test");
@@ -549,7 +549,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-ssn.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-ssn.error"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-ssn"))).isTrue();
         testPage.enter("providerIdentityCheckSSN", "123456789");
 
         testPage.clickContinue();
@@ -1053,7 +1053,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-ssn.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-ssn.error"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-ssn"))).isTrue();
         testPage.enter("providerIdentityCheckSSN", "123456789");
 
         testPage.clickContinue();
