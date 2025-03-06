@@ -37,7 +37,7 @@ public class ValidateHomeProviderSSN implements Action {
 
         if (!requiredSSNMatcher.matches()) {
             errorMessages.put(INPUT_NAME,
-                    List.of(messageSource.getMessage("registration-home-provider-ssn.error", null, locale)));
+                    List.of(messageSource.getMessage("errors.invalid-ssn", null, locale)));
         }
 
         return errorMessages;

@@ -97,6 +97,8 @@ public class Providerresponse extends FlowInputs {
     @NotBlank
     private String providerLicenseExemptRelationship;
 
+    @SSN(message="{errors.invalid-ssn}")
+    @Encrypted
     private String providerIdentityCheckSSN;
     
     private String providerType;
@@ -121,7 +123,8 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank
     private String providerTaxIdType;
-    @SSN(message="{registration-tax-id-ssn.error}")
+    
+    @SSN(message="{errors.invalid-ssn}")
     @Encrypted
     private String providerTaxIdSSN;
     @Pattern(regexp = "\\d{9}", message = "{registration-tax-id-ein.error}")
@@ -146,8 +149,9 @@ public class Providerresponse extends FlowInputs {
     private String providerHouseholdMemberDateOfBirthYear;
     @NotBlank(message = "{registration-household-add-person-info.error.relationship}")
     private String providerHouseholdMemberRelationship;
+
+    @SSN(message="{errors.invalid-ssn}")
     @Encrypted
-    @SSN(message="{registration-household-add-person-info.error.ssn}")
     private String providerHouseholdMemberSSN;
 
     // registration-signature
