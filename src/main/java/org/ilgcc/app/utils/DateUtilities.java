@@ -109,9 +109,9 @@ public class DateUtilities {
         return date.format(outputFormatter);
     }
     
-    public static String formatDateToYearMonthDayHourCST(OffsetDateTime submittedAt) {
+    public static String formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime submittedAt) {
         ZonedDateTime centralTime = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         return centralTime.format(formatter);
     }
 }

@@ -118,7 +118,7 @@ public class CCMSTransactionPayloadServiceTest {
                         Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedPngPath)))
         );
 
-        CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generatePayloadAndUploadToS3(submission);
+        CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(submission);
         assertThat(ccmsTransaction).isNotNull();
         assertThat(ccmsTransaction.getTransmissionType()).isEqualTo("application");
         assertThat(ccmsTransaction.getSubmissionId()).isEqualTo(submission.getId());
@@ -133,6 +133,6 @@ public class CCMSTransactionPayloadServiceTest {
             assertThat(testFiles.contains(file)).isTrue();
         });
         assertThat(ccmsTransaction.getWebSubmissionTimestamp()).isEqualTo(
-                DateUtilities.formatDateToYearMonthDayHourCST(submission.getSubmittedAt()));
+                DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(submission.getSubmittedAt()));
     }
 }
