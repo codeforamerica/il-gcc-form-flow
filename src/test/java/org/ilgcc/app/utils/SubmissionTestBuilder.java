@@ -154,21 +154,6 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withValidatedMailingAddress(
-            String parentMailingStreetAddress1_validated,
-            String parentMailingStreetAddress2_validated,
-            String parentMailingCity_validated,
-            String parentMailingState_validated,
-            String parentMailingZipCode_validated) {
-        submission.getInputData().put("parentMailingStreetAddress1_validated", parentMailingStreetAddress1_validated);
-        submission.getInputData().put("parentMailingStreetAddress2_validated", parentMailingStreetAddress2_validated);
-        submission.getInputData().put("parentMailingCity_validated", parentMailingCity_validated);
-        submission.getInputData().put("parentMailingState_validated", parentMailingState_validated);
-        submission.getInputData().put("parentMailingZipCode_validated", parentMailingZipCode_validated);
-        return this;
-    }
-
-
     public SubmissionTestBuilder withAdultDependent(String firstName, String lastName) {
         List<Map<String, Object>> adultDependents = (List<Map<String, Object>>) submission.getInputData().get("adultDependents");
         if (adultDependents == null) {

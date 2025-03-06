@@ -557,6 +557,8 @@ flow:
     nextScreens:
       - name: confirm-address
   confirm-address:
+    condition: ShowProviderResponseServiceAddressConfirmationScreen
+    onPostAction: SaveValidatedProviderResponseServiceAddress
     nextScreens:
       - name: mailing-address
         condition: EnableProviderRegistration
@@ -566,7 +568,8 @@ flow:
     nextScreens:
       - name: confirm-mailing-address
   confirm-mailing-address:
-    condition: EnableProviderRegistration
+    condition: ShowProviderResponseMailingAddressConfirmationScreen
+    onPostAction: SaveValidatedProviderResponseMailingAddress
     nextScreens:
       - name: contact-info
   contact-info:
@@ -637,6 +640,8 @@ flow:
     nextScreens:
       - name: registration-confirm-address
   registration-confirm-address:
+    condition: ShowProviderResponseServiceAddressConfirmationScreen
+    onPostAction: SaveValidatedProviderResponseServiceAddress
     nextScreens:
       - name: registration-mailing-address
         condition: EnableProviderRegistration
@@ -646,7 +651,8 @@ flow:
     nextScreens:
       - name: registration-confirm-mailing-address
   registration-confirm-mailing-address:
-    condition: EnableProviderRegistration
+    condition: ShowProviderResponseMailingAddressConfirmationScreen
+    onPostAction: SaveValidatedProviderResponseMailingAddress
     nextScreens:
       - name: registration-contact-info
   registration-contact-info:

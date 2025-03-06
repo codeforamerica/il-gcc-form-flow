@@ -98,34 +98,6 @@ public class AddressUtilities {
         return addressLines;
     }
 
-    public static Map<String, String> getAddress(Map<String, Object> inputData, String addressGroupInputPrefix) {
-        Map<String, String> addressLines = new HashMap<>();
-
-        var useValidatedAddress = inputData.getOrDefault(String.format(suggestedAddressKey, capitalize(addressGroupInputPrefix)),
-                        "false")
-                .equals("true");
-
-        addressLines.put("address1", inputData.getOrDefault(
-                addressGroupInputPrefix + streetAddress1Key + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
-                        : ""), "").toString());
-        addressLines.put("address2",
-                inputData.getOrDefault(useValidatedAddress ? "" : addressGroupInputPrefix + streetAddress2Key, "").toString());
-        addressLines.put("city",
-                inputData.getOrDefault(
-                        addressGroupInputPrefix + cityKey + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
-                                : ""), "").toString());
-        addressLines.put("state",
-                inputData.getOrDefault(
-                        addressGroupInputPrefix + stateKey + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
-                                : ""), "").toString());
-        addressLines.put("zipCode",
-                inputData.getOrDefault(
-                        addressGroupInputPrefix + zipCodeKey + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
-                                : ""), "").toString());
-
-        return addressLines;
-    }
-
     private static String capitalize(String text) {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }

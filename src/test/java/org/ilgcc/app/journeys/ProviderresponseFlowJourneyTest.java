@@ -132,7 +132,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Continue");
 
         // confirm-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
         // contact-info
@@ -220,7 +220,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Continue");
 
         // confirm-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
         // contact-info

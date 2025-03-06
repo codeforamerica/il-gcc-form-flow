@@ -57,7 +57,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // confirm-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -75,7 +75,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // confirm-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-mailing-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // registration-contact-info
@@ -176,7 +176,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickButton("Continue");
 
         // confirm-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
         //mailing-address
@@ -185,7 +185,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         //confirm-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-mailing-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
         // contact-info
@@ -1203,7 +1203,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // confirm-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -1221,7 +1221,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // confirm-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-mailing-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // contact-info
