@@ -28,26 +28,18 @@ public class AddressUtilities {
         return inputData.getOrDefault(experiencingHomelessnessInputName + "[]", "no").equals(List.of("yes"));
     }
 
-    /**
-     * @param inputData a JSON object of user inputs
-     * @return true or false
-     */
-    public static boolean parentMailingAddressIsHomeAddress(Map<String, Object> inputData) {
-        return inputData.getOrDefault("parentMailingAddressSameAsHomeAddress[]", "no").equals(List.of("yes"));
-    }
-
-    public static boolean hasAddressSuggestion(Submission submission, String inputName) {
-        return submission.getInputData().get(FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATE_ADDRESS + inputName)
+    public static boolean hasAddressSuggestion(Submission submission, String addressGroupInputPrefix) {
+        return submission.getInputData().get(FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATE_ADDRESS + addressGroupInputPrefix)
                 .equals("true") && submission.getInputData()
-                .containsKey(inputName + "StreetAddress1" + FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATED);
+                .containsKey(addressGroupInputPrefix + "StreetAddress1" + FieldNameMarkers.UNVALIDATED_FIELD_MARKER_VALIDATED);
     }
 
     public static String useSuggestedAddressKey(String suggestedAddressKey, String addressGroupInputPrefix) {
         return String.format(suggestedAddressKey, capitalize(addressGroupInputPrefix));
     }
 
-    public static boolean skipAddressConfirmation(Submission submission, String inputName) {
-        return validatedAndInputtedAddressesMatch(submission.getInputData(), inputName);
+    public static boolean skipAddressConfirmation(Submission submission, String addressGroupInputPrefix) {
+        return validatedAndInputtedAddressesMatch(submission.getInputData(), addressGroupInputPrefix);
     }
 
     public static Boolean validatedAndInputtedAddressesMatch(Map<String, Object> inputData, String addressGroupInputPrefix) {
@@ -91,12 +83,13 @@ public class AddressUtilities {
         return inputtedData.equals(truncatedZip);
     }
 
-    public static Map<String, String> formatAddressAsMultiline(Map<String, Object> inputData, String addressPrefix) {
+    public static Map<String, String> formatAddressAsMultiline(Map<String, Object> inputData, String addressGroupInputPrefix) {
         Map<String, String> addressLines = new HashMap<>();
 
         addressKeys.forEach(ak -> {
-                    if (inputData.containsKey(addressPrefix + ak) && !inputData.get(addressPrefix + ak).toString().isBlank()) {
-                        addressLines.put(ak, (String) inputData.get(addressPrefix + ak));
+                    if (inputData.containsKey(addressGroupInputPrefix + ak) && !inputData.get(addressGroupInputPrefix + ak).toString()
+                            .isBlank()) {
+                        addressLines.put(ak, (String) inputData.get(addressGroupInputPrefix + ak));
                     }
                 }
 
@@ -105,26 +98,30 @@ public class AddressUtilities {
         return addressLines;
     }
 
-    public static Map<String, String> getAddress(Map<String, Object> inputData, String addressPrefix) {
+    public static Map<String, String> getAddress(Map<String, Object> inputData, String addressGroupInputPrefix) {
         Map<String, String> addressLines = new HashMap<>();
 
-        var useValidatedAddress = inputData.getOrDefault(String.format(suggestedAddressKey, capitalize(addressPrefix)), "false")
+        var useValidatedAddress = inputData.getOrDefault(String.format(suggestedAddressKey, capitalize(addressGroupInputPrefix)),
+                        "false")
                 .equals("true");
 
         addressLines.put("address1", inputData.getOrDefault(
-                addressPrefix + streetAddress1Key + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
+                addressGroupInputPrefix + streetAddress1Key + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
                         : ""), "").toString());
         addressLines.put("address2",
-                inputData.getOrDefault(useValidatedAddress ? "" : addressPrefix + streetAddress2Key, "").toString());
+                inputData.getOrDefault(useValidatedAddress ? "" : addressGroupInputPrefix + streetAddress2Key, "").toString());
         addressLines.put("city",
-                inputData.getOrDefault(addressPrefix + cityKey + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
-                        : ""), "").toString());
+                inputData.getOrDefault(
+                        addressGroupInputPrefix + cityKey + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
+                                : ""), "").toString());
         addressLines.put("state",
-                inputData.getOrDefault(addressPrefix + stateKey + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
-                        : ""), "").toString());
+                inputData.getOrDefault(
+                        addressGroupInputPrefix + stateKey + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
+                                : ""), "").toString());
         addressLines.put("zipCode",
-                inputData.getOrDefault(addressPrefix + zipCodeKey + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
-                        : ""), "").toString());
+                inputData.getOrDefault(
+                        addressGroupInputPrefix + zipCodeKey + (useValidatedAddress ? UNVALIDATED_FIELD_MARKER_VALIDATED
+                                : ""), "").toString());
 
         return addressLines;
     }
