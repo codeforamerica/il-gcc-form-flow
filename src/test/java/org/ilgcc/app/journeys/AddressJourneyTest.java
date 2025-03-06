@@ -1,12 +1,8 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.ilgcc.app.data.FakeResourceOrganization.ACTIVE_FOUR_C_COUNTY;
-
-import java.util.List;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.CountyOption;
-import org.ilgcc.app.utils.ZipcodeOption;
 import org.junit.jupiter.api.Test;
 
 public class AddressJourneyTest extends AbstractBasePageTest {
@@ -58,11 +54,11 @@ public class AddressJourneyTest extends AbstractBasePageTest {
 
         //parent-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-review.title"));
-        assertThat(testPage.getElementText("no-mailing-address")).isEqualTo(getEnMessage("general.none-added"));
-        assertThat(testPage.elementDoesNotExistById("mailing-street-address-1")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("mailing-street-address-2")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("mailing-city-state")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("mailing-zipcode")).isTrue();
+        assertThat(testPage.getElementText("no-home-address")).isEqualTo(getEnMessage("general.none-added"));
+        assertThat(testPage.elementDoesNotExistById("home-street-address-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("home-street-address-2")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("home-city-state")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("home-zipcode")).isTrue();
         assertThat(testPage.getElementText("mailing-street-address-1")).isEqualTo("123 Main St");
         assertThat(testPage.getElementText("mailing-street-address-2")).isEqualTo("5th floor");
         assertThat(testPage.getElementText("mailing-city-state")).isEqualTo("Sycamore, IL");
@@ -95,6 +91,6 @@ public class AddressJourneyTest extends AbstractBasePageTest {
     void whenApplicantRejectsHomeAddressValidationAndMailingAddressIsDifferent(){
         return;
     }
-    
+
 
 }
