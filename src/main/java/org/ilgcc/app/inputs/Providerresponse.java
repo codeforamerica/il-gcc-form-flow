@@ -2,6 +2,7 @@ package org.ilgcc.app.inputs;
 
 import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Phone;
+import formflow.library.data.annotations.SSN;
 import formflow.library.inputs.Encrypted;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.Email;
@@ -120,7 +121,8 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank
     private String providerTaxIdType;
-    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{registration-tax-id-ssn.error}")
+
+    @SSN(message="{errors.invalid-ssn}")
     @Encrypted
     private String providerTaxIdSSN;
     @Pattern(regexp = "\\d{9}", message = "{registration-tax-id-ein.error}")
@@ -145,8 +147,9 @@ public class Providerresponse extends FlowInputs {
     private String providerHouseholdMemberDateOfBirthYear;
     @NotBlank(message = "{registration-household-add-person-info.error.relationship}")
     private String providerHouseholdMemberRelationship;
+
+    @SSN(message="{errors.invalid-ssn}")
     @Encrypted
-    @Pattern(regexp = "\\d{3}-\\d{2}-\\d{4}", message = "{registration-household-add-person-info.error.ssn}")
     private String providerHouseholdMemberSSN;
 
     // registration-signature
