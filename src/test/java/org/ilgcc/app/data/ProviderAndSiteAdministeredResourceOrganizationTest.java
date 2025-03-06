@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigInteger;
 import java.util.Optional;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.submission.router.ApplicationRouterService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,36 +27,45 @@ class ProviderAndSiteAdministeredResourceOrganizationTest {
     @Autowired
     ProviderRepository providerRepository;
 
+    @Autowired
+    ApplicationRouterService applicationRouterService;
+
     @Test
     public void testProviderWithoutSiteAdminResourceOrgLookup() {
-        assertThat(providerRepository.existsById(new BigInteger("12345678901"))).isTrue();
+        BigInteger providerId = new BigInteger("12345678901");
 
-        Optional<Provider> providerOptional = providerRepository.findById(new BigInteger("12345678901"));
+        assertThat(providerRepository.existsById(providerId)).isTrue();
+
+        Optional<Provider> providerOptional = providerRepository.findById(providerId);
         assertThat(providerOptional.isPresent()).isTrue();
 
         Provider provider = providerOptional.get();
         assertThat(provider.getResourceOrganization()).isNull();
 
-        assertThat(providerRepository.existsById(new BigInteger("12345678909"))).isTrue();
-
-        providerOptional = providerRepository.findById(new BigInteger("12345678909"));
-        assertThat(providerOptional.isPresent()).isTrue();
-
-        provider = providerOptional.get();
-        assertThat(provider.getResourceOrganization()).isNotNull();
+        Optional<BigInteger> siteAdminOrgIdOptional = applicationRouterService.getSiteAdministeredOrganizationIdByProviderId(providerId);
+        assertThat(siteAdminOrgIdOptional.isPresent()).isFalse();
     }
 
     @Test
     public void testProviderWithSiteAdminResourceOrgLookup() {
-        assertThat(providerRepository.existsById(new BigInteger("12345678909"))).isTrue();
+        BigInteger providerId = new BigInteger("12345678909");
+        BigInteger resourceOrgId = new BigInteger("10101");
 
-        Optional<Provider> providerOptional = providerRepository.findById(new BigInteger("12345678909"));
+        assertThat(providerRepository.existsById(providerId)).isTrue();
+
+        Optional<Provider> providerOptional = providerRepository.findById(providerId);
         assertThat(providerOptional.isPresent()).isTrue();
 
         Provider provider = providerOptional.get();
         assertThat(provider.getResourceOrganization()).isNotNull();
-        assertThat(provider.getResourceOrganization().getResourceOrgId().equals(new BigInteger("10101"))).isTrue();
+        assertThat(provider.getResourceOrganization().getResourceOrgId().equals(resourceOrgId)).isTrue();
         assertThat(provider.getResourceOrganization().getName().equals("Sample Site Admin Resource Organization")).isTrue();
         assertThat(provider.getResourceOrganization().getCity().equals("Chicago")).isTrue();
+
+        Optional<BigInteger> siteAdminOrgIdOptional = applicationRouterService.getSiteAdministeredOrganizationIdByProviderId(providerId);
+        assertThat(siteAdminOrgIdOptional.isPresent()).isTrue();
+
+        BigInteger siteAdminOrgId = siteAdminOrgIdOptional.get();
+        assertThat(siteAdminOrgId.equals(resourceOrgId)).isTrue();
     }
 }
