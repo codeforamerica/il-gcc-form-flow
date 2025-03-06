@@ -2,6 +2,8 @@ package org.ilgcc.app.data.ccms;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.UUID;
 
@@ -106,6 +108,16 @@ public class CCMSTransaction {
 
         FileTypeId(String value) {
             this.value = value;
+        }
+    }
+    
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return "An error occurred when attempting to convert the CCMSTransaction to a String: " + e.getMessage();
         }
     }
 }

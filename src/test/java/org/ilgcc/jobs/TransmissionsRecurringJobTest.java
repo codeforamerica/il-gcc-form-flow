@@ -4,7 +4,11 @@ import static org.ilgcc.app.utils.enums.TransmissionStatus.Queued;
 import static org.ilgcc.app.utils.enums.TransmissionType.APPLICATION_PDF;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
@@ -23,13 +27,12 @@ import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(
         classes = IlGCCApplication.class
@@ -69,11 +72,13 @@ public class TransmissionsRecurringJobTest {
     @Mock
     private EnqueueDocumentTransfer enqueueDocumentTransfer;
 
-    @InjectMocks
     private TransmissionsRecurringJob transmissionsRecurringJob;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
+    
+    @MockitoBean
+    private CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
 
     private Submission expiredSubmission;
     private Submission transmittedSubmission;
@@ -84,7 +89,6 @@ public class TransmissionsRecurringJobTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
         transmissionsRecurringJob = new TransmissionsRecurringJob(
                 s3PresignService,
                 transmissionRepositoryService,
@@ -94,7 +98,10 @@ public class TransmissionsRecurringJobTest {
                 cloudFileRepository,
                 pdfTransmissionJob,
                 enqueueDocumentTransfer,
-                submissionRepositoryService
+                submissionRepositoryService,
+                ccmsSubmissionPayloadTransactionJob,
+                true,
+                true
         );
     }
 
