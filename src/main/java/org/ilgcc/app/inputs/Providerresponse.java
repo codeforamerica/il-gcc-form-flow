@@ -97,8 +97,6 @@ public class Providerresponse extends FlowInputs {
     @NotBlank
     private String providerLicenseExemptRelationship;
 
-    @SSN(message="{errors.invalid-ssn}")
-    @Encrypted
     private String providerIdentityCheckSSN;
     
     private String providerType;
