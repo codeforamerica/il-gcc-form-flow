@@ -74,6 +74,10 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentHomeZipCode", ACTIVE_PROJECT_CHILD_COUNTY.getZipCode().toString());
         testPage.clickContinue();
 
+        // confirm-parent-home-address
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
+        testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
+
         // parent-mailing-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
         testPage.clickElementById("parentMailingAddressSameAsHomeAddress-yes");
