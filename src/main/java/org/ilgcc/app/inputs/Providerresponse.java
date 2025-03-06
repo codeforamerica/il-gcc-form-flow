@@ -123,7 +123,7 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank
     private String providerTaxIdType;
-    
+
     @SSN(message="{errors.invalid-ssn}")
     @Encrypted
     private String providerTaxIdSSN;
