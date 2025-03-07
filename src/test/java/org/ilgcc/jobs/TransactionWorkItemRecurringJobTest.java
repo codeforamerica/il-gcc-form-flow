@@ -82,7 +82,7 @@ class TransactionWorkItemRecurringJobTest {
     
 
     @Test
-    void getTransactionsWithoutWorkItemIdsOlderThanOneHour() {
+    void getTransactionsWithoutWorkItemsOlderThanOneHourShouldOnlyReturnTransactionsWithNullWorkItemOlderThanOneHour() {
         List<Transaction> transactionsWithoutWorkItemIdsOlderThanOneHour = transactionWorkItemRecurringJob.getTransactionsWithoutWorkItemIdsOlderThanOneHour();
         assertThat(transactionsWithoutWorkItemIdsOlderThanOneHour.size()).isEqualTo(2);
         transactionsWithoutWorkItemIdsOlderThanOneHour.forEach(transaction -> {
