@@ -16,5 +16,5 @@ public interface CountyRepository extends JpaRepository<County, String> {
 
     Optional<County> findByZipCode(BigInteger truncatedZip);
 
-
+    Optional<List<County>> findAllByCaseloadCode(String caseloadCode);
 }

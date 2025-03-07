@@ -16,9 +16,9 @@
       <th:block th:ref="countyInput">
         <th:block
                 th:replace="~{fragments/inputs/selectOptionPlaceholder :: selectOptionPlaceholder(optionText=#{onboarding-county.placeholder-text})}"/>
-        <th:block th:each="county : ${T(org.ilgcc.app.utils.CountyOptionUtils).getActiveCountyOptions()}">
+        <th:block th:each="county : ${T(org.ilgcc.app.utils.CountyOptionUtils).getActiveCounties()}">
           <th:block
-                  th:replace="~{fragments/inputs/selectOption :: selectOption(value=${county.getLabel()}, optionText=${county.getLabel()})}"/>
+                  th:replace="~{fragments/inputs/selectOption :: selectOption(value=${county.getCounty()}, optionText=${county.getCounty()})}"/>
         </th:block>
       </th:block>
     </th:block>
