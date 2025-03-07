@@ -74,21 +74,19 @@ public class ProviderApplicationPreparerTest {
     }
 
     @Test
-    public void setsValidatedAddressWhenSelected() {
+    public void mapsProviderResponseServiceAndProviderMailingAddressesToPDF() {
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
                 .withProviderSubmissionData()
                 .with("providerResponseAgreeToCare", "true")
-                .with("useSuggestedProviderResponseServiceAddress", "true")
-                .with("useSuggestedProviderMailingAddress", "true")
                 .with("providerResponseServiceStreetAddress1", "123 Main Street")
                 .with("providerResponseServiceCity", "De Kalb")
                 .with("providerResponseServiceState", "IL")
-                .with("providerResponseServiceZipCode", "60112-1234")
+                .with("providerResponseServiceZipCode", "60112")
                 .with("providerMailingStreetAddress1", "888 Main Street")
                 .with("providerMailingCity", "Chicago")
                 .with("providerMailingState", "IL")
-                .with("providerMailingZipCode", "60115-1234")
+                .with("providerMailingZipCode", "60115")
                 .with("providerConviction", "true")
                 .build();
 
@@ -116,14 +114,12 @@ public class ProviderApplicationPreparerTest {
                 new SingleField("providerResponseBusinessName", "DayCare Place", null));
         assertThat(result.get("providerResponseServiceStreetAddress1")).isEqualTo(
                 new SingleField("providerResponseServiceStreetAddress1", "123 Main Street", null));
-        assertThat(result.get("providerResponseServiceStreetAddress2")).isEqualTo(
-                new SingleField("providerResponseServiceStreetAddress2", "", null));
         assertThat(result.get("providerResponseServiceCity")).isEqualTo(
                 new SingleField("providerResponseServiceCity", "De Kalb", null));
         assertThat(result.get("providerResponseServiceState")).isEqualTo(
                 new SingleField("providerResponseServiceState", "IL", null));
         assertThat(result.get("providerResponseServiceZipCode")).isEqualTo(
-                new SingleField("providerResponseServiceZipCode", "60112-1234", null));
+                new SingleField("providerResponseServiceZipCode", "60112", null));
 
         assertThat(result.get("providerMailingStreetAddress1")).isEqualTo(
                 new SingleField("providerMailingStreetAddress1", "888 Main Street", null));
@@ -134,7 +130,7 @@ public class ProviderApplicationPreparerTest {
         assertThat(result.get("providerMailingState")).isEqualTo(
                 new SingleField("providerMailingState", "IL", null));
         assertThat(result.get("providerMailingZipCode")).isEqualTo(
-                new SingleField("providerMailingZipCode", "60115-1234", null));
+                new SingleField("providerMailingZipCode", "60115", null));
 
         assertThat(result.get("providerResponseContactPhoneNumber")).isEqualTo(
                 new SingleField("providerResponseContactPhoneNumber", "(111) 222-3333", null));

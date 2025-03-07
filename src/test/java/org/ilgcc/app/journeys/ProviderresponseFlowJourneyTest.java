@@ -145,7 +145,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         assertThat(testPage.findElementTextById("business-name")).isEqualTo("Business Name");
         assertThat(testPage.findElementTextById("full-name")).isEqualTo("First Name Last Name");
-        assertThat(testPage.findElementTextById("provider-service-address-1")).isEqualTo("123 Main St");
+        assertThat(testPage.findElementTextById("provider-service-street-address-1")).isEqualTo("123 Main St");
         assertThat(testPage.findElementTextById("provider-service-city-state")).isEqualTo("City, IL");
         assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("12345");
         assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
@@ -233,7 +233,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         assertThat(testPage.findElementTextById("business-name")).isEqualTo("Business Name");
         assertThat(testPage.findElementTextById("full-name")).isEqualTo("First Name Last Name");
-        assertThat(testPage.findElementTextById("provider-service-address-1")).isEqualTo("123 Main St");
+        assertThat(testPage.findElementTextById("provider-service-street-address-1")).isEqualTo("123 Main St");
         assertThat(testPage.findElementTextById("provider-service-city-state")).isEqualTo("City, IL");
         assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("12345");
         assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
