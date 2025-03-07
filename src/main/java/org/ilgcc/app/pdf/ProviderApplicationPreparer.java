@@ -1,5 +1,6 @@
 package org.ilgcc.app.pdf;
 
+import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
@@ -12,6 +13,8 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +48,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
 
         Map<String, Object> providerInputData = providerSubmission.getInputData();
 
-        List<String> providerFields = List.of(
+        List<String> providerFields = new ArrayList<>(Arrays.asList(
                 "providerResponseProviderNumber",
                 "providerResponseFirstName",
                 "providerResponseLastName",
@@ -60,13 +63,21 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 "providerResponseServiceStreetAddress2",
                 "providerResponseServiceCity",
                 "providerResponseServiceState",
-                "providerResponseServiceZipCode",
+                "providerResponseServiceZipCode"
+        ));
+
+        List<String> mailingAddressFields = List.of(
                 "providerMailingStreetAddress1",
                 "providerMailingStreetAddress2",
                 "providerMailingCity",
                 "providerMailingState",
-                "providerMailingZipCode"
-        );
+                "providerMailingZipCode");
+
+        List sameAddress = (List) providerInputData.getOrDefault("providerMailingAddressSameAsServiceAddress[]", emptyList());
+
+        if (sameAddress.isEmpty()) {
+            providerFields.addAll(mailingAddressFields);
+        };
 
         for (String fieldName : providerFields) {
             results.put(fieldName,
@@ -129,9 +140,8 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
     }
 
 
-
     private String providerSignature(Map<String, Object> providerInputData) {
-        String providerSignature =  (String) providerInputData.getOrDefault("providerSignedName", "");
+        String providerSignature = (String) providerInputData.getOrDefault("providerSignedName", "");
         if (!providerSignature.isEmpty()) {
             return providerSignature;
         }
