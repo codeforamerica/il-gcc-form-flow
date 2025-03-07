@@ -60,7 +60,7 @@ public class Provider implements Serializable {
     @Column(name = "date_of_last_approval")
     private OffsetDateTime dateOfLastApproval;
 
-    @JoinColumn(name = "resource_org_id", nullable = true)
+    @JoinColumn(name = "site_provider_org_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     private ResourceOrganization resourceOrganization;

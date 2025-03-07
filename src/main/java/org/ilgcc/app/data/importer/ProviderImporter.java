@@ -13,8 +13,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,7 @@ public class ProviderImporter {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HH.mm.ss");
     private static final DateTimeFormatter dateColumnFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
-    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, date_of_last_approval, resource_org_id, status) VALUES\n";
+    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, date_of_last_approval, resource_org_id, status, site_provider_org_id) VALUES\n";
     private static final String SQL_BEGIN = "BEGIN;\n";
     private static final String SQL_COMMIT = "COMMIT;\n\n";
 
@@ -39,7 +41,8 @@ public class ProviderImporter {
             "\tzip_code = excluded.zip_code,\n" +
             "\tdate_of_last_approval = excluded.date_of_last_approval,\n" +
             "\tresource_org_id = excluded.resource_org_id,\n" +
-            "\tstatus = excluded.status;\n";
+            "\tstatus = excluded.status,\n" +
+            "\tsite_provider_org_id = excluded.site_provider_org_id;\n";
 
     private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", "Provider Type", "RSRCE_NAME", "DO_BUSN_AS_NAME",
             "STR_ADR", "CITY", "ST", "ZIP", "Date of Last Approval", "Maintaining R&R", "Provider Status");
@@ -107,14 +110,53 @@ public class ProviderImporter {
                 }
             }
 
-            System.out.println("\nEverything looks ok in the CSV format! Preparing to generate SQL.");
+            System.out.println("\nEverything looks ok in the provider CSV format!");
+
+            Path directoryPath = ImporterUtils.createDataImportDirectory();
+            Path providerSiteAdminData = directoryPath.resolve("provider-site-admin-data.csv");
+            Map<BigInteger, BigInteger> providerIdToSiteAdminIdMapping = new HashMap<>();
+
+            if (Files.exists(providerSiteAdminData)) {
+                System.out.println("data-import/provider-site-admin-data.csv exists.");
+
+                List<String> providerSiteAdminDataLines = Files.readAllLines(providerSiteAdminData);
+                System.out.println("\n\nThere are " + providerSiteAdminDataLines.size() + " rows in " + providerSiteAdminData);
+
+                int duplicates = 0;
+                for (int j = 1; j < providerSiteAdminDataLines.size(); j++) {
+                    String[] values = providerSiteAdminDataLines.get(j).split(",");
+                    try {
+                        BigInteger providerId = new BigInteger(values[0]);
+                        BigInteger siteAdminId = new BigInteger(values[1]);
+
+                        if (providerIdToSiteAdminIdMapping.containsKey(providerId)) {
+                            if (!providerIdToSiteAdminIdMapping.get(providerId).equals(siteAdminId)) {
+                                System.out.println("Duplicate provider ID " + providerId + ". Already has " + providerIdToSiteAdminIdMapping.get(providerId) + ". Trying to store " + siteAdminId);
+                            } else {
+                                System.out.println(providerId + " " + siteAdminId);
+                                duplicates++;
+                            }
+                            continue;
+                        }
+                        providerIdToSiteAdminIdMapping.put(providerId, siteAdminId);
+
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
+                }
+                System.out.println("There are " + providerIdToSiteAdminIdMapping.size() + " Ids mapped from " + providerSiteAdminData);
+                System.out.println("There were " + duplicates + " duplicates.");
+            } else {
+                System.out.println("data-import/provider-site-admin-data.csv does not exist!");
+                return;
+            }
 
             LocalDateTime now = LocalDateTime.now();
             String timestamp = now.format(formatter);
             String sqlFileName = "providers-data-" + timestamp + ".sql";
             System.out.println("SQL will be written to " + sqlFileName);
 
-            Path path = Paths.get(sqlFileName);
+            Path path = directoryPath.resolve(sqlFileName);
 
             // Create the file and write content to it
             Files.write(path, SQL_BEGIN.getBytes(), StandardOpenOption.CREATE);
@@ -122,16 +164,11 @@ public class ProviderImporter {
 
             Set<BigInteger> idsInBatch = new HashSet<>();
             for (int j = 1; j < lines.size(); j++) {
-                // If there's a line with an element wrapped in double quotes that also has a comma, remove that comma
-                // For example: ACME Daycare, "Smith, Thomas", 1 Main St --> ACME Daycare, "Smith Thomas", 1 Main St
-                String line = lines.get(j).replaceAll("\"([^\"]*?),\\s*([^\"]*)\"", "\"$1 $2\"");
-                String[] values = line.split(","); // Split by comma
+                String[] values = ImporterUtils.getValuesFromCSVRow(lines.get(j));
 
                 if (EXCLUDED_IDS.contains(values[0])) {
-
                     // These Ids are excluded and should not ever be written to our DB, most likely
                     // because they are for testing and training purposes only and are not real providers
-
                     System.out.println("Ignoring ID " + values[0]);
                     continue;
                 }
@@ -148,6 +185,7 @@ public class ProviderImporter {
                 priorIds.remove(new BigInteger(values[0]));
 
                 StringBuilder sb = new StringBuilder("\t(");
+                BigInteger siteAdminId = null;
                 for (int i = 0; i < values.length; i++) {
                     if (excludedColumnsIndices.contains(i)) {
                         // Skip values in the excluded columns
@@ -158,13 +196,11 @@ public class ProviderImporter {
                     if (values[i] == null || values[i].isBlank()) {
                         valueToInsert.append("NULL");
                     } else {
-                        // escape ' to ''
-                        // remove "
-                        // remove whitespace
-                        String cleanedValue = values[i].replaceAll("(?<!')'|'(?!')", "''").replaceAll("\"", "").trim();
+                        String cleanedValue = ImporterUtils.getCleanedValue(values[i]);
                         if (i == 0) {
                             // No need to wrap the id with single quotes
                             valueToInsert.append(cleanedValue);
+                            siteAdminId = providerIdToSiteAdminIdMapping.get(new BigInteger(cleanedValue));
                         } else if (dateColumnsIndices.contains(i)) {
                             LocalDate localDate = LocalDate.parse(cleanedValue, dateColumnFormatter);
                             ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.of("America/Chicago"));
@@ -180,6 +216,12 @@ public class ProviderImporter {
                     if (i < values.length - 1) {
                         sb.append(", ");
                     } else {
+                        sb.append(", ");
+                        if (siteAdminId == null) {
+                            sb.append("NULL");
+                        } else {
+                            sb.append(siteAdminId);
+                        }
                         if (j % 20000 == 0) {
                             // Batches of 20000
                             // If there's a duplicated row, just skip over it so the batch does not get rolled back

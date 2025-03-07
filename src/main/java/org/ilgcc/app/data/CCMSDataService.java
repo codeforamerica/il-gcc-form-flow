@@ -31,12 +31,12 @@ public interface CCMSDataService {
     Optional<Provider> getProviderById(BigInteger providerId);
 
     /**
-     * Retrieves a resource organization associated with a given provider ID.
+     * Retrieves a site administered resource organization associated with a given provider ID.
      *
      * @param providerId the unique identifier of the provider
      * @return an Optional containing the matching resource organization if found, or an empty Optional if not found
      */
-    Optional<ResourceOrganization> getResourceOrganizationByProviderId(BigInteger providerId);
+    Optional<ResourceOrganization> getSiteAdministeredResourceOrganizationByProviderId(BigInteger providerId);
 
     /**
      * Retrieves a list of resource organizations based on the given caseload code.

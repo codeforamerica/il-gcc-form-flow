@@ -30,13 +30,13 @@ class SetOrganizationIdAndCCRRNameTest {
     @Autowired
     CCMSDataServiceImpl ccmsDataServiceImpl;
 
-    private SetOrganizationIdAndCCRRName action = new SetOrganizationIdAndCCRRName();
+    private final SetOrganizationIdAndCCRRName setOrganizationIdAndCCRRNameAction = new SetOrganizationIdAndCCRRName();
 
     @BeforeEach
     void setUp() {
-        action.applicationRouterService = applicationRouterService;
-        action.submissionRepositoryService = submissionRepositoryService;
-        action.ccmsDataServiceImpl = ccmsDataServiceImpl;
+        setOrganizationIdAndCCRRNameAction.applicationRouterService = applicationRouterService;
+        setOrganizationIdAndCCRRNameAction.submissionRepositoryService = submissionRepositoryService;
+        setOrganizationIdAndCCRRNameAction.ccmsDataServiceImpl = ccmsDataServiceImpl;
     }
 
     @Test
@@ -46,7 +46,7 @@ class SetOrganizationIdAndCCRRNameTest {
                 .with("applicationCounty", "DEKALB")
                 .build();
 
-        action.run(submission);
+        setOrganizationIdAndCCRRNameAction.run(submission);
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
@@ -60,7 +60,7 @@ class SetOrganizationIdAndCCRRNameTest {
                 .with("applicationZipCode", ACTIVE_FOUR_C_COUNTY.getZipCode().toString())
                 .build();
 
-        action.run(submission);
+        setOrganizationIdAndCCRRNameAction.run(submission);
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
@@ -75,7 +75,7 @@ class SetOrganizationIdAndCCRRNameTest {
                 .with("applicationCounty", ACTIVE_FOUR_C_COUNTY.getCounty())
                 .build();
 
-        action.run(submission);
+        setOrganizationIdAndCCRRNameAction.run(submission);
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
@@ -92,7 +92,7 @@ class SetOrganizationIdAndCCRRNameTest {
                 .with("applicationZipCode", ACTIVE_FOUR_C_COUNTY.getZipCode().toString())
                 .build();
 
-        action.run(submission);
+        setOrganizationIdAndCCRRNameAction.run(submission);
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
@@ -108,7 +108,7 @@ class SetOrganizationIdAndCCRRNameTest {
                 .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", ACTIVE_FOUR_C_COUNTY.getZipCode().toString())
                 .build();
 
-        action.run(submission);
+        setOrganizationIdAndCCRRNameAction.run(submission);
 
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());

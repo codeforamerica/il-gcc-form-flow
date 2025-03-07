@@ -48,8 +48,8 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
     }
 
     @Override
-    public Optional<BigInteger> getOrganizationIdByProviderId(BigInteger providerId) {
-        Optional<ResourceOrganization> resourceOrganizationByProviderId = ccmsDataService.getResourceOrganizationByProviderId(
+    public Optional<BigInteger> getSiteAdministeredOrganizationIdByProviderId(BigInteger providerId) {
+        Optional<ResourceOrganization> resourceOrganizationByProviderId = ccmsDataService.getSiteAdministeredResourceOrganizationByProviderId(
                 providerId);
         return resourceOrganizationByProviderId.map(ResourceOrganization::getResourceOrgId);
     }

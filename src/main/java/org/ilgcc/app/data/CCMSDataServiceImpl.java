@@ -49,7 +49,7 @@ public class CCMSDataServiceImpl implements CCMSDataService {
     }
 
     @Override
-    public Optional<ResourceOrganization> getResourceOrganizationByProviderId(BigInteger providerId) {
+    public Optional<ResourceOrganization> getSiteAdministeredResourceOrganizationByProviderId(BigInteger providerId) {
        return resourceOrganizationRepository.findByProvidersProviderId(providerId);
     }
 
