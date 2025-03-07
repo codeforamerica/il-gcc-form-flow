@@ -47,7 +47,7 @@ public class CCMSSubmissionPayloadTransactionJob {
         log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}", jobId, submission.getId());
     }
 
-    @Job(name = "Send No Provider Selected Family Submission CCMS Payload", retries = 5)
+    @Job(name = "Send No Provider Selected Family Submission CCMS Payload", retries = 3)
     public void sendCCMSTransaction(Submission submission) throws JsonProcessingException {
         CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(submission);
         JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
