@@ -28,22 +28,20 @@ public class SetOrganizationIdAndCCRRName implements Action {
     CCMSDataServiceImpl ccmsDataServiceImpl;
 
     private static final String ORGANIZATION_ID_INPUT = "organizationId";
-    private static final String UNVALIDATED_ZIPCODE_INPUT_NAME = "parentHomeZipCode";
+    private static final String ZIP_CODE_INPUT_NAME = "parentHomeZipCode";
     private static final String APPLICATION_COUNTY_INPUT_NAME = "applicationCounty";
     private static final String APPLICATION_ZIPCODE_INPUT_NAME = "applicationZipCode";
     private static final String APPLICANT_COUNTY_INPUT_NAME = "applicantAddressCounty";
 
     @Override
     public void run(Submission submission) {
-        //TODO: add parentHomeZipCode_validated logic when validation is implemented
-
         Map<String, Object> inputData = submission.getInputData();
 
         boolean experiencingHomelessness = inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
                 List.of("yes"));
 
-        if (!experiencingHomelessness && hasValidValue(inputData, UNVALIDATED_ZIPCODE_INPUT_NAME)) {
-            final String unvalidatedZip = (String) submission.getInputData().get(UNVALIDATED_ZIPCODE_INPUT_NAME);
+        if (!experiencingHomelessness && hasValidValue(inputData, ZIP_CODE_INPUT_NAME)) {
+            final String unvalidatedZip = (String) submission.getInputData().get(ZIP_CODE_INPUT_NAME);
             saveCountyFromZip(submission, unvalidatedZip);
 
             final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(unvalidatedZip);

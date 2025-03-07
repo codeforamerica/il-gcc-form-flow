@@ -3,64 +3,98 @@
 <head th:replace="~{fragments/head :: head(title=#{parent-info-review.title})}"></head>
 <body>
 <div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: documents-search}"></th:block>
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-review.header})}"/>
-          <div class="form-card__content">
-            <p class="text--left"><strong th:text="#{parent-info-review.personal.information}"></strong></p>
-            <ol class="list--bulleted">
-              <li th:text="|${inputData.get('parentFirstName')} ${inputData.get('parentLastName')}|"></li>
-              <li th:text="|${inputData.get('parentBirthMonth')}/${inputData.get('parentBirthDay')}/${inputData.get('parentBirthYear')}|"></li>
-            </ol>
-            <a id="edit-parent-info-basic" th:href="|/flow/${flow}/parent-info-basic-1|" th:text="#{parent-info-review.personal.information.link}"></a>
-            <hr class="spacing-below-15 spacing-above-15">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block th:replace="~{fragments/gcc-icons :: documents-search}"></th:block>
+                <th:block
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-review.header})}"/>
+                <div class="form-card__content">
+                    <p class="text--left"><strong
+                            th:text="#{parent-info-review.personal.information}"></strong></p>
+                    <ol class="list--bulleted">
+                        <li th:text="|${inputData.get('parentFirstName')} ${inputData.get('parentLastName')}|"></li>
+                        <li th:text="|${inputData.get('parentBirthMonth')}/${inputData.get('parentBirthDay')}/${inputData.get('parentBirthYear')}|"></li>
+                    </ol>
+                    <a id="edit-parent-info-basic" th:href="|/flow/${flow}/parent-info-basic-1|"
+                       th:text="#{parent-info-review.personal.information.link}"></a>
+                    <hr class="spacing-below-15 spacing-above-15">
+                    <p class="text--left"><strong
+                            th:text="#{parent-info-review.home.address}"></strong></p>
+                    <th:block
+                            th:with="parentHomeAddress = ${T(org.ilgcc.app.utils.AddressUtilities).formatAddressAsMultiline(inputData, 'parentHome')}">
+                        <th:block th:if="${!parentHomeAddress.isEmpty()}">
+                            <div id="home-street-address-1"
+                                 th:text="${parentHomeAddress.get('StreetAddress1').toString()}"></div>
+                            <div id="home-street-address-2"
+                                 th:if="${parentHomeAddress.containsKey('StreetAddress2')}"
+                                 th:text="${parentHomeAddress.get('StreetAddress2')}"></div>
+                            <div id="home-city-state"
+                                 th:text="|${parentHomeAddress.get('City')}, ${parentHomeAddress.get('State')}|"></div>
+                            <div id="home-zipcode"
+                                 th:text="${parentHomeAddress.get('ZipCode')}"></div>
+                        </th:block>
+                        <th:block
+                                th:unless="${!parentHomeAddress.isEmpty()}">
+                            <p id="no-home-address" th:text="#{general.none-added}"></p>
+                        </th:block>
 
-            <p class="text--left"><strong th:text="#{parent-info-review.home.address}"></strong></p>
-            <div th:unless="${T(org.ilgcc.app.utils.SubmissionUtilities).parentIsExperiencingHomelessness(fieldData)}">
-              <th:block th:each="addressLine : ${inputData.get('homeAddressLines')}">
-                <div th:id="${addressLine.getKey()}" th:text="${addressLine.getValue()}"></div>
-              </th:block>
-              <br>
-            </div>
-            <div th:unless="${inputData.containsKey('homeAddressLines') and !inputData.get('homeAddressLines').isEmpty()}">
-              <p th:text="#{general.none-added}"></p>
-            </div>
-            <a id="edit-home-address" th:href="|/flow/${flow}/parent-home-address|" th:text="#{parent-info-review.home.address.link}"></a>
-            <hr class="spacing-below-15 spacing-above-15">
+                        <br>
 
-            <p class="text--left"><strong th:text="#{parent-info-review.mailing.address}"></strong></p>
-            <div th:if="${inputData.containsKey('addressLines') and !inputData.get('addressLines').isEmpty()}">
-              <th:block th:each="addressLine : ${inputData.get('addressLines')}">
-                <div th:id="${addressLine.getKey()}" th:text="${addressLine.getValue()}"></div>
-              </th:block>
-              <br>
-            </div>
-            <div th:unless="${inputData.containsKey('addressLines') and !inputData.get('addressLines').isEmpty()}">
-              <p th:text="#{general.none-added}"></p>
-            </div>
-            <a id="edit-mailing-address" th:href="|/flow/${flow}/parent-mailing-address|" th:text="#{parent-info-review.mailing.address.link}"></a>
-            <hr class="spacing-below-15 spacing-above-15">
+                        <a id="edit-home-address" th:href="|/flow/${flow}/parent-home-address|"
+                           th:text="#{parent-info-review.home.address.link}"></a>
+                        <hr class="spacing-below-15 spacing-above-15">
+                    </th:block>
+                    <p class="text--left"><strong
+                            th:text="#{parent-info-review.mailing.address}"></strong></p>
+                    <th:block
+                            th:with="parentMailingAddress = ${T(org.ilgcc.app.utils.AddressUtilities).formatAddressAsMultiline(inputData, 'parentMailing')}">
+                        <th:block th:if="${!parentMailingAddress.isEmpty()}">
+                            <div id="mailing-street-address-1"
+                                 th:text="${parentMailingAddress.get('StreetAddress1').toString()}"></div>
+                            <div id="mailing-street-address-2"
+                                 th:if="${parentMailingAddress.containsKey('StreetAddress2')}"
+                                 th:text="${parentMailingAddress.get('StreetAddress2')}"></div>
+                            <div id="mailing-city-state"
+                                 th:text="|${parentMailingAddress.get('City')}, ${parentMailingAddress.get('State')}|"></div>
+                            <div id="mailing-zipcode"
+                                 th:text="${parentMailingAddress.get('ZipCode')}"></div>
+                        </th:block>
+                        <th:block
+                                th:unless="${!parentMailingAddress.isEmpty()}">
+                            <p id="no-mailing-address" th:text="#{general.none-added}"></p>
+                        </th:block>
 
-            <p class="text--left"><strong th:text="#{parent-info-review.contact.info}"></strong></p>
-            <ol class="list--bulleted">
-              <li th:if="${!#strings.isEmpty(inputData.get('parentContactEmail'))}" th:text="${inputData.get('parentContactEmail')}"></li>
-              <li th:if="${!#strings.isEmpty(inputData.get('parentContactPhoneNumber'))}" th:text="${inputData.get('parentContactPhoneNumber')}"></li>
-            </ol>
-            <div th:unless="${!#strings.isEmpty(inputData.get('parentContactEmail')) or !#strings.isEmpty(inputData.get('parentContactPhoneNumber'))}">
-              <p th:text="#{general.none-added}"></p>
-            </div>
-            <a id="edit-parent-contact-info-basic" th:href="|/flow/${flow}/parent-contact-info|" th:text="#{parent-info-review.contact.info.link}"></a>
-          </div>
-          <div class="form-card__footer">
-            <th:block th:replace="~{fragments/continueButton :: continue}"/>
-          </div>
-      </main>
-    </div>
-  </section>
+                        <br>
+                        <a id="edit-mailing-address"
+                           th:href="|/flow/${flow}/parent-mailing-address|"
+                           th:text="#{parent-info-review.mailing.address.link}"></a>
+                        <hr class="spacing-below-15 spacing-above-15">
+                    </th:block>
+                    <p class="text--left"><strong
+                            th:text="#{parent-info-review.contact.info}"></strong>
+                    </p>
+                    <ol class="list--bulleted">
+                        <li th:if="${!#strings.isEmpty(inputData.get('parentContactEmail'))}"
+                            th:text="${inputData.get('parentContactEmail')}"></li>
+                        <li th:if="${!#strings.isEmpty(inputData.get('parentContactPhoneNumber'))}"
+                            th:text="${inputData.get('parentContactPhoneNumber')}"></li>
+                    </ol>
+                    <div th:unless="${!#strings.isEmpty(inputData.get('parentContactEmail')) or !#strings.isEmpty(inputData.get('parentContactPhoneNumber'))}">
+                        <p th:text="#{general.none-added}"></p>
+                    </div>
+                    <a id="edit-parent-contact-info-basic"
+                       th:href="|/flow/${flow}/parent-contact-info|"
+                       th:text="#{parent-info-review.contact.info.link}"></a>
+                </div>
+                <div class="form-card__footer">
+                    <th:block th:replace="~{fragments/continueButton :: continue}"/>
+                </div>
+            </main>
+        </div>
+    </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
 </body>

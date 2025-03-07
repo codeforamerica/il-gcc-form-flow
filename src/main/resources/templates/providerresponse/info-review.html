@@ -32,40 +32,54 @@
                                     th:text="#{provider-response-info-review.child-care-service-address}"></strong>
                             </p>
                             <th:block
-                                    th:with="serviceAddress = ${T(org.ilgcc.app.utils.SubmissionUtilities).getAddress(inputData, 'providerResponseService')}">
-                                <div id="provider-service-address-1"
-                                     th:text="${serviceAddress.get('address1').toString()}"></div>
-                                <div id="provider-service-address-2"
-                                     th:unless="${serviceAddress.get('address2').toString().isBlank()}"
-                                     th:text="${serviceAddress.get('address2')}"></div>
-                                <div id="provider-service-city-state"
-                                     th:text="|${serviceAddress.get('city')}, ${serviceAddress.get('state')}|"></div>
-                                <div id="provider-service-zipcode"
-                                     th:text="${serviceAddress.get('zipCode')}"></div>
+                                    th:with="serviceAddress = ${T(org.ilgcc.app.utils.AddressUtilities).formatAddressAsMultiline(inputData, 'providerResponseService')}">
+                                <th:block th:if="${!serviceAddress.isEmpty()}">
+                                    <div id="provider-service-street-address-1"
+                                         th:text="${serviceAddress.get('StreetAddress1').toString()}"></div>
+                                    <div id="provider-service-street-address-2"
+                                         th:if="${serviceAddress.containsKey('StreetAddress2')}"
+                                         th:text="${serviceAddress.get('StreetAddress2')}"></div>
+                                    <div id="provider-service-city-state"
+                                         th:text="|${serviceAddress.get('City')}, ${serviceAddress.get('State')}|"></div>
+                                    <div id="provider-service-zipcode"
+                                         th:text="${serviceAddress.get('ZipCode')}"></div>
+                                </th:block>
+                                <th:block
+                                        th:unless="${!serviceAddress.isEmpty()}">
+                                    <p id="no-service-address" th:text="#{general.none-added}"></p>
+                                </th:block>
+                                <br>
+                                <a id="edit-provider-service-address"
+                                   th:href="|/flow/${flow}/service-address|"
+                                   th:text="#{provider-response-info-review.child-care-service-address-edit}"></a>
+                                <hr class="spacing-below-15 spacing-above-15">
                             </th:block>
-                            <a id="edit-home-address" th:href="|/flow/${flow}/service-address|"
-                               th:text="#{provider-response-info-review.child-care-service-address-edit}"></a>
-                            <hr class="spacing-below-15 spacing-above-15">
-
                             <p class="text--left"><strong
                                     th:text="#{provider-response-info-review.mailing-address}"></strong>
                             </p>
                             <th:block
-                                    th:with="mailingAddress = ${T(org.ilgcc.app.utils.SubmissionUtilities).getAddress(inputData, 'providerMailing')}">
-                                <div id="provider-mailing-address-1"
-                                     th:text="${mailingAddress.get('address1').toString()}"></div>
-                                <div id="provider-mailing-address-2"
-                                     th:unless="${mailingAddress.get('address2').toString().isBlank()}"
-                                     th:text="${mailingAddress.get('address2')}"></div>
-                                <div id="provider-mailing-city-state"
-                                     th:text="|${mailingAddress.get('city')}, ${mailingAddress.get('state')}|"></div>
-                                <div id="provider-mailing-zipcode"
-                                     th:text="${mailingAddress.get('zipCode')}"></div>
+                                    th:with="mailingAddress = ${T(org.ilgcc.app.utils.AddressUtilities).formatAddressAsMultiline(inputData, 'providerMailing')}">
+                                <th:block th:if="${!mailingAddress.isEmpty()}">
+                                    <div id="provider-mailing-street-address-1"
+                                         th:text="${mailingAddress.get('StreetAddress1').toString()}"></div>
+                                    <div id="provider-mailing-street-address-2"
+                                         th:if="${mailingAddress.containsKey('StreetAddress2')}"
+                                         th:text="${mailingAddress.get('StreetAddress2')}"></div>
+                                    <div id="provider-mailing-city-state"
+                                         th:text="|${mailingAddress.get('City')}, ${mailingAddress.get('State')}|"></div>
+                                    <div id="provider-mailing-zipcode"
+                                         th:text="${mailingAddress.get('ZipCode')}"></div>
+                                </th:block>
+                                <th:block
+                                        th:unless="${!mailingAddress.isEmpty()}">
+                                    <p id="no-mailing-address" th:text="#{general.none-added}"></p>
+                                </th:block>
+                                <br>
+                                <a id="edit-provider-mailing-address"
+                                   th:href="|/flow/${flow}/mailing-address|"
+                                   th:text="#{provider-response-info-review.mailing-address-edit}"></a>
+                                <hr class="spacing-below-15 spacing-above-15">
                             </th:block>
-                            <br>
-                            <a id="edit-provider-mailing-address"
-                               th:href="|/flow/${flow}/mailing-address|"
-                               th:text="#{provider-response-info-review.mailing-address-edit}"></a>
                             <hr class="spacing-below-15 spacing-above-15">
                             <p class="text--left"><strong
                                     th:text="#{parent-info-review.contact.info}"></strong></p>
@@ -86,7 +100,7 @@
                         </div>
                         <div class="form-card__footer">
                             <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
-                      text=#{general.button.continue})}" />
+                      text=#{general.button.continue})}"/>
                         </div>
                     </th:block>
                 </th:block>

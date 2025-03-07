@@ -49,6 +49,35 @@ public class ApplicationPreparerTest {
     }
 
     @Test
+    public void skipsAddingMailingAddressWhenSameAsHomeAddress(){
+        submission = new SubmissionTestBuilder()
+                .withFlow("gcc")
+                .with("parentHomeStreetAddress1", "123 Main Street")
+                .with("parentHomeCity", "De Kalb")
+                .with("parentHomeState", "IL")
+                .with("parentHomeZipCode", "60112")
+                .with("parentMailingAddressSameAsHomeAddress[]", List.of("yes"))
+                .with("parentMailingStreetAddress1", "123 Main Street")
+                .with("parentMailingCity", "De Kalb")
+                .with("parentMailingState", "IL")
+                .with("parentMailingZipCode", "60112")
+                .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        assertThat(result.get("parentMailingStreetAddress1")).isEqualTo(
+                new SingleField("parentMailingStreetAddress1", "", null));
+        assertThat(result.get("parentMailingStreetAddress2")).isEqualTo(
+                new SingleField("parentMailingStreetAddress2", "", null));
+        assertThat(result.get("parentMailingCity")).isEqualTo(
+                new SingleField("parentMailingCity", "", null));
+        assertThat(result.get("parentMailingState")).isEqualTo(
+                new SingleField("parentMailingState", "", null));
+        assertThat(result.get("parentMailingZipCode")).isEqualTo(
+                new SingleField("parentMailingZipCode", "", null));
+    }
+
+    @Test
     public void setsOtherMonthlyIncomeByAddingUnearnedIncome() {
         submission = new SubmissionTestBuilder().with("unearnedIncomeRental", "123").with("unearnedIncomeDividends", "127")
                 .with("unearnedIncomeUnemployment", "124").with("unearnedIncomeRoyalties", "126")

@@ -56,8 +56,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-address.title"));
+        // cconfirm-service-address
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -75,7 +75,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // confirm-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-mailing-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // registration-contact-info
@@ -87,12 +87,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         assertThat(testPage.findElementTextById("provider-full-name")).isEqualTo("ProviderFirst ProviderLast");
-        assertThat(testPage.findElementTextById("provider-service-address-1")).isEqualTo("972 Mission St");
-        assertThat(testPage.findElementTextById("provider-service-address-2")).isEqualTo("5th floor");
+        assertThat(testPage.findElementTextById("provider-service-street-address-1")).isEqualTo("972 Mission St");
+        assertThat(testPage.findElementTextById("provider-service-street-address-2")).isEqualTo("5th floor");
         assertThat(testPage.findElementTextById("provider-service-city-state")).isEqualTo("San Francisco, CA");
         assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("94103");
-        assertThat(testPage.findElementTextById("provider-mailing-address-1")).isEqualTo("972 Mission St");
-        assertThat(testPage.findElementTextById("provider-mailing-address-2")).isEqualTo("5th floor");
+        assertThat(testPage.findElementTextById("provider-mailing-street-address-1")).isEqualTo("972 Mission St");
+        assertThat(testPage.findElementTextById("provider-mailing-street-address-2")).isEqualTo("5th floor");
         assertThat(testPage.findElementTextById("provider-mailing-city-state")).isEqualTo("San Francisco, CA");
         assertThat(testPage.findElementTextById("provider-mailing-zipcode")).isEqualTo("94103");
         assertThat(testPage.findElementTextById("provider-phone")).isEqualTo("(555) 555-5555");
@@ -175,8 +175,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseServiceZipCode", "12345");
         testPage.clickButton("Continue");
 
-        // confirm-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-address.title"));
+        // confirm-service-address
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
         //mailing-address
@@ -185,7 +185,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         //confirm-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-mailing-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
         // contact-info
@@ -198,7 +198,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         assertThat(testPage.findElementTextById("business-name")).isEqualTo("Business Name");
         assertThat(testPage.findElementTextById("full-name")).isEqualTo("First Name Last Name");
-        assertThat(testPage.findElementTextById("provider-service-address-1")).isEqualTo("123 Main St");
+        assertThat(testPage.findElementTextById("provider-service-street-address-1")).isEqualTo("123 Main St");
         assertThat(testPage.findElementTextById("provider-service-city-state")).isEqualTo("City, IL");
         assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("12345");
         assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
@@ -254,7 +254,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -526,7 +526,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -704,7 +704,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -876,7 +876,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -1030,7 +1030,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -1202,8 +1202,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-address.title"));
+        // confirm-service-address
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -1221,7 +1221,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         // confirm-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-mailing-address.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // contact-info
@@ -1233,12 +1233,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         assertThat(testPage.findElementTextById("provider-full-name")).isEqualTo("ProviderFirst ProviderLast");
-        assertThat(testPage.findElementTextById("provider-service-address-1")).isEqualTo("972 Mission St");
-        assertThat(testPage.findElementTextById("provider-service-address-2")).isEqualTo("5th floor");
+        assertThat(testPage.findElementTextById("provider-service-street-address-1")).isEqualTo("972 Mission St");
+        assertThat(testPage.findElementTextById("provider-service-street-address-2")).isEqualTo("5th floor");
         assertThat(testPage.findElementTextById("provider-service-city-state")).isEqualTo("San Francisco, CA");
         assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("94103");
-        assertThat(testPage.findElementTextById("provider-mailing-address-1")).isEqualTo("972 Mission St");
-        assertThat(testPage.findElementTextById("provider-mailing-address-2")).isEqualTo("5th floor");
+        assertThat(testPage.findElementTextById("provider-mailing-street-address-1")).isEqualTo("972 Mission St");
+        assertThat(testPage.findElementTextById("provider-mailing-street-address-2")).isEqualTo("5th floor");
         assertThat(testPage.findElementTextById("provider-mailing-city-state")).isEqualTo("San Francisco, CA");
         assertThat(testPage.findElementTextById("provider-mailing-zipcode")).isEqualTo("94103");
         assertThat(testPage.findElementTextById("provider-phone")).isEqualTo("(555) 555-5555");
