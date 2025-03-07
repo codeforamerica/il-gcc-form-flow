@@ -555,8 +555,8 @@ flow:
       - name: service-address
   service-address:
     nextScreens:
-      - name: confirm-address
-  confirm-address:
+      - name: confirm-service-address
+  confirm-service-address:
     condition: ShowProviderResponseServiceAddressConfirmationScreen
     onPostAction: SaveValidatedProviderResponseServiceAddress
     nextScreens:

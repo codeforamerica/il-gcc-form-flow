@@ -56,7 +56,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // cconfirm-service-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
@@ -175,7 +175,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerResponseServiceZipCode", "12345");
         testPage.clickButton("Continue");
 
-        // confirm-address
+        // confirm-service-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
@@ -254,7 +254,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -526,7 +526,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -704,7 +704,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -876,7 +876,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -1030,7 +1030,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 
         // mailing-address
@@ -1202,7 +1202,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        // confirm-address
+        // confirm-service-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
 

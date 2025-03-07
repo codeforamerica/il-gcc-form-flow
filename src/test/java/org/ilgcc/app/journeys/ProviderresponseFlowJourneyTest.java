@@ -131,7 +131,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("providerResponseServiceZipCode", "12345");
         testPage.clickButton("Continue");
 
-        // confirm-address
+        // confirm-service-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
@@ -219,7 +219,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("providerResponseServiceZipCode", "12345");
         testPage.clickButton("Continue");
 
-        // confirm-address
+        // confirm-service-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
