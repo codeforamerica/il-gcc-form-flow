@@ -33,6 +33,9 @@
                                th:text="#{provider-response-info-review.basic-info-edit}"></a>
                             <hr class="spacing-below-15 spacing-above-15">
 
+                            <p class="text--left"><strong
+                                    th:text="#{provider-response-info-review.child-care-service-address}"></strong>
+                            </p>
                             <th:block
                                     th:with="serviceAddress = ${T(org.ilgcc.app.utils.AddressUtilities).formatAddressAsMultiline(inputData, 'providerResponseService')}">
                                 <th:block th:if="${!serviceAddress.isEmpty()}">

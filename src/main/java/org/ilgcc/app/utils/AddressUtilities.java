@@ -38,8 +38,8 @@ public class AddressUtilities {
         return String.format(suggestedAddressKey, capitalize(addressGroupInputPrefix));
     }
 
-    public static boolean skipAddressConfirmation(Submission submission, String addressGroupInputPrefix) {
-        return validatedAndInputtedAddressesMatch(submission.getInputData(), addressGroupInputPrefix);
+    public static boolean requireAddressConfirmation(Submission submission, String addressGroupInputPrefix) {
+        return !validatedAndInputtedAddressesMatch(submission.getInputData(), addressGroupInputPrefix);
     }
 
     public static Boolean validatedAndInputtedAddressesMatch(Map<String, Object> inputData, String addressGroupInputPrefix) {

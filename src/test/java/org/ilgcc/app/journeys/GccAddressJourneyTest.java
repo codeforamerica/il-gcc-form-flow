@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-public class AddressJourneyTest extends AbstractBasePageTest {
+public class GccAddressJourneyTest extends AbstractBasePageTest {
 
     private final static String STREET_ADDRESS_LINE_1 = "110 E Sycamore St";
     private final static String STREET_ADDRESS_LINE_2 = "#1010";
@@ -339,8 +339,6 @@ public class AddressJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getInputValue("parentHomeZipCode")).isEqualTo(ZIP_CODE);
 
         testPage.goBack();
-
-        // Todo: What should happen if someone rejects the first validation then accepts the second validation and are using the same Address checkbox.
 
         //parent-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-review.title"));

@@ -14,7 +14,7 @@ import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.util.Map;
 
-public class SaveValidatedAddress implements Action {
+abstract class SaveValidatedAddress implements Action {
 
     private final SubmissionRepositoryService submissionRepositoryService;
     private final String addressGroupInputPrefix;
