@@ -18,7 +18,7 @@ public class ResourceOrganizationImporter {
 
     private static final String SQL_BEGIN = "BEGIN;\n";
 
-    private static final String SQL_TRUNCATE = "\n\tTRUNCATE TABLE resource_organizations;\n";
+    private static final String SQL_TRUNCATE = "\n\tTRUNCATE TABLE resource_organizations CASCADE;\n";
 
     private static final String SQL_INSERT = "\tINSERT INTO resource_organizations (resource_org_id, name, street_address, city, state, zip_code, caseload_code, phone) VALUES\n";
 
@@ -70,8 +70,7 @@ public class ResourceOrganizationImporter {
 
             Set<String> resourceOrgIdsAdded = new HashSet<>();
             for (int j = 1; j < lines.size(); j++) {
-                String line = lines.get(j);
-                String[] values = line.split(","); // Split by comma
+                String[] values = ImporterUtils.getValuesFromCSVRow(lines.get(j));
 
                 StringBuilder sb = new StringBuilder("\t(");
 
@@ -86,7 +85,8 @@ public class ResourceOrganizationImporter {
                         } else if (integerIndices.contains(i)) {
                             valueToInsert.append(values[i].trim());
                         } else {
-                            valueToInsert.append("'").append(values[i].trim()).append("'");
+                            String cleanedValue = ImporterUtils.getCleanedValue(values[i]);
+                            valueToInsert.append("'").append(cleanedValue).append("'");
                         }
                         sb.append(valueToInsert);
                         if (i < values.length - 1) {
