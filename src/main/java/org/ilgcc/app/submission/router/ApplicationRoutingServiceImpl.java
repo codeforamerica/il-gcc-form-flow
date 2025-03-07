@@ -1,6 +1,7 @@
 package org.ilgcc.app.submission.router;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.ilgcc.app.data.CCMSDataService;
@@ -55,7 +56,12 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
     }
 
     @Override
-    public Optional<List<County>> getCountiesByCaseLoadCode(String caseloadCode) {
-        return Optional.empty();
+    public Optional<List<County>> getActiveCountiesByCaseLoadCodes() {
+        List<County> counties = new ArrayList<>();
+        activeCaseLoadCodes.forEach(caseloadCode -> {
+            Optional<List<County>> countiesByCaseloadCode = ccmsDataService.getCountiesByCaseloadCode(caseloadCode);
+            countiesByCaseloadCode.ifPresent(counties::addAll);
+        });
+        return Optional.of(counties);
     }
 }

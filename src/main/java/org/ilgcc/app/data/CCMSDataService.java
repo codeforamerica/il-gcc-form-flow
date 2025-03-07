@@ -45,5 +45,7 @@ public interface CCMSDataService {
      * @return a list of matching resource organizations
      */
     List<ResourceOrganization> getResourceOrganizationsByCaseloadCode(String caseloadCode);
+
+    Optional<List<County>> getCountiesByCaseloadCode(String caseloadCode);
 }
 
