@@ -23,38 +23,29 @@ import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import lombok.Getter;
+import org.ilgcc.app.data.County;
+import org.ilgcc.app.submission.router.ApplicationRoutingServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CountyOptionUtils {
 
-    private static List<CountyOption> countyOptions;
+  @Autowired
+  private ApplicationRoutingServiceImpl applicationRoutingService;
 
-    @PostConstruct
-    public void init() {
-        List<CountyOption> unsortedCountyOptions = new ArrayList<>();
-        unsortedCountyOptions.add(CARROLL);
-        unsortedCountyOptions.add(DEKALB);
-        unsortedCountyOptions.add(LEE);
-        unsortedCountyOptions.add(MCHENRY);
-        unsortedCountyOptions.add(OGLE);
-        unsortedCountyOptions.add(WHITESIDE);
-        unsortedCountyOptions.add(MARION);
-        unsortedCountyOptions.add(JEFFERSON);
-        unsortedCountyOptions.add(EFFINGHAM);
-        unsortedCountyOptions.add(FAYETTE);
-        unsortedCountyOptions.add(CRAWFORD);
-        unsortedCountyOptions.add(WAYNE);
-        unsortedCountyOptions.add(RICHLAND);
-        unsortedCountyOptions.add(LAWRENCE);
-        unsortedCountyOptions.add(CLAY);
-        unsortedCountyOptions.add(WABASH);
-        unsortedCountyOptions.add(JASPER);
-        unsortedCountyOptions.add(EDWARDS);
-        countyOptions = unsortedCountyOptions.stream().sorted(Comparator.comparing(CountyOption::getLabel)).toList();
-    }
+  private static List<County> activeCounties;
 
-    public static List<CountyOption> getActiveCountyOptions() {
-        return countyOptions;
-    }
+  @PostConstruct
+  public void init() {
+    // Load data from the database on startup
+    Optional<List<County>> optionalActiiveCounties = applicationRoutingService.getActiveCountiesByCaseLoadCodes();
+    activeCounties = optionalActiiveCounties.orElseGet(ArrayList::new);
+  }
+
+  public static List<County> getActiveCounties() {
+    return activeCounties;
+  }
 }

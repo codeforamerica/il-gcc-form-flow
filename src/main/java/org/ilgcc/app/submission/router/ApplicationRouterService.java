@@ -35,5 +35,5 @@ public interface ApplicationRouterService {
      */
     Optional<BigInteger> getOrganizationIdByProviderId(BigInteger providerId);
 
-    Optional<List<County>> getCountiesByCaseLoadCode(String caseLoadCode);
+    Optional<List<County>> getActiveCountiesByCaseLoadCodes();
 }

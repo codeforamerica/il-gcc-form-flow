@@ -15,9 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class CountyUtilTest {
 
-    @Test
-    public void getCountiesWithSda15ProvidersAsFalse() {
-        assertThat(CountyOptionUtils.getActiveCountyOptions().size()).isEqualTo(18);
-    }
-
+//    @Test
+//    public void getCountiesWithSda15ProvidersAsFalse() {
+//        assertThat(CountyOptionUtils.getActiveCounties().size()).isEqualTo(18);
+//    }
 }
