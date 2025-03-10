@@ -10,7 +10,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     
     Transaction findByTransactionId(UUID transactionId);
     
-    Transaction findByWorkItemId(String workItemId);
+    Transaction findByWorkItemId(UUID workItemId);
     
     Transaction findBySubmissionId(UUID submissionId);
     

@@ -29,7 +29,7 @@ public class Transaction {
     private UUID transactionId;
     
     @Column(name = "work_item_id")
-    private String workItemId;
+    private UUID workItemId;
     
     @JoinColumn(name = "submission_id")
     private UUID submissionId;
