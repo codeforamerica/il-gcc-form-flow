@@ -35,5 +35,10 @@ public interface ApplicationRouterService {
      */
     Optional<BigInteger> getSiteAdministeredOrganizationIdByProviderId(BigInteger providerId);
 
+    /**
+     * Returns a list of active counties with unique county names
+     *
+     * @return A list of active counties
+     */
     List<County> getActiveCountiesByCaseLoadCodes();
 }
