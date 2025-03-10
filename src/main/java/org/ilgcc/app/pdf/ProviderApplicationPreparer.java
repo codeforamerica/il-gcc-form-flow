@@ -1,5 +1,6 @@
 package org.ilgcc.app.pdf;
 
+import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
@@ -12,13 +13,13 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.ilgcc.app.submission.actions.FormatSubmittedAtDate;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
-import org.ilgcc.app.utils.SubmissionUtilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +48,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
 
         Map<String, Object> providerInputData = providerSubmission.getInputData();
 
-        List<String> providerFields = List.of(
+        List<String> providerFields = new ArrayList<>(Arrays.asList(
                 "providerResponseProviderNumber",
                 "providerResponseFirstName",
                 "providerResponseLastName",
@@ -57,8 +58,26 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 "providerConviction",
                 "providerConvictionExplanation",
                 "providerIdentityCheckDateOfBirthDate",
-                "providerTaxIdEIN"
-        );
+                "providerTaxIdEIN",
+                "providerResponseServiceStreetAddress1",
+                "providerResponseServiceStreetAddress2",
+                "providerResponseServiceCity",
+                "providerResponseServiceState",
+                "providerResponseServiceZipCode"
+        ));
+
+        List<String> mailingAddressFields = List.of(
+                "providerMailingStreetAddress1",
+                "providerMailingStreetAddress2",
+                "providerMailingCity",
+                "providerMailingState",
+                "providerMailingZipCode");
+
+        List sameAddress = (List) providerInputData.getOrDefault("providerMailingAddressSameAsServiceAddress[]", emptyList());
+
+        if (sameAddress.isEmpty()) {
+            providerFields.addAll(mailingAddressFields);
+        };
 
         for (String fieldName : providerFields) {
             results.put(fieldName,
@@ -69,8 +88,6 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 new HashMap<String, String>());
         results.put("clientResponseConfirmationCode", new SingleField("clientResponseConfirmationCode",
                 (String) client.getOrDefault("clientResponseConfirmationCode", ""), null));
-        results.putAll(prepareProviderAddressData(providerInputData));
-        results.putAll(prepareProviderMailingAddressData(providerInputData));
 
         results.put("providerLicenseNumber",
                 new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
@@ -122,45 +139,9 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         return results;
     }
 
-    private Map<String, SubmissionField> prepareProviderAddressData(Map<String, Object> inputData) {
-        var results = new HashMap<String, SubmissionField>();
-
-        Map<String, String> providerAddressMapped = SubmissionUtilities.getAddress(inputData, "providerResponseService");
-
-        results.put("providerResponseServiceStreetAddress1", new SingleField("providerResponseServiceStreetAddress1",
-                providerAddressMapped.get("address1"), null));
-        results.put("providerResponseServiceStreetAddress2", new SingleField("providerResponseServiceStreetAddress2",
-                providerAddressMapped.get("address2"), null));
-        results.put("providerResponseServiceCity",
-                new SingleField("providerResponseServiceCity", providerAddressMapped.get("city"), null));
-        results.put("providerResponseServiceState",
-                new SingleField("providerResponseServiceState", providerAddressMapped.get("state"), null));
-        results.put("providerResponseServiceZipCode",
-                new SingleField("providerResponseServiceZipCode", providerAddressMapped.get("zipCode"), null));
-
-        return results;
-    }
-
-    private Map<String, SubmissionField> prepareProviderMailingAddressData(Map<String, Object> inputData) {
-        var results = new HashMap<String, SubmissionField>();
-        Map<String, String> mailingAddressMapped = SubmissionUtilities.getAddress(inputData, "providerMailing");
-
-        results.put("providerMailingStreetAddress1", new SingleField("providerMailingStreetAddress1",
-                mailingAddressMapped.get("address1"), null));
-        results.put("providerMailingStreetAddress2", new SingleField("providerMailingStreetAddress2",
-                mailingAddressMapped.get("address2"), null));
-        results.put("providerMailingCity",
-                new SingleField("providerMailingCity", mailingAddressMapped.get("city"), null));
-        results.put("providerMailingState",
-                new SingleField("providerMailingState", mailingAddressMapped.get("state"), null));
-        results.put("providerMailingZipCode",
-                new SingleField("providerMailingZipCode", mailingAddressMapped.get("zipCode"), null));
-
-        return results;
-    }
 
     private String providerSignature(Map<String, Object> providerInputData) {
-        String providerSignature =  (String) providerInputData.getOrDefault("providerSignedName", "");
+        String providerSignature = (String) providerInputData.getOrDefault("providerSignedName", "");
         if (!providerSignature.isEmpty()) {
             return providerSignature;
         }

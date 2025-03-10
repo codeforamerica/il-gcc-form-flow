@@ -54,14 +54,20 @@ flow:
     nextScreens:
       - name: parent-no-permanent-address
         condition: ParentIsExperiencingHomelessness
+      - name: confirm-parent-home-address
+  confirm-parent-home-address:
+    condition: ShowParentHomeAddressConfirmationScreen
+    onPostAction: SaveValidatedParentHomeAddress
+    nextScreens:
       - name: parent-mailing-address
   parent-no-permanent-address:
     nextScreens: null
   parent-mailing-address:
     nextScreens:
-      - name: parent-confirm-address
-  parent-confirm-address:
-    beforeDisplayAction: SetEditAddressRedirect
+      - name: confirm-parent-mailing-address
+  confirm-parent-mailing-address:
+    condition: ShowParentMailingAddressConfirmationScreen
+    onPostAction: SaveValidatedParentMailingAddress
     nextScreens:
       - name: parent-comm-preference
   parent-comm-preference:
@@ -73,7 +79,6 @@ flow:
     nextScreens:
       - name: parent-info-review
   parent-info-review:
-    beforeDisplayAction: FormatParentConfirmationAddress
     nextScreens:
       - name: parent-have-a-partner
   parent-have-a-partner:
@@ -550,8 +555,10 @@ flow:
       - name: service-address
   service-address:
     nextScreens:
-      - name: confirm-address
-  confirm-address:
+      - name: confirm-service-address
+  confirm-service-address:
+    condition: ShowProviderResponseServiceAddressConfirmationScreen
+    onPostAction: SaveValidatedProviderResponseServiceAddress
     nextScreens:
       - name: mailing-address
         condition: EnableProviderRegistration
@@ -561,7 +568,8 @@ flow:
     nextScreens:
       - name: confirm-mailing-address
   confirm-mailing-address:
-    condition: EnableProviderRegistration
+    condition: ShowProviderResponseMailingAddressConfirmationScreen
+    onPostAction: SaveValidatedProviderResponseMailingAddress
     nextScreens:
       - name: contact-info
   contact-info:
@@ -632,6 +640,8 @@ flow:
     nextScreens:
       - name: registration-confirm-address
   registration-confirm-address:
+    condition: ShowProviderResponseServiceAddressConfirmationScreen
+    onPostAction: SaveValidatedProviderResponseServiceAddress
     nextScreens:
       - name: registration-mailing-address
         condition: EnableProviderRegistration
@@ -641,7 +651,8 @@ flow:
     nextScreens:
       - name: registration-confirm-mailing-address
   registration-confirm-mailing-address:
-    condition: EnableProviderRegistration
+    condition: ShowProviderResponseMailingAddressConfirmationScreen
+    onPostAction: SaveValidatedProviderResponseMailingAddress
     nextScreens:
       - name: registration-contact-info
   registration-contact-info:
