@@ -46,3 +46,4 @@ node_modules/
 
 ### Local cert ###
 *.p12
+/data-import/

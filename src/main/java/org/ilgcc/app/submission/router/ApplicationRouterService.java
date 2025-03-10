@@ -26,10 +26,10 @@ public interface ApplicationRouterService {
     Optional<ResourceOrganization> getOrganizationByCountyName(String countyName);
 
     /**
-     * Returns the organization ID for a given provider ID
+     * Returns the site administered resource organization's Id for a given provider Id
      *
-     * @param providerId The alphanumeric provider ID to look up
-     * @return The corresponding organization ID
+     * @param providerId The numeric provider Id to look up
+     * @return The site administered resource organization's Id
      */
-    Optional<BigInteger> getOrganizationIdByProviderId(BigInteger providerId);
+    Optional<BigInteger> getSiteAdministeredOrganizationIdByProviderId(BigInteger providerId);
 }

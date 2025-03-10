@@ -5,6 +5,8 @@ import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.Provider;
 import org.ilgcc.app.data.ProviderRepository;
+import org.ilgcc.app.data.ResourceOrganization;
+import org.ilgcc.app.data.ResourceOrganizationRepository;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -17,8 +19,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile({"dev", "demo", "test", "staging"})
 public class FakeProviderDataImporter implements InitializingBean {
+
     @Autowired
     private ProviderRepository providerRepository;
+
+    @Autowired
+    private ResourceOrganizationRepository resourceOrganizationRepository;
 
     @Override
     public void afterPropertiesSet() {
@@ -36,7 +42,6 @@ public class FakeProviderDataImporter implements InitializingBean {
             provider.setDateOfLastApproval(OffsetDateTime.now().minusYears(1));
             providerRepository.save(provider);
         }
-
 
         if (!providerRepository.existsById(new BigInteger("12345678902"))) {
             // Valid date, status P
@@ -126,6 +131,34 @@ public class FakeProviderDataImporter implements InitializingBean {
             provider.setZipCode("60613");
             provider.setStatus("P");
             provider.setDateOfLastApproval(OffsetDateTime.now().minusYears(5));
+            providerRepository.save(provider);
+        }
+
+        if (!providerRepository.existsById(new BigInteger("12345678909"))) {
+
+            ResourceOrganization siteAdminResourceOrganization = null;
+            if (!resourceOrganizationRepository.existsById(new BigInteger("10101"))) {
+                siteAdminResourceOrganization = new ResourceOrganization();
+                siteAdminResourceOrganization.setResourceOrgId(new BigInteger("10101"));
+                siteAdminResourceOrganization.setName("Sample Site Admin Resource Organization");
+                siteAdminResourceOrganization.setCity("Chicago");
+                resourceOrganizationRepository.save(siteAdminResourceOrganization);
+            }
+
+            // Valid date, status W
+            Provider provider = new Provider();
+            provider.setProviderId(new BigInteger("12345678909"));
+            provider.setName("Sample Provider #9");
+            provider.setCity("Chicago");
+            provider.setState("IL");
+            provider.setZipCode("60613");
+            provider.setStatus("W");
+            provider.setDateOfLastApproval(OffsetDateTime.now().minusYears(2));
+
+            if (siteAdminResourceOrganization != null) {
+                provider.setResourceOrganization(siteAdminResourceOrganization);
+            }
+
             providerRepository.save(provider);
         }
 
