@@ -19,7 +19,7 @@ public class TransactionRepositoryService {
         return transactionRepository.findByTransactionId(transactionId);
     }
     
-    public Transaction getByWorkItemId(String workItemId) {
+    public Transaction getByWorkItemId(UUID workItemId) {
         return transactionRepository.findByWorkItemId(workItemId);
     }
     
@@ -38,7 +38,7 @@ public class TransactionRepositoryService {
         return transactionRepository.save(transaction);
     }
     
-    public Transaction setWorkItemId(UUID transactionId, String workItemId) {
+    public Transaction setWorkItemId(UUID transactionId, UUID workItemId) {
         Transaction transaction = transactionRepository.findByTransactionId(transactionId);
         transaction.setWorkItemId(workItemId);
         return transactionRepository.save(transaction);
