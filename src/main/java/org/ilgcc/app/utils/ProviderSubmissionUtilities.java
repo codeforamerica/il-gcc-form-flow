@@ -62,7 +62,7 @@ public class ProviderSubmissionUtilities {
 
     public static Optional<UUID> getFamilySubmissionId(Submission providerSubmission) {
         if (providerSubmission.getInputData().containsKey("familySubmissionId")) {
-            String familySubmissionId = (String) providerSubmission.getInputData().get("familySubmissionId");
+            String familySubmissionId = providerSubmission.getInputData().get("familySubmissionId").toString();
             return Optional.of(UUID.fromString(familySubmissionId));
         }
         return Optional.empty();
