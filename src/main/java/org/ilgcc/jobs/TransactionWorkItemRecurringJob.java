@@ -11,10 +11,12 @@ import org.ilgcc.app.data.TransactionRepositoryService;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.scheduling.JobScheduler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@ConditionalOnProperty(name = "il-gcc.ccms-integration-enabled", havingValue = "true")
 public class TransactionWorkItemRecurringJob {
 
     private final TransactionRepositoryService transactionRepositoryService;
