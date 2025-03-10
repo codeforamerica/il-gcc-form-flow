@@ -53,22 +53,6 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         results.put("partnerFullName",
                 new SingleField("partnerFullName", String.format("%s, %s", partnerLastName, partnerFirstName), null));
 
-        List<String> mailingAddressFields = List.of(
-                "parentMailingStreetAddress1",
-                "parentMailingStreetAddress2",
-                "parentMailingCity",
-                "parentMailingState",
-                "parentMailingZipCode");
-
-        List sameAddress = (List) inputData.getOrDefault("parentMailingAddressSameAsHomeAddress[]", emptyList());
-
-        if (sameAddress.contains("yes")) {
-            for (String fieldName : mailingAddressFields) {
-                results.put(fieldName,
-                        new SingleField(fieldName, "", null));
-            }
-        }
-
         String rentalIncome = inputData.getOrDefault("unearnedIncomeRental", "").toString();
         String dividendIncome = inputData.getOrDefault("unearnedIncomeDividends", "").toString();
         String unemploymentIncome = inputData.getOrDefault("unearnedIncomeUnemployment", "").toString();
