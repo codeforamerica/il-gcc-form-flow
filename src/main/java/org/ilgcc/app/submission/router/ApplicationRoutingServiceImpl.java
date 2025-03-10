@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
-    private final List<String> activeCaseLoadCodes = List.of("BB", "QQ");
+    public List<String> activeCaseLoadCodes = List.of("BB", "QQ");
     private final CCMSDataService ccmsDataService;
 
     @Autowired
