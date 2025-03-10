@@ -143,7 +143,7 @@ public class ProviderApplicationPreparerTest {
     }
 
     @Test
-    public void doesNotMapMailingAddressIfSameAsProviderMailingAddress() {
+    public void mapsServiceAndMailingAddressEvenIfSame() {
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
                 .withProviderSubmissionData()
@@ -191,11 +191,14 @@ public class ProviderApplicationPreparerTest {
         assertThat(result.get("providerResponseServiceZipCode")).isEqualTo(
                 new SingleField("providerResponseServiceZipCode", "60112", null));
 
-        assertThat(result.get("providerMailingStreetAddress1")).isNull();
-        assertThat(result.get("providerMailingStreetAddress2")).isNull();
-        assertThat(result.get("providerMailingCity")).isNull();
-        assertThat(result.get("providerMailingState")).isNull();
-        assertThat(result.get("providerMailingZipCode")).isNull();
+        assertThat(result.get("providerMailingStreetAddress1")).isEqualTo(
+                new SingleField("providerMailingStreetAddress1", "123 Main Street", null));
+        assertThat(result.get("providerMailingCity")).isEqualTo(
+                new SingleField("providerMailingCity", "De Kalb", null));
+        assertThat(result.get("providerMailingState")).isEqualTo(
+                new SingleField("providerMailingState", "IL", null));
+        assertThat(result.get("providerMailingZipCode")).isEqualTo(
+                new SingleField("providerMailingZipCode", "60112", null));
 
         assertThat(result.get("providerResponseContactPhoneNumber")).isEqualTo(
                 new SingleField("providerResponseContactPhoneNumber", "(111) 222-3333", null));

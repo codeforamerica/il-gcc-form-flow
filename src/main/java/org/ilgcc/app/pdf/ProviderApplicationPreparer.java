@@ -1,6 +1,5 @@
 package org.ilgcc.app.pdf;
 
-import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
@@ -63,21 +62,14 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 "providerResponseServiceStreetAddress2",
                 "providerResponseServiceCity",
                 "providerResponseServiceState",
-                "providerResponseServiceZipCode"
-        ));
-
-        List<String> mailingAddressFields = List.of(
+                "providerResponseServiceZipCode",
                 "providerMailingStreetAddress1",
                 "providerMailingStreetAddress2",
                 "providerMailingCity",
                 "providerMailingState",
-                "providerMailingZipCode");
+                "providerMailingZipCode"
+        ));
 
-        List sameAddress = (List) providerInputData.getOrDefault("providerMailingAddressSameAsServiceAddress[]", emptyList());
-
-        if (sameAddress.isEmpty()) {
-            providerFields.addAll(mailingAddressFields);
-        };
 
         for (String fieldName : providerFields) {
             results.put(fieldName,
