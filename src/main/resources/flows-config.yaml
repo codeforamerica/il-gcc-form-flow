@@ -528,7 +528,6 @@ flow:
   provider-number:
     crossFieldValidationAction: ValidateProviderNumber
     beforeSaveAction: ConnectProviderApplicationToFamilyApplication
-    onPostAction: GenerateDummyFamilySubmissionForDev
     afterSaveAction: SetResourceOrganization
     nextScreens:
       - name: response

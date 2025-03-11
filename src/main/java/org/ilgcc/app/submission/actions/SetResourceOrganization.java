@@ -4,13 +4,16 @@ import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getFamilySubmissio
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
-import formflow.library.data.SubmissionRepositoryService;
 import java.math.BigInteger;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import org.ilgcc.app.data.CCMSDataServiceImpl;
+import org.ilgcc.app.submission.router.ApplicationRouterService;
+import formflow.library.data.SubmissionRepositoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.submission.router.ApplicationRoutingServiceImpl;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +23,12 @@ public class SetResourceOrganization implements Action {
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
+
+    @Autowired
+    ApplicationRouterService applicationRouterService;
+
+    @Autowired
+    CCMSDataServiceImpl ccmsDataServiceImpl;
 
     @Autowired
     ApplicationRoutingServiceImpl applicationRouterServiceImpl;
@@ -38,23 +47,15 @@ public class SetResourceOrganization implements Action {
                 providerId);
 
         if (resourceOrgId.isPresent()) {
-            Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission);
-            if(familySubmissionOptional.isPresent()){
-                familySubmissionOptional.get().getInputData().put(ORGANIZATION_ID_INPUT, resourceOrgId.get().toString());
-                submissionRepositoryService.save(familySubmissionOptional.get());
+            UUID familySubmissionId = UUID.fromString(providerSubmission.getInputData().get("familySubmissionId").toString());
+            Optional<Submission> familySubmission = submissionRepositoryService.findById(familySubmissionId);
+            if (familySubmission.isPresent()) {
+                familySubmission.get().getInputData().put(ORGANIZATION_ID_INPUT, resourceOrgId.get());
+                submissionRepositoryService.save(familySubmission.get());
             }
-        }
-    }
 
-
-    private Optional<Submission> getFamilySubmission(Submission providerSubmission) {
-        Optional<UUID> familySubmissionId = getFamilySubmissionId(providerSubmission);
-        if (familySubmissionId.isPresent()) {
-            return submissionRepositoryService.findById(familySubmissionId.get());
-        } else {
-            log.error("Provider application {} is missing a family application", providerSubmission.getId());
-            return Optional.empty();
         }
+
     }
 
 }

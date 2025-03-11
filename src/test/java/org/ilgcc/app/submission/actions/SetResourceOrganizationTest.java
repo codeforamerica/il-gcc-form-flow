@@ -4,8 +4,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,19 +15,16 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @ActiveProfiles("test")
 class SetResourceOrganizationTest {
-    
+
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
-    
+
     @Autowired
     SetResourceOrganization setResourceOrganization;
-    
-    @PersistenceContext
-    private EntityManager entityManager;
-    
+
     Submission familySubmission;
     Submission providerSubmission;
-    
+
     @BeforeEach
     void setUp() {
         familySubmission = Submission.builder()
@@ -43,7 +38,7 @@ class SetResourceOrganizationTest {
         providerSubmission = Submission.builder()
                 .inputData(providerSubmissionData)
                 .build();
-        
+
         submissionRepositoryService.save(providerSubmission);
     }
 
@@ -53,7 +48,7 @@ class SetResourceOrganizationTest {
         familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
         assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo(10101);
     }
-    
+
     @Test
     void shouldNotChangeFamilyOrgIdWhenProviderIsNotSiteAdministered() {
         providerSubmission.getInputData().put("providerResponseProviderNumber", "12345678901");
