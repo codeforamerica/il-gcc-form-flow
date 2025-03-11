@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CountyOptionUtils {
+public class CountyUtils {
 
   @Autowired
   private ApplicationRoutingServiceImpl applicationRoutingService;
@@ -19,7 +19,6 @@ public class CountyOptionUtils {
 
   @PostConstruct
   public void init() {
-    // Load data from the database on startup
     activeCounties = applicationRoutingService.getActiveCountiesByCaseLoadCodes();
   }
 }
