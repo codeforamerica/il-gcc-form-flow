@@ -47,13 +47,14 @@ public class SetResourceOrganization implements Action {
                 providerId);
 
         if (resourceOrgId.isPresent()) {
-            UUID familySubmissionId = UUID.fromString(providerSubmission.getInputData().get("familySubmissionId").toString());
-            Optional<Submission> familySubmission = submissionRepositoryService.findById(familySubmissionId);
-            if (familySubmission.isPresent()) {
-                familySubmission.get().getInputData().put(ORGANIZATION_ID_INPUT, resourceOrgId.get());
-                submissionRepositoryService.save(familySubmission.get());
+            Optional<UUID> familySubmissionId = getFamilySubmissionId(providerSubmission);
+            if(familySubmissionId.isPresent()){
+                Optional<Submission> familySubmission = submissionRepositoryService.findById(familySubmissionId.get());
+                if (familySubmission.isPresent()) {
+                    familySubmission.get().getInputData().put(ORGANIZATION_ID_INPUT, resourceOrgId.get());
+                    submissionRepositoryService.save(familySubmission.get());
+                }
             }
-
         }
 
     }

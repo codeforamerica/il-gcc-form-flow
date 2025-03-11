@@ -39,7 +39,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
     }
 
     @Override
-    public void run(FormSubmission formSubmission, Submission submission) {
+    public void run(FormSubmission formSubmission, Submission providerSubmission) {
         String[] activeProfiles = env.getActiveProfiles();
 
         boolean isDevProfile = Arrays.asList(activeProfiles).contains("dev");
@@ -47,7 +47,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
             Optional<Submission> existingDummyFamilySubmision = submissionRepositoryService.findByShortCode("DEV-123ABC");
             existingDummyFamilySubmision.ifPresent(submissionRepository::delete);
 
-            Map<String, Object> inputData = createFamilySubmission(submission);
+            Map<String, Object> inputData = createFamilySubmission(providerSubmission);
 
             Submission dummyFamilySubmission = new Submission();
             dummyFamilySubmission.setSubmittedAt(OffsetDateTime.now().minusDays(1));
@@ -56,6 +56,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
             dummyFamilySubmission.setInputData(inputData);
 
             dummyFamilySubmission = submissionRepositoryService.save(dummyFamilySubmission);
+            providerSubmission.getInputData().put("familySubmissionId", dummyFamilySubmission.getId());
 
             httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, dummyFamilySubmission.getId());
         }

@@ -527,6 +527,7 @@ flow:
   #Existing Provider Flow
   provider-number:
     crossFieldValidationAction: ValidateProviderNumber
+    onPostAction: GenerateDummyFamilySubmissionForDev
     beforeSaveAction: ConnectProviderApplicationToFamilyApplication
     afterSaveAction: SetResourceOrganization
     nextScreens:
