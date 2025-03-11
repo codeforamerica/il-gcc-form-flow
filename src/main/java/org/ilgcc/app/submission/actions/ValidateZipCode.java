@@ -34,7 +34,7 @@ public class ValidateZipCode implements Action {
         Map<String, List<String>> errorMessages = new java.util.HashMap<>(Collections.emptyMap());
 
         String providedZipCode = formSubmission.getFormData().get("applicationZipCode").toString();
-        if (providedZipCode.isBlank() || !(providedZipCode.length() == 5)) {
+        if (providedZipCode.isBlank() || (providedZipCode.length() != 5)) {
             errorMessages.put(INPUT_NAME,
                     List.of(messageSource.getMessage("errors.provide-zip", null, locale)));
             return errorMessages;

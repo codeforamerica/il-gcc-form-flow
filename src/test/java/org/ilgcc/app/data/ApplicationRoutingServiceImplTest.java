@@ -1,33 +1,29 @@
 package org.ilgcc.app.data;
 
 import org.ilgcc.app.submission.router.ApplicationRoutingServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
+@ActiveProfiles("test")
+@SpringBootTest
 class ApplicationRoutingServiceImplTest {
 
-  @Mock
-  private CCMSDataService ccmsDataService;
+  @Autowired
+  private CCMSDataServiceImpl ccmsDataServiceImpl;
 
-  @InjectMocks
+  @Autowired
   private ApplicationRoutingServiceImpl applicationRoutingServiceImpl;
 
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-  }
 
+  private final String FOUR_C_CASELOAD_CODE = "BB";
+  private final String PROJECT_CHILD_CASELOAD_CODE = "QQ";
+  private final String INACTIVE_CASELOAD_CODE = "INACTIVE";
   @Test
   void shouldReturnEmptyListWhenNoActiveCaseLoadCodes() {
     applicationRoutingServiceImpl.activeCaseLoadCodes = Collections.emptyList();
@@ -39,8 +35,7 @@ class ApplicationRoutingServiceImplTest {
 
   @Test
   void shouldReturnEmptyListWhenNoCountiesFound() {
-    applicationRoutingServiceImpl.activeCaseLoadCodes = List.of("CODE1");
-    when(ccmsDataService.getCountiesByCaseloadCode("CODE1")).thenReturn(Collections.emptyList());
+    applicationRoutingServiceImpl.activeCaseLoadCodes = List.of(INACTIVE_CASELOAD_CODE);
 
     List<County> result = applicationRoutingServiceImpl.getActiveCountiesByCaseLoadCodes();
 
@@ -49,21 +44,17 @@ class ApplicationRoutingServiceImplTest {
 
   @Test
   void shouldReturnUniqueAndSortedCounties() {
-    applicationRoutingServiceImpl.activeCaseLoadCodes = List.of("CODE1", "CODE2");
+    applicationRoutingServiceImpl.activeCaseLoadCodes = List.of(FOUR_C_CASELOAD_CODE, PROJECT_CHILD_CASELOAD_CODE);
 
-    County countyA = new County(new BigInteger("12345"), "AlphaCity", "Alpha", 100, 200, "CODE1");
-    County countyB = new County(new BigInteger("67890"), "BetaCity", "Beta", 101, 201, "CODE2");
-    County countyC = new County(new BigInteger("11111"), "GammaCity", "Gamma", 102, 202, "CODE1");
-    County duplicateCountyA = new County(new BigInteger("12345"), "AlphaCity", "Alpha", 100, 200, "CODE2"); // Duplicate entry
-
-    when(ccmsDataService.getCountiesByCaseloadCode("CODE1")).thenReturn(Arrays.asList(countyC, countyA));
-    when(ccmsDataService.getCountiesByCaseloadCode("CODE2")).thenReturn(Arrays.asList(countyB, duplicateCountyA));
+    List<County> mchenryCountyEntries = ccmsDataServiceImpl.getCountyByCountyName("MCHENRY");
+    assertEquals(2, mchenryCountyEntries.size());
 
     List<County> result = applicationRoutingServiceImpl.getActiveCountiesByCaseLoadCodes();
 
     assertEquals(3, result.size());
-    assertEquals("Alpha", result.get(0).getCounty());
-    assertEquals("Beta", result.get(1).getCounty());
-    assertEquals("Gamma", result.get(2).getCounty());
+    assertEquals("DEKALB", result.get(0).getCounty());
+    assertEquals("FAYETTE", result.get(1).getCounty());
+    assertEquals("MCHENRY", result.get(2).getCounty());
+
   }
 }
