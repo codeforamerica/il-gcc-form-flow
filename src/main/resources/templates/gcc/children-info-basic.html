@@ -37,18 +37,7 @@
                   </th:block>
                 </th:block>
               </th:block>
-              <th:block th:replace="~{fragments/inputs/radioFieldset ::
-                  radioFieldset(inputName='needFinancialAssistanceForChild',
-                  label=#{children-info-basic.financial-assistance-question},
-                  fieldsetHelpText=#{children-info-basic.financial-assistance-help-text(${providerName})},
-                  content=~{::radioOptions})}">
-                <th:block th:ref="radioOptions">
-                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='needFinancialAssistanceForChild', value='Yes', label=#{general.inputs.yes})}"/>
-                  <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='needFinancialAssistanceForChild', value='No', label=#{general.inputs.no})}"/>
-                </th:block>
-              </th:block>
             </div>
-
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
             </div>
