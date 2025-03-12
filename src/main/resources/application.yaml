@@ -128,6 +128,7 @@ il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
   allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
+  enable-new-sda-caseload-codes: ${ENABLE_NEW_SDA_CASELOAD_CODES:false}
   ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
   dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:true}
   dts:
