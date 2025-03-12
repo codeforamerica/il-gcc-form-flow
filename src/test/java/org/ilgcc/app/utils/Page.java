@@ -1,16 +1,16 @@
 package org.ilgcc.app.utils;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+
 import io.percy.selenium.Percy;
+import java.time.Duration;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.By.ById;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 
 public class Page {
 
@@ -192,7 +192,7 @@ public class Page {
   }
 
   private void waitForFooterToLoad() {
-    await().until(
+    await().atMost(Duration.ofSeconds(20)).ignoreExceptions().until(
         () -> !driver.findElements(By.className("main-footer")).get(0).getAttribute("innerHTML")
             .isBlank());
   }
@@ -366,6 +366,7 @@ public class Page {
   public void clickElementById(String id) {
     WebElement inputToSelect = driver.findElement(By.id(id));
     inputToSelect.click();
+    waitForFooterToLoad();
   }
 
 //  public void chooseSentiment(Sentiment sentiment) {
