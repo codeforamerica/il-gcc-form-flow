@@ -10,7 +10,6 @@ import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(
@@ -22,7 +21,7 @@ class ValidateZipCodeTest {
     private static final String INVALID_CHAMPAIGN_ZIPCODE = "60949";
     private static final String VALID_MCHENRY_ZIPCODE = "60013";
     private static final String VALID_SDA15_ZIPCODE = "62418";
-
+    private static final String INVALID_ZIPCODE_LENGTH = VALID_MCHENRY_ZIPCODE + "2212334344";
     @Autowired
     ValidateZipCode action;
 
@@ -89,5 +88,20 @@ class ValidateZipCodeTest {
         action.runValidation(formSubmission, submission);
 
         assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("true");
+    }
+
+    @Test
+    public void returnsHasValidZipCodeIsFalseWhenZipCodeIsMoreThan5Digits() {
+        Submission submission = new SubmissionTestBuilder()
+            .build();
+
+        Map<String, Object> formData = Map.of(
+            "applicationZipCode", INVALID_ZIPCODE_LENGTH
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.runValidation(formSubmission, submission);
+        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("false");
     }
 }

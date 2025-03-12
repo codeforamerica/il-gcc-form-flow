@@ -33,13 +33,14 @@ public class ValidateZipCode implements Action {
         Locale locale = LocaleContextHolder.getLocale();
         Map<String, List<String>> errorMessages = new java.util.HashMap<>(Collections.emptyMap());
 
+        Optional<ResourceOrganization> resourceOrganizationOptional = Optional.empty();
         String providedZipCode = formSubmission.getFormData().get("applicationZipCode").toString();
-        if (providedZipCode.isBlank() || (providedZipCode.length() != 5)) {
+        if (!providedZipCode.isBlank() && (providedZipCode.length() == 5)) {
+            resourceOrganizationOptional = applicationRoutingService.getOrganizationIdByZipCode(providedZipCode);
+        }else {
             errorMessages.put(INPUT_NAME,
-                    List.of(messageSource.getMessage("errors.provide-zip", null, locale)));
-            return errorMessages;
+                List.of(messageSource.getMessage("errors.provide-zip", null, locale)));
         }
-       Optional<ResourceOrganization> resourceOrganizationOptional = applicationRoutingService.getOrganizationIdByZipCode(providedZipCode);
         submission.getInputData()
             .put(OUTPUT_NAME, String.valueOf(resourceOrganizationOptional.isPresent()));
         return errorMessages;
