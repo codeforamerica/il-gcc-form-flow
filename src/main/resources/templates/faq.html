@@ -129,8 +129,16 @@
                 <h3 class="h3" th:text="#{faq.questions-about-the-online-application.what-is-get-child-care-il-question}"></h3>
                 <p th:text="#{faq.questions-about-the-online-application.what-is-get-child-care-il-answer}"></p>
                 <h3 class="h3" th:text="#{faq.questions-about-the-online-application.who-can-use-the-online-application-question}"></h3>
-                <p th:utext="#{faq.questions-about-the-online-application.sda15-expansion.counties}"></p>
-
+                <th:block th:with="counties=${T(org.ilgcc.app.utils.CountyUtils).activeCountiesProperCapitalized}">
+                  <p th:text="${#messages.msg('faq.questions-about-the-online-application.counties', counties.size())}"></p>
+                  <ul class='list--bulleted'>
+                    <th:block th:each="county : ${counties}">
+                      <li th:text="${#messages.msg('faq.questions-about-the-online-application.county', county)}"></li>
+                    </th:block>
+                  </ul>
+                  <p th:text="#{faq.questions-about-the-online-application.available-through-2025}"></p>
+                <hr/>
+                </th:block>
                 <h3 class="h3" th:text="#{faq.questions-about-the-online-application.what-can-i-do}"></h3>
                 <p th:text="#{faq.questions-about-the-online-application.what-can-i-do.please-contact}"></p>
                 <p th:utext="#{faq.questions-about-the-online-application.what-can-i-do.local-agency-number}"></p>

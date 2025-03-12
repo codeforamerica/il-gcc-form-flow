@@ -2,6 +2,7 @@ package org.ilgcc.app.submission.router;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -11,16 +12,23 @@ import org.ilgcc.app.data.CCMSDataService;
 import org.ilgcc.app.data.County;
 import org.ilgcc.app.data.ResourceOrganization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
-    public List<String> activeCaseLoadCodes = List.of("BB", "QQ");
+public class ApplicationRoutingServiceImpl implements ApplicationRouterService {
+    private final List<String> newCaseLoadCodes = Arrays.asList("GG");
+
+    public List<String> activeCaseLoadCodes = new ArrayList<>(Arrays.asList("BB", "QQ"));
+
     private final CCMSDataService ccmsDataService;
 
     @Autowired
-    public ApplicationRoutingServiceImpl(CCMSDataService ccmsDataService) {
+    public ApplicationRoutingServiceImpl(CCMSDataService ccmsDataService, @Value("${il-gcc.enable-new-sda-caseload-codes}") boolean enableNewSDACaseLoadCodes) {
         this.ccmsDataService = ccmsDataService;
+        if (enableNewSDACaseLoadCodes) {
+            this.activeCaseLoadCodes.addAll(newCaseLoadCodes);
+        }
     }
 
     @Override
@@ -39,7 +47,7 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
 
     @Override
     public Optional<ResourceOrganization> getOrganizationByCountyName(String countyName) {
-        if(countyName == null || countyName.isBlank()){
+        if (countyName == null || countyName.isBlank()) {
             return Optional.empty();
         }
         List<County> counties = ccmsDataService.getCountyByCountyName(countyName);
