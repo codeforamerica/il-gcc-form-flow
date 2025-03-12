@@ -46,7 +46,7 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
             S3PresignService s3PresignService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
             @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
-            @Value("${il-gcc.dts-integration-enabled:true}") boolean dtsIntegrationEnabled) {
+            @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;

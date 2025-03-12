@@ -29,7 +29,7 @@ public class SendUploadedFileToDocumentTransferService implements Action {
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, 
             S3PresignService s3PresignService,
             EnqueueDocumentTransfer enqueueDocumentTransfer,
-            @Value("${il-gcc.dts-integration-enabled:true}") boolean dtsIntegrationEnabled) {
+            @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled) {
         this.userFileRepositoryService = userFileRepositoryService;
         this.uploadedDocumentTransmissionJob = uploadedDocumentTransmissionJob;
         this.s3PresignService = s3PresignService;
