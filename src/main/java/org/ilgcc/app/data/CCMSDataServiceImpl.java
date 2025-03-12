@@ -57,4 +57,8 @@ public class CCMSDataServiceImpl implements CCMSDataService {
     public List<ResourceOrganization> getResourceOrganizationsByCaseloadCode(String caseloadCode) {
         return resourceOrganizationRepository.findByCaseloadCode(caseloadCode);
     }
+    @Override
+    public List<County> getCountiesByCaseloadCode(String caseloadCode) {
+        return countyRepository.findCountiesByCaseloadCode(caseloadCode);
+    }
 }

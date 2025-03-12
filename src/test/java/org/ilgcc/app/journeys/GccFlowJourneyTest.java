@@ -6,8 +6,6 @@ import formflow.library.data.SubmissionRepository;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
-import org.ilgcc.app.utils.CountyOption;
-import org.ilgcc.app.utils.ZipcodeOption;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +43,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         // onboarding-county
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.selectFromDropdown("applicationCounty", CountyOption.LEE.getLabel());
+        testPage.selectFromDropdown("applicationCounty", "DEKALB");
         testPage.clickLink(getEnMessage("onboarding-county.link"));
 
         // onboarding-zipcode
@@ -60,7 +58,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("pilot-offboard.title"));
         testPage.goBack();
 
-        testPage.enter("applicationZipCode", ZipcodeOption.zip_60001.getValue());
+        testPage.enter("applicationZipCode", "62418");
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));

@@ -10,7 +10,6 @@ import formflow.library.data.FormSubmission;
 import java.io.IOException;
 import java.util.Map;
 import org.ilgcc.app.utils.AbstractBasePageTest;
-import org.ilgcc.app.utils.CountyOption;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -27,6 +26,7 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
     private final static String VALIDATED_STATE = "IL";
     private final static String VALIDATED_ZIP_CODE = "60178";
 
+    private final static String COUNTY_LEE_LABEL = "LEE";
     @MockitoBean
     AddressValidationService addressValidationService;
 
@@ -37,7 +37,7 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder()
                 .withParentBasicInfo()
                 .with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", CountyOption.LEE.getLabel())
+                .with("applicationCounty", COUNTY_LEE_LABEL)
                 .build());
 
         testPage.clickYes();
@@ -116,7 +116,7 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder()
                 .withParentBasicInfo()
                 .with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", CountyOption.LEE.getLabel())
+                .with("applicationCounty", COUNTY_LEE_LABEL)
                 .build());
 
         testPage.clickYes();
@@ -161,7 +161,7 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder()
                 .withParentBasicInfo()
                 .with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", CountyOption.LEE.getLabel())
+                .with("applicationCounty", COUNTY_LEE_LABEL)
                 .build());
 
         testPage.clickYes();
@@ -259,7 +259,7 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder()
                 .withParentBasicInfo()
                 .with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", CountyOption.LEE.getLabel())
+                .with("applicationCounty", COUNTY_LEE_LABEL)
                 .build());
 
         testPage.clickYes();
@@ -366,7 +366,7 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder()
                 .withParentBasicInfo()
                 .with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", CountyOption.LEE.getLabel())
+                .with("applicationCounty", COUNTY_LEE_LABEL)
                 .build());
 
         testPage.clickYes();

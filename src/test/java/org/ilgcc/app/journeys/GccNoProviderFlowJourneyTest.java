@@ -30,7 +30,7 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
         // onboarding-county
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.selectFromDropdown("applicationCounty", "DeKalb");
+        testPage.selectFromDropdown("applicationCounty", "DEKALB");
         testPage.clickContinue();
 
         // onboarding-chosen-provider

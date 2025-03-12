@@ -1,7 +1,9 @@
 package org.ilgcc.app.submission.router;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
+import org.ilgcc.app.data.County;
 import org.ilgcc.app.data.ResourceOrganization;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +34,11 @@ public interface ApplicationRouterService {
      * @return The site administered resource organization's Id
      */
     Optional<BigInteger> getSiteAdministeredOrganizationIdByProviderId(BigInteger providerId);
+
+    /**
+     * Returns a list of active counties with unique county names
+     *
+     * @return A list of active counties
+     */
+    List<County> getActiveCountiesByCaseLoadCodes();
 }

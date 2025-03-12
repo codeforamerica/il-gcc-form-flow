@@ -7,11 +7,9 @@ import formflow.library.data.Submission;
 import java.util.Map;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
-import org.ilgcc.app.utils.ZipcodeOption;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(
@@ -20,9 +18,10 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class ValidateZipCodeTest {
 
-    @Autowired
-    MessageSource messageSource;
-
+    private static final String INVALID_CHAMPAIGN_ZIPCODE = "60949";
+    private static final String VALID_MCHENRY_ZIPCODE = "60013";
+    private static final String VALID_SDA15_ZIPCODE = "62418";
+    private static final String INVALID_ZIPCODE_LENGTH = VALID_MCHENRY_ZIPCODE + "2212334344";
     @Autowired
     ValidateZipCode action;
 
@@ -32,7 +31,7 @@ class ValidateZipCodeTest {
                 .build();
 
         Map<String, Object> formData = Map.of(
-                "applicationZipCode", ZipcodeOption.zip_60647.getValue()
+                "applicationZipCode", INVALID_CHAMPAIGN_ZIPCODE
         );
 
         FormSubmission formSubmission = new FormSubmission(formData);
@@ -48,7 +47,7 @@ class ValidateZipCodeTest {
                 .build();
 
         Map<String, Object> formData = Map.of(
-                "applicationZipCode", ZipcodeOption.zip_60051.getValue()
+                "applicationZipCode", VALID_MCHENRY_ZIPCODE
         );
 
         FormSubmission formSubmission = new FormSubmission(formData);
@@ -80,7 +79,7 @@ class ValidateZipCodeTest {
                 .build();
 
         Map<String, Object> formData = Map.of(
-                "applicationZipCode", ZipcodeOption.zip_62811.getValue()
+                "applicationZipCode", VALID_SDA15_ZIPCODE
         );
 
         FormSubmission formSubmission = new FormSubmission(formData);
@@ -89,5 +88,20 @@ class ValidateZipCodeTest {
         action.runValidation(formSubmission, submission);
 
         assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("true");
+    }
+
+    @Test
+    public void returnsHasValidZipCodeIsFalseWhenZipCodeIsMoreThan5Digits() {
+        Submission submission = new SubmissionTestBuilder()
+            .build();
+
+        Map<String, Object> formData = Map.of(
+            "applicationZipCode", INVALID_ZIPCODE_LENGTH
+        );
+
+        FormSubmission formSubmission = new FormSubmission(formData);
+
+        action.runValidation(formSubmission, submission);
+        assertThat(submission.getInputData().get("hasValidZipCode")).isEqualTo("false");
     }
 }

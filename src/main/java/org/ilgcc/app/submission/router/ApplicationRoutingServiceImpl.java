@@ -1,8 +1,12 @@
 package org.ilgcc.app.submission.router;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.ilgcc.app.data.CCMSDataService;
 import org.ilgcc.app.data.County;
 import org.ilgcc.app.data.ResourceOrganization;
@@ -11,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
-    private final List<String> activeCaseLoadCodes = List.of("BB", "QQ");
+    public List<String> activeCaseLoadCodes = List.of("BB", "QQ");
     private final CCMSDataService ccmsDataService;
 
     @Autowired
@@ -52,5 +56,25 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService{
         Optional<ResourceOrganization> resourceOrganizationByProviderId = ccmsDataService.getSiteAdministeredResourceOrganizationByProviderId(
                 providerId);
         return resourceOrganizationByProviderId.map(ResourceOrganization::getResourceOrgId);
+    }
+
+    @Override
+    public List<County> getActiveCountiesByCaseLoadCodes() {
+        List<County> counties = new ArrayList<>();
+        Set<String> countyNames = new HashSet<>(); // To track unique county names
+
+        for (String code : activeCaseLoadCodes) {
+            List<County> countiesConnectedToThisCaseloadCode = ccmsDataService.getCountiesByCaseloadCode(code);
+
+            for (County currentCounty : countiesConnectedToThisCaseloadCode) {
+                if (countyNames.add(currentCounty.getCounty().toLowerCase())) {
+                    counties.add(currentCounty);
+                }
+            }
+        }
+
+        counties.sort(Comparator.comparing(county -> county.getCounty().toLowerCase()));
+
+        return counties;
     }
 }
