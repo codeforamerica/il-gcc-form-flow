@@ -40,7 +40,7 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
         }
 
         var children = ((List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList())).stream()
-                .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "No").equals("No"))
+                .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("false"))
                 .toList();
         for (var child : children) {
             results.put("familyMemberFirstName_" + iteration,

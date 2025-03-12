@@ -1,14 +1,13 @@
+
 <th:block
   th:replace="~{fragments/screens/screenWithYesAndNoButtons ::
   screenWithYesAndNoButtons(
     title=#{children-info-assistance.title},
-    header=#{children-info-assistance.financial-assistance-question},
+    header=#{children-info-assistance.financial-assistance-question(${fieldData.get('childFirstName')})},
     subtext=#{children-info-assistance.financial-assistance-help-text},
-    formAction=${formAction},
-    inputName=${inputName},
+    iconFragment=~{fragments/gcc-icons :: child-head},
+    inputName='needFinancialAssistanceForChild',
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
-    <input type="hidden" th:name="current_uuid" th:value="${fieldData.get('uuid')}">
-    <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
   </th:block>
 </th:block>

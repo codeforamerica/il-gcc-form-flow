@@ -174,9 +174,11 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
-        testPage.selectRadio("needFinancialAssistanceForChild", "No");
         testPage.clickContinue();
 
+        // children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickNo();
         testPage.clickButton(getEnMessage("children-add.add-button"));
         testPage.enter("childFirstName", "child");
         testPage.enter("childLastName", "mcchild");
@@ -184,9 +186,11 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthDay", "25");
         testPage.enter("childDateOfBirthYear", "2018");
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.fosterchild"));
-        testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
         testPage.clickContinue();
 
+        // children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickYes();
         // children-ccap-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
         testPage.clickElementById("childGender-MALE");
