@@ -18,6 +18,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
 import org.ilgcc.app.utils.DateUtilities;
@@ -56,83 +57,129 @@ public class CCMSTransactionPayloadServiceTest {
     @MockitoBean
     PdfService pdfService;
 
-    private Submission submission;
+    private Submission familySubmission;
+    private Submission providerSubmission;
 
     private final UserFile testConvertedJpegPdf = new UserFile();
     private final UserFile testConvertedPngPdf = new UserFile();
+    private final UserFile testProviderUploadedPdf1 = new UserFile();
+    private final UserFile testProviderUploadedPdf2 = new UserFile();
     private final Path testFilledCcapPdfPath = Path.of("src/test/resources/output/test_filled_ccap.pdf");
     private final Path testConvertedJpegPath = Path.of("src/test/resources/test-image-jpeg-converted.pdf");
     private final Path testConvertedPngPath = Path.of("src/test/resources/test-image-png-converted.pdf");
     
     @BeforeEach
     public void setUp() throws IOException {
-        Map<String, Object> inputData = new HashMap<>();
-        inputData.put("organizationId", "testOrganizationId");
-        inputData.put("parentFirstName", "Tésty");
-        inputData.put("parentLastName", "McTéstersün");
-        inputData.put("parentBirthDate", "12/17/1987");
+        providerSubmission = Submission.builder()
+                .id(UUID.randomUUID())
+                .submittedAt(OffsetDateTime.now())
+                .build();
         
-        submission = Submission.builder()
+        Map<String, Object> familyInputData = new HashMap<>();
+        familyInputData.put("organizationId", "testOrganizationId");
+        familyInputData.put("parentFirstName", "Tésty");
+        familyInputData.put("parentLastName", "McTéstersün");
+        familyInputData.put("parentBirthDate", "12/17/1987");
+        familyInputData.put("providerResponseSubmissionId", providerSubmission.getId());
+        
+        familySubmission = Submission.builder()
                 .id(UUID.randomUUID())
                 .shortCode("shortCode")
                 .submittedAt(OffsetDateTime.now())
-                .inputData(inputData)
+                .inputData(familyInputData)
                 .build();
         
         testConvertedJpegPdf.setMimeType("application/pdf");
         testConvertedJpegPdf.setFileId(UUID.randomUUID());
         testConvertedJpegPdf.setRepositoryPath("testConvertedJpegPath");
-        testConvertedJpegPdf.setSubmission(submission);
+        testConvertedJpegPdf.setSubmission(familySubmission);
+        
         testConvertedPngPdf.setMimeType("application/pdf");
         testConvertedPngPdf.setFileId(UUID.randomUUID());
         testConvertedPngPdf.setRepositoryPath("testConvertedPngPath");
-        testConvertedPngPdf.setSubmission(submission);
+        testConvertedPngPdf.setSubmission(familySubmission);
+        
+        testProviderUploadedPdf1.setMimeType("application/pdf");
+        testProviderUploadedPdf1.setFileId(UUID.randomUUID());
+        testProviderUploadedPdf1.setRepositoryPath("testProviderUploadedPdf1Path");
+        testProviderUploadedPdf1.setSubmission(providerSubmission);
+        
+        testProviderUploadedPdf2.setMimeType("application/pdf");
+        testProviderUploadedPdf2.setFileId(UUID.randomUUID());
+        testProviderUploadedPdf2.setRepositoryPath("testProviderUploadedPdf2Path");
+        testProviderUploadedPdf2.setSubmission(providerSubmission);
 
         CloudFile testConvertedJpegCloudFile = new CloudFile(Files.size(testConvertedJpegPath),
                 Files.readAllBytes(testConvertedJpegPath), Map.of());
         CloudFile testConvertedPngCloudFile = new CloudFile(Files.size(testConvertedPngPath),
                 Files.readAllBytes(testConvertedPngPath), Map.of());
+        CloudFile providerPdfCloudFile1 = new CloudFile(100L, "testBase64String1".getBytes(), Map.of());
+        CloudFile providerPdfCloudFile2 = new CloudFile(100L, "testBase64String2".getBytes(), Map.of());
 
-        when(pdfService.getFilledOutPDF(submission)).thenReturn(Files.readAllBytes(testFilledCcapPdfPath));
-        when(userFileRepositoryService.findAllOrderByOriginalName(submission, "application/pdf")).thenReturn(
+        when(pdfService.getFilledOutPDF(familySubmission)).thenReturn(Files.readAllBytes(testFilledCcapPdfPath));
+        when(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf")).thenReturn(
                 List.of(testConvertedPngPdf, testConvertedJpegPdf));
+        when(submissionRepositoryService.findById(providerSubmission.getId())).thenReturn(Optional.ofNullable(providerSubmission));
+        when(userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")).thenReturn(
+                List.of(testProviderUploadedPdf1, testProviderUploadedPdf2));
         when(cloudFileRepository.get(testConvertedJpegPdf.getRepositoryPath())).thenReturn(testConvertedJpegCloudFile);
         when(cloudFileRepository.get(testConvertedPngPdf.getRepositoryPath())).thenReturn(testConvertedPngCloudFile);
-        when(submissionRepositoryService.save(submission)).thenReturn(submission);
+        when(cloudFileRepository.get(testProviderUploadedPdf1.getRepositoryPath())).thenReturn(providerPdfCloudFile1);
+        when(cloudFileRepository.get(testProviderUploadedPdf2.getRepositoryPath())).thenReturn(providerPdfCloudFile2);
+        when(submissionRepositoryService.save(familySubmission)).thenReturn(familySubmission);
     }
 
     @Test
-    void shouldCreateACCMSTransactionWithTheCorrectDataAndFields() throws IOException, InterruptedException {
+    void shouldCreateACCMSTransactionWithTheCorrectDataAndFields() throws IOException {
         List<TransactionFile> testFiles = List.of(
+                // The indexes here matter unfortunately as the file names are checked in the loop below
                 new TransactionFile(
-                        String.format("%s-CCAP-Application-Form.pdf", submission.getId()),
+                        String.format("%s-CCAP-Application-Form.pdf", familySubmission.getId()),
                         TransactionFile.FileTypeId.APPLICATION_PDF.getValue(),
                         Base64.getEncoder().encodeToString(Files.readAllBytes(testFilledCcapPdfPath))),
                 new TransactionFile(
-                        String.format("%s-Supporting-Document-%d-of-%d.pdf", submission.getId(), 2, 2),
+                        String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 4, 4),
                         FileTypeId.UPLOADED_DOCUMENT.getValue(),
                         Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedJpegPath))),
                 new TransactionFile(
-                        String.format("%s-Supporting-Document-%d-of-%d.pdf", submission.getId(), 1, 2),
+                        String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 3, 4),
                         FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedPngPath)))
+                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedPngPath))),
+                new TransactionFile(
+                        String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 1, 4),
+                        FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                        Base64.getEncoder().encodeToString("testBase64String1".getBytes())),
+                new TransactionFile(
+                        String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 2, 4),
+                        FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                        Base64.getEncoder().encodeToString("testBase64String2".getBytes()))
         );
 
-        CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(submission);
+        CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(familySubmission);
         assertThat(ccmsTransaction).isNotNull();
         assertThat(ccmsTransaction.getTransmissionType()).isEqualTo("application");
-        assertThat(ccmsTransaction.getSubmissionId()).isEqualTo(submission.getId());
-        assertThat(ccmsTransaction.getClientConfirmationCode()).isEqualTo(submission.getShortCode());
+        assertThat(ccmsTransaction.getSubmissionId()).isEqualTo(familySubmission.getId());
+        assertThat(ccmsTransaction.getClientConfirmationCode()).isEqualTo(familySubmission.getShortCode());
         assertThat(ccmsTransaction.getSubmissionOrgId()).isEqualTo("testOrganizationId");
         assertThat(ccmsTransaction.getSubmissionFirstName()).isEqualTo("Testy");
         assertThat(ccmsTransaction.getSubmissionLastName()).isEqualTo("McTestersun");
         assertThat(ccmsTransaction.getSubmissionDOB()).isEqualTo("12/17/1987");
         assertThat(ccmsTransaction.getProviderId()).isEqualTo(List.of(""));
-        assertThat(ccmsTransaction.getFiles().size()).isEqualTo(3);
-        ccmsTransaction.getFiles().forEach(file -> {
-            assertThat(testFiles.contains(file)).isTrue();
-        });
+        assertThat(ccmsTransaction.getFiles().size()).isEqualTo(5);
         assertThat(ccmsTransaction.getWebSubmissionTimestamp()).isEqualTo(
-                DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(submission.getSubmittedAt()));
+                DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(familySubmission.getSubmittedAt()));
+
+        List<TransactionFile> actualFiles = ccmsTransaction.getFiles();
+        for (TransactionFile expectedFile : testFiles) {
+            boolean expectedFilesContainsCurrentFile = actualFiles.stream().anyMatch(actualFile ->
+                    actualFile.getFileName().equals(expectedFile.getFileName()) &&
+                            actualFile.getFileType().equals(expectedFile.getFileType()) &&
+                            actualFile.getFilePayload().equals(expectedFile.getFilePayload())
+            );
+
+            assertThat(expectedFilesContainsCurrentFile)
+                    .as("The two lists did not have a matching file for %s. Because of the naming convention the indexes need to match as well.", expectedFile.getFileName()) // This message displays if the assertion in the loop fails
+                    .isTrue();
+        }
     }
 }
