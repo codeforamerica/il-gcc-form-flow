@@ -145,6 +145,10 @@ public class Gcc extends FlowInputs {
     private String adultDependentBirthdateMonth;
     private String adultDependentBirthdateYear;
     private String adultDependentBirthdateDate;
+    @SSN(message="{errors.invalid-ssn}")
+    @Encrypted
+    private String adultDependentSSN;
+    private String adultDependentRelationship;
 
     // children-info-basic
     @NotBlank(message = "{errors.provide-first-name}")

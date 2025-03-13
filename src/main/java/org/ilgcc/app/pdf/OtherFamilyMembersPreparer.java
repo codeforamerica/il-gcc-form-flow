@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import static java.util.Collections.emptyList;
 
@@ -62,6 +61,10 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
                     new SingleField("familyMemberLastName", (String) adult.get("adultDependentLastName"), iteration));
             results.put("familyMemberDateOfBirth_" + iteration,
                     new SingleField("familyMemberDateOfBirth", formatAdultDependentDateOfBirth(adult), iteration));
+            results.put("familyMemberRelationship_" + iteration,
+                new SingleField("familyMemberRelationship", (String) adult.getOrDefault("adultDependentRelationship", ""), iteration));
+            results.put("familyMemberSSN_" + iteration,
+                new SingleField("familyMemberSSN", (String) adult.getOrDefault("adultDependentSSN", ""), iteration));
             iteration++;
         }
 

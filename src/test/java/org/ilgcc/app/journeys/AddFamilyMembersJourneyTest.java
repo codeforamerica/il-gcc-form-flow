@@ -27,7 +27,7 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthMonth", "1");
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.child"));
         testPage.clickContinue();
 
         // children-info-assistance
@@ -63,7 +63,7 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthMonth", "1");
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.child"));
         testPage.clickContinue();
 
         // children-info-assistance

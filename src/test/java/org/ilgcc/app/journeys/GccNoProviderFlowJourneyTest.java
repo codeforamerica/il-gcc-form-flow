@@ -173,7 +173,7 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthMonth", "1");
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.child"));
         testPage.clickContinue();
 
         // children-info-assistance
@@ -185,7 +185,7 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthMonth", "12");
         testPage.enter("childDateOfBirthDay", "25");
         testPage.enter("childDateOfBirthYear", "2018");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.fosterchild"));
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.foster-child"));
         testPage.clickContinue();
 
         // children-info-assistance

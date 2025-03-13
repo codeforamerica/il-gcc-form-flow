@@ -18,10 +18,26 @@
               <th:block th:replace="~{fragments/inputs/text ::
                 text(inputName='adultDependentLastName',
                 label=#{general.question.their-last-name})}"/>
+              <th:block
+                  th:replace="~{fragments/inputs/select :: select(label=#{parent-add-adults.ssn-question}, inputName='adultDependentRelationship', content=~{::adultDependentRelationship})}">
+                <th:block th:ref="adultDependentRelationship">
+                  <th:block
+                      th:replace="~{fragments/inputs/selectOption :: selectOption(value='', optionText=#{general.relationship-option.default})}"/>
+                  <th:block th:each="adultDependentRelationshipOption : ${T(org.ilgcc.app.utils.AdultDependentRelationshipOption).values()}">
+                    <th:block
+                        th:replace="~{fragments/inputs/selectOption :: selectOption(value=${adultDependentRelationshipOption.pdfValue}, optionText=#{${adultDependentRelationshipOption.getLabel()}})}"/>
+                  </th:block>
+                </th:block>
+              </th:block>
               <th:block th:replace="~{fragments/inputs/date ::
                 date(inputName='adultDependentBirthdate',
                 groupName='adultDependentBirthdate',
                 label=#{general.question.their-date-of-birth})}"/>
+              <th:block
+                  th:replace="~{fragments/inputs/ssn :: ssn(
+                  inputName='adultDependentSSN',
+                  label=#{parent-add-adults.ssn-question},
+                  helpText=#{parent-add-adults.ssn-helper})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
