@@ -19,8 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 class ValidateZipCodeTest {
 
     private static final String INVALID_CHAMPAIGN_ZIPCODE = "60949";
-    private static final String VALID_MCHENRY_ZIPCODE = "60013";
-    private static final String VALID_SDA15_ZIPCODE = "62418";
+    private static final String VALID_MCHENRY_ZIPCODE = "60002";
+    private static final String VALID_SDA15_ZIPCODE = "60015";
     private static final String INVALID_ZIPCODE_LENGTH = VALID_MCHENRY_ZIPCODE + "2212334344";
     @Autowired
     ValidateZipCode action;

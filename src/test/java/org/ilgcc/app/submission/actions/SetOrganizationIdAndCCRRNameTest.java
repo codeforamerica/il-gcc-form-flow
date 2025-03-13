@@ -1,9 +1,9 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.ilgcc.app.data.FakeResourceOrganization.ACTIVE_FOUR_C_COUNTY;
-import static org.ilgcc.app.data.FakeResourceOrganization.ACTIVE_OUT_OF_SCOPE_COUNTY;
-import static org.ilgcc.app.data.FakeResourceOrganization.FOUR_C_TEST_DATA;
+import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_FOUR_C_COUNTY;
+import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_OUT_OF_SCOPE_COUNTY;
+import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.FOUR_C_TEST_DATA;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
