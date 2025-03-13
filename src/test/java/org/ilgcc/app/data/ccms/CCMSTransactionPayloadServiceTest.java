@@ -138,21 +138,21 @@ public class CCMSTransactionPayloadServiceTest {
                         TransactionFile.FileTypeId.APPLICATION_PDF.getValue(),
                         Base64.getEncoder().encodeToString(Files.readAllBytes(testFilledCcapPdfPath))),
                 new TransactionFile(
-                        String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 4, 4),
-                        FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedJpegPath))),
-                new TransactionFile(
-                        String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 3, 4),
-                        FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedPngPath))),
-                new TransactionFile(
                         String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 1, 4),
                         FileTypeId.UPLOADED_DOCUMENT.getValue(),
                         Base64.getEncoder().encodeToString("testBase64String1".getBytes())),
                 new TransactionFile(
                         String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 2, 4),
                         FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                        Base64.getEncoder().encodeToString("testBase64String2".getBytes()))
+                        Base64.getEncoder().encodeToString("testBase64String2".getBytes())),
+                new TransactionFile(
+                        String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 3, 4),
+                        FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedPngPath))),
+                new TransactionFile(
+                        String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 4, 4),
+                        FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedJpegPath)))
         );
 
         CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(familySubmission);
