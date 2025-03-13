@@ -78,7 +78,7 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
                             uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }
                 if (CCMMS_INTEGRATION_ENABLED) {
-                    ccmsSubmissionPayloadTransactionJob.enqueueSubmissionCCMSPayloadTransactionJobInOneHour(familySubmission);
+                    ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission);
                 }
             } else {
                 log.error(String.format("We can not find a match for your family submission: %s", familySubmissionId.get()));

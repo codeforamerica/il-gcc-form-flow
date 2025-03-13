@@ -130,6 +130,7 @@ il-gcc:
   allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
   enable-new-sda-caseload-codes: ${ENABLE_NEW_SDA_CASELOAD_CODES:false}
   ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
+  ccms-transaction-delay-minutes: ${CCMS_TRANSACTION_DELAY_MINUTES:60}
   dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:true}
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
