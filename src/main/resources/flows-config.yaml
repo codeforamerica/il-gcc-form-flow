@@ -131,6 +131,10 @@ flow:
     crossFieldValidationAction: ValidateChildBirth
     subflow: children
     nextScreens:
+      - name: children-info-assistance
+  children-info-assistance:
+    subflow: children
+    nextScreens:
       - name: children-ccap-max-number
         condition: ReachedMaxChildrenNeedingAssistance
       - name: children-ccap-info

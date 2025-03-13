@@ -148,7 +148,7 @@ public class SubmissionUtilities {
 
     public static List<Map<String, Object>> getChildrenNeedingAssistance(Submission submission) {
         return getChildren(submission).stream().filter(
-                        child -> child.getOrDefault("needFinancialAssistanceForChild", "No").equals("Yes"))
+                        child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("true"))
                 .toList();
     }
 

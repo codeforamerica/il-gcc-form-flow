@@ -17,7 +17,7 @@ public class NeedsFinancialAssistanceForChild implements Condition {
     var children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
     for(var child : children) {
       if(child.get("uuid").equals(uuid)) {
-        return child.getOrDefault("needFinancialAssistanceForChild", "No").equals("Yes");
+        return child.getOrDefault("needFinancialAssistanceForChild", "false").equals("true");
       }
     }
 

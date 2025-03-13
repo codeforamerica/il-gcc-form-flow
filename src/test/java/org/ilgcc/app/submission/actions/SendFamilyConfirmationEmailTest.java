@@ -48,7 +48,7 @@ public class SendFamilyConfirmationEmailTest {
     void setUp() {
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .with("parentFirstName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "Yes")
+                .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
                 .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 0, 0, 0, 0, ZoneOffset.ofTotalSeconds(0)))
                 .withCCRR()
                 .with("parentContactEmail", "familyemail@test.com")

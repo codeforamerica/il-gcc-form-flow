@@ -17,7 +17,7 @@ public class ReachedMaxChildrenNeedingAssistance implements Condition {
         var children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
         for (var child : children) {
             if (child.get("uuid").equals(uuid)) {
-                if (child.getOrDefault("needFinancialAssistanceForChild", "No").equals("Yes")) {
+                if (child.getOrDefault("needFinancialAssistanceForChild", "false").equals("true")) {
                     var childrenNeededAssistance = SubmissionUtilities.getChildrenNeedingAssistance(submission);
 
                     return childrenNeededAssistance.size() > 4;

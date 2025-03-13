@@ -49,7 +49,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
     void setUp() {
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .with("parentFirstName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "Yes")
+                .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
                 .with("parentContactEmail", "familyemail@test.com")
                 .with("languageRead", "English")
                 .withSubmittedAtDate(OffsetDateTime.now())
