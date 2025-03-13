@@ -517,11 +517,18 @@ landmarks:
 name: providerresponse
 flow:
   submit-start:
-    beforeDisplayAction: CheckFamilySubmissionForProvider
+    beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
     nextScreens:
       - name: paid-by-ccap
-        condition: EnableProviderRegistration
-      - name: provider-number
+        condition: ShouldSkipConfirmationCode
+      - name: confirmation-code
+  confirmation-code:
+    onPostAction: GenerateDummyFamilySubmissionForDev
+    crossFieldValidationAction: ValidateConfirmationCode
+    nextScreens:
+      - name: submit-start
+        condition: IsConfirmationCodeInactive
+      - name: provider-response
   paid-by-ccap:
     condition: EnableProviderRegistration
     nextScreens:
@@ -530,21 +537,11 @@ flow:
       - name: registration-start
   #Existing Provider Flow
   provider-number:
+    beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
     crossFieldValidationAction: ValidateProviderNumber
-    beforeSaveAction: ConnectProviderApplicationToFamilyApplication
-    onPostAction: GenerateDummyFamilySubmissionForDev
+    beforeSaveAction: SaveProviderNumberAsBigInteger
     nextScreens:
       - name: response
-        condition: ShouldSkipConfirmationCode
-      - name: confirmation-code
-  confirmation-code:
-    crossFieldValidationAction: ValidateConfirmationCodeAndSaveId
-    onPostAction: GenerateDummyFamilySubmissionForDev
-    afterSaveAction: CheckFamilySubmissionForProvider
-    nextScreens:
-      - name: response
-        condition: IsConfirmationCodeActive
-      - name: submit-start
   response:
     beforeDisplayAction: FindApplicationData
     afterSaveAction: SendProviderAgreesToCareFamilyConfirmationEmail
@@ -592,6 +589,7 @@ flow:
   #New Provider Type
   registration-start:
     condition: EnableProviderRegistration
+    beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
     nextScreens:
       - name: registration-getting-started
   registration-getting-started:
@@ -740,7 +738,7 @@ flow:
   registration-family-response-intro:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: confirmation-code
+      - name: response
   registration-submit-intro:
     condition: EnableProviderRegistration
     nextScreens:

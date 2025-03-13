@@ -1,5 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_CONFIRMATION_CODE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ValidateConfirmationCodeAndSaveId implements Action {
+public class ValidateConfirmationCode implements Action {
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
@@ -31,7 +32,7 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
 
     private final HttpSession httpSession;
 
-    public ValidateConfirmationCodeAndSaveId(HttpSession httpSession) {
+    public ValidateConfirmationCode(HttpSession httpSession) {
         this.httpSession = httpSession;
     }
 
@@ -46,10 +47,7 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
             Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode.toUpperCase());
 
             if (familySubmission.isPresent()) {
-                httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.get().getId());
-                httpSession.removeAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS);
-
-                providerSubmission.getInputData().put("familySubmissionId", familySubmission.get().getId());
+                setFamilySessionData(familySubmission.get(), httpSession);
             } else {
                 setErrorMessages(errorMessages);
             }
@@ -64,5 +62,11 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
         Locale locale = LocaleContextHolder.getLocale();
         errorMessages.put("providerResponseFamilyShortCode",
                 List.of(messageSource.getMessage("errors.provide-applicant-number", null, locale)));
+    }
+
+    private void setFamilySessionData(Submission familySubmission, HttpSession currentSession){
+        currentSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.getId());
+        currentSession.setAttribute(SESSION_KEY_FAMILY_CONFIRMATION_CODE, familySubmission.getShortCode());
+        currentSession.removeAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS);
     }
 }
