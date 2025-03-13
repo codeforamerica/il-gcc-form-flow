@@ -750,7 +750,7 @@ flow:
     nextScreens:
       - name: registration-signature
   registration-signature:
-    afterSaveAction: UploadSubmissionToS3AndEnqueueCCMSPayload
+    afterSaveAction: SendProviderRegistrationAndFamilyPayloadToCCMS
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-submit-complete
