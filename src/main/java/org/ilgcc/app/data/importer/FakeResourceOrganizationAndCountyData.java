@@ -45,13 +45,13 @@ public class FakeResourceOrganizationAndCountyData implements InitializingBean {
 
         ACTIVE_FOUR_C_COUNTY = new County();
         ACTIVE_FOUR_C_COUNTY.setCounty("DEKALB");
-        ACTIVE_FOUR_C_COUNTY.setZipCode(new BigInteger("60002"));
+        ACTIVE_FOUR_C_COUNTY.setZipCode(new BigInteger("60013"));
         ACTIVE_FOUR_C_COUNTY.setCaseloadCode("BB");
         countyRepository.save(ACTIVE_FOUR_C_COUNTY);
 
         ACTIVE_FOUR_C_COUNTY_MCHENRY_ZIPCODE_60051 = new County();
         ACTIVE_FOUR_C_COUNTY_MCHENRY_ZIPCODE_60051.setCounty("MCHENRY");
-        ACTIVE_FOUR_C_COUNTY_MCHENRY_ZIPCODE_60051.setZipCode(new BigInteger("60051"));
+        ACTIVE_FOUR_C_COUNTY_MCHENRY_ZIPCODE_60051.setZipCode(new BigInteger("60002"));
         ACTIVE_FOUR_C_COUNTY_MCHENRY_ZIPCODE_60051.setCaseloadCode("BB");
         countyRepository.save(ACTIVE_FOUR_C_COUNTY_MCHENRY_ZIPCODE_60051);
 

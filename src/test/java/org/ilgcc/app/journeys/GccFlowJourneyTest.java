@@ -58,7 +58,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("pilot-offboard.title"));
         testPage.goBack();
 
-        testPage.enter("applicationZipCode", "62418");
+        testPage.enter("applicationZipCode", "60015");
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
