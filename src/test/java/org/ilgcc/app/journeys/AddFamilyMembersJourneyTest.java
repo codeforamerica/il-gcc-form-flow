@@ -13,9 +13,9 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/children-info-intro");
 
         saveSubmission(
-                getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails().withChild("First", "Child", "Yes")
-                        .withChild("Second", "Child", "Yes").withChild("Third", "Child", "Yes")
-                        .withChild("Fourth", "Child", "Yes").build());
+                getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails().withChild("First", "Child", "true")
+                        .withChild("Second", "Child", "true").withChild("Third", "Child", "true")
+                        .withChild("Fourth", "Child", "true").build());
 
         testPage.clickContinue();
 
@@ -28,8 +28,11 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
-        testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
         testPage.clickContinue();
+
+        // children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickYes();
 
         // children-ccap-max-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-max-number.title"));
@@ -45,10 +48,10 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/children-info-intro");
 
         saveSubmission(
-                getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails().withChild("First", "Child", "Yes")
-                        .withChild("Second", "Child", "No").withChild("Third", "Child", "No").withChild("Fourth", "Child", "No")
-                        .withChild("Fifth", "Child", "No").withChild("Sixth", "Child", "No").withChild("Seventh", "Child", "No")
-                        .withChild("Eight", "Child", "No").build());
+                getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails().withChild("First", "Child", "true")
+                        .withChild("Second", "Child", "false").withChild("Third", "Child", "false").withChild("Fourth", "Child", "false")
+                        .withChild("Fifth", "Child", "false").withChild("Sixth", "Child", "false").withChild("Seventh", "Child", "false")
+                        .withChild("Eight", "Child", "false").build());
 
         testPage.clickContinue();
 
@@ -61,8 +64,11 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
-        testPage.selectRadio("needFinancialAssistanceForChild", "No");
         testPage.clickContinue();
+
+        // children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickNo();
 
         // children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));

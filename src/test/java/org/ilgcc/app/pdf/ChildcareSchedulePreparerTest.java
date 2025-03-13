@@ -19,9 +19,9 @@ public class ChildcareSchedulePreparerTest {
     @Test
     public void scheduleTwoChildrenWithOverlap() {
         submission = new SubmissionTestBuilder()
-                .withChild("First", "Child", "Yes")
+                .withChild("First", "Child", "true")
                 .withConstantChildcareSchedule(0)
-                .withChild("Second", "Child", "Yes")
+                .withChild("Second", "Child", "true")
                 .withVaryingChildcareSchedule(1)
                 .build();
 

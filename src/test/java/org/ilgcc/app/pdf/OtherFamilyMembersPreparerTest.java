@@ -19,12 +19,12 @@ public class OtherFamilyMembersPreparerTest {
     @Test
     public void includesChildrenNeedingAssistanceBeyondFourAllowed() {
         submission = new SubmissionTestBuilder()
-                .withChild("First", "Child", "Yes")
-                .withChild("Second", "Child", "Yes")
-                .withChild("Third", "Child", "Yes")
-                .withChild("Fourth", "Child", "Yes")
-                .withChild("Fifth", "Child", "Yes")
-                .withChild("Sixth", "Child", "Yes")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
+                .withChild("Third", "Child", "true")
+                .withChild("Fourth", "Child", "true")
+                .withChild("Fifth", "Child", "true")
+                .withChild("Sixth", "Child", "true")
                 .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
@@ -41,14 +41,14 @@ public class OtherFamilyMembersPreparerTest {
     @Test
     public void correctlyPreparesChildAndAdultInformation() {
         submission = new SubmissionTestBuilder()
-                .withChild("First", "Child", "Yes")
-                .withChild("Second", "Child", "Yes")
-                .withChild("Third", "Child", "Yes")
-                .withChild("Fourth", "Child", "Yes")
-                .withChild("Fifth", "Child", "Yes")
-                .withChild("Sixth", "Child", "No")
-                .withChild("Seventh", "Child", "No")
-                .withChild("Eight", "Child", "No")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
+                .withChild("Third", "Child", "true")
+                .withChild("Fourth", "Child", "true")
+                .withChild("Fifth", "Child", "true")
+                .withChild("Sixth", "Child", "false")
+                .withChild("Seventh", "Child", "false")
+                .withChild("Eight", "Child", "false")
                 .withAdultDependent("First A", "Adult-Dependent")
                 .withAdultDependent("Second A", "Adult-Dependent")
                 .build();

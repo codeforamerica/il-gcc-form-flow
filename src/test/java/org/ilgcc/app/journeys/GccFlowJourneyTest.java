@@ -208,17 +208,25 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
-        testPage.selectRadio("needFinancialAssistanceForChild", "No");
         testPage.clickContinue();
+        //children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickNo();
+        //children-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
         testPage.clickButton(getEnMessage("children-add.add-button"));
+        //children-info-basic
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-basic.title"));
         testPage.enter("childFirstName", "child");
         testPage.enter("childLastName", "mcchild");
         testPage.enter("childDateOfBirthMonth", "12");
         testPage.enter("childDateOfBirthDay", "25");
         testPage.enter("childDateOfBirthYear", "2018");
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.fosterchild"));
-        testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
         testPage.clickContinue();
+        //children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickYes();
         //children-ccap-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
         testPage.clickElementById("childGender-MALE");
@@ -287,11 +295,12 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
         testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
-        testPage.selectRadio("needFinancialAssistanceForChild", "Yes");
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
-        // Go back to the children-add page and assert that the incomplete iteration is removed
+        //children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
         testPage.goBack();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-basic.title"));
+        // Go back to the children-add page and assert that the incomplete iteration is removed
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
         List<String> li = testPage.getTextBySelector(".child-name");

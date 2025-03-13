@@ -85,7 +85,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
         child1.put("childDateOfBirthDay", "17");
         child1.put("childDateOfBirthYear", "2015");
         child1.put("childInCare", "true");
-        child1.put("needFinancialAssistanceForChild", "Yes");
+        child1.put("needFinancialAssistanceForChild", "true");
         child1.put("childIsUsCitizen", "Yes");
         child1.put("ccapStartDate", "01/10/2025");
         child1.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
@@ -98,7 +98,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
         child2.put("childDateOfBirthDay", "25");
         child2.put("childDateOfBirthYear", "2017");
         child2.put("childInCare", "true");
-        child2.put("needFinancialAssistanceForChild", "Yes");
+        child2.put("needFinancialAssistanceForChild", "true");
         child2.put("childIsUsCitizen", "Yes");
         child2.put("ccapStartDate", "01/10/2025");
         child2.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
