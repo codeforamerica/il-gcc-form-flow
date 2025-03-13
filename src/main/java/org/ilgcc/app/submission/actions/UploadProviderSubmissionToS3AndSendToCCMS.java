@@ -33,8 +33,8 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final S3PresignService s3PresignService;
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
-    private boolean CCMMS_INTEGRATION_ENABLED;
-    private boolean DTS_INTEGRATION_ENABLED;
+    private final boolean CCMS_INTEGRATION_ENABLED;
+    private final boolean DTS_INTEGRATION_ENABLED;
 
     public UploadProviderSubmissionToS3AndSendToCCMS(PdfService pdfService,
             CloudFileRepository cloudFileRepository,
@@ -56,7 +56,7 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
         this.uploadedDocumentTransmissionJob = uploadedDocumentTransmissionJob;
         this.s3PresignService = s3PresignService;
         this.ccmsSubmissionPayloadTransactionJob = ccmsSubmissionPayloadTransactionJob;
-        CCMMS_INTEGRATION_ENABLED = ccmsIntegrationEnabled;
+        CCMS_INTEGRATION_ENABLED = ccmsIntegrationEnabled;
         DTS_INTEGRATION_ENABLED = dtsIntegrationEnabled;
     }
 
@@ -77,7 +77,7 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                             uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }
-                if (CCMMS_INTEGRATION_ENABLED) {
+                if (CCMS_INTEGRATION_ENABLED) {
                     ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission);
                 }
             } else {

@@ -24,21 +24,21 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
     private final PdfTransmissionJob pdfTransmissionJob;
     private final CCMSSubmissionPayloadTransactionJob CCMSSubmissionPayloadTransactionJob;
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
-    private boolean CCMMS_INTEGRATION_ENABLED;
-    private boolean DTS_INTEGRATION_ENABLED;
+    private final boolean CCMS_INTEGRATION_ENABLED;
+    private final boolean DTS_INTEGRATION_ENABLED;
 
     public UploadSubmissionToS3AndEnqueueCCMSPayload(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob,
             CCMSSubmissionPayloadTransactionJob CCMSSubmissionPayloadTransactionJob,
             EnqueueDocumentTransfer enqueueDocumentTransfer,
-            @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmmsIntegrationEnabled,
+            @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
             @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
         this.CCMSSubmissionPayloadTransactionJob = CCMSSubmissionPayloadTransactionJob;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
-        CCMMS_INTEGRATION_ENABLED = ccmmsIntegrationEnabled;
+        CCMS_INTEGRATION_ENABLED = ccmsIntegrationEnabled;
         DTS_INTEGRATION_ENABLED = dtsIntegrationEnabled;
     }
 
@@ -50,7 +50,7 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
                         submission, FileNameUtility.getFileNameForPdf(submission, "Form-Family"));
             }
 
-            if (CCMMS_INTEGRATION_ENABLED) {
+            if (CCMS_INTEGRATION_ENABLED) {
                 CCMSSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(submission);
             }
         }
