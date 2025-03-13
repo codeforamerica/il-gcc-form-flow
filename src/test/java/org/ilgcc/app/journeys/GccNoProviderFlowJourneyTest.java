@@ -2,8 +2,8 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.ilgcc.app.data.FakeResourceOrganization.ACTIVE_PROJECT_CHILD_COUNTY;
-import static org.ilgcc.app.data.FakeResourceOrganization.PROJECT_CHILD_TEST_DATA;
+import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_PROJECT_CHILD_COUNTY;
+import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.PROJECT_CHILD_TEST_DATA;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

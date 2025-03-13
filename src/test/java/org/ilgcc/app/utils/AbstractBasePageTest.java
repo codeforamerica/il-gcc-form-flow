@@ -6,7 +6,7 @@ import formflow.library.data.SubmissionRepository;
 import formflow.library.data.UserFileRepository;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import org.ilgcc.app.data.FakeResourceOrganization;
+import org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData;
 import org.ilgcc.app.data.TransmissionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +38,7 @@ import static org.awaitility.Awaitility.await;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@Import({WebDriverConfiguration.class, FakeResourceOrganization.class})
+@Import({WebDriverConfiguration.class, FakeResourceOrganizationAndCountyData.class})
 @ActiveProfiles({"test", "selenium-test"})
 public abstract class AbstractBasePageTest {
 

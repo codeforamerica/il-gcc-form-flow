@@ -20,7 +20,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.awaitility.Awaitility.await;
-import static org.ilgcc.app.data.FakeResourceOrganization.ACTIVE_FOUR_C_COUNTY;
+import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_FOUR_C_COUNTY;
 
 @Slf4j
 public class GccFlowJourneyTest extends AbstractBasePageTest {
