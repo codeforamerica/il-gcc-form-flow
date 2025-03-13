@@ -119,8 +119,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
                 .withParentDetails()
-                .withChild("First", "Child", "Yes")
-                .withChild("Second", "Child", "Yes")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
                 .build());
 
         testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
@@ -256,8 +256,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
                 .withParentDetails()
-                .withChild("First", "Child", "Yes")
-                .withChild("Second", "Child", "Yes")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
                 .build());
 
         testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
@@ -447,8 +447,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
                 .withParentDetails()
                 .withParentPartnerDetails()
-                .withChild("First", "Child", "Yes")
-                .withChild("Second", "Child", "Yes")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
                 .build());
 
         //activities-partner-add-job
@@ -511,8 +511,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
                 .withParentDetails()
                 .withParentPartnerDetails()
-                .withChild("First", "Child", "Yes")
-                .withChild("Second", "Child", "Yes")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
                 .build());
 
         //activities-partner-add-job
@@ -734,8 +734,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-add-ed-program");
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
                 .withParentDetails()
-                .withChild("First", "Child", "Yes")
-                .withChild("Second", "Child", "Yes")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
                 .build());
 
         //activities-add-ed-program
@@ -783,8 +783,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
                 .withParentDetails()
                 .withParentPartnerDetails()
-                .withChild("First", "Child", "Yes")
-                .withChild("Second", "Child", "Yes")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
                 .build());
 
         testPage.clickElementById("partnerHasBachelorsDegree-skip");

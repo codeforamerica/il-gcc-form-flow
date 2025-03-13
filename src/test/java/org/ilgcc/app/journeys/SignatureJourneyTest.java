@@ -14,8 +14,8 @@ public class SignatureJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
             .withParentPartnerDetails()
-            .withChild("First", "Child", "Yes")
-            .withChild("Second", "Child", "Yes")
+            .withChild("First", "Child", "true")
+            .withChild("Second", "Child", "true")
             .build());
 
         testPage.clickElementById("agreesToLegalTerms-true-label");
@@ -33,8 +33,8 @@ public class SignatureJourneyTest extends AbstractBasePageTest {
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
             .withParentDetails()
             .withParentPartnerDetails()
-            .withChild("First", "Child", "Yes")
-            .withChild("Second", "Child", "Yes")
+            .withChild("First", "Child", "true")
+            .withChild("Second", "Child", "true")
             .with("parentHasQualifyingPartner", "False")
             .build());
 

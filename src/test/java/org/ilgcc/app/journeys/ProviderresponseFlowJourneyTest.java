@@ -25,8 +25,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-            .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
-            .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+            .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
+            .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
             .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
 
         testPage.clickContinue();
@@ -77,8 +77,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
-                .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
+                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
                 .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
 
         testPage.clickContinue();
@@ -166,8 +166,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
-                .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
+                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
                 .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
 
         testPage.clickContinue();
@@ -253,8 +253,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
-                .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
+                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
                 .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
 
         testPage.clickContinue();
@@ -298,8 +298,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
-                .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
+                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(10)).withShortCode(CONF_CODE).build());
 
         testPage.clickContinue();

@@ -31,9 +31,9 @@ public class RemoveIncompleteChildIterationsTest {
     @Test
     public void setsEarliestDateWithMultipleChildren() {
         Submission submission = new SubmissionTestBuilder()
-                .withChild("first", "child", "Yes")
-                .withChild("second", "child", "Yes")
-                .withChild("third", "child", "Yes")
+                .withChild("first", "child", "true")
+                .withChild("second", "child", "true")
+                .withChild("third", "child", "true")
                 .addChildCareStartDate(0, "2009", "2", "10")
                 .addChildCareStartDate(1, "2009", "1", "10")
                 .addChildCareStartDate(2, "2020", "1", "10")
@@ -47,7 +47,7 @@ public class RemoveIncompleteChildIterationsTest {
     @Test
     public void setsEarliestDateWithSingle() {
         Submission submission = new SubmissionTestBuilder()
-                .withChild("first", "child", "Yes")
+                .withChild("first", "child", "true")
                 .addChildCareStartDate(0, "2020", "2", "10")
                 .build();
 

@@ -129,7 +129,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-            .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
+            .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
             .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
             .with("earliestChildcareStartDate", "10/10/2011")
             .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
