@@ -188,6 +188,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("parent-add-adults.add-member"));
         testPage.enter("adultDependentFirstName", "adaa");
         testPage.enter("adultDependentLastName", "doltt");
+        testPage.enter("adultDependentSSN", "112-456-7893");
+        testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
         testPage.clickButton(getEnMessage("parent-add-adults.im-done"));
         // parent-intro-family-info

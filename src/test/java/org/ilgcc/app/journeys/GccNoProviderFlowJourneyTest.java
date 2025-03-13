@@ -147,6 +147,8 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-add-adults-detail.title"));
         testPage.enter("adultDependentFirstName", "ada");
         testPage.enter("adultDependentLastName", "dolt");
+        testPage.enter("adultDependentSSN", "123-456-7890");
+        testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
 
         // parent-add-adults
