@@ -2,9 +2,9 @@
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head(title=#{index.title})}"></head>
 <body class="template--index template--static-page">
-<div class="page-wrapper">
+<div class="page-wrapper padding-bottom-10">
     <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
-    <main id="content" role="main" class="slab slab--white padding-top-0 spacing-below-0">
+    <main id="content" role="main" class="slab slab--white padding-top-0 padding-bottom-0 spacing-below-0">
         <section class="slab slab--light-purple slab--hero">
             <div class="grid">
                 <div class="notice--warning spacing-below-35">
@@ -124,18 +124,18 @@
                 </div>
 
                 <div class="width-one-half">
-                    <p class="normal"
+                    <p
                        th:text="#{index.are-you-a-child-care-provider.subheader}"></p>
-                    <div class="form-group spacing-above-25">
-                        <label class="form-question" for="homepage-provider-response-link">
+                    <div class="form-group spacing-above-35">
+                        <label class="form-question spacing-below-35" for="homepage-provider-response-link">
                             <span th:text="#{index.enter-confirmation-code.input-header}"></span>
                         </label>
-                        <input type="text" class="text-input" id="homepage-provider-response-link">
+                        <input type="text" class="text-input width-two-thirds spacing-below-35" id="homepage-provider-response-link">
                         <a
                                 th:href="'/s'"
                                 id="route-to-provider-response"
-                                class="button--big button">
-                            <span th:text="#{index.respond-to-application.button}"></span>
+                                class="button--big button spacing-above-10">
+                            <span th:text="#{index.respond-to-application.button} + '  →'"></span>
                         </a>
                         <div class="width-one-half is-desktop-hidden">
                             <img src="/assets/images/mother_baby_smiling.svg" loading="lazy" alt=""
@@ -147,9 +147,7 @@
                     <img src="/assets/images/mother_baby_smiling.svg" loading="lazy" alt=""
                          class="img-center">
                 </div>
-
             </div>
-
         </section>
     </main>
 </div>
