@@ -1,7 +1,7 @@
 package org.ilgcc.app.utils;
 
 public enum AdultDependentRelationshipOption implements InputOption {
-    AUNT("general.relationship-option.aunt-uncle", "Aunt or Uncle"),
+    AUNT_OR_UNCLE("general.relationship-option.aunt-uncle", "Aunt or Uncle"),
     CHILD("general.relationship-option.child", "Child"),
     PARENT("general.relationship-option.parent", "Parent"),
     STEP_PARENT("general.relationship-option.step-parent", "Step Parent"),
