@@ -51,7 +51,7 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
             }
 
             if (CCMMS_INTEGRATION_ENABLED) {
-                CCMSSubmissionPayloadTransactionJob.enqueueSubmissionCCMSPayloadTransactionJobInOneHour(submission);
+                CCMSSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(submission);
             }
         }
     }

@@ -16,6 +16,7 @@ import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -26,6 +27,8 @@ public class CCMSSubmissionPayloadTransactionJob {
     private final CCMSTransactionPayloadService ccmsTransactionPayloadService;
     private final CCMSApiClient ccmsApiClient;
     private final TransactionRepositoryService transactionRepositoryService;
+    @Value("${il-gcc.ccms-transaction-delay-minutes}")
+    private int jobDelayMinutes;
 
     public CCMSSubmissionPayloadTransactionJob(
             JobScheduler jobScheduler, CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
@@ -36,8 +39,8 @@ public class CCMSSubmissionPayloadTransactionJob {
         this.transactionRepositoryService = transactionRepositoryService;
     }
 
-    public void enqueueSubmissionCCMSPayloadTransactionJobInOneHour(Submission submission) {
-        JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofHours(1)),
+    public void enqueueCCMSTransactionPayloadWithDelay(Submission submission) {
+        JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofMinutes(jobDelayMinutes)),
                 () -> sendCCMSTransaction(submission));
         log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}", jobId, submission.getId());
     }
@@ -47,7 +50,7 @@ public class CCMSSubmissionPayloadTransactionJob {
         log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}", jobId, submission.getId());
     }
 
-    @Job(name = "Send No Provider Selected Family Submission CCMS Payload", retries = 3)
+    @Job(name = "Send CCMS Submission Payload", retries = 3)
     public void sendCCMSTransaction(Submission submission) throws JsonProcessingException {
         CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(submission);
         JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
