@@ -188,6 +188,8 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("parent-add-adults.add-member"));
         testPage.enter("adultDependentFirstName", "adaa");
         testPage.enter("adultDependentLastName", "doltt");
+        testPage.enter("adultDependentSSN", "112-456-7893");
+        testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
         testPage.clickButton(getEnMessage("parent-add-adults.im-done"));
         // parent-intro-family-info
@@ -207,7 +209,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthMonth", "1");
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.child"));
         testPage.clickContinue();
         //children-info-assistance
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
@@ -222,7 +224,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthMonth", "12");
         testPage.enter("childDateOfBirthDay", "25");
         testPage.enter("childDateOfBirthYear", "2018");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.fosterchild"));
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.foster-child"));
         testPage.clickContinue();
         //children-info-assistance
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
@@ -294,7 +296,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthMonth", "1");
         testPage.enter("childDateOfBirthDay", "1");
         testPage.enter("childDateOfBirthYear", "2022");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.child"));
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.child"));
         testPage.clickContinue();
         //children-info-assistance
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
