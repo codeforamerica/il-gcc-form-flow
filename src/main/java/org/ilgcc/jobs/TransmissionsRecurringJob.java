@@ -37,8 +37,8 @@ public class TransmissionsRecurringJob {
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransaction;
-    private boolean CCMMS_INTEGRATION_ENABLED;
-    private boolean DTS_INTEGRATION_ENABLED;
+    private final boolean CCMS_INTEGRATION_ENABLED;
+    private final boolean DTS_INTEGRATION_ENABLED;
 
     public TransmissionsRecurringJob(S3PresignService s3PresignService,
             TransmissionRepositoryService transmissionRepositoryService,
@@ -50,7 +50,7 @@ public class TransmissionsRecurringJob {
             EnqueueDocumentTransfer enqueueDocumentTransfer,
             SubmissionRepositoryService submissionRepositoryService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransaction,
-            @Value("${il-gcc.ccms-integration-enabled:false}") boolean CCMMS_INTEGRATION_ENABLED,
+            @Value("${il-gcc.ccms-integration-enabled:false}") boolean CCMS_INTEGRATION_ENABLED,
             @Value("${il-gcc.dts-integration-enabled}") boolean DTS_INTEGRATION_ENABLED) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
@@ -62,7 +62,7 @@ public class TransmissionsRecurringJob {
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
         this.submissionRepositoryService = submissionRepositoryService;
         this.ccmsSubmissionPayloadTransaction = ccmsSubmissionPayloadTransaction;
-        this.CCMMS_INTEGRATION_ENABLED = CCMMS_INTEGRATION_ENABLED;
+        this.CCMS_INTEGRATION_ENABLED = CCMS_INTEGRATION_ENABLED;
         this.DTS_INTEGRATION_ENABLED = DTS_INTEGRATION_ENABLED;
     }
 
@@ -92,7 +92,7 @@ public class TransmissionsRecurringJob {
                         enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                                 uploadedDocumentTransmissionJob, s3PresignService, submission);
                     }
-                    if (CCMMS_INTEGRATION_ENABLED) {
+                    if (CCMS_INTEGRATION_ENABLED) {
                         ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(submission);
                     }
                 } else {

@@ -706,7 +706,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthMonth", "10");
         testPage.enter("childDateOfBirthDay", "25");
         testPage.enter("childDateOfBirthYear", "2018");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("children-ccap-info.relationship-option.fosterchild"));
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.foster-child"));
         testPage.clickContinue();
 
         // children-info-assistance

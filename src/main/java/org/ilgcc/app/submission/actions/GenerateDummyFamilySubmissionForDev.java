@@ -42,7 +42,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
     public void run(FormSubmission formSubmission, Submission submission) {
         String[] activeProfiles = env.getActiveProfiles();
         boolean isDevProfile = Arrays.asList(activeProfiles).contains("dev");
-        if (isDevProfile) {
+        if (null == httpSession.getAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID) && isDevProfile) {
             Optional<Submission> existingDummyFamilySubmision = submissionRepositoryService.findByShortCode("DEV-123ABC");
             existingDummyFamilySubmision.ifPresent(submissionRepository::delete);
 

@@ -29,7 +29,7 @@
                       th:replace="~{fragments/inputs/select :: select(label=#{children-ccap-info.relationship-question}, inputName='childRelationship', content=~{::childRelationship})}">
                 <th:block th:ref="childRelationship">
                   <th:block
-                          th:replace="~{fragments/inputs/selectOption :: selectOption(value='', optionText=#{children-ccap-info.relationship-option.default})}"/>
+                          th:replace="~{fragments/inputs/selectOption :: selectOption(value='', optionText=#{general.relationship-option.default})}"/>
 
                   <th:block th:each="childRelationshipOption : ${T(org.ilgcc.app.utils.ChildRelationshipOption).values()}">
                     <th:block

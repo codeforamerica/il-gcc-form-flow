@@ -3,6 +3,7 @@ package org.ilgcc.app.data.ccms;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
 
 import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFile;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFile;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
 import org.ilgcc.app.utils.DateUtilities;
@@ -26,12 +28,15 @@ public class CCMSTransactionPayloadService {
     private final CloudFileRepository cloudFileRepository;
     private final UserFileRepositoryService userFileRepositoryService;
     private final PdfService pdfService;
+    private final SubmissionRepositoryService submissionRepositoryService;
     
     public CCMSTransactionPayloadService(CloudFileRepository cloudFileRepository,
-            UserFileRepositoryService userFileRepositoryService, PdfService pdfService) {
+            UserFileRepositoryService userFileRepositoryService, PdfService pdfService,
+            SubmissionRepositoryService submissionRepositoryService) {
         this.cloudFileRepository = cloudFileRepository;
         this.userFileRepositoryService = userFileRepositoryService;
         this.pdfService = pdfService;
+        this.submissionRepositoryService = submissionRepositoryService;
     }
 
     public CCMSTransaction generateSubmissionTransactionPayload(Submission familySubmission) {
@@ -63,14 +68,21 @@ public class CCMSTransactionPayloadService {
                     "There was an error when generating the application PDF for sending to the CCMS Submission Endpoint for Submission with ID {}.",
                     familySubmission.getId(), e);
         }
-        
-        List<UserFile> userFiles = userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf");
-        for (int i = 0; i < userFiles.size(); i++) {
-            UserFile userFile = userFiles.get(i);
+
+        List<UserFile> allFiles = new ArrayList<>();
+        if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
+            submissionRepositoryService.findById(
+                            UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()))
+                    .ifPresent(providerSubmission -> allFiles.addAll(
+                            userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")));
+        }
+        allFiles.addAll(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf"));
+        for (int i = 0; i < allFiles.size(); i++) {
+            UserFile userFile = allFiles.get(i);
             CloudFile cloudFile = cloudFileRepository.get(userFile.getRepositoryPath());
             transactionFiles.add(
                     new TransactionFile(
-                            FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, userFiles.size()),
+                            FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
                             FileTypeId.UPLOADED_DOCUMENT.getValue(),
                             Base64.getEncoder().encodeToString(cloudFile.getFileBytes())
                     ));

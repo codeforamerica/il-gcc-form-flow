@@ -752,6 +752,7 @@ flow:
     nextScreens:
       - name: registration-signature
   registration-signature:
+    afterSaveAction: SendProviderRegistrationAndFamilyPayloadToCCMS
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-submit-complete
