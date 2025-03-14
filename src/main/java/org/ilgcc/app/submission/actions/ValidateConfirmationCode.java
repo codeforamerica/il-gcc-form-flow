@@ -9,6 +9,7 @@ import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import jakarta.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -30,7 +32,12 @@ public class ValidateConfirmationCode implements Action {
     @Autowired
     MessageSource messageSource;
 
+    @Autowired
+    Environment env;
+
     private final HttpSession httpSession;
+
+    private final String PROVIDER_RESPONSE_STATUS_INPUT_NAME = "providerApplicationStatus";
 
     public ValidateConfirmationCode(HttpSession httpSession) {
         this.httpSession = httpSession;
@@ -44,7 +51,12 @@ public class ValidateConfirmationCode implements Action {
                 .getOrDefault("providerResponseFamilyShortCode", "");
 
         if (!providerProvidedConfirmationCode.isBlank()) {
-            Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode.toUpperCase());
+
+            if (skipValidationForSpecialDevConfirmationCode(providerProvidedConfirmationCode.toUpperCase())) {
+                return errorMessages;
+            }
+            Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(
+                    providerProvidedConfirmationCode.toUpperCase());
 
             if (familySubmission.isPresent()) {
                 setFamilySessionData(familySubmission.get(), httpSession);
@@ -64,9 +76,18 @@ public class ValidateConfirmationCode implements Action {
                 List.of(messageSource.getMessage("errors.provide-applicant-number", null, locale)));
     }
 
-    private void setFamilySessionData(Submission familySubmission, HttpSession currentSession){
+    private void setFamilySessionData(Submission familySubmission, HttpSession currentSession) {
         currentSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.getId());
         currentSession.setAttribute(SESSION_KEY_FAMILY_CONFIRMATION_CODE, familySubmission.getShortCode());
-        currentSession.removeAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS);
+        String providerResponseStatus = (String) familySubmission.getInputData()
+                .getOrDefault(PROVIDER_RESPONSE_STATUS_INPUT_NAME, "");
+        if (!providerResponseStatus.isBlank()) {
+            currentSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, providerResponseStatus);
+        }
+    }
+
+    private boolean skipValidationForSpecialDevConfirmationCode(String providerConfirmationCode) {
+        String[] activeProfiles = env.getActiveProfiles();
+        return Arrays.asList(activeProfiles).contains("dev") && providerConfirmationCode.equals("DEV-123ABC");
     }
 }

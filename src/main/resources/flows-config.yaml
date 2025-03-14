@@ -523,12 +523,12 @@ flow:
         condition: ShouldSkipConfirmationCode
       - name: confirmation-code
   confirmation-code:
-    onPostAction: GenerateDummyFamilySubmissionForDev
     crossFieldValidationAction: ValidateConfirmationCode
+    afterSaveAction: GenerateDummyFamilySubmissionForDev
     nextScreens:
       - name: submit-start
         condition: IsConfirmationCodeInactive
-      - name: provider-response
+      - name: provider-number
   paid-by-ccap:
     condition: EnableProviderRegistration
     nextScreens:

@@ -233,6 +233,16 @@ public class ProviderSubmissionUtilities {
     }
 
     public static SubmissionStatus setProviderSubmissionStatus(Submission familySubmission) {
+        boolean hasProviderApplicationStatus = familySubmission.getInputData().containsKey("providerApplicationStatus");
+        if (hasProviderApplicationStatus) {
+            SubmissionStatus status = SubmissionStatus.valueOf(familySubmission.getInputData().get("providerApplicationStatus").toString());
+            if(status == SubmissionStatus.ACTIVE){
+                return SubmissionStatus.CONFIRMED;
+            } else {
+                return status;
+            }
+        }
+
         boolean familyHasProviderResponse = familySubmission.getInputData().containsKey("providerResponseSubmissionId");
         if (familyHasProviderResponse) {
             return SubmissionStatus.RESPONDED;

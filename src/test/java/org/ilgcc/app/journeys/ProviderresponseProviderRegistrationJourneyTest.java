@@ -1369,6 +1369,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
+        testPage.clickContinue();
+
         // paid-by-ccap
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
         testPage.clickNo();

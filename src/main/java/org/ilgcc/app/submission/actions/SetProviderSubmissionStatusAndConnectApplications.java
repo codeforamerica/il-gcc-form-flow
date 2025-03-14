@@ -29,8 +29,6 @@ public class SetProviderSubmissionStatusAndConnectApplications implements Action
     private UUID familySubmissionId;
     private String providerSubmissionStatus;
 
-    private final String PROVIDER_RESPONSE_STATUS_INPUT_NAME = "providerApplicationStatus";
-
     public SetProviderSubmissionStatusAndConnectApplications(HttpSession httpSession, MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
         this.httpSession = httpSession;
