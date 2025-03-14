@@ -1,4 +1,4 @@
-<div th:with="childHasProvider=${fieldData.get('childInCare').equals('true')},
+<div th:with="childHasProvider=${fieldData.getOrDefault('childInCare', '').equals('true')},
               hasProviderHeader=#{children-childcare-weekly-schedule.header-current(${fieldData.get('childFirstName')})},
               noCurrentProviderHeader=#{children-childcare-weekly-schedule.header-future(${fieldData.get('childFirstName')})}">
 

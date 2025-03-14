@@ -13,4 +13,8 @@ public class NoProviderChosen implements Condition {
     public Boolean run(Submission submission) {
         return hasNotChosenProvider(submission);
     }
+    @Override
+    public Boolean run(Submission submission, String UUID) {
+        return hasNotChosenProvider(submission);
+    }
 }
