@@ -296,7 +296,9 @@ p.normal {
   font-weight: normal;
   font-size: 2.5rem;
 }
-
+.padding-bottom-15{
+  padding-bottom: 15rem;
+}
 .eligibility-table th.bold {
   font-weight: bold;
 }
