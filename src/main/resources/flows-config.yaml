@@ -147,6 +147,8 @@ flow:
   children-ccap-info:
     subflow: children
     nextScreens:
+      - name: children-childcare-weekly-schedule
+        condition: NoProviderChosen
       - name: children-ccap-in-care
   children-ccap-in-care:
     subflow: children

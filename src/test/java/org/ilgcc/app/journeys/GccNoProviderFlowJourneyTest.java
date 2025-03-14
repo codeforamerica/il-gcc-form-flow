@@ -200,17 +200,6 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("none__checkbox-childRaceEthnicity");
         testPage.clickContinue();
 
-        // children-ccap-in-care
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-in-care.title"));
-        testPage.clickNo();
-
-        // children-ccap-start-date
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-start-date.when-did.title"));
-        testPage.enter("ccapStartMonth", "11");
-        testPage.enter("ccapStartDay", "1");
-        testPage.enter("ccapStartYear", "2010");
-        testPage.clickContinue();
-
         //children-ccap-weekly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-weekly-schedule.title"));
         testPage.clickElementById("childcareWeeklySchedule-Thursday");
