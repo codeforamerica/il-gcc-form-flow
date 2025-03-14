@@ -41,7 +41,7 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
                 familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
                 submissionRepositoryService.save(familySubmission);
                 if (CCMS_INTEGRATION_ENABLED) {
-                    ccmsSubmissionPayloadTransactionJob.enqueueSubmissionCCMSPayloadTransactionJobInOneHour(familySubmission);
+                    ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission);
                 }
             } else {
                 log.error("We can not find a match for your family submission: {}", familySubmissionId.get());
