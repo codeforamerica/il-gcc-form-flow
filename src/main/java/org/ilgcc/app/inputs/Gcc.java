@@ -644,4 +644,5 @@ public class Gcc extends FlowInputs {
     private String surveyDifficulty;
     private String surveyAdditionalComments;
     private String providerResponseSubmissionId;
+    private String providerApplicationStatus;
 }

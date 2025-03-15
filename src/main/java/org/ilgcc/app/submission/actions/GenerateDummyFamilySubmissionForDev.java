@@ -1,6 +1,8 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_CONFIRMATION_CODE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -39,7 +42,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
     }
 
     @Override
-    public void run(FormSubmission formSubmission, Submission submission) {
+    public void run(Submission submission) {
         String[] activeProfiles = env.getActiveProfiles();
         boolean isDevProfile = Arrays.asList(activeProfiles).contains("dev");
         if (null == httpSession.getAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID) && isDevProfile) {
@@ -57,12 +60,19 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
             dummyFamilySubmission = submissionRepositoryService.save(dummyFamilySubmission);
 
             httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, dummyFamilySubmission.getId());
+            httpSession.setAttribute(SESSION_KEY_FAMILY_CONFIRMATION_CODE, dummyFamilySubmission.getShortCode());
+            String providerResponseStatus = (String) dummyFamilySubmission.getInputData()
+                    .getOrDefault("providerApplicationStatus", "");
+            if (!providerResponseStatus.isBlank()) {
+                httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS, providerResponseStatus);
+            }
         }
     }
 
     private @NotNull Map<String, Object> createFamilySubmission(Submission providerSubmission) {
         Map<String, Object> inputData = new HashMap<>();
         inputData.put("familyIntendedProviderName", "Dev Provider");
+        inputData.put("providerApplicationStatus", SubmissionStatus.ACTIVE);
         inputData.put("parentFirstName", "Devy");
         inputData.put("parentLastName", "McDeverson");
         inputData.put("parentBirthMonth", "12");

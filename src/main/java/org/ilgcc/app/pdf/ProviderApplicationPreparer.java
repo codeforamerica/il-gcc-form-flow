@@ -197,9 +197,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 }
             }
         }
-        ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
-        ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
-        if (ProviderSubmissionUtilities.providerApplicationHasExpired(familySubmission, todaysDate)) {
+        if (ProviderSubmissionUtilities.providerApplicationHasExpired(familySubmission)) {
             return "No response from provider";
         }
         return "";
