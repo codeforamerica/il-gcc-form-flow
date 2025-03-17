@@ -1,5 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_CONFIRMATION_CODE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 
@@ -8,20 +9,23 @@ import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import jakarta.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ValidateConfirmationCodeAndSaveId implements Action {
+public class ValidateConfirmationCode implements Action {
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
@@ -29,9 +33,12 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
     @Autowired
     MessageSource messageSource;
 
+    @Autowired
+    Environment env;
+
     private final HttpSession httpSession;
 
-    public ValidateConfirmationCodeAndSaveId(HttpSession httpSession) {
+    public ValidateConfirmationCode(HttpSession httpSession) {
         this.httpSession = httpSession;
     }
 
@@ -43,13 +50,15 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
                 .getOrDefault("providerResponseFamilyShortCode", "");
 
         if (!providerProvidedConfirmationCode.isBlank()) {
-            Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(providerProvidedConfirmationCode.toUpperCase());
+
+            if (skipValidationForSpecialDevConfirmationCode(providerProvidedConfirmationCode.toUpperCase())) {
+                return errorMessages;
+            }
+            Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(
+                    providerProvidedConfirmationCode.toUpperCase());
 
             if (familySubmission.isPresent()) {
-                httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.get().getId());
-                httpSession.removeAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS);
-
-                providerSubmission.getInputData().put("familySubmissionId", familySubmission.get().getId());
+                setFamilySessionData(familySubmission.get(), httpSession);
             } else {
                 setErrorMessages(errorMessages);
             }
@@ -64,5 +73,18 @@ public class ValidateConfirmationCodeAndSaveId implements Action {
         Locale locale = LocaleContextHolder.getLocale();
         errorMessages.put("providerResponseFamilyShortCode",
                 List.of(messageSource.getMessage("errors.provide-applicant-number", null, locale)));
+    }
+
+    private void setFamilySessionData(Submission familySubmission, HttpSession currentSession) {
+        currentSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.getId());
+        currentSession.setAttribute(SESSION_KEY_FAMILY_CONFIRMATION_CODE, familySubmission.getShortCode());
+        currentSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS,
+                ProviderSubmissionUtilities.setProviderSubmissionStatus(
+                        familySubmission).name());
+    }
+
+    private boolean skipValidationForSpecialDevConfirmationCode(String providerConfirmationCode) {
+        String[] activeProfiles = env.getActiveProfiles();
+        return Arrays.asList(activeProfiles).contains("dev") && providerConfirmationCode.equals("DEV-123ABC");
     }
 }
