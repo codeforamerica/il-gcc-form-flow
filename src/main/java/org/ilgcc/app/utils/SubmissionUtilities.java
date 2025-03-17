@@ -73,7 +73,8 @@ public class SubmissionUtilities {
      * Mixpanel helper method
      */
     public static String getMixpanelValue(Map<String, Object> inputData, String inputName) {
-        String value = inputData == null ? "not_set" : (String) inputData.getOrDefault(inputName, "not_set");
+        Object rawValue = inputData == null ? "not_set" : inputData.getOrDefault(inputName, "not_set");
+        String value = rawValue != null ? rawValue.toString() : "not_set";
 
         if (inputName.equals("parentHasPartner")) {
             if (!"not_set".equals(value)) {
@@ -111,6 +112,7 @@ public class SubmissionUtilities {
         String day = (String) submission.getInputData().get("%sDay".formatted(inputName));
         return getFormatedDateStringWithOptionalDayField(year, month, day);
     }
+
     public static String getDateInputWithDayOptionalFromSubflow(HashMap<String, Object> subflowInstance, String inputName) {
         String year = (String) subflowInstance.get("%sYear".formatted(inputName));
         String month = (String) subflowInstance.get("%sMonth".formatted(inputName));

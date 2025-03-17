@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_CAME_FROM_HOME_PAGE;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_CONFIRMATION_CODE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_SUBMISSION_MAP;
 
@@ -53,20 +54,11 @@ public class ProviderLinkController {
         log.info("Loading submission for code " + sanitizedConfirmationCode);
 
         if (sanitizedConfirmationCode != null) {
-            Optional<Submission> submission = submissionRepositoryService.findByShortCode(sanitizedConfirmationCode.toUpperCase());
-            if (submission.isPresent()) {
-                Submission s = submission.get();
-                Map<String, String> urlParams = s.getUrlParams();
-                if (urlParams == null) {
-                    urlParams = new HashMap<>();
-                }
-
-                urlParams.put("conf_code", sanitizedConfirmationCode);
-                s.setUrlParams(urlParams);
-                submissionRepositoryService.save(s);
-
-                newSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, s.getId());
-
+            Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(
+                    sanitizedConfirmationCode.toUpperCase());
+            if (familySubmission.isPresent()) {
+                setSessionUrl(familySubmission.get(), sanitizedConfirmationCode);
+                setFamilySessionData(familySubmission.get(), newSession);
                 checkRefererValue(referer, newSession);
             } else {
                 log.error("Unable to load submission for code " + sanitizedConfirmationCode);
@@ -77,11 +69,27 @@ public class ProviderLinkController {
         return "redirect:/flow/providerresponse/submit-start";
     }
 
-    private static void checkRefererValue(String referer, HttpSession newSession) throws URISyntaxException {
+    private void setSessionUrl(Submission familySubmission, String sanitizedConfirmationCode) {
+        Map<String, String> urlParams = familySubmission.getUrlParams();
+        if (urlParams == null) {
+            urlParams = new HashMap<>();
+        }
+
+        urlParams.put("conf_code", sanitizedConfirmationCode);
+        familySubmission.setUrlParams(urlParams);
+        submissionRepositoryService.save(familySubmission);
+    }
+
+    private void setFamilySessionData(Submission familySubmission, HttpSession currentSession) {
+        currentSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.getId());
+        currentSession.setAttribute(SESSION_KEY_FAMILY_CONFIRMATION_CODE, familySubmission.getShortCode());
+    }
+
+    private static void checkRefererValue(String referer, HttpSession currentSession) throws URISyntaxException {
         if (referer != null) {
             URI refererUri = new URI(referer);
             if (("/").equals(refererUri.getPath())) {
-                newSession.setAttribute(SESSION_KEY_CAME_FROM_HOME_PAGE, true);
+                currentSession.setAttribute(SESSION_KEY_CAME_FROM_HOME_PAGE, true);
             }
         }
     }

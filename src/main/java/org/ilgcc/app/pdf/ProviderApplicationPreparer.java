@@ -70,7 +70,6 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 "providerMailingZipCode"
         ));
 
-
         for (String fieldName : providerFields) {
             results.put(fieldName,
                     new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
@@ -197,9 +196,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 }
             }
         }
-        ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
-        ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
-        if (ProviderSubmissionUtilities.providerApplicationHasExpired(familySubmission, todaysDate)) {
+        if (ProviderSubmissionUtilities.providerApplicationHasExpired(familySubmission)) {
             return "No response from provider";
         }
         return "";

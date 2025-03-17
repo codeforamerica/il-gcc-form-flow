@@ -143,6 +143,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
+        testPage.clickContinue();
+
         // paid-by-ccap
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
         testPage.clickYes();
@@ -150,10 +155,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
         testPage.enter("providerResponseProviderNumber", "12345678901");
-        testPage.clickContinue();
-
-        //confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.clickContinue();
 
         //response
@@ -402,10 +403,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
         testPage.clickContinue();
 
-        // confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.clickContinue();
-
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
@@ -604,10 +601,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
         testPage.clickContinue();
 
-        // confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.clickContinue();
-
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
@@ -778,10 +771,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
         testPage.clickContinue();
 
-        // confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.clickContinue();
-
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
@@ -930,10 +919,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // Skips registration-convictions-info and registration screens
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
-        testPage.clickContinue();
-
-        // confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.clickContinue();
 
         // response
@@ -1093,10 +1078,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-family-response-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
-        testPage.clickContinue();
-
-        // confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.clickContinue();
 
         // response
@@ -1285,10 +1266,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
         testPage.clickContinue();
 
-        // confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.clickContinue();
-
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
@@ -1368,6 +1345,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // submit-start
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
+
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
+        testPage.clickContinue();
 
         // paid-by-ccap
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
