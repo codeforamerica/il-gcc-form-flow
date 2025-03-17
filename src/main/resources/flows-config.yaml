@@ -541,8 +541,8 @@ flow:
       - name: registration-start
   #Existing Provider Flow
   provider-number:
-    beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
     crossFieldValidationAction: ValidateProviderNumber
+    beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
     beforeSaveAction: SaveProviderNumberAsBigInteger
     nextScreens:
       - name: response
@@ -777,7 +777,7 @@ flow:
       - name: registration-doc-upload-submit-confirmation
   registration-doc-upload-submit-confirmation:
     condition: EnableProviderRegistration
-    nextScreens: 
+    nextScreens:
       - name: registration-submit-next-steps
 subflows:
   providerHouseholdMembers:

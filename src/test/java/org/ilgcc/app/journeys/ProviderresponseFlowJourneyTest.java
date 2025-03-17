@@ -372,7 +372,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
                 getEnMessageWithParams("provider-response-submit-start.responded.header", new Object[]{"Dev Provider"}));
     }
 
-
     @Test
     void ProviderresponseJourneyTest_ProviderNumberValidation() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");

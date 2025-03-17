@@ -20,6 +20,52 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     private static final String CONF_CODE = "A2123B";
 
     @Test
+    void onboardingScreenNoLink() {
+        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
+
+        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
+                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
+                .with("earliestChildcareStartDate", "10/10/2011")
+                .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+
+        testPage.clickContinue();
+
+        driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
+
+        // submit-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
+        testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
+
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.clickContinue();
+
+        // paid-by-ccap
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
+        testPage.clickNo();
+
+        // registration-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start.title"));
+        testPage.clickButton(getEnMessage("registration-start.button"));
+
+        testPage.navigateToFlowScreen("providerresponse/response");
+
+        //response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        assertThat(testPage.findElementTextById("confirmation-code")).isEqualTo(CONF_CODE);
+        assertThat(testPage.findElementTextById("parent-name")).isEqualTo("FirstName parent last");
+
+        assertThat(testPage.findElementTextById("child-name-0")).isEqualTo("First Child");
+        assertThat(testPage.findElementTextById("child-age-0")).isEqualTo("Age 22");
+        assertThat(testPage.findElementTextById("child-schedule-0")).isNotNull();
+        assertThat(testPage.findElementTextById("child-start-0")).isEqualTo("01/10/2025");
+        testPage.clickElementById("providerResponseAgreeToCare-true");
+        testPage.clickContinue();
+    }
+
+    @Test
     void basicInfoFlow() {
         createAValidLink();
 
@@ -129,15 +175,16 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-            .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
-            .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
-            .with("earliestChildcareStartDate", "10/10/2011")
-            .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
+                .withChild("Second", "Child", "false")
+                .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+                .with("earliestChildcareStartDate", "10/10/2011")
+                .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
 
         testPage.clickContinue();
 
         driver.navigate()
-            .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
+                .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
 
         // submit-start
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -215,7 +262,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void licenseExemptInProviderHomeFlow() {
         createAValidLink();
-        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -396,7 +442,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
         assertThat(testPage.findElementsByClass("m").getFirst().getText()).isEqualTo("First_Name_Test Last_Name_Test");
-        assertThat(testPage.findElementById("done-adding-provider-household-member").getText()).isEqualTo(getEnMessage("registration-household-add-person.im-done"));
+        assertThat(testPage.findElementById("done-adding-provider-household-member").getText()).isEqualTo(
+                getEnMessage("registration-household-add-person.im-done"));
         testPage.clickElementById("done-adding-provider-household-member");
 
         // registration-family-response-intro
@@ -465,7 +512,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // registration-doc-upload-add-files.title
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
         uploadJpgFile("providerUploadDocuments");
-        
+
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
@@ -483,7 +530,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void licenseExemptInChildHomeFlow() {
         createAValidLink();
-        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -577,7 +623,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerLanguagesOffered-English-label");
         assertThat(testPage.findElementById("providerLanguagesOffered-English").isSelected()).isTrue();
         testPage.clickElementById("none__checkbox-providerLanguagesOffered");
-        assertThat(testPage.findElementById("providerLanguagesOffered-English").isSelected()).isFalse() ;
+        assertThat(testPage.findElementById("providerLanguagesOffered-English").isSelected()).isFalse();
         testPage.clickContinue();
 
         // registration-start-date
@@ -633,7 +679,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        
+
         // registration-doc-upload-add-files
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
         assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
@@ -648,7 +694,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
         testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
-        
+
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
@@ -662,7 +708,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void licensedChildCareHomeFlow() {
         createAValidLink();
-        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -817,7 +862,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
         testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
-        
+
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
@@ -830,7 +875,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void licensedChildCareCenterFlow() {
         createAValidLink();
-        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -980,7 +1024,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void licensedGroupChildCareHomeFlow() {
         createAValidLink();
-        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -1126,7 +1169,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
         testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
-        
+
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
@@ -1139,7 +1182,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     @Test
     void licenseExemptChildCareCenter() {
         createAValidLink();
-        submitFamilyConfirmationCode();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -1317,7 +1359,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
         testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
-        
+
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
@@ -1327,13 +1369,13 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
     }
 
-
     private void createAValidLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
-                .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
+                .withChild("Second", "Child", "false")
+                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
                 .with("earliestChildcareStartDate", "10/10/2011")
                 .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
 
@@ -1365,11 +1407,6 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-provide-care-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-provide-care-intro.title"));
-        testPage.clickContinue();
-    }
-
-    private void submitFamilyConfirmationCode(){
-        testPage.navigateToFlowScreen("providerresponse/confirmation-code");
         testPage.clickContinue();
     }
 }
