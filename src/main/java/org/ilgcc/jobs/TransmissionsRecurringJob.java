@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,11 +72,8 @@ public class TransmissionsRecurringJob {
     public void noProviderResponseJob() {
         List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
 
-        ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
-        ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
-
         List<Submission> expiredSubmissionsWithNoTransmission = submissionsWithoutTransmissions.stream()
-                .filter(submission -> providerApplicationHasExpired(submission, todaysDate)).toList();
+                .filter(submission -> providerApplicationHasExpired(submission)).toList();
 
         log.info(String.format("Running the 'No provider response job' for %s expired submissions",
                 expiredSubmissionsWithNoTransmission.size()));
@@ -85,6 +83,7 @@ public class TransmissionsRecurringJob {
         } else {
             for (Submission submission : expiredSubmissionsWithNoTransmission) {
                 if (!hasProviderResponse(submission)) {
+                    updateProviderStatus(submission);
                     if (DTS_INTEGRATION_ENABLED) {
                         enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository,
                                 pdfTransmissionJob,
@@ -102,6 +101,11 @@ public class TransmissionsRecurringJob {
                 }
             }
         }
+    }
+
+    private void updateProviderStatus(Submission familySubmission) {
+        familySubmission.getInputData().put("providerApplicationStatus", SubmissionStatus.EXPIRED.name());
+        submissionRepositoryService.save(familySubmission);
     }
 
     private boolean hasProviderResponse(Submission familySubmission) {

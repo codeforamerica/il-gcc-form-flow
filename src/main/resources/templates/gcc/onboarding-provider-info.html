@@ -26,6 +26,7 @@
                   inputName='familyIntendedProviderPhoneNumber',
                   label=#{onboarding-provider-info.phone},
                   helpText=#{onboarding-provider-info.phone-help})}"/>
+                <input type="hidden" id="providerApplicationStatusHidden" name="providerApplicationStatus" th:value="${T(org.ilgcc.app.utils.enums.SubmissionStatus).ACTIVE.name()}">
               </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
