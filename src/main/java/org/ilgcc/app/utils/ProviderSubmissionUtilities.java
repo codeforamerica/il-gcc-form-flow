@@ -91,7 +91,8 @@ public class ProviderSubmissionUtilities {
     public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
         Map<String, Object> applicationData = new HashMap<>();
 
-        applicationData.put("providerResponseContactEmail", providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
+        applicationData.put("providerResponseContactEmail",
+                providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
         applicationData.put("providerSubmissionId", providerSubmission.getId());
         applicationData.put("ccapStartDate",
@@ -221,7 +222,7 @@ public class ProviderSubmissionUtilities {
         // We won't always have to calculate the application status, we can refer to the field as well
         if (hasProviderApplicationStatus) {
             SubmissionStatus status = getStatusFromProviderApplicationStatusField(familySubmission);
-            if (status.equals(SubmissionStatus.EXPIRED.name())) {
+            if (status.equals(SubmissionStatus.EXPIRED)) {
                 return true;
             }
         }

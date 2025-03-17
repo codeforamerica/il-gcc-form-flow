@@ -202,7 +202,7 @@ public class SubmissionUtilities {
         return getProviderSubmissionId(submission).isPresent();
     }
 
-    public static Optional<UUID> getProviderSubmissionId(Submission familySubmission){
+    public static Optional<UUID> getProviderSubmissionId(Submission familySubmission) {
         if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
             return Optional.of(UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()));
         }
