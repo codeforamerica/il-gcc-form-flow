@@ -177,6 +177,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-add-adults-detail.title"));
         testPage.enter("adultDependentFirstName", "ada");
         testPage.enter("adultDependentLastName", "dolt");
+        testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
         // delete-person
         testPage.clickLink("delete");
