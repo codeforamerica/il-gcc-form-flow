@@ -19,7 +19,7 @@
                 text(inputName='adultDependentLastName',
                 label=#{general.question.their-last-name})}"/>
               <th:block
-                  th:replace="~{fragments/inputs/select :: select(label=#{parent-add-adults.ssn-question}, inputName='adultDependentRelationship', content=~{::adultDependentRelationship})}">
+                  th:replace="~{fragments/inputs/select :: select(label=#{parent-add-adults-detail.relationship-to-you}, inputName='adultDependentRelationship', content=~{::adultDependentRelationship})}">
                 <th:block th:ref="adultDependentRelationship">
                   <th:block
                       th:replace="~{fragments/inputs/selectOption :: selectOption(value='', optionText=#{general.relationship-option.default})}"/>
@@ -36,8 +36,8 @@
               <th:block
                   th:replace="~{fragments/inputs/ssn :: ssn(
                   inputName='adultDependentSSN',
-                  label=#{parent-add-adults.ssn-question},
-                  helpText=#{parent-add-adults.ssn-helper})}"/>
+                  label=#{parent-add-adults-detail.ssn-question},
+                  helpText=#{parent-add-adults-detail.ssn-helper})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
