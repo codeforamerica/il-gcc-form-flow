@@ -148,6 +148,7 @@ public class Gcc extends FlowInputs {
     @SSN(message="{errors.invalid-ssn}")
     @Encrypted
     private String adultDependentSSN;
+    @NotEmpty(message = "{errors.select-a-relationship}")
     private String adultDependentRelationship;
 
     // children-info-basic
@@ -163,7 +164,7 @@ public class Gcc extends FlowInputs {
     private String needFinancialAssistanceForChild;
 
     // children-ccap-info
-    @NotEmpty(message = "{errors.select-child-relationship}")
+    @NotEmpty(message = "{errors.select-a-relationship}")
     private String childRelationship;
     private List<String> childGender;
     private String childHasDisability;
