@@ -644,5 +644,7 @@ public class Gcc extends FlowInputs {
     private String surveyDifficulty;
     private String surveyAdditionalComments;
     private String providerResponseSubmissionId;
-    private String providerApplicationStatus;
+
+    // Stores the Response status (Active, Expired, Responded) of the provider application
+    private String providerApplicationResponseStatus;
 }

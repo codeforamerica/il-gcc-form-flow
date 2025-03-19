@@ -6,7 +6,6 @@ import lombok.Getter;
 public enum SubmissionStatus {
 
     ACTIVE(true),
-    CONFIRMED(true),
     EXPIRED(false),
     RESPONDED(false);
 

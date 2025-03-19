@@ -104,7 +104,7 @@ public class TransmissionsRecurringJob {
     }
 
     private void updateProviderStatus(Submission familySubmission) {
-        familySubmission.getInputData().put("providerApplicationStatus", SubmissionStatus.EXPIRED.name());
+        familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name());
         submissionRepositoryService.save(familySubmission);
     }
 

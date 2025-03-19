@@ -73,8 +73,7 @@ public class SubmissionUtilities {
      * Mixpanel helper method
      */
     public static String getMixpanelValue(Map<String, Object> inputData, String inputName) {
-        Object rawValue = inputData == null ? "not_set" : inputData.getOrDefault(inputName, "not_set");
-        String value = rawValue != null ? rawValue.toString() : "not_set";
+        String value = inputData == null ? "not_set" : inputData.getOrDefault(inputName, "not_set").toString();
 
         if (inputName.equals("parentHasPartner")) {
             if (!"not_set".equals(value)) {

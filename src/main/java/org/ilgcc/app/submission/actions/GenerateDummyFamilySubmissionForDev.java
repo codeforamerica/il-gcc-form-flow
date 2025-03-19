@@ -60,18 +60,13 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
 
             httpSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, dummyFamilySubmission.getId());
             httpSession.setAttribute(SESSION_KEY_FAMILY_CONFIRMATION_CODE, dummyFamilySubmission.getShortCode());
-            String providerResponseStatus = (String) dummyFamilySubmission.getInputData()
-                    .getOrDefault("providerApplicationStatus", "");
-            if (!providerResponseStatus.isBlank()) {
-                httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS, providerResponseStatus);
-            }
         }
     }
 
     private @NotNull Map<String, Object> createFamilySubmission(Submission providerSubmission) {
         Map<String, Object> inputData = new HashMap<>();
         inputData.put("familyIntendedProviderName", "Dev Provider");
-        inputData.put("providerApplicationStatus", SubmissionStatus.ACTIVE.name());
+        inputData.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
         inputData.put("parentFirstName", "Devy");
         inputData.put("parentLastName", "McDeverson");
         inputData.put("parentBirthMonth", "12");
