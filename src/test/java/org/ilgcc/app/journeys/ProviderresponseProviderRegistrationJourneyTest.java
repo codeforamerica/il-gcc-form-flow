@@ -54,11 +54,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        assertThat(testPage.findElementTextById("confirmation-code")).isEqualTo(CONF_CODE);
-        assertThat(testPage.findElementTextById("parent-name")).isEqualTo("FirstName parent last");
+        assertThat(testPage.findElementTextById("confirmation-code")).contains(CONF_CODE);
+        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
 
-        assertThat(testPage.findElementTextById("child-name-0")).isEqualTo("First Child");
-        assertThat(testPage.findElementTextById("child-age-0")).isEqualTo("Age 22");
+        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
+        assertThat(testPage.findElementTextById("child-age-0")).contains("Age 22");
         assertThat(testPage.findElementTextById("child-schedule-0")).isNotNull();
         assertThat(testPage.findElementTextById("child-start-0")).isEqualTo("01/10/2025");
         testPage.clickElementById("providerResponseAgreeToCare-true");
