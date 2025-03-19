@@ -15,38 +15,53 @@
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">
                         <div class="form-card__content">
-                            <div class="providerResponse">
-                                <th:block
-                                        th:if="${submission.getInputData().containsKey('familySubmissionId')}"
-                                        th:with="applicationData=${submission.getInputData().get('clientResponse')}, children=${submission.getInputData().get('clientResponseChildren')}">
+                            <h3 th:text="#{provider-response-response.family-details}"></h3>
+                            <th:block
+                                    th:if="${submission.getInputData().containsKey('familySubmissionId')}"
+                                    th:with="applicationData=${submission.getInputData().get('clientResponse')}, children=${submission.getInputData().get('clientResponseChildren')}">
+                                <div class="radio-button familyDetails">
+                                    <p th:id="parent-name" th:utext="${#messages.msg('provider-response-response.parent-name', applicationData.getOrDefault('clientResponseParentName', 'n/a'))}"></p>
 
-                                    <p class="category" th:text="#{provider-response-response.confirmation-code}"></p>
-                                    <p class="response" th:id="confirmation-code"
-                                       th:text="${applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a')}"></p>
-
-                                    <p class="category" th:text="#{provider-response-response.parent-name}"></p>
-                                    <p class="response" th:id="parent-name"
-                                       th:text="${applicationData.getOrDefault('clientResponseParentName', 'n/a')}"></p>
-
-                                    <th:block
-                                            th:each="child : ${submission.getInputData().get('clientResponseChildren')}">
-                                        <p class="category" th:text="#{provider-response-response.child-name}"></p>
-                                        <p class="response" th:id="${'child-name-'+childStat.index}"
-                                           th:text="${child.getOrDefault('childName', 'n/a')}"></p>
-
-                                        <p class="category" th:text="#{provider-response-response.child-age}"></p>
-                                        <p th:id="${'child-age-'+childStat.index}" th:text="${child.getOrDefault('childAge', 'n/a')}"></p>
-
-                                        <p class="category" th:text="#{provider-response-response.hours}"></p>
-                                        <ul class="list--bulleted" th:id="${'child-schedule-'+childStat.index}"
-                                            th:utext="${child.get('childCareHours')}"></ul>
-
-                                        <p class="category" th:text="#{provider-response-response.start-date}"></p>
-                                        <p class="response" th:id="${'child-start-'+childStat.index}"
-                                           th:text="${child.getOrDefault('childStartDate', 'n/a')}"></p>
+                                    <th:block th:if="${children.size().equals(1)}">
+                                        <p th:utext="#{'provider-response-response.care-request.1-child'}"></p>
                                     </th:block>
-                                </th:block>
-                            </div>
+                                    <th:block th:unless="${children.size().equals(1)}">
+                                        <p th:utext="${#messages.msg('provider-response-response.care-request.multiple-children', children.size())}"></p>
+                                    </th:block>
+
+                                    <p th:id="confirmation-code" th:utext="${#messages.msg('provider-response-response.confirmation-code', applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a'))}"></p>
+                                </div>
+                                <div class="familyDetailsReveal">
+                                    <th:block
+                                            th:each="child, iter : ${children}">
+                                        <th:block th:replace="~{fragments/honeycrisp/reveal :: reveal(
+                                            controlId='r1',
+                                            linkLabel=~{::ref1},
+                                            content=~{::revealContent},
+                                            forceShowContent=${children.size().equals(1)})}">
+                                            <th:block th:ref="ref1">
+                                                <th:span th:id="${'child-name-'+iter.index}"
+                                                        th:utext="${#messages.msg('provider-response-response.child-name', iter.index + 1, child.getOrDefault('childName', 'n/a'))}"></th:span>
+                                            </th:block>
+                                            <th:block th:ref="revealContent">
+                                                <p th:id="${'child-age-'+iter.index}" th:utext="${#messages.msg('provider-response-response.child-age', child.getOrDefault('childAge', 'n/a'))}"></p>
+
+                                                <p class="response-header"
+                                                   th:utext="#{provider-response-response.hours}"></p>
+                                                <ul class="list--bulleted"
+                                                    th:id="${'child-schedule-'+iter.index}"
+                                                    th:utext="${child.get('childCareHours')}"></ul>
+
+                                                <p class="response-header"
+                                                   th:utext="#{provider-response-response.start-date}"></p>
+                                                <p
+                                                   th:id="${'child-start-'+iter.index}"
+                                                   th:text="${child.getOrDefault('childStartDate', 'n/a')}"></p>
+                                            </th:block>
+                                        </th:block>
+                                    </th:block>
+                                </div>
+                            </th:block>
                         </div>
                         <th:block th:replace="~{fragments/inputs/radioFieldset ::
                                           radioFieldset(inputName='providerResponseAgreeToCare',
