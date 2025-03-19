@@ -20,8 +20,8 @@ public class CCMSTransaction {
     private final String timestamp;
     private final String webSubmissionTimestamp;
 
-    private final int FIRST_NAME_MAX_LENGTH = 14;
-    private final int LAST_NAME_MAX_LENGTH = 30;
+    private static final int FIRST_NAME_MAX_LENGTH = 14;
+    private static final int LAST_NAME_MAX_LENGTH = 30;
 
     @JsonCreator
     public CCMSTransaction(
