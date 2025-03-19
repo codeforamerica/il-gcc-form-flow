@@ -71,7 +71,7 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
                         familySubmissionId.get());
                 Submission familySubmission = familySubmissionOptional.get();
                 familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
-                familySubmission.getInputData().put("providerApplicationStatus", SubmissionStatus.RESPONDED.name());
+                familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
                 submissionRepositoryService.save(familySubmission);
                 if (DTS_INTEGRATION_ENABLED) {
                     enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
