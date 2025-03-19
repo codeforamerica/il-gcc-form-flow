@@ -20,6 +20,9 @@ public class CCMSTransaction {
     private final String timestamp;
     private final String webSubmissionTimestamp;
 
+    private final int FIRST_NAME_MAX_LENGTH = 14;
+    private final int LAST_NAME_MAX_LENGTH = 30;
+
     @JsonCreator
     public CCMSTransaction(
             @JsonProperty("trans_type") String transmissionType,
@@ -36,8 +39,8 @@ public class CCMSTransaction {
         this.submissionId = submissionId;
         this.clientConfirmationCode = clientConfirmationCode;
         this.submissionOrgId = submissionOrgId;
-        this.submissionFirstName = submissionFirstName;
-        this.submissionLastName = submissionLastName;
+        this.submissionFirstName = (submissionFirstName.length() > FIRST_NAME_MAX_LENGTH ? submissionFirstName.substring(0, FIRST_NAME_MAX_LENGTH) : submissionFirstName);
+        this.submissionLastName = (submissionLastName.length() > LAST_NAME_MAX_LENGTH ? submissionLastName.substring(0, LAST_NAME_MAX_LENGTH) : submissionLastName);
         this.submissionDOB = submissionDOB;
         this.providerId = List.of("");
         this.files = files;
