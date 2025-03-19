@@ -549,7 +549,6 @@ flow:
       - name: submit-start
   response:
     beforeDisplayAction: FindApplicationData
-    afterSaveAction: SendProviderAgreesToCareFamilyConfirmationEmail
     nextScreens:
       - name: registration-submit-intro
         condition: ProviderIsRegistering
@@ -582,7 +581,7 @@ flow:
     nextScreens:
       - name: info-review
   info-review:
-    beforeSaveAction: SendProviderConfirmationEmail
+    beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: registration-submit-confirmation

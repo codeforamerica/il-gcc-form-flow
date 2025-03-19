@@ -31,7 +31,8 @@ public class ILGCCEmail {
     public enum EmailType {
         FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"), FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER(
                 "No Provider Family Confirmation Email"), PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL(
-                "Provider Agrees to Care Family Email"), PROVIDER_CONFIRMATION_EMAIL("Provider confirmation email");
+                "Provider Agrees to Care Family Email"), PROVIDER_CONFIRMATION_EMAIL(
+                "Provider confirmation email"), PROVIDER_DECLINES_CARE_FAMILY_EMAIL("Provider Declines Care Family Email");
 
         private final String description;
 

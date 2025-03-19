@@ -1,7 +1,5 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getFamilySubmissionDataForEmails;
-
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -13,11 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.app.email.ILGCCEmailTemplate;
-import org.ilgcc.app.email.templates.FamilyConfirmationEmailTemplate;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 abstract class SendEmail implements Action {
