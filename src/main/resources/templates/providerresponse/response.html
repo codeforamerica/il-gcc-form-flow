@@ -20,7 +20,7 @@
                                     th:if="${submission.getInputData().containsKey('familySubmissionId')}"
                                     th:with="applicationData=${submission.getInputData().get('clientResponse')}, children=${submission.getInputData().get('clientResponseChildren')}">
                                 <div class="radio-button familyDetails">
-                                    <p th:utext="${#messages.msg('provider-response-response.parent-name', applicationData.getOrDefault('clientResponseParentName', 'n/a'))}"></p>
+                                    <p th:id="parent-name" th:utext="${#messages.msg('provider-response-response.parent-name', applicationData.getOrDefault('clientResponseParentName', 'n/a'))}"></p>
 
                                     <th:block th:if="${children.size().equals(1)}">
                                         <p th:utext="#{'provider-response-response.care-request.1-child'}"></p>
@@ -29,7 +29,7 @@
                                         <p th:utext="${#messages.msg('provider-response-response.care-request.multiple-children', children.size())}"></p>
                                     </th:block>
 
-                                    <p th:utext="${#messages.msg('provider-response-response.confirmation-code', applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a'))}"></p>
+                                    <p th:id="confirmation-code" th:utext="${#messages.msg('provider-response-response.confirmation-code', applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a'))}"></p>
                                 </div>
                                 <div class="familyDetailsReveal">
                                     <th:block
@@ -40,11 +40,11 @@
                                             content=~{::revealContent},
                                             forceShowContent=${children.size().equals(1)})}">
                                             <th:block th:ref="ref1">
-                                                <th:span
+                                                <th:span th:id="${'child-name-'+iter.index}"
                                                         th:utext="${#messages.msg('provider-response-response.child-name', iter.index + 1, child.getOrDefault('childName', 'n/a'))}"></th:span>
                                             </th:block>
                                             <th:block th:ref="revealContent">
-                                                <p th:utext="${#messages.msg('provider-response-response.child-age', child.getOrDefault('childAge', 'n/a'))}"></p>
+                                                <p th:id="${'child-age-'+iter.index}" th:utext="${#messages.msg('provider-response-response.child-age', child.getOrDefault('childAge', 'n/a'))}"></p>
 
                                                 <p class="response-header"
                                                    th:utext="#{provider-response-response.hours}"></p>
