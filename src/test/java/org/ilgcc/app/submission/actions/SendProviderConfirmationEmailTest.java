@@ -1,9 +1,11 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 
+import com.sendgrid.helpers.mail.objects.Email;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.time.OffsetDateTime;
@@ -12,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.email.ILGCCEmail;
+import org.ilgcc.app.email.ILGCCEmailTemplate;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.jobs.SendEmailJob;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,19 +102,14 @@ public class SendProviderConfirmationEmailTest {
     }
 
     @Test
-    void correctlySetsEmailSubject() {
+    void correctlySetsEmailTemplateData() {
         Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
-        Map<String, Object> emailData = emailDataOptional.get();
+        ILGCCEmailTemplate emailTemplate = action.emailTemplate(emailDataOptional.get());
 
-        assertThat(action.setSubject(emailData, Locale.ENGLISH)).isEqualTo("Your CCAP confirmation code: ABC123");
-    }
+        assertThat(emailTemplate.getSenderEmail()).isEqualTo(new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+        assertThat(emailTemplate.getSubject()).isEqualTo(messageSource.getMessage("email.family-confirmation.subject", new Object[]{"ABC123"}, locale));
 
-    @Test
-    void correctlySetsEmailBody() {
-        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
-        Map<String, Object> emailData = emailDataOptional.get();
-
-        String emailCopy = action.setBodyCopy(emailData, locale);
+        String emailCopy = emailTemplate.getBody().getValue();
 
         assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation.p1", null, locale));
         assertThat(emailCopy).contains(
@@ -128,11 +126,6 @@ public class SendProviderConfirmationEmailTest {
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
 
-    @Test
-    void correctlySetsEmailSender() {
-        assertThat(action.getSenderName(Locale.ENGLISH)).isEqualTo(
-                "Child Care Assistance Program Applications - Code for America on behalf of the Illinois Department of Human Services");
-    }
 
     @Test
     void correctlyUpdatesEmailSendStatus() {
