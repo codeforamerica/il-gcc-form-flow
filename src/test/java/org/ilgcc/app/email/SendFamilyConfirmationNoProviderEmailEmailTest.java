@@ -27,7 +27,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class SendFamilyConfirmationEmailTest {
+public class SendFamilyConfirmationNoProviderEmailEmailTest {
 
     @MockitoSpyBean
     SendEmailJob sendEmailJob;
@@ -101,15 +101,11 @@ public class SendFamilyConfirmationEmailTest {
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.family-confirmation.hi", new Object[]{"FirstName"}, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-completed-the-online-application", null, locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.family-confirmation.you-need-to-email-or-text", new Object[]{"tempEmailLink"},
-                        locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-will-recieve-mail",
-                new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.pending-review",
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.sent-for-review",
                 new Object[]{"ABC123", "October 10, 2022"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.what-happens", null, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.what-are-the-next", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.review-without-a-child-care-provider", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.a-staff-member", new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-will-receive", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
