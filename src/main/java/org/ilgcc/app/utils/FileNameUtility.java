@@ -37,7 +37,7 @@ public class FileNameUtility {
     }
 
     public static String formatApplicantNameForFileName(String fullNameLastToFirst) {
-        // Breaks down diacritics into English letter and diacritic seperately
+        // Breaks down diacritics into English letter and diacritic separately
         String normalized = Normalizer.normalize(fullNameLastToFirst, Normalizer.Form.NFD);
 
         // Remove diacritic marks
@@ -54,7 +54,7 @@ public class FileNameUtility {
     }
 
     public static String removeNonSpaceOrDashCharacters(String namePart) {
-        // Breaks down diacritics into English letter and diacritic seperately
+        // Breaks down diacritics into English letter and diacritic separately
         String normalized = Normalizer.normalize(namePart, Normalizer.Form.NFD);
 
         // Remove diacritic marks
@@ -68,7 +68,7 @@ public class FileNameUtility {
         return String.format("/%s/%s/%s",
                 CCRRSlug.getCCRRSlugFromOrgId(submission.getInputData().getOrDefault("organizationId", "56522729391679").toString()) + (isProductionEnvironment ? "" : "-testing"),
                 getDashFormattedSubmittedAtDate(submission),
-                formatApplicantNameForFileName(getApplicantNameLastToFirst(submission) + "-" +
+                formatApplicantNameForFileName(getApplicantNameLastToFirst(submission) + "-" + submission.getShortCode() + "-" +
                         getDashFormattedSubmittedAtDateWithTime(submission)));
     }
     

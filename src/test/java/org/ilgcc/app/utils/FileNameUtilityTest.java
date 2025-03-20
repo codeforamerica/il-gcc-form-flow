@@ -53,4 +53,16 @@ public class FileNameUtilityTest {
         submission.setInputData(inputData);
         assertEquals("Gonzalez-Alex-2024-02-07-CCAP-Application-Form.pdf", FileNameUtility.getFileNameForPdf(submission));
     }
+
+    @Test
+    void getSharePointFilePathShouldReturnValidString() {
+        Submission submission = new Submission();
+        submission.setSubmittedAt(OffsetDateTime.parse("2024-02-07T12:00:00Z"));
+        Map<String, Object> inputData = new HashMap<>();
+        inputData.put("parentFirstName", "Alex");
+        inputData.put("parentLastName", "Gonzalez");
+        submission.setInputData(inputData);
+        submission.setShortCode("DEV-TEST12");
+        assertEquals("/4c-ccap-apps-testing/2024-02-07/Gonzalez-Alex-DEV-TEST12-2024-02-07-0600-AM", FileNameUtility.getSharePointFilePath(submission, false));
+    }
 }
