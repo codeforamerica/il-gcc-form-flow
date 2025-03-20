@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -90,7 +91,8 @@ public class ProviderSubmissionUtilities {
     public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
         Map<String, Object> applicationData = new HashMap<>();
 
-        applicationData.put("providerResponseContactEmail", providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
+        applicationData.put("providerResponseContactEmail",
+                providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
         applicationData.put("providerSubmissionId", providerSubmission.getId());
         applicationData.put("ccapStartDate",
@@ -214,10 +216,45 @@ public class ProviderSubmissionUtilities {
         return expiresAt;
     }
 
-    public static boolean providerApplicationHasExpired(Submission submission, ZonedDateTime todaysDate) {
-        return submission.getSubmittedAt() != null &&
-                MINUTES.between(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt()),
+    public static boolean providerApplicationHasExpired(Submission familySubmission) {
+        // In Prod, there should always be a submittedAt date, but for Staging it's possible to skip around in the flow and never submit
+        LocalDate submittedAtDate =
+                familySubmission.getSubmittedAt() != null ? familySubmission.getSubmittedAt().toLocalDate()
+                        : null;
+        if (submittedAtDate == null) {
+            log.warn("No submittedAt date found for submission " + familySubmission.getId());
+        }
+        ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
+        ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
+        return familySubmission.getSubmittedAt() != null &&
+                MINUTES.between(
+                        ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(familySubmission.getSubmittedAt()),
                         todaysDate) > 0;
+    }
+
+    public static Optional<SubmissionStatus> getProviderApplicationResponseStatus(Submission familySubmission) {
+        boolean hasProviderApplicationResponseStatus = familySubmission.getInputData()
+                .containsKey("providerApplicationResponseStatus");
+        if (hasProviderApplicationResponseStatus) {
+            return Optional.of(SubmissionStatus.valueOf(
+                    familySubmission.getInputData().get("providerApplicationResponseStatus").toString()));
+        } else {
+            return Optional.empty();
+        }
+
+    }
+
+    public static SubmissionStatus calculateProviderApplicationResponseStatus(Submission familySubmission) {
+        boolean familyHasProviderResponse = familySubmission.getInputData().containsKey("providerResponseSubmissionId");
+        if (familyHasProviderResponse) {
+            return SubmissionStatus.RESPONDED;
+        }
+
+        if (providerApplicationHasExpired(familySubmission)) {
+            return SubmissionStatus.EXPIRED;
+        } else {
+            return SubmissionStatus.ACTIVE;
+        }
     }
 
     public static String getCCAPStartDateFromProviderOrFamilyChildcareStartDate(Submission familySubmission,

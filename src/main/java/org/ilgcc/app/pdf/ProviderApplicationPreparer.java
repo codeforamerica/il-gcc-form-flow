@@ -1,5 +1,6 @@
 package org.ilgcc.app.pdf;
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getProviderApplicationResponseStatus;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
@@ -10,8 +11,6 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -69,7 +69,6 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 "providerMailingState",
                 "providerMailingZipCode"
         ));
-
 
         for (String fieldName : providerFields) {
             results.put(fieldName,
@@ -197,9 +196,9 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 }
             }
         }
-        ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
-        ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);
-        if (ProviderSubmissionUtilities.providerApplicationHasExpired(familySubmission, todaysDate)) {
+
+        Optional<SubmissionStatus> submissionStatus = getProviderApplicationResponseStatus(familySubmission);
+        if (submissionStatus.isPresent() && submissionStatus.get().equals(SubmissionStatus.EXPIRED) || ProviderSubmissionUtilities.providerApplicationHasExpired(familySubmission)) {
             return "No response from provider";
         }
         return "";
