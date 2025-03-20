@@ -68,7 +68,7 @@ public class FileNameUtility {
         return String.format("/%s/%s/%s",
                 CCRRSlug.getCCRRSlugFromOrgId(submission.getInputData().getOrDefault("organizationId", "56522729391679").toString()) + (isProductionEnvironment ? "" : "-testing"),
                 getDashFormattedSubmittedAtDate(submission),
-                formatApplicantNameForFileName(getApplicantNameLastToFirst(submission) + "-" +
+                formatApplicantNameForFileName(getApplicantNameLastToFirst(submission) + "-" + submission.getShortCode() + "-" +
                         getDashFormattedSubmittedAtDateWithTime(submission)));
     }
     
