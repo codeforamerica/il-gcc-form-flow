@@ -39,6 +39,8 @@ public class SendFamilyConfirmationEmail implements Action {
     @Override
     public void run(Submission familySubmission) {
         if (!skipEmailSend(familySubmission)) {
+            boolean hasProvider = familySubmission.getInputData().getOrDefault("hasChosenProvider", "false").equals("true");
+
             Optional<Map<String, Object>> emailData = getEmailData(familySubmission);
 
             if (emailData.isEmpty()) {
@@ -48,10 +50,14 @@ public class SendFamilyConfirmationEmail implements Action {
             locale = emailData.get().get("familyPreferredLanguage").equals("Spanish") ? Locale.forLanguageTag(
                     "es") : Locale.ENGLISH;
 
-            ILGCCEmail email = ILGCCEmail.createFamilyConfirmationEmail(getSenderName(locale),
+            ILGCCEmail email = hasProvider ? ILGCCEmail.createFamilyConfirmationEmail(getSenderName(locale),
                     getRecipientEmail(emailData.get()),
                     setSubject(emailData.get(), locale), new Content("text/html", setBodyCopy(emailData.get(), locale)),
-                    familySubmission.getId());
+                    familySubmission.getId()) :
+                    ILGCCEmail.createNoProviderFamilyConfirmationEmail(getSenderName(locale),
+                        getRecipientEmail(emailData.get()),
+                        setSubject(emailData.get(), locale), new Content("text/html", setNoProviderEmailBody(emailData.get(), locale)) ,familySubmission.getId()
+                        );
             sendEmail(email, familySubmission);
         }
     }
@@ -86,20 +92,35 @@ public class SendFamilyConfirmationEmail implements Action {
     }
 
     protected String setBodyCopy(Map<String, Object> emailData, Locale locale) {
-        String p1 = messageSource.getMessage("email.family-confirmation.p1", new Object[]{emailData.get("parentFirstName")},
+        String p1 = messageSource.getMessage("email.family-confirmation.hi", new Object[]{emailData.get("parentFirstName")},
                 locale);
-        String p2 = messageSource.getMessage("email.family-confirmation.p2", null, locale);
-        String p3 = messageSource.getMessage("email.family-confirmation.p3", new Object[]{emailData.get("shareableLink")}, locale);
-        String p4 = messageSource.getMessage("email.family-confirmation.p4",
+        String p2 = messageSource.getMessage("email.family-confirmation.you-completed-the-online-application", null, locale);
+        String p3 = messageSource.getMessage("email.family-confirmation.you-need-to-email-or-text", new Object[]{emailData.get("shareableLink")}, locale);
+        String p4 = messageSource.getMessage("email.family-confirmation.you-will-recieve-mail",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
-        String p5 = messageSource.getMessage("email.family-confirmation.p5",
+        String p5 = messageSource.getMessage("email.family-confirmation.pending-review",
                 new Object[]{emailData.get("confirmationCode"), emailData.get("submittedDate")},
                 locale);
-        String p6 = messageSource.getMessage("email.family-confirmation.p6", null, locale);
-        String p7 = messageSource.getMessage("email.family-confirmation.p7", null, locale);
+        String p6 = messageSource.getMessage("email.family-confirmation.what-happens", null, locale);
+        String p7 = messageSource.getMessage("email.family-confirmation.what-are-the-next", null, locale);
         String p8 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p9 = messageSource.getMessage("email.general.footer.cfa", null, locale);
         return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
+    }
+
+    protected String setNoProviderEmailBody(Map<String, Object> emailData, Locale locale) {
+        String p1 = messageSource.getMessage("email.family-confirmation.hi", new Object[]{emailData.get("parentFirstName")},
+            locale);
+        String p2 = messageSource.getMessage("email.family-confirmation.you-completed-the-online-application", null, locale);
+        String p3 = messageSource.getMessage("email.family-confirmation.sent-for-review",
+            new Object[]{emailData.get("confirmationCode"), emailData.get("submittedDate")},
+            locale);
+        String p4 = messageSource.getMessage("email.family-confirmation.review-without-a-child-care-provider", null, locale);
+        String p5 = messageSource.getMessage("email.family-confirmation.a-staff-member", new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
+        String p6 = messageSource.getMessage("email.family-confirmation.you-will-receive", null, locale);
+        String p7 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
+        String p8 = messageSource.getMessage("email.general.footer.cfa", null, locale);
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
     }
 
     protected void sendEmail(ILGCCEmail email, Submission submission) {
