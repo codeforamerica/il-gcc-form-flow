@@ -21,7 +21,7 @@ public class ILGCCEmail {
 
     public ILGCCEmail(String senderEmailAddress, String senderName, String recipientAddress, String subject, Content body, EmailType emailType,
             UUID submissionId) {
-        this.senderEmail = new Email(FROM_ADDRESS, senderName);
+        this.senderEmail = new Email(senderEmailAddress, senderName);
         this.recipientEmail = new Email(recipientAddress);
         this.subject = subject;
         this.body = body;
