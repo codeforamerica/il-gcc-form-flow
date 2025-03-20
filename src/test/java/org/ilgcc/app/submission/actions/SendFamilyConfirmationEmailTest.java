@@ -103,17 +103,36 @@ public class SendFamilyConfirmationEmailTest {
         String emailCopy = action.setBodyCopy(emailData, locale);
 
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.family-confirmation.p1", new Object[]{"FirstName"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p2", null, locale));
+                messageSource.getMessage("email.family-confirmation.hi", new Object[]{"FirstName"}, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-completed-the-online-application", null, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.family-confirmation.p3", new Object[]{"tempEmailLink"},
+                messageSource.getMessage("email.family-confirmation.you-need-to-email-or-text", new Object[]{"tempEmailLink"},
                         locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p4",
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-will-recieve-mail",
                 new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p5",
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.pending-review",
                 new Object[]{"ABC123", "October 10, 2022"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p6", null, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p7", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.what-happens", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.what-are-the-next", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
+    }
+
+    @Test
+    void correctlySetsNoProviderEmailBody() {
+        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(familySubmission);
+        Map<String, Object> emailData = emailDataOptional.get();
+
+        String emailCopy = action.setNoProviderEmailBody(emailData, locale);
+
+        assertThat(emailCopy).contains(
+            messageSource.getMessage("email.family-confirmation.hi", new Object[]{"FirstName"}, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-completed-the-online-application", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.sent-for-review",
+            new Object[]{"ABC123", "October 10, 2022"}, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.review-without-a-child-care-provider", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.a-staff-member", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-will-receive", null, locale));        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.a-staff-member", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
