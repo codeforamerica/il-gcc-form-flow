@@ -42,7 +42,7 @@ public class ILGCCEmail {
 
     public static ILGCCEmail createNoProviderFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
         Content body, UUID submissionId) {
-        return new ILGCCEmail(FROM_ADDRESS_WITH_NO_PROVIDER, senderName, recipientAddress, subject, body, EmailType.FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER, submissionId);
+        return new ILGCCEmail(FROM_ADDRESS, senderName, recipientAddress, subject, body, EmailType.FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER, submissionId);
     }
 
     public static ILGCCEmail createProviderAgreesToCareFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
