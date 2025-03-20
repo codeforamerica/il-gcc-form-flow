@@ -10,7 +10,6 @@ public class ILGCCEmail {
 
     public static final String FROM_ADDRESS = "contact@getchildcareil.org";
     public static final String EMAIL_SENDER_KEY = "email.general.sender-name";
-    public static final String FROM_ADDRESS_WITH_NO_PROVIDER = "noreply@getchildcareil.org";
 
     private Email senderEmail;
     private String subject;
@@ -19,9 +18,9 @@ public class ILGCCEmail {
     private UUID submissionId;
     private Email recipientEmail;
 
-    public ILGCCEmail(String senderEmailAddress, String senderName, String recipientAddress, String subject, Content body, EmailType emailType,
+    public ILGCCEmail(String senderName, String recipientAddress, String subject, Content body, EmailType emailType,
             UUID submissionId) {
-        this.senderEmail = new Email(senderEmailAddress, senderName);
+        this.senderEmail = new Email(FROM_ADDRESS, senderName);
         this.recipientEmail = new Email(recipientAddress);
         this.subject = subject;
         this.body = body;
@@ -32,22 +31,22 @@ public class ILGCCEmail {
 
     public static ILGCCEmail createProviderConfirmationEmail(String senderName, String recipientAddress, String subject,
             Content body, UUID submissionId) {
-        return new ILGCCEmail(FROM_ADDRESS, senderName, recipientAddress, subject, body, EmailType.PROVIDER_CONFIRMATION_EMAIL, submissionId);
+        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.PROVIDER_CONFIRMATION_EMAIL, submissionId);
     }
 
     public static ILGCCEmail createFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
             Content body, UUID submissionId) {
-        return new ILGCCEmail(FROM_ADDRESS, senderName, recipientAddress, subject, body, EmailType.FAMILY_CONFIRMATION_EMAIL, submissionId);
+        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.FAMILY_CONFIRMATION_EMAIL, submissionId);
     }
 
     public static ILGCCEmail createNoProviderFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
         Content body, UUID submissionId) {
-        return new ILGCCEmail(FROM_ADDRESS, senderName, recipientAddress, subject, body, EmailType.FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER, submissionId);
+        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER, submissionId);
     }
 
     public static ILGCCEmail createProviderAgreesToCareFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
             Content body, UUID submissionId) {
-        return new ILGCCEmail(FROM_ADDRESS, senderName, recipientAddress, subject, body, EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL, submissionId);
+        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL, submissionId);
     }
 
 
