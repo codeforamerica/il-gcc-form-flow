@@ -27,7 +27,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class SendFamilyConfirmationNoProviderEmailEmailTest {
+public class SendFamilyConfirmationNoProviderEmailTest {
 
     @MockitoSpyBean
     SendEmailJob sendEmailJob;

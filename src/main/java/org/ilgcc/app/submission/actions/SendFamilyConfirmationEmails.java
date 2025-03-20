@@ -30,9 +30,9 @@ public class SendFamilyConfirmationEmails implements Action {
     public void run(Submission familySubmission) {
         boolean hasProvider = familySubmission.getInputData().getOrDefault("hasChosenProvider", "false").equals("true");
         if (hasProvider) {
-            new SendFamilyConfirmationEmail(familySubmission);
+            new SendFamilyConfirmationEmail(familySubmission).send();
         } else {
-            new SendFamilyConfirmationNoProviderEmail(familySubmission);
+            new SendFamilyConfirmationNoProviderEmail(familySubmission).send();
         }
 
     }

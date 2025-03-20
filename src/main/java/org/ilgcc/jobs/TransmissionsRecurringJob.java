@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.TransmissionRepositoryService;
+import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
@@ -95,6 +96,7 @@ public class TransmissionsRecurringJob {
                     }
                     updateProviderStatus(submission);
                     // send email here that the application has been transmitted
+                    new SendProviderDidNotRespondToFamilyEmail(submission).send();
                 } else {
                     log.error(
                             String.format("The provider response exists but the provider response expired. Check submission: %s",

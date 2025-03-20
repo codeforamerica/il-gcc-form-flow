@@ -14,31 +14,27 @@ import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
-abstract class SendEmail {
+public abstract class SendEmail {
 
     protected static String emailSentStatusInputName;
     protected static String recipientEmailInputName;
 
     protected static Locale locale;
 
-    @Autowired
-    SendEmailJob sendEmailJob;
+    protected static SendEmailJob sendEmailJob;
 
-    @Autowired
-    MessageSource messageSource;
+    protected static MessageSource messageSource;
 
-    @Autowired
-    SubmissionRepositoryService submissionRepositoryService;
+    protected static SubmissionRepositoryService submissionRepositoryService;
 
     protected Submission submission;
 
     public SendEmail(Submission submission) {
         this.submission = submission;
-
     }
 
     public void send() {
