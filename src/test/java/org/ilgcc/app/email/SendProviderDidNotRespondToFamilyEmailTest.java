@@ -59,11 +59,12 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
 
         submissionRepositoryService.save(familySubmission);
 
-        sendEmailClass = new SendProviderDidNotRespondToFamilyEmail(familySubmission);
+        sendEmailClass = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService,
+                familySubmission);
     }
 
     @Test
-    void correctlySetsEmailRecipient(){
+    void correctlySetsEmailRecipient() {
         Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
         Map<String, Object> emailData = emailDataOptional.get();
 
@@ -91,14 +92,18 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
         Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
         ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
 
-        assertThat(emailTemplate.getSenderEmail()).isEqualTo(new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
-        assertThat(emailTemplate.getSubject()).isEqualTo(messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
+        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+                new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+        assertThat(emailTemplate.getSubject()).isEqualTo(
+                messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p1", null, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2", new Object[]{"Intended Provider"},
+                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p1", null, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2",
+                        new Object[]{"Intended Provider"},
                         locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p3",
                 new Object[]{"ABC123"}, locale));

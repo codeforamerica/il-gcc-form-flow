@@ -73,7 +73,7 @@ public class SendProviderDeclinesCareFamilyConfirmationEmailTest {
 
         submissionRepositoryService.save(providerSubmission);
 
-        sendEmailClass = new SendProviderDeclinesCareFamilyConfirmationEmail(providerSubmission);
+        sendEmailClass = new SendProviderDeclinesCareFamilyConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService,providerSubmission);
     }
 
     @Test

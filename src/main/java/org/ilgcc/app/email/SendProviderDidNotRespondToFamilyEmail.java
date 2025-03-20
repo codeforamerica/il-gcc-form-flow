@@ -9,6 +9,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.templates.ProviderDidNotRespondToFamilyEmailTemplate;
 import org.ilgcc.jobs.SendEmailJob;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +17,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SendProviderDidNotRespondToFamilyEmail extends SendEmail {
 
-    public SendProviderDidNotRespondToFamilyEmail(Submission submission) {
-        super(submission);
+    @Autowired
+    public SendProviderDidNotRespondToFamilyEmail(SendEmailJob sendEmailJob,
+            MessageSource messageSource,
+            SubmissionRepositoryService submissionRepositoryService,
+            Submission submission) {
+        super(sendEmailJob, messageSource, submissionRepositoryService, submission);
         this.emailSentStatusInputName = "providerDidNotRespondEmailSent";
         this.recipientEmailInputName = "parentContactEmail";
     }

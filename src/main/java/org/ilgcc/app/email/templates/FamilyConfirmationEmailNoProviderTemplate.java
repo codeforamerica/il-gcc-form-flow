@@ -28,7 +28,7 @@ public class FamilyConfirmationEmailNoProviderTemplate {
 
    }
    public ILGCCEmailTemplate createTemplate(){
-       return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData), new Content("text/html", setBodyCopy(emailData)), EmailType.FAMILY_CONFIRMATION_EMAIL);
+       return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData), new Content("text/html", setBodyCopy(emailData)), EmailType.FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER);
    }
 
     private Email senderEmail() {

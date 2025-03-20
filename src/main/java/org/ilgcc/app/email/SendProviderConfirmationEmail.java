@@ -10,17 +10,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.app.email.templates.ProviderConfirmationEmailTemplate;
 import org.ilgcc.jobs.SendEmailJob;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-
 public class SendProviderConfirmationEmail extends SendEmail {
 
 
-    public SendProviderConfirmationEmail(Submission submission) {
-        super(submission);
+    @Autowired
+    public SendProviderConfirmationEmail(SendEmailJob sendEmailJob,
+            MessageSource messageSource,
+            SubmissionRepositoryService submissionRepositoryService,
+            Submission submission) {
+        super(sendEmailJob, messageSource, submissionRepositoryService, submission);
         this.emailSentStatusInputName = "providerConfirmationEmailSent";
         this.recipientEmailInputName = "providerResponseContactEmail";
     }

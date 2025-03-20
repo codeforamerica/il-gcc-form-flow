@@ -40,7 +40,7 @@ public class SendFamilyConfirmationNoProviderEmailTest {
 
     private Submission familySubmission;
 
-    private SendFamilyConfirmationEmail sendEmailClass;
+    private SendFamilyConfirmationNoProviderEmail sendEmailClass;
 
     private Locale locale = Locale.ENGLISH;
 
@@ -59,7 +59,7 @@ public class SendFamilyConfirmationNoProviderEmailTest {
 
         submissionRepositoryService.save(familySubmission);
 
-        sendEmailClass = new SendFamilyConfirmationEmail(familySubmission);
+        sendEmailClass = new SendFamilyConfirmationNoProviderEmail(sendEmailJob, messageSource, submissionRepositoryService,familySubmission);
     }
 
     @Test

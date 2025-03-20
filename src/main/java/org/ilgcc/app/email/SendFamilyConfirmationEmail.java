@@ -9,6 +9,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.templates.FamilyConfirmationEmailTemplate;
 import org.ilgcc.jobs.SendEmailJob;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +17,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SendFamilyConfirmationEmail extends SendEmail {
 
-    public SendFamilyConfirmationEmail(Submission submission) {
-        super(submission);
+    @Autowired
+    public SendFamilyConfirmationEmail(SendEmailJob sendEmailJob,
+            MessageSource messageSource,
+            SubmissionRepositoryService submissionRepositoryService,
+            Submission submission) {
+        super(sendEmailJob, messageSource, submissionRepositoryService, submission);
         this.emailSentStatusInputName = "familyConfirmationEmailSent";
         this.recipientEmailInputName = "parentContactEmail";
 

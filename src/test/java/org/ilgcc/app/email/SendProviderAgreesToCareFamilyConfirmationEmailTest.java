@@ -73,11 +73,12 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
         submissionRepositoryService.save(providerSubmission);
 
-        sendEmailClass = new SendProviderAgreesToCareFamilyConfirmationEmail(providerSubmission);
+        sendEmailClass = new SendProviderAgreesToCareFamilyConfirmationEmail(sendEmailJob, messageSource,
+                submissionRepositoryService, providerSubmission);
     }
 
     @Test
-    void correctlySetsEmailRecipient(){
+    void correctlySetsEmailRecipient() {
         Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
         Map<String, Object> emailData = emailDataOptional.get();
 
@@ -108,14 +109,18 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
         Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
         ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
 
-        assertThat(emailTemplate.getSenderEmail()).isEqualTo(new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
-        assertThat(emailTemplate.getSubject()).isEqualTo(messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
+        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+                new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+        assertThat(emailTemplate.getSubject()).isEqualTo(
+                messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name", new Object[]{"BusinessName", "Sample Test CCRR"},
+                messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name",
+                        new Object[]{"BusinessName", "Sample Test CCRR"},
                         locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
                 new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));

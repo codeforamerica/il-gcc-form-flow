@@ -7,7 +7,7 @@ import formflow.library.data.SubmissionRepositoryService;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.email.templates.FamilyConfirmationEmailTemplate;
+import org.ilgcc.app.email.templates.FamilyConfirmationEmailNoProviderTemplate;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -16,25 +16,20 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class SendFamilyConfirmationNoProviderEmail extends SendEmail {
-    @Autowired
-    SendEmailJob sendEmailJob;
 
     @Autowired
-    MessageSource messageSource;
-
-    @Autowired
-    SubmissionRepositoryService submissionRepositoryService;
-
-    public SendFamilyConfirmationNoProviderEmail(Submission submission) {
-        super(submission);
+    public SendFamilyConfirmationNoProviderEmail(SendEmailJob sendEmailJob,
+            MessageSource messageSource,
+            SubmissionRepositoryService submissionRepositoryService,
+            Submission submission) {
+        super(sendEmailJob, messageSource, submissionRepositoryService, submission);
         this.emailSentStatusInputName = "familyConfirmationEmailSent";
         this.recipientEmailInputName = "parentContactEmail";
-
     }
 
     @Override
     protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData){
-        return new FamilyConfirmationEmailTemplate(emailData,
+        return new FamilyConfirmationEmailNoProviderTemplate(emailData,
                 messageSource,
                 locale).createTemplate();
     }

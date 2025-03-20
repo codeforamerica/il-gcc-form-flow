@@ -59,11 +59,12 @@ public class SendFamilyConfirmationEmailTest {
 
         submissionRepositoryService.save(familySubmission);
 
-        sendEmailClass = new SendFamilyConfirmationEmail(familySubmission);
+        sendEmailClass = new SendFamilyConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService,
+                familySubmission);
     }
 
     @Test
-    void correctlySetsEmailRecipient(){
+    void correctlySetsEmailRecipient() {
         Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
         Map<String, Object> emailData = emailDataOptional.get();
 
@@ -93,14 +94,17 @@ public class SendFamilyConfirmationEmailTest {
         Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
         ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
 
-        assertThat(emailTemplate.getSenderEmail()).isEqualTo(new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
-        assertThat(emailTemplate.getSubject()).isEqualTo(messageSource.getMessage("email.family-confirmation.subject", new Object[]{"ABC123"}, locale));
+        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+                new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+        assertThat(emailTemplate.getSubject()).isEqualTo(
+                messageSource.getMessage("email.family-confirmation.subject", new Object[]{"ABC123"}, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.family-confirmation.hi", new Object[]{"FirstName"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-completed-the-online-application", null, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.family-confirmation.you-completed-the-online-application", null, locale));
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.family-confirmation.you-need-to-email-or-text", new Object[]{"tempEmailLink"},
                         locale));

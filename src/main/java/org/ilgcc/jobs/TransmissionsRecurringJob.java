@@ -22,6 +22,7 @@ import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,9 @@ public class TransmissionsRecurringJob {
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransaction;
     private final boolean CCMS_INTEGRATION_ENABLED;
     private final boolean DTS_INTEGRATION_ENABLED;
+
+    @Autowired
+    SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
 
     public TransmissionsRecurringJob(S3PresignService s3PresignService,
             TransmissionRepositoryService transmissionRepositoryService,
@@ -94,9 +98,8 @@ public class TransmissionsRecurringJob {
                     if (CCMS_INTEGRATION_ENABLED) {
                         ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(submission);
                     }
+                    sendProviderDidNotRespondToFamilyEmail.send();
                     updateProviderStatus(submission);
-                    // send email here that the application has been transmitted
-                    new SendProviderDidNotRespondToFamilyEmail(submission).send();
                 } else {
                     log.error(
                             String.format("The provider response exists but the provider response expired. Check submission: %s",

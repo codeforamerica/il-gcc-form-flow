@@ -7,33 +7,31 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.email.ILGCCEmail.EmailType;
-import org.ilgcc.app.email.ILGCCEmailTemplate;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 public abstract class SendEmail {
 
-    protected static String emailSentStatusInputName;
-    protected static String recipientEmailInputName;
+    protected String emailSentStatusInputName;
+    protected String recipientEmailInputName;
 
-    protected static Locale locale;
+    protected Locale locale;
 
-    protected static SendEmailJob sendEmailJob;
+    protected SendEmailJob sendEmailJob;
 
-    protected static MessageSource messageSource;
+    protected MessageSource messageSource;
 
-    protected static SubmissionRepositoryService submissionRepositoryService;
+    protected SubmissionRepositoryService submissionRepositoryService;
 
     protected Submission submission;
 
-    public SendEmail(Submission submission) {
+    public SendEmail(SendEmailJob sendEmailJob, MessageSource messageSource, SubmissionRepositoryService submissionRepositoryService, Submission submission) {
+        this.sendEmailJob = sendEmailJob;
+        this.messageSource = messageSource;
+        this.submissionRepositoryService = submissionRepositoryService;
         this.submission = submission;
     }
 
@@ -66,7 +64,7 @@ public abstract class SendEmail {
         return submission.getInputData().getOrDefault(emailSentStatusInputName, "false").equals("true");
     }
 
-    protected static String getRecipientEmail(Map<String, Object> emailData) {
+    protected String getRecipientEmail(Map<String, Object> emailData) {
         String recipientEmail = emailData.get(recipientEmailInputName).toString();
 
         if (recipientEmail.isBlank()) {
