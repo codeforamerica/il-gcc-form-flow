@@ -112,6 +112,7 @@ public class ProviderSubmissionUtilities {
         applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
         applicationData.put("childrenInitialsList",
                 ProviderSubmissionUtilities.getChildrenInitialsListFromApplication(familySubmission));
+        applicationData.put("familyIntendedProvider", (String) familySubmission.getInputData().getOrDefault("familyIntendedProviderName", ""));
         applicationData.put("confirmationCode", familySubmission.getShortCode());
         applicationData.put("familySubmissionId", familySubmission.getId());
         applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));

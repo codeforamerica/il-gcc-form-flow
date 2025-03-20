@@ -94,6 +94,7 @@ public class TransmissionsRecurringJob {
                         ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(submission);
                     }
                     updateProviderStatus(submission);
+                    // send email here that the application has been transmitted
                 } else {
                     log.error(
                             String.format("The provider response exists but the provider response expired. Check submission: %s",
