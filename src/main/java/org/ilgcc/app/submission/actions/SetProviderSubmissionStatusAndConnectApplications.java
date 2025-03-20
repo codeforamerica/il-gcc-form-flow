@@ -1,6 +1,8 @@
 package org.ilgcc.app.submission.actions;
 
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.calculateProviderApplicationResponseStatus;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getProviderApplicationResponseStatus;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_SELECTED_PROVIDER_NAME;
@@ -14,7 +16,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -45,8 +46,20 @@ public class SetProviderSubmissionStatusAndConnectApplications implements Action
             Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(familySubmissionId);
             if (familySubmissionOptional.isPresent()) {
                 connectProviderSubmissionToFamilySubmission(providerSubmission);
-                httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS,
-                        ProviderSubmissionUtilities.setProviderSubmissionStatus(familySubmissionOptional.get()).name());
+                Optional<SubmissionStatus> statusFromFamilyApp = getProviderApplicationResponseStatus(
+                        familySubmissionOptional.get());
+                if (statusFromFamilyApp.isPresent()) {
+                    httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS,
+                            statusFromFamilyApp.get());
+                } else {
+                    SubmissionStatus calculatedSubmissionStatus = calculateProviderApplicationResponseStatus(
+                            familySubmissionOptional.get());
+                    httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS,
+                            calculatedSubmissionStatus);
+                    familySubmissionOptional.get().getInputData()
+                            .put("providerApplicationResponseStatus", calculatedSubmissionStatus);
+                    submissionRepositoryService.save(familySubmissionOptional.get());
+                }
                 httpSession.setAttribute(SESSION_KEY_SELECTED_PROVIDER_NAME, getProviderName(familySubmissionOptional.get()));
             }
         } else {

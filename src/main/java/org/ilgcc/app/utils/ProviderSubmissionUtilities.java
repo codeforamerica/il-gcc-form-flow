@@ -217,16 +217,6 @@ public class ProviderSubmissionUtilities {
     }
 
     public static boolean providerApplicationHasExpired(Submission familySubmission) {
-        boolean hasProviderApplicationResponseStatus = familySubmission.getInputData().containsKey("providerApplicationResponseStatus");
-
-        // We won't always have to calculate the application status, we can refer to the field as well
-        if (hasProviderApplicationResponseStatus) {
-            SubmissionStatus status = getProviderApplicationResponseStatus(familySubmission);
-            if (status.equals(SubmissionStatus.EXPIRED)) {
-                return true;
-            }
-        }
-
         // In Prod, there should always be a submittedAt date, but for Staging it's possible to skip around in the flow and never submit
         LocalDate submittedAtDate =
                 familySubmission.getSubmittedAt() != null ? familySubmission.getSubmittedAt().toLocalDate()
@@ -242,18 +232,19 @@ public class ProviderSubmissionUtilities {
                         todaysDate) > 0;
     }
 
-    public static SubmissionStatus getProviderApplicationResponseStatus(Submission familySubmission) {
-        return SubmissionStatus.valueOf(
-                familySubmission.getInputData().get("providerApplicationResponseStatus").toString());
-    }
-
-
-    public static SubmissionStatus setProviderSubmissionStatus(Submission familySubmission) {
-        boolean hasProviderApplicationResponseStatus = familySubmission.getInputData().containsKey("providerApplicationResponseStatus");
+    public static Optional<SubmissionStatus> getProviderApplicationResponseStatus(Submission familySubmission) {
+        boolean hasProviderApplicationResponseStatus = familySubmission.getInputData()
+                .containsKey("providerApplicationResponseStatus");
         if (hasProviderApplicationResponseStatus) {
-            return getProviderApplicationResponseStatus(familySubmission);
+            return Optional.of(SubmissionStatus.valueOf(
+                    familySubmission.getInputData().get("providerApplicationResponseStatus").toString()));
+        } else {
+            return Optional.empty();
         }
 
+    }
+
+    public static SubmissionStatus calculateProviderApplicationResponseStatus(Submission familySubmission) {
         boolean familyHasProviderResponse = familySubmission.getInputData().containsKey("providerResponseSubmissionId");
         if (familyHasProviderResponse) {
             return SubmissionStatus.RESPONDED;

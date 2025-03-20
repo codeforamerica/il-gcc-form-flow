@@ -57,7 +57,6 @@ public class ProviderLinkController {
             Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(
                     sanitizedConfirmationCode.toUpperCase());
             if (familySubmission.isPresent()) {
-                setSessionUrl(familySubmission.get(), sanitizedConfirmationCode);
                 setFamilySessionData(familySubmission.get(), newSession);
                 checkRefererValue(referer, newSession);
             } else {
@@ -67,17 +66,6 @@ public class ProviderLinkController {
         }
 
         return "redirect:/flow/providerresponse/submit-start";
-    }
-
-    private void setSessionUrl(Submission familySubmission, String sanitizedConfirmationCode) {
-        Map<String, String> urlParams = familySubmission.getUrlParams();
-        if (urlParams == null) {
-            urlParams = new HashMap<>();
-        }
-
-        urlParams.put("conf_code", sanitizedConfirmationCode);
-        familySubmission.setUrlParams(urlParams);
-        submissionRepositoryService.save(familySubmission);
     }
 
     private void setFamilySessionData(Submission familySubmission, HttpSession currentSession) {

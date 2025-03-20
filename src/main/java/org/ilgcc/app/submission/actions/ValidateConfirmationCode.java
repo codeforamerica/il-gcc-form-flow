@@ -1,5 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.calculateProviderApplicationResponseStatus;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getProviderApplicationResponseStatus;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_CONFIRMATION_CODE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
@@ -16,7 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -78,9 +80,19 @@ public class ValidateConfirmationCode implements Action {
     private void setFamilySessionData(Submission familySubmission, HttpSession currentSession) {
         currentSession.setAttribute(SESSION_KEY_FAMILY_SUBMISSION_ID, familySubmission.getId());
         currentSession.setAttribute(SESSION_KEY_FAMILY_CONFIRMATION_CODE, familySubmission.getShortCode());
-        currentSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS,
-                ProviderSubmissionUtilities.setProviderSubmissionStatus(
-                        familySubmission).name());
+
+        Optional<SubmissionStatus> statusFromFamilyApp = getProviderApplicationResponseStatus(familySubmission);
+        if (statusFromFamilyApp.isPresent()) {
+            currentSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS,
+                    statusFromFamilyApp.get());
+        } else {
+            SubmissionStatus calculatedSubmissionStatus = calculateProviderApplicationResponseStatus(familySubmission);
+            currentSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS,
+                    calculatedSubmissionStatus);
+            familySubmission.getInputData().put("providerApplicationResponseStatus", calculatedSubmissionStatus);
+            submissionRepositoryService.save(familySubmission);
+        }
+
     }
 
     private boolean skipValidationForSpecialDevConfirmationCode(String providerConfirmationCode) {

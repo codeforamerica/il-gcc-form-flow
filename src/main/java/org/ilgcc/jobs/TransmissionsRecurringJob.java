@@ -83,7 +83,6 @@ public class TransmissionsRecurringJob {
         } else {
             for (Submission submission : expiredSubmissionsWithNoTransmission) {
                 if (!hasProviderResponse(submission)) {
-                    updateProviderStatus(submission);
                     if (DTS_INTEGRATION_ENABLED) {
                         enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository,
                                 pdfTransmissionJob,
@@ -94,6 +93,7 @@ public class TransmissionsRecurringJob {
                     if (CCMS_INTEGRATION_ENABLED) {
                         ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(submission);
                     }
+                    updateProviderStatus(submission);
                 } else {
                     log.error(
                             String.format("The provider response exists but the provider response expired. Check submission: %s",
