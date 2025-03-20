@@ -28,7 +28,7 @@ class SetResourceOrganizationTest {
     @BeforeEach
     void setUp() {
         familySubmission = Submission.builder()
-                .inputData(Map.of("organizationId", "testValue"))
+                .inputData(Map.of("organizationId", "testValue", "ccrrName", "CCRR Name", "ccrrPhoneNumber", "(123) 123-1234"))
                 .shortCode("testShortCode")
                 .build();
         submissionRepositoryService.save(familySubmission);
@@ -47,6 +47,8 @@ class SetResourceOrganizationTest {
         setResourceOrganization.run(providerSubmission);
         familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
         assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo(10101);
+        assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("Sample Site Admin Resource Organization");
+        assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(999) 123-1234");
     }
 
     @Test
@@ -56,5 +58,7 @@ class SetResourceOrganizationTest {
         setResourceOrganization.run(providerSubmission);
         familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
         assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
+        assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("CCRR Name");
+        assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(123) 123 -1234");
     }
 }

@@ -33,7 +33,7 @@ public interface ApplicationRouterService {
      * @param providerId The numeric provider Id to look up
      * @return The site administered resource organization's Id
      */
-    Optional<BigInteger> getSiteAdministeredOrganizationIdByProviderId(BigInteger providerId);
+    Optional<ResourceOrganization> getSiteAdministeredOrganizationByProviderId(BigInteger providerId);
 
     /**
      * Returns a list of active counties with unique county names
