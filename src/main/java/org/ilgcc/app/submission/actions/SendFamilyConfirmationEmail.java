@@ -116,7 +116,7 @@ public class SendFamilyConfirmationEmail implements Action {
             new Object[]{emailData.get("confirmationCode"), emailData.get("submittedDate")},
             locale);
         String p4 = messageSource.getMessage("email.family-confirmation.review-without-a-child-care-provider", null, locale);
-        String p5 = messageSource.getMessage("email.family-confirmation.a-staff-member", null, locale);
+        String p5 = messageSource.getMessage("email.family-confirmation.a-staff-member", new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
         String p6 = messageSource.getMessage("email.family-confirmation.you-will-receive", null, locale);
         String p7 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p8 = messageSource.getMessage("email.general.footer.cfa", null, locale);

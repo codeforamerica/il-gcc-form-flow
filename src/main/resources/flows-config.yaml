@@ -450,6 +450,7 @@ flow:
     nextScreens:
       - name: complete-submit-confirmation
   no-provider-intro:
+    beforeDisplayAction: SendFamilyConfirmationEmail
     nextScreens:
       - name: no-provider-notice
   no-provider-notice:
