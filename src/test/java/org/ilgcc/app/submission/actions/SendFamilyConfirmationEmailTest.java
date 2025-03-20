@@ -132,8 +132,9 @@ public class SendFamilyConfirmationEmailTest {
             new Object[]{"ABC123", "October 10, 2022"}, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.review-without-a-child-care-provider", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.a-staff-member", null, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-will-receive", null, locale));        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.a-staff-member", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.you-will-receive", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.a-staff-member", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
 
