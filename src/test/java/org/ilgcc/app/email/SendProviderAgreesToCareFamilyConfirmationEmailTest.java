@@ -1,9 +1,11 @@
-package org.ilgcc.app.submission.actions;
+package org.ilgcc.app.email;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 
+import com.sendgrid.helpers.mail.objects.Email;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.time.OffsetDateTime;
@@ -11,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.jobs.SendEmailJob;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +41,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
     private Submission familySubmission;
 
-    private SendProviderAgreesToCareFamilyConfirmationEmail action;
+    private SendProviderAgreesToCareFamilyConfirmationEmail sendEmailClass;
 
     private Locale locale = Locale.ENGLISH;
 
@@ -72,20 +73,21 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
         submissionRepositoryService.save(providerSubmission);
 
-        action = new SendProviderAgreesToCareFamilyConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
+        sendEmailClass = new SendProviderAgreesToCareFamilyConfirmationEmail(sendEmailJob, messageSource,
+                submissionRepositoryService, providerSubmission);
     }
 
     @Test
-    void correctlySetsEmailRecipient(){
-        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
+    void correctlySetsEmailRecipient() {
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
         Map<String, Object> emailData = emailDataOptional.get();
 
-        assertThat(action.getRecipientEmail(emailData)).isEqualTo("familyemail@test.com");
+        assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("familyemail@test.com");
     }
 
     @Test
     void correctlySetsEmailData() {
-        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
 
         assertThat(emailDataOptional.isPresent()).isTrue();
 
@@ -103,23 +105,22 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
     }
 
     @Test
-    void correctlySetsEmailSubject() {
-        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
-        Map<String, Object> emailData = emailDataOptional.get();
+    void correctlySetsEmailTemplateData() {
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
+        ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
 
-        assertThat(action.setSubject(emailData, Locale.ENGLISH)).isEqualTo(messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
-    }
+        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+                new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+        assertThat(emailTemplate.getSubject()).isEqualTo(
+                messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
 
-    @Test
-    void correctlySetsEmailBody() {
-        Optional<Map<String, Object>> emailDataOptional = action.getEmailData(providerSubmission);
-        Map<String, Object> emailData = emailDataOptional.get();
+        String emailCopy = emailTemplate.getBody().getValue();
 
-        String emailCopy = action.setBodyCopy(emailData, locale);
-
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name", new Object[]{"BusinessName", "Sample Test CCRR"},
+                messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name",
+                        new Object[]{"BusinessName", "Sample Test CCRR"},
                         locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
                 new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
@@ -133,15 +134,9 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
     }
 
     @Test
-    void correctlySetsEmailSender() {
-        assertThat(action.getSenderName(Locale.ENGLISH)).isEqualTo(
-                "Child Care Assistance Program Applications - Code for America on behalf of the Illinois Department of Human Services");
-    }
-
-    @Test
     void correctlyUpdatesEmailSendStatus() {
         assertThat(providerSubmission.getInputData().containsKey("providerResponseFamilyConfirmationEmailSent")).isFalse();
-        action.run(providerSubmission);
+        sendEmailClass.send();
 
         assertThat(providerSubmission.getInputData().containsKey("providerResponseFamilyConfirmationEmailSent")).isTrue();
         assertThat(providerSubmission.getInputData().get("providerResponseFamilyConfirmationEmailSent")).isEqualTo("true");
@@ -149,15 +144,15 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
     @Test
     void correctlySkipsEmailSendWhenEmailStatusIsTrue() {
-        assertThat(action.skipEmailSend(providerSubmission)).isFalse();
+        assertThat(sendEmailClass.skipEmailSend(providerSubmission)).isFalse();
 
         providerSubmission.getInputData().put("providerResponseFamilyConfirmationEmailSent", "true");
-        assertThat(action.skipEmailSend(providerSubmission)).isTrue();
+        assertThat(sendEmailClass.skipEmailSend(providerSubmission)).isTrue();
     }
 
     @Test
     void correctlyEnqueuesSendEmailJob() {
-        action.run(providerSubmission);
+        sendEmailClass.send();
         verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
     }
 
