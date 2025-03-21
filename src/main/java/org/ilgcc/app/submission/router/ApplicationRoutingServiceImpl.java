@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationRoutingServiceImpl implements ApplicationRouterService {
+
     private final List<String> newCaseLoadCodes = Arrays.asList("GG");
 
     public List<String> activeCaseLoadCodes = new ArrayList<>(Arrays.asList("BB", "QQ"));

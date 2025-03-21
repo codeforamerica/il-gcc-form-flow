@@ -59,6 +59,6 @@ class SetResourceOrganizationTest {
         familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
         assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
         assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("CCRR Name");
-        assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(123) 123 -1234");
+        assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(123) 123-1234");
     }
 }
