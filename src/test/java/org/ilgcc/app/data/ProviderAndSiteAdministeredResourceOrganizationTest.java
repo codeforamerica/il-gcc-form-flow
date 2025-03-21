@@ -42,9 +42,9 @@ class ProviderAndSiteAdministeredResourceOrganizationTest {
         Provider provider = providerOptional.get();
         assertThat(provider.getResourceOrganization()).isNull();
 
-        Optional<BigInteger> siteAdminOrgIdOptional = applicationRouterService.getSiteAdministeredOrganizationIdByProviderId(
+        Optional<ResourceOrganization> siteAdminOrgOptional = applicationRouterService.getSiteAdministeredOrganizationByProviderId(
                 providerId);
-        assertThat(siteAdminOrgIdOptional.isPresent()).isFalse();
+        assertThat(siteAdminOrgOptional.isPresent()).isFalse();
     }
 
     @Test
@@ -63,11 +63,11 @@ class ProviderAndSiteAdministeredResourceOrganizationTest {
         assertThat(provider.getResourceOrganization().getName().equals("Sample Site Admin Resource Organization")).isTrue();
         assertThat(provider.getResourceOrganization().getCity().equals("Chicago")).isTrue();
 
-        Optional<BigInteger> siteAdminOrgIdOptional = applicationRouterService.getSiteAdministeredOrganizationIdByProviderId(
+        Optional<ResourceOrganization> siteAdminOrgOptional = applicationRouterService.getSiteAdministeredOrganizationByProviderId(
                 providerId);
-        assertThat(siteAdminOrgIdOptional.isPresent()).isTrue();
+        assertThat(siteAdminOrgOptional.isPresent()).isTrue();
 
-        BigInteger siteAdminOrgId = siteAdminOrgIdOptional.get();
-        assertThat(siteAdminOrgId.equals(resourceOrgId)).isTrue();
+        ResourceOrganization siteAdmin = siteAdminOrgOptional.get();
+        assertThat(siteAdmin.getResourceOrgId().equals(resourceOrgId)).isTrue();
     }
 }

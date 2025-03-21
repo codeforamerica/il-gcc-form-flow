@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationRoutingServiceImpl implements ApplicationRouterService {
+
     private final List<String> newCaseLoadCodes = Arrays.asList("GG");
 
     public List<String> activeCaseLoadCodes = new ArrayList<>(Arrays.asList("BB", "QQ"));
@@ -60,10 +61,9 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService {
     }
 
     @Override
-    public Optional<BigInteger> getSiteAdministeredOrganizationIdByProviderId(BigInteger providerId) {
-        Optional<ResourceOrganization> resourceOrganizationByProviderId = ccmsDataService.getSiteAdministeredResourceOrganizationByProviderId(
+    public Optional<ResourceOrganization> getSiteAdministeredOrganizationByProviderId(BigInteger providerId) {
+        return ccmsDataService.getSiteAdministeredResourceOrganizationByProviderId(
                 providerId);
-        return resourceOrganizationByProviderId.map(ResourceOrganization::getResourceOrgId);
     }
 
     @Override

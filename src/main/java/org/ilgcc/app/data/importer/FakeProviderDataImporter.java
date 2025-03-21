@@ -141,6 +141,7 @@ public class FakeProviderDataImporter implements InitializingBean {
                 siteAdminResourceOrganization = new ResourceOrganization();
                 siteAdminResourceOrganization.setResourceOrgId(new BigInteger("10101"));
                 siteAdminResourceOrganization.setName("Sample Site Admin Resource Organization");
+                siteAdminResourceOrganization.setPhone("(999) 123-1234");
                 siteAdminResourceOrganization.setCity("Chicago");
                 resourceOrganizationRepository.save(siteAdminResourceOrganization);
             }

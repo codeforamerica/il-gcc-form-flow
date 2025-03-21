@@ -545,6 +545,7 @@ flow:
     crossFieldValidationAction: ValidateProviderNumber
     beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
     beforeSaveAction: SaveProviderNumberAsBigInteger
+    afterSaveAction: SetResourceOrganization
     nextScreens:
       - name: response
   response:
