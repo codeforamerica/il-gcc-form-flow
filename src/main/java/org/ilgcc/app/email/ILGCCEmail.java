@@ -8,7 +8,7 @@ import java.util.UUID;
 @Getter
 public class ILGCCEmail {
 
-    public static final String FROM_ADDRESS = "contact@getchildcareil.org";
+    public static final String FROM_ADDRESS = "noreply@getchildcareil.org";
     public static final String EMAIL_SENDER_KEY = "email.general.sender-name";
 
     private Email senderEmail;
