@@ -53,6 +53,11 @@
                     .headers(headers -> headers.addAll(createRequestHeaders()))
                     .bodyValue(requestBody)
                     .retrieve()
+                    .onStatus(status -> !status.is2xxSuccessful(), apiResponse -> {
+                        log.error("Received an error response {} from CCMS when attempting to fetch the work item ID for Transaction with ID: {}",
+                                apiResponse.statusCode(), requestBody.getTransactionId());
+                        return apiResponse.createException();
+                    })
                     .bodyToMono(String.class)
                     .block();
             return objectMapper.readTree(response);
