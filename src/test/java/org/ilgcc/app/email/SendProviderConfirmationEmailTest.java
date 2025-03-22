@@ -71,8 +71,7 @@ public class SendProviderConfirmationEmailTest {
 
         submissionRepositoryService.save(providerSubmission);
 
-        sendEmailClass = new SendProviderConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService,
-                providerSubmission);
+        sendEmailClass = new SendProviderConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @Test
@@ -131,7 +130,7 @@ public class SendProviderConfirmationEmailTest {
     @Test
     void correctlyUpdatesEmailSendStatus() {
         assertThat(providerSubmission.getInputData().containsKey("providerConfirmationEmailSent")).isFalse();
-        sendEmailClass.send();
+        sendEmailClass.send(providerSubmission);
 
         assertThat(providerSubmission.getInputData().containsKey("providerConfirmationEmailSent")).isTrue();
         assertThat(providerSubmission.getInputData().get("providerConfirmationEmailSent")).isEqualTo("true");
@@ -147,7 +146,7 @@ public class SendProviderConfirmationEmailTest {
 
     @Test
     void correctlyEnqueuesSendEmailJob() {
-        sendEmailClass.send();
+        sendEmailClass.send(providerSubmission);
         verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
     }
 
