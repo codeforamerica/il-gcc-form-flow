@@ -22,9 +22,8 @@ public class SendProviderConfirmationEmail extends SendEmail {
     @Autowired
     public SendProviderConfirmationEmail(SendEmailJob sendEmailJob,
             MessageSource messageSource,
-            SubmissionRepositoryService submissionRepositoryService,
-            Submission submission) {
-        super(sendEmailJob, messageSource, submissionRepositoryService, submission);
+            SubmissionRepositoryService submissionRepositoryService) {
+        super(sendEmailJob, messageSource, submissionRepositoryService);
         this.emailSentStatusInputName = "providerConfirmationEmailSent";
         this.recipientEmailInputName = "providerResponseContactEmail";
     }

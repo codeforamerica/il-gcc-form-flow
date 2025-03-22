@@ -1,12 +1,17 @@
 package org.ilgcc.app.email;
 
+import java.io.Serializable;
 import lombok.Getter;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import java.util.UUID;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
-public class ILGCCEmail {
+public class ILGCCEmail implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final String FROM_ADDRESS = "noreply@getchildcareil.org";
     public static final String EMAIL_SENDER_KEY = "email.general.sender-name";

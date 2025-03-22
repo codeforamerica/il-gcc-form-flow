@@ -22,9 +22,9 @@ public class SendFamilyConfirmationEmails implements Action {
     public void run(Submission familySubmission) {
         boolean hasProvider = familySubmission.getInputData().getOrDefault("hasChosenProvider", "false").equals("true");
         if (hasProvider) {
-            sendFamilyConfirmationEmail.send();
+            sendFamilyConfirmationEmail.send(familySubmission);
         } else {
-            sendConfirmationEmail.send();
+            sendConfirmationEmail.send(familySubmission);
         }
 
     }

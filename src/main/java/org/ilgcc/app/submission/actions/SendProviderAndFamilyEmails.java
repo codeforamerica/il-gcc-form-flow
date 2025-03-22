@@ -23,8 +23,8 @@ public class SendProviderAndFamilyEmails implements Action {
 
     @Override
     public void run(Submission submission) {
-        sendProviderAgreesToCareFamilyConfirmationEmail.send();
-        sendProviderConfirmationEmail.send();
-        sendProviderDeclinesCareFamilyConfirmationEmail.send();
+        sendProviderAgreesToCareFamilyConfirmationEmail.send(submission);
+        sendProviderConfirmationEmail.send(submission);
+        sendProviderDeclinesCareFamilyConfirmationEmail.send(submission);
     }
 }

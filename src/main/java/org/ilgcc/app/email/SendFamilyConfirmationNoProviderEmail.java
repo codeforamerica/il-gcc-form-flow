@@ -20,9 +20,8 @@ public class SendFamilyConfirmationNoProviderEmail extends SendEmail {
     @Autowired
     public SendFamilyConfirmationNoProviderEmail(SendEmailJob sendEmailJob,
             MessageSource messageSource,
-            SubmissionRepositoryService submissionRepositoryService,
-            Submission submission) {
-        super(sendEmailJob, messageSource, submissionRepositoryService, submission);
+            SubmissionRepositoryService submissionRepositoryService) {
+        super(sendEmailJob, messageSource, submissionRepositoryService);
         this.emailSentStatusInputName = "familyConfirmationEmailSent";
         this.recipientEmailInputName = "parentContactEmail";
     }

@@ -26,16 +26,14 @@ public abstract class SendEmail {
 
     protected SubmissionRepositoryService submissionRepositoryService;
 
-    protected Submission submission;
 
-    public SendEmail(SendEmailJob sendEmailJob, MessageSource messageSource, SubmissionRepositoryService submissionRepositoryService, Submission submission) {
+    public SendEmail(SendEmailJob sendEmailJob, MessageSource messageSource, SubmissionRepositoryService submissionRepositoryService) {
         this.sendEmailJob = sendEmailJob;
         this.messageSource = messageSource;
         this.submissionRepositoryService = submissionRepositoryService;
-        this.submission = submission;
     }
 
-    public void send() {
+    public void send(Submission submission) {
         if (!skipEmailSend(submission)) {
             Optional<Map<String, Object>> emailData = getEmailData(submission);
 

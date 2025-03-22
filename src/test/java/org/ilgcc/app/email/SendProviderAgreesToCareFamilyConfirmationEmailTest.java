@@ -74,7 +74,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
         submissionRepositoryService.save(providerSubmission);
 
         sendEmailClass = new SendProviderAgreesToCareFamilyConfirmationEmail(sendEmailJob, messageSource,
-                submissionRepositoryService, providerSubmission);
+                submissionRepositoryService);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
     @Test
     void correctlyUpdatesEmailSendStatus() {
         assertThat(providerSubmission.getInputData().containsKey("providerResponseFamilyConfirmationEmailSent")).isFalse();
-        sendEmailClass.send();
+        sendEmailClass.send(providerSubmission);
 
         assertThat(providerSubmission.getInputData().containsKey("providerResponseFamilyConfirmationEmailSent")).isTrue();
         assertThat(providerSubmission.getInputData().get("providerResponseFamilyConfirmationEmailSent")).isEqualTo("true");
@@ -152,7 +152,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
     @Test
     void correctlyEnqueuesSendEmailJob() {
-        sendEmailClass.send();
+        sendEmailClass.send(providerSubmission);
         verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
     }
 

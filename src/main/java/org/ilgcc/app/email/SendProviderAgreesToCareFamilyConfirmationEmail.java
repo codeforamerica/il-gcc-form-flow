@@ -21,9 +21,8 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail extends SendEmail {
     @Autowired
     public SendProviderAgreesToCareFamilyConfirmationEmail(SendEmailJob sendEmailJob,
             MessageSource messageSource,
-            SubmissionRepositoryService submissionRepositoryService,
-            Submission submission) {
-        super(sendEmailJob, messageSource, submissionRepositoryService, submission);
+            SubmissionRepositoryService submissionRepositoryService) {
+        super(sendEmailJob, messageSource, submissionRepositoryService);
         this.emailSentStatusInputName = "providerResponseFamilyConfirmationEmailSent";
         this.recipientEmailInputName = "parentContactEmail";
     }
