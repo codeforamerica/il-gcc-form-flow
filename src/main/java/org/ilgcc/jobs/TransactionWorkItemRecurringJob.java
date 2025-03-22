@@ -36,8 +36,13 @@ public class TransactionWorkItemRecurringJob {
     public void transactionWorkItemLookupJob() {
         List<Transaction> transactions = transactionRepositoryService.getTransactionsWithoutWorkItemIds();
         log.info("Running the Transaction Work Item Lookup recurring job. Found {} transactions without work item IDs.", transactions.size());
-        transactions.stream().filter(transaction -> transaction.getCreatedAt().before(Date.from(oneHourAgo)))
-                .forEach(transaction -> {
+        List<Transaction> transactionsOlderThanOneHour = getTransactionsWithoutWorkItemIdsOlderThanOneHour();
+        log.info("Of the {} transactions without work item IDs found {} are older than one hour. Those transactions have IDs: {}",
+                transactions.size(),
+                transactionsOlderThanOneHour.size(),
+                transactionsOlderThanOneHour.stream().map(Transaction::getTransactionId).toList());
+        transactionsOlderThanOneHour.forEach(transaction -> {
+                    log.info("Enqueuing work item lookup job for transaction with ID: {}", transaction.getTransactionId());
                     jobScheduler.enqueue(() -> enqueueTransactionWorkItemLookupJob.lookupWorkItemIDForTransaction(transaction));
                 });
     }
