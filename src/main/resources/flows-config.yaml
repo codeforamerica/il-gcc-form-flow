@@ -588,6 +588,7 @@ flow:
       - name: registration-submit-confirmation
   confirm-deny-care:
     beforeDisplayAction: FormatChildrenWhoNeedCareNames
+    beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: registration-submit-confirmation

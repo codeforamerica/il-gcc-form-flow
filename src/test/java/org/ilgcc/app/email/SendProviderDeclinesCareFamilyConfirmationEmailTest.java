@@ -52,7 +52,9 @@ public class SendProviderDeclinesCareFamilyConfirmationEmailTest {
                 .withFlow("gcc")
                 .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
                 .with("parentContactEmail", "familyemail@test.com")
+                .with("familyIntendedProviderName", "BusinessName")
                 .with("languageRead", "English")
+                .with("earliestChildcareStartDate", "01/10/2025")
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withCCRR()
                 .withShortCode("ABC123")
@@ -63,11 +65,6 @@ public class SendProviderDeclinesCareFamilyConfirmationEmailTest {
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
                 .with("familySubmissionId", familySubmission.getId().toString())
-                .with("providerResponseContactEmail", "provideremail@test.com")
-                .with("providerResponseFirstName", "ProviderFirst")
-                .with("providerResponseLastName", "ProviderLast")
-                .with("providerResponseBusinessName", "BusinessName")
-                .with("providerCareStartDate", "01/10/2025")
                 .with("providerResponseAgreeToCare", "false")
                 .build();
 
@@ -98,7 +95,7 @@ public class SendProviderDeclinesCareFamilyConfirmationEmailTest {
         assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
         assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
         assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
-        assertThat(emailData.get("providerName")).isEqualTo("BusinessName");
+        assertThat(emailData.get("familyIntendedProviderName")).isEqualTo("BusinessName");
         assertThat(emailData.get("ccapStartDate")).isEqualTo("January 10, 2025");
         assertThat(emailData.get("familyPreferredLanguage")).isEqualTo("English");
     }

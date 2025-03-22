@@ -82,7 +82,7 @@ public abstract class SendEmail {
     }
 
     private void updateEmailStatus(Submission submission) {
-        submission.getInputData().putIfAbsent(emailSentStatusInputName, "true");
+        submission.getInputData().put(emailSentStatusInputName, "true");
         submissionRepositoryService.save(submission);
     }
 
