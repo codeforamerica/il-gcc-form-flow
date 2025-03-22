@@ -1,12 +1,17 @@
 package org.ilgcc.app.email;
 
+import java.io.Serializable;
 import lombok.Getter;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import java.util.UUID;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
-public class ILGCCEmail {
+public class ILGCCEmail implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final String FROM_ADDRESS = "noreply@getchildcareil.org";
     public static final String EMAIL_SENDER_KEY = "email.general.sender-name";
@@ -18,44 +23,21 @@ public class ILGCCEmail {
     private UUID submissionId;
     private Email recipientEmail;
 
-    public ILGCCEmail(String senderName, String recipientAddress, String subject, Content body, EmailType emailType,
-            UUID submissionId) {
-        this.senderEmail = new Email(FROM_ADDRESS, senderName);
+    public ILGCCEmail(String recipientAddress, ILGCCEmailTemplate emailTemplate, UUID submissionId) {
+        this.senderEmail = emailTemplate.getSenderEmail();
         this.recipientEmail = new Email(recipientAddress);
-        this.subject = subject;
-        this.body = body;
-        this.emailType = emailType;
+        this.subject = emailTemplate.getSubject();
+        this.body = emailTemplate.getBody();
+        this.emailType = emailTemplate.getEmailType();
         this.submissionId = submissionId;
     }
-
-
-    public static ILGCCEmail createProviderConfirmationEmail(String senderName, String recipientAddress, String subject,
-            Content body, UUID submissionId) {
-        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.PROVIDER_CONFIRMATION_EMAIL, submissionId);
-    }
-
-    public static ILGCCEmail createFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
-            Content body, UUID submissionId) {
-        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.FAMILY_CONFIRMATION_EMAIL, submissionId);
-    }
-
-    public static ILGCCEmail createNoProviderFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
-        Content body, UUID submissionId) {
-        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER, submissionId);
-    }
-
-    public static ILGCCEmail createProviderAgreesToCareFamilyConfirmationEmail(String senderName, String recipientAddress, String subject,
-            Content body, UUID submissionId) {
-        return new ILGCCEmail(senderName, recipientAddress, subject, body, EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL, submissionId);
-    }
-
-
 
     @Getter
     public enum EmailType {
         FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"), FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER(
                 "No Provider Family Confirmation Email"), PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL(
-                "Provider Agrees to Care Family Email"), PROVIDER_CONFIRMATION_EMAIL("Provider confirmation email");
+                "Provider Agrees to Care Family Email"), PROVIDER_CONFIRMATION_EMAIL(
+                "Provider confirmation email"), PROVIDER_DECLINES_CARE_FAMILY_EMAIL("Provider Declines Care Family Email");
 
         private final String description;
 

@@ -450,14 +450,14 @@ flow:
     nextScreens:
       - name: complete-submit-confirmation
   no-provider-intro:
-    beforeDisplayAction: SendFamilyConfirmationEmail
+    beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
       - name: no-provider-notice
   no-provider-notice:
     nextScreens:
       - name: submit-next-steps
   contact-provider-message:
-    beforeDisplayAction: SendFamilyConfirmationEmail
+    beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
       - name: submit-next-steps
   complete-next-steps:
@@ -550,7 +550,6 @@ flow:
       - name: response
   response:
     beforeDisplayAction: FindApplicationData
-    afterSaveAction: SendProviderAgreesToCareFamilyConfirmationEmail
     nextScreens:
       - name: registration-submit-intro
         condition: ProviderIsRegistering
@@ -583,12 +582,13 @@ flow:
     nextScreens:
       - name: info-review
   info-review:
-    beforeSaveAction: SendProviderConfirmationEmail
+    beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: registration-submit-confirmation
   confirm-deny-care:
     beforeDisplayAction: FormatChildrenWhoNeedCareNames
+    beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: registration-submit-confirmation
