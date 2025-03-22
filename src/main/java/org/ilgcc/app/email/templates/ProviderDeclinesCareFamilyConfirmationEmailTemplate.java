@@ -48,7 +48,7 @@ public class ProviderDeclinesCareFamilyConfirmationEmailTemplate {
         String p1 = messageSource.getMessage("email.response-email-for-family.provider-declines.p1", null, locale);
 
         String p2 = messageSource.getMessage("email.response-email-for-family.provider-declines.p2",
-                new Object[]{emailData.get("providerName").toString()}, locale);
+                new Object[]{emailData.get("familyIntendedProviderName").toString()}, locale);
         String p3 = messageSource.getMessage("email.response-email-for-family.provider-declines.p3", null, locale);
         String p4 = messageSource.getMessage("email.response-email-for-family.provider-declines.p4",
                 new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
