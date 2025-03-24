@@ -91,14 +91,14 @@ public class ProviderSubmissionUtilities {
     public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
         Map<String, Object> applicationData = new HashMap<>();
 
+        applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission));
         applicationData.put("providerResponseContactEmail",
                 providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
         applicationData.put("providerSubmissionId", providerSubmission.getId());
         applicationData.put("ccapStartDate",
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
-                        providerSubmission));
-        applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission));
+                        Optional.of(providerSubmission)));
 
         return applicationData;
     }
@@ -106,7 +106,7 @@ public class ProviderSubmissionUtilities {
     public static Map<String, Object> getFamilySubmissionDataForEmails(Submission familySubmission) {
         Map<String, Object> applicationData = new HashMap<>();
 
-        applicationData.put("parentContactEmail", (String) familySubmission.getInputData().get("parentContactEmail"));
+        applicationData.put("parentContactEmail", (String) familySubmission.getInputData().getOrDefault("parentContactEmail", ""));
         applicationData.put("parentFirstName", (String) familySubmission.getInputData().get("parentFirstName"));
         applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
         applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
@@ -116,7 +116,11 @@ public class ProviderSubmissionUtilities {
         applicationData.put("familySubmissionId", familySubmission.getId());
         applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));
         applicationData.put("shareableLink", familySubmission.getInputData().getOrDefault("shareableLink", ""));
+        applicationData.put("familyIntendedProviderName",
+                familySubmission.getInputData().getOrDefault("familyIntendedProviderName", ""));
         applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
+        applicationData.put("ccapStartDate", ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
+                Optional.empty()));
 
         return applicationData;
     }
@@ -258,16 +262,21 @@ public class ProviderSubmissionUtilities {
     }
 
     public static String getCCAPStartDateFromProviderOrFamilyChildcareStartDate(Submission familySubmission,
-            Submission providerSubmission) {
-        String providerCareStartDate = (String) providerSubmission.getInputData().getOrDefault("providerCareStartDate", "");
+            Optional<Submission> providerSubmission) {
+        String earliestDate = (String) familySubmission.getInputData()
+                .getOrDefault("earliestChildcareStartDate", "");
 
-        if (!providerCareStartDate.isBlank()) {
-            return DateUtilities.convertDateToFullWordMonthPattern(providerCareStartDate);
-        } else {
-            String familyEarliestChildcareStartDate = (String) familySubmission.getInputData()
-                    .getOrDefault("earliestChildcareStartDate", "");
-            return DateUtilities.convertDateToFullWordMonthPattern(familyEarliestChildcareStartDate);
+        if (providerSubmission.isPresent()) {
+            String providerCareStartDate = (String) providerSubmission.get().getInputData()
+                    .getOrDefault("providerCareStartDate", "");
+
+            if (!providerCareStartDate.isBlank()) {
+                earliestDate = providerCareStartDate;
+            }
         }
+
+        return DateUtilities.convertDateToFullWordMonthPattern(earliestDate);
+
     }
 
     public static List<String> getChildrenInitialsListFromApplication(Submission familySubmission) {
