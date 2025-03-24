@@ -1,0 +1,138 @@
+package org.ilgcc.app.email;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
+
+import com.sendgrid.helpers.mail.objects.Email;
+import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepositoryService;
+import java.time.OffsetDateTime;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.jobs.SendEmailJob;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.MessageSource;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+
+
+@ActiveProfiles("test")
+@SpringBootTest
+public class SendProviderDidNotRespondToFamilyEmailTest {
+
+    @MockitoSpyBean
+    SendEmailJob sendEmailJob;
+
+    @Autowired
+    SubmissionRepositoryService submissionRepositoryService;
+
+    @Autowired
+    MessageSource messageSource;
+
+    private Submission familySubmission;
+
+    private SendProviderDidNotRespondToFamilyEmail sendEmailClass;
+
+    private Locale locale = Locale.ENGLISH;
+
+
+    @BeforeEach
+    void setUp() {
+        familySubmission = new SubmissionTestBuilder()
+                .withFlow("gcc")
+                .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .with("parentContactEmail", "familyemail@test.com")
+                .with("languageRead", "English")
+                .with("familyIntendedProviderName", "Intended Provider")
+                .withSubmittedAtDate(OffsetDateTime.now())
+                .withCCRR()
+                .withShortCode("ABC123")
+                .build();
+
+        submissionRepositoryService.save(familySubmission);
+
+        sendEmailClass = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
+    }
+
+    @Test
+    void correctlySetsEmailRecipient() {
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
+        Map<String, Object> emailData = emailDataOptional.get();
+
+        assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("familyemail@test.com");
+    }
+
+    @Test
+    void correctlySetsEmailData() {
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
+
+        assertThat(emailDataOptional.isPresent()).isTrue();
+
+        Map<String, Object> emailData = emailDataOptional.get();
+
+        assertThat(emailData.get("parentFirstName")).isEqualTo("FirstName");
+        assertThat(emailData.get("parentContactEmail")).isEqualTo("familyemail@test.com");
+        assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
+        assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
+        assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+        assertThat(emailData.get("familyIntendedProviderName")).isEqualTo("Intended Provider");
+    }
+
+    @Test
+    void correctlySetsEmailTemplateData() {
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
+        ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
+
+        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+                new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+        assertThat(emailTemplate.getSubject()).isEqualTo(
+                messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
+
+        String emailCopy = emailTemplate.getBody().getValue();
+
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p1", null, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2",
+                        new Object[]{"Intended Provider"},
+                        locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p3",
+                new Object[]{"ABC123"}, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p4",
+                new Object[]{"Sample Test CCRR", "(603) 555-1244"},
+                locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
+    }
+
+    @Test
+    void correctlyUpdatesEmailSendStatus() {
+        assertThat(familySubmission.getInputData().containsKey("providerResponseFamilyConfirmationEmailSent")).isFalse();
+        sendEmailClass.send(familySubmission);
+
+        assertThat(familySubmission.getInputData().containsKey("providerResponseFamilyConfirmationEmailSent")).isTrue();
+        assertThat(familySubmission.getInputData().get("providerResponseFamilyConfirmationEmailSent")).isEqualTo("true");
+    }
+
+    @Test
+    void correctlySkipsEmailSendWhenEmailStatusIsTrue() {
+        assertThat(sendEmailClass.skipEmailSend(familySubmission)).isFalse();
+
+        familySubmission.getInputData().put("providerResponseFamilyConfirmationEmailSent", "true");
+        assertThat(sendEmailClass.skipEmailSend(familySubmission)).isTrue();
+    }
+
+    @Test
+    void correctlyEnqueuesSendEmailJob() {
+        sendEmailClass.send(familySubmission);
+        verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
+    }
+
+}
