@@ -467,6 +467,42 @@ flow:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: complete-submit-confirmation
+  submit-contact-method:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-contact-provider-email
+  submit-contact-provider-email:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-confirm-provider-email
+  submit-confirm-provider-email:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-provider-info-edit
+  submit-provider-info-edit:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-contact-provider-email-confirmation
+  submit-contact-provider-email-confirmation:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-contact-provider-text
+  submit-contact-provider-text:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: parent-confirm-provider-number
+  parent-confirm-provider-number:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-contact-provider-text-confirmation
+  submit-contact-provider-text-confirmation:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-confirmation
+  submit-confirmation:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: null
   doc-upload-confirm:
     nextScreens: null
   children-delete:
