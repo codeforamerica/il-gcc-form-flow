@@ -23,13 +23,12 @@ public class SendProviderConfirmationEmail extends SendEmail {
     public SendProviderConfirmationEmail(SendEmailJob sendEmailJob,
             MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
-        super(sendEmailJob, messageSource, submissionRepositoryService);
-        this.emailSentStatusInputName = "providerConfirmationEmailSent";
-        this.recipientEmailInputName = "providerResponseContactEmail";
+        super(sendEmailJob, messageSource, submissionRepositoryService, "providerConfirmationEmailSent",
+                "providerResponseContactEmail");
     }
 
     @Override
-    protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData){
+    protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
         return new ProviderConfirmationEmailTemplate(emailData,
                 messageSource,
                 locale).createTemplate();

@@ -21,14 +21,11 @@ public class SendFamilyConfirmationEmail extends SendEmail {
     public SendFamilyConfirmationEmail(SendEmailJob sendEmailJob,
             MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
-        super(sendEmailJob, messageSource, submissionRepositoryService);
-        this.emailSentStatusInputName = "familyConfirmationEmailSent";
-        this.recipientEmailInputName = "parentContactEmail";
-
+        super(sendEmailJob, messageSource, submissionRepositoryService, "familyConfirmationEmailSent", "parentContactEmail");
     }
 
     @Override
-    protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData){
+    protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
         return new FamilyConfirmationEmailTemplate(emailData,
                 messageSource,
                 locale).createTemplate();

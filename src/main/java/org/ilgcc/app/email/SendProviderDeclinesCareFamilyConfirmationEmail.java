@@ -22,13 +22,12 @@ public class SendProviderDeclinesCareFamilyConfirmationEmail extends SendEmail {
     public SendProviderDeclinesCareFamilyConfirmationEmail(SendEmailJob sendEmailJob,
             MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
-        super(sendEmailJob, messageSource, submissionRepositoryService);
-        this.emailSentStatusInputName = "providerResponseFamilyConfirmationEmailSent";
-        this.recipientEmailInputName = "parentContactEmail";
+        super(sendEmailJob, messageSource, submissionRepositoryService, "providerResponseFamilyConfirmationEmailSent",
+                "parentContactEmail");
     }
 
     @Override
-    protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData){
+    protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
         return new ProviderDeclinesCareFamilyConfirmationEmailTemplate(emailData, messageSource,
                 locale).createTemplate();
     }
@@ -48,7 +47,8 @@ public class SendProviderDeclinesCareFamilyConfirmationEmail extends SendEmail {
 
     @Override
     protected Boolean skipEmailSend(Submission submission) {
-        boolean emailSent = submission.getInputData().getOrDefault("providerResponseFamilyConfirmationEmailSent", "false").equals("true");
+        boolean emailSent = submission.getInputData().getOrDefault("providerResponseFamilyConfirmationEmailSent", "false")
+                .equals("true");
         boolean providerAgreedToCare = submission.getInputData().getOrDefault("providerResponseAgreeToCare", "false")
                 .equals("true");
 

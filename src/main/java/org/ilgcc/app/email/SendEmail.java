@@ -27,10 +27,14 @@ public abstract class SendEmail {
     protected SubmissionRepositoryService submissionRepositoryService;
 
 
-    public SendEmail(SendEmailJob sendEmailJob, MessageSource messageSource, SubmissionRepositoryService submissionRepositoryService) {
+    public SendEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
+            SubmissionRepositoryService submissionRepositoryService, String emailSentStatusInputName,
+            String recipientEmailInputName) {
         this.sendEmailJob = sendEmailJob;
         this.messageSource = messageSource;
         this.submissionRepositoryService = submissionRepositoryService;
+        this.emailSentStatusInputName = emailSentStatusInputName;
+        this.recipientEmailInputName = recipientEmailInputName;
     }
 
     public void send(Submission submission) {
@@ -68,7 +72,7 @@ public abstract class SendEmail {
         if (recipientEmail.isBlank()) {
             log.warn(
                     "{}: Skipping email send because there is no email associated with the submission: {}",
-                    EmailType.FAMILY_CONFIRMATION_EMAIL.getDescription(), emailData.get("familySubmissionId"));
+                    getClass().getSimpleName(), emailData.get("familySubmissionId"));
         }
 
         return recipientEmail;
