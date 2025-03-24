@@ -106,7 +106,7 @@ public class ProviderSubmissionUtilities {
     public static Map<String, Object> getFamilySubmissionDataForEmails(Submission familySubmission) {
         Map<String, Object> applicationData = new HashMap<>();
 
-        applicationData.put("parentContactEmail", (String) familySubmission.getInputData().get("parentContactEmail"));
+        applicationData.put("parentContactEmail", (String) familySubmission.getInputData().getOrDefault("parentContactEmail", ""));
         applicationData.put("parentFirstName", (String) familySubmission.getInputData().get("parentFirstName"));
         applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
         applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));

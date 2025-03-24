@@ -48,9 +48,15 @@ public abstract class SendEmail {
             locale = emailData.get().get("familyPreferredLanguage").equals("Spanish") ? Locale.forLanguageTag(
                     "es") : Locale.ENGLISH;
 
-            ILGCCEmail email = new ILGCCEmail(getRecipientEmail(emailData.get()), emailTemplate(emailData.get()),
-                    submission.getId());
-            sendEmail(email, submission);
+            if(!getRecipientEmail(emailData.get()).isBlank()){
+                ILGCCEmail email = new ILGCCEmail(getRecipientEmail(emailData.get()), emailTemplate(emailData.get()),
+                        submission.getId());
+                sendEmail(email, submission);
+            } else {
+                log.error(
+                        "{}: Skipping email send because because there is no {} associated with the submission: {}",
+                        getClass().getSimpleName(), recipientEmailInputName,  submission.getId());
+            }
         }
     }
 
@@ -67,15 +73,7 @@ public abstract class SendEmail {
     }
 
     protected String getRecipientEmail(Map<String, Object> emailData) {
-        String recipientEmail = emailData.get(recipientEmailInputName).toString();
-
-        if (recipientEmail.isBlank()) {
-            log.warn(
-                    "{}: Skipping email send because there is no email associated with the submission: {}",
-                    getClass().getSimpleName(), emailData.get("familySubmissionId"));
-        }
-
-        return recipientEmail;
+        return emailData.getOrDefault(recipientEmailInputName, "").toString();
     }
 
     protected void sendEmail(ILGCCEmail email, Submission submission) {
