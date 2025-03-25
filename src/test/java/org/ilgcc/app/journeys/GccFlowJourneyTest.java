@@ -36,6 +36,10 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         // onboarding-getting-started
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
+        //onboarding-2-part.html
+        assertThat(testPage.getTitle()).isEqualTo("2-part process");
+        assertThat(testPage.getHeader()).isEqualTo("This is a 2-part process");
+        testPage.clickContinue();
         // onboarding-language-pref
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
         testPage.selectFromDropdown("languageRead", "English");
@@ -71,7 +75,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // onboarding-provider-info-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-provider-info-review.title"));
-        assertThat(testPage.getTextBySelector("ol.list--bulleted > li").get(0)).isEqualTo("ACME Daycare");
+        assertThat(testPage.getTextBySelector("ol.list--bulleted > li").getFirst()).isEqualTo("ACME Daycare");
         testPage.clickContinue();
 
         // onboarding-provider-info-confirm

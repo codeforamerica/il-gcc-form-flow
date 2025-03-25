@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{onboarding-2-part.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab slab--grey">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: support}"></th:block>
+        <div class="onboarding-2-part-header">
+          <th:block
+              th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-2-part.header})}"/>
+        </div>
+        <div class="form-card__content onboarding-2-part">
+          <ul class="list--numbered bold spacing-below-35">
+            <li class="spacing-below-35" th:utext="#{onboarding-2-part.li.fill-out-your-part}"></li>
+            <li th:utext="#{onboarding-2-part.li.contact-your-childcare-provider}"></li>
+          </ul>
+          <p th:text="#{onboarding-2-part.notice}"
+              class="notice--warning"></p>
+        </div>
+        <div class="form-card__footer">
+          <th:block th:replace="~{fragments/continueButton :: continue}"/>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>
