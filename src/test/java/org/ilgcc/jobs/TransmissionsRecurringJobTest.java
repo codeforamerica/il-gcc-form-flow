@@ -22,6 +22,9 @@ import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.Transmission;
 import org.ilgcc.app.data.TransmissionRepository;
 import org.ilgcc.app.data.TransmissionRepositoryService;
+import org.ilgcc.app.email.ILGCCEmail;
+import org.ilgcc.app.email.SendFamilyConfirmationEmail;
+import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.AfterEach;
@@ -31,8 +34,10 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @SpringBootTest(
         classes = IlGCCApplication.class
@@ -87,8 +92,18 @@ public class TransmissionsRecurringJobTest {
     private Submission expiredUntransmittedSubmissionWithProviderResponse;
     private Submission providerSubmission;
 
+    @MockitoSpyBean
+    SendEmailJob sendEmailJob;
+
+    @Autowired
+    MessageSource messageSource;
+
+    private SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
+
+
     @BeforeEach
     void setUp() {
+        sendProviderDidNotRespondToFamilyEmail = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
         transmissionsRecurringJob = new TransmissionsRecurringJob(
                 s3PresignService,
                 transmissionRepositoryService,
@@ -101,7 +116,8 @@ public class TransmissionsRecurringJobTest {
                 submissionRepositoryService,
                 ccmsSubmissionPayloadTransactionJob,
                 true,
-                true
+                true,
+                sendProviderDidNotRespondToFamilyEmail
         );
     }
 
@@ -120,6 +136,7 @@ public class TransmissionsRecurringJobTest {
     void enqueueDocumentTransferIsOnlyCalledOnExpiredSubmissions() {
         unexpiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
+                .with("parentContactEmail", "test@mail.com")
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withFlow("gcc")
                 .build();
@@ -127,6 +144,7 @@ public class TransmissionsRecurringJobTest {
 
         expiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
+                .with("parentContactEmail", "test@mail.com")
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
                 .withFlow("gcc")
                 .build();
@@ -134,6 +152,7 @@ public class TransmissionsRecurringJobTest {
 
         unsubmittedSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
+                .with("parentContactEmail", "test@mail.com")
                 .withFlow("gcc")
                 .build();
         submissionRepository.save(unsubmittedSubmission);
@@ -155,6 +174,7 @@ public class TransmissionsRecurringJobTest {
                 eq(pdfTransmissionJob), eq(unsubmittedSubmission), any());
         verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(eq(userFileRepositoryService),
                 eq(uploadedDocumentTransmissionJob), eq(s3PresignService), eq(unsubmittedSubmission));
+        verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
     }
 
     @Test
@@ -171,7 +191,7 @@ public class TransmissionsRecurringJobTest {
 
         transmissionsRecurringJob.noProviderResponseJob();
 
-        verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService);
+        verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
 
     @Test
@@ -192,5 +212,6 @@ public class TransmissionsRecurringJobTest {
 
         verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(any(), any(), any(), any(), any());
         verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(any(), any(), any(), any());
+        verifyNoInteractions(sendEmailJob);
     }
 }
