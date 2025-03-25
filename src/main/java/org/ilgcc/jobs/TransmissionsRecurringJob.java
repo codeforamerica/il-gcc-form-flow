@@ -16,11 +16,13 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.TransmissionRepositoryService;
+import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,8 @@ public class TransmissionsRecurringJob {
     private final boolean CCMS_INTEGRATION_ENABLED;
     private final boolean DTS_INTEGRATION_ENABLED;
 
+    private final  SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
+
     public TransmissionsRecurringJob(S3PresignService s3PresignService,
             TransmissionRepositoryService transmissionRepositoryService,
             UserFileRepositoryService userFileRepositoryService,
@@ -52,7 +56,7 @@ public class TransmissionsRecurringJob {
             SubmissionRepositoryService submissionRepositoryService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransaction,
             @Value("${il-gcc.ccms-integration-enabled:false}") boolean CCMS_INTEGRATION_ENABLED,
-            @Value("${il-gcc.dts-integration-enabled}") boolean DTS_INTEGRATION_ENABLED) {
+            @Value("${il-gcc.dts-integration-enabled}") boolean DTS_INTEGRATION_ENABLED, SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
         this.userFileRepositoryService = userFileRepositoryService;
@@ -65,6 +69,7 @@ public class TransmissionsRecurringJob {
         this.ccmsSubmissionPayloadTransaction = ccmsSubmissionPayloadTransaction;
         this.CCMS_INTEGRATION_ENABLED = CCMS_INTEGRATION_ENABLED;
         this.DTS_INTEGRATION_ENABLED = DTS_INTEGRATION_ENABLED;
+        this.sendProviderDidNotRespondToFamilyEmail = sendProviderDidNotRespondToFamilyEmail;
     }
 
     @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
@@ -94,6 +99,7 @@ public class TransmissionsRecurringJob {
                         ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(submission);
                     }
                     updateProviderStatus(submission);
+                    sendProviderDidNotRespondToFamilyEmail.send(submission);
                 } else {
                     log.error(
                             String.format("The provider response exists but the provider response expired. Check submission: %s",

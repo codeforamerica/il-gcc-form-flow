@@ -47,7 +47,7 @@ public class SendProviderDeclinesCareFamilyConfirmationEmail extends SendEmail {
 
     @Override
     protected Boolean skipEmailSend(Submission submission) {
-        boolean emailSent = submission.getInputData().getOrDefault("providerResponseFamilyConfirmationEmailSent", "false")
+        boolean emailSent = submission.getInputData().getOrDefault(emailSentStatusInputName, "false")
                 .equals("true");
         boolean providerAgreedToCare = submission.getInputData().getOrDefault("providerResponseAgreeToCare", "false")
                 .equals("true");
