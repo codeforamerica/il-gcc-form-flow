@@ -39,7 +39,7 @@ public class ILGCCEmail implements Serializable {
         PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL("Provider Agrees to Care Family Email"),
         PROVIDER_CONFIRMATION_EMAIL("Provider confirmation email"),
         PROVIDER_DECLINES_CARE_FAMILY_EMAIL("Provider Declines Care Family Email"),
-        PROVIDER_DID_NOT_RESPOND_FAMILY_EMAIL("Provider did not Respond Family Email");
+        PROVIDER_DID_NOT_RESPOND_FAMILY_EMAIL("Provider Did Not Respond Family Email");
 
         private final String description;
 
