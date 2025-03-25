@@ -22,8 +22,8 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
         //onboarding-2-part.html
-        assertThat(testPage.getTitle()).isEqualTo("2-part process");
-        assertThat(testPage.getHeader()).isEqualTo("This is a 2-part process");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-2-part.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("onboarding-2-part.header"));
         testPage.clickContinue();
         //onboarding-language-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
