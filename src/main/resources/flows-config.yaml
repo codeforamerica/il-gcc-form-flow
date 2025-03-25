@@ -488,6 +488,10 @@ flow:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-contact-provider-email-confirmation
+  submit-edit-provider-email:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-confirm-provider-email
   submit-contact-provider-email-confirmation:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
@@ -560,6 +564,7 @@ landmarks:
     - submit-contact-method
     - submit-contact-provider-email
     - submit-confirm-provider-email
+    - submit-edit-provider-email
     - submit-provider-info-edit
     - submit-contact-provider-email-confirmation
     - submit-contact-provider-text
