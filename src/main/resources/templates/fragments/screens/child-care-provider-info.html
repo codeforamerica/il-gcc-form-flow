@@ -1,0 +1,49 @@
+<th:block th:fragment="screen" th:with="
+    hasTitle=${!#strings.isEmpty(title)},
+    hasHeader=${!#strings.isEmpty(header)}
+">
+    <!DOCTYPE html>
+    <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/head :: head(title=${title})}"></head>
+    <body>
+    <div class="page-wrapper">
+        <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+        <section class="slab">
+            <div class="grid">
+                <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+                <main id="content" role="main" class="form-card spacing-above-35">
+                    <th:block th:replace="~{fragments/gcc-icons :: care}"></th:block>
+                    <th:block
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=${header})}"/>
+                    <th:block
+                            th:replace="~{fragments/form :: form(action=${formAction}, content=~{:: content})}">
+                        <th:block th:ref="content">
+                            <div class="form-card__content">
+                                <th:block th:replace="~{fragments/inputs/text ::
+                                  text(inputName='familyIntendedProviderName',
+                                  label=#{child-care-provider-info.name},
+                                  helpText=#{child-care-provider-info.name-help})}"/>
+                                <th:block th:replace="~{fragments/inputs/text ::
+                                  text(inputName='familyIntendedProviderEmail',
+                                  label=#{child-care-provider-info.email},
+                                  helpText=#{child-care-provider-info.email-help})}"/>
+                                <th:block th:replace="~{fragments/inputs/phone :: phone(
+                                  inputName='familyIntendedProviderPhoneNumber',
+                                  label=#{child-care-provider-info.phone},
+                                  helpText=#{child-care-provider-info.phone-help})}"/>
+                                <input type="hidden" id="providerApplicationResponseStatusHidden" name="providerApplicationResponseStatus" th:value="${T(org.ilgcc.app.utils.enums.SubmissionStatus).ACTIVE.name()}">
+                            </div>
+                            <div class="form-card__footer">
+                                <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{general.inputs.continue})}"/>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </main>
+            </div>
+        </section>
+    </div>
+    <th:block th:replace="~{fragments/footer :: footer}"/>
+    </body>
+    </html>
+</th:block>

@@ -1,0 +1,13 @@
+<th:block th:replace="~{fragments/screens/child-care-provider-info ::
+      screen(
+        title=#{submit-edit-provider-email.title},
+        header=#{submit-edit-provider-email.header}
+      )}">
+</th:block>
+
+<script th:inline="javascript">
+  $(document).ready(function () {
+    $('#familyIntendedProviderName').prop('disabled', true);
+    $('#familyIntendedProviderPhoneNumber').prop('disabled', true);
+  });
+</script>
