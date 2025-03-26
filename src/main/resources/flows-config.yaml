@@ -2,6 +2,9 @@ name: gcc
 flow:
   onboarding-getting-started:
     nextScreens:
+      - name: onboarding-2-part
+  onboarding-2-part:
+    nextScreens:
       - name: onboarding-language-pref
   onboarding-chosen-provider:
     nextScreens:

@@ -307,6 +307,12 @@ p.normal {
   margin-bottom: 0;
 }
 
+.onboarding-2-part ul{
+  padding-left: 2rem;
+}
+.onboarding-2-part-header header{
+  margin-bottom: 3.5rem;
+}
 .registration-submit-confirmation-header header{
   margin-bottom: 3rem;
 }
@@ -390,7 +396,7 @@ p.normal {
 #providerConvictionExplanation {
   padding: 15px;
   background: white;
-  box-shadow: 0px 2px 0px #CFC5BF inset;
+  box-shadow: 0 2px 0 #CFC5BF inset;
   border: 2px #121111 solid;
   font-weight: normal;
   resize: none;
@@ -501,7 +507,7 @@ p.normal {
   height: 6.4rem;
   padding: 0 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: inset 0px 2px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.15);
   border: 2px solid #121111;
   border-radius: 0;
   background-color: white
@@ -535,7 +541,7 @@ input[name$="Address2"] {
   padding: 0 2.5rem 0 1rem;
   vertical-align: middle;
   background-color: #F7F5F4;
-  box-shadow: inset 0px 2px 0px rgba(0, 0, 0, 0.15)
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.15)
 }
 
 .demo-banner a[href="#"] {
@@ -598,7 +604,7 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   background-image: none;
   font-family: 'Material Icons';
   content: "file_download";
-  top: 0rem;
+  top: 0;
   color: currentColor;
   font-size: 3rem;
 }
@@ -607,7 +613,7 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   background-image: none;
   font-family: 'Material Icons';
   content: "phone_in_talk";
-  top: 0rem;
+  top: 0;
   color: currentColor;
   font-size: 3rem;
 }
@@ -644,7 +650,7 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 }
 
 .form-question-stack:nth-child(2) {
-  flex: 1 1 0px;
+  flex: 1 1 0;
 }
 
 @media only screen and (max-width: 500px) {
@@ -713,11 +719,11 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 
 .familyDetails {
   .list--bulleted {
-    margin-top: 0px;
+    margin-top: 0;
   }
 
   .list--bulleted li {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }
 .response-line-margins{
