@@ -25,5 +25,25 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-intro.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-intro.header.contact-provider"));
         testPage.clickContinue();
+
+        // submit-ccap-terms
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-ccap-terms.title"));
+        testPage.clickElementById("agreesToLegalTerms-true");
+        testPage.clickContinue();
+
+        // submit-sign-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-sign-name.title"));
+        testPage.enter("signedName", "parent first parent last");
+        testPage.clickButton(getEnMessage("submit-sign-name.submit-application"));
+
+        // submit-contact-method
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-method.title"));
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("errors.submit-contact-method"))).isTrue();
+        testPage.clickElementById("contactProviderMethod-EMAIL-label");
+        testPage.clickContinue();
+
+        // submit-contact-provider-email
     }
 }

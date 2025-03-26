@@ -641,6 +641,10 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.validate.signed-name}")
     private String partnerSignedName;
 
+    // submit-contact-provider-method
+    @NotEmpty(message = "{errors.submit-contact-method}")
+    private List<String> contactProviderMethod;
+
     // complete-submit-confirmation
     private String surveyDifficulty;
     private String surveyAdditionalComments;
