@@ -19,7 +19,14 @@
                                 th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-intro.title})}"/>
                     </div>
                     <div class="form-card__content">
-                        <div class="boxed-content" th:utext="#{submit-intro.box.next-steps}"></div>
+                        <div class="boxed-content">
+                            <p class="text--centered"><strong th:text="#{submit-intro.box.header}"></strong></p>
+                            <ol class="list--numbered">
+                                <li th:text="#{submit-intro.box.one}"></li>
+                                <li th:text="#{submit-intro.box.two}"></li>
+                                <li th:text="#{submit-intro.box.three}"></li>
+                            </ol>
+                        </div>
                     </div>
                     <div class="form-card__footer text--centered">
                         <th:block th:replace="~{fragments/continueButton :: continue}"/>
@@ -36,7 +43,14 @@
                                 th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-intro.header.contact-provider})}"/>
                     </div>
                     <div class="form-card__content">
-                        <div class="boxed-content" th:utext="#{submit-intro.box.next-steps.contact-provider}"></div>
+                        <div class="boxed-content">
+                            <p class="text--centered"><strong th:text="#{submit-intro.box.header}"></strong></p>
+                            <ol class="list--numbered">
+                                <li th:text="#{submit-intro.box.one.contact-provider}"></li>
+                                <li th:text="#{submit-intro.box.two.contact-provider}"></li>
+                                <li th:text="#{submit-intro.box.three.contact-provider}"></li>
+                            </ol>
+                        </div>
                     </div>
                     <div class="form-card__footer text--centered">
                         <th:block th:replace="~{fragments/continueButton :: continue}"/>
