@@ -8,13 +8,22 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: mail-sent-success}"></th:block>
         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-contact-provider-email-confirmation.header}, subtext=#{submit-contact-provider-email-confirmation.subheader})}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-              <hr>
-              <div>
 
+              <div class="notice">
+                <p class th:utext="#{submit-contact-provider-email-confirmation.email-preview.sent}"></p>
+                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.from}"></p>
+                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.subject}"></p>
+                <hr>
+                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt1}"></p>
+                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt2}"></p>
+                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt3}"></p>
+                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt4}"></p>
+                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt5}"></p>
               </div>
             </div>
             <div class="form-card__footer">

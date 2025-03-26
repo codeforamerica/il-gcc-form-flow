@@ -425,6 +425,13 @@ p.normal {
   padding: 20px 15px 0 15px;
 }
 
+.notice-white {
+  background: #fdfcfc;
+  border: 1px solid #CFC5BF;
+  border-radius: 3px;
+  position: relative;
+  padding: 20px 15px 0 15px;
+}
 .steps-box {
   display: flex;
   align-items: flex-start;
