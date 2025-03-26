@@ -44,13 +44,22 @@ public class ProviderImporter {
             "\tstatus = excluded.status,\n" +
             "\tsite_provider_org_id = excluded.site_provider_org_id;\n";
 
-    private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", "Provider Type", "RSRCE_NAME", "DO_BUSN_AS_NAME",
+    private static final String TYPE_HEADER = "Provider Type";
+    private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", TYPE_HEADER, "RSRCE_NAME", "DO_BUSN_AS_NAME",
             "STR_ADR", "CITY", "ST", "ZIP", "Date of Last Approval", "Maintaining R&R", "Provider Status");
 
     private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of();
     private static final List<String> DATE_COLUMN_HEADERS = List.of("Date of Last Approval");
+    private static final List<String> REDACTED_COLUMN_HEADERS = List.of("RSRCE_NAME", "STR_ADR");
 
     private static final List<String> EXCLUDED_IDS = List.of("460328258720008");
+
+    private static final Set<String> REDACTABLE_TYPES = Set.of(
+        "764 - Day Care Home Exempt from Licensing",
+        "765 - Relative Exempt care in the home of the provider",
+        "766 - Non-Relative Exempt care in the home of the child",
+        "767 - Relative Exempt care in the home of the child"
+    );
 
     public static void main(String[] args) {
         String fileNameAndPath = args[0];
@@ -101,6 +110,16 @@ public class ProviderImporter {
                     excludedColumnsIndices.add(index);
                 }
             }
+
+            Set<Integer> redactedColumnsIndices = new HashSet<>();
+            for (String redactedColumnHeader : REDACTED_COLUMN_HEADERS) {
+                int index = COLUMN_HEADERS.indexOf(redactedColumnHeader);
+                if (index != -1) {
+                    redactedColumnsIndices.add(index);
+                }
+            }
+
+            int typeColumnIndex = COLUMN_HEADERS.indexOf(TYPE_HEADER);
 
             Set<Integer> dateColumnsIndices = new HashSet<>();
             for (String dateColumnHeader : DATE_COLUMN_HEADERS) {
@@ -186,14 +205,20 @@ public class ProviderImporter {
 
                 StringBuilder sb = new StringBuilder("\t(");
                 BigInteger siteAdminId = null;
+                boolean isLineRedactable = false;
                 for (int i = 0; i < values.length; i++) {
+
+                    if (typeColumnIndex == i) {
+                        isLineRedactable = REDACTABLE_TYPES.contains(values[i]);
+                    }
+
                     if (excludedColumnsIndices.contains(i)) {
                         // Skip values in the excluded columns
                         continue;
                     }
 
                     StringBuilder valueToInsert = new StringBuilder();
-                    if (values[i] == null || values[i].isBlank()) {
+                    if (values[i] == null || values[i].isBlank() || (isLineRedactable && redactedColumnsIndices.contains(i))) {
                         valueToInsert.append("NULL");
                     } else {
                         String cleanedValue = ImporterUtils.getCleanedValue(values[i]);
