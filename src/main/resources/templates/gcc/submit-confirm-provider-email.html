@@ -15,6 +15,7 @@
                     <div class="grid__item address-validation spacing-below-60">
                         <label th:for="email-entered"
                                class="radio-button is-selected"
+                               style="padding-left: 2.5rem; word-break: break-word;"
                                id="email-entered-label">
                             <p th:text="#{submit-confirm-provider-email.body}"></p>
                             <div th:text="${submission.getInputData().getOrDefault('familyIntendedProviderEmail', 'n/a')}"></div>
