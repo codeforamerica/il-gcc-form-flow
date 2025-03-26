@@ -221,12 +221,13 @@ public class ProviderSubmissionUtilities {
     }
 
     public static boolean providerApplicationHasExpired(Submission familySubmission) {
-        // In Prod, there should always be a submittedAt date, but for Staging it's possible to skip around in the flow and never submit
+        // It is possible for submittedAtDate to be null when applicant downloads pdf in submit-ccap-terms screen
+
         LocalDate submittedAtDate =
                 familySubmission.getSubmittedAt() != null ? familySubmission.getSubmittedAt().toLocalDate()
                         : null;
         if (submittedAtDate == null) {
-            log.warn("No submittedAt date found for submission " + familySubmission.getId());
+            return false;
         }
         ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
         ZonedDateTime todaysDate = OffsetDateTime.now().atZoneSameInstant(chicagoTimeZone);

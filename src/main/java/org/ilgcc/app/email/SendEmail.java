@@ -53,7 +53,7 @@ public abstract class SendEmail {
                         submission.getId());
                 sendEmail(email, submission);
             } else {
-                log.error(
+                log.debug(
                         "{}: Skipping email send because because there is no {} associated with the submission: {}",
                         getClass().getSimpleName(), recipientEmailInputName,  submission.getId());
             }
