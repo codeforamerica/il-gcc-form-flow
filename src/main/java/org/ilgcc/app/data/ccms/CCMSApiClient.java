@@ -60,6 +60,7 @@
                     })
                     .bodyToMono(String.class)
                     .block();
+            log.info("Received work item look up response from CCMS: {}", response);
             return objectMapper.readTree(response);
         }
         
