@@ -1,9 +1,6 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
@@ -70,7 +67,7 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // submit-confirm-provider-email
-        //submit
+        // submit-contact-provider-email-confirmation
         testPage.navigateToFlowScreen("gcc/submit-contact-provider-email-confirmation");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.header"));
