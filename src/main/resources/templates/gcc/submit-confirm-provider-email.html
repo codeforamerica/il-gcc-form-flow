@@ -18,7 +18,7 @@
                                style="padding-left: 2.5rem; word-break: break-word;"
                                id="email-entered-label">
                             <p th:text="#{submit-confirm-provider-email.body}"></p>
-                            <div th:text="${submission.getInputData().getOrDefault('familyIntendedProviderEmail', 'n/a')}"></div>
+                            <div th:text="${submission.getInputData().get('familyIntendedProviderEmail')}"></div>
                         </label>
 
                     </div>
