@@ -125,7 +125,7 @@ public class DateUtilities {
         return String.valueOf(submittedAt.getDayOfMonth());
     }
 
-    public String getTimeFromOffsetDateTime(OffsetDateTime submittedAt) {
+    public static String getTimeFromOffsetDateTime(OffsetDateTime submittedAt) {
         ZonedDateTime centralTime = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
         return centralTime.format(formatter);
