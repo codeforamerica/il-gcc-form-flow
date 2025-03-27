@@ -19,7 +19,7 @@
                             submittedAtMonth=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).getMonthStringFromOffsetDateTime(submittedAt, #locale) : 'N/a'},
                             submittedAtDay=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).getDayFromOffsetDateTime(submittedAt) : 'N/a'},
                             submittedAtTime=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).getTimeFromOffsetDateTime(submittedAt) : 'N/a'}">
-                <th:block th:utext="#{submit-contact-provider-email-confirmation.email-preview.sent(${submission.getSubmittedAt()}, ${submittedAtDay}, ${submittedAtTime})}"></th:block>
+                <th:block th:utext="#{submit-contact-provider-email-confirmation.email-preview.sent(${submittedAtMonth}, ${submittedAtDay}, ${submittedAtTime})}"></th:block>
                 <br>
                 <th:block th:utext="#{submit-contact-provider-email-confirmation.email-preview.from}"></th:block>
                 <br>
@@ -27,8 +27,8 @@
                 <br>
                 <hr>
                 <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt1}"></p>
-                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt2}"></p>
-                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt3}"></p>
+                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt2(${submission.getShortCode()})}"></p>
+                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt3(${submission.getInputData().getOrDefault('shareableLink', '')})}"></p>
                 <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt4}"></p>
                 <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt5}"></p>
               </div>
