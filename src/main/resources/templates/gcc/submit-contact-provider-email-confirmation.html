@@ -13,11 +13,18 @@
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-
-              <div class="notice">
-                <p class th:utext="#{submit-contact-provider-email-confirmation.email-preview.sent}"></p>
-                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.from}"></p>
-                <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.subject}"></p>
+              <div class="notice-white"
+                   th:with="submittedAt=${submission.getSubmittedAt()},
+                            hasSubmittedApplication=${submittedAt != null},
+                            submittedAtMonth=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).getMonthStringFromOffsetDateTime(submittedAt, #locale) : 'N/a'},
+                            submittedAtDay=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).getDayFromOffsetDateTime(submittedAt) : 'N/a'},
+                            submittedAtTime=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).getTimeFromOffsetDateTime(submittedAt) : 'N/a'}">
+                <th:block th:utext="#{submit-contact-provider-email-confirmation.email-preview.sent(${submission.getSubmittedAt()}, ${submittedAtDay}, ${submittedAtTime})}"></th:block>
+                <br>
+                <th:block th:utext="#{submit-contact-provider-email-confirmation.email-preview.from}"></th:block>
+                <br>
+                <th:block th:utext="#{submit-contact-provider-email-confirmation.email-preview.subject}"></th:block>
+                <br>
                 <hr>
                 <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt1}"></p>
                 <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt2}"></p>
