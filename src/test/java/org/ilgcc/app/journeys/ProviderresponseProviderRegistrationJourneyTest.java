@@ -20,6 +20,296 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     private static final String CONF_CODE = "A2123B";
 
     @Test
+    public void providerRegistersWhenNotSureIfPaidByCCCAP() {
+        createAValidLink();
+
+        // submit-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
+        testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
+
+        // confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
+        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
+        testPage.clickContinue();
+
+        // paid-by-ccap
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
+        testPage.clickElementById("not-sure-providerPaidCcap-link");
+
+        // registration-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start.title"));
+        testPage.clickButton(getEnMessage("registration-start.button"));
+
+        // registration-getting-started
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-getting-started.title"));
+        testPage.clickContinue();
+
+        // registration-provide-care-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-provide-care-intro.title"));
+        testPage.clickContinue();
+
+        // registration-licensing
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing.title"));
+        testPage.clickNo();
+
+        // registration-applicant
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-applicant.title"));
+        testPage.selectRadio("providerLicenseExemptType", "Self");
+        testPage.clickContinue();
+
+        // registration-unlicensed-care-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-unlicensed-care-location.title"));
+        testPage.selectRadio("providerLicenseExemptCareLocation", "Providers home");
+        testPage.clickContinue();
+
+        // registration-unlicensed-relationship
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-unlicensed-relationship.title"));
+        testPage.selectRadio("providerLicenseExemptRelationship", "Relative");
+        testPage.clickContinue();
+
+        // registration-basic-info-intro (
+        testPage.clickContinue();
+
+        // provider-info
+        testPage.enter("providerResponseFirstName", "LicenseExemptProvider");
+        testPage.enter("providerResponseLastName", "InChildHome");
+        testPage.clickContinue();
+
+        // service-address
+        testPage.enter("providerResponseServiceStreetAddress1", "972 Mission St");
+        testPage.enter("providerResponseServiceStreetAddress2", "5th floor");
+        testPage.enter("providerResponseServiceCity", "San Francisco");
+        testPage.selectFromDropdown("providerResponseServiceState", getEnMessage("state.ca"));
+        testPage.enter("providerResponseServiceZipCode", "94103");
+
+        testPage.clickContinue();
+
+        // confirm-service-address
+        testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
+
+        // mailing-address
+        testPage.clickElementById("providerMailingAddressSameAsServiceAddress-yes");
+        testPage.clickContinue();
+
+        // confirm-mailing-address
+        testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
+
+        // contact-info
+        testPage.enter("providerResponseContactPhoneNumber", "5555555555");
+        testPage.enter("providerResponseContactEmail", "foo@bar.com");
+        testPage.clickContinue();
+
+        // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
+        testPage.clickContinue();
+
+        // registration-home-provider-ssn
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-ssn.title"));
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-ssn"))).isTrue();
+        testPage.enter("providerIdentityCheckSSN", "123456789");
+
+        testPage.clickContinue();
+        // registration-home-provider-dob
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-dob.title"));
+        testPage.enter("providerIdentityCheckDateOfBirthMonth", "12");
+        testPage.enter("providerIdentityCheckDateOfBirthDay", "25");
+        testPage.enter("providerIdentityCheckDateOfBirthYear", "1985");
+        testPage.clickContinue();
+        //registration-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        testPage.clickElementById("providerTaxIdType-SSN-label");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
+        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
+
+        //registration-service-languages-error
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-service-languages.error"))).isTrue();
+
+        //registration-service-languages
+        testPage.clickElementById("providerLanguagesOffered-other");
+        testPage.enter("providerLanguagesOffered_other", "Test");
+        testPage.clickContinue();
+
+        // registration-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.clickContinue();
+
+        // registration-checks-trainings-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-intro.title"));
+        testPage.clickContinue();
+
+        // registration-checks-trainings-notice
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-checks-trainings-notice.title"));
+        testPage.clickContinue();
+
+        // registration-convictions
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
+        testPage.clickYes();
+
+        // registration-convictions-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions-info.title"));
+        testPage.enter("providerConvictionExplanation", "Reason for conviction");
+        testPage.clickContinue();
+
+        // registration-household-members
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-members.title"));
+        testPage.clickNo();
+
+        // registration-family-response-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
+        testPage.goBack();
+
+        // registration-household-members
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-members.title"));
+        testPage.clickYes();
+
+        // registration-household-add-person
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+        testPage.clickElementById("add-provider-household-member");
+
+        //registration-household-add-person-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person-info.title"));
+        testPage.clickContinue();
+
+        //registration-household-add-person-info-error
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.first-name"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.last-name"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.dob"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.relationship"))).isTrue();
+
+        testPage.enter("providerHouseholdMemberDateOfBirthDay", "10");
+        testPage.enter("providerHouseholdMemberSSN", "333");
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.date"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("registration-household-add-person-info.error.dob"))).isFalse();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-ssn"))).isTrue();
+
+        testPage.enter("providerHouseholdMemberFirstName", "First_Name_Test");
+        testPage.enter("providerHouseholdMemberLastName", "Last_Name_Test");
+        testPage.enter("providerHouseholdMemberRelationship", "Aunt");
+        testPage.enter("providerHouseholdMemberDateOfBirthDay", "9");
+        testPage.enter("providerHouseholdMemberDateOfBirthMonth", "10");
+        testPage.enter("providerHouseholdMemberDateOfBirthYear", "2009");
+        testPage.enter("providerHouseholdMemberSSN", "333-33-3333");
+        testPage.clickContinue();
+
+        // registration-household-add-person
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+        testPage.clickElementById("add-provider-household-member");
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person-info.title"));
+        testPage.enter("providerHouseholdMemberFirstName", "Tester");
+        testPage.enter("providerHouseholdMemberLastName", "Lastenson");
+        testPage.enter("providerHouseholdMemberRelationship", "Brother");
+        testPage.enter("providerHouseholdMemberDateOfBirthDay", "2");
+        testPage.enter("providerHouseholdMemberDateOfBirthMonth", "1");
+        testPage.enter("providerHouseholdMemberDateOfBirthYear", "1999");
+        testPage.enter("providerHouseholdMemberSSN", "888-33-3333");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+
+        assertThat(testPage.findElementsByClass("m").get(1).getText()).isEqualTo("Tester Lastenson");
+        testPage.findElementsByClass("subflow-delete").get(1).click();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person-delete.title"));
+        testPage.clickButton(getEnMessage("registration-household-add-person-delete.button.yes-delete"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
+        assertThat(testPage.findElementsByClass("m").getFirst().getText()).isEqualTo("First_Name_Test Last_Name_Test");
+        assertThat(testPage.findElementById("done-adding-provider-household-member").getText()).isEqualTo(
+                getEnMessage("registration-household-add-person.im-done"));
+        testPage.clickElementById("done-adding-provider-household-member");
+
+        // registration-family-response-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
+        testPage.clickContinue();
+
+        // response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        testPage.selectRadio("providerResponseAgreeToCare", "true");
+        testPage.clickContinue();
+
+        // registration-submit-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
+        testPage.clickContinue();
+
+        // registration-terms
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-terms.title"));
+        testPage.clickCheckbox("providerAgreesToLegalTerms-true");
+        testPage.clickContinue();
+
+        // registration-signature
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-signature.title"));
+        testPage.enter("providerSignedName", "test name");
+        testPage.clickSubmit();
+
+        // registration-submit-complete
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
+        testPage.clickButton(getEnMessage("submit-complete.button.do-this-later"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.goBack();
+        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        assertThat(testPage.elementDoesNotExistById("ssn-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("id-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("child-care-license-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        assertThat(testPage.elementDoesNotExistById("show-ssn-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-id-card-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-child-care-license-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-w9-tax-form-required")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("show-irs-letter-required")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("show-license-exempt-letter-required")).isTrue();
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.goBack();
+
+        // registration-doc-upload-recommended-docs
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+        // registration-doc-upload-add-files.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-add-files.title"));
+        uploadJpgFile("providerUploadDocuments");
+
+        testPage.clickButton(getEnMessage("doc-upload-add-files.confirmation"));
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-submit-confirmation.title"));
+        testPage.clickButton(getEnMessage("doc-upload-submit-confirmation.yes"));
+
+        // registration-submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
+        testPage.clickContinue();
+
+        // registration-submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
+    }
+    @Test
     void onboardingScreenNoLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
@@ -67,7 +357,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
     @Test
     void basicInfoFlow() {
-        createAValidLink();
+        setupRegistration();
 
         testPage.navigateToFlowScreen("providerresponse/registration-basic-info-intro");
 
@@ -170,6 +460,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
     }
 
+
+
     @Test
     public void existingProviderBasicflow() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
@@ -261,7 +553,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
     @Test
     void licenseExemptInProviderHomeFlow() {
-        createAValidLink();
+        setupRegistration();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -529,7 +821,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
     @Test
     void licenseExemptInChildHomeFlow() {
-        createAValidLink();
+        setupRegistration();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -707,7 +999,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
     @Test
     void licensedChildCareHomeFlow() {
-        createAValidLink();
+        setupRegistration();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -874,7 +1166,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
     @Test
     void licensedChildCareCenterFlow() {
-        createAValidLink();
+        setupRegistration();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -1023,7 +1315,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
     @Test
     void licensedGroupChildCareHomeFlow() {
-        createAValidLink();
+        setupRegistration();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -1181,7 +1473,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
     @Test
     void licenseExemptChildCareCenter() {
-        createAValidLink();
+        setupRegistration();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -1383,30 +1675,27 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         driver.navigate()
                 .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
+    }
 
+    private void setupRegistration() {
+        createAValidLink();
         // submit-start
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
         // confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
         testPage.clickContinue();
 
         // paid-by-ccap
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
         testPage.clickNo();
 
         // registration-start
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start.title"));
         testPage.clickButton(getEnMessage("registration-start.button"));
 
         // registration-getting-started
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-getting-started.title"));
         testPage.clickContinue();
 
         // registration-provide-care-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-provide-care-intro.title"));
         testPage.clickContinue();
     }
 }

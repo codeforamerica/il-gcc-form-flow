@@ -1,5 +1,5 @@
-<th:block th:with="isExistingProvider=${submission.getInputData().getOrDefault('providerPaidCcap', 'true').equals('true')},
-                   displaySubmitCompleteFinalScreen=${submission.getInputData().getOrDefault('providerPaidCcap', '').equals('')}">
+<th:block th:with="isExistingProvider=${submission.getInputData().getOrDefault('providerPaidCcap', 'false').equals('true')},
+                   displaySubmitCompleteFinalScreen=${@environment.getProperty('il-gcc.allow-provider-registration-flow') == 'false'}">
     <th:block th:if="${displaySubmitCompleteFinalScreen}">
         <th:block th:replace="~{fragments/screens/submit-complete-final-fragment :: screen}"></th:block>
     </th:block>
