@@ -48,10 +48,15 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email.title"));
         testPage.clickContinue();
 
-
         // submit-confirm-provider-email
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirm-provider-email.title"));
+        testPage.clickYes();
+
+        // submit-contact-provider-email-confirmation
+        testPage.goBack();
+        testPage.clickNo();
+
         // submit-edit-provider-email
-        testPage.navigateToFlowScreen("gcc/submit-edit-provider-email");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-edit-provider-email.title"));
         assertThat(testPage.getInputValue("familyIntendedProviderName")).isEqualTo("ACME Daycare");
         assertThat(testPage.findElementById("familyIntendedProviderName").isEnabled()).isFalse();
