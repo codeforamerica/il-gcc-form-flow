@@ -67,5 +67,25 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // submit-confirm-provider-email
+
+
+        // submit-share-confirmation-code
+        testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
+
+        // skips screen and goes to doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+
+        testPage.navigateToFlowScreen("gcc/submit-contact-method");
+        testPage.clickElementById("contactProviderMethod-OTHER-label");
+        testPage.clickContinue();
+
+        testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
+
+        testPage.clickLink(getEnMessage("submit-share-confirmation-code.cta"));
+
+        // doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+
     }
 }
