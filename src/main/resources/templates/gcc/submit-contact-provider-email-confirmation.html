@@ -16,10 +16,9 @@
               <div class="notice-white"
                    th:with="submittedAt=${submission.getSubmittedAt()},
                             hasSubmittedApplication=${submittedAt != null},
-                            submittedAtMonth=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).getMonthStringFromOffsetDateTime(submittedAt, #locale) : 'N/a'},
-                            submittedAtDay=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).getDayFromOffsetDateTime(submittedAt) : 'N/a'},
-                            submittedAtTime=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).getTimeFromOffsetDateTime(submittedAt) : 'N/a'}">
-                <th:block th:utext="#{submit-contact-provider-email-confirmation.email-preview.sent(${submittedAtMonth}, ${submittedAtDay}, ${submittedAtTime})}"></th:block>
+                            submittedAtDate=${hasSubmittedApplication ? T(org.ilgcc.app.utils.DateUtilities).convertDateToFullWordMonthPattern(submission.getInputData.get('formattedSubmittedAtDate')) : 'N/a'},
+                            submittedAtTime=${hasSubmittedApplication ? submission.getInputData.get('formattedSubmittedAtTime'): 'N/a'}">
+                <th:block th:utext="#{submit-contact-provider-email-confirmation.email-preview.sent(${submittedAtDate}, ${submittedAtTime})}"></th:block>
                 <br>
                 <th:block th:utext="#{submit-contact-provider-email-confirmation.email-preview.from}"></th:block>
                 <br>
