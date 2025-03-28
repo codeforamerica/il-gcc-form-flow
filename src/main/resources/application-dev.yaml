@@ -30,6 +30,5 @@ org:
       retry-back-off-time-seed: 1
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:false}
-  enable-provider-messaging: ${ENABLE_PROVIDER_MESSAGING:false}
   dts:
     processing-org: '4c-ccap-apps-testing'
