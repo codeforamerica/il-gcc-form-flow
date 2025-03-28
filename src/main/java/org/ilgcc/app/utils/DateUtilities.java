@@ -5,8 +5,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
-import java.time.format.TextStyle;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -114,20 +112,6 @@ public class DateUtilities {
     public static String formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime submittedAt) {
         ZonedDateTime centralTime = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        return centralTime.format(formatter);
-    }
-
-    public static String getMonthStringFromOffsetDateTime(OffsetDateTime submittedAt, Locale locale) {
-        return submittedAt.getMonth().getDisplayName(TextStyle.FULL, locale);
-    }
-
-    public static String getDayFromOffsetDateTime(OffsetDateTime submittedAt) {
-        return String.valueOf(submittedAt.getDayOfMonth());
-    }
-
-    public static String getTimeFromOffsetDateTime(OffsetDateTime submittedAt) {
-        ZonedDateTime centralTime = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
         return centralTime.format(formatter);
     }
 }
