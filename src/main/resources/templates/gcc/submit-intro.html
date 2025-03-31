@@ -37,8 +37,10 @@
                     <div class="text--centered">
                         <th:block
                                 th:replace="~{fragments/gcc-icons :: application-mail}"></th:block>
-                        <p class="text--grey-dark" th:id="submit-intro-step"
-                           th:text="#{general.step-header('5','5')}"></p>
+                        <th:block
+                                th:with="stepCount = ${@environment.getProperty('il-gcc.enable-provider-messaging') == 'true' ? '5' : '6'}">
+                            <p class="text--grey-dark" th:id="submit-intro-step" th:text="${#messages.msg('general.step-header', '5' , stepCount)}"></p>
+                        </th:block>
                         <th:block
                                 th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-intro.header.contact-provider})}"/>
                     </div>

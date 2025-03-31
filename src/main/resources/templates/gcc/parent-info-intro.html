@@ -10,7 +10,10 @@
       <main id="content" role="main" class="form-card spacing-above-35">
         <div class="text--centered">
           <th:block th:replace="~{fragments/gcc-icons :: person}"></th:block>
-          <p class="text--grey-dark" th:id="parent-info-intro-step" th:text="${#messages.msg('parent-info-intro.step', '6')}"></p>
+          <th:block
+                  th:with="stepCount = ${@environment.getProperty('il-gcc.enable-provider-messaging') == 'true' ? '5' : '6'}">
+            <p class="text--grey-dark" th:id="parent-info-intro-step" th:text="${#messages.msg('general.step-header', '1' , stepCount)}"></p>
+          </th:block>
           <th:block
               th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-intro.title})}"/>
         </div>
