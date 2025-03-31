@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
 
       - name: Deploy to Aptible
-        uses: aptible/aptible-deploy-action@v5
+        uses: aptible/aptible-deploy-action@v4
         with:
           type: git
           app: illinois-get-childcare-staging
