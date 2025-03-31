@@ -436,6 +436,11 @@ p.normal {
 .notice-white hr{
   margin: 1.5rem;
 }
+
+.email-header-example p{
+  margin-top: 0;
+  margin-bottom: 0;
+}
 .steps-box {
   display: flex;
   align-items: flex-start;
