@@ -6,12 +6,14 @@
     subtext=#{submit-contact-provider-text.subheader},
     iconFragment=~{fragments/gcc-icons :: text-bubble},
     formAction=${formAction},
+    buttonLabel=#{general.button.continue},
+    required=true,
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
     <!-- Be sure to have `ariaLabel='header'` to label the input with the header -->
     <th:block
       th:replace="~{fragments/inputs/phone :: phone(
       inputName='familyIntendedProviderPhoneNumber',
-      arialabel='header')}"/>
+      ariaLabel='header')}"/>
   </th:block>
 </th:block>

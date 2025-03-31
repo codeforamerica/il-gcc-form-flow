@@ -497,7 +497,8 @@ flow:
     nextScreens:
       - name: submit-contact-provider-text
   submit-contact-provider-text:
-    condition: EnableProviderMessagingFlagOn
+    condition: DisplaySubmitContactProviderTextScreen
+    crossFieldValidationAction: ValidatePhoneNumberNotBlank
     nextScreens:
       - name: parent-confirm-provider-number
   parent-confirm-provider-number:
