@@ -754,6 +754,14 @@ div.move-40-up {
   margin-top: -4.0rem;
 }
 
+.display-box-green {
+  border: 2px #008060 solid;
+  border-radius: 5px;
+  background-color: unset;
+  padding: 2.5rem;
+  word-break: break-word;
+}
+
 /* THIS NEEDS TO BE HERE, IF IT'S REMOVED IT WILL BREAK JAVASCRIPT FOR SAME AS HOME ADDRESS FUNCTIONALITY */
 .hidden {
   display: none !important;
