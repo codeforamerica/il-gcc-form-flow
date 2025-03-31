@@ -10,7 +10,7 @@
             <main id="content" role="main" class="form-card spacing-above-35">
                 <div class="text--centered">
                     <th:block th:replace="~{fragments/gcc-icons :: support}"></th:block>
-                    <p class="text--grey-dark" th:text="#{no-provider-intro.step}"></p>
+                    <p class="text--grey-dark" th:id="no-provider-intro-step" th:text="${#messages.msg('general.step-header', '6' , '6')}"></p>
                     <th:block
                             th:replace="~{fragments/cardHeader :: cardHeader(header=#{no-provider-intro.header})}"/>
                 </div>
