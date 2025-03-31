@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}">
+<head th:replace="~{fragments/head :: head(title=#{submit-share-confirmation-code.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: text-bubble}"></th:block>
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(header=${#messages.msg('submit-share-confirmation-code.header', submission.getShortCode())}, noSpacingBelow=true)}"/>
+        <div class="form-card__content">
+          <p th:text="#{submit-share-confirmation-code.body.p1}"></p>
+          <p th:utext="#{submit-share-confirmation-code.body.p2}"></p>
+          <p th:utext="#{submit-share-confirmation-code.body.p3}"></p>
+        </div>
+        <div class="form-card__footer">
+          <th:block th:replace="~{fragments/continueButton :: continue(text=#{submit-share-confirmation-code.cta})}"/>
+        </div>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>

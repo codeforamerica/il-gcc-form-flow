@@ -507,11 +507,11 @@ flow:
   submit-contact-provider-text-confirmation:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
-      - name: submit-confirmation
-  submit-confirmation:
-    condition: EnableProviderMessagingFlagOn
+      - name: submit-share-confirmation-code
+  submit-share-confirmation-code:
+    condition: ContactProviderViaOther
     nextScreens:
-      - name: null
+      - name: doc-upload-recommended-docs
   doc-upload-confirm:
     nextScreens: null
   children-delete:
@@ -570,7 +570,7 @@ landmarks:
     - submit-contact-provider-text
     - parent-confirm-provider-number
     - submit-contact-provider-text-confirmation
-    - submit-confirmation
+    - submit-share-confirmation-code
 ---
 name: providerresponse
 flow:
