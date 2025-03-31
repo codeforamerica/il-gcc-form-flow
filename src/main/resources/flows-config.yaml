@@ -481,11 +481,7 @@ flow:
     nextScreens:
       - name: submit-confirm-provider-email
   submit-confirm-provider-email:
-    condition: EnableProviderMessagingFlagOn
-    nextScreens:
-      - name: submit-provider-info-edit
-  submit-provider-info-edit:
-    condition: EnableProviderMessagingFlagOn
+    condition: ContactProviderViaEmail
     nextScreens:
       - name: submit-contact-provider-email-confirmation
   submit-edit-provider-email:
