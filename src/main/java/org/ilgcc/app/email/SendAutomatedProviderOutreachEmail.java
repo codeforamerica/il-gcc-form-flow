@@ -28,7 +28,7 @@ public class SendAutomatedProviderOutreachEmail extends SendEmail {
     protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
         return new AutomatedProviderOutreachEmailTemplate(emailData,
                 messageSource,
-                locale).createTemplate();
+                locale.ENGLISH).createTemplate();
     }
 
     @Override
