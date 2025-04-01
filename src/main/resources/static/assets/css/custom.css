@@ -446,7 +446,13 @@ p.normal {
   align-items: flex-start;
   gap: 20px;
 }
+.open-text-app header{
+  margin-bottom: 0;
+}
 
+.open-text-app-paragraph{
+  margin-bottom: 5rem;
+}
 .steps-box svg {
   flex-shrink: 0;
 }

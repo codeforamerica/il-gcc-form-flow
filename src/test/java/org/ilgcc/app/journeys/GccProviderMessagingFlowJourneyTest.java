@@ -1,11 +1,9 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
-
 @TestPropertySource(properties = {"il-gcc.enable-provider-messaging=true"})
 public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
 
@@ -87,13 +85,17 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
         testPage.clickContinue();
 
-        // parent-confirm-provider-number
-        testPage.navigateToFlowScreen("gcc/parent-confirm-provider-number");
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-provider-number.title"));
-        testPage.clickYes();
+      testPage.navigateToFlowScreen("gcc/submit-contact-provider-text-confirmation");
+      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-text-confirmation.title"));
+      testPage.clickContinue();
 
-        // submit-share-confirmation-code
-        testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
+      // parent-confirm-provider-number
+      testPage.navigateToFlowScreen("gcc/parent-confirm-provider-number");
+      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-provider-number.title"));
+      testPage.clickYes();
+
+      // submit-share-confirmation-code
+      testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
 
         // skips screen and goes to doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
