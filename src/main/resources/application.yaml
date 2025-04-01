@@ -123,8 +123,6 @@ org:
     background-job-server:
       enabled: ${JOBRUNR_SERVER_ENABLED:true}
     dashboard:
-      enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
-#TODO: REMOVE THIS TODO WHEN UAT TESTING CAN BE DONE
 il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
