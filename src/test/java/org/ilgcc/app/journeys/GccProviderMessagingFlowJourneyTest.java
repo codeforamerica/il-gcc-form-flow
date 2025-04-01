@@ -1,9 +1,11 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
+
 @TestPropertySource(properties = {"il-gcc.enable-provider-messaging=true"})
 public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
 
@@ -42,6 +44,7 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
 
         assertThat(testPage.hasErrorText(getEnMessage("errors.submit-contact-method"))).isTrue();
         testPage.clickElementById("contactProviderMethod-EMAIL-label");
+        testPage.clickElementById("contactProviderMethod-TEXT-label");
         testPage.clickContinue();
 
         // submit-contact-provider-email
@@ -72,32 +75,39 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // submit-confirm-provider-email
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirm-provider-email.title"));
+        testPage.clickYes();
+
+        // submit-contact-provider-email-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
+        testPage.clickContinue();
+
         // submit-contact-provider-email-confirmation
         testPage.navigateToFlowScreen("gcc/submit-contact-provider-email-confirmation");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
         testPage.clickContinue();
 
-      // submit-contact-provider-email-confirmation
-      testPage.navigateToFlowScreen("gcc/submit-contact-provider-email-confirmation");
-      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
-      testPage.clickContinue();
+        // parent-confirm-provider-number
+        testPage.navigateToFlowScreen("gcc/parent-confirm-provider-number");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-provider-number.title"));
+        testPage.clickYes();
 
-      // submit-share-confirmation-code
-      testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
+        // submit-share-confirmation-code
+        testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
 
-      // skips screen and goes to doc-upload-recommended-docs
-      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+        // skips screen and goes to doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
 
-      testPage.navigateToFlowScreen("gcc/submit-contact-method");
-      testPage.clickElementById("contactProviderMethod-OTHER-label");
-      testPage.clickContinue();
+        testPage.navigateToFlowScreen("gcc/submit-contact-method");
+        testPage.clickElementById("contactProviderMethod-OTHER-label");
+        testPage.clickContinue();
 
-      testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
-      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
+        testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
 
-      testPage.clickLink(getEnMessage("submit-share-confirmation-code.cta"));
+        testPage.clickLink(getEnMessage("submit-share-confirmation-code.cta"));
 
-      // doc-upload-recommended-docs
-      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+        // doc-upload-recommended-docs
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
     }
 }

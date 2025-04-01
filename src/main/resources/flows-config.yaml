@@ -498,7 +498,7 @@ flow:
     nextScreens:
       - name: parent-confirm-provider-number
   parent-confirm-provider-number:
-    condition: EnableProviderMessagingFlagOn
+    condition: ContactProviderViaText
     nextScreens:
       - name: submit-contact-provider-text-confirmation
   submit-contact-provider-text-confirmation:
