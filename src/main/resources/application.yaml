@@ -123,6 +123,7 @@ org:
     background-job-server:
       enabled: ${JOBRUNR_SERVER_ENABLED:true}
     dashboard:
+      enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
