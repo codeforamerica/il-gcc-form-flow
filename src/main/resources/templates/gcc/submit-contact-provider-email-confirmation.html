@@ -24,11 +24,11 @@
                 </div>
                 <hr>
                 <div>
-                  <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt1}"></p>
-                  <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt2(${submission.getShortCode()})}"></p>
+                  <p th:utext="#{email.automated-provider-outreach.p1}"></p>
+                  <p th:utext="#{email.automated-provider-outreach.p2(${submission.getShortCode()})}"></p>
                   <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt3(${submission.getInputData().getOrDefault('shareableLink', '')})}"></p>
-                  <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt4}"></p>
-                  <p th:utext="#{submit-contact-provider-email-confirmation.email-preview.body.pt5}"></p>
+                  <p th:utext="#{email.automated-provider-outreach.p4}"></p>
+                  <p th:utext="#{email.automated-provider-outreach.p5('the CCR&R')}"></p>
                 </div>
               </div>
             </div>

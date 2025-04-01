@@ -118,6 +118,8 @@ public class ProviderSubmissionUtilities {
         applicationData.put("shareableLink", familySubmission.getInputData().getOrDefault("shareableLink", ""));
         applicationData.put("familyIntendedProviderName",
                 familySubmission.getInputData().getOrDefault("familyIntendedProviderName", ""));
+        applicationData.put("familyIntendedProviderEmail",
+                familySubmission.getInputData().getOrDefault("familyIntendedProviderEmail", ""));
         applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
         applicationData.put("ccapStartDate", ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
                 Optional.empty()));
