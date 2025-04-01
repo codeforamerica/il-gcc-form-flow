@@ -10,8 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContactProviderViaText implements Condition {
     
-    @Value("${il-gcc.enable-provider-messaging}")
-    private boolean enableProviderMessaging;
+    private final boolean enableProviderMessaging;
+
+    public ContactProviderViaText(@Value("${il-gcc.enable-provider-messaging}") boolean enableProviderMessaging) {
+        this.enableProviderMessaging = enableProviderMessaging;
+    }
 
     @Override
     public Boolean run(Submission submission) {

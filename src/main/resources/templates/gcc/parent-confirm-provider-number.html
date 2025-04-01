@@ -13,9 +13,7 @@
                         th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-confirm-provider-number.header})}"/>
                 <div class="form-card__content">
                     <div class="grid__item address-validation spacing-below-60">
-                        <div class="display-box-green "
-                             style="padding-left: 2.5rem; word-break: break-word;"
-                             id="number-entered-box">
+                        <div class="display-box-green " id="number-entered-box">
                             <p><strong th:text="#{parent-confirm-provider-number.subtext}"></strong></p>
                             <div th:text="${submission.getInputData().get('familyIntendedProviderPhoneNumber')}"></div>
                         </div>
