@@ -22,7 +22,6 @@ public class TransactionWorkItemRecurringJob {
     private final TransactionRepositoryService transactionRepositoryService;
     private final EnqueueTransactionWorkItemLookupJob enqueueTransactionWorkItemLookupJob;
     private final JobScheduler jobScheduler;
-    private final Instant oneHourAgo = Instant.now().minus(1, ChronoUnit.HOURS);
 
     public TransactionWorkItemRecurringJob(TransactionRepositoryService transactionRepositoryService,
             EnqueueTransactionWorkItemLookupJob enqueueTransactionWorkItemLookupJob, JobScheduler jobScheduler) {
@@ -48,6 +47,7 @@ public class TransactionWorkItemRecurringJob {
     }
     
     public List<Transaction> getTransactionsWithoutWorkItemIdsOlderThanOneHour() {
+        Instant oneHourAgo = Instant.now().minus(1, ChronoUnit.HOURS);
         return transactionRepositoryService.getTransactionsWithoutWorkItemIds().stream()
                 .filter(transaction -> transaction.getCreatedAt().before(Date.from(oneHourAgo))).toList();
     }
