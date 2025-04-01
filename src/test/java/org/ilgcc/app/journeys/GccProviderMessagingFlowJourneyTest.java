@@ -72,25 +72,32 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // submit-confirm-provider-email
-
-
-        // submit-share-confirmation-code
-        testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
-
-        // skips screen and goes to doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-
-        testPage.navigateToFlowScreen("gcc/submit-contact-method");
-        testPage.clickElementById("contactProviderMethod-OTHER-label");
+        // submit-contact-provider-email-confirmation
+        testPage.navigateToFlowScreen("gcc/submit-contact-provider-email-confirmation");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
         testPage.clickContinue();
 
-        testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
+      // submit-contact-provider-email-confirmation
+      testPage.navigateToFlowScreen("gcc/submit-contact-provider-email-confirmation");
+      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
+      testPage.clickContinue();
 
-        testPage.clickLink(getEnMessage("submit-share-confirmation-code.cta"));
+      // submit-share-confirmation-code
+      testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
 
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+      // skips screen and goes to doc-upload-recommended-docs
+      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
 
+      testPage.navigateToFlowScreen("gcc/submit-contact-method");
+      testPage.clickElementById("contactProviderMethod-OTHER-label");
+      testPage.clickContinue();
+
+      testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
+      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
+
+      testPage.clickLink(getEnMessage("submit-share-confirmation-code.cta"));
+
+      // doc-upload-recommended-docs
+      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
     }
 }
