@@ -489,7 +489,7 @@ flow:
     nextScreens:
       - name: submit-confirm-provider-email
   submit-contact-provider-email-confirmation:
-    beforeDisplayAction: SendAutomatedProviderEmailAndFormatSubmittedAtDate
+    beforeDisplayAction: FormatSubmittedAtDate
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-contact-provider-text

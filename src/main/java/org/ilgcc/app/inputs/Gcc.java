@@ -645,6 +645,8 @@ public class Gcc extends FlowInputs {
     @NotEmpty(message = "{errors.submit-contact-method}")
     private List<String> contactProviderMethod;
 
+    private String hasConfirmedIntendedProviderEmail;
+
     // complete-submit-confirmation
     private String surveyDifficulty;
     private String surveyAdditionalComments;
