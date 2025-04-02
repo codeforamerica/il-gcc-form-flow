@@ -482,8 +482,11 @@ flow:
       - name: submit-confirm-provider-email
   submit-confirm-provider-email:
     condition: ContactProviderViaEmail
+    afterSaveAction: SendAutomatedProviderEmail
     nextScreens:
       - name: submit-contact-provider-email-confirmation
+        condition: hasConfirmedProviderEmail
+      - name: submit-edit-provider-email
   submit-edit-provider-email:
     condition: EnableProviderMessagingFlagOn
     nextScreens:

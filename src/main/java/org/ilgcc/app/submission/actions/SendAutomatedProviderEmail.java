@@ -9,14 +9,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class SendAutomatedProviderEmailAndFormatSubmittedAtDate implements Action {
+public class SendAutomatedProviderEmail implements Action {
 
     @Autowired
     SendAutomatedProviderOutreachEmail sendAutomatedProviderOutreachEmail;
 
     @Override
     public void run(Submission familySubmission) {
-        new FormatSubmittedAtDate().run(familySubmission);
-        sendAutomatedProviderOutreachEmail.send(familySubmission);
+        if (familySubmission.getInputData().get("hasConfirmedIntendedProviderEmail").equals("true")) {
+            sendAutomatedProviderOutreachEmail.send(familySubmission);
+        }
     }
 }
