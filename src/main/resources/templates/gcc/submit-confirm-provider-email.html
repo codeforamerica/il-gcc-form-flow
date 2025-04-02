@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:lang="${#locale.language}">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head(title=#{submit-confirm-provider-email.title})}"></head>
 <body>
 <div class="page-wrapper">
@@ -11,30 +11,22 @@
                 <th:block th:replace="~{fragments/gcc-icons :: application-search}"></th:block>
                 <th:block
                         th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-confirm-provider-email.header})}"/>
-                <div class="form-card__content">
-                    <div class="grid__item address-validation spacing-below-60">
-                        <div class="display-box-green "
-                             id="email-entered-label">
-                            <p><strong th:text="#{submit-confirm-provider-email.body}"></strong></p>
-                            <div th:text="${submission.getInputData().get('familyIntendedProviderEmail')}"></div>
+                <th:block
+                        th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="grid__item address-validation spacing-below-60">
+                            <div class="display-box-green "
+                                 id="email-entered-label">
+                                <p><strong th:text="#{submit-confirm-provider-email.body}"></strong>
+                                </p>
+                                <div th:text="${submission.getInputData().get('familyIntendedProviderEmail')}"></div>
+                            </div>
                         </div>
-
-                    </div>
-                </div>
-                <div class="form-card__footer">
-                    <a aria-describedby="header"
-                       th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
-                       class="button button--secondary" id="confirmed-provider-email">
-                        <span class="button__icon--left emoji emoji--inline emoji--checkmark"></span>
-                        <span th:text="#{general.inputs.yes}"></span>
-                    </a>
-                    <a aria-describedby="header"
-                       th:href="'/flow/' + ${flow} + '/submit-edit-provider-email'"
-                       class="button button--secondary" id="edit-provider-email">
-                        <span class="button__icon--left emoji emoji--inline emoji--crossmark"></span>
-                        <span th:text="#{general.inputs.no}"></span>
-                    </a>
-                </div>
+                        <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(
+              inputName='hasConfirmedIntendedProviderEmail',
+              ariaDescribe='header')}"/>
+                    </th:block>
+                </th:block>
             </main>
         </div>
     </section>
