@@ -18,7 +18,10 @@ import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.time.OffsetDateTime;
 import java.util.Date;
+import java.util.UUID;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.data.Transaction;
+import org.ilgcc.app.data.TransactionRepository;
 import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.Transmission;
 import org.ilgcc.app.data.TransmissionRepository;
@@ -53,7 +56,14 @@ public class TransmissionsRecurringJobTest {
     private TransmissionRepository transmissionRepository;
 
     @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Autowired
     private TransmissionRepositoryService transmissionRepositoryService;
+
+    @Autowired
+    private TransactionRepositoryService transactionRepositoryService;
+
     @Mock
     private S3PresignService s3PresignService;
 
@@ -101,9 +111,6 @@ public class TransmissionsRecurringJobTest {
 
     private SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
 
-    @Autowired
-    private TransactionRepositoryService transactionRepositoryService;
-
     @BeforeEach
     void setUp() {
         sendProviderDidNotRespondToFamilyEmail = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
@@ -128,6 +135,7 @@ public class TransmissionsRecurringJobTest {
     @AfterEach
     protected void clearSubmissions() {
         transmissionRepository.deleteAll();
+        transactionRepository.deleteAll();
         submissionRepository.deleteAll();
     }
 
@@ -182,16 +190,18 @@ public class TransmissionsRecurringJobTest {
     }
 
     @Test
-    void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmission() {
+    void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmissionAndTransaction() {
         transmittedSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
                 .with("providerResponseSubmissionId", "4e477c74-8529-4cd0-a02b-2d67e5b5b171")
                 .withFlow("gcc")
                 .build();
-        submissionRepository.save(transmittedSubmission);
+        transmittedSubmission = submissionRepository.save(transmittedSubmission);
         transmissionRepositoryService.save(new Transmission(transmittedSubmission, null, Date.from(OffsetDateTime.now()
                 .toInstant()), Queued, APPLICATION_PDF, null));
+
+        transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId());
 
         transmissionsRecurringJob.noProviderResponseJob();
 

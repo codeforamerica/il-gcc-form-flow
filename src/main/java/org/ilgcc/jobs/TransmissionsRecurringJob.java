@@ -76,11 +76,27 @@ public class TransmissionsRecurringJob {
     @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
-        List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
-        List<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransaction();
 
-        Set<Submission> submissionsWithoutTransmissionsOrTransactions = new HashSet<>(submissionsWithoutTransmissions);
-        submissionsWithoutTransmissionsOrTransactions.addAll(submissionsWithoutTransactions);
+        Set<Submission> submissionsWithoutTransmissionsOrTransactions = new HashSet<Submission>();
+
+        if (DTS_INTEGRATION_ENABLED && !CCMS_INTEGRATION_ENABLED) {
+            // Only DTS is enabled
+            log.debug("No provider response job for DTS only.");
+            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(transmissionRepositoryService.findSubmissionsWithoutTransmission());
+        } else if (!DTS_INTEGRATION_ENABLED && CCMS_INTEGRATION_ENABLED) {
+            // Only CCMS is enabled
+            log.debug("No provider response job for CCMS only.");
+            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(transactionRepositoryService.findSubmissionsWithoutTransaction());
+        } else if (DTS_INTEGRATION_ENABLED) {
+            // Both enabled
+            log.debug("No provider response job for both DTS and CCMS.");
+            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(transmissionRepositoryService.findSubmissionsWithoutTransmission());
+            submissionsWithoutTransmissionsOrTransactions.addAll(transactionRepositoryService.findSubmissionsWithoutTransaction());
+        } else {
+            // Nothing is enabled. This seems wrong!
+            log.error("Neither DTS nor CCMS integration is turned on. Why?");
+            return;
+        }
 
         List<Submission> expiredSubmissionsWithNoTransmissionsOrTransactions = submissionsWithoutTransmissionsOrTransactions.stream()
                 .filter(ProviderSubmissionUtilities::providerApplicationHasExpired).toList();
