@@ -93,9 +93,22 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
       testPage.navigateToFlowScreen("gcc/parent-confirm-provider-number");
       assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-provider-number.title"));
       testPage.clickYes();
+        // submit-contact-provider-text
+        testPage.navigateToFlowScreen("gcc/submit-contact-provider-text");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-text.title"));
+        assertThat(testPage.findElementById("familyIntendedProviderPhoneNumber").isEnabled()).isTrue();
 
-      // submit-share-confirmation-code
-      testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
+        //test that phone number is empty generates an error
+        testPage.clickContinue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
+        //test that an invalid phone number generates an error
+        testPage.enter("familyIntendedProviderPhoneNumber", "test");
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
+        testPage.enter("familyIntendedProviderPhoneNumber", "(333)333-3333");
+        testPage.clickContinue();
+
+        // submit-share-confirmation-code
+        testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
 
         // skips screen and goes to doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
