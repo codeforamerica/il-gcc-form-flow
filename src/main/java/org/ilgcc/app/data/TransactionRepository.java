@@ -25,5 +25,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
                     "AND s.flow = 'gcc' " +
                     "AND t.transactionId IS NULL " +
                     "ORDER BY s.updatedAt ASC")
-    List<Submission> findSubmissionsWithoutTransmission();
+    List<Submission> findSubmissionsWithoutTransaction();
 }

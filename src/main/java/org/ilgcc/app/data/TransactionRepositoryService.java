@@ -33,7 +33,7 @@ public class TransactionRepositoryService {
     }
 
     public List<Submission> findSubmissionsWithoutTransmission(){
-        return transactionRepository.findSubmissionsWithoutTransmission();
+        return transactionRepository.findSubmissionsWithoutTransaction();
     }
 
     public Transaction createTransaction(UUID transactionId, UUID submissionId) {
