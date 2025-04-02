@@ -27,7 +27,7 @@ public class ValidatePhoneNumberNotBlank implements Action {
         String phoneNumber = (String) formSubmission.getFormData().getOrDefault(PROVIDER_PHONE_NUMBER, "");
 
         Locale locale = LocaleContextHolder.getLocale();
-        if (phoneNumber.isEmpty()) {
+        if (phoneNumber.isBlank()) {
             errorMessages.put(PROVIDER_PHONE_NUMBER, List.of(messageSource.getMessage("errors.invalid-phone-number", null, locale)));
         }
         return errorMessages;
