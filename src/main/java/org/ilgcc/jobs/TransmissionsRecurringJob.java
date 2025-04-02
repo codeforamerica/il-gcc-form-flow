@@ -101,8 +101,8 @@ public class TransmissionsRecurringJob {
                     updateProviderStatus(submission);
                     sendProviderDidNotRespondToFamilyEmail.send(submission);
                 } else {
-                    log.error(
-                            String.format("The provider response exists but the provider response expired. Check submission: %s",
+                    log.warn(
+                            String.format("TransmissionsRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission. Check familySubmission: %s",
                                     submission.getId()));
                 }
             }
