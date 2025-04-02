@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: [ "Run tests" ]
     types: [ completed ]
-    branches: [ main ]
+    branches: [ ccap-690-create-qa-environment ]
   workflow_dispatch:
 
 jobs:
