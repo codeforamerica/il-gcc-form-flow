@@ -9,7 +9,16 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
-    
+    @Query(value =
+            "SELECT s FROM Submission s " +
+                    "LEFT JOIN Transaction t ON t.submissionId = s.id " +
+                    "WHERE s.submittedAt IS NOT NULL " +
+                    "AND s.flow = 'gcc' " +
+                    "AND t.transactionId IS NULL " +
+                    "ORDER BY s.updatedAt ASC")
+
+    List<Submission> findSubmissionsWithoutTransaction();
+
     Transaction findByTransactionId(UUID transactionId);
     
     Transaction findByWorkItemId(String workItemId);
@@ -17,13 +26,4 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     Transaction findBySubmissionId(UUID submissionId);
     
     List<Transaction> findByWorkItemIdIsNull();
-
-    @Query(value =
-            "SELECT s FROM Submission s " +
-                    "LEFT JOIN Transaction t ON t.submissionId = s " +
-                    "WHERE s.submittedAt IS NOT NULL " +
-                    "AND s.flow = 'gcc' " +
-                    "AND t.transactionId IS NULL " +
-                    "ORDER BY s.updatedAt ASC")
-    List<Submission> findSubmissionsWithoutTransaction();
 }
