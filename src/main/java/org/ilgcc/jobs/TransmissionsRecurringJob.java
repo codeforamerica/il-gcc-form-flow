@@ -77,7 +77,7 @@ public class TransmissionsRecurringJob {
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
         List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
-        List<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransmission();
+        List<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransaction();
 
         Set<Submission> submissionsWithoutTransmissionsOrTransactions = new HashSet<>(submissionsWithoutTransmissions);
         submissionsWithoutTransmissionsOrTransactions.addAll(submissionsWithoutTransactions);

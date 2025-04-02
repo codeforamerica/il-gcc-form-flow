@@ -32,7 +32,7 @@ public class TransactionRepositoryService {
         return transactionRepository.findByWorkItemIdIsNull();
     }
 
-    public List<Submission> findSubmissionsWithoutTransmission(){
+    public List<Submission> findSubmissionsWithoutTransaction(){
         return transactionRepository.findSubmissionsWithoutTransaction();
     }
 
