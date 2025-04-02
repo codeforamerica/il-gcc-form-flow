@@ -31,7 +31,7 @@ public class SendProviderConfirmationEmail extends SendEmail {
     protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
         return new ProviderConfirmationEmailTemplate(emailData,
                 messageSource,
-                locale).createTemplate();
+                locale.ENGLISH).createTemplate();
     }
 
     @Override

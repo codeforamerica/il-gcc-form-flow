@@ -42,6 +42,7 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
 
         assertThat(testPage.hasErrorText(getEnMessage("errors.submit-contact-method"))).isTrue();
         testPage.clickElementById("contactProviderMethod-EMAIL-label");
+        testPage.clickElementById("contactProviderMethod-TEXT-label");
         testPage.clickContinue();
 
         // submit-contact-provider-email
@@ -72,10 +73,29 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // submit-confirm-provider-email
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirm-provider-email.title"));
+        testPage.clickYes();
 
+        // submit-contact-provider-email-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
+        testPage.clickContinue();
 
-        // submit-share-confirmation-code
-        testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
+        // submit-contact-provider-email-confirmation
+        testPage.navigateToFlowScreen("gcc/submit-contact-provider-email-confirmation");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
+        testPage.clickContinue();
+
+      testPage.navigateToFlowScreen("gcc/submit-contact-provider-text-confirmation");
+      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-text-confirmation.title"));
+      testPage.clickContinue();
+
+      // parent-confirm-provider-number
+      testPage.navigateToFlowScreen("gcc/parent-confirm-provider-number");
+      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-provider-number.title"));
+      testPage.clickYes();
+
+      // submit-share-confirmation-code
+      testPage.navigateToFlowScreen("gcc/submit-share-confirmation-code");
 
         // skips screen and goes to doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -91,6 +111,5 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-
     }
 }

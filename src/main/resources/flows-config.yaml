@@ -482,13 +482,17 @@ flow:
       - name: submit-confirm-provider-email
   submit-confirm-provider-email:
     condition: ContactProviderViaEmail
+    afterSaveAction: SendAutomatedProviderEmail
     nextScreens:
       - name: submit-contact-provider-email-confirmation
+        condition: hasConfirmedProviderEmail
+      - name: submit-edit-provider-email
   submit-edit-provider-email:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-confirm-provider-email
   submit-contact-provider-email-confirmation:
+    beforeDisplayAction: FormatSubmittedAtDate
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-contact-provider-text
@@ -497,7 +501,7 @@ flow:
     nextScreens:
       - name: parent-confirm-provider-number
   parent-confirm-provider-number:
-    condition: EnableProviderMessagingFlagOn
+    condition: ContactProviderViaText
     nextScreens:
       - name: submit-contact-provider-text-confirmation
   submit-contact-provider-text-confirmation:

@@ -425,12 +425,34 @@ p.normal {
   padding: 20px 15px 0 15px;
 }
 
+.notice-white {
+  background: #fdfcfc;
+  border: 2px solid #CFC5BF;
+  border-radius: 3px;
+  position: relative;
+  padding: 15px 15px;
+  font-size: 1.5rem;
+}
+.notice-white hr{
+  margin: 1.5rem;
+}
+
+.email-header-example p{
+  margin-top: 0;
+  margin-bottom: 0;
+}
 .steps-box {
   display: flex;
   align-items: flex-start;
   gap: 20px;
 }
+.open-text-app header{
+  margin-bottom: 0;
+}
 
+.open-text-app-paragraph{
+  margin-bottom: 5rem;
+}
 .steps-box svg {
   flex-shrink: 0;
 }
@@ -736,6 +758,14 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 
 div.move-40-up {
   margin-top: -4.0rem;
+}
+
+.display-box-green {
+  border: 2px #008060 solid;
+  border-radius: 5px;
+  background-color: unset;
+  padding: 2.5rem;
+  word-break: break-word;
 }
 
 /* THIS NEEDS TO BE HERE, IF IT'S REMOVED IT WILL BREAK JAVASCRIPT FOR SAME AS HOME ADDRESS FUNCTIONALITY */
