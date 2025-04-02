@@ -19,6 +19,7 @@ import formflow.library.pdf.PdfService;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.Transmission;
 import org.ilgcc.app.data.TransmissionRepository;
 import org.ilgcc.app.data.TransmissionRepositoryService;
@@ -100,6 +101,8 @@ public class TransmissionsRecurringJobTest {
 
     private SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
 
+    @Autowired
+    private TransactionRepositoryService transactionRepositoryService;
 
     @BeforeEach
     void setUp() {
@@ -107,6 +110,7 @@ public class TransmissionsRecurringJobTest {
         transmissionsRecurringJob = new TransmissionsRecurringJob(
                 s3PresignService,
                 transmissionRepositoryService,
+                transactionRepositoryService,
                 userFileRepositoryService,
                 uploadedDocumentTransmissionJob,
                 pdfService,

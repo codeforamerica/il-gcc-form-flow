@@ -1,5 +1,6 @@
 package org.ilgcc.app.data;
 
+import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +31,11 @@ public class TransactionRepositoryService {
     public List<Transaction> getTransactionsWithoutWorkItemIds() {
         return transactionRepository.findByWorkItemIdIsNull();
     }
-    
+
+    public List<Submission> findSubmissionsWithoutTransmission(){
+        return transactionRepository.findSubmissionsWithoutTransmission();
+    }
+
     public Transaction createTransaction(UUID transactionId, UUID submissionId) {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(transactionId);

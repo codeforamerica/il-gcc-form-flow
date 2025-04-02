@@ -1,28 +1,26 @@
 package org.ilgcc.jobs;
 
 
-import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerApplicationHasExpired;
-
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +30,7 @@ public class TransmissionsRecurringJob {
 
     private final S3PresignService s3PresignService;
     private final TransmissionRepositoryService transmissionRepositoryService;
+    private final TransactionRepositoryService transactionRepositoryService;
     private final UserFileRepositoryService userFileRepositoryService;
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final PdfService pdfService;
@@ -47,6 +46,7 @@ public class TransmissionsRecurringJob {
 
     public TransmissionsRecurringJob(S3PresignService s3PresignService,
             TransmissionRepositoryService transmissionRepositoryService,
+            TransactionRepositoryService transactionRepositoryService,
             UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob,
             PdfService pdfService,
@@ -59,6 +59,7 @@ public class TransmissionsRecurringJob {
             @Value("${il-gcc.dts-integration-enabled}") boolean DTS_INTEGRATION_ENABLED, SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
+        this.transactionRepositoryService = transactionRepositoryService;
         this.userFileRepositoryService = userFileRepositoryService;
         this.uploadedDocumentTransmissionJob = uploadedDocumentTransmissionJob;
         this.pdfService = pdfService;
@@ -76,17 +77,21 @@ public class TransmissionsRecurringJob {
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
         List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
+        List<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransmission();
 
-        List<Submission> expiredSubmissionsWithNoTransmission = submissionsWithoutTransmissions.stream()
-                .filter(submission -> providerApplicationHasExpired(submission)).toList();
+        Set<Submission> submissionsWithoutTransmissionsOrTransactions = new HashSet<>(submissionsWithoutTransmissions);
+        submissionsWithoutTransmissionsOrTransactions.addAll(submissionsWithoutTransactions);
+
+        List<Submission> expiredSubmissionsWithNoTransmissionsOrTransactions = submissionsWithoutTransmissionsOrTransactions.stream()
+                .filter(ProviderSubmissionUtilities::providerApplicationHasExpired).toList();
 
         log.info(String.format("Running the 'No provider response job' for %s expired submissions",
-                expiredSubmissionsWithNoTransmission.size()));
+                expiredSubmissionsWithNoTransmissionsOrTransactions.size()));
 
-        if (expiredSubmissionsWithNoTransmission.isEmpty()) {
+        if (expiredSubmissionsWithNoTransmissionsOrTransactions.isEmpty()) {
             return;
         } else {
-            for (Submission submission : expiredSubmissionsWithNoTransmission) {
+            for (Submission submission : expiredSubmissionsWithNoTransmissionsOrTransactions) {
                 if (!hasProviderResponse(submission)) {
                     if (DTS_INTEGRATION_ENABLED) {
                         enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository,
