@@ -25,9 +25,7 @@
         private final WebClient client;
         private final ObjectMapper objectMapper = new ObjectMapper();
         private final boolean isProduction;
-
-        Environment env;
-
+        
         @Autowired
         public CCMSApiClient(CCMSApiConfiguration configuration, Environment env) {
             this.configuration = configuration;
