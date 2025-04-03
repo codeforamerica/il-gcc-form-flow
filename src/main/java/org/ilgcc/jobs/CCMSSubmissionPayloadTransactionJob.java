@@ -56,7 +56,7 @@ public class CCMSSubmissionPayloadTransactionJob {
         JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
         log.info("Received response from CCMS when sending transaction payload: {}", response);
 
-        String workItemId = response.get("transactionId") != null ? response.get("transactionId").asText() : null;
+        String workItemId = response.get("workItemId") != null ? response.get("workItemId").asText() : null;
         if (workItemId == null) {
             log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
         }
