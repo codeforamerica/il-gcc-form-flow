@@ -58,9 +58,6 @@ public class CCMSSubmissionPayloadTransactionJob {
 
         String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
 
-if (workItemId == null) {
-    log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
-}
         if (workItemId == null) {
             log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
         }
