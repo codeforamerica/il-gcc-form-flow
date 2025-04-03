@@ -201,7 +201,7 @@ public class TransmissionsRecurringJobTest {
         transmissionRepositoryService.save(new Transmission(transmittedSubmission, null, Date.from(OffsetDateTime.now()
                 .toInstant()), Queued, APPLICATION_PDF, null));
 
-        transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId());
+        transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId(), null);
 
         transmissionsRecurringJob.noProviderResponseJob();
 
@@ -270,7 +270,7 @@ public class TransmissionsRecurringJobTest {
                 .build();
         transmittedSubmission = submissionRepository.save(transmittedSubmission);
 
-        transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId());
+        transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId(), null);
 
         transmissionsRecurringJob.noProviderResponseJob();
 
