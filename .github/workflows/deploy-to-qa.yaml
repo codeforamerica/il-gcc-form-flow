@@ -39,8 +39,8 @@ jobs:
       - name: Deploy to ECS (Fargate)
         run: |
           aws ecs update-service \
-            --cluster il-gcc-qa-cluster \
-            --service il-gcc-qa-service \
+            --cluster illinois-getchildcare-qa-app \
+            --service illinois-getchildcare-qa-app \
             --force-new-deployment
 
       - name: Announce on Slack when deployed
