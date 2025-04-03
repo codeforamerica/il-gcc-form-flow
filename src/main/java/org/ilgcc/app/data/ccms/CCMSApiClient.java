@@ -26,11 +26,10 @@
         private final ObjectMapper objectMapper = new ObjectMapper();
         private final boolean isProduction;
 
-        @Autowired
         Environment env;
 
         @Autowired
-        public CCMSApiClient(CCMSApiConfiguration configuration) {
+        public CCMSApiClient(CCMSApiConfiguration configuration, Environment env) {
             this.configuration = configuration;
             this.client = WebClient.builder()
                     .baseUrl(configuration.getBaseUrl())
