@@ -98,15 +98,8 @@ public class TransmissionsRecurringJob {
 
             if (submissionsWithoutTransmissions.size() != submissionsWithoutTransactions.size()) {
                 // If both are turned on, we should have the same number of submissions for both DTS and CCMS that need to be processed
-                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream()
-                        .map(Submission::getId)
-                        .sorted()
-                        .toList();
-
-                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream()
-                        .map(Submission::getId)
-                        .sorted()
-                        .toList();
+                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId).sorted().toList();
+                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream().map(Submission::getId).sorted().toList();
 
                 log.error("Number of submissions without transmissions and transactions do not match. There were {} without transmissions and {} without transactions. The submission ids without transmissions are [{}]. The submission ids without transactions are [{}].",
                         submissionsWithoutTransmissions.size(), submissionsWithoutTransactions.size(),
@@ -116,15 +109,8 @@ public class TransmissionsRecurringJob {
                 // list and the transactions list are the same size, if the superset in the Set isn't the same size as the original
                 // list(s), it must mean that somehow we have different Submissions that we're merging into a single Set
                 // This should obviously never ever happen.
-                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream()
-                        .map(Submission::getId)
-                        .sorted()
-                        .toList();
-
-                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream()
-                        .map(Submission::getId)
-                        .sorted()
-                        .toList();
+                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId).sorted().toList();
+                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream().map(Submission::getId).sorted().toList();
 
                 log.error("There is a mismatch of submissions without transmissions and transactions. The submission ids without transmissions are [{}]. The submission ids without transactions are [{}].",
                         submissionIdsWithoutTransmissions, submissionIdsWithoutTransactions);
