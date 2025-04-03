@@ -132,6 +132,7 @@ public class TransmissionsRecurringJob {
         } else {
             for (Submission submission : expiredSubmissionsWithNoTransmissionsOrTransactions) {
                 if (!hasProviderResponse(submission)) {
+                    log.info("No provider response found for {}. DTS: {} CCMS {}", submission.getId(), DTS_INTEGRATION_ENABLED, CCMS_INTEGRATION_ENABLED);
                     if (DTS_INTEGRATION_ENABLED) {
                         enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository,
                                 pdfTransmissionJob,
@@ -146,7 +147,7 @@ public class TransmissionsRecurringJob {
                     sendProviderDidNotRespondToFamilyEmail.send(submission);
                 } else {
                     log.warn(
-                            String.format("TransmissionsRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission. Check familySubmission: %s",
+                            String.format("TransmissionsRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission or transaction. Check familySubmission: %s",
                                     submission.getId()));
                 }
             }
