@@ -1,26 +1,28 @@
 package org.ilgcc.jobs;
 
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerApplicationHasExpired;
+
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
-import java.util.HashSet;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
-import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +32,6 @@ public class TransmissionsRecurringJob {
 
     private final S3PresignService s3PresignService;
     private final TransmissionRepositoryService transmissionRepositoryService;
-    private final TransactionRepositoryService transactionRepositoryService;
     private final UserFileRepositoryService userFileRepositoryService;
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final PdfService pdfService;
@@ -46,7 +47,6 @@ public class TransmissionsRecurringJob {
 
     public TransmissionsRecurringJob(S3PresignService s3PresignService,
             TransmissionRepositoryService transmissionRepositoryService,
-            TransactionRepositoryService transactionRepositoryService,
             UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob,
             PdfService pdfService,
@@ -59,7 +59,6 @@ public class TransmissionsRecurringJob {
             @Value("${il-gcc.dts-integration-enabled}") boolean DTS_INTEGRATION_ENABLED, SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
-        this.transactionRepositoryService = transactionRepositoryService;
         this.userFileRepositoryService = userFileRepositoryService;
         this.uploadedDocumentTransmissionJob = uploadedDocumentTransmissionJob;
         this.pdfService = pdfService;
@@ -76,63 +75,19 @@ public class TransmissionsRecurringJob {
     @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
+        List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
 
-        Set<Submission> submissionsWithoutTransmissionsOrTransactions;
-
-        if (DTS_INTEGRATION_ENABLED && !CCMS_INTEGRATION_ENABLED) {
-            // Only DTS is enabled
-            log.debug("No provider response job for DTS only.");
-            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(transmissionRepositoryService.findSubmissionsWithoutTransmission());
-        } else if (!DTS_INTEGRATION_ENABLED && CCMS_INTEGRATION_ENABLED) {
-            // Only CCMS is enabled
-            log.debug("No provider response job for CCMS only.");
-            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(transactionRepositoryService.findSubmissionsWithoutTransaction());
-        } else if (DTS_INTEGRATION_ENABLED) {
-            // Both enabled
-            log.debug("No provider response job for both DTS and CCMS.");
-            List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
-            List<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransaction();
-
-            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(submissionsWithoutTransmissions);
-            submissionsWithoutTransmissionsOrTransactions.addAll(submissionsWithoutTransactions);
-
-            if (submissionsWithoutTransmissions.size() != submissionsWithoutTransactions.size()) {
-                // If both are turned on, we should have the same number of submissions for both DTS and CCMS that need to be processed
-                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId).sorted().toList();
-                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream().map(Submission::getId).sorted().toList();
-
-                log.error("Number of submissions without transmissions and transactions do not match. There were {} without transmissions and {} without transactions. The submission ids without transmissions are [{}]. The submission ids without transactions are [{}].",
-                        submissionsWithoutTransmissions.size(), submissionsWithoutTransactions.size(),
-                        submissionIdsWithoutTransmissions, submissionIdsWithoutTransactions);
-            } else if (submissionsWithoutTransmissionsOrTransactions.size() != submissionsWithoutTransmissions.size()) {
-                // Because the Set will dedupe the Submission objects, and we already know that the transmissions
-                // list and the transactions list are the same size, if the superset in the Set isn't the same size as the original
-                // list(s), it must mean that somehow we have different Submissions that we're merging into a single Set
-                // This should obviously never ever happen.
-                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId).sorted().toList();
-                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream().map(Submission::getId).sorted().toList();
-
-                log.error("There is a mismatch of submissions without transmissions and transactions. The submission ids without transmissions are [{}]. The submission ids without transactions are [{}].",
-                        submissionIdsWithoutTransmissions, submissionIdsWithoutTransactions);
-            }
-        } else {
-            // Nothing is enabled. This seems wrong!
-            log.error("Neither DTS nor CCMS integration is turned on. Why?");
-            return;
-        }
-
-        List<Submission> expiredSubmissionsWithNoTransmissionsOrTransactions = submissionsWithoutTransmissionsOrTransactions.stream()
-                .filter(ProviderSubmissionUtilities::providerApplicationHasExpired).toList();
+        List<Submission> expiredSubmissionsWithNoTransmission = submissionsWithoutTransmissions.stream()
+                .filter(submission -> providerApplicationHasExpired(submission)).toList();
 
         log.info(String.format("Running the 'No provider response job' for %s expired submissions",
-                expiredSubmissionsWithNoTransmissionsOrTransactions.size()));
+                expiredSubmissionsWithNoTransmission.size()));
 
-        if (expiredSubmissionsWithNoTransmissionsOrTransactions.isEmpty()) {
+        if (expiredSubmissionsWithNoTransmission.isEmpty()) {
             return;
         } else {
-            for (Submission submission : expiredSubmissionsWithNoTransmissionsOrTransactions) {
+            for (Submission submission : expiredSubmissionsWithNoTransmission) {
                 if (!hasProviderResponse(submission)) {
-                    log.info("No provider response found for {}. DTS: {} CCMS {}", submission.getId(), DTS_INTEGRATION_ENABLED, CCMS_INTEGRATION_ENABLED);
                     if (DTS_INTEGRATION_ENABLED) {
                         enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository,
                                 pdfTransmissionJob,
@@ -147,7 +102,7 @@ public class TransmissionsRecurringJob {
                     sendProviderDidNotRespondToFamilyEmail.send(submission);
                 } else {
                     log.warn(
-                            String.format("TransmissionsRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission or transaction. Check familySubmission: %s",
+                            String.format("TransmissionsRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission. Check familySubmission: %s",
                                     submission.getId()));
                 }
             }
