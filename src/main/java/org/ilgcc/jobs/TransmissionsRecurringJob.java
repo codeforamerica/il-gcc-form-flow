@@ -77,7 +77,7 @@ public class TransmissionsRecurringJob {
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
 
-        Set<Submission> submissionsWithoutTransmissionsOrTransactions = new HashSet<Submission>();
+        Set<Submission> submissionsWithoutTransmissionsOrTransactions;
 
         if (DTS_INTEGRATION_ENABLED && !CCMS_INTEGRATION_ENABLED) {
             // Only DTS is enabled
@@ -90,8 +90,45 @@ public class TransmissionsRecurringJob {
         } else if (DTS_INTEGRATION_ENABLED) {
             // Both enabled
             log.debug("No provider response job for both DTS and CCMS.");
-            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(transmissionRepositoryService.findSubmissionsWithoutTransmission());
-            submissionsWithoutTransmissionsOrTransactions.addAll(transactionRepositoryService.findSubmissionsWithoutTransaction());
+            List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
+            List<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransaction();
+
+            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(submissionsWithoutTransmissions);
+            submissionsWithoutTransmissionsOrTransactions.addAll(submissionsWithoutTransactions);
+
+            if (submissionsWithoutTransmissions.size() != submissionsWithoutTransactions.size()) {
+                // If both are turned on, we should have the same number of submissions for both DTS and CCMS that need to be processed
+                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream()
+                        .map(Submission::getId)
+                        .sorted()
+                        .toList();
+
+                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream()
+                        .map(Submission::getId)
+                        .sorted()
+                        .toList();
+
+                log.error("Number of submissions without transmissions and transactions do not match. There were {} without transmissions and {} without transactions. The ids for the transmissions are [{}]. The ids for the transactions are [{}].",
+                        submissionsWithoutTransmissions.size(), submissionsWithoutTransactions.size(),
+                        submissionIdsWithoutTransmissions, submissionIdsWithoutTransactions);
+            } else if (submissionsWithoutTransmissionsOrTransactions.size() != submissionsWithoutTransmissions.size()) {
+                // Because the Set will dedupe the Submission objects, and we already know that the transmissions
+                // list and the transactions list are the same size, if the superset in the Set isn't the same size as the original
+                // list(s), it must mean that somehow we have different Submissions that we're merging into a single Set
+                // This should obviously never ever happen.
+                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream()
+                        .map(Submission::getId)
+                        .sorted()
+                        .toList();
+
+                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream()
+                        .map(Submission::getId)
+                        .sorted()
+                        .toList();
+
+                log.error("There is a mismatch of submissions without transmissions and transactions. The ids for the transmissions are [{}]. The ids for the transactions are [{}].",
+                        submissionIdsWithoutTransmissions, submissionIdsWithoutTransactions);
+            }
         } else {
             // Nothing is enabled. This seems wrong!
             log.error("Neither DTS nor CCMS integration is turned on. Why?");
