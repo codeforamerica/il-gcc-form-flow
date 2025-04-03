@@ -45,7 +45,7 @@
                     .retrieve()
                     .onStatus(status -> !status.is2xxSuccessful(), apiResponse -> {
                         log.error("Received an error response {} from CCMS when attempting to send transaction payload for submission with ID: {} {}",
-                                apiResponse.statusCode(), requestBody.getSubmissionId(), (isProduction ? "" : ("requestBody: " + requestBody)));
+                                apiResponse.statusCode(), requestBody.getSubmissionId(), (isProduction ? "" : ("requestBody: " + requestBody.toStringForLogging())));
                         return apiResponse.createException();
                     })
                     .bodyToMono(String.class)
