@@ -7,7 +7,9 @@
 
 <script th:inline="javascript">
   $(document).ready(function () {
-    $('#familyIntendedProviderName').prop('disabled', true);
-    $('#familyIntendedProviderPhoneNumber').prop('disabled', true);
+    $('#familyIntendedProviderName').prop('readonly', true).attr('aria-readonly', 'true')
+
+    $('#familyIntendedProviderPhoneNumber').prop('readonly', true).attr('aria-readonly', 'true')
+
   });
 </script>
