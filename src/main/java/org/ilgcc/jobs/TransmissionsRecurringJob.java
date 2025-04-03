@@ -108,7 +108,7 @@ public class TransmissionsRecurringJob {
                         .sorted()
                         .toList();
 
-                log.error("Number of submissions without transmissions and transactions do not match. There were {} without transmissions and {} without transactions. The ids for the transmissions are [{}]. The ids for the transactions are [{}].",
+                log.error("Number of submissions without transmissions and transactions do not match. There were {} without transmissions and {} without transactions. The submission ids without transmissions are [{}]. The submission ids without transactions are [{}].",
                         submissionsWithoutTransmissions.size(), submissionsWithoutTransactions.size(),
                         submissionIdsWithoutTransmissions, submissionIdsWithoutTransactions);
             } else if (submissionsWithoutTransmissionsOrTransactions.size() != submissionsWithoutTransmissions.size()) {
@@ -126,7 +126,7 @@ public class TransmissionsRecurringJob {
                         .sorted()
                         .toList();
 
-                log.error("There is a mismatch of submissions without transmissions and transactions. The ids for the transmissions are [{}]. The ids for the transactions are [{}].",
+                log.error("There is a mismatch of submissions without transmissions and transactions. The submission ids without transmissions are [{}]. The submission ids without transactions are [{}].",
                         submissionIdsWithoutTransmissions, submissionIdsWithoutTransactions);
             }
         } else {

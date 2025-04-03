@@ -209,6 +209,75 @@ public class TransmissionsRecurringJobTest {
     }
 
     @Test
+    void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmissionOnly_CCMS_Off() {
+        transmissionsRecurringJob = new TransmissionsRecurringJob(
+                s3PresignService,
+                transmissionRepositoryService,
+                transactionRepositoryService,
+                userFileRepositoryService,
+                uploadedDocumentTransmissionJob,
+                pdfService,
+                cloudFileRepository,
+                pdfTransmissionJob,
+                enqueueDocumentTransfer,
+                submissionRepositoryService,
+                ccmsSubmissionPayloadTransactionJob,
+                false,
+                true,
+                sendProviderDidNotRespondToFamilyEmail
+        );
+
+        transmittedSubmission = new SubmissionTestBuilder()
+                .withParentDetails()
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
+                .with("providerResponseSubmissionId", "4e477c74-8529-4cd0-a02b-2d67e5b5b171")
+                .withFlow("gcc")
+                .build();
+        transmittedSubmission = submissionRepository.save(transmittedSubmission);
+
+        transmissionRepositoryService.save(new Transmission(transmittedSubmission, null, Date.from(OffsetDateTime.now()
+                .toInstant()), Queued, APPLICATION_PDF, null));
+
+        transmissionsRecurringJob.noProviderResponseJob();
+
+        verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
+    }
+
+    @Test
+    void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransactionOnly_DTS_Off() {
+        transmissionsRecurringJob = new TransmissionsRecurringJob(
+                s3PresignService,
+                transmissionRepositoryService,
+                transactionRepositoryService,
+                userFileRepositoryService,
+                uploadedDocumentTransmissionJob,
+                pdfService,
+                cloudFileRepository,
+                pdfTransmissionJob,
+                enqueueDocumentTransfer,
+                submissionRepositoryService,
+                ccmsSubmissionPayloadTransactionJob,
+                true,
+                false,
+                sendProviderDidNotRespondToFamilyEmail
+        );
+
+        transmittedSubmission = new SubmissionTestBuilder()
+                .withParentDetails()
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
+                .with("providerResponseSubmissionId", "4e477c74-8529-4cd0-a02b-2d67e5b5b171")
+                .withFlow("gcc")
+                .build();
+        transmittedSubmission = submissionRepository.save(transmittedSubmission);
+
+        transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId());
+
+        transmissionsRecurringJob.noProviderResponseJob();
+
+        verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
+    }
+
+    @Test
     void enqueueDocumentTransferIsNotCalledOnExpiredUntransmittedSubmission() {
 
         providerSubmission = new SubmissionTestBuilder().withProviderSubmissionData().withSubmittedAtDate(OffsetDateTime.now().minusDays(2)).build();
