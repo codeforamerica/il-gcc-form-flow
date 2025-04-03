@@ -34,13 +34,16 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Deploy to ECS (Fargate)
         run: |
           aws ecs update-service \
             --cluster illinois-getchildcare-qa-app \
             --service illinois-getchildcare-qa-app \
+            --region us-east-1 \
             --force-new-deployment
 
       - name: Announce on Slack when deployed
