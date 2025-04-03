@@ -31,10 +31,11 @@ public class TransactionRepositoryService {
         return transactionRepository.findByWorkItemIdIsNull();
     }
     
-    public Transaction createTransaction(UUID transactionId, UUID submissionId) {
+    public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId) {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(transactionId);
         transaction.setSubmissionId(submissionId);
+        transaction.setWorkItemId(workItemId);
         return transactionRepository.save(transaction);
     }
     
