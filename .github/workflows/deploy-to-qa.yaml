@@ -44,13 +44,22 @@ jobs:
           container-name: illinois-getchildcare-qa-app
           image: 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{ github.sha }}
 
+      - name: Register rendered task definition
+        id: register-task-def
+        run: |
+          TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://${{ steps.render-task-def.outputs.task-definition }} \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+          echo "task_def_arn=$TASK_DEF_ARN" >> "$GITHUB_OUTPUT"
+      
       - name: Deploy to ECS (Fargate)
         run: |
           aws ecs update-service \
             --cluster illinois-getchildcare-qa-app \
             --service illinois-getchildcare-qa-app \
             --region us-east-1 \
-            --task-definition ${{ steps.render-task-def.outputs.task-definition }} \
+            --task-definition ${{ steps.register-task-def.outputs.task_def_arn }} \
             --force-new-deployment
 
       - name: Announce on Slack when deployed
