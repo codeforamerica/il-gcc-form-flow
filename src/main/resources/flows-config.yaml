@@ -476,6 +476,12 @@ flow:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-contact-provider-email
+        condition: ContactProviderViaEmail
+      - name: submit-contact-provider-text
+        condition: ContactProviderViaText
+      - name: submit-share-confirmation-code
+        condition: ContactProviderViaOther
+      - name: doc-upload-recommended-docs
   submit-contact-provider-email:
     condition: DisplaySubmitContactProviderEmailScreen
     nextScreens:
@@ -496,6 +502,10 @@ flow:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-contact-provider-text
+        condition: ContactProviderViaText
+      - name: submit-share-confirmation-code
+        condition: ContactProviderViaOther
+      - name: doc-upload-recommended-docs
   submit-contact-provider-text:
     condition: DisplaySubmitContactProviderTextScreen
     crossFieldValidationAction: ValidatePhoneNumberNotBlank
@@ -514,7 +524,9 @@ flow:
   submit-contact-provider-text-confirmation:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
-      - name: submit-share-confirmation-code
+    - name: submit-share-confirmation-code
+      condition: ContactProviderViaOther
+    - name: doc-upload-recommended-docs
   submit-share-confirmation-code:
     condition: ContactProviderViaOther
     nextScreens:
