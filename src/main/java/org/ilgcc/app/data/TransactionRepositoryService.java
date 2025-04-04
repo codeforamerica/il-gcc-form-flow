@@ -2,6 +2,7 @@ package org.ilgcc.app.data;
 
 import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -33,8 +34,8 @@ public class TransactionRepositoryService {
         return transactionRepository.findByWorkItemIdIsNull();
     }
 
-    public Set<Submission> findSubmissionsWithoutTransaction(){
-        return transactionRepository.findSubmissionsWithoutTransaction();
+    public Set<Submission> findSubmissionsWithoutTransactions(Instant lastRun){
+        return transactionRepository.findSubmissionsWithoutTransactions(lastRun);
     }
 
     public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId) {

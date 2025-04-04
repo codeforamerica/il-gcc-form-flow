@@ -20,6 +20,7 @@ import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.data.JobrunrJobRepository;
 import org.ilgcc.app.data.Transaction;
 import org.ilgcc.app.data.TransactionRepository;
 import org.ilgcc.app.data.TransactionRepositoryService;
@@ -80,6 +81,9 @@ public class TransmissionsRecurringJobTest {
     private CloudFileRepository cloudFileRepository;
 
     @Mock
+    private JobrunrJobRepository jobrunrJobRepository;
+
+    @Mock
     private PdfTransmissionJob pdfTransmissionJob;
 
     @Autowired
@@ -122,6 +126,7 @@ public class TransmissionsRecurringJobTest {
                 uploadedDocumentTransmissionJob,
                 pdfService,
                 cloudFileRepository,
+                jobrunrJobRepository,
                 pdfTransmissionJob,
                 enqueueDocumentTransfer,
                 submissionRepositoryService,
@@ -218,6 +223,7 @@ public class TransmissionsRecurringJobTest {
                 uploadedDocumentTransmissionJob,
                 pdfService,
                 cloudFileRepository,
+                jobrunrJobRepository,
                 pdfTransmissionJob,
                 enqueueDocumentTransfer,
                 submissionRepositoryService,
@@ -253,6 +259,7 @@ public class TransmissionsRecurringJobTest {
                 uploadedDocumentTransmissionJob,
                 pdfService,
                 cloudFileRepository,
+                jobrunrJobRepository,
                 pdfTransmissionJob,
                 enqueueDocumentTransfer,
                 submissionRepositoryService,

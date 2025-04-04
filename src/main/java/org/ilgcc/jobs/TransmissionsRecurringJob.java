@@ -1,11 +1,12 @@
 package org.ilgcc.jobs;
 
-
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.data.JobrunrJob;
+import org.ilgcc.app.data.JobrunrJobRepository;
 import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
@@ -36,12 +39,13 @@ public class TransmissionsRecurringJob {
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final PdfService pdfService;
     private final CloudFileRepository cloudFileRepository;
+    private final JobrunrJobRepository jobrunrJobRepository;
     private final PdfTransmissionJob pdfTransmissionJob;
     private final EnqueueDocumentTransfer enqueueDocumentTransfer;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransaction;
-    private final boolean CCMS_INTEGRATION_ENABLED;
-    private final boolean DTS_INTEGRATION_ENABLED;
+    private final boolean isCCMSIntegrationEnabled;
+    private final boolean isDTSIntegrationEnabled;
 
     private final  SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
 
@@ -52,12 +56,14 @@ public class TransmissionsRecurringJob {
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob,
             PdfService pdfService,
             CloudFileRepository cloudFileRepository,
+            JobrunrJobRepository jobrunrJobRepository,
             PdfTransmissionJob pdfTransmissionJob,
             EnqueueDocumentTransfer enqueueDocumentTransfer,
             SubmissionRepositoryService submissionRepositoryService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransaction,
-            @Value("${il-gcc.ccms-integration-enabled:false}") boolean CCMS_INTEGRATION_ENABLED,
-            @Value("${il-gcc.dts-integration-enabled}") boolean DTS_INTEGRATION_ENABLED, SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail) {
+            @Value("${il-gcc.ccms-integration-enabled:false}") boolean isCCMSIntegrationEnabled,
+            @Value("${il-gcc.dts-integration-enabled}") boolean isDTSIntegrationEnabled,
+            SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail) {
         this.s3PresignService = s3PresignService;
         this.transmissionRepositoryService = transmissionRepositoryService;
         this.transactionRepositoryService = transactionRepositoryService;
@@ -65,12 +71,13 @@ public class TransmissionsRecurringJob {
         this.uploadedDocumentTransmissionJob = uploadedDocumentTransmissionJob;
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
+        this.jobrunrJobRepository = jobrunrJobRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
         this.submissionRepositoryService = submissionRepositoryService;
         this.ccmsSubmissionPayloadTransaction = ccmsSubmissionPayloadTransaction;
-        this.CCMS_INTEGRATION_ENABLED = CCMS_INTEGRATION_ENABLED;
-        this.DTS_INTEGRATION_ENABLED = DTS_INTEGRATION_ENABLED;
+        this.isCCMSIntegrationEnabled = isCCMSIntegrationEnabled;
+        this.isDTSIntegrationEnabled = isDTSIntegrationEnabled;
         this.sendProviderDidNotRespondToFamilyEmail = sendProviderDidNotRespondToFamilyEmail;
     }
 
@@ -78,18 +85,31 @@ public class TransmissionsRecurringJob {
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
 
-        Set<Submission> unsentSubmissions;
-
-        if (!DTS_INTEGRATION_ENABLED && !CCMS_INTEGRATION_ENABLED) {
+        if (!isDTSIntegrationEnabled && !isCCMSIntegrationEnabled) {
             // Nothing is enabled. This seems wrong!
             log.error("Neither DTS nor CCMS integration is turned on. Why?");
             return;
         }
 
-        log.info("Running No Provider Response Job. DTS integration: {} CCMS integration: {}", DTS_INTEGRATION_ENABLED, CCMS_INTEGRATION_ENABLED);
+        Optional<JobrunrJob> jobrunrJob = jobrunrJobRepository.findLatestSuccessfulNoProviderResponseJob();
+        Instant lastRun;
+        if (jobrunrJob.isPresent() && jobrunrJob.get().getUpdatedAt() != null) {
+            lastRun = jobrunrJob.get().getUpdatedAt().toInstant();
+        } else {
+            lastRun = Instant.now();
+            log.warn("No prior No Provider Response Job found. Using {} as the last run.", lastRun);
+        }
 
-        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
-        Set<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransaction();
+        // We should run the job against things with a bit of an overlap, just in case -- so let's grab the Submissions that have
+        // happened since the last run of this job, but 5 minutes earlier than that.
+        lastRun = lastRun.minus(Duration.ofMinutes(5));
+        log.info("Running No Provider Response Job for submissions since {}. DTS integration: {} CCMS integration: {}", lastRun,
+                isDTSIntegrationEnabled,
+                isCCMSIntegrationEnabled);
+
+        Set<Submission> unsentSubmissions;
+        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmissions(lastRun);
+        Set<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransactions(lastRun);
 
         if (submissionsWithoutTransmissions.equals(submissionsWithoutTransactions)) {
             // Happy case, all the submissions are missing both a transmission and a transaction, so just send one entire
@@ -143,15 +163,18 @@ public class TransmissionsRecurringJob {
         } else {
             for (Submission expiredFamilySubmission : expiredUnsentSubmissions) {
                 if (!hasProviderResponse(expiredFamilySubmission)) {
-                    log.info("No provider response found for {}. DTS: {} CCMS {}", expiredFamilySubmission.getId(), DTS_INTEGRATION_ENABLED, CCMS_INTEGRATION_ENABLED);
-                    if (DTS_INTEGRATION_ENABLED) {
+                    log.info("No provider response found for family submission {}. DTS: {} CCMS: {}", expiredFamilySubmission.getId(),
+                            isDTSIntegrationEnabled,
+                            isCCMSIntegrationEnabled);
+
+                    if (isDTSIntegrationEnabled) {
                         enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository,
                                 pdfTransmissionJob,
                                 expiredFamilySubmission, FileNameUtility.getFileNameForPdf(expiredFamilySubmission, "No-Provider-Response"));
                         enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                                 uploadedDocumentTransmissionJob, s3PresignService, expiredFamilySubmission);
                     }
-                    if (CCMS_INTEGRATION_ENABLED) {
+                    if (isCCMSIntegrationEnabled) {
                         ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(expiredFamilySubmission);
                     }
                     updateProviderStatus(expiredFamilySubmission);
