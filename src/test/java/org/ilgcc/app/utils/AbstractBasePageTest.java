@@ -48,10 +48,10 @@ public abstract class AbstractBasePageTest {
     protected RemoteWebDriver driver;
 
     @Autowired
-    SubmissionRepository repo;
+    protected SubmissionRepository repo;
 
     @Autowired
-    UserFileRepository userFileRepository;
+    protected UserFileRepository userFileRepository;
     
     @Autowired
     TransmissionRepository transmissionRepository;
