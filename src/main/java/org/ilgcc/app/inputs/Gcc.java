@@ -661,4 +661,6 @@ public class Gcc extends FlowInputs {
 
     // Stores the Response status (Active, Expired, Responded) of the provider application
     private String providerApplicationResponseStatus;
+
+    private String hasConfirmedIntendedProviderPhoneNumber;
 }
