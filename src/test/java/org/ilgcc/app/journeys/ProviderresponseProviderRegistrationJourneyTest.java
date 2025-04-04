@@ -16,9 +16,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     private static final String CONF_CODE = "A2123B";
 
     @AfterEach
-    void tearDown() throws Exception {
-        userFileRepository.deleteAll();
-        repo.deleteAll();
+    protected void clearSubmissions() {
+        super.clearSubmissions();
     }
 
     @Test
