@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.data.JobrunrJob;
 import org.ilgcc.app.data.JobrunrJobRepository;
 import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.TransmissionRepositoryService;
@@ -91,10 +90,11 @@ public class TransmissionsRecurringJob {
             return;
         }
 
-        Optional<JobrunrJob> jobrunrJob = jobrunrJobRepository.findLatestSuccessfulNoProviderResponseJob();
+        Optional<Instant> lastRunOptional = jobrunrJobRepository.findLatestSuccessfulNoProviderResponseJobRunTime();
         Instant lastRun;
-        if (jobrunrJob.isPresent() && jobrunrJob.get().getUpdatedAt() != null) {
-            lastRun = jobrunrJob.get().getUpdatedAt().toInstant();
+        if (lastRunOptional.isPresent()) {
+            lastRun = lastRunOptional.get();
+            log.info("Last run: {}", lastRun);
         } else {
             lastRun = Instant.now();
             log.warn("No prior No Provider Response Job found. Using {} as the last run.", lastRun);
