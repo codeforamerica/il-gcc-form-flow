@@ -2,22 +2,23 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import formflow.library.data.SubmissionRepository;
 import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
 @TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true"})
 public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBasePageTest {
 
-    @Autowired
-    SubmissionRepository repository;
-
     private static final String CONF_CODE = "A2123B";
+
+    @AfterEach
+    protected void clearSubmissions() {
+        super.clearSubmissions();
+    }
 
     @Test
     public void providerRegistersWhenNotSureIfPaidByCCCAP() {

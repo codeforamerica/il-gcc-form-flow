@@ -19,7 +19,10 @@
             <p class="open-text-app-paragraph" th:utext="#{submit-contact-provider-text-confirmation.body.pt2}"></p>
           </div>
           <div class="center"
-               th:with="textMessageContent=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('submit-contact-provider-text-confirmation.message', shortCode, shareableLink))}">
+               th:with="shortCode=${submission.getShortCode()},
+                        shareableLink=${submission.getInputData.getOrDefault('shareableLink', '')},
+                        textMessageContent=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(inputData.get('familyIntendedProviderPhoneNumber'), #messages.msg('submit-contact-provider-text-confirmation.message', shareableLink, shortCode))}">
+
             <a target="_blank" th:id="contact-provider-by-text-confirmation" th:href="${textMessageContent}"
                class="button button--wide">
               <i aria-hidden="true"  class="icon-insert_comment"></i>

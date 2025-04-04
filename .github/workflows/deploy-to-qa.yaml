@@ -1,0 +1,61 @@
+name: Deploy to AWS QA
+
+on:
+  workflow_run:
+    workflows: [ "Run tests" ]
+    types: [ completed ]
+    branches: [ ccap-690-create-qa-environment ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to QA
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: us-east-1
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: illinois-getchildcare-qa-app
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Render ECS task definition with new image tag
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: .github/ecs/ecs-task-def.json
+          container-name: illinois-getchildcare-qa-app
+          image: 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{ github.sha }}
+
+      - name: Deploy to ECS (Fargate)
+        run: |
+          aws ecs update-service \
+            --cluster illinois-getchildcare-qa-app \
+            --service illinois-getchildcare-qa-app \
+            --region us-east-1 \
+            --task-definition ${{ steps.render-task-def.outputs.task-definition }} \
+            --force-new-deployment
+
+      - name: Announce on Slack when deployed
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
