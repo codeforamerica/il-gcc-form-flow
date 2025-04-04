@@ -27,15 +27,14 @@ public class ProviderSubmissionUtilities {
     private final static Map<String, Integer> DAY_OF_WEEK_WITH_BUSINESS_DAYS_OFFSET = Map.of(
             "MONDAY", 3, "TUESDAY", 3, "WEDNESDAY", 5, "THURSDAY", 5, "FRIDAY", 5, "SATURDAY", 4, "SUNDAY", 3);
 
+    private final static Map<String, Integer> DAY_OF_WEEK_WITH_BUSINESS_DAYS_DECREMENT = Map.of(
+            "MONDAY", 5, "TUESDAY", 5, "WEDNESDAY", 5, "THURSDAY", 3, "FRIDAY", 3, "SATURDAY", 3, "SUNDAY", 4);
+
+
     private final static List<DayOfWeek> WEEKENDS = List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
 
     // From https://cms.illinois.gov/personnel/employeeresources/stateholidays.html
     private final static List<LocalDate> HOLIDAYS = List.of(
-            LocalDate.of(2024, 12, 25),
-            LocalDate.of(2025, 1, 1),
-            LocalDate.of(2025, 1, 20),
-            LocalDate.of(2025, 2, 12),
-            LocalDate.of(2025, 2, 17),
             LocalDate.of(2025, 5, 26),
             LocalDate.of(2025, 6, 19),
             LocalDate.of(2025, 7, 4),
@@ -220,6 +219,39 @@ public class ProviderSubmissionUtilities {
         }
 
         return expiresAt;
+    }
+
+    /**
+     * Takes a date that we care about, and rolls it back 3 business days -- taking into account holidays and weekends We can use
+     * this date, for example, to query for anything Submissions before this date and know that they are expired
+     *
+     * @param dateWeCareAbout
+     * @return
+     */
+    public static OffsetDateTime threeBusinessDaysBeforeDate(OffsetDateTime dateWeCareAbout) {
+        Integer daysToDecrement = DAY_OF_WEEK_WITH_BUSINESS_DAYS_DECREMENT.get(dateWeCareAbout.getDayOfWeek().toString());
+        OffsetDateTime threeBusinessDaysBeforeDateWeCareAbout = dateWeCareAbout.minusDays(daysToDecrement);
+
+        LocalDate dateWeCareAboutLocalDate = dateWeCareAbout.toLocalDate();
+        LocalDate threeBusinessDaysBeforeLocalDate = threeBusinessDaysBeforeDateWeCareAbout.toLocalDate();
+
+        // If a holiday occurs after the submission and before/on the expiration date, we give the provider
+        // one extra day to respond
+        for (var holiday : HOLIDAYS) {
+            if ((holiday.isAfter(threeBusinessDaysBeforeLocalDate) && holiday.isBefore(dateWeCareAboutLocalDate))
+                    || holiday.isEqual(
+                    dateWeCareAboutLocalDate)) {
+                threeBusinessDaysBeforeDateWeCareAbout = threeBusinessDaysBeforeDateWeCareAbout.minusDays(1);
+            }
+        }
+
+        // Because we might have had a holiday that pushes the expiration date into a weekend, we want to keep
+        // pushing the expiration 1 day at a time until it's a Monday
+        while (WEEKENDS.contains(threeBusinessDaysBeforeDateWeCareAbout.getDayOfWeek())) {
+            threeBusinessDaysBeforeDateWeCareAbout = threeBusinessDaysBeforeDateWeCareAbout.plusDays(1);
+        }
+
+        return threeBusinessDaysBeforeDateWeCareAbout;
     }
 
     public static boolean providerApplicationHasExpired(Submission familySubmission) {

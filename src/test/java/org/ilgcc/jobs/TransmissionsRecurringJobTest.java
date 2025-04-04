@@ -31,6 +31,7 @@ import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.email.SendFamilyConfirmationEmail;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -153,23 +154,24 @@ public class TransmissionsRecurringJobTest {
     void enqueueDocumentTransferIsOnlyCalledOnExpiredSubmissions() {
         unexpiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
-                .with("parentContactEmail", "test@mail.com")
+                .with("parentContactEmail", "test-unexpired@mail.com")
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withFlow("gcc")
                 .build();
         submissionRepository.save(unexpiredSubmission);
 
+        OffsetDateTime expiredSubmissionDate = ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(OffsetDateTime.now()).minusMinutes(5);
         expiredSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
-                .with("parentContactEmail", "test@mail.com")
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
+                .with("parentContactEmail", "test-expired@mail.com")
+                .withSubmittedAtDate(expiredSubmissionDate)
                 .withFlow("gcc")
                 .build();
         submissionRepository.save(expiredSubmission);
 
         unsubmittedSubmission = new SubmissionTestBuilder()
                 .withParentDetails()
-                .with("parentContactEmail", "test@mail.com")
+                .with("parentContactEmail", "test-unsubmitted@mail.com")
                 .withFlow("gcc")
                 .build();
         submissionRepository.save(unsubmittedSubmission);

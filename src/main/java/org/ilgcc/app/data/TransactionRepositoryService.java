@@ -2,7 +2,7 @@ package org.ilgcc.app.data;
 
 import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -34,7 +34,7 @@ public class TransactionRepositoryService {
         return transactionRepository.findByWorkItemIdIsNull();
     }
 
-    public Set<Submission> findSubmissionsWithoutTransactions(Instant lastRun){
+    public Set<Submission> findSubmissionsWithoutTransactions(OffsetDateTime lastRun){
         return transactionRepository.findSubmissionsWithoutTransactions(lastRun);
     }
 

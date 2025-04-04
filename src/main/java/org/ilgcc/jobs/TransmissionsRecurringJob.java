@@ -7,6 +7,8 @@ import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -91,18 +93,22 @@ public class TransmissionsRecurringJob {
         }
 
         Optional<Instant> lastRunOptional = jobrunrJobRepository.findLatestSuccessfulNoProviderResponseJobRunTime();
-        Instant lastRun;
+        OffsetDateTime lastRun;
         if (lastRunOptional.isPresent()) {
-            lastRun = lastRunOptional.get();
-            log.info("Last run: {}", lastRun);
+            lastRun = lastRunOptional.get().atOffset(ZoneOffset.UTC);
         } else {
-            lastRun = Instant.now();
+            lastRun = Instant.now().atOffset(ZoneOffset.UTC);
             log.warn("No prior No Provider Response Job found. Using {} as the last run.", lastRun);
         }
 
-        // We should run the job against things with a bit of an overlap, just in case -- so let's grab the Submissions that have
-        // happened since the last run of this job, but 5 minutes earlier than that.
-        lastRun = lastRun.minus(Duration.ofMinutes(5));
+        // We want to only ever process Submissions that have been sitting unanswered for 3+ business days, but because a large
+        // portion of those Submissions will have been submitted increasingly in the past and will have already been processed,
+        // we can aim to only load the Submissions that might fit the criteria of being 3+ business days past their submission
+        // timestamp and also not responded to by the provider.
+        // We can get the last time we tried to process any expired Submissions by grabbing the last time this job
+        // successfully ran (lastRun), roll it back 3 business days, and then to provide a little buffer roll it back an additional
+        // 15 minutes. 
+        lastRun = ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(lastRun).minusMinutes(15);
         log.info("Running No Provider Response Job for submissions since {}. DTS integration: {} CCMS integration: {}", lastRun,
                 isDTSIntegrationEnabled,
                 isCCMSIntegrationEnabled);

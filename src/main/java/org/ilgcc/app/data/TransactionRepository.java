@@ -1,7 +1,7 @@
 package org.ilgcc.app.data;
 
 import formflow.library.data.Submission;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -21,7 +21,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
                     "AND s.flow = 'gcc' " +
                     "AND t.transactionId IS NULL " +
                     "ORDER BY s.updatedAt ASC")
-    Set<Submission> findSubmissionsWithoutTransactions(@Param("sinceDate") Instant lastRun);
+    Set<Submission> findSubmissionsWithoutTransactions(@Param("sinceDate") OffsetDateTime lastRun);
 
     Transaction findByTransactionId(UUID transactionId);
 

@@ -2,7 +2,7 @@ package org.ilgcc.app.data;
 
 import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class TransmissionRepositoryService {
         return this.transmissionRepository.findAllBySubmissionId(submission);
     }
 
-    public Set<Submission> findSubmissionsWithoutTransmissions(Instant sinceDate){
+    public Set<Submission> findSubmissionsWithoutTransmissions(OffsetDateTime sinceDate){
         return this.transmissionRepository.findSubmissionsWithoutTransmissions(sinceDate);
     }
 
