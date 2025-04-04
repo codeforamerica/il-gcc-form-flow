@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.TransmissionRepositoryService;
@@ -77,78 +78,88 @@ public class TransmissionsRecurringJob {
     @Job(name = "No provider response job")
     public void noProviderResponseJob() {
 
-        Set<Submission> submissionsWithoutTransmissionsOrTransactions;
+        Set<Submission> unsentSubmissions;
 
-        if (DTS_INTEGRATION_ENABLED && !CCMS_INTEGRATION_ENABLED) {
-            // Only DTS is enabled
-            log.debug("No provider response job for DTS only.");
-            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(transmissionRepositoryService.findSubmissionsWithoutTransmission());
-        } else if (!DTS_INTEGRATION_ENABLED && CCMS_INTEGRATION_ENABLED) {
-            // Only CCMS is enabled
-            log.debug("No provider response job for CCMS only.");
-            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(transactionRepositoryService.findSubmissionsWithoutTransaction());
-        } else if (DTS_INTEGRATION_ENABLED) {
-            // Both enabled
-            log.debug("No provider response job for both DTS and CCMS.");
-            List<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
-            List<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransaction();
-
-            submissionsWithoutTransmissionsOrTransactions = new HashSet<>(submissionsWithoutTransmissions);
-            submissionsWithoutTransmissionsOrTransactions.addAll(submissionsWithoutTransactions);
-
-            if (submissionsWithoutTransmissions.size() != submissionsWithoutTransactions.size()) {
-                // If both are turned on, we should have the same number of submissions for both DTS and CCMS that need to be processed
-                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId).sorted().toList();
-                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream().map(Submission::getId).sorted().toList();
-
-                log.error("Number of submissions without transmissions and transactions do not match. There were {} without transmissions and {} without transactions. The submission ids without transmissions are [{}]. The submission ids without transactions are [{}].",
-                        submissionsWithoutTransmissions.size(), submissionsWithoutTransactions.size(),
-                        submissionIdsWithoutTransmissions, submissionIdsWithoutTransactions);
-            } else if (submissionsWithoutTransmissionsOrTransactions.size() != submissionsWithoutTransmissions.size()) {
-                // Because the Set will dedupe the Submission objects, and we already know that the transmissions
-                // list and the transactions list are the same size, if the superset in the Set isn't the same size as the original
-                // list(s), it must mean that somehow we have different Submissions that we're merging into a single Set
-                // This should obviously never ever happen.
-                List<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId).sorted().toList();
-                List<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream().map(Submission::getId).sorted().toList();
-
-                log.error("There is a mismatch of submissions without transmissions and transactions. The submission ids without transmissions are [{}]. The submission ids without transactions are [{}].",
-                        submissionIdsWithoutTransmissions, submissionIdsWithoutTransactions);
-            }
-        } else {
+        if (!DTS_INTEGRATION_ENABLED && !CCMS_INTEGRATION_ENABLED) {
             // Nothing is enabled. This seems wrong!
             log.error("Neither DTS nor CCMS integration is turned on. Why?");
             return;
         }
 
-        List<Submission> expiredSubmissionsWithNoTransmissionsOrTransactions = submissionsWithoutTransmissionsOrTransactions.stream()
+        log.info("Running No Provider Response Job. DTS integration: {} CCMS integration: {}", DTS_INTEGRATION_ENABLED, CCMS_INTEGRATION_ENABLED);
+
+        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmission();
+        Set<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransaction();
+
+        if (submissionsWithoutTransmissions.equals(submissionsWithoutTransactions)) {
+            // Happy case, all the submissions are missing both a transmission and a transaction, so just send one entire
+            // Set to both DTS and CCMS
+            unsentSubmissions = submissionsWithoutTransmissions;
+        } else {
+            // It's possible to have Submissions that have be transmitted (DTS) but not transacted (CCMS) or vice versa depending
+            // on how/when the Submissions were created and which integration was turned on at the time
+            // We want to only send Submissions that are missing both, which is an indicator that the Submission has never ever
+            // been sent DTS or CCMS
+
+            // First, get the intersection of Submissions that have both a transmission and a transaction. These are the
+            // Submissions we want to send to DTS and CCMS!
+            unsentSubmissions = new HashSet<>(submissionsWithoutTransmissions);
+            unsentSubmissions.retainAll(submissionsWithoutTransactions);
+
+            // Next, we want to log the UUIDs for whichever Submissions aren't getting sent from the two Sets
+            Set<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId).collect(Collectors.toSet());
+            Set<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream().map(Submission::getId).collect(Collectors.toSet());
+
+            // Find Submissions without transmissions, but that apparently have a transaction
+            Set<UUID> submissionIdsWithoutTransmissionsOnly = new HashSet<>(submissionIdsWithoutTransmissions);
+            submissionIdsWithoutTransmissionsOnly.removeAll(submissionIdsWithoutTransactions);
+
+            // Find Submissions without transactions, but that apparently have a transmission
+            Set<UUID> submissionIdsWithoutTransactionsOnly = new HashSet<>(submissionIdsWithoutTransactions);
+            submissionIdsWithoutTransactionsOnly.removeAll(submissionIdsWithoutTransmissions);
+
+            log.warn(
+                    "Submissions without transmissions and transactions do not match. Sending {} submissions. Ignoring {} without transmissions. Ignoring {} without transactions.",
+                    unsentSubmissions.size(), submissionIdsWithoutTransmissionsOnly.size(),
+                    submissionIdsWithoutTransactionsOnly.size());
+
+            if (!submissionIdsWithoutTransmissionsOnly.isEmpty()) {
+                log.warn("Ignored {} submissions without transmissions. [{}]", submissionIdsWithoutTransmissionsOnly.size(), submissionIdsWithoutTransmissionsOnly);
+            }
+
+            if (!submissionIdsWithoutTransactionsOnly.isEmpty()) {
+                log.warn("Ignored {} submissions without transactions. [{}]", submissionIdsWithoutTransactionsOnly.size(), submissionIdsWithoutTransactionsOnly);
+            }
+        }
+
+        List<Submission> expiredUnsentSubmissions = unsentSubmissions.stream()
                 .filter(ProviderSubmissionUtilities::providerApplicationHasExpired).toList();
 
         log.info(String.format("Running the 'No provider response job' for %s expired submissions",
-                expiredSubmissionsWithNoTransmissionsOrTransactions.size()));
+                expiredUnsentSubmissions.size()));
 
-        if (expiredSubmissionsWithNoTransmissionsOrTransactions.isEmpty()) {
+        if (expiredUnsentSubmissions.isEmpty()) {
             return;
         } else {
-            for (Submission submission : expiredSubmissionsWithNoTransmissionsOrTransactions) {
-                if (!hasProviderResponse(submission)) {
-                    log.info("No provider response found for {}. DTS: {} CCMS {}", submission.getId(), DTS_INTEGRATION_ENABLED, CCMS_INTEGRATION_ENABLED);
+            for (Submission expiredFamilySubmission : expiredUnsentSubmissions) {
+                if (!hasProviderResponse(expiredFamilySubmission)) {
+                    log.info("No provider response found for {}. DTS: {} CCMS {}", expiredFamilySubmission.getId(), DTS_INTEGRATION_ENABLED, CCMS_INTEGRATION_ENABLED);
                     if (DTS_INTEGRATION_ENABLED) {
                         enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository,
                                 pdfTransmissionJob,
-                                submission, FileNameUtility.getFileNameForPdf(submission, "No-Provider-Response"));
+                                expiredFamilySubmission, FileNameUtility.getFileNameForPdf(expiredFamilySubmission, "No-Provider-Response"));
                         enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
-                                uploadedDocumentTransmissionJob, s3PresignService, submission);
+                                uploadedDocumentTransmissionJob, s3PresignService, expiredFamilySubmission);
                     }
                     if (CCMS_INTEGRATION_ENABLED) {
-                        ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(submission);
+                        ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(expiredFamilySubmission);
                     }
-                    updateProviderStatus(submission);
-                    sendProviderDidNotRespondToFamilyEmail.send(submission);
+                    updateProviderStatus(expiredFamilySubmission);
+                    sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
                 } else {
                     log.warn(
                             String.format("TransmissionsRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission or transaction. Check familySubmission: %s",
-                                    submission.getId()));
+                                    expiredFamilySubmission.getId()));
                 }
             }
         }

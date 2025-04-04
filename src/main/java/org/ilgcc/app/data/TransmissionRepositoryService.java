@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import org.ilgcc.app.utils.enums.TransmissionStatus;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class TransmissionRepositoryService {
         return this.transmissionRepository.findAllBySubmissionId(submission);
     }
 
-    public List<Submission> findSubmissionsWithoutTransmission(){
+    public Set<Submission> findSubmissionsWithoutTransmission(){
         return this.transmissionRepository.findSubmissionsWithoutTransmission();
     }
 

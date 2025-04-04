@@ -3,6 +3,7 @@ package org.ilgcc.app.data;
 import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +33,7 @@ public class TransactionRepositoryService {
         return transactionRepository.findByWorkItemIdIsNull();
     }
 
-    public List<Submission> findSubmissionsWithoutTransaction(){
+    public Set<Submission> findSubmissionsWithoutTransaction(){
         return transactionRepository.findSubmissionsWithoutTransaction();
     }
 

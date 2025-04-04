@@ -2,6 +2,7 @@ package org.ilgcc.app.data;
 
 import formflow.library.data.Submission;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,8 +17,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
                     "AND s.flow = 'gcc' " +
                     "AND t.transactionId IS NULL " +
                     "ORDER BY s.updatedAt ASC")
-
-    List<Submission> findSubmissionsWithoutTransaction();
+    Set<Submission> findSubmissionsWithoutTransaction();
 
     Transaction findByTransactionId(UUID transactionId);
     
