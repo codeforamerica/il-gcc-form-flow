@@ -1,16 +1,12 @@
 package org.ilgcc.app.data.ccms;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import java.util.List;
 import java.util.UUID;
 
-@JsonFilter("excludeFilesFilter")
 public class CCMSTransaction {
     private final String transmissionType;
     private final UUID submissionId;
@@ -123,17 +119,6 @@ public class CCMSTransaction {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            return "An error occurred when attempting to convert the CCMSTransaction to a String: " + e.getMessage();
-        }
-    }
-
-    public String toStringForLogging() {
-        ObjectMapper mapper = new ObjectMapper();
-        SimpleFilterProvider filters = new SimpleFilterProvider().addFilter("excludeFilesFilter", SimpleBeanPropertyFilter.serializeAllExcept("files"));
-
-        try {
-            return mapper.writer(filters).writeValueAsString(this);
         } catch (JsonProcessingException e) {
             return "An error occurred when attempting to convert the CCMSTransaction to a String: " + e.getMessage();
         }
