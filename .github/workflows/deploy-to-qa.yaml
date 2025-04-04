@@ -34,9 +34,15 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Render ECS task definition with new image tag
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: .github/ecs/ecs-task-def.json
+          container-name: illinois-getchildcare-qa-app
+          image: 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{ github.sha }}
 
       - name: Deploy to ECS (Fargate)
         run: |
@@ -44,6 +50,7 @@ jobs:
             --cluster illinois-getchildcare-qa-app \
             --service illinois-getchildcare-qa-app \
             --region us-east-1 \
+            --task-definition ${{ steps.render-task-def.outputs.task-definition }} \
             --force-new-deployment
 
       - name: Announce on Slack when deployed
