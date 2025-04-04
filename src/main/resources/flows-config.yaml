@@ -505,8 +505,12 @@ flow:
     condition: ContactProviderViaText
     nextScreens:
       - name: submit-contact-provider-text-confirmation
-        condition: hasConfirmedProviderPhoneNumber
-      - name: submit-edit-provider-text
+        condition: HasConfirmedProviderPhoneNumber
+      - name: submit-provider-edit-text
+  submit-provider-edit-text:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-confirm-provider-number
   submit-contact-provider-text-confirmation:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
@@ -572,6 +576,7 @@ landmarks:
     - submit-contact-provider-email-confirmation
     - submit-contact-provider-text
     - submit-confirm-provider-number
+    - submit-provider-edit-text
     - submit-contact-provider-text-confirmation
     - submit-share-confirmation-code
 ---
