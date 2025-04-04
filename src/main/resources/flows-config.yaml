@@ -500,8 +500,8 @@ flow:
     condition: DisplaySubmitContactProviderTextScreen
     crossFieldValidationAction: ValidatePhoneNumberNotBlank
     nextScreens:
-      - name: parent-confirm-provider-number
-  parent-confirm-provider-number:
+      - name: submit-confirm-provider-number
+  submit-confirm-provider-number:
     condition: ContactProviderViaText
     nextScreens:
       - name: submit-contact-provider-text-confirmation
@@ -569,7 +569,7 @@ landmarks:
     - submit-provider-info-edit
     - submit-contact-provider-email-confirmation
     - submit-contact-provider-text
-    - parent-confirm-provider-number
+    - submit-confirm-provider-number
     - submit-contact-provider-text-confirmation
     - submit-share-confirmation-code
 ---

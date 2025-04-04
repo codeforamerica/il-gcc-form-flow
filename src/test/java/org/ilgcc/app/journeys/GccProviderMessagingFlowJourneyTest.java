@@ -91,7 +91,7 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
 
       // parent-confirm-provider-number
       testPage.navigateToFlowScreen("gcc/parent-confirm-provider-number");
-      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-provider-number.title"));
+      assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirm-provider-number.title"));
       testPage.clickYes();
         // submit-contact-provider-text
         testPage.navigateToFlowScreen("gcc/submit-contact-provider-text");
