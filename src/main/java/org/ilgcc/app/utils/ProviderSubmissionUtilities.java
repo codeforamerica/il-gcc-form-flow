@@ -240,8 +240,8 @@ public class ProviderSubmissionUtilities {
         LocalDate dateWeCareAboutLocalDate = dateWeCareAbout.toLocalDate();
         LocalDate threeBusinessDaysBeforeLocalDate = threeBusinessDaysBeforeDateWeCareAbout.toLocalDate();
 
-        // If a holiday occurs after the submission and before/on the expiration date, we give the provider
-        // one extra day to respond
+        // If a holiday occurs after the 3 business days before and before/on the original date we care about, we can push the
+        // 3 days before date back 1 more day
         for (var holiday : HOLIDAYS) {
             if ((holiday.isAfter(threeBusinessDaysBeforeLocalDate) && holiday.isBefore(dateWeCareAboutLocalDate))
                     || holiday.isEqual(
@@ -250,8 +250,8 @@ public class ProviderSubmissionUtilities {
             }
         }
 
-        // Because we might have had a holiday that pushes the expiration date into a weekend, we want to keep
-        // pushing the expiration 1 day at a time until it's a Monday
+        // Because we might have had a holiday that pushes the 3 days before date into a weekend, we want to keep
+        // pushing the 3 days before date kac 1 day at a time until it's a Friday
         while (WEEKENDS.contains(threeBusinessDaysBeforeDateWeCareAbout.getDayOfWeek())) {
             threeBusinessDaysBeforeDateWeCareAbout = threeBusinessDaysBeforeDateWeCareAbout.plusDays(1);
         }
