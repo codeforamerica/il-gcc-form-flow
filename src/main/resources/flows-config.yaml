@@ -505,6 +505,8 @@ flow:
     condition: ContactProviderViaText
     nextScreens:
       - name: submit-contact-provider-text-confirmation
+        condition: hasConfirmedProviderPhoneNumber
+      - name: submit-edit-provider-text
   submit-contact-provider-text-confirmation:
     condition: EnableProviderMessagingFlagOn
     nextScreens:

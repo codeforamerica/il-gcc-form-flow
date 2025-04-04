@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:lang="${#locale.language}">
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head(title=#{submit-confirm-provider-number.title})}"></head>
 <body>
 <div class="page-wrapper">
@@ -10,29 +10,22 @@
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block th:replace="~{fragments/gcc-icons :: application-search}"></th:block>
                 <th:block
-                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-confirm-provider-number.header})}"/>
-                <div class="form-card__content">
-                    <div class="grid__item address-validation spacing-below-60">
-                        <div class="display-box-green " id="number-entered-box">
-                            <p><strong th:text="#{submit-confirm-provider-number.subtext}"></strong></p>
-                            <div th:text="${submission.getInputData().get('familyIntendedProviderPhoneNumber')}"></div>
+                    th:replace="~{fragments/cardHeader :: cardHeader(header=#{submit-confirm-provider-number.header})}"/>
+                <th:block
+                    th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+                    <th:block th:ref="formContent">
+                        <div class="grid__item address-validation spacing-below-60">
+                            <div class="display-box-green " id="number-entered-box">
+                                <p><strong th:text="#{submit-confirm-provider-number.subtext}"></strong>
+                                </p>
+                                <div th:text="${submission.getInputData().get('familyIntendedProviderPhoneNumber')}"></div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-card__footer">
-                    <a aria-describedby="header"
-                       th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
-                       class="button button--secondary" id="confirmed-provider-email">
-                        <span class="button__icon--left emoji emoji--inline emoji--checkmark"></span>
-                        <span th:text="#{general.inputs.yes}"></span>
-                    </a>
-                    <a aria-describedby="header"
-                       th:href="'/flow/' + ${flow} + '/submit-edit-provider-text'"
-                       class="button button--secondary" id="edit-provider-email">
-                        <span class="button__icon--left emoji emoji--inline emoji--crossmark"></span>
-                        <span th:text="#{general.inputs.no}"></span>
-                    </a>
-                </div>
+                        <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(
+              inputName='hasConfirmedIntendedProviderPhoneNumber',
+              ariaDescribe='header')}"/>
+                    </th:block>
+                </th:block>
             </main>
         </div>
     </section>
