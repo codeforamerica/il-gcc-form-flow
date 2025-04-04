@@ -34,8 +34,8 @@ public class TransactionRepositoryService {
         return transactionRepository.findByWorkItemIdIsNull();
     }
 
-    public Set<Submission> findSubmissionsWithoutTransactions(OffsetDateTime lastRun){
-        return transactionRepository.findSubmissionsWithoutTransactions(lastRun);
+    public Set<Submission> findSubmissionsWithoutTransactions(OffsetDateTime sinceDate){
+        return transactionRepository.findSubmissionsWithoutTransactions(sinceDate);
     }
 
     public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId) {

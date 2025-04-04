@@ -21,7 +21,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
                     "AND s.flow = 'gcc' " +
                     "AND t.transactionId IS NULL " +
                     "ORDER BY s.updatedAt ASC")
-    Set<Submission> findSubmissionsWithoutTransactions(@Param("sinceDate") OffsetDateTime lastRun);
+    Set<Submission> findSubmissionsWithoutTransactions(@Param("sinceDate") OffsetDateTime sinceDate);
 
     Transaction findByTransactionId(UUID transactionId);
 
