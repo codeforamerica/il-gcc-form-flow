@@ -5,7 +5,6 @@ import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -107,7 +106,7 @@ public class TransmissionsRecurringJob {
         // timestamp and also not responded to by the provider.
         // We can get the last time we tried to process any expired Submissions by grabbing the last time this job
         // successfully ran (lastRun), roll it back 3 business days, and then to provide a little buffer roll it back an additional
-        // 15 minutes. 
+        // 15 minutes.
         lastRun = ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(lastRun).minusMinutes(15);
         log.info("Running No Provider Response Job for submissions since {}. DTS integration: {} CCMS integration: {}", lastRun,
                 isDTSIntegrationEnabled,
