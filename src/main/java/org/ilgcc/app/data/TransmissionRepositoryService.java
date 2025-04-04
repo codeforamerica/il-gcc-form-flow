@@ -2,9 +2,11 @@ package org.ilgcc.app.data;
 
 import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import org.ilgcc.app.utils.enums.TransmissionStatus;
 import org.springframework.stereotype.Service;
@@ -31,8 +33,8 @@ public class TransmissionRepositoryService {
         return this.transmissionRepository.findAllBySubmissionId(submission);
     }
 
-    public List<Submission> findSubmissionsWithoutTransmission(){
-        return this.transmissionRepository.findSubmissionsWithoutTransmission();
+    public Set<Submission> findSubmissionsWithoutTransmissions(OffsetDateTime sinceDate){
+        return this.transmissionRepository.findSubmissionsWithoutTransmissions(sinceDate);
     }
 
     public void updateStatus(Transmission transmission, TransmissionStatus status) {
