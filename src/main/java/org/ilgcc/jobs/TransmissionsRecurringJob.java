@@ -143,6 +143,11 @@ public class TransmissionsRecurringJob {
             Set<UUID> submissionIdsWithoutTransactionsOnly = new HashSet<>(submissionIdsWithoutTransactions);
             submissionIdsWithoutTransactionsOnly.removeAll(submissionIdsWithoutTransmissions);
 
+            // There's no something inherently wrong if these two values mismatch. Initially, while DTS is the only
+            // integration on, we will see Submissions without transactions that have a transmission because they were
+            // sent to DTS in the prior job run. And when we eventually are CCMS only, the same will happen for Submissions that
+            // do not have transmissions. The time when this logging will be helpful is when both are turned on, and somehow
+            // we have a Submission that was sent to DTS and not to CCMS or vice versa in a prior run!
             log.warn(
                     "Submissions without transmissions and transactions do not match. Sending {} submissions. Ignoring {} without transmissions. Ignoring {} without transactions.",
                     unsentSubmissions.size(), submissionIdsWithoutTransmissionsOnly.size(),
