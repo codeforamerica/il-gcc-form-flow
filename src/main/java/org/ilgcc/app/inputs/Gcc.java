@@ -70,7 +70,9 @@ public class Gcc extends FlowInputs {
     private String parentHomeCity;
     @NotBlank(message = "{errors.provide-state}")
     private String parentHomeState;
+
     @NotBlank(message = "{errors.provide-zip}")
+    @Pattern(regexp = "^$|^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String parentHomeZipCode;
 
     private String useSuggestedParentHomeAddress;
@@ -85,6 +87,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-state}")
     private String parentMailingState;
     @NotBlank(message = "{errors.provide-zip}")
+    @Pattern(regexp = "^$|^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String parentMailingZipCode;
     private String useSuggestedParentMailingAddress;
     private String parentConfirmSuggestedAddress;

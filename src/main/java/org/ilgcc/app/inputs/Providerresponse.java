@@ -48,6 +48,7 @@ public class Providerresponse extends FlowInputs {
     private String providerResponseServiceState;
 
     @NotBlank(message = "{errors.provide-zip}")
+    @Pattern(regexp = "^$|^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String providerResponseServiceZipCode;
 
     private String useSuggestedProviderResponseServiceAddress;
@@ -64,6 +65,7 @@ public class Providerresponse extends FlowInputs {
     @NotBlank(message = "{errors.provide-state}")
     private String providerMailingState;
     @NotBlank(message = "{errors.provide-zip}")
+    @Pattern(regexp = "^$|^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
     private String providerMailingZipCode;
 
     private String providerMailingAddressSameAsServiceAddress;
