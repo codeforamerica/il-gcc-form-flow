@@ -476,6 +476,12 @@ flow:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-contact-provider-email
+        condition: ContactProviderViaEmail
+      - name: submit-contact-provider-text
+        condition: ContactProviderViaText
+      - name: submit-share-confirmation-code
+        condition: ContactProviderViaOther
+      - name: doc-upload-recommended-docs
   submit-contact-provider-email:
     condition: DisplaySubmitContactProviderEmailScreen
     nextScreens:
@@ -496,19 +502,31 @@ flow:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-contact-provider-text
+        condition: ContactProviderViaText
+      - name: submit-share-confirmation-code
+        condition: ContactProviderViaOther
+      - name: doc-upload-recommended-docs
   submit-contact-provider-text:
     condition: DisplaySubmitContactProviderTextScreen
     crossFieldValidationAction: ValidatePhoneNumberNotBlank
     nextScreens:
-      - name: parent-confirm-provider-number
-  parent-confirm-provider-number:
+      - name: submit-confirm-provider-number
+  submit-confirm-provider-number:
     condition: ContactProviderViaText
     nextScreens:
       - name: submit-contact-provider-text-confirmation
+        condition: HasConfirmedProviderPhoneNumber
+      - name: submit-provider-edit-text
+  submit-provider-edit-text:
+    condition: EnableProviderMessagingFlagOn
+    nextScreens:
+      - name: submit-confirm-provider-number
   submit-contact-provider-text-confirmation:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
-      - name: submit-share-confirmation-code
+    - name: submit-share-confirmation-code
+      condition: ContactProviderViaOther
+    - name: doc-upload-recommended-docs
   submit-share-confirmation-code:
     condition: ContactProviderViaOther
     nextScreens:
@@ -569,7 +587,8 @@ landmarks:
     - submit-provider-info-edit
     - submit-contact-provider-email-confirmation
     - submit-contact-provider-text
-    - parent-confirm-provider-number
+    - submit-confirm-provider-number
+    - submit-provider-edit-text
     - submit-contact-provider-text-confirmation
     - submit-share-confirmation-code
 ---
