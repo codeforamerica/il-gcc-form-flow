@@ -42,6 +42,6 @@ jobs:
         run: |
           npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.GccFlowJourneyTest.fullGccFlow
           npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.ProviderresponseFlowJourneyTest.ProviderresponseJourneyTest_validLink
-          npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.ProviderresponseProviderRegistrationJourneyTest.LicenseExemptInProviderHomeFlow
+          npx percy exec -- ./gradlew test --tests org.ilgcc.app.journeys.ProviderresponseProviderRegistrationJourneyTest.licenseExemptInProviderHomeFlow
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
