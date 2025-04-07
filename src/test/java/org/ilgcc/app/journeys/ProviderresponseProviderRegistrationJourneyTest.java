@@ -1,8 +1,10 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 import java.time.OffsetDateTime;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
@@ -349,7 +351,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
 
         assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-        assertThat(testPage.findElementTextById("child-age-0")).contains("Age 22");
+        await().atMost(5, TimeUnit.SECONDS)
+            .until(() -> (testPage.findElementTextById("child-age-0")).contains("Age 22"));
         assertThat(testPage.findElementTextById("child-schedule-0")).isNotNull();
         assertThat(testPage.findElementTextById("child-start-0")).isEqualTo("01/10/2025");
         testPage.clickElementById("providerResponseAgreeToCare-true");
