@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,6 +18,11 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
     @Autowired
     SubmissionRepository repository;
+
+    @AfterEach
+    protected void clearSubmissions() {
+        super.clearSubmissions();
+    }
 
     @Test
     void ProviderresponseJourneyTest_validLink_No_Agreement_To_Care(){
