@@ -10,7 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
 
   @Test
-  void ProviderMessagingStepsHappyPath() throws Exception {
+  void ProviderMessagingStepsHappyPath() {
     testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
     saveSubmission(getSessionSubmissionTestBuilder()
@@ -43,6 +43,7 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-method.title"));
     testPage.clickContinue();
 
+    // submit-contact-method
     assertThat(testPage.hasErrorText(getEnMessage("errors.submit-contact-method"))).isTrue();
     testPage.clickElementById("contactProviderMethod-EMAIL-label");
     testPage.clickElementById("contactProviderMethod-TEXT-label");
@@ -73,8 +74,8 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("familyIntendedProviderEmail", "test");
     testPage.clickContinue();
 
+    // submit-edit-provider-email
     assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-email"))).isTrue();
-
     testPage.enter("familyIntendedProviderEmail", "test@mail.com");
     testPage.clickContinue();
 
@@ -86,23 +87,32 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
     testPage.clickContinue();
 
+    // submit-contact-provider-text
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-text.title"));
     assertThat(testPage.findElementTextById("familyIntendedProviderPhoneNumber")).isEqualTo("");
     testPage.clickContinue();
 
+    // submit-contact-provider-text
     assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
     testPage.enter("familyIntendedProviderPhoneNumber", "(333)333-3333");
     testPage.clickContinue();
 
+    // submit-confirm-provider-number
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirm-provider-number.title"));
     testPage.clickNo();
 
+    // submit-provider-edit-text
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-provider-edit-text.title"));
+    assertThat(testPage.findElementById("familyIntendedProviderName").isEnabled()).isFalse();
+    assertThat(testPage.findElementById("familyIntendedProviderEmail").isEnabled()).isFalse();
+    assertThat(testPage.findElementById("familyIntendedProviderPhoneNumber").isEnabled()).isTrue();
     testPage.clickContinue();
 
+    // submit-confirm-provider-number
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirm-provider-number.title"));
     testPage.clickYes();
 
+    //submit-contact-provider-text-confirmation
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-text-confirmation.title"));
     testPage.clickContinue();
 
