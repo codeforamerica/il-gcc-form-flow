@@ -7,7 +7,7 @@
 
 <script th:inline="javascript">
   $(document).ready(function () {
-    $('#familyIntendedProviderName').prop('readonly', true).attr('aria-readonly', 'true').css('color', 'grey');
-    $('#familyIntendedProviderEmail').prop('readonly', true).attr('aria-readonly', 'true').css('color', 'grey');
+    $('#familyIntendedProviderName').prop('disabled', true).css('color', 'grey');
+    $('#familyIntendedProviderEmail').prop('disabled', true).css('color', 'grey');
   });
 </script>
