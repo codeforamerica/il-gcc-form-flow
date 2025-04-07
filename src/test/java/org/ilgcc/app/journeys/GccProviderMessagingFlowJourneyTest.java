@@ -86,7 +86,6 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-email-confirmation.title"));
     testPage.clickContinue();
 
-    //here we need to test the submit-contact-provider-text
     assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-contact-provider-text.title"));
     assertThat(testPage.findElementTextById("familyIntendedProviderPhoneNumber")).isEqualTo("");
     testPage.clickContinue();
