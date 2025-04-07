@@ -244,8 +244,7 @@ public class ProviderSubmissionUtilities {
         // 3 days before date back 1 more day
         for (var holiday : HOLIDAYS) {
             if ((holiday.isAfter(threeBusinessDaysBeforeLocalDate) && holiday.isBefore(dateWeCareAboutLocalDate))
-                    || holiday.isEqual(
-                    dateWeCareAboutLocalDate)) {
+                    || holiday.isEqual(threeBusinessDaysBeforeLocalDate)) {
                 threeBusinessDaysBeforeDateWeCareAbout = threeBusinessDaysBeforeDateWeCareAbout.minusDays(1);
             }
         }
@@ -253,7 +252,7 @@ public class ProviderSubmissionUtilities {
         // Because we might have had a holiday that pushes the 3 days before date into a weekend, we want to keep
         // pushing the 3 days before date kac 1 day at a time until it's a Friday
         while (WEEKENDS.contains(threeBusinessDaysBeforeDateWeCareAbout.getDayOfWeek())) {
-            threeBusinessDaysBeforeDateWeCareAbout = threeBusinessDaysBeforeDateWeCareAbout.plusDays(1);
+            threeBusinessDaysBeforeDateWeCareAbout = threeBusinessDaysBeforeDateWeCareAbout.minusDays(1);
         }
 
         return threeBusinessDaysBeforeDateWeCareAbout;
