@@ -19,7 +19,7 @@
                                  id="email-entered-label">
                                 <p><strong th:text="#{submit-confirm-provider-email.body}"></strong>
                                 </p>
-                                <div th:text="${submission.getInputData().get('familyIntendedProviderEmail')}"></div>
+                                <div id="intended-provider-email" th:text="${submission.getInputData().get('familyIntendedProviderEmail')}"></div>
                             </div>
                         </div>
                         <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(
