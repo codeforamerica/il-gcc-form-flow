@@ -27,6 +27,10 @@ public class ProviderSubmissionUtilities {
     private final static Map<String, Integer> DAY_OF_WEEK_WITH_BUSINESS_DAYS_OFFSET = Map.of(
             "MONDAY", 3, "TUESDAY", 3, "WEDNESDAY", 5, "THURSDAY", 5, "FRIDAY", 5, "SATURDAY", 4, "SUNDAY", 3);
 
+    private final static Map<String, Integer> DAY_OF_WEEK_WITH_BUSINESS_DAYS_DECREMENT = Map.of(
+            "MONDAY", 5, "TUESDAY", 5, "WEDNESDAY", 5, "THURSDAY", 3, "FRIDAY", 3, "SATURDAY", 3, "SUNDAY", 4);
+
+
     private final static List<DayOfWeek> WEEKENDS = List.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
 
     // From https://cms.illinois.gov/personnel/employeeresources/stateholidays.html
@@ -220,6 +224,38 @@ public class ProviderSubmissionUtilities {
         }
 
         return expiresAt;
+    }
+
+    /**
+     * Takes a date that we care about, and rolls it back 3 business days -- taking into account holidays and weekends We can use
+     * this date, for example, to query for anything Submissions before this date and know that they are expired
+     *
+     * @param dateWeCareAbout
+     * @return
+     */
+    public static OffsetDateTime threeBusinessDaysBeforeDate(OffsetDateTime dateWeCareAbout) {
+        Integer daysToDecrement = DAY_OF_WEEK_WITH_BUSINESS_DAYS_DECREMENT.get(dateWeCareAbout.getDayOfWeek().toString());
+        OffsetDateTime threeBusinessDaysBeforeDateWeCareAbout = dateWeCareAbout.minusDays(daysToDecrement);
+
+        LocalDate dateWeCareAboutLocalDate = dateWeCareAbout.toLocalDate();
+        LocalDate threeBusinessDaysBeforeLocalDate = threeBusinessDaysBeforeDateWeCareAbout.toLocalDate();
+
+        // If a holiday occurs after the 3 business days before and before/on the original date we care about, we can push the
+        // 3 days before date back 1 more day
+        for (var holiday : HOLIDAYS) {
+            if ((holiday.isAfter(threeBusinessDaysBeforeLocalDate) && holiday.isBefore(dateWeCareAboutLocalDate))
+                    || holiday.isEqual(threeBusinessDaysBeforeLocalDate)) {
+                threeBusinessDaysBeforeDateWeCareAbout = threeBusinessDaysBeforeDateWeCareAbout.minusDays(1);
+            }
+        }
+
+        // Because we might have had a holiday that pushes the 3 days before date into a weekend, we want to keep
+        // pushing the 3 days before date kac 1 day at a time until it's a Friday
+        while (WEEKENDS.contains(threeBusinessDaysBeforeDateWeCareAbout.getDayOfWeek())) {
+            threeBusinessDaysBeforeDateWeCareAbout = threeBusinessDaysBeforeDateWeCareAbout.minusDays(1);
+        }
+
+        return threeBusinessDaysBeforeDateWeCareAbout;
     }
 
     public static boolean providerApplicationHasExpired(Submission familySubmission) {
