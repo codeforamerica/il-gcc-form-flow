@@ -40,7 +40,7 @@ jobs:
         run: |
           aws ssm put-parameter \
             --name /illinois-getchildcare/qa/version \
-            --value ${{env.IMAGE_TAG}}
+            --value "${{env.IMAGE_TAG}}"
 
       - name: Announce on Slack when deployed
         uses: ravsamhq/notify-slack-action@v2
