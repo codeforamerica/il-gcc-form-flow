@@ -1,0 +1,43 @@
+spring:
+  thymeleaf:
+    cache: true
+  datasource:
+    url: jdbc:postgresql://${DATABASE_HOST}:5432/illinois-staging
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+form-flow:
+  error:
+    show-stack-trace: false
+  virus-scanning:
+    enabled: true
+  short-code:
+    short-code-configs:
+      gcc:
+        prefix: QA-
+        creation-point: creation
+  uploads:
+    max-file-size: ${UPLOADS_MAX_FILE_SIZE:10}
+    file-conversion:
+      max-conversion-size: ${UPLOADS_MAX_CONVERSION_SIZE:10}
+      max-pages: ${UPLOADS_MAX_PAGES:50}
+  validation:
+    ssn-pattern: "\\d{3}-\\d{2}-\\d{4}"
+management:
+  endpoint:
+    health:
+      enabled: true
+    info:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+il-gcc:
+  enable-emails: ${ENABLE_EMAILS_FLAG:true}
+  dts:
+    processing-org: '4c-ccap-apps-testing'
+logging:
+  level:
+    root: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
