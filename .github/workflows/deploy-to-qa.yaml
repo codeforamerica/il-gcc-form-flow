@@ -11,7 +11,10 @@ jobs:
   deploy:
     name: Deploy to QA
     runs-on: ubuntu-latest
-
+    env:
+      ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      ECR_REPOSITORY: illinois-getchildcare-qa-app
+      IMAGE_TAG: ${{ github.sha }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -28,10 +31,6 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and push Docker image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: illinois-getchildcare-qa-app
-          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{env.IMAGE_TAG}} --platform linux/amd64 .
           docker push 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{env.IMAGE_TAG}}
