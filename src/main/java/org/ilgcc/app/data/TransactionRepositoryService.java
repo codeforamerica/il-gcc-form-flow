@@ -1,7 +1,10 @@
 package org.ilgcc.app.data;
 
+import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +33,11 @@ public class TransactionRepositoryService {
     public List<Transaction> getTransactionsWithoutWorkItemIds() {
         return transactionRepository.findByWorkItemIdIsNull();
     }
-    
+
+    public Set<Submission> findSubmissionsWithoutTransactions(OffsetDateTime sinceDate){
+        return transactionRepository.findSubmissionsWithoutTransactions(sinceDate);
+    }
+
     public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId) {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(transactionId);

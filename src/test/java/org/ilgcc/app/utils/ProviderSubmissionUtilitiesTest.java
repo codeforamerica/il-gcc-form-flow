@@ -106,4 +106,71 @@ class ProviderSubmissionUtilitiesTest {
         assertThat(ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submittedAt)).isEqualTo(
                 LocalDateTime.of(2025, 1, 2, 9, 56, 54).atZone(chicagoTimeZone));
     }
+
+    @Test
+    void threeBusinessDaysBeforeDate_noHoliday() {
+        // Friday current date, Tuesday rollback
+        OffsetDateTime dateWeCareAbout = OffsetDateTime.parse("2025-09-12T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-09-09T15:56:54+00:00"));
+
+        // Thursday current date, Monday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-11T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-09-08T15:56:54+00:00"));
+
+        // Wednesday current date, Friday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-10T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-09-05T15:56:54+00:00"));
+
+        // Tuesday current date, Thursday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-09T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-09-04T15:56:54+00:00"));
+
+        // Monday current date, Wednesday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-08T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-09-03T15:56:54+00:00"));
+
+        // Sunday current date, Wednesday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-07T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-09-03T15:56:54+00:00"));
+
+        // Saturday current date, Wednesday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-06T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-09-03T15:56:54+00:00"));
+    }
+
+    @Test
+    void threeBusinessDaysBeforeDate_Holiday() {
+        // Friday current date, Tuesday rollback
+        OffsetDateTime dateWeCareAbout = OffsetDateTime.parse("2025-09-05T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-09-02T15:56:54+00:00"));
+
+        // Thursday current date, Monday holiday, Friday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-04T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-08-29T15:56:54+00:00"));
+
+        // Wednesday current date, Monday holiday, Thursday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-03T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-08-28T15:56:54+00:00"));
+
+        // Tuesday current date, Monday holiday, Wednesday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-02T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-08-27T15:56:54+00:00"));
+
+        // Monday current date, Monday holiday, Tuesday rollback
+        dateWeCareAbout = OffsetDateTime.parse("2025-09-01T15:56:54+00:00");
+        assertThat(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(dateWeCareAbout)).isEqualTo(
+                OffsetDateTime.parse("2025-08-27T15:56:54+00:00"));
+
+    }
 }
