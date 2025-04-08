@@ -13,7 +13,16 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class IlGCCApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(IlGCCApplication.class, args);
-  }
-
+    System.out.println("SPRING_PROFILES_ACTIVE: " + System.getenv("SPRING_PROFILES_ACTIVE"));
+    System.out.println("DATABASE_HOST: " + System.getenv("DATABASE_HOST"));
+    System.out.println("DATABASE_USER: " + System.getenv("DATABASE_USER"));
+    System.out.println("DATABASE_PASSWORD: " + System.getenv("DATABASE_PASSWORD"));
+    try {
+      SpringApplication.run(IlGCCApplication.class, args);
+    } catch (Throwable t) {
+      t.printStackTrace();
+      System.err.println("FATAL ERROR: " + t.getMessage());
+      System.exit(1);
+    }
+}
 }
