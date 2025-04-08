@@ -38,7 +38,7 @@ jobs:
       
       - name: Update SSM Version Parameter
         run: |
-          echo $IMAGE_TAG
+          echo "tag:$IMAGE_TAG"
           aws ssm put-parameter \
             --name /illinois-getchildcare/qa/version \
             --value "$IMAGE_TAG" \
