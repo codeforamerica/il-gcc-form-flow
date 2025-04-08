@@ -63,7 +63,8 @@ jobs:
           environment="staging"
           config="staging"
           
-          curl -L \
+          set -e
+          curl -f -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.QA_DEPLOY_PAT }}" \
