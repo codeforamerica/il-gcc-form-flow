@@ -136,7 +136,7 @@ class PdfTransmissionJobTest {
         when(httpUrlConnection.getInputStream()).thenReturn(new ByteArrayInputStream("Mock Response".getBytes()));
         when(httpUrlConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_BAD_REQUEST);
 
-        assertThrows(RuntimeException.class, () -> pdfTransmissionJob.sendPdfTransferRequest("https://www.test.com", submission, objectPath, transmission.getTransmissionId()));
+        assertThrows(RuntimeException.class, () -> pdfTransmissionJob.sendPdfTransferRequest(objectPath, submission, objectPath, transmission.getTransmissionId()));
     }
 
 
