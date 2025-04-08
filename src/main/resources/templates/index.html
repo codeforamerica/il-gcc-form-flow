@@ -90,27 +90,28 @@
                 <div class="width-one-whole">
                     <h2 th:text="#{index.gather-docs.title}"></h2>
                 </div>
-                <div class="width-one-half">
-                    <div class="width-one-half documents-hero">
-                        <img src="/assets/images/woman-with-paperwork.svg" loading="lazy" alt=""
-                             class="img-left">
+                <div class="documents">
+                    <div class="width-one-half">
+                        <p class="paragraph-large normal"
+                           th:text="#{index.gather-docs.first-paragraph}"></p>
+                        <div class="index-icon-list spacing-below-15">
+                            <th:block th:replace="~{fragments/gcc-icons :: pay-stub}"></th:block>
+                            <p class="h2 normal spacing-above-0"
+                               th:text="#{index.gather-docs.icon-list.1}"></p>
+                        </div>
+                        <div class="index-icon-list spacing-below-15">
+                            <th:block th:replace="~{fragments/gcc-icons :: schedule-1099}"></th:block>
+                            <p class="h2 normal spacing-above-0"
+                               th:text="#{index.gather-docs.icon-list.2}"></p>
+                        </div>
+                        <div class="index-icon-list">
+                            <th:block th:replace="~{fragments/gcc-icons :: schedule-blob}"></th:block>
+                            <p class="h2 normal spacing-above-0"
+                               th:text="#{index.gather-docs.icon-list.3}"></p>
+                        </div>
                     </div>
-                    <p class="paragraph-large normal"
-                       th:text="#{index.gather-docs.first-paragraph}"></p>
-                    <div class="index-icon-list spacing-below-15">
-                        <th:block th:replace="~{fragments/gcc-icons :: pay-stub}"></th:block>
-                        <p class="h2 normal spacing-above-0"
-                           th:text="#{index.gather-docs.icon-list.1}"></p>
-                    </div>
-                    <div class="index-icon-list spacing-below-15">
-                        <th:block th:replace="~{fragments/gcc-icons :: schedule-1099}"></th:block>
-                        <p class="h2 normal spacing-above-0"
-                           th:text="#{index.gather-docs.icon-list.2}"></p>
-                    </div>
-                    <div class="index-icon-list">
-                        <th:block th:replace="~{fragments/gcc-icons :: schedule-blob}"></th:block>
-                        <p class="h2 normal spacing-above-0"
-                           th:text="#{index.gather-docs.icon-list.3}"></p>
+                    <div class="width-one-half">
+                        <img src="/assets/images/woman-with-paperwork.svg" loading="lazy" alt="" class="img-center">
                     </div>
                 </div>
             </div>

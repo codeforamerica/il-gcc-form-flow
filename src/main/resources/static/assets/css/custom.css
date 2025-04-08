@@ -64,18 +64,31 @@ img.slab-image {
   width: 65%;
 }
 
+.documents {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.documents > .width-one-half > img {
+  display: block;
+  margin-right: 0;
+  margin-bottom: 66px;
+  width: auto;
+}
+
 @media only screen and (min-width: 600px) {
   img.slab-image {
     position: relative;
     bottom: auto;
     right: auto;
   }
-}
 
-@media only screen and (min-width: 600px) {
-  div.width-one-half.documents-hero {
-    float: right;
-    width: auto;
+  .documents {
+    display: block;
+  }
+
+  .documents > .width-one-half > img {
+    width: 462px;
   }
 }
 
