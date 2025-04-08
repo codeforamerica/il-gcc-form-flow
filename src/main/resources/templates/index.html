@@ -121,30 +121,25 @@
                 <div class="width-one-whole">
                     <h2 th:text="#{index.are-you-a-child-care-provider.header}"></h2>
                 </div>
-
-                <div class="width-one-half">
-                    <p
-                       th:text="#{index.are-you-a-child-care-provider.subheader}"></p>
-                    <div class="form-group spacing-above-35">
-                        <label class="form-question spacing-below-25" for="homepage-provider-response-link">
-                            <span th:text="#{index.enter-confirmation-code.input-header}"></span>
-                        </label>
-                        <input type="text" class="text-input width-two-thirds spacing-below-35" id="homepage-provider-response-link">
-                        <a
-                                th:href="'/s'"
-                                id="route-to-provider-response"
-                                class="button--big button spacing-above-10">
-                            <span th:text="#{index.respond-to-application.button} + '  →'"></span>
-                        </a>
-                        <div class="width-one-half is-desktop-hidden">
-                            <img src="/assets/images/mother_baby_smiling.svg" loading="lazy" alt=""
-                                 class="img-right">
+                <div class="providers">
+                   <div class="width-one-half">
+                        <p th:text="#{index.are-you-a-child-care-provider.subheader}"></p>
+                        <div class="form-group spacing-above-35">
+                            <label class="form-question spacing-below-25" for="homepage-provider-response-link">
+                                <span th:text="#{index.enter-confirmation-code.input-header}"></span>
+                            </label>
+                            <input type="text" class="text-input width-two-thirds spacing-below-35" id="homepage-provider-response-link">
+                            <a
+                                    th:href="'/s'"
+                                    id="route-to-provider-response"
+                                    class="button--big button spacing-above-10">
+                                <span th:text="#{index.respond-to-application.button} + '  →'"></span>
+                            </a>
                         </div>
                     </div>
-                </div>
-                <div class="width-one-half is-tablet-hidden">
-                    <img src="/assets/images/mother_baby_smiling.svg" loading="lazy" alt=""
-                         class="img-center">
+                    <div class="width-one-half">
+                        <img src="/assets/images/mother_baby_smiling.svg" loading="lazy" alt="" class="img-center">
+                    </div>
                 </div>
             </div>
         </section>

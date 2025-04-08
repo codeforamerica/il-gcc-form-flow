@@ -76,6 +76,18 @@ img.slab-image {
   width: auto;
 }
 
+.providers .form-group {
+  margin-bottom: 0;
+}
+
+.providers > .width-one-half > img {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  display: block;
+  margin-bottom: 66px;
+}
+
 @media only screen and (min-width: 600px) {
   img.slab-image {
     position: relative;
@@ -89,6 +101,15 @@ img.slab-image {
 
   .documents > .width-one-half > img {
     width: 462px;
+  }
+
+  .providers .form-group {
+    margin-bottom: 0;
+  }
+
+  .providers > .width-one-half > img {
+    width: 462px;
+    margin-bottom: 2em;
   }
 }
 
