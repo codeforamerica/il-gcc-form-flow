@@ -72,6 +72,13 @@ img.slab-image {
   }
 }
 
+@media only screen and (min-width: 600px) {
+  div.width-one-half.documents-hero {
+    float: right;
+    width: auto;
+  }
+}
+
 .toolbar__wrapper {
   background-color: var(--idhs-base-blue);
   height: auto;
