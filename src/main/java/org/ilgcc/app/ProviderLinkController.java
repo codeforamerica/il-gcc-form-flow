@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpSession;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,7 @@ public class ProviderLinkController {
      * @param confirmationCode The confirmation code used to look up the submission
      * @return
      */
-    @GetMapping(value = {"s", "s/{confirmationCode}", "providerresponse/submit/{confirmationCode}"})
+    @GetMapping(value = {"s", "s/{confirmationCode}"})
     String loadFamilySubmission(HttpSession session, HttpServletRequest request,
             @PathVariable(required = false) String confirmationCode,
             @RequestHeader(value = "Referer", required = false) String referer
@@ -60,7 +59,7 @@ public class ProviderLinkController {
                 setFamilySessionData(familySubmission.get(), newSession);
                 checkRefererValue(referer, newSession);
             } else {
-                log.error("Unable to load submission for code " + sanitizedConfirmationCode);
+                log.debug("Unable to load submission for code " + sanitizedConfirmationCode);
                 return "redirect:/error-invalid-code";
             }
         }
