@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: [ "Run tests" ]
     types: [ completed ]
-    branches: [ ccap-690-create-qa-environment ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -33,34 +33,15 @@ jobs:
           ECR_REPOSITORY: illinois-getchildcare-qa-app
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t illinois-getchildcare-qa-app --platform linux/amd64 .
+          docker tag illinois-getchildcare-qa-app:${{IMAGE_TAG}} 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{IMAGE_TAG}}
+          docker push 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{IMAGE_TAG}}
 
-      - name: Render ECS task definition with new image tag
-        id: render-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: .github/ecs/ecs-task-def.json
-          container-name: illinois-getchildcare-qa-app
-          image: 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{ github.sha }}
-
-      - name: Register rendered task definition
-        id: register-task-def
+      - name: Update SSM Version Parameter
         run: |
-          TASK_DEF_ARN=$(aws ecs register-task-definition \
-            --cli-input-json file://${{ steps.render-task-def.outputs.task-definition }} \
-            --query 'taskDefinition.taskDefinitionArn' \
-            --output text)
-          echo "task_def_arn=$TASK_DEF_ARN" >> "$GITHUB_OUTPUT"
-      
-      - name: Deploy to ECS (Fargate)
-        run: |
-          aws ecs update-service \
-            --cluster illinois-getchildcare-qa-app \
-            --service illinois-getchildcare-qa-app \
-            --region us-east-1 \
-            --task-definition ${{ steps.register-task-def.outputs.task_def_arn }} \
-            --force-new-deployment
+          aws ssm put-parameter \
+            --name /illinois-getchildcare/qa/version \
+            --value ${{IMAGE_TAG}}
 
       - name: Announce on Slack when deployed
         uses: ravsamhq/notify-slack-action@v2
