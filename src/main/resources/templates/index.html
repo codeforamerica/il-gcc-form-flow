@@ -5,7 +5,7 @@
 <div class="page-wrapper padding-bottom-15">
     <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
     <main id="content" role="main" class="slab slab--white padding-top-0 padding-bottom-0 spacing-below-0">
-        <section class="slab slab--light-purple slab--hero">
+        <section class="slab slab--light-purple">
             <div class="grid">
                 <div class="notice--warning spacing-below-35">
                     <th:block
@@ -13,28 +13,30 @@
                         <p th:utext="'<span aria-hidden=true>🌱 </span>' + ${#messages.msg('index.notice-html', counties.size(), #strings.listJoin(counties, ', '))}"></p>
                     </th:block>
                 </div>
-                <div class="tracking-home-language-links width-one-half">
-                    <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>
-                    <p th:text="#{index.apply-for-benefits}"></p>
-                    <div class="spacing-above-35">
-                        <a
-                                th:href="|/flow/gcc/onboarding-getting-started?lang=${#locale.getLanguage()}|"
-                                th:text="#{index.apply-now} + ' →'"
-                                id="primary-apply-now"
-                                class="button--primary button"></a>
+                <div>
+                    <div class="tracking-home-language-links width-one-half">
+                        <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>
+                        <p th:text="#{index.apply-for-benefits}"></p>
+                        <div class="spacing-above-35">
+                            <a
+                                    th:href="|/flow/gcc/onboarding-getting-started?lang=${#locale.getLanguage()}|"
+                                    th:text="#{index.apply-now} + ' →'"
+                                    id="primary-apply-now"
+                                    class="button--primary button"></a>
+                        </div>
+                        <div class="spacing-below-35">
+                            <a
+                                    th:with="otherLang=${#locale.getLanguage().equals('es') ? 'en' : 'es'}"
+                                    th:href="|/flow/gcc/onboarding-getting-started?lang=${otherLang}|"
+                                    th:text="#{index.apply-now-other-language} + ' →'"
+                                    th:lang="${otherLang}"
+                                    id="secondary-apply-now"
+                                    class="button--small button"></a>
+                        </div>
                     </div>
-                    <div class="spacing-below-35">
-                        <a
-                                th:with="otherLang=${#locale.getLanguage().equals('es') ? 'en' : 'es'}"
-                                th:href="|/flow/gcc/onboarding-getting-started?lang=${otherLang}|"
-                                th:text="#{index.apply-now-other-language} + ' →'"
-                                th:lang="${otherLang}"
-                                id="secondary-apply-now"
-                                class="button--small button"></a>
-                    </div>
+                    <img src="/assets/images/mother-reading-to-child.svg" alt=""
+                         class="slab-image width-one-half">
                 </div>
-                <img src="/assets/images/mother-reading-to-child.svg" alt=""
-                     class="width-one-half is-tablet-hidden">
             </div>
         </section>
         <section class="slab slab--white">

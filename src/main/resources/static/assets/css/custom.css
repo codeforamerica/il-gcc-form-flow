@@ -53,20 +53,22 @@ html, body {
   padding-bottom: 17.8rem;
 }
 
-.slab--hero {
-  position: relative;
-  background-image: url('/assets/images/mother-reading-to-child.svg');
-  background-repeat: no-repeat;
-  background-position: bottom right 5rem;
-  background-size: 25rem;
-}
-
 .slab--tan {
   background-color: #FFE8CE;
 }
+
+img.slab-image {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 65%;
+}
+
 @media only screen and (min-width: 600px) {
-  .slab--hero {
-    background-image: none;
+  img.slab-image {
+    position: relative;
+    bottom: auto;
+    right: auto;
   }
 }
 
