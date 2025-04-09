@@ -25,22 +25,22 @@
   <logger name="org.hibernate" level="TRACE"/>
   <logger name="com.ilgcc.app" level="TRACE"/>
 
-  <springProfile name="dev | test">
-    <root level="INFO">
-      <appender-ref ref="LocalConsole"/>
-    </root>
-  </springProfile>
+<!--  <springProfile name="dev | test">-->
+<!--    <root level="INFO">-->
+<!--      <appender-ref ref="LocalConsole"/>-->
+<!--    </root>-->
+<!--  </springProfile>-->
 
-  <springProfile name="qa">
-    <root level="TRACE">
-      <appender-ref ref="LocalConsole" />
-      <appender-ref ref="JsonConsole" />
-    </root>
-  </springProfile>
+<!--  <springProfile name="qa">-->
+<!--    <root level="TRACE">-->
+<!--      <appender-ref ref="LocalConsole" />-->
+<!--      <appender-ref ref="JsonConsole" />-->
+<!--    </root>-->
+<!--  </springProfile>-->
 
-  <springProfile name="staging | demo | production">
-    <root level="INFO | WARN | ERROR">
-      <appender-ref ref="JsonConsole"/>
-    </root>
-  </springProfile>
+<!--  <springProfile name="staging | demo | production">-->
+<!--    <root level="INFO | WARN | ERROR">-->
+<!--      <appender-ref ref="JsonConsole"/>-->
+<!--    </root>-->
+<!--  </springProfile>-->
 </configuration>
