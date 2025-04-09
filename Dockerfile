@@ -14,4 +14,4 @@ RUN ./gradlew clean assemble && \
 EXPOSE 8080
 EXPOSE 8000
 
-CMD ["java", "-jar", "/opt/il-gcc/app.jar"]
+RUN ./webapp_launcher.sh
