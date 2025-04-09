@@ -9,9 +9,15 @@ COPY src/main/resources/pdf-fonts/* /opt/pdf-fonts/
 WORKDIR /opt/il-gcc
 
 RUN ./gradlew clean assemble && \
-    cp /opt/il-gcc/build/libs/app.jar app.jar
+    cp build/libs/*.jar app.jar
 
+# Copy and prepare the launcher script
+COPY scripts/webapp_launcher.sh /opt/il-gcc/webapp_launcher.sh
+RUN chmod +x /opt/il-gcc/webapp_launcher.sh
+
+# Expose ports
 EXPOSE 8080
 EXPOSE 8000
 
-RUN ./scripts/webapp_launcher.sh
+# Run the launcher script on container start
+ENTRYPOINT ["/opt/il-gcc/webapp_launcher.sh"]
