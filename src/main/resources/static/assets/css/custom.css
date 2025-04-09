@@ -88,6 +88,12 @@ img.slab-image {
   margin-bottom: 66px;
 }
 
+@media only screen and (max-width: 400px) {
+  img.slab-image {
+    width: 55%;
+  }
+}
+
 @media only screen and (min-width: 600px) {
   img.slab-image {
     position: relative;
