@@ -33,7 +33,16 @@
               </div>
             </div>
             <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              <th:block th:with="
+                      textSelected=${T(org.ilgcc.app.utils.SubmissionUtilities).isSelectedAsProviderContactMethod(inputData, 'TEXT')},
+                      otherSelected=${T(org.ilgcc.app.utils.SubmissionUtilities).isSelectedAsProviderContactMethod(inputData, 'OTHER')}">
+                <th:block th:if="${textSelected || otherSelected}">
+                  <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+                </th:block>
+                <th:block th:unless="${textSelected || otherSelected}">
+                  <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.button.next.submit-documents})}"/>
+                </th:block>
+              </th:block>
             </div>
           </th:block>
         </th:block>
