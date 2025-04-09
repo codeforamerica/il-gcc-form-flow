@@ -743,13 +743,25 @@ flow:
       - name: registration-info-review
   registration-info-review:
     nextScreens:
+      - name: registration-home-provider-itin
+        condition: EnableProviderRegistrationItin
       - name: registration-home-provider-ssn
         condition: ProviderSsnRequiredForInHomeCare
       - name: registration-tax-id
   registration-home-provider-ssn:
     crossFieldValidationAction: ValidateHomeProviderSSN
     nextScreens:
+      - name: registration-home-provider-tax-id
+        condition: EnableProviderRegistrationItin
       - name: registration-home-provider-dob
+  registration-home-provider-tax-id:
+    condition: EnableProviderRegistrationItin
+    nextScreens:
+      - name: registration-home-provider-ssn
+  registration-home-provider-itin:
+    condition: EnableProviderRegistrationItin
+    nextScreens:
+      - name:
   registration-home-provider-dob:
     crossFieldValidationAction: ValidateHomeProviderDateOfBirth
     onPostAction: CreateProviderIdentityCheckDOB
@@ -770,6 +782,10 @@ flow:
       - name: registration-service-languages
   registration-tax-id-ssn:
     condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-service-languages
+  registration-tax-id-itin:
+    condition: EnableProviderRegistrationItin
     nextScreens:
       - name: registration-service-languages
   registration-service-languages:
