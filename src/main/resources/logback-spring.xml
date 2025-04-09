@@ -22,6 +22,12 @@
     </root>
   </springProfile>
 
+  <springProfile name="qa">
+    <root level="DEBUG">
+      <appender-ref ref="LocalConsole"/>
+    </root>
+  </springProfile>
+
   <springProfile name="staging | demo | production">
     <root level="INFO | WARN | ERROR">
       <appender-ref ref="JsonConsole"/>
