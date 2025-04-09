@@ -196,7 +196,7 @@ fi
 
 
 # Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
-DEFAULT_JVM_OPTS='"-Xmx512m" "-Xms64m"'
+DEFAULT_JVM_OPTS='"-Xmx512m" "-Xms64m" "-Dlogging.level.root=TRACE"'
 
 # Collect all arguments for the java command;
 #   * $DEFAULT_JVM_OPTS, $JAVA_OPTS, and $GRADLE_OPTS can contain fragments of
