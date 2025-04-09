@@ -14,4 +14,4 @@ RUN ./gradlew clean assemble && \
 EXPOSE 8080
 EXPOSE 8000
 
-RUN ./webapp_launcher.sh
+RUN ./scripts/webapp_launcher.sh

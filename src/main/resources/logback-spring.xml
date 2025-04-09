@@ -1,46 +1,7 @@
-<?xml version = "1.0" encoding = "UTF-8"?>
 <configuration>
-  <appender name="LocalConsole" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%boldCyan(%d{HH:mm:ss.SSS}) [%thread] %highlight(%-5level) %boldMagenta(%logger{36}) - %msg%n</pattern>
-    </encoder>
-  </appender>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-  <appender name="JsonConsole" class="ch.qos.logback.core.ConsoleAppender">
-    <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
-      <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
-        <prettyPrint>false</prettyPrint>
-      </jsonFormatter>
-      <appendLineSeparator>true</appendLineSeparator>
-      <timestampFormat>yyyy-MM-dd HH:mm:ss</timestampFormat>
-    </layout>
-  </appender>
-
-  <root level="TRACE">
-    <appender-ref ref="LocalConsole" />
-    <appender-ref ref="JsonConsole" />
-  </root>
-
-  <logger name="org.springframework" level="TRACE"/>
-  <logger name="org.hibernate" level="TRACE"/>
-  <logger name="com.ilgcc.app" level="TRACE"/>
-
-<!--  <springProfile name="dev | test">-->
-<!--    <root level="INFO">-->
-<!--      <appender-ref ref="LocalConsole"/>-->
-<!--    </root>-->
-<!--  </springProfile>-->
-
-<!--  <springProfile name="qa">-->
-<!--    <root level="TRACE">-->
-<!--      <appender-ref ref="LocalConsole" />-->
-<!--      <appender-ref ref="JsonConsole" />-->
-<!--    </root>-->
-<!--  </springProfile>-->
-
-<!--  <springProfile name="staging | demo | production">-->
-<!--    <root level="INFO | WARN | ERROR">-->
-<!--      <appender-ref ref="JsonConsole"/>-->
-<!--    </root>-->
-<!--  </springProfile>-->
+  <logger name="org.springframework" level="DEBUG"/>
+  <logger name="org.hibernate" level="DEBUG"/>
+  <logger name="com.ilgcc" level="DEBUG"/>
 </configuration>
