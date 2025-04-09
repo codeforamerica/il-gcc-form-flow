@@ -16,6 +16,15 @@
     </layout>
   </appender>
 
+  <root level="TRACE">
+    <appender-ref ref="LocalConsole" />
+    <appender-ref ref="JsonConsole" />
+  </root>
+
+  <logger name="org.springframework" level="TRACE"/>
+  <logger name="org.hibernate" level="TRACE"/>
+  <logger name="com.ilgcc.app" level="TRACE"/>
+
   <springProfile name="dev | test">
     <root level="INFO">
       <appender-ref ref="LocalConsole"/>
@@ -23,8 +32,9 @@
   </springProfile>
 
   <springProfile name="qa">
-    <root level="DEBUG">
-      <appender-ref ref="LocalConsole"/>
+    <root level="TRACE">
+      <appender-ref ref="LocalConsole" />
+      <appender-ref ref="JsonConsole" />
     </root>
   </springProfile>
 
