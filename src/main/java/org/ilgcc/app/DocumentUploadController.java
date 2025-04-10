@@ -83,6 +83,6 @@ public class DocumentUploadController {
     }
 
     private String sanitize(String string) {
-        return string.replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\n", " ").replaceAll("\r", " ");
+        return string.replaceAll("[^a-zA-Z0-9]", "*").replaceAll("\n", "*").replaceAll("\r", "*");
     }
 }
