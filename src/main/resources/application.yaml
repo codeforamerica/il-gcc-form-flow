@@ -83,6 +83,9 @@ spring:
       production:
         - production
         - form-flow-library
+      qa:
+        - qa
+        - form-flow-library
   thymeleaf:
     template-resolver-order: 0
     check-template-location: true
@@ -98,9 +101,9 @@ spring:
       max-request-size: ${form-flow.uploads.max-file-size}MB
 logging:
   level:
-    root: DEBUG
-    org.springframework: DEBUG
-    org.springframework.boot: DEBUG
+    root: INFO
+    org.springframework: INFO
+    org.springframework.boot: INFO
 server:
   tomcat:
     max-http-form-post-size: ${form-flow.uploads.max-file-size}MB

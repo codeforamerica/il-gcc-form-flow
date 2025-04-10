@@ -17,12 +17,12 @@ public class IlGCCApplication {
     System.out.println("DATABASE_HOST: " + System.getenv("DATABASE_HOST"));
     System.out.println("DATABASE_USER: " + System.getenv("DATABASE_USER"));
     System.out.println("DATABASE_PASSWORD: " + System.getenv("DATABASE_PASSWORD"));
-    try {
+//    try {
       SpringApplication.run(IlGCCApplication.class, args);
-    } catch (Throwable t) {
-      t.printStackTrace();
-      System.err.println("FATAL ERROR: " + t.getMessage());
-      System.exit(1);
-    }
+//    } catch (Throwable t) {
+//      t.printStackTrace();
+//      System.err.println("FATAL ERROR: " + t.getMessage());
+//      System.exit(1);
+//    }
 }
 }
