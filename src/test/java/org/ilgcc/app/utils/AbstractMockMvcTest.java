@@ -1,5 +1,6 @@
 package org.ilgcc.app.utils;
 
+import static formflow.library.FormFlowController.SUBMISSION_MAP_NAME;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_SUBMISSION_MAP;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.MOCK;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -11,9 +12,12 @@ import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfig
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.time.Clock;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -104,5 +108,19 @@ public abstract class AbstractMockMvcTest {
   protected ResultActions getFromUrl(String url) throws Exception {
     return mockMvc.perform(get(url)
         .session(session));
+  }
+
+  protected void setFlowInfoInSession(MockHttpSession mockHttpSession, Object... flowInfo) {
+    if (flowInfo.length % 2 != 0) {
+      throw new IllegalArgumentException("Arguments should be paired flowName -> submission id (UUID).");
+    }
+    Iterator<Object> iterator = Arrays.stream(flowInfo).iterator();
+    Map<String, Object> flowMap = new HashMap<>();
+    while (iterator.hasNext()) {
+      String flowName = (String) iterator.next();
+      UUID submissionId = (UUID) iterator.next();
+      flowMap.put(flowName, submissionId);
+    }
+    mockHttpSession.setAttribute(SUBMISSION_MAP_NAME, flowMap);
   }
 }
