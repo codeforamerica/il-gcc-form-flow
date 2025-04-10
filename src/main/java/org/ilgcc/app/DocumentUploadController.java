@@ -65,7 +65,7 @@ public class DocumentUploadController {
             HttpServletRequest request,
             Locale locale
     ) {
-        log.info("POST doc-upload (url: {}): flow: {}, inputName: {}", request.getRequestURI().toLowerCase(), flow.replace("\n", "").replace("\r", ""), inputName);
+        log.debug("POST doc-upload (url: {}): inputName: {}", request.getRequestURI().toLowerCase(), inputName);
 
         Submission submission = fileController.findOrCreateSubmission(httpSession, flow);
 
@@ -73,6 +73,7 @@ public class DocumentUploadController {
             Transaction transaction = transactionRepositoryService.getBySubmissionId(submission.getId());
             if (transaction != null) {
                 // The submission was already sent to CCMS
+                log.info("Submission {} was already sent to CCMS.", submission.getId());
                 return getResponse(locale);
             }
         }
