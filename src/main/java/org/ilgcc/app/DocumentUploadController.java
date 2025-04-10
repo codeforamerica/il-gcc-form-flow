@@ -4,13 +4,10 @@ import formflow.library.FileController;
 import formflow.library.data.Submission;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.Transaction;
 import org.ilgcc.app.data.TransactionRepositoryService;
-import org.ilgcc.app.data.Transmission;
-import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -33,17 +30,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class DocumentUploadController {
 
     private final TransactionRepositoryService transactionRepositoryService;
-    private final TransmissionRepositoryService transmissionRepositoryService;
     private final FileController fileController;
     protected final MessageSource messageSource;
 
     public DocumentUploadController(FileController fileController,
-            TransmissionRepositoryService transmissionRepositoryService,
             TransactionRepositoryService transactionRepositoryService,
             MessageSource messageSource) {
 
         this.fileController = fileController;
-        this.transmissionRepositoryService = transmissionRepositoryService;
         this.transactionRepositoryService = transactionRepositoryService;
         this.messageSource = messageSource;
     }
@@ -80,13 +74,6 @@ public class DocumentUploadController {
             if (transaction != null) {
                 // The submission was already sent to CCMS
                 return getResponse(locale);
-            } else {
-                // The submission was not sent to CCMS, but was it sent to DTS?
-                List<Transmission> transmissions = transmissionRepositoryService.findAllBySubmissionId(submission);
-                if (transmissions != null && !transmissions.isEmpty()) {
-                    // The Submission was sent to DTS!
-                    return getResponse(locale);
-                }
             }
         }
 
