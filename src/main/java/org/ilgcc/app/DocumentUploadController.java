@@ -65,7 +65,7 @@ public class DocumentUploadController {
             HttpServletRequest request,
             Locale locale
     ) {
-        log.info("POST doc-upload (url: {}): flow: {}, inputName: {}", request.getRequestURI().toLowerCase(), flow, inputName);
+        log.info("POST doc-upload (url: {}): flow: {}, inputName: {}", request.getRequestURI().toLowerCase(), flow.replace("\n", "").replace("\r", ""), inputName);
 
         Submission submission = fileController.findOrCreateSubmission(httpSession, flow);
 
