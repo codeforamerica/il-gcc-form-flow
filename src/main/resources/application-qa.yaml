@@ -2,7 +2,7 @@ spring:
   thymeleaf:
     cache: true
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST}:5432/illinois-staging
+    url: jdbc:postgresql://${DATABASE_HOST}:5432/postgres
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
 form-flow:
