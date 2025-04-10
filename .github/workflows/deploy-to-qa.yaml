@@ -19,13 +19,19 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ECR_REPOSITORY: illinois-getchildcare-qa-app
-      IMAGE_TAG: ${{ github.sha }}
 
     steps:
       - name: Check out code
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.ref || github.ref_name }}
+
+      - name: Get commit SHA from checked out ref
+        id: get-sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Set IMAGE_TAG
+        run: echo "IMAGE_TAG=${{ steps.get-sha.outputs.sha }}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -56,13 +62,12 @@ jobs:
 
       - name: Trigger infrastructure deployment
         run: |
-          # Set the required variables
           repo_owner="codeforamerica" 
           repo_name="il-gcc-infra"
           event_type="plan"
           environment="staging"
           config="staging"
-          
+
           set -e
           curl -f -L \
             -X POST \
