@@ -65,7 +65,7 @@ public class DocumentUploadController {
             HttpServletRequest request,
             Locale locale
     ) {
-        log.debug("POST doc-upload (url: {}): flow: {} inputName: {}", request.getRequestURI().toLowerCase(), flow, inputName);
+        log.debug("POST doc-upload (url: {}): flow: {} inputName: {}", request.getRequestURI().toLowerCase(), sanitize(flow), sanitize(inputName));
 
         Submission submission = fileController.findOrCreateSubmission(httpSession, flow);
 
@@ -80,5 +80,9 @@ public class DocumentUploadController {
         }
 
         return fileController.upload(file, flow, inputName, thumbDataUrl, screen, httpSession, request, locale);
+    }
+
+    private String sanitize(String string) {
+        return string.replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\n", " ").replaceAll("\r", " ");
     }
 }
