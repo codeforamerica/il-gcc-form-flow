@@ -65,7 +65,7 @@ public class DocumentUploadController {
             HttpServletRequest request,
             Locale locale
     ) {
-        log.debug("POST doc-upload (url: {}): inputName: {}", request.getRequestURI().toLowerCase(), inputName);
+        log.debug("POST doc-upload (url: {}): flow: {} inputName: {}", request.getRequestURI().toLowerCase(), flow, inputName);
 
         Submission submission = fileController.findOrCreateSubmission(httpSession, flow);
 
@@ -74,15 +74,11 @@ public class DocumentUploadController {
             if (transaction != null) {
                 // The submission was already sent to CCMS
                 log.info("Submission {} was already sent to CCMS.", submission.getId());
-                return getResponse(locale);
+                String message = messageSource.getMessage("doc-upload-add-files.error.already-sent", null, locale);
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
             }
         }
 
         return fileController.upload(file, flow, inputName, thumbDataUrl, screen, httpSession, request, locale);
-    }
-
-    private ResponseEntity<?> getResponse(Locale locale) {
-        String message = messageSource.getMessage("doc-upload-add-files.error.already-sent", null, locale);
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }
