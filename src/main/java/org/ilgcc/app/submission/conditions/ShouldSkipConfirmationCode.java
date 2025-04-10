@@ -31,6 +31,6 @@ public class ShouldSkipConfirmationCode implements Condition {
             submissionRepositoryService.save(submission);
         }
 
-        return cameFromHomePage != null && cameFromHomePage;
+        return shouldSkip;
     }
 }
