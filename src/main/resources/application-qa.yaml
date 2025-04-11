@@ -23,7 +23,7 @@ form-flow:
   validation:
     ssn-pattern: "\\d{3}-\\d{2}-\\d{4}"
   aws:
-    region: ""
+    region: ${AWS_REGION}
     s3_bucket_name: ${AWS_BUCKET}
     access_key: ""
     secret_key: ""
