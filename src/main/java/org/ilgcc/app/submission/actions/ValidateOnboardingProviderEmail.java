@@ -4,7 +4,6 @@ package org.ilgcc.app.submission.actions;
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
-import formflow.library.utils.RegexUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +37,24 @@ public class ValidateOnboardingProviderEmail implements Action {
     if (providerEmail.isBlank()) {
       return errorMessages;
     }
-
     try {
-      //
-      if (sendGridEmailValidationService.sendGridEmailValidationIsAvailable(providerEmail)) {
-        if (!sendGridEmailValidationService.validateEmail(providerEmail)) {
-          errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("email.invalid", null, locale)));
+      //Grab the validation response object
+      HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(providerEmail);
+      // When the flag is on and the sengrid endpoint is successfully reached whe should ge the values from the response object
+      // for validation
+      if (emailValidationResult.get("endpointReached").equals("success")) {
+        //Check that the email is valid.  if so we should just return errormessages
+        if (emailValidationResult.get("emailIsValid").equals("true")){
+          return errorMessages;
+        }else{
+          if (emailValidationResult.get("hasSuggestion").equals("true")){
+            errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.with-suggested-email-address", new Object[]{emailValidationResult.get("suggestedEmail")}, locale)));
+          }else{
+            errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, locale)));
+          }
         }
       }
+
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

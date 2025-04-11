@@ -26,15 +26,27 @@ public class SendGridEmailValidationService {
         ENABLE_EMAIL_VALIDATION = enableSendgridEmailValidation;
   }
 
-  public Boolean validateEmail(String emailAddress) throws IOException {
+  public HashMap<String, String> validateEmail(String emailAddress) throws IOException {
+        HashMap<String, String> emailValidationResult = new HashMap<>();
         Response response = getSendGridResponse(emailAddress);
+        if(!flagIsOnAndApiIsWorking(response)) {
+          emailValidationResult.put("endpointReached", "failed");
+          return emailValidationResult;
+        }
         ObjectMapper mapper = new ObjectMapper();
         SendGridValidationResponseBody responseBody = mapper.readValue(response.getBody(), SendGridValidationResponseBody.class);
-        if (isValidEmail(responseBody)){
-            return true;
-        }else {
-            return false;
+        emailValidationResult.put("endpointReached", "success");
+
+        Boolean emailIsValid = isValidEmail(responseBody);
+        emailValidationResult.put("emailIsValid", emailIsValid.toString());
+        if (!emailIsValid) {
+          Boolean hasSuggestedEmail = responseBody.getResult().hasSuggestedEmailAddress();
+          emailValidationResult.put("hasSuggestion", hasSuggestedEmail.toString());
+          if (hasSuggestedEmail) {
+            emailValidationResult.put("suggestedEmail", responseBody.getResult().getSuggestedEmailAddress());
+          }
         }
+        return emailValidationResult;
     }
 
     private Response getSendGridResponse (String emailAddress) throws IOException {
@@ -49,11 +61,11 @@ public class SendGridEmailValidationService {
         return sendGrid.api(request);
     }
 
-    public Boolean sendGridEmailValidationIsAvailable(String emailAddress) throws IOException {
+    public Boolean flagIsOnAndApiIsWorking(Response response) throws IOException {
       if  (ENABLE_EMAIL_VALIDATION) {
-          Response response = getSendGridResponse(emailAddress);
           return response.getStatusCode() == 200;
       }  else {
+          log.debug("Sendgrid Flag is off");
           return false;
       }
     }

@@ -16,6 +16,7 @@ public class SendGridValidationResponseBody {
     private String host;
     private String ip_address;
     private Checks checks;
+    private String suggestion;
 
     public boolean hasValidAddressSyntax() {
       return checks != null && checks.domain != null && checks.domain.hasValidAddressSyntax;
@@ -36,8 +37,15 @@ public class SendGridValidationResponseBody {
     public boolean hasSuspectedBounces() {
       return checks != null && checks.additional != null && checks.additional.hasSuspectedBounces;
     }
-  }
 
+    public Boolean hasSuggestedEmailAddress() {
+      return suggestion != null && !suggestion.isBlank();
+    }
+
+    public String getSuggestedEmailAddress() {
+      return suggestion;
+    }
+  }
   @Data
   public static class Checks {
     private Domain domain;
@@ -73,4 +81,5 @@ public class SendGridValidationResponseBody {
     @JsonProperty("has_suspected_bounces")
     private boolean hasSuspectedBounces;
   }
+
 }
