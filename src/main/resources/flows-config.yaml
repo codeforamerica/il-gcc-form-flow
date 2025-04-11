@@ -416,7 +416,7 @@ flow:
     beforeSaveAction: GenerateShortLinks
     afterSaveAction: UploadSubmissionToS3AndEnqueueCCMSPayload
     nextScreens:
-      - name: submit-contact-method
+      - name: after-submit-contact-provider
         condition: EnableProviderMessagingFlagOn
       - name: submit-complete
   submit-complete:
@@ -472,7 +472,7 @@ flow:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: complete-submit-confirmation
-  submit-contact-method:
+  after-submit-contact-provider:
     condition: EnableProviderMessagingFlagOn
     beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
@@ -581,7 +581,7 @@ landmarks:
     - next-steps-pdf-delivery
     - no-provider-intro
     - no-provider-notice
-    - submit-contact-method
+    - after-submit-contact-provider
     - submit-contact-provider-email
     - submit-confirm-provider-email
     - submit-edit-provider-email
@@ -744,13 +744,25 @@ flow:
       - name: registration-info-review
   registration-info-review:
     nextScreens:
+      - name: registration-home-provider-itin
+        condition: EnableProviderRegistrationItin
       - name: registration-home-provider-ssn
         condition: ProviderSsnRequiredForInHomeCare
       - name: registration-tax-id
   registration-home-provider-ssn:
     crossFieldValidationAction: ValidateHomeProviderSSN
     nextScreens:
+      - name: registration-home-provider-tax-id
+        condition: EnableProviderRegistrationItin
       - name: registration-home-provider-dob
+  registration-home-provider-tax-id:
+    condition: EnableProviderRegistrationItin
+    nextScreens:
+      - name: registration-home-provider-ssn
+  registration-home-provider-itin:
+    condition: EnableProviderRegistrationItin
+    nextScreens:
+      - name:
   registration-home-provider-dob:
     crossFieldValidationAction: ValidateHomeProviderDateOfBirth
     onPostAction: CreateProviderIdentityCheckDOB
@@ -771,6 +783,10 @@ flow:
       - name: registration-service-languages
   registration-tax-id-ssn:
     condition: EnableProviderRegistration
+    nextScreens:
+      - name: registration-service-languages
+  registration-tax-id-itin:
+    condition: EnableProviderRegistrationItin
     nextScreens:
       - name: registration-service-languages
   registration-service-languages:
