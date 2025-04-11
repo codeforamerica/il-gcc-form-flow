@@ -40,16 +40,16 @@ public class PdfTransmissionJob {
     }
 
     public void enqueuePdfTransmissionJob(String objectPath, Submission submission, String pdfFileName) throws IOException {
-        String presignedUrl = s3PresignService.generatePresignedUrl(objectPath);
         Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
         Transmission pdfTransmission = transmissionRepositoryService.save(new Transmission(submission, null, now, Queued, APPLICATION_PDF, null));
         UUID transmissionId = pdfTransmission.getTransmissionId();
-        JobId jobId = jobScheduler.enqueue(() -> sendPdfTransferRequest(presignedUrl, submission, pdfFileName, transmissionId));
+        JobId jobId = jobScheduler.enqueue(() -> sendPdfTransferRequest(objectPath, submission, pdfFileName, transmissionId));
         log.info("Enqueued job with ID: {} for submission with ID: {}", jobId, submission.getId());
     }
 
     @Job(name = "Send Document Transfer Service Request for Application PDF", retries = 5)
-    public void sendPdfTransferRequest(String presignedUrl, Submission submission, String fileName, UUID transmissionId) throws IOException, URISyntaxException {
+    public void sendPdfTransferRequest(String objectPath, Submission submission, String fileName, UUID transmissionId) throws IOException, URISyntaxException {
+        String presignedUrl = s3PresignService.generatePresignedUrl(objectPath);
         documentTransferRequestService.sendDocumentTransferServiceRequest(presignedUrl, submission, fileName, transmissionId);
     }
 }

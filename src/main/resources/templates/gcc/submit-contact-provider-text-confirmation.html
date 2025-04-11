@@ -31,7 +31,14 @@
           </div>
         </div>
         <div class="form-card__footer">
-          <th:block th:replace="~{fragments/continueButton :: continue}"/>
+          <th:block th:with="otherSelected=${T(org.ilgcc.app.utils.SubmissionUtilities).isSelectedAsProviderContactMethod(inputData, 'OTHER')}">
+            <th:block th:if="${otherSelected}">
+              <th:block th:replace="~{fragments/continueButton :: continue(text=#{general.inputs.continue})}"/>
+            </th:block>
+            <th:block th:unless="${otherSelected}">
+              <th:block th:replace="~{fragments/continueButton :: continue(text=#{general.button.next.submit-documents})}"/>
+            </th:block>
+          </th:block>
         </div>
       </main>
     </div>

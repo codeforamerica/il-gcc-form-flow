@@ -9,7 +9,7 @@
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block
-                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{doc-upload-recommended-docs.header}, subtext=#{doc-upload-recommended-docs.subheader})}"/>
+                        th:replace="~{fragments/cardHeader :: cardHeader(header=#{registration-doc-upload-recommended-docs.title}, subtext=#{registration-doc-upload-recommended-docs.subheader})}"/>
                 <th:block
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent">

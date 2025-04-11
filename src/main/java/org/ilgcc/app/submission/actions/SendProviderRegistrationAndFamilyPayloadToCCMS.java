@@ -7,6 +7,7 @@ import formflow.library.data.SubmissionRepositoryService;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,7 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
                         familySubmissionId.get());
                 Submission familySubmission = familySubmissionOptional.get();
                 familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
+                familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
                 submissionRepositoryService.save(familySubmission);
                 if (CCMS_INTEGRATION_ENABLED) {
                     ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission);

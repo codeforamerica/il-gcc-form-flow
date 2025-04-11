@@ -234,7 +234,7 @@
     }
 
     $("#document-upload-" + [[${inputName}]]).dropzone({
-      url: "/file-upload",
+      url: "/doc-upload",
       uploadMultiple: false,
       previewsContainer: [[${'#document-upload-' + inputName}]] + " .preview-container",
       autoProcessQueue: false,
@@ -427,7 +427,11 @@
       },
       error: function (file, errorMessage, xhr) {
         if (xhr && xhr.response) {
-          file.previewElement.getElementsByClassName("text--error")[0].innerText = xhr.response;
+          if (xhr.status === 403) {
+            file.previewElement.getElementsByClassName("text--error")[0].innerText = [[#{doc-upload-add-files.error.unauthorized}]];
+          } else {
+            file.previewElement.getElementsByClassName("text--error")[0].innerText = xhr.response;
+          }
         } else {
           var message = errorMessage.error ? errorMessage.error : errorMessage;
           file.previewElement.getElementsByClassName("text--error")[0].innerText = message;
