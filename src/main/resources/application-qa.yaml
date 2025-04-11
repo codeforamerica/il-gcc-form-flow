@@ -41,8 +41,3 @@ il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
   dts:
     processing-org: '4c-ccap-apps-testing'
-logging:
-  level:
-    root: DEBUG
-    org.springframework: DEBUG
-    org.springframework.boot: DEBUG
