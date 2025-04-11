@@ -22,6 +22,11 @@ form-flow:
       max-pages: ${UPLOADS_MAX_PAGES:50}
   validation:
     ssn-pattern: "\\d{3}-\\d{2}-\\d{4}"
+  aws:
+    region: ""
+    s3_bucket_name: ${AWS_BUCKET}
+    access_key: ""
+    secret_key: ""
 management:
   endpoint:
     health:
