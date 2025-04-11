@@ -1,0 +1,32 @@
+<th:block th:fragment="screen">
+    <th:block
+            th:replace="~{fragments/screens/screenWithOneInput ::
+  screenWithOneInput(
+    title=#{after-submit-contact-provider.title},
+    header=#{after-submit-contact-provider.header},
+    iconFragment=~{fragments/gcc-icons :: mail-sent-success},
+    required='true',
+    buttonLabel=#{general.button.continue},
+    formAction=${formAction},
+    inputContent=~{::inputContent})}">
+        <th:block th:ref="inputContent">
+            <div class='notice spacing-below-60 notice--gray'>
+                <p th:utext="#{after-submit-contact-provider.notice}"></p>
+            </div>
+            <p class="spacing-below-0" th:text="#{general.select-all-that-apply}"></p>
+            <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+      checkboxFieldset(inputName='contactProviderMethod',
+      ariaLabel='header',
+      content=~{::contactList})}">
+                <th:block th:ref="contactList">
+                    <th:block
+                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='contactProviderMethod',value='EMAIL', label=#{after-submit-contact-provider.email})}"/>
+                    <th:block
+                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='contactProviderMethod',value='TEXT', label=#{after-submit-contact-provider.text})}"/>
+                    <th:block
+                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='contactProviderMethod',value='OTHER', label=#{after-submit-contact-provider.other})}"/>
+                </th:block>
+            </th:block>
+        </th:block>
+    </th:block>
+</th:block>

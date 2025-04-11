@@ -1,0 +1,5 @@
+<th:block
+        th:with="hasChosenProvider=${submission.getInputData().getOrDefault('hasChosenProvider', 'false')}">
+    <th:block
+            th:replace="${hasChosenProvider} ? ~{fragments/screens/choose-messaging-method :: screen} : ~{fragments/screens/find-provider :: screen}"/>
+</th:block>
