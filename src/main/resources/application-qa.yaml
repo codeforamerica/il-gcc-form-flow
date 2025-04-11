@@ -25,8 +25,8 @@ form-flow:
   aws:
     region: ${AWS_REGION}
     s3_bucket_name: ${AWS_BUCKET}
-    access_key: ""
-    secret_key: ""
+    access_key: ${AWS_ACCESS_KEY}
+    secret_key: ${AWS_SECRET_KEY}
 management:
   endpoint:
     health:
