@@ -51,12 +51,12 @@ public class S3PresignService {
 //                software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider.create();
 
         this.s3Client = S3Client.builder()
-//                .region(Region.of(region))
+                .region(Region.of(region))
 //                .credentialsProvider(credentialsProvider)
                 .build();
 
         this.s3Presigner = S3Presigner.builder()
-//                .region(Region.of(region))
+                .region(Region.of(region))
 //                .credentialsProvider(credentialsProvider)
                 .build();
     }
