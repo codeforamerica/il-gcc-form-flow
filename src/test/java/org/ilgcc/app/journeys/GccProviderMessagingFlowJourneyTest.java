@@ -119,7 +119,7 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-share-confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("submit-share-confirmation-code.cta"));
+        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
     }
