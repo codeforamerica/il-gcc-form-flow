@@ -12,8 +12,6 @@ import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
@@ -35,8 +33,8 @@ public class S3PresignService {
     private final S3Client s3Client;
     private final Long presignedUrlDuration;
     
-    public S3PresignService(@Value("${form-flow.aws.access_key}") String accessKey,
-            @Value("${form-flow.aws.secret_key}") String secretKey,
+    public S3PresignService(@Value("${form-flow.aws.access_key:}") String accessKey,
+            @Value("${form-flow.aws.secret_key:}") String secretKey,
             @Value("${form-flow.aws.s3_bucket_name}") String bucketName,
             @Value("${form-flow.aws.region}") String region,
             DocumentTransferConfiguration documentTransferConfiguration) {
@@ -46,15 +44,20 @@ public class S3PresignService {
         this.bucketName = bucketName;
         this.presignedUrlDuration = documentTransferConfiguration.getPresignedUrlDuration();
 
-        AwsBasicCredentials awsCreds = AwsBasicCredentials.create(this.accessKey, this.secretKey);
-        
+//        var credentialsProvider = (!accessKey.isBlank() && !secretKey.isBlank()) ?
+//                // We are in aptible and need to pass the keys
+//                StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)) :
+//                // We are in AWS and get them automatically through IAM
+//                software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider.create();
+
         this.s3Client = S3Client.builder()
-                .region(this.region)
-                .credentialsProvider(StaticCredentialsProvider.create(awsCreds))
+//                .region(Region.of(region))
+//                .credentialsProvider(credentialsProvider)
                 .build();
+
         this.s3Presigner = S3Presigner.builder()
-                .region(this.region)
-                .credentialsProvider(StaticCredentialsProvider.create(awsCreds))
+//                .region(Region.of(region))
+//                .credentialsProvider(credentialsProvider)
                 .build();
     }
 
