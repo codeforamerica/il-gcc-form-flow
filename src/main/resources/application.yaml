@@ -101,9 +101,8 @@ spring:
       max-request-size: ${form-flow.uploads.max-file-size}MB
 logging:
   level:
-    root: DEBUG
-    org.springframework: DEBUG
-    org.springframework.boot: DEBUG
+    root: INFO
+    org.springframework.web: ERROR
 server:
   tomcat:
     max-http-form-post-size: ${form-flow.uploads.max-file-size}MB
