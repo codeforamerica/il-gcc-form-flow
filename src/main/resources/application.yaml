@@ -146,4 +146,5 @@ il-gcc:
     password: ${CCMS_API_PASSWORD}
 sendgrid:
   public-key: ${SENDGRID_PUBLIC_KEY}
-  
+  enable-sendgrid-email-validation: ${ENABLE_SENDGRID_EMAIL_VALIDATION:false}
+  email-validation: ${SENDGRID_EMAIL_VALIDATION_API_KEY}
