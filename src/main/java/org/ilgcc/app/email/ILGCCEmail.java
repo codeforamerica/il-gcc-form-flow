@@ -40,7 +40,8 @@ public class ILGCCEmail implements Serializable {
         PROVIDER_CONFIRMATION_EMAIL("Provider Confirmation Email"),
         PROVIDER_DECLINES_CARE_FAMILY_EMAIL("Provider Declines Care Family Email"),
         PROVIDER_DID_NOT_RESPOND_FAMILY_EMAIL("Provider Did Not Respond Family Email"),
-        AUTOMATED_PROVIDER_OUTREACH_EMAIL("Automated Provider Outreach Email");
+        AUTOMATED_PROVIDER_OUTREACH_EMAIL("Automated Provider Outreach Email"),
+        AUTOMATED_NEW_APPLICATIONS_EMAIL("Automated Email going to Processing Organizations Daily");
 
         private final String description;
 
