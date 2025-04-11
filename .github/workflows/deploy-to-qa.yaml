@@ -6,7 +6,12 @@ on:
     types: [ completed ]
     branches: [ main ]
   workflow_dispatch:
-
+    inputs:
+      ref:
+        description: 'Branch, tag, or SHA to deploy'
+        required: true
+        default: 'main'
+        
 jobs:
   deploy:
     name: Deploy to QA
