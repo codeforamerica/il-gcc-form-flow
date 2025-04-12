@@ -47,6 +47,14 @@ public interface CCMSDataService {
     List<ResourceOrganization> getResourceOrganizationsByCaseloadCode(String caseloadCode);
 
     /**
+     * Retrieves a list of resource organizations based on a list of caseload codes.
+     *
+     * @param  activeCaseloadCode the caseloads to filter down the list by
+     * @return a list of matching resource organizations
+     */
+    List<ResourceOrganization> getActiveResourceOrganizations(List<String> activeCaseloadCode);
+
+    /**
      * Retrieves a list of Counties by caseload code.
      *
      * @param caseloadCode the caseload code to search for

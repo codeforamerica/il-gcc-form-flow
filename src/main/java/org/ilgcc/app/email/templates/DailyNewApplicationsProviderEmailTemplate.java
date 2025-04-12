@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
+import org.ilgcc.app.data.ResourceOrganizationTransaction;
 import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.app.email.ILGCCEmailTemplate;
@@ -17,23 +18,21 @@ import org.springframework.context.MessageSource;
 
 @Getter
 @Setter
-public class AutomatedNewApplicationsEmailTemplate {
+public class DailyNewApplicationsProviderEmailTemplate {
 
     private Map<String, Object> emailData;
     private MessageSource messageSource;
-    private Locale locale;
+    private Locale locale = Locale.ENGLISH;
 
-    public AutomatedNewApplicationsEmailTemplate(Map<String, Object> emailData, MessageSource messageSource, Locale locale) {
+    public DailyNewApplicationsProviderEmailTemplate(Map<String, Object> emailData, MessageSource messageSource) {
         this.emailData = emailData;
         this.messageSource = messageSource;
-        this.locale = locale;
-
     }
 
     public ILGCCEmailTemplate createTemplate() {
-        return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData.getOrDefault("date", "").toString()),
+        return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData.get("currentEmailDate").toString()),
                 new Content("text/html", setBodyCopy(emailData)),
-                EmailType.AUTOMATED_NEW_APPLICATIONS_EMAIL);
+                EmailType.DAILY_NEW_APPLICATIONS_PROVIDER_EMAIL);
     }
 
     private Email senderEmail() {
@@ -46,10 +45,11 @@ public class AutomatedNewApplicationsEmailTemplate {
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
-        List<Map<String, String>> submissions = (List) emailData.get("submissions");
+
+        List<ResourceOrganizationTransaction> transmissions = (List) emailData.get("transmissions");
 
         String p1 = messageSource.getMessage("email.automated-new-applications.header1",
-                new Object[]{emailData.get("processingOrg")},
+                new Object[]{emailData.get("processingOrgName")},
                 locale);
 
         String p2 = messageSource.getMessage("email.automated-new-applications.body1",
@@ -60,18 +60,18 @@ public class AutomatedNewApplicationsEmailTemplate {
                 locale);
 
         String p4 = messageSource.getMessage("email.automated-new-applications.body2",
-                new Object[]{submissions.size(), emailData.get("processingOrg")},
+                new Object[]{transmissions.size(), emailData.get("processingOrgName")},
                 locale);
 
         String p5 = messageSource.getMessage("email.automated-new-applications.header3", null,
                 locale);
 
-        String p6 = String.format("<table class='submissions-list'>%s</table>", createSubmissionsTableBody(submissions));
+        String p6 = String.format("<table class='transmissions-list'>%s</table>", createSubmissionsTableBody(transmissions));
 
         return p1 + p2 + p3 + p4 + p5 + p6;
     }
 
-    private String createSubmissionsTableBody(List<Map<String, String>> submissions) {
+    private String createSubmissionsTableBody(List<ResourceOrganizationTransaction> transmissions) {
         String tableHeader =
                 "<thead><tr><th scope = 'col'>" + messageSource.getMessage("email.automated-new-applications.col-name-1", null,
                         locale) + "</th>" + "<th scope = 'col'>" + messageSource.getMessage(
@@ -81,18 +81,18 @@ public class AutomatedNewApplicationsEmailTemplate {
                         locale) + "</th></tr></thead>";
 
         List<String> tableBody = new ArrayList();
-        submissions.forEach(s -> {
+        transmissions.forEach(s -> {
             tableBody.add(createSubmissionsTableRows(s));
         });
 
         return tableHeader + String.format("<tbody>%s/<tbody>", String.join("", tableBody));
     }
 
-    private String createSubmissionsTableRows(Map<String, String> submission) {
+    private String createSubmissionsTableRows(ResourceOrganizationTransaction transaction) {
         return "<tr>"
-                + "<td>" + submission.get("date") + "</td>"
-                + "<td>" + submission.get("confirmationCode") + "</td>"
-                + "<td>" + submission.get("workItemID") + "</td>"
+                + "<td>" + transaction.getCreatedAt() + "</td>"
+                + "<td>" + transaction.getShortCode() + "</td>"
+                + "<td>" + transaction.getWorkItemId() + "</td>"
                 + "</tr>";
     }
 
