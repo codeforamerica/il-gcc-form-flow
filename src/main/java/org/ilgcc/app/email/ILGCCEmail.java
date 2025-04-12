@@ -32,6 +32,15 @@ public class ILGCCEmail implements Serializable {
         this.submissionId = submissionId;
     }
 
+    // need to figure out how to handle a world without submissionId
+    public ILGCCEmail(String recipientAddress, ILGCCEmailTemplate emailTemplate) {
+        this.senderEmail = emailTemplate.getSenderEmail();
+        this.recipientEmail = new Email(recipientAddress);
+        this.subject = emailTemplate.getSubject();
+        this.body = emailTemplate.getBody();
+        this.emailType = emailTemplate.getEmailType();
+    }
+
     @Getter
     public enum EmailType {
         FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"),
@@ -41,7 +50,7 @@ public class ILGCCEmail implements Serializable {
         PROVIDER_DECLINES_CARE_FAMILY_EMAIL("Provider Declines Care Family Email"),
         PROVIDER_DID_NOT_RESPOND_FAMILY_EMAIL("Provider Did Not Respond Family Email"),
         AUTOMATED_PROVIDER_OUTREACH_EMAIL("Automated Provider Outreach Email"),
-        AUTOMATED_NEW_APPLICATIONS_EMAIL("Automated Email going to Processing Organizations Daily");
+        DAILY_NEW_APPLICATIONS_PROVIDER_EMAIL("Automated Email going to Processing Organizations Daily");
 
         private final String description;
 

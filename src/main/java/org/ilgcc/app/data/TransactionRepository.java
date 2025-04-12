@@ -24,12 +24,17 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     Set<Submission> findSubmissionsWithoutTransactions(@Param("sinceDate") OffsetDateTime sinceDate);
 
     @Query(value = """
-        SELECT s.input_data->>'organizationId' AS organization_id, t.created_at, s.short_code, t.work_item_id, 
-        FROM transaction t
-        LEFT JOIN submission s ON t.submission_id = s.id
-        WHERE t.created_at >= :sinceDate AND s.flow = 'gcc'
-        ORDER BY t.created_at ASC
-        """, nativeQuery = true)
+            SELECT 
+                s.input_data->>'organizationId' AS organization_id, 
+                t.created_at, 
+                s.short_code, 
+                t.work_item_id
+            FROM transaction t
+            LEFT JOIN submission s ON t.submission_id = s.id
+            WHERE t.created_at >= :sinceDate 
+              AND s.flow = 'gcc'
+            ORDER BY t.created_at ASC
+            """, nativeQuery = true)
     List<Object[]> findSubmissionsTransmittedSince(@Param("sinceDate") OffsetDateTime sinceDate);
 
     Transaction findByTransactionId(UUID transactionId);

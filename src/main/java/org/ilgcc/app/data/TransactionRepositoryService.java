@@ -6,14 +6,12 @@ import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.AbstractMap;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.ilgcc.app.data.TransactionRepositoryService.ResourceOrganizationTransaction.TransactionData;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,34 +22,6 @@ public class TransactionRepositoryService {
 
     public TransactionRepositoryService(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
-    }
-
-    public class ResourceOrganizationTransaction {
-
-        private String organizationId;
-        private List<TransactionData> transactions;
-
-
-        public ResourceOrganizationTransaction(String organizationId, List<TransactionData> transactions) {
-            this.organizationId = organizationId;
-            this.transactions = transactions;
-        }
-
-
-        public static class TransactionData {
-
-            private String shortCode;
-            private OffsetDateTime createdAt;
-            private String workItemId;
-
-            public TransactionData(OffsetDateTime createdAt, String shortCode, String workItemId) {
-                this.workItemId = workItemId;
-                this.shortCode = shortCode;
-                this.createdAt = createdAt;
-            }
-
-        }
-
     }
 
     public Transaction getByTransactionId(UUID transactionId) {
@@ -74,32 +44,27 @@ public class TransactionRepositoryService {
         return transactionRepository.findSubmissionsWithoutTransactions(sinceDate);
     }
 
-    public List<ResourceOrganizationTransaction> findSubmissionsTransmittedPerResourceOrganization(OffsetDateTime sinceDate) {
+    public List<ResourceOrganizationTransaction> findSubmissionsTransmittedSince(OffsetDateTime sinceDate) {
 
         List<Object[]> rows = transactionRepository.findSubmissionsTransmittedSince(sinceDate);
 
-        Map<String, List<ResourceOrganizationTransaction.TransactionData>> grouped = rows.stream()
-                .map(row -> {
-                    OffsetDateTime createdAt = ((Timestamp) row[0]).toLocalDateTime().atOffset(ZoneOffset.UTC);
-                    String shortCode = (String) row[1];
-                    String workItemId = (String) row[2];
-                    String organizationId = (String) row[3];
+        List<ResourceOrganizationTransaction> transactions = new ArrayList<>();
 
-                    return new AbstractMap.SimpleEntry<>(
-                            organizationId,
-                            new ResourceOrganizationTransaction.TransactionData(createdAt, shortCode, workItemId)
-                    );
-                })
-                .filter(entry -> entry.getKey() != null)
-                .collect(Collectors.groupingBy(
-                        Map.Entry::getKey,
-                        Collectors.mapping(Map.Entry::getValue, Collectors.toList())
-                ));
+        rows.stream()
+                .forEach(t -> {
+                    String organizationId = (String) t[0];
+                    OffsetDateTime createdAt = ((Timestamp) t[1]).toLocalDateTime().atOffset(ZoneOffset.UTC);
+                    String shortCode = (String) t[2];
+                    String workItemId = (String) t[3];
+                    transactions.add(new ResourceOrganizationTransaction(organizationId, createdAt, shortCode, workItemId));
+                });
 
-        return grouped.entrySet().stream()
-                .map(entry -> new ResourceOrganizationTransaction(entry.getKey(), entry.getValue()))
-                .toList();
+        return transactions;
+    }
 
+    public Map<String, List<ResourceOrganizationTransaction>> findSubmissionsSentByResourceOrganizationSince(OffsetDateTime sinceDate){
+        return findSubmissionsTransmittedSince(sinceDate).stream()
+                .collect(Collectors.groupingBy(ResourceOrganizationTransaction::getOrganizationId));
     }
 
     public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId) {
