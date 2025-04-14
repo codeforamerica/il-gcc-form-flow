@@ -21,9 +21,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * A controller that checks if the document being uploaded has already been sent to be processed,
- * and if so, stops the upload and lets the user know. Otherwise, it falls through to the FFL's
- * FileController for further validation and processing.
+ * A controller that checks if the document being uploaded has already been sent to be processed, and if so, stops the upload and
+ * lets the user know. Otherwise, it falls through to the FFL's FileController for further validation and processing.
  */
 @Controller
 @EnableAutoConfiguration
@@ -34,8 +33,7 @@ public class DocumentUploadController {
     private final FileController fileController;
     protected final MessageSource messageSource;
 
-    public DocumentUploadController(FileController fileController,
-            TransactionRepositoryService transactionRepositoryService,
+    public DocumentUploadController(FileController fileController, TransactionRepositoryService transactionRepositoryService,
             MessageSource messageSource) {
 
         this.fileController = fileController;
@@ -56,24 +54,18 @@ public class DocumentUploadController {
      */
     @PostMapping(value = "/doc-upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> upload(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("flow") String flow,
-            @RequestParam("inputName") String inputName,
-            @RequestParam("thumbDataURL") String thumbDataUrl,
-            @RequestParam("screen") String screen,
-            HttpSession httpSession,
-            HttpServletRequest request,
-            Locale locale
-    ) {
-        log.debug("POST doc-upload (url: {}): flow: {} inputName: {}", request.getRequestURI().toLowerCase(), sanitize(flow), sanitize(inputName));
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file, @RequestParam("flow") String flow,
+            @RequestParam("inputName") String inputName, @RequestParam("thumbDataURL") String thumbDataUrl,
+            @RequestParam("screen") String screen, HttpSession httpSession, HttpServletRequest request, Locale locale) {
+        log.debug("POST doc-upload (url: {}): flow: {} inputName: {}", request.getRequestURI().toLowerCase(), sanitize(flow),
+                sanitize(inputName));
 
         Submission submission = fileController.findOrCreateSubmission(httpSession, flow);
 
         if (submission != null) {
 
             UUID submissionId;
-            String familySubmissionId = (String)submission.getInputData().get("familySubmissionId");
+            String familySubmissionId = (String) submission.getInputData().get("familySubmissionId");
             if (familySubmissionId != null) {
                 // If we have a familySubmissionId, this means we're uploading to a provider submission
                 // Since we only send the family submission to CCMS, we need to check against the database
