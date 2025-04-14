@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ValidateOnboardingProviderEmail implements Action {
+public class ValidateProviderEmail implements Action {
   @Autowired
   MessageSource messageSource;
 

@@ -12,7 +12,7 @@ flow:
         condition: NoProviderChosen
       - name: onboarding-provider-info
   onboarding-provider-info:
-    crossFieldValidationAction: ValidateOnboardingProviderEmail
+    crossFieldValidationAction: ValidateProviderEmail
     nextScreens:
       - name: onboarding-provider-info-review
   onboarding-no-provider-intro:
