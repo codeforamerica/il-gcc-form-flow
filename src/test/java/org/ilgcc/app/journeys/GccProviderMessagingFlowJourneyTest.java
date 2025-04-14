@@ -121,7 +121,12 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
         testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
 
+        // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
     }
 
 
@@ -160,6 +165,11 @@ public class GccProviderMessagingFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("after-submit-contact-provider.no-provider.title"));
         testPage.clickContinue();
 
+        // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
+
+        // submit-next-steps
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));
     }
 }
