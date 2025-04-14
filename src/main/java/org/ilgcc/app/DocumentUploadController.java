@@ -5,6 +5,7 @@ import formflow.library.data.Submission;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import java.util.Locale;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.Transaction;
 import org.ilgcc.app.data.TransactionRepositoryService;
@@ -69,13 +70,27 @@ public class DocumentUploadController {
 
         Submission submission = fileController.findOrCreateSubmission(httpSession, flow);
 
-        if (submission != null && submission.getId() != null) {
-            Transaction transaction = transactionRepositoryService.getBySubmissionId(submission.getId());
-            if (transaction != null) {
-                // The submission was already sent to CCMS
-                log.info("Submission {} was already sent to CCMS.", submission.getId());
-                String message = messageSource.getMessage("doc-upload-add-files.error.already-sent", null, locale);
-                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        if (submission != null) {
+
+            UUID submissionId;
+            String familySubmissionId = (String)submission.getInputData().get("familySubmissionId");
+            if (familySubmissionId != null) {
+                // If we have a familySubmissionId, this means we're uploading to a provider submission
+                // Since we only send the family submission to CCMS, we need to check against the database
+                // table for a transaction using this UUID and not the provider submission's id.
+                submissionId = UUID.fromString(familySubmissionId);
+            } else {
+                submissionId = submission.getId();
+            }
+
+            if (submissionId != null) {
+                Transaction transaction = transactionRepositoryService.getBySubmissionId(submission.getId());
+                if (transaction != null) {
+                    // The submission was already sent to CCMS
+                    log.info("Submission {} was already sent to CCMS.", submission.getId());
+                    String message = messageSource.getMessage("doc-upload-add-files.error.already-sent", null, locale);
+                    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+                }
             }
         }
 
