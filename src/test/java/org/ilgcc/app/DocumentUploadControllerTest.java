@@ -12,6 +12,7 @@ import formflow.library.data.UserFile;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.ClammitVirusScanner;
 import formflow.library.file.CloudFileRepository;
+import java.util.HashMap;
 import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.ilgcc.app.data.Transaction;
@@ -69,7 +70,8 @@ public class DocumentUploadControllerTest extends AbstractMockMvcTest {
             submissionId = UUID.randomUUID();
             mockMvc = MockMvcBuilders.standaloneSetup(documentUploadController).build();
             submission = Submission.builder().id(submissionId).build();
-
+            submission.setInputData(new HashMap<>());
+            
             when(clammitVirusScanner.virusDetected(any())).thenReturn(false);
             when(submissionRepositoryService.save(any())).thenReturn(submission);
             // Set the file ID on the UserFile since Mockito won't actually set one (it just returns what we tell it to)
