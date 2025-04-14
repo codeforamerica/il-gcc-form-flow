@@ -19,11 +19,13 @@ public class SendGridEmailValidationService {
         This service will send a request to the SendGrid email validation api
      */
   private final boolean ENABLE_EMAIL_VALIDATION;
-  private final SendGrid sendGrid = new SendGrid(System.getenv("SENDGRID_EMAIL_VALIDATION_API_KEY"));
+  private final SendGrid sendGrid;
 
   public SendGridEmailValidationService(
-        @Value("${sendgrid.enable-sendgrid-email-validation:false}") boolean enableSendgridEmailValidation) {
+        @Value("${sendgrid.enable-sendgrid-email-validation:false}") boolean enableSendgridEmailValidation,
+        @Value("${sendgrid.email-validation-api-key}") String apiKey) {
         ENABLE_EMAIL_VALIDATION = enableSendgridEmailValidation;
+        this.sendGrid = new SendGrid(System.getenv(apiKey));
   }
 
   public HashMap<String, String> validateEmail(String emailAddress) throws IOException {

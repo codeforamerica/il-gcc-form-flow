@@ -33,17 +33,12 @@ public class ValidateOnboardingProviderEmail implements Action {
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> formData = formSubmission.getFormData();
     String providerEmail = formData.get(INPUT_NAME).toString();
-    //If providerEmail is blank we should fall back to the annotations for this field
     if (providerEmail.isBlank()) {
       return errorMessages;
     }
     try {
-      //Grab the validation response object
       HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(providerEmail);
-      // When the flag is on and the sengrid endpoint is successfully reached whe should ge the values from the response object
-      // for validation
       if (emailValidationResult.get("endpointReached").equals("success")) {
-        //Check that the email is valid.  if so we should just return errormessages
         if (emailValidationResult.get("emailIsValid").equals("true")){
           return errorMessages;
         }else{
