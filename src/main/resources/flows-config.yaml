@@ -476,6 +476,7 @@ flow:
       - name: complete-submit-confirmation
   after-submit-contact-provider:
     condition: EnableProviderMessagingFlagOn
+    beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
       - name: submit-contact-provider-email
         condition: ContactProviderViaEmail
