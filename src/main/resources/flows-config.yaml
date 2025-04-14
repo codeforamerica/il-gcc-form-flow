@@ -433,6 +433,8 @@ flow:
   doc-upload-submit-confirmation:
     afterSaveAction: SendUploadedFileToDocumentTransferService
     nextScreens:
+      - name: submit-next-steps
+        condition: EnableProviderMessagingFlagOn
       - name: no-provider-intro
         condition: NoProviderChosen
       - name: contact-provider-intro
