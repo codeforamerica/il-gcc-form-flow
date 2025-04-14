@@ -38,7 +38,7 @@ public class ValidateProviderEmail implements Action {
     }
     try {
       HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(providerEmail);
-      if (emailValidationResult.get("endpointReached").equals("success")) {
+      if (emailValidationResult.getOrDefault("endpointReached", "").equals("success")) {
         if (emailValidationResult.get("emailIsValid").equals("true")){
           return errorMessages;
         }else{
