@@ -416,7 +416,7 @@ flow:
     beforeSaveAction: GenerateShortLinks
     afterSaveAction: UploadSubmissionToS3AndEnqueueCCMSPayload
     nextScreens:
-      - name: submit-contact-method
+      - name: after-submit-contact-provider
         condition: EnableProviderMessagingFlagOn
       - name: submit-complete
   submit-complete:
@@ -472,8 +472,9 @@ flow:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: complete-submit-confirmation
-  submit-contact-method:
+  after-submit-contact-provider:
     condition: EnableProviderMessagingFlagOn
+    beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
       - name: submit-contact-provider-email
         condition: ContactProviderViaEmail
@@ -580,7 +581,7 @@ landmarks:
     - next-steps-pdf-delivery
     - no-provider-intro
     - no-provider-notice
-    - submit-contact-method
+    - after-submit-contact-provider
     - submit-contact-provider-email
     - submit-confirm-provider-email
     - submit-edit-provider-email
