@@ -1,5 +1,6 @@
 package org.ilgcc.app.email;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ public class SendGridValidationResponseBody {
   private Result result;
 
   @Data
+  @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Result {
     private String email;
     private String verdict;
