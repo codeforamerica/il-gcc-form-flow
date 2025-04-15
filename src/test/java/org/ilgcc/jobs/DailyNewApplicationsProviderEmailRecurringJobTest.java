@@ -51,6 +51,11 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     @Autowired
     CCMSDataService ccmsDataService;
 
+    String TWO_RESOURCE_ORG_EMAILS = "{\"12345678901234\": [\"12345678901234@mail.com\"], \"12345678901235\": [\"12345678901235@mail.com\"]}";
+
+    String FOUR_RESOURCE_ORG_EMAILS = "{\"12345678901234\": [\"12345678901234@mail.com\", \"12345678901234-2@mail.com\", \"12345678901234-3@mail.com\"], \"12345678901235\": [\"12345678901235@mail.com\"]}";
+
+
     @Mock
     private SendRecurringEmailJob sendRecurringEmailJob;
 
@@ -99,9 +104,10 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     }
 
     @Test
-    void jobSkipsWhenEnableResourceOrgEmailIsFalse() {
+    void jobSkipsWhenEnableResourceOrgEmailIsFalse() throws JsonProcessingException {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
-                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, false, null);
+                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, false, TWO_RESOURCE_ORG_EMAILS);
+        dailyNewApplicationsProviderEmailRecurringJob.parseMap();
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
         verifyNoInteractions(sendRecurringEmailJob);
@@ -109,20 +115,33 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     }
 
     @Test
-    void jobSkipsWhenEnableEmailIsFalse() {
+    void jobSkipsWhenEnableEmailIsFalse() throws JsonProcessingException {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
-                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, false, true, null);
+                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, false, true, TWO_RESOURCE_ORG_EMAILS);
+        dailyNewApplicationsProviderEmailRecurringJob.parseMap();
+
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
         verifyNoInteractions(sendRecurringEmailJob);
     }
 
     @Test
-    void automatedEmailSendHappyPath() throws JsonProcessingException {
-        String RESOURCE_ORG_EMAILS = "{\"12345678901234\": [\"12345678901234@mail.com\"], \"12345678901235\": [\"12345678901235@mail.com\"]}";
-
+    void jobSkipsWhenResourceEmailsAreNull() throws JsonProcessingException {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
-                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, RESOURCE_ORG_EMAILS);
+                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, null);
+
+        dailyNewApplicationsProviderEmailRecurringJob.parseMap();
+        dailyNewApplicationsProviderEmailRecurringJob.messageSource = messageSource;
+
+        dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
+
+        verifyNoInteractions(sendRecurringEmailJob);
+    }
+
+    @Test
+    void sendsSingleEmailPerOrgWhenSingleEmailExists() throws JsonProcessingException {
+        dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
+                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, TWO_RESOURCE_ORG_EMAILS);
 
         dailyNewApplicationsProviderEmailRecurringJob.parseMap();
         dailyNewApplicationsProviderEmailRecurringJob.messageSource = messageSource;
@@ -130,5 +149,18 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
         verify(sendRecurringEmailJob, times(2)).enqueueSendEmailJob(any(ILGCCEmail.class));
+    }
+
+    @Test
+    void sendsMultipleEmailPerOrgWhenMultipleEmailsExist() throws JsonProcessingException {
+        dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
+                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, FOUR_RESOURCE_ORG_EMAILS);
+
+        dailyNewApplicationsProviderEmailRecurringJob.parseMap();
+        dailyNewApplicationsProviderEmailRecurringJob.messageSource = messageSource;
+
+        dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
+
+        verify(sendRecurringEmailJob, times(4)).enqueueSendEmailJob(any(ILGCCEmail.class));
     }
 }

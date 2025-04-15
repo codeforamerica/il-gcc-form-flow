@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class ResourceOrganizationTransaction {
+
     private String organizationId;
     private String shortCode;
     private OffsetDateTime createdAt;
@@ -12,9 +13,8 @@ public class ResourceOrganizationTransaction {
 
     public ResourceOrganizationTransaction(String organizationId, OffsetDateTime createdAt, String shortCode, String workItemId) {
         this.organizationId = organizationId;
-        this.workItemId = workItemId;
-        this.shortCode = shortCode;
         this.createdAt = createdAt;
+        this.shortCode = shortCode;
+        this.workItemId = workItemId;
     }
-
 }

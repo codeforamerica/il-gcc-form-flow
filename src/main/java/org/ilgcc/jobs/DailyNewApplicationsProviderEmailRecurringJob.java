@@ -46,11 +46,8 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
         if (orgEmailsRaw != null) {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                organizationEmailRecipients = mapper.readValue(
-                        orgEmailsRaw,
-                        new TypeReference<Map<String, List<String>>>() {
-                        }
-                );
+                organizationEmailRecipients = mapper.readValue(orgEmailsRaw, new TypeReference<Map<String, List<String>>>() {
+                });
             } catch (Exception e) {
                 System.err.println("Failed to parse orgEmailsRaw: " + orgEmailsRaw);
                 e.printStackTrace();
@@ -102,40 +99,42 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
                 transactionsAsOfDate);
 
         activeResourceOrganizations.forEach(org -> {
-            Map<String, Object> emailData = new HashMap<>();
-
             List<String> currentOrgRecipients = organizationEmailRecipients.get(org.getResourceOrgId().toString());
-
-            List<ResourceOrganizationTransaction> transactionsPerOrganization =
-                    transactions.isPresent() ? transactions.get().get(org.getResourceOrgId().toString())
-                            : Collections.emptyList();
-
-            emailData.put("transactions",
-                    transactionsPerOrganization == null ? Collections.emptyList() : transactionsPerOrganization);
-            emailData.put("processingOrgName", org.getName());
-            emailData.put("processingOrgId", org.getResourceOrgId());
-            emailData.put("transactionsAsOfDate", transactionsAsOfDate.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")));
-            emailData.put("currentEmailDate", currentDate.format(DateTimeFormatter.ofPattern("M/d/yy")));
-            emailData.put("recipients", currentOrgRecipients);
-
-            if (currentOrgRecipients.isEmpty()) {
-                log.info("We don't have any email recipients for {}. Skipping email", org.getName());
-                return;
-            }
-
-            enqueueOrgEmail(emailData);
+            enqueueOrgEmail(generateEmailData(transactions, org, transactionsAsOfDate, currentDate), currentOrgRecipients);
         });
     }
 
-    private void enqueueOrgEmail(Map<String, Object> emailData) {
-        List<String> recipients = (List) emailData.get("recipients");
+    public Map<String, Object> generateEmailData(Optional<Map<String, List<ResourceOrganizationTransaction>>> transactions,
+            ResourceOrganization org, OffsetDateTime transactionsAsOfDate, OffsetDateTime currentDate) {
+
+        List<ResourceOrganizationTransaction> transactionsPerOrganization =
+                transactions.isPresent() ? transactions.get().get(org.getResourceOrgId().toString()) : Collections.emptyList();
+        Map<String, Object> emailData = new HashMap<>();
+
+        emailData.put("transactions",
+                transactionsPerOrganization == null ? Collections.emptyList() : transactionsPerOrganization);
+        emailData.put("processingOrgName", org.getName());
+        emailData.put("processingOrgId", org.getResourceOrgId());
+        emailData.put("transactionsAsOfDate", transactionsAsOfDate.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")));
+        emailData.put("currentEmailDate", currentDate.format(DateTimeFormatter.ofPattern("M/d/yy")));
+
+        return emailData;
+    }
+
+    private void enqueueOrgEmail(Map<String, Object> emailData, List<String> recipients) {
+
+        if (recipients.isEmpty()) {
+            log.info("We don't have any email recipients for {}. Skipping email", emailData.get("processingOrgName"));
+            return;
+        }
 
         log.info("SendDailyNewApplicationsProviderEmail enqueuing {} emails for {} and processing org: {}", recipients.size(),
                 emailData.get("currentEmailDate"), emailData.get("processingOrgName"));
 
         recipients.forEach(recipient -> {
-            ILGCCEmail email = new ILGCCEmail(recipient, new DailyNewApplicationsProviderEmailTemplate(emailData,
-                    this.messageSource).createTemplate(), emailData.get("processingOrgId").toString());
+            ILGCCEmail email = new ILGCCEmail(recipient,
+                    new DailyNewApplicationsProviderEmailTemplate(emailData, messageSource).createTemplate(),
+                    emailData.get("processingOrgId").toString());
             sendRecurringEmailJob.enqueueSendEmailJob(email);
         });
 
