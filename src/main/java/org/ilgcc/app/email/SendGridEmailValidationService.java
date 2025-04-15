@@ -25,9 +25,9 @@ public class SendGridEmailValidationService {
 
   public SendGridEmailValidationService(
         @Value("${sendgrid.enable-sendgrid-email-validation:false}") boolean enableSendgridEmailValidation,
-        @Value("${sendgrid.email-validation-api-key:fake-key}") String apiKey) {
+        @Value("${sendgrid.email-validation-api-key}") String apiKey) {
         ENABLE_EMAIL_VALIDATION = enableSendgridEmailValidation;
-        this.sendGrid = new SendGrid(System.getenv(apiKey));
+        this.sendGrid = new SendGrid(apiKey);
   }
 
   public HashMap<String, String> validateEmail(String emailAddress) throws IOException {
@@ -39,7 +39,7 @@ public class SendGridEmailValidationService {
         if (ENABLE_EMAIL_VALIDATION) {
           try{
             Response response = getSendGridResponse(emailAddress);
-            if(sendGridProcessedClientRequest(response)) {
+            if(sendGridFailedToProcessEmailValidationRequest(response)) {
               emailValidationResult.put("endpointReached", "failed");
               return emailValidationResult;
             }
@@ -75,12 +75,12 @@ public class SendGridEmailValidationService {
         return sendGrid.api(request);
     }
 
-    public Boolean sendGridProcessedClientRequest(Response response) {
+    public Boolean sendGridFailedToProcessEmailValidationRequest(Response response) {
     boolean sendGridRequestFailed = response.getStatusCode() != 200;
     if (sendGridRequestFailed) {
         log.error("Sendgrid request failed.  Error code: {}", response.getStatusCode());
     }
-    return !sendGridRequestFailed;
+    return sendGridRequestFailed;
     }
 
     public Boolean isValidEmail(@NotNull SendGridValidationResponseBody responseBody) {
