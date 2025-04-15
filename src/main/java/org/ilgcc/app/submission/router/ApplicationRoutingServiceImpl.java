@@ -65,7 +65,7 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService {
         List<County> counties = new ArrayList<>();
         Set<String> countyNames = new HashSet<>(); // To track unique county names
 
-        for (String code : ccmsDataService.getActiveCaseLoadCodes()) {
+        for (String code : activeCaseLoadCodes) {
             List<County> countiesConnectedToThisCaseloadCode = ccmsDataService.getCountiesByCaseloadCode(code);
 
             for (County currentCounty : countiesConnectedToThisCaseloadCode) {
