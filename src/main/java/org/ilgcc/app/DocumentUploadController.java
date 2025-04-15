@@ -76,10 +76,10 @@ public class DocumentUploadController {
             }
 
             if (submissionId != null) {
-                Transaction transaction = transactionRepositoryService.getBySubmissionId(submission.getId());
+                Transaction transaction = transactionRepositoryService.getBySubmissionId(submissionId);
                 if (transaction != null) {
                     // The submission was already sent to CCMS
-                    log.info("Submission {} was already sent to CCMS.", submission.getId());
+                    log.info("Submission {} was already sent to CCMS.", submissionId);
                     String message = messageSource.getMessage("doc-upload-add-files.error.already-sent", null, locale);
                     return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
                 }
