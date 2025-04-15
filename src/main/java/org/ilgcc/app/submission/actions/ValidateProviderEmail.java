@@ -33,7 +33,7 @@ public class ValidateProviderEmail implements Action {
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> formData = formSubmission.getFormData();
     String providerEmail = formData.get(INPUT_NAME).toString();
-    if (providerEmail.isBlank()) {
+    if (providerEmail==null ||providerEmail.isBlank()) {
       return errorMessages;
     }
     try {

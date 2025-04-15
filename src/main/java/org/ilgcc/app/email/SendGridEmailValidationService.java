@@ -5,6 +5,7 @@ import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
+import formflow.library.utils.RegexUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
@@ -18,36 +19,45 @@ public class SendGridEmailValidationService {
     /*
         This service will send a request to the SendGrid email validation api
      */
-  private final boolean ENABLE_EMAIL_VALIDATION;
+  //enable_email_
+  private boolean ENABLE_EMAIL_VALIDATION;
   private final SendGrid sendGrid;
 
   public SendGridEmailValidationService(
         @Value("${sendgrid.enable-sendgrid-email-validation:false}") boolean enableSendgridEmailValidation,
-        @Value("${sendgrid.email-validation-api-key}") String apiKey) {
+        @Value("${sendgrid.email-validation-api-key:fake-key}") String apiKey) {
         ENABLE_EMAIL_VALIDATION = enableSendgridEmailValidation;
         this.sendGrid = new SendGrid(System.getenv(apiKey));
   }
 
   public HashMap<String, String> validateEmail(String emailAddress) throws IOException {
         HashMap<String, String> emailValidationResult = new HashMap<>();
+        //if enable sendgrid-email-validation is present then
+        if(emailAddress.isBlank() || !emailAddress.matches(RegexUtils.EMAIL_REGEX)) {
+          return emailValidationResult;
+        }
         if (ENABLE_EMAIL_VALIDATION) {
-          Response response = getSendGridResponse(emailAddress);
-          if(sendGridProcessedClientRequest(response)) {
-            emailValidationResult.put("endpointReached", "failed");
-            return emailValidationResult;
-          }
-          ObjectMapper mapper = new ObjectMapper();
-          SendGridValidationResponseBody responseBody = mapper.readValue(response.getBody(), SendGridValidationResponseBody.class);
-          emailValidationResult.put("endpointReached", "success");
-
-          Boolean emailIsValid = isValidEmail(responseBody);
-          emailValidationResult.put("emailIsValid", emailIsValid.toString());
-          if (!emailIsValid) {
-            Boolean hasSuggestedEmail = responseBody.getResult().hasSuggestedEmailAddress();
-            emailValidationResult.put("hasSuggestion", hasSuggestedEmail.toString());
-            if (hasSuggestedEmail) {
-              emailValidationResult.put("suggestedEmail", responseBody.getResult().getSuggestedEmailAddress());
+          try{
+            Response response = getSendGridResponse(emailAddress);
+            if(sendGridProcessedClientRequest(response)) {
+              emailValidationResult.put("endpointReached", "failed");
+              return emailValidationResult;
             }
+            ObjectMapper mapper = new ObjectMapper();
+            SendGridValidationResponseBody responseBody = mapper.readValue(response.getBody(), SendGridValidationResponseBody.class);
+            emailValidationResult.put("endpointReached", "success");
+
+            Boolean emailIsValid = isValidEmail(responseBody);
+            emailValidationResult.put("emailIsValid", emailIsValid.toString());
+            if (!emailIsValid) {
+              Boolean hasSuggestedEmail = responseBody.getResult().hasSuggestedEmailAddress();
+              emailValidationResult.put("hasSuggestion", hasSuggestedEmail.toString());
+              if (hasSuggestedEmail) {
+                emailValidationResult.put("suggestedEmail", responseBody.getResult().getSuggestedEmailAddress());
+              }
+            }
+          }catch (Exception e) {
+            log.error(e.getMessage(), e);
           }
         }
         return emailValidationResult;
@@ -65,7 +75,7 @@ public class SendGridEmailValidationService {
         return sendGrid.api(request);
     }
 
-    public Boolean sendGridProcessedClientRequest(Response response) throws IOException {
+    public Boolean sendGridProcessedClientRequest(Response response) {
     boolean sendGridRequestFailed = response.getStatusCode() != 200;
     if (sendGridRequestFailed) {
         log.debug("Sendgrid Flag is off");
