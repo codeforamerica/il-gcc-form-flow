@@ -29,8 +29,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
                 t.created_at, 
                 s.short_code, 
                 t.work_item_id
-            FROM transaction t
-            LEFT JOIN submission s ON t.submission_id = s.id
+            FROM transactions t
+            LEFT JOIN submissions s ON t.submission_id = s.id
             WHERE t.created_at >= :sinceDate 
               AND s.flow = 'gcc'
             ORDER BY t.created_at ASC

@@ -14,6 +14,7 @@ import org.ilgcc.app.data.ResourceOrganizationTransaction;
 import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.app.email.ILGCCEmailTemplate;
+import org.ilgcc.app.utils.DateUtilities;
 import org.springframework.context.MessageSource;
 
 @Getter
@@ -46,27 +47,27 @@ public class DailyNewApplicationsProviderEmailTemplate {
 
     private String setBodyCopy(Map<String, Object> emailData) {
 
-        List<ResourceOrganizationTransaction> transmissions = (List) emailData.get("transmissions");
+        List<ResourceOrganizationTransaction> transactions = (List) emailData.get("transactions");
 
         String p1 = messageSource.getMessage("email.automated-new-applications.header1",
                 new Object[]{emailData.get("processingOrgName")},
                 locale);
 
         String p2 = messageSource.getMessage("email.automated-new-applications.body1",
-                new Object[]{emailData.get("currentEmailDate")},
+                new Object[]{emailData.get("transactionsAsOfDate")},
                 locale);
 
         String p3 = messageSource.getMessage("email.automated-new-applications.header2", null,
                 locale);
 
         String p4 = messageSource.getMessage("email.automated-new-applications.body2",
-                new Object[]{transmissions.size(), emailData.get("processingOrgName")},
+                new Object[]{transactions.size(), emailData.get("processingOrgName")},
                 locale);
 
         String p5 = messageSource.getMessage("email.automated-new-applications.header3", null,
                 locale);
 
-        String p6 = String.format("<table class='transmissions-list'>%s</table>", createSubmissionsTableBody(transmissions));
+        String p6 = String.format("<table class='transactions-list'>%s</table>", createSubmissionsTableBody(transactions));
 
         return p1 + p2 + p3 + p4 + p5 + p6;
     }
@@ -85,12 +86,12 @@ public class DailyNewApplicationsProviderEmailTemplate {
             tableBody.add(createSubmissionsTableRows(s));
         });
 
-        return tableHeader + String.format("<tbody>%s/<tbody>", String.join("", tableBody));
+        return tableHeader + String.format("<tbody>%s</tbody>", String.join("", tableBody));
     }
 
     private String createSubmissionsTableRows(ResourceOrganizationTransaction transaction) {
         return "<tr>"
-                + "<td>" + transaction.getCreatedAt() + "</td>"
+                + "<td>" + DateUtilities.formatFullDateAndTimeinUTC(transaction.getCreatedAt()) + "</td>"
                 + "<td>" + transaction.getShortCode() + "</td>"
                 + "<td>" + transaction.getWorkItemId() + "</td>"
                 + "</tr>";

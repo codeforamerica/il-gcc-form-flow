@@ -5,10 +5,11 @@ import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,6 +49,10 @@ public class TransactionRepositoryService {
 
         List<Object[]> rows = transactionRepository.findSubmissionsTransmittedSince(sinceDate);
 
+        if(rows.isEmpty()){
+            return Collections.emptyList();
+        }
+
         List<ResourceOrganizationTransaction> transactions = new ArrayList<>();
 
         rows.stream()
@@ -62,9 +67,14 @@ public class TransactionRepositoryService {
         return transactions;
     }
 
-    public Map<String, List<ResourceOrganizationTransaction>> findSubmissionsSentByResourceOrganizationSince(OffsetDateTime sinceDate){
-        return findSubmissionsTransmittedSince(sinceDate).stream()
-                .collect(Collectors.groupingBy(ResourceOrganizationTransaction::getOrganizationId));
+    public Optional<Map<String, List<ResourceOrganizationTransaction>>> findSubmissionsSentByResourceOrganizationSince(OffsetDateTime sinceDate){
+        List<ResourceOrganizationTransaction> transactions = findSubmissionsTransmittedSince(sinceDate);
+        if(transactions.isEmpty()){
+            return Optional.empty();
+        } else {
+            return Optional.of(transactions.stream()
+                    .collect(Collectors.groupingBy(ResourceOrganizationTransaction::getOrganizationId)));
+        }
     }
 
     public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId) {
