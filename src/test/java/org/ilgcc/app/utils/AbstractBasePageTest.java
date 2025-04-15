@@ -41,7 +41,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import({WebDriverConfiguration.class, FakeResourceOrganizationAndCountyData.class})
 @TestPropertySource(properties = {
-        "ACTIVE_CASELOAD_CODES=BB, QQ"
+        "ACTIVE_CASELOAD_CODES=BB,QQ"
 })
 @ActiveProfiles({"test", "selenium-test"})
 public abstract class AbstractBasePageTest {
