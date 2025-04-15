@@ -1,6 +1,7 @@
 package org.ilgcc.app.email;
 
 import java.io.Serializable;
+import java.util.List;
 import lombok.Getter;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -22,6 +23,7 @@ public class ILGCCEmail implements Serializable {
     private EmailType emailType;
     private UUID submissionId;
     private Email recipientEmail;
+    private String orgId;
 
     public ILGCCEmail(String recipientAddress, ILGCCEmailTemplate emailTemplate, UUID submissionId) {
         this.senderEmail = emailTemplate.getSenderEmail();
@@ -32,13 +34,13 @@ public class ILGCCEmail implements Serializable {
         this.submissionId = submissionId;
     }
 
-    // need to figure out how to handle a world without submissionId
-    public ILGCCEmail(String recipientAddress, ILGCCEmailTemplate emailTemplate) {
+    public ILGCCEmail(String recipientAddress, ILGCCEmailTemplate emailTemplate, String orgId) {
         this.senderEmail = emailTemplate.getSenderEmail();
         this.recipientEmail = new Email(recipientAddress);
         this.subject = emailTemplate.getSubject();
         this.body = emailTemplate.getBody();
         this.emailType = emailTemplate.getEmailType();
+        this.orgId = orgId;
     }
 
     @Getter

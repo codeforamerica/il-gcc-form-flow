@@ -16,6 +16,8 @@ public class DateUtilities {
     private final static String FULL_DATE_FORMAT_OUTPUT_PATTER = "MMMM dd, yyyy";
     private final static String MONTH_YEAR_INPUT = "MM/yyyy";
     private final static String MONTH_YEAR_OUTPUT_PATTERN = "MMMM yyyy";
+
+    private final static String MONTH_DAY_FULL_TIME_FORMATTER = "MM/dd/yy - hh:mm a";
     public static String getFormattedDateFromMonthDateYearInputs(String prefix, Map<String, Object> data) {
         String month = (String) data.get(prefix + "Month");
         String day = (String) data.get(prefix + "Day");
@@ -112,6 +114,12 @@ public class DateUtilities {
     public static String formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime submittedAt) {
         ZonedDateTime centralTime = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        return centralTime.format(formatter);
+    }
+
+    public static String formatFullDateAndTimeinUTC(OffsetDateTime date) {
+        ZonedDateTime centralTime = date.atZoneSameInstant(ZoneId.of("America/Chicago"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(MONTH_DAY_FULL_TIME_FORMATTER);
         return centralTime.format(formatter);
     }
 }
