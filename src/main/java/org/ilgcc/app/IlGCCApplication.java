@@ -3,7 +3,6 @@ package org.ilgcc.app;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
 
@@ -14,6 +13,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class IlGCCApplication {
 
     public static void main(String[] args) {
-      ConfigurableApplicationContext context = SpringApplication.run(IlGCCApplication.class, args);
+      SpringApplication.run(IlGCCApplication.class, args);
     }
 }
