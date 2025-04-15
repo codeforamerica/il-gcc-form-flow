@@ -57,7 +57,7 @@ public class SendGridEmailValidationService {
               }
             }
           }catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error("Request to Sendgrid Failed! Error: {}", e.getMessage());
           }
         }
         return emailValidationResult;
@@ -78,7 +78,7 @@ public class SendGridEmailValidationService {
     public Boolean sendGridProcessedClientRequest(Response response) {
     boolean sendGridRequestFailed = response.getStatusCode() != 200;
     if (sendGridRequestFailed) {
-        log.debug("Sendgrid Flag is off");
+        log.error("Sendgrid request failed.  Error code: {}", response.getStatusCode());
     }
     return !sendGridRequestFailed;
     }
