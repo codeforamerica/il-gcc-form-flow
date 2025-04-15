@@ -67,12 +67,20 @@ public class DailyNewApplicationsProviderEmailTemplate {
         String p5 = messageSource.getMessage("email.automated-new-applications.header3", null,
                 locale);
 
-        String p6 = String.format("<table style='border: 1px solid #b7b7b7; padding: 8px; border-collapse: collapse;'>%s</table>",
-                createTransactionsTableBody(transactions));
+        String p6 = "";
+
+        if(!transactions.isEmpty()){
+            p6 = String.format("<table style='border: 1px solid #b7b7b7; padding: 8px; border-collapse: collapse;'>%s</table>",
+                    createTransactionsTableBody(transactions));
+        }
 
         String p7 = messageSource.getMessage("email.automated-new-application.cta", null,
                 locale);
-        return p1 + p2 + p3 + p4 + p5 + p6 + p7;
+
+        String p8 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
+        String p9 = messageSource.getMessage("email.general.footer.cfa", null, locale);
+
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
     }
 
     private String createTransactionsTableBody(List<ResourceOrganizationTransaction> transactions) {

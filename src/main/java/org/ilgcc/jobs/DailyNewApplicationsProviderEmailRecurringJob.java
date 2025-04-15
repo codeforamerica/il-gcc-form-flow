@@ -100,6 +100,11 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
 
         activeResourceOrganizations.forEach(org -> {
             List<String> currentOrgRecipients = organizationEmailRecipients.get(org.getResourceOrgId().toString());
+
+            if (null == currentOrgRecipients || currentOrgRecipients.isEmpty()) {
+                log.info("We don't have any email recipients for {}. Skipping email", org.getName());
+                return;
+            }
             enqueueOrgEmail(generateEmailData(transactions, org, transactionsAsOfDate, currentDate), currentOrgRecipients);
         });
     }
@@ -122,12 +127,6 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
     }
 
     private void enqueueOrgEmail(Map<String, Object> emailData, List<String> recipients) {
-
-        if (recipients.isEmpty()) {
-            log.info("We don't have any email recipients for {}. Skipping email", emailData.get("processingOrgName"));
-            return;
-        }
-
         log.info("SendDailyNewApplicationsProviderEmail enqueuing {} emails for {} and processing org: {}", recipients.size(),
                 emailData.get("currentEmailDate"), emailData.get("processingOrgName"));
 
