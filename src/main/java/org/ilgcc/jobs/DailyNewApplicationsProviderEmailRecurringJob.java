@@ -71,7 +71,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
         this.orgEmailsRaw = orgEmailsRaw;
     }
 
-    @Recurring(id = "daily-provider-email-job", cron = "0 0 17 * * *", zoneId = "America/Chicago")
+    @Recurring(id = "daily-provider-email-job", cron = "0 0 18 * * *", zoneId = "America/Chicago")
     @Job(name = "Daily New Applications Email to Providers")
     public void dailyProviderEmailJob() {
         if (!emailsEnabled || !enableResourceOrganizationEmails) {
@@ -92,7 +92,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
         }
 
         // we want this to run every 24 hours, so it will check for the last 24 hours
-        OffsetDateTime currentDate = OffsetDateTime.now();
+        OffsetDateTime currentDate = OffsetDateTime.now().minusHours(1);
         OffsetDateTime transactionsAsOfDate = currentDate.minusHours(24);
 
         Optional<Map<String, List<ResourceOrganizationTransaction>>> transactions = transactionRepositoryService.findSubmissionsSentByResourceOrganizationSince(
