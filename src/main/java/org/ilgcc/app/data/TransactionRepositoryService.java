@@ -72,7 +72,7 @@ public class TransactionRepositoryService {
         if(transactions.isEmpty()){
             return Optional.empty();
         } else {
-            return Optional.of(transactions.stream()
+            return Optional.of(transactions.stream().filter(t -> t.getOrganizationId() != null)
                     .collect(Collectors.groupingBy(ResourceOrganizationTransaction::getOrganizationId)));
         }
     }

@@ -67,23 +67,28 @@ public class DailyNewApplicationsProviderEmailTemplate {
         String p5 = messageSource.getMessage("email.automated-new-applications.header3", null,
                 locale);
 
-        String p6 = String.format("<table class='transactions-list'>%s</table>", createSubmissionsTableBody(transactions));
+        String p6 = String.format("<table style='border: 1px solid #b7b7b7; padding: 8px; border-collapse: collapse;'>%s</table>",
+                createTransactionsTableBody(transactions));
 
-        return p1 + p2 + p3 + p4 + p5 + p6;
+        String p7 = messageSource.getMessage("email.automated-new-application.cta", null,
+                locale);
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7;
     }
 
-    private String createSubmissionsTableBody(List<ResourceOrganizationTransaction> transmissions) {
+    private String createTransactionsTableBody(List<ResourceOrganizationTransaction> transactions) {
         String tableHeader =
-                "<thead><tr><th scope = 'col'>" + messageSource.getMessage("email.automated-new-applications.col-name-1", null,
-                        locale) + "</th>" + "<th scope = 'col'>" + messageSource.getMessage(
+                "<thead style='font-weight: 800;background-color: #f3f3f3;'><tr><th style='width: 33.3%; border: 1px solid #b7b7b7; padding: 8px;'>"
+                        + messageSource.getMessage("email.automated-new-applications.col-name-1", null,
+                        locale) + "</th><th style='width: 33.3%; border: 1px solid #b7b7b7; padding: 8px;'>"
+                        + messageSource.getMessage(
                         "email.automated-new-applications.col-name-2", null,
-                        locale) + "</th>" + "<th scope = 'col'>" + messageSource.getMessage(
+                        locale) + "</th><th style='width: 33.3%; border: 1px solid #b7b7b7'>" + messageSource.getMessage(
                         "email.automated-new-applications.col-name-3", null,
                         locale) + "</th></tr></thead>";
 
         List<String> tableBody = new ArrayList();
-        transmissions.forEach(s -> {
-            tableBody.add(createSubmissionsTableRows(s));
+        transactions.forEach(r -> {
+            tableBody.add(createSubmissionsTableRows(r));
         });
 
         return tableHeader + String.format("<tbody>%s</tbody>", String.join("", tableBody));
@@ -91,9 +96,10 @@ public class DailyNewApplicationsProviderEmailTemplate {
 
     private String createSubmissionsTableRows(ResourceOrganizationTransaction transaction) {
         return "<tr>"
-                + "<td>" + DateUtilities.formatFullDateAndTimeinUTC(transaction.getCreatedAt()) + "</td>"
-                + "<td>" + transaction.getShortCode() + "</td>"
-                + "<td>" + transaction.getWorkItemId() + "</td>"
+                + "<td style='border: 1px solid #b7b7b7; padding: 8px;'>" + DateUtilities.formatFullDateAndTimeinUTC(
+                transaction.getCreatedAt()) + "</td>"
+                + "<td style='border: 1px solid #b7b7b7; padding: 8px;'>" + transaction.getShortCode() + "</td>"
+                + "<td style='border: 1px solid #b7b7b7; padding: 8px;'>" + transaction.getWorkItemId() + "</td>"
                 + "</tr>";
     }
 
