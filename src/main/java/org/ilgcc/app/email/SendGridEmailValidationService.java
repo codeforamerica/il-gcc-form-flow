@@ -5,12 +5,12 @@ import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
-import formflow.library.utils.RegexUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 @Slf4j
@@ -22,7 +22,7 @@ public class SendGridEmailValidationService {
   //enable_email_
   private boolean ENABLE_EMAIL_VALIDATION;
   private final SendGrid sendGrid;
-
+  @Autowired
   public SendGridEmailValidationService(
         @Value("${sendgrid.enable-sendgrid-email-validation:false}") boolean enableSendgridEmailValidation,
         @Value("${sendgrid.email-validation-api-key}") String apiKey) {
@@ -30,12 +30,14 @@ public class SendGridEmailValidationService {
         this.sendGrid = new SendGrid(apiKey);
   }
 
+  //Constructor for mocking SendGrid service for tests
+  public SendGridEmailValidationService(boolean enableValidation, SendGrid sendGrid) {
+    this.ENABLE_EMAIL_VALIDATION = enableValidation;
+    this.sendGrid = sendGrid;
+  }
+
   public HashMap<String, String> validateEmail(String emailAddress) throws IOException {
         HashMap<String, String> emailValidationResult = new HashMap<>();
-        //if enable sendgrid-email-validation is present then
-        if(emailAddress.isBlank() || !emailAddress.matches(RegexUtils.EMAIL_REGEX)) {
-          return emailValidationResult;
-        }
         if (ENABLE_EMAIL_VALIDATION) {
           try{
             Response response = getSendGridResponse(emailAddress);
@@ -63,7 +65,7 @@ public class SendGridEmailValidationService {
         return emailValidationResult;
     }
 
-    private Response getSendGridResponse (String emailAddress) throws IOException {
+    protected Response getSendGridResponse (String emailAddress) throws IOException {
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("validations/email");

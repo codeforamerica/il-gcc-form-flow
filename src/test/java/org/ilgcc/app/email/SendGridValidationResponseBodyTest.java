@@ -1,6 +1,5 @@
 package org.ilgcc.app.email;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ilgcc.app.utils.SendGridValidationResponseBodyBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SendGridValidationResponseBodyTest {
 
-  private SendGridValidationResponseBody body;
   private SendGridValidationResponseBody responseBody;
 
   @BeforeEach

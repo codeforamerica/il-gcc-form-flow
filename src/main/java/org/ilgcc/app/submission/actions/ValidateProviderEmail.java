@@ -4,6 +4,7 @@ package org.ilgcc.app.submission.actions;
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
+import formflow.library.utils.RegexUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,8 @@ public class ValidateProviderEmail implements Action {
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> formData = formSubmission.getFormData();
     String providerEmail = formData.get(INPUT_NAME).toString();
-    if (providerEmail==null ||providerEmail.isBlank()) {
+    //Stops Sendgrid call if email is blank or fail our EMAIL_REGEX test
+    if (providerEmail==null || providerEmail.isBlank() || !providerEmail.matches(RegexUtils.EMAIL_REGEX)) {
       return errorMessages;
     }
     try {
