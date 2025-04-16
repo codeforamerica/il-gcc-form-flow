@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import formflow.library.data.SubmissionRepository;
 import java.time.OffsetDateTime;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,8 +14,13 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
     @Autowired
     SubmissionRepository repository;
 
-    private static String VALID_CONF_CODE="A2123B";
-    private static String PROVIDER_NAME="Brown Bear Daycare";
+    private static final String VALID_CONF_CODE = "A2123B";
+    private static final String PROVIDER_NAME = "Brown Bear Daycare";
+
+    @AfterEach
+    protected void clearSubmissions() {
+        super.clearSubmissions();
+    }
 
     @Test
     void activeApplicationShowsSuccess() {

@@ -38,7 +38,7 @@ public class ProviderConfirmationEmailTemplate {
     }
 
     private String setSubject(Map<String, Object> emailData) {
-        return messageSource.getMessage("email.family-confirmation.subject", new Object[]{emailData.get("confirmationCode")},
+        return messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{emailData.get("confirmationCode")},
                 locale);
     }
 
