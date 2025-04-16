@@ -70,8 +70,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
     }
 
 
-    @Recurring(id = "daily-provider-email-job", cron = "0 0 * * * *", zoneId = "America/Chicago")
-//    @Recurring(id = "daily-provider-email-job", cron = "0 0 4 * * *", zoneId = "America/Chicago")
+    @Recurring(id = "daily-provider-email-job", cron = "0 0 4 * * *", zoneId = "America/Chicago")
     @Job(name = "Daily New Applications Email to Providers")
     public void dailyProviderEmailJob() {
         if (!emailsEnabled || !enableResourceOrganizationEmails) {
