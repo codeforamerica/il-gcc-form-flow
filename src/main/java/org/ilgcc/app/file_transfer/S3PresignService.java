@@ -24,40 +24,25 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 @Service
 @Slf4j
 public class S3PresignService {
-
-    private final Region region;
-    private final String secretKey;
-    private final String accessKey;
+    
     private final String bucketName;
     private final S3Presigner s3Presigner;
     private final S3Client s3Client;
     private final Long presignedUrlDuration;
     
-    public S3PresignService(@Value("${form-flow.aws.access_key:}") String accessKey,
-            @Value("${form-flow.aws.secret_key:}") String secretKey,
+    public S3PresignService(
             @Value("${form-flow.aws.s3_bucket_name}") String bucketName,
             @Value("${form-flow.aws.region}") String region,
             DocumentTransferConfiguration documentTransferConfiguration) {
-        this.region = Region.of(region);
-        this.secretKey = secretKey;
-        this.accessKey = accessKey;
         this.bucketName = bucketName;
         this.presignedUrlDuration = documentTransferConfiguration.getPresignedUrlDuration();
 
-//        var credentialsProvider = (!accessKey.isBlank() && !secretKey.isBlank()) ?
-//                // We are in aptible and need to pass the keys
-//                StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey, secretKey)) :
-//                // We are in AWS and get them automatically through IAM
-//                software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider.create();
-
         this.s3Client = S3Client.builder()
                 .region(Region.of(region))
-//                .credentialsProvider(credentialsProvider)
                 .build();
 
         this.s3Presigner = S3Presigner.builder()
                 .region(Region.of(region))
-//                .credentialsProvider(credentialsProvider)
                 .build();
     }
 
