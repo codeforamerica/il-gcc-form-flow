@@ -1,28 +1,28 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
-<body>
-<div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
+<th:block
+        th:replace="~{fragments/screens/screenWithOneInput ::
+  screenWithOneInput(
+    title=#{registration-home-provider-tax-id.title},
+    header=#{registration-home-provider-tax-id.header},
+    formAction=${formAction},
+    iconFragment=~{fragments/gcc-icons :: care-financial},
+    buttonLabel=#{general.button.continue},
+    required='true',
+    inputContent=~{::inputContent})}">
+  <th:block th:ref="inputContent">
+    <div class="spacing-below-60">
+      <p th:text="#{registration-home-provider-tax-id.body1}"></p>
+      <p th:text="#{registration-home-provider-tax-id.body2}"></p>
     </div>
-  </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+    <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                    radioFieldset(inputName='homeProviderTaxIDselection',
+                    ariaLabel='header',
+                    content=~{::radioContent})}">
+      <th:block th:ref="radioContent">
+        <th:block
+                th:replace="~{fragments/inputs/radio :: radio(inputName='homeProviderTaxIDselection',value='SSN', label=#{registration-home-provider-tax-id.ssn})}"/>
+        <th:block
+                th:replace="~{fragments/inputs/radio :: radio(inputName='homeProviderTaxIDselection',value='ITIN', label=#{registration-home-provider-tax-id.itin})}"/>
+      </th:block>
+    </th:block>
+  </th:block>
+</th:block>

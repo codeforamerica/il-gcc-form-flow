@@ -153,6 +153,10 @@ public class Providerresponse extends FlowInputs {
     @SSN(message="{errors.invalid-ssn}")
     @Encrypted
     private String providerHouseholdMemberSSN;
+    
+    //registration-home-provider-tax-id
+    @NotBlank(message = "{errors.select-one-option}")
+    private String homeProviderTaxIDselection;
 
     // registration-signature
     @NotBlank(message = "{errors.validate.provider-signed-name}")
