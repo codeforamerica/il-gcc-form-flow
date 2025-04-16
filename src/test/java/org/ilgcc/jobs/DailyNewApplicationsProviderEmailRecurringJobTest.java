@@ -5,7 +5,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import java.time.OffsetDateTime;
@@ -70,7 +69,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
                     .withParentDetails()
                     .withFlow("gcc")
                     .with("organizationId", "12345678901234")
-                    .withSubmittedAtDate(OffsetDateTime.now())
+                    .withSubmittedAtDate(OffsetDateTime.now().minusDays(1))
                     .withShortCode(sc.toString())
                     .build();
             submissionRepository.save(currentSubmission);
@@ -82,7 +81,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
             Submission currentSubmission = new SubmissionTestBuilder()
                     .withParentDetails()
                     .withFlow("gcc")
-                    .withSubmittedAtDate(OffsetDateTime.now())
+                    .withSubmittedAtDate(OffsetDateTime.now().minusDays(1))
                     .with("organizationId", "12345678901235")
                     .withShortCode(sc.toString())
                     .build();
@@ -104,7 +103,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     }
 
     @Test
-    void jobSkipsWhenEnableResourceOrgEmailIsFalse() throws JsonProcessingException {
+    void jobSkipsWhenEnableResourceOrgEmailIsFalse() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
                 transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, false, TWO_RESOURCE_ORG_EMAILS);
         dailyNewApplicationsProviderEmailRecurringJob.parseMap();
@@ -115,7 +114,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     }
 
     @Test
-    void jobSkipsWhenEnableEmailIsFalse() throws JsonProcessingException {
+    void jobSkipsWhenEnableEmailIsFalse() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
                 transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, false, true, TWO_RESOURCE_ORG_EMAILS);
         dailyNewApplicationsProviderEmailRecurringJob.parseMap();
@@ -126,7 +125,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     }
 
     @Test
-    void jobSkipsWhenResourceEmailsAreNull() throws JsonProcessingException {
+    void jobSkipsWhenResourceEmailsAreNull() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
                 transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, null);
 
@@ -139,7 +138,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     }
 
     @Test
-    void sendsSingleEmailPerOrgWhenSingleEmailExists() throws JsonProcessingException {
+    void sendsSingleEmailPerOrgWhenSingleEmailExists() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
                 transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, TWO_RESOURCE_ORG_EMAILS);
 
@@ -152,7 +151,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     }
 
     @Test
-    void sendsMultipleEmailPerOrgWhenMultipleEmailsExist() throws JsonProcessingException {
+    void sendsMultipleEmailPerOrgWhenMultipleEmailsExist() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
                 transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, FOUR_RESOURCE_ORG_EMAILS);
 

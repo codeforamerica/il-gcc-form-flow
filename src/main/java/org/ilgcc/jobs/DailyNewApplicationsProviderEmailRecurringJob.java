@@ -1,6 +1,5 @@
 package org.ilgcc.jobs;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -42,16 +41,15 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
     private Map<String, List<String>> organizationEmailRecipients = new HashMap<>();
 
     @PostConstruct
-    void parseMap() throws JsonProcessingException {
+    void parseMap() {
         if (orgEmailsRaw != null) {
             try {
                 ObjectMapper mapper = new ObjectMapper();
                 organizationEmailRecipients = mapper.readValue(orgEmailsRaw, new TypeReference<Map<String, List<String>>>() {
                 });
             } catch (Exception e) {
-                System.err.println("Failed to parse orgEmailsRaw: " + orgEmailsRaw);
-                e.printStackTrace();
-                throw new RuntimeException("Failed to parse organizationEmailRecipients from ORG_EMAILS", e);
+                log.error(
+                        "DailyNewApplicationProviderEmailRecurringJob: Could not parse the recipient emails provided. Make sure you set the RESOURCE_ORG_EMAILS environment variable properly.");
             }
         } else {
             organizationEmailRecipients = new HashMap<>();
@@ -71,7 +69,9 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
         this.orgEmailsRaw = orgEmailsRaw;
     }
 
-    @Recurring(id = "daily-provider-email-job", cron = "0 0 18 * * *", zoneId = "America/Chicago")
+
+    @Recurring(id = "daily-provider-email-job", cron = "0 0 * * * *", zoneId = "America/Chicago")
+//    @Recurring(id = "daily-provider-email-job", cron = "0 0 4 * * *", zoneId = "America/Chicago")
     @Job(name = "Daily New Applications Email to Providers")
     public void dailyProviderEmailJob() {
         if (!emailsEnabled || !enableResourceOrganizationEmails) {
@@ -91,11 +91,10 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
             return;
         }
 
-        // we want this to run every 24 hours, so it will check for the last 24 hours
-        OffsetDateTime currentDate = OffsetDateTime.now().minusHours(1);
-        OffsetDateTime transactionsAsOfDate = currentDate.minusHours(24);
+        OffsetDateTime currentDate = OffsetDateTime.now();
+        OffsetDateTime transactionsAsOfDate = currentDate.minusHours(24).withHour(0).withMinute(0).withSecond(0).withNano(0);
 
-        Optional<Map<String, List<ResourceOrganizationTransaction>>> transactions = transactionRepositoryService.findSubmissionsSentByResourceOrganizationSince(
+        Optional<Map<String, List<ResourceOrganizationTransaction>>> transactions = transactionRepositoryService.find24HoursOfSubmissionsSentByResourceOrganizationSince(
                 transactionsAsOfDate);
 
         activeResourceOrganizations.forEach(org -> {

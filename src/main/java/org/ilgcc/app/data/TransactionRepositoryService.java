@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -45,11 +46,13 @@ public class TransactionRepositoryService {
         return transactionRepository.findSubmissionsWithoutTransactions(sinceDate);
     }
 
-    public List<ResourceOrganizationTransaction> findSubmissionsTransmittedSince(OffsetDateTime sinceDate) {
+    public List<ResourceOrganizationTransaction> find24HoursOfSubmissionsTransmittedSince(OffsetDateTime sinceDate) {
 
-        List<Object[]> rows = transactionRepository.findSubmissionsTransmittedSince(sinceDate);
+        OffsetDateTime endDate = sinceDate.plusHours(24);
 
-        if(rows.isEmpty()){
+        List<Object[]> rows = transactionRepository.find24HoursOfSubmissionsTransmittedSince(sinceDate, endDate);
+
+        if (rows.isEmpty()) {
             return Collections.emptyList();
         }
 
@@ -67,9 +70,10 @@ public class TransactionRepositoryService {
         return transactions;
     }
 
-    public Optional<Map<String, List<ResourceOrganizationTransaction>>> findSubmissionsSentByResourceOrganizationSince(OffsetDateTime sinceDate){
-        List<ResourceOrganizationTransaction> transactions = findSubmissionsTransmittedSince(sinceDate);
-        if(transactions.isEmpty()){
+    public Optional<Map<String, List<ResourceOrganizationTransaction>>> find24HoursOfSubmissionsSentByResourceOrganizationSince(
+            OffsetDateTime sinceDate) {
+        List<ResourceOrganizationTransaction> transactions = find24HoursOfSubmissionsTransmittedSince(sinceDate);
+        if (transactions.isEmpty()) {
             return Optional.empty();
         } else {
             return Optional.of(transactions.stream().filter(t -> t.getOrganizationId() != null)

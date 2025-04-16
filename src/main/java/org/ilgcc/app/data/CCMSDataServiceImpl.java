@@ -16,6 +16,7 @@ public class CCMSDataServiceImpl implements CCMSDataService {
     private final CountyRepository countyRepository;
     private final ResourceOrganizationRepository resourceOrganizationRepository;
     private final List<String> activeCaseLoadCodes;
+
     public CCMSDataServiceImpl(ProviderRepository providerRepository, CountyRepository countyRepository,
             ResourceOrganizationRepository resourceOrganizationRepository,
             @Value("${il-gcc.enable-new-sda-caseload-codes}") boolean enableNewCaseloadCodes,
@@ -25,7 +26,7 @@ public class CCMSDataServiceImpl implements CCMSDataService {
         this.countyRepository = countyRepository;
         this.resourceOrganizationRepository = resourceOrganizationRepository;
         this.activeCaseLoadCodes = activeCaseLoadCodes;
-        if(enableNewCaseloadCodes && null!= pendingCaseLoadCodes && !pendingCaseLoadCodes.isEmpty()){
+        if (enableNewCaseloadCodes && null != pendingCaseLoadCodes && !pendingCaseLoadCodes.isEmpty()) {
             activeCaseLoadCodes.addAll(pendingCaseLoadCodes);
         }
     }

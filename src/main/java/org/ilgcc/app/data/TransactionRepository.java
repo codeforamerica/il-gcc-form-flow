@@ -31,11 +31,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
                 t.work_item_id
             FROM transactions t
             LEFT JOIN submissions s ON t.submission_id = s.id
-            WHERE t.created_at >= :sinceDate 
+            WHERE t.created_at >= :startDate
+              AND t.created_at < :endDate
               AND s.flow = 'gcc'
             ORDER BY t.created_at ASC
             """, nativeQuery = true)
-    List<Object[]> findSubmissionsTransmittedSince(@Param("sinceDate") OffsetDateTime sinceDate);
+    List<Object[]> find24HoursOfSubmissionsTransmittedSince(@Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate);
 
     Transaction findByTransactionId(UUID transactionId);
 
