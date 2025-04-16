@@ -670,7 +670,7 @@ flow:
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: registration-submit-confirmation
-  #New Provider Type
+  #New Provider Flow
   registration-start:
     condition: EnableProviderRegistration
     beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
@@ -852,6 +852,7 @@ flow:
     nextScreens:
       - name: registration-submit-complete
   registration-submit-complete:
+    beforeDisplayAction: SendNewProviderAndFamilyConfirmationEmails
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-doc-upload-recommended-docs
