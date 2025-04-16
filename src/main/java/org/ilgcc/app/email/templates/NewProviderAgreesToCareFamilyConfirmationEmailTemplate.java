@@ -32,7 +32,7 @@ public class NewProviderAgreesToCareFamilyConfirmationEmailTemplate {
     }
 
     public ILGCCEmailTemplate createTemplate() {
-        return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData), new Content("text/html", setBodyCopy(emailData)),
+        return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)),
                 EmailType.NEW_PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL);
     }
 
@@ -40,7 +40,7 @@ public class NewProviderAgreesToCareFamilyConfirmationEmailTemplate {
         return new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale));
     }
 
-    private String setSubject(Map<String, Object> emailData) {
+    private String setSubject() {
         return messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale);
     }
 
