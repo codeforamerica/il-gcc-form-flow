@@ -1,6 +1,7 @@
 package org.ilgcc.app.email;
 
 import java.io.Serializable;
+import java.util.List;
 import lombok.Getter;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -22,6 +23,7 @@ public class ILGCCEmail implements Serializable {
     private EmailType emailType;
     private UUID submissionId;
     private Email recipientEmail;
+    private String orgId;
 
     public ILGCCEmail(String recipientAddress, ILGCCEmailTemplate emailTemplate, UUID submissionId) {
         this.senderEmail = emailTemplate.getSenderEmail();
@@ -32,6 +34,15 @@ public class ILGCCEmail implements Serializable {
         this.submissionId = submissionId;
     }
 
+    public ILGCCEmail(String recipientAddress, ILGCCEmailTemplate emailTemplate, String orgId) {
+        this.senderEmail = emailTemplate.getSenderEmail();
+        this.recipientEmail = new Email(recipientAddress);
+        this.subject = emailTemplate.getSubject();
+        this.body = emailTemplate.getBody();
+        this.emailType = emailTemplate.getEmailType();
+        this.orgId = orgId;
+    }
+
     @Getter
     public enum EmailType {
         FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"),
@@ -40,7 +51,8 @@ public class ILGCCEmail implements Serializable {
         PROVIDER_CONFIRMATION_EMAIL("Provider Confirmation Email"),
         PROVIDER_DECLINES_CARE_FAMILY_EMAIL("Provider Declines Care Family Email"),
         PROVIDER_DID_NOT_RESPOND_FAMILY_EMAIL("Provider Did Not Respond Family Email"),
-        AUTOMATED_PROVIDER_OUTREACH_EMAIL("Automated Provider Outreach Email");
+        AUTOMATED_PROVIDER_OUTREACH_EMAIL("Automated Provider Outreach Email"),
+        DAILY_NEW_APPLICATIONS_PROVIDER_EMAIL("Automated Email going to Processing Organizations Daily");
 
         private final String description;
 

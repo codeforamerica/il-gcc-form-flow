@@ -32,6 +32,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -39,6 +40,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import({WebDriverConfiguration.class, FakeResourceOrganizationAndCountyData.class})
+@TestPropertySource(properties = {
+        "ACTIVE_CASELOAD_CODES=BB,QQ"
+})
 @ActiveProfiles({"test", "selenium-test"})
 public abstract class AbstractBasePageTest {
 

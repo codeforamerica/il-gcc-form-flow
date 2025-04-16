@@ -7,6 +7,14 @@ import java.util.Optional;
 public interface CCMSDataService {
 
     /**
+     * Retrieves a list of active caseload codes
+     *
+     * @return an List containing a list of caseload code strings
+     */
+
+    List<String> getActiveCaseLoadCodes();
+
+    /**
      * Retrieves a county based on the given zip code.
      *
      * @param zipCode the zip code to search for
@@ -45,6 +53,13 @@ public interface CCMSDataService {
      * @return a list of matching resource organizations
      */
     List<ResourceOrganization> getResourceOrganizationsByCaseloadCode(String caseloadCode);
+
+    /**
+     * Retrieves a list of active resource organizations
+     *
+     * @return a list active resource organizations
+     */
+    List<ResourceOrganization> getActiveResourceOrganizations();
 
     /**
      * Retrieves a list of Counties by caseload code.
