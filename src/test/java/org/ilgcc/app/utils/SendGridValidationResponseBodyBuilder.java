@@ -12,6 +12,7 @@ public class SendGridValidationResponseBodyBuilder {
   private boolean hasSuspectedBounces = false;
   private String suggestion = null;
   private String emailAddress = "";
+
   public SendGridValidationResponseBodyBuilder withHasValidAddressSyntax(boolean value) {
     this.hasValidAddressSyntax = value;
     return this;
@@ -46,6 +47,7 @@ public class SendGridValidationResponseBodyBuilder {
     this.emailAddress = emailAddress;
     return this;
   }
+
   public SendGridValidationResponseBody build() {
     Domain domain = new Domain();
     domain.setHasValidAddressSyntax(hasValidAddressSyntax);

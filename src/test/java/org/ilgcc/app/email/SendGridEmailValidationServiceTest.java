@@ -25,20 +25,21 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 })
 @ActiveProfiles("test")
 public class SendGridEmailValidationServiceTest {
+
   private SendGrid mockSendGrid = mock(SendGrid.class);
 
-  private static final String MOCK_VALID_EMAIL= "test@email.com";
-  private static final String MOCK_INVALID_EMAIL= "invalid@email.com";
+  private static final String MOCK_VALID_EMAIL = "test@email.com";
+  private static final String MOCK_INVALID_EMAIL = "invalid@email.com";
   private static final String ERROR_RESPONSE_BODY = """
-    {
-      "errors": [
-        {
-          "field": "email",
-          "message": "Invalid email format provided."
-        }
-      ]
-    }
-""";
+          {
+            "errors": [
+              {
+                "field": "email",
+                "message": "Invalid email format provided."
+              }
+            ]
+          }
+      """;
 
   @Test
   public void shouldReturnTrueWhenSendGridReturnsValidResponse() throws Exception {
@@ -127,6 +128,7 @@ public class SendGridEmailValidationServiceTest {
     assertEquals("success", result.get("endpointReached"));
     assertEquals("false", result.get("emailIsValid"));
   }
+
   @Test
   public void shouldSetEmailIsValidToFalseWhenHasKnownBouncesIsTrue() throws Exception {
     SendGridEmailValidationService sendGridEmailValidationService = new SendGridEmailValidationService(true, mockSendGrid);

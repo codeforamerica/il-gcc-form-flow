@@ -6,11 +6,13 @@ import lombok.Data;
 
 @Data
 public class SendGridValidationResponseBody {
+
   private Result result;
 
   @Data
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Result {
+
     private String email;
     private String verdict;
     private double score;
@@ -48,8 +50,10 @@ public class SendGridValidationResponseBody {
       return suggestion;
     }
   }
+
   @Data
   public static class Checks {
+
     private Domain domain;
     @JsonProperty("local_part")
     private LocalPart localPart;
@@ -59,6 +63,7 @@ public class SendGridValidationResponseBody {
 
   @Data
   public static class Domain {
+
     @JsonProperty("has_valid_address_syntax")
     private boolean hasValidAddressSyntax;
 
@@ -71,12 +76,14 @@ public class SendGridValidationResponseBody {
 
   @Data
   public static class LocalPart {
+
     @JsonProperty("is_suspected_role_address")
     private boolean isSuspectedRoleAddress;
   }
 
   @Data
   public static class Additional {
+
     @JsonProperty("has_known_bounces")
     private boolean hasKnownBounces;
 

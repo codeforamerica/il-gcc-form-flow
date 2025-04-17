@@ -13,21 +13,20 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 @Slf4j
 @Service
 public class SendGridEmailValidationService {
-    /*
-        This service will send a request to the SendGrid email validation api
-     */
-  //enable_email_
+
   private boolean ENABLE_EMAIL_VALIDATION;
   private final SendGrid sendGrid;
+
   @Autowired
   public SendGridEmailValidationService(
-        @Value("${sendgrid.enable-sendgrid-email-validation:false}") boolean enableSendgridEmailValidation,
-        @Value("${sendgrid.email-validation-api-key}") String apiKey) {
-        ENABLE_EMAIL_VALIDATION = enableSendgridEmailValidation;
-        this.sendGrid = new SendGrid(apiKey);
+      @Value("${sendgrid.enable-sendgrid-email-validation:false}") boolean enableSendgridEmailValidation,
+      @Value("${sendgrid.email-validation-api-key}") String apiKey) {
+    ENABLE_EMAIL_VALIDATION = enableSendgridEmailValidation;
+    this.sendGrid = new SendGrid(apiKey);
   }
 
   //Constructor for mocking SendGrid service for tests
@@ -37,60 +36,60 @@ public class SendGridEmailValidationService {
   }
 
   public HashMap<String, String> validateEmail(String emailAddress) throws IOException {
-        HashMap<String, String> emailValidationResult = new HashMap<>();
-        if (ENABLE_EMAIL_VALIDATION) {
-          try{
-            Response response = getSendGridResponse(emailAddress);
-            if(sendGridFailedToProcessEmailValidationRequest(response)) {
-              emailValidationResult.put("endpointReached", "failed");
-              return emailValidationResult;
-            }
-            ObjectMapper mapper = new ObjectMapper();
-            SendGridValidationResponseBody responseBody = mapper.readValue(response.getBody(), SendGridValidationResponseBody.class);
-            emailValidationResult.put("endpointReached", "success");
+    HashMap<String, String> emailValidationResult = new HashMap<>();
+    if (ENABLE_EMAIL_VALIDATION) {
+      try {
+        Response response = getSendGridResponse(emailAddress);
+        if (sendGridFailedToProcessEmailValidationRequest(response)) {
+          emailValidationResult.put("endpointReached", "failed");
+          return emailValidationResult;
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        SendGridValidationResponseBody responseBody = mapper.readValue(response.getBody(), SendGridValidationResponseBody.class);
+        emailValidationResult.put("endpointReached", "success");
 
-            Boolean emailIsValid = isValidEmail(responseBody);
-            emailValidationResult.put("emailIsValid", emailIsValid.toString());
-            if (!emailIsValid) {
-              Boolean hasSuggestedEmail = responseBody.getResult().hasSuggestedEmailAddress();
-              emailValidationResult.put("hasSuggestion", hasSuggestedEmail.toString());
-              if (hasSuggestedEmail) {
-                emailValidationResult.put("suggestedEmail", responseBody.getResult().getSuggestedEmailAddress());
-              }
-            }
-          }catch (Exception e) {
-            log.error("Request to Sendgrid Failed! Error: {}", e.getMessage());
+        Boolean emailIsValid = isValidEmail(responseBody);
+        emailValidationResult.put("emailIsValid", emailIsValid.toString());
+        if (!emailIsValid) {
+          Boolean hasSuggestedEmail = responseBody.getResult().hasSuggestedEmailAddress();
+          emailValidationResult.put("hasSuggestion", hasSuggestedEmail.toString());
+          if (hasSuggestedEmail) {
+            emailValidationResult.put("suggestedEmail", responseBody.getResult().getSuggestedEmailAddress());
           }
         }
-        return emailValidationResult;
+      } catch (Exception e) {
+        log.error("Request to Sendgrid Failed! Error: {}", e.getMessage());
+      }
     }
+    return emailValidationResult;
+  }
 
-    protected Response getSendGridResponse (String emailAddress) throws IOException {
-        Request request = new Request();
-        request.setMethod(Method.POST);
-        request.setEndpoint("validations/email");
-        request.setBody(new JSONObject(new HashMap<String, Object>() {
-            {
-                put("email", emailAddress);
-            }
-        }).toString());
-        return sendGrid.api(request);
-    }
+  protected Response getSendGridResponse(String emailAddress) throws IOException {
+    Request request = new Request();
+    request.setMethod(Method.POST);
+    request.setEndpoint("validations/email");
+    request.setBody(new JSONObject(new HashMap<String, Object>() {
+      {
+        put("email", emailAddress);
+      }
+    }).toString());
+    return sendGrid.api(request);
+  }
 
-    public Boolean sendGridFailedToProcessEmailValidationRequest(Response response) {
+  public Boolean sendGridFailedToProcessEmailValidationRequest(Response response) {
     boolean sendGridRequestFailed = response.getStatusCode() != 200;
     if (sendGridRequestFailed) {
-        log.error("Sendgrid request failed.  Error code: {}", response.getStatusCode());
+      log.error("Sendgrid request failed.  Error code: {}", response.getStatusCode());
     }
     return sendGridRequestFailed;
-    }
+  }
 
-    public Boolean isValidEmail(@NotNull SendGridValidationResponseBody responseBody) {
-        SendGridValidationResponseBody.Result result = responseBody.getResult();
-        return  result.hasValidAddressSyntax() &&
-                result.hasMxOrARecord() &&
-                !result.isSuspectedDisposableAddress() &&
-                !result.hasKnownBounces() &&
-                !result.hasSuspectedBounces();
-    }
+  public Boolean isValidEmail(@NotNull SendGridValidationResponseBody responseBody) {
+    SendGridValidationResponseBody.Result result = responseBody.getResult();
+    return result.hasValidAddressSyntax() &&
+        result.hasMxOrARecord() &&
+        !result.isSuspectedDisposableAddress() &&
+        !result.hasKnownBounces() &&
+        !result.hasSuspectedBounces();
+  }
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ValidateProviderEmail implements Action {
+
   @Autowired
   MessageSource messageSource;
 
@@ -35,19 +36,21 @@ public class ValidateProviderEmail implements Action {
     Map<String, Object> formData = formSubmission.getFormData();
     String providerEmail = formData.get(INPUT_NAME).toString();
     //Stops Sendgrid call if email is blank or fail our EMAIL_REGEX test
-    if (providerEmail==null || providerEmail.isBlank() || !providerEmail.matches(RegexUtils.EMAIL_REGEX)) {
+    if (providerEmail == null || providerEmail.isBlank() || !providerEmail.matches(RegexUtils.EMAIL_REGEX)) {
       return errorMessages;
     }
     try {
       HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(providerEmail);
       if (emailValidationResult.getOrDefault("endpointReached", "").equals("success")) {
-        if (emailValidationResult.get("emailIsValid").equals("true")){
+        if (emailValidationResult.get("emailIsValid").equals("true")) {
           return errorMessages;
-        }else{
-          if (emailValidationResult.get("hasSuggestion").equals("true")){
-            errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.with-suggested-email-address", new Object[]{emailValidationResult.get("suggestedEmail")}, locale)));
-          }else{
-            errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, locale)));
+        } else {
+          if (emailValidationResult.get("hasSuggestion").equals("true")) {
+            errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.with-suggested-email-address",
+                new Object[]{emailValidationResult.get("suggestedEmail")}, locale)));
+          } else {
+            errorMessages.put(INPUT_NAME,
+                List.of(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, locale)));
           }
         }
       }

@@ -28,8 +28,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 
 @ActiveProfiles("test")
-@SpringBootTest( classes = {IlGCCApplication.class, SendGridEmailValidationService.class})
+@SpringBootTest(classes = {IlGCCApplication.class, SendGridEmailValidationService.class})
 class ValidateProviderEmailTest {
+
   @Mock
   private MessageSource messageSource;
 
@@ -54,9 +55,11 @@ class ValidateProviderEmailTest {
         .thenReturn("");
     when(messageSource.getMessage("errors.invalid-email", null, Locale.getDefault()))
         .thenReturn("Enter an email that follows the right format. For example: name@email.com");
-    when(messageSource.getMessage("errors.invalid-email.with-suggested-email-address", new Object[]{suggestedEmail}, Locale.getDefault()))
+    when(messageSource.getMessage("errors.invalid-email.with-suggested-email-address", new Object[]{suggestedEmail},
+        Locale.getDefault()))
         .thenReturn("Make sure the email address is valid. Did you mean foo@bar.com?");
   }
+
   @AfterEach
   void tearDown() throws Exception {
     closeable.close();
