@@ -746,7 +746,7 @@ flow:
       - name: registration-info-review
   registration-info-review:
     nextScreens:
-      - name: registration-home-provider-itin
+      - name: registration-home-provider-tax-id
         condition: EnableProviderRegistrationItin
       - name: registration-home-provider-ssn
         condition: ProviderSsnRequiredForInHomeCare
@@ -758,7 +758,7 @@ flow:
         condition: EnableProviderRegistrationItin
       - name: registration-home-provider-dob
   registration-home-provider-tax-id:
-    condition: EnableProviderRegistrationItin
+    condition: IsLicensedOrLicenseExemptHomeCareProvider
     nextScreens:
       - name: registration-home-provider-ssn
   registration-home-provider-itin:
