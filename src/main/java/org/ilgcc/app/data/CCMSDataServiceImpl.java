@@ -75,7 +75,11 @@ public class CCMSDataServiceImpl implements CCMSDataService {
 
     @Override
     public List<ResourceOrganization> getActiveResourceOrganizations() {
-        return resourceOrganizationRepository.findAll().stream().filter(t -> activeCaseLoadCodes.contains(t.getCaseloadCode()))
+        // allows all sites
+        List caseLoadCodes = List.of("SITE");
+        // limits to only active case load codes
+        caseLoadCodes.addAll(activeCaseLoadCodes);
+        return resourceOrganizationRepository.findAll().stream().filter(t -> caseLoadCodes.contains(t.getCaseloadCode()))
                 .toList();
     }
 

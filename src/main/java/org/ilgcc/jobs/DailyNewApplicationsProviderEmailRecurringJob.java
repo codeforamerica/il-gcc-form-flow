@@ -3,6 +3,7 @@ package org.ilgcc.jobs;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -83,10 +84,9 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
             return;
         }
 
-        List<ResourceOrganization> activeResourceOrganizations = ccmsDataService.getActiveResourceOrganizations();
 
-        if (activeResourceOrganizations.isEmpty()) {
-            log.debug("There are no active resources in this current database, so no one to send an email to");
+        if (organizationEmailRecipients.isEmpty()) {
+            log.debug("There are no email recipients in this current database, so no one to send an email to");
             return;
         }
 
@@ -96,14 +96,24 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
         Optional<Map<String, List<ResourceOrganizationTransaction>>> transactions = transactionRepositoryService.findTransactionsByResourceOrganizationsOnDate(
                 transactionsAsOfDate);
 
-        activeResourceOrganizations.forEach(org -> {
-            List<String> currentOrgRecipients = organizationEmailRecipients.get(org.getResourceOrgId().toString());
+        List<ResourceOrganization> activeResourceOrganizations = ccmsDataService.getActiveResourceOrganizations();
+
+
+        organizationEmailRecipients.keySet().forEach(orgId -> {
+
+            List<String> currentOrgRecipients = organizationEmailRecipients.get(orgId);
+            Optional<ResourceOrganization> currentOrg = activeResourceOrganizations.stream().filter(org -> org.getResourceOrgId() == new BigInteger(orgId)).findFirst();
 
             if (null == currentOrgRecipients || currentOrgRecipients.isEmpty()) {
-                log.info("We don't have any email recipients for {}. Skipping email", org.getName());
+                log.info("We don't have any email recipients for {}. Skipping email", orgId);
                 return;
             }
-            enqueueOrgEmail(generateEmailData(transactions, org, transactionsAsOfDate, currentDate), currentOrgRecipients);
+
+            if(!currentOrg.isPresent()){
+                log.info("The org id doesn't have a corresponding org: {} in the database. Skipping email", orgId);
+                return;
+            }
+            enqueueOrgEmail(generateEmailData(transactions, currentOrg.get(), transactionsAsOfDate, currentDate), currentOrgRecipients);
         });
     }
 
