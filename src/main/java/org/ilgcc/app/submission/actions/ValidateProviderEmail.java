@@ -36,7 +36,7 @@ public class ValidateProviderEmail implements Action {
     Map<String, Object> formData = formSubmission.getFormData();
     String providerEmail = formData.get(INPUT_NAME).toString();
     //Stops Sendgrid call if email is blank or fail our EMAIL_REGEX test
-    if (providerEmail == null || providerEmail.isBlank() || !providerEmail.matches(RegexUtils.EMAIL_REGEX)) {
+    if (providerEmail == null || !providerEmail.matches(RegexUtils.EMAIL_REGEX)) {
       return errorMessages;
     }
     try {
