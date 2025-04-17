@@ -94,7 +94,7 @@ public class SendFamilyConfirmationNoProviderEmailTest {
         ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
 
         assertThat(emailTemplate.getSenderEmail()).isEqualTo(new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
-        assertThat(emailTemplate.getSubject()).isEqualTo(messageSource.getMessage("email.family-confirmation.subject", new Object[]{"ABC123"}, locale));
+        assertThat(emailTemplate.getSubject()).isEqualTo(messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{"ABC123"}, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
