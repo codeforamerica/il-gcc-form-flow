@@ -488,7 +488,7 @@ flow:
       - name: doc-upload-recommended-docs
   submit-contact-provider-email:
     condition: DisplaySubmitContactProviderEmailScreen
-    crossFieldValidationAction: ValidateProviderEmail
+    crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     nextScreens:
       - name: submit-confirm-provider-email
   submit-confirm-provider-email:
@@ -499,7 +499,7 @@ flow:
         condition: hasConfirmedProviderEmail
       - name: submit-edit-provider-email
   submit-edit-provider-email:
-    crossFieldValidationAction: ValidateProviderEmail
+    crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-confirm-provider-email

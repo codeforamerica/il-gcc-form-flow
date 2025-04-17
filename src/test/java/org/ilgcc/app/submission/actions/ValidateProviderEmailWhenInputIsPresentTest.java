@@ -1,7 +1,8 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -30,7 +31,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = {IlGCCApplication.class, SendGridEmailValidationService.class})
-class ValidateProviderEmailTest {
+class ValidateProviderEmailWhenInputIsPresentTest {
 
   @Mock
   private MessageSource messageSource;
@@ -38,7 +39,7 @@ class ValidateProviderEmailTest {
   @MockitoSpyBean
   SendGridEmailValidationService mockSendGridEmailValidationService;
   @Autowired
-  private ValidateProviderEmail validateProviderEmailAction;
+  private ValidateProviderEmailWhenInputIsPresent validateProviderEmailWhenInputIsPresentAction;
 
   private AutoCloseable closeable;
   private String suggestedEmail = "foo@bar.com";
@@ -51,7 +52,7 @@ class ValidateProviderEmailTest {
   @BeforeEach
   void setUp() throws Exception {
     closeable = MockitoAnnotations.openMocks(this);
-    validateProviderEmailAction.messageSource = messageSource;
+    validateProviderEmailWhenInputIsPresentAction.messageSource = messageSource;
     when(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, Locale.getDefault()))
         .thenReturn("Make sure the email address is valid and follows this format: name@email.com");
     when(messageSource.getMessage("errors.invalid-email", null, Locale.getDefault()))
@@ -59,6 +60,8 @@ class ValidateProviderEmailTest {
     when(messageSource.getMessage("errors.invalid-email.with-suggested-email-address", new Object[]{suggestedEmail},
         Locale.getDefault()))
         .thenReturn("Make sure the email address is valid. Did you mean foo@bar.com?");
+    when(messageSource.getMessage("errors.invalid-email.blank", null, Locale.getDefault()))
+        .thenReturn("Enter your provider's email");
   }
 
   @AfterEach
@@ -73,8 +76,9 @@ class ValidateProviderEmailTest {
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, "");
     FormSubmission formSubmission = new FormSubmission(formData);
     doReturn(result).when(mockSendGridEmailValidationService).validateEmail(PROVIDER_EMAIL_INPUT);
-    Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
-    assertTrue(errors.isEmpty());
+    Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
+    assertFalse(errors.isEmpty());
+    assertThat(errors.get(PROVIDER_EMAIL_INPUT).contains("Enter your provider's email")).isTrue();
   }
 
   @Test
@@ -85,7 +89,7 @@ class ValidateProviderEmailTest {
     FormSubmission formSubmission = new FormSubmission(formData);
 
     verify(mockSendGridEmailValidationService, never()).validateEmail(MALFORMED_EMAIL);
-    Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
+    Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());
   }
 
@@ -99,7 +103,7 @@ class ValidateProviderEmailTest {
     FormSubmission formSubmission = new FormSubmission(formData);
     when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL))
         .thenReturn(emailIsValidReturn);
-    Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
+    Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());
   }
 
@@ -114,7 +118,7 @@ class ValidateProviderEmailTest {
     FormSubmission formSubmission = new FormSubmission(formData);
     when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
         .thenReturn(emailIsInvalidReturn);
-    Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
+    Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertFalse(errors.isEmpty());
     assertThat(errors.get(PROVIDER_EMAIL_INPUT).contains("Make sure the email address is valid and follows this format: name@email.com")).isTrue();
   }
@@ -131,7 +135,7 @@ class ValidateProviderEmailTest {
     FormSubmission formSubmission = new FormSubmission(formData);
     when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
         .thenReturn(emailIsInvalidReturn);
-    Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
+    Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertFalse(errors.isEmpty());
     assertThat(errors.get(PROVIDER_EMAIL_INPUT).contains("Make sure the email address is valid. Did you mean foo@bar.com?")).isTrue();
   }
