@@ -43,7 +43,7 @@ public class DailyNewApplicationsProviderEmailTemplate {
     private String setSubject(Map<String, Object> emailData) {
         String date = (String) emailData.get("currentEmailDate");
         String orgName = (String) emailData.get("processingOrgName");
-        return messageSource.getMessage("email.automated-new-applications.subject", new Object[]{date, orgName},
+        return messageSource.getMessage("email.automated-new-applications.subject", new Object[]{orgName, date},
                 locale);
     }
 

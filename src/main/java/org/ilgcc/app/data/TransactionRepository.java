@@ -26,17 +26,16 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     @Query(value = """
             SELECT 
                 s.input_data->>'organizationId' AS organization_id, 
-                t.created_at, 
+                (t.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago') AS created_at,
                 s.short_code, 
                 t.work_item_id
             FROM transactions t
             LEFT JOIN submissions s ON t.submission_id = s.id
-            WHERE t.created_at >= :startDate
-              AND t.created_at < :endDate
+            WHERE DATE_TRUNC('day', t.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago') = DATE_TRUNC('day', CAST(:date AS TIMESTAMP))
               AND s.flow = 'gcc'
             ORDER BY t.created_at ASC
             """, nativeQuery = true)
-    List<Object[]> find24HoursOfSubmissionsTransmittedSince(@Param("startDate") OffsetDateTime startDate, @Param("endDate") OffsetDateTime endDate);
+    List<Object[]> findTransactionsOnDate(@Param("date") OffsetDateTime date);
 
     Transaction findByTransactionId(UUID transactionId);
 

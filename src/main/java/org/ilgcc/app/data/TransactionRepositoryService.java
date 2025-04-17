@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -46,11 +46,9 @@ public class TransactionRepositoryService {
         return transactionRepository.findSubmissionsWithoutTransactions(sinceDate);
     }
 
-    public List<ResourceOrganizationTransaction> find24HoursOfSubmissionsTransmittedSince(OffsetDateTime sinceDate) {
+    public List<ResourceOrganizationTransaction> findTransactionsOnDate(OffsetDateTime date) {
 
-        OffsetDateTime endDate = sinceDate.plusHours(24);
-
-        List<Object[]> rows = transactionRepository.find24HoursOfSubmissionsTransmittedSince(sinceDate, endDate);
+        List<Object[]> rows = transactionRepository.findTransactionsOnDate(date);
 
         if (rows.isEmpty()) {
             return Collections.emptyList();
@@ -70,9 +68,10 @@ public class TransactionRepositoryService {
         return transactions;
     }
 
-    public Optional<Map<String, List<ResourceOrganizationTransaction>>> find24HoursOfSubmissionsSentByResourceOrganizationSince(
-            OffsetDateTime sinceDate) {
-        List<ResourceOrganizationTransaction> transactions = find24HoursOfSubmissionsTransmittedSince(sinceDate);
+    public Optional<Map<String, List<ResourceOrganizationTransaction>>> findTransactionsByResourceOrganizationsOnDate(
+            OffsetDateTime date) {
+
+        List<ResourceOrganizationTransaction> transactions = findTransactionsOnDate(date);
         if (transactions.isEmpty()) {
             return Optional.empty();
         } else {
