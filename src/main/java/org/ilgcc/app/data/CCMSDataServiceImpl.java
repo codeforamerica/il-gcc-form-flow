@@ -1,6 +1,7 @@
 package org.ilgcc.app.data;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -75,7 +76,12 @@ public class CCMSDataServiceImpl implements CCMSDataService {
 
     @Override
     public List<ResourceOrganization> getActiveResourceOrganizations() {
-        return resourceOrganizationRepository.findAll().stream().filter(t -> activeCaseLoadCodes.contains(t.getCaseloadCode()))
+        List<String> caseLoadCodes = new ArrayList<>();
+        // allows all sites
+        caseLoadCodes.add("SITE");
+        // limits to only active case load codes
+        caseLoadCodes.addAll(activeCaseLoadCodes);
+        return resourceOrganizationRepository.findAll().stream().filter(t -> caseLoadCodes.contains(t.getCaseloadCode()))
                 .toList();
     }
 

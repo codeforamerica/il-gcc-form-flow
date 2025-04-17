@@ -31,7 +31,7 @@ public class DailyNewApplicationsProviderEmailTemplate {
     }
 
     public ILGCCEmailTemplate createTemplate() {
-        return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData.get("currentEmailDate").toString()),
+        return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData),
                 new Content("text/html", setBodyCopy(emailData)),
                 EmailType.DAILY_NEW_APPLICATIONS_PROVIDER_EMAIL);
     }
@@ -40,8 +40,10 @@ public class DailyNewApplicationsProviderEmailTemplate {
         return new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale));
     }
 
-    private String setSubject(String date) {
-        return messageSource.getMessage("email.automated-new-applications.subject", new Object[]{date},
+    private String setSubject(Map<String, Object> emailData) {
+        String date = (String) emailData.get("currentEmailDate");
+        String orgName = (String) emailData.get("processingOrgName");
+        return messageSource.getMessage("email.automated-new-applications.subject", new Object[]{orgName, date},
                 locale);
     }
 
