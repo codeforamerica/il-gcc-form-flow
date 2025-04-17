@@ -5,6 +5,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import java.io.IOException;
@@ -40,6 +41,7 @@ class ValidateProviderEmailTest {
   private AutoCloseable closeable;
   private String suggestedEmail = "foo@bar.com";
   private String VALID_EMAIL = "bar@foo.com";
+  private String INVALID_EMAIL = "bar@gemaildas.com";
   private String MALFORMED_EMAIL = "foo@bar";
   private final String PROVIDER_EMAIL_INPUT = "familyIntendedProviderEmail";
 
@@ -47,10 +49,9 @@ class ValidateProviderEmailTest {
   @BeforeEach
   void setUp() throws Exception {
     closeable = MockitoAnnotations.openMocks(this);
-    validateProviderEmailAction  = new ValidateProviderEmail();
     validateProviderEmailAction.messageSource = messageSource;
     when(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, Locale.getDefault()))
-        .thenReturn("Make sure the email address is valid and follows this format: name@email.com");
+        .thenReturn("");
     when(messageSource.getMessage("errors.invalid-email", null, Locale.getDefault()))
         .thenReturn("Enter an email that follows the right format. For example: name@email.com");
     when(messageSource.getMessage("errors.invalid-email.with-suggested-email-address", new Object[]{suggestedEmail}, Locale.getDefault()))
@@ -92,8 +93,24 @@ class ValidateProviderEmailTest {
 
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, VALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    doReturn(emailIsValidReturn).when(mockSendGridEmailValidationService).validateEmail(VALID_EMAIL);
+    when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL))
+        .thenReturn(emailIsValidReturn);
     Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());
+  }
+
+  @Test
+  void shouldReturnErrorWhenSendGridIsReachedEmailIsNotValidAndHasNoSuggestions() throws IOException {
+    HashMap<String, String> emailIsInvalidReturn = new HashMap<>();
+    emailIsInvalidReturn.put("endpointReached", "success");
+    emailIsInvalidReturn.put("emailIsValid", "false");
+    emailIsInvalidReturn.put("hasSuggestion", "false");
+
+    Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
+    FormSubmission formSubmission = new FormSubmission(formData);
+    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
+        .thenReturn(emailIsInvalidReturn);
+    Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
+    assertFalse(errors.isEmpty());
   }
 }
