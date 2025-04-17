@@ -102,7 +102,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
         organizationEmailRecipients.keySet().forEach(orgId -> {
 
             List<String> currentOrgRecipients = organizationEmailRecipients.get(orgId);
-            Optional<ResourceOrganization> currentOrg = activeResourceOrganizations.stream().filter(org -> org.getResourceOrgId() == new BigInteger(orgId)).findFirst();
+            Optional<ResourceOrganization> currentOrg = activeResourceOrganizations.stream().filter(org -> org.getResourceOrgId().equals(new BigInteger(orgId))).findFirst();
 
             if (null == currentOrgRecipients || currentOrgRecipients.isEmpty()) {
                 log.info("We don't have any email recipients for {}. Skipping email", orgId);
