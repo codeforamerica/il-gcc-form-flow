@@ -3,6 +3,7 @@ package org.ilgcc.app.utils;
 import com.google.common.collect.Iterables;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
+import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepository;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -55,6 +56,9 @@ public abstract class AbstractBasePageTest {
     protected SubmissionRepository repo;
 
     @Autowired
+    protected SubmissionRepositoryService submissionRepositoryService;
+
+    @Autowired
     protected UserFileRepository userFileRepository;
     
     @Autowired
@@ -82,8 +86,12 @@ public abstract class AbstractBasePageTest {
         return new SubmissionTestBuilder(getSessionSubmission());
     }
 
-    public void saveSubmission(Submission submission) {
-        repo.save(submission);
+    public Submission saveSubmission(Submission submission) {
+        Submission s = repo.save(submission);
+        if (s.getShortCode() == null) {
+            submissionRepositoryService.generateAndSetUniqueShortCode(s);
+        }
+        return s;
     }
 
     @BeforeEach

@@ -2,6 +2,7 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
@@ -13,8 +14,6 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true"})
 public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBasePageTest {
 
-    private static final String CONF_CODE = "A2123B";
-
     @AfterEach
     protected void clearSubmissions() {
         super.clearSubmissions();
@@ -22,7 +21,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
     @Test
     public void providerRegistersWhenNotSureIfPaidByCCCAP() {
-        createAValidLink();
+        String confirmationCode = createAValidLink();
 
         // submit-start
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -30,7 +29,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
+        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(confirmationCode);
+
         testPage.clickContinue();
 
         // paid-by-ccap
@@ -310,15 +310,16 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
     }
+
     @Test
     void onboardingScreenNoLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
-                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
-                .with("earliestChildcareStartDate", "10/10/2011")
-                .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
+                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
+                .withConstantChildcareSchedule(0).with("earliestChildcareStartDate", "10/10/2011")
+                .withSubmittedAtDate(OffsetDateTime.now()).build());
 
         testPage.clickContinue();
 
@@ -330,7 +331,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
         testPage.clickContinue();
 
         // paid-by-ccap
@@ -345,7 +346,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        assertThat(testPage.findElementTextById("confirmation-code")).contains(CONF_CODE);
+        assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
         assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
 
         assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
@@ -462,22 +463,21 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
     }
 
 
-
     @Test
     public void existingProviderBasicflow() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+        Submission s = getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
                 .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false")
-                .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
-                .with("earliestChildcareStartDate", "10/10/2011")
-                .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
+                .with("earliestChildcareStartDate", "10/10/2011").withSubmittedAtDate(OffsetDateTime.now()).build();
+
+        s = submissionRepositoryService.save(s);
+        submissionRepositoryService.generateAndSetUniqueShortCode(s);
 
         testPage.clickContinue();
 
-        driver.navigate()
-                .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
+        driver.navigate().to("http://localhost:%s/s/%s".formatted(localServerPort, s.getShortCode()));
 
         // submit-start
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -485,7 +485,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
+        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(s.getShortCode());
         testPage.clickContinue();
 
         // paid-by-ccap
@@ -1662,29 +1662,29 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
     }
 
-    private void createAValidLink() {
+    private String createAValidLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
                 .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false")
-                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
-                .with("earliestChildcareStartDate", "10/10/2011")
-                .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
+                .withConstantChildcareSchedule(0).with("earliestChildcareStartDate", "10/10/2011")
+                .withSubmittedAtDate(OffsetDateTime.now()).build());
 
         testPage.clickContinue();
 
-        driver.navigate()
-                .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
+        driver.navigate().to("http://localhost:%s/s/%s".formatted(localServerPort, s.getShortCode()));
+
+        return s.getShortCode();
     }
 
     private void setupRegistration() {
-        createAValidLink();
+        String confirmationCode = createAValidLink();
         // submit-start
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
         // confirmation-code
-        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
+        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(confirmationCode);
         testPage.clickContinue();
 
         // paid-by-ccap
