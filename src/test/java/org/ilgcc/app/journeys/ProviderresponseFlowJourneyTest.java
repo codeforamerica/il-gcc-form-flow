@@ -3,7 +3,6 @@ package org.ilgcc.app.journeys;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import formflow.library.data.Submission;
-import formflow.library.data.SubmissionRepository;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,13 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
-
-    @Autowired
-    SubmissionRepository repository;
 
     @AfterEach
     protected void clearSubmissions() {
@@ -25,20 +20,17 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     }
 
     @Test
-    void ProviderresponseJourneyTest_validLink_No_Agreement_To_Care(){
+    void ProviderresponseJourneyTest_validLink_No_Agreement_To_Care() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        String CONF_CODE = "A2123B";
-
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-            .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
-            .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
-            .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
+                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
+                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now()).build());
 
         testPage.clickContinue();
 
-        driver.navigate()
-            .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
+        driver.navigate().to("http://localhost:%s/s/%s".formatted(localServerPort, s.getShortCode()));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -46,7 +38,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
+        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(s.getShortCode());
+
         testPage.clickContinue();
 
         // provider-number
@@ -56,7 +49,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        assertThat(testPage.findElementTextById("confirmation-code")).contains(CONF_CODE);
+        assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
         assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
 
         assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
@@ -75,21 +68,19 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
         assertThat(testPage.elementDoesNotExistById("continue-link")).isFalse();
     }
+
     @Test
     void ProviderresponseJourneyTest_validLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        String CONF_CODE = "A2123A";
-
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
-                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
-                .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
+                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
+                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now()).build());
 
         testPage.clickContinue();
 
-        driver.navigate()
-                .to("http://localhost:%s/s/%s".formatted(localServerPort, CONF_CODE));
+        driver.navigate().to("http://localhost:%s/s/%s".formatted(localServerPort, s.getShortCode()));
 
         // submit-start when application is still active
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
@@ -97,7 +88,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.findElementTextById("providerResponseFamilyShortCode").equals(CONF_CODE);
+        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(s.getShortCode());
+
         testPage.clickContinue();
 
         // provider-number
@@ -107,7 +99,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        assertThat(testPage.findElementTextById("confirmation-code")).contains(CONF_CODE);
+        assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
         assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
 
         assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
@@ -167,12 +159,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     void ProviderresponseJourneyTest_noLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        String CONF_CODE = "A2123C";
-
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
-                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
-                .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
+                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
+                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now()).build());
 
         testPage.clickContinue();
 
@@ -184,7 +174,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
         testPage.clickContinue();
 
         // provider-number
@@ -194,7 +184,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        assertThat(testPage.findElementTextById("confirmation-code")).contains(CONF_CODE);
+        assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
         assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
 
         assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
@@ -211,7 +201,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("providerResponseFirstName", "First Name");
         testPage.enter("providerResponseLastName", "Last Name");
         testPage.clickButton("Continue");
-        
+
         // service-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-service-address.title"));
         testPage.enter("providerResponseServiceStreetAddress1", "123 Main St");
@@ -253,12 +243,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     void ProviderresponseJourneyTest_noLink_invalidConfirmationCode() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        String CONF_CODE = "A2123D";
-
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
-                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
-                .withSubmittedAtDate(OffsetDateTime.now()).withShortCode(CONF_CODE).build());
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
+                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
+                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now()).build());
 
         testPage.clickContinue();
 
@@ -285,7 +273,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
         testPage.clickContinue();
 
         // provider-number
@@ -301,12 +289,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     void ProviderresponseJourneyTest_noLink_expiredConfirmationCode() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        String CONF_CODE = "A2123E";
-
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "false")
-                .withChild("NoAssistance", "Child", "false").withConstantChildcareSchedule(0)
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(10)).withShortCode(CONF_CODE).build());
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
+                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
+                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now().minusDays(10)).build());
 
         testPage.clickContinue();
 
@@ -318,7 +304,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
         testPage.clickContinue();
 
         // expired
@@ -331,8 +317,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     void ProviderresponseJourneyTest_noLink_alreadyResponded() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        String CONF_CODE = "A2123F";
-
         Submission providerSubmission = new Submission();
         providerSubmission.setFlow("providerresponse");
         providerSubmission.setSubmittedAt(OffsetDateTime.now().minusDays(1));
@@ -341,14 +325,13 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         Submission familySubmission = new Submission();
         familySubmission.setFlow("gcc");
         familySubmission.setSubmittedAt(OffsetDateTime.now().minusDays(2));
-        familySubmission.setShortCode(CONF_CODE);
         Map<String, Object> inputData = new HashMap<>();
         inputData.put("familyIntendedProviderName", "Dev Provider");
         inputData.put("parentFirstName", "Devy");
         inputData.put("parentLastName", "McDeverson");
         inputData.put("providerResponseSubmissionId", providerSubmission.getId());
         familySubmission.setInputData(inputData);
-        saveSubmission(familySubmission);
+        familySubmission = saveSubmission(familySubmission);
 
         testPage.clickContinue();
 
@@ -360,7 +343,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.enter("providerResponseFamilyShortCode", familySubmission.getShortCode());
         testPage.clickContinue();
 
         // submit-start
@@ -373,12 +356,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     void ProviderresponseJourneyTest_ProviderNumberValidation() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        String CONF_CODE = "A2123G";
-
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
                 .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
                 .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2)).withShortCode(CONF_CODE).build());
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2)).build());
 
         testPage.clickContinue();
 
@@ -390,7 +371,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", CONF_CODE);
+        testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
         testPage.clickContinue();
 
         // provider-number
