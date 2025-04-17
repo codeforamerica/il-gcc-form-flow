@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail.EmailType;
-import org.ilgcc.app.email.templates.ProviderConfirmationEmailTemplate;
+import org.ilgcc.app.email.templates.NewProviderConfirmationEmailTemplate;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,12 +17,11 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SendProviderConfirmationEmail extends SendEmail {
+public class SendNewProviderConfirmationEmail extends SendEmail {
 
 
     @Autowired
-    public SendProviderConfirmationEmail(SendEmailJob sendEmailJob,
-            MessageSource messageSource,
+    public SendNewProviderConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
         super(sendEmailJob, messageSource, submissionRepositoryService, "providerConfirmationEmailSent",
                 "providerResponseContactEmail");
@@ -30,9 +29,7 @@ public class SendProviderConfirmationEmail extends SendEmail {
 
     @Override
     protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
-        return new ProviderConfirmationEmailTemplate(emailData,
-                messageSource,
-                Locale.ENGLISH).createTemplate();
+        return new NewProviderConfirmationEmailTemplate(emailData, messageSource, Locale.ENGLISH).createTemplate();
     }
 
     @Override
@@ -43,14 +40,14 @@ public class SendProviderConfirmationEmail extends SendEmail {
         } else {
             log.warn(
                     "{}: Skipping email send because there is no family submission associated with the provider submission with ID : {}",
-                    EmailType.PROVIDER_CONFIRMATION_EMAIL.getDescription(), providerSubmission.getId());
+                    EmailType.NEW_PROVIDER_CONFIRMATION_EMAIL.getDescription(), providerSubmission.getId());
             return Optional.empty();
         }
     }
 
     @Override
     protected Boolean skipEmailSend(Submission submission) {
-        boolean emailSent = submission.getInputData().getOrDefault("providerConfirmationEmailSent", "false").equals("true");
+        boolean emailSent = submission.getInputData().getOrDefault(emailSentStatusInputName, "false").equals("true");
         boolean providerAgreedToCare = submission.getInputData().getOrDefault("providerResponseAgreeToCare", "false")
                 .equals("true");
 

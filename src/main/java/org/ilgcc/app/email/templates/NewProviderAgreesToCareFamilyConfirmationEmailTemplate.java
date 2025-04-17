@@ -17,24 +17,27 @@ import org.springframework.context.MessageSource;
 
 @Getter
 @Setter
-public class ProviderAgreesToCareFamilyConfirmationEmailTemplate {
+public class NewProviderAgreesToCareFamilyConfirmationEmailTemplate {
 
     private Map<String, Object> emailData;
     private MessageSource messageSource;
     private Locale locale;
 
-   public ProviderAgreesToCareFamilyConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource, Locale locale) {
-       this.emailData = emailData;
-       this.messageSource = messageSource;
-       this.locale = locale;
+    public NewProviderAgreesToCareFamilyConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource,
+            Locale locale) {
+        this.emailData = emailData;
+        this.messageSource = messageSource;
+        this.locale = locale;
 
-   }
-   public ILGCCEmailTemplate createTemplate(){
-       return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)), EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL);
-   }
+    }
+
+    public ILGCCEmailTemplate createTemplate() {
+        return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)),
+                EmailType.NEW_PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL);
+    }
 
     private Email senderEmail() {
-        return  new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale));
+        return new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale));
     }
 
     private String setSubject() {
@@ -58,9 +61,10 @@ public class ProviderAgreesToCareFamilyConfirmationEmailTemplate {
                 locale);
         String p5 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p5",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
-        String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
-        String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
-        return p1 + p2 + p3 + p4 + p5 + p6 + p7;
+        String p6 = messageSource.getMessage("email.response-email-for-family.new-provider-agrees.note", null, locale);
+        String p7 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
+        String p8 = messageSource.getMessage("email.general.footer.cfa", null, locale);
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
     }
 
 }
