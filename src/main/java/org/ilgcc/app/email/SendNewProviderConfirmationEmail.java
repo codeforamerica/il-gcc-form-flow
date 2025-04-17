@@ -23,7 +23,7 @@ public class SendNewProviderConfirmationEmail extends SendEmail {
     @Autowired
     public SendNewProviderConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
-        super(sendEmailJob, messageSource, submissionRepositoryService, "newProviderConfirmationEmailSent",
+        super(sendEmailJob, messageSource, submissionRepositoryService, "providerConfirmationEmailSent",
                 "providerResponseContactEmail");
     }
 

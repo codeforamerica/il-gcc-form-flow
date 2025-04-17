@@ -130,18 +130,18 @@ public class SendNewProviderConfirmationEmailTest {
 
     @Test
     void correctlyUpdatesEmailSendStatus() {
-        assertThat(providerSubmission.getInputData().containsKey("newProviderConfirmationEmailSent")).isFalse();
+        assertThat(providerSubmission.getInputData().containsKey("providerConfirmationEmailSent")).isFalse();
         sendEmailClass.send(providerSubmission);
 
-        assertThat(providerSubmission.getInputData().containsKey("newProviderConfirmationEmailSent")).isTrue();
-        assertThat(providerSubmission.getInputData().get("newProviderConfirmationEmailSent")).isEqualTo("true");
+        assertThat(providerSubmission.getInputData().containsKey("providerConfirmationEmailSent")).isTrue();
+        assertThat(providerSubmission.getInputData().get("providerConfirmationEmailSent")).isEqualTo("true");
     }
 
     @Test
     void correctlySkipsEmailSendWhenEmailStatusIsTrue() {
         assertThat(sendEmailClass.skipEmailSend(providerSubmission)).isFalse();
 
-        providerSubmission.getInputData().put("newProviderConfirmationEmailSent", "true");
+        providerSubmission.getInputData().put("providerConfirmationEmailSent", "true");
         assertThat(sendEmailClass.skipEmailSend(providerSubmission)).isTrue();
     }
 
