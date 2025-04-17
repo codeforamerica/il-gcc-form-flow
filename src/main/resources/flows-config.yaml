@@ -750,7 +750,6 @@ flow:
         condition: EnableProviderRegistrationItin
       - name: registration-home-provider-ssn
         condition: ProviderSsnRequiredForInHomeCare
-      - name: registration-tax-id
   registration-home-provider-ssn:
     crossFieldValidationAction: ValidateHomeProviderSSN
     nextScreens:
@@ -760,11 +759,14 @@ flow:
   registration-home-provider-tax-id:
     condition: IsLicensedOrLicenseExemptHomeCareProvider
     nextScreens:
+      - name: registration-home-provider-itin
+        condition: selectedITIN
       - name: registration-home-provider-ssn
+        condition: selectedSSN
   registration-home-provider-itin:
     condition: EnableProviderRegistrationItin
     nextScreens:
-      - name:
+      - name: registration-home-provider-dob
   registration-home-provider-dob:
     crossFieldValidationAction: ValidateHomeProviderDateOfBirth
     onPostAction: CreateProviderIdentityCheckDOB
