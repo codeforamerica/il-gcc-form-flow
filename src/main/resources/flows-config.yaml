@@ -12,6 +12,7 @@ flow:
         condition: NoProviderChosen
       - name: onboarding-provider-info
   onboarding-provider-info:
+    crossFieldValidationAction: ValidateProviderEmail
     nextScreens:
       - name: onboarding-provider-info-review
   onboarding-no-provider-intro:
@@ -487,6 +488,7 @@ flow:
       - name: doc-upload-recommended-docs
   submit-contact-provider-email:
     condition: DisplaySubmitContactProviderEmailScreen
+    crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     nextScreens:
       - name: submit-confirm-provider-email
   submit-confirm-provider-email:
@@ -497,6 +499,7 @@ flow:
         condition: hasConfirmedProviderEmail
       - name: submit-edit-provider-email
   submit-edit-provider-email:
+    crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-confirm-provider-email
@@ -587,7 +590,6 @@ landmarks:
     - submit-contact-provider-email
     - submit-confirm-provider-email
     - submit-edit-provider-email
-    - submit-provider-info-edit
     - submit-contact-provider-email-confirmation
     - submit-contact-provider-text
     - submit-confirm-provider-number
