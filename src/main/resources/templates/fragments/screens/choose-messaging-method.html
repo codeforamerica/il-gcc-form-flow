@@ -1,32 +1,52 @@
 <th:block th:fragment="screen">
-    <th:block
-            th:replace="~{fragments/screens/screenWithOneInput ::
-  screenWithOneInput(
-    title=#{after-submit-contact-provider.title},
-    header=#{after-submit-contact-provider.header},
-    iconFragment=~{fragments/gcc-icons :: mail-sent-success},
-    required='true',
-    buttonLabel=#{general.button.continue},
-    formAction=${formAction},
-    inputContent=~{::inputContent})}">
-        <th:block th:ref="inputContent">
-            <div class='notice spacing-below-60 notice--gray'>
-                <p th:utext="#{after-submit-contact-provider.notice}"></p>
-            </div>
-            <p class="spacing-below-0" th:text="#{general.select-all-that-apply}"></p>
-            <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+    <!DOCTYPE html>
+    <html th:lang="${#locale.language}">
+    <head th:replace="~{fragments/head :: head(title=#{after-submit-contact-provider.title})}"></head>
+    <body>
+    <div class="page-wrapper">
+        <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+        <section class="slab">
+            <div class="grid">
+                <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+                <main id="content" role="main" class="form-card spacing-above-35">
+                    <th:block th:replace="~{fragments/gcc-icons :: mail-sent-success}"></th:block>
+                    <div th:if="${lockedSubmissionMessage}" class="notice--warning">
+                        <p th:text="${lockedSubmissionMessage}"></p>
+                    </div>
+                    <th:block
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{after-submit-contact-provider.header})}"/>
+                    <th:block
+                            th:replace="~{fragments/form :: form(action=${formAction}, content=~{::inputContent})}">
+                        <th:block th:ref="inputContent">
+                            <div class='notice spacing-below-60 notice--gray'>
+                                <p th:utext="#{after-submit-contact-provider.notice}"></p>
+                            </div>
+                            <p class="spacing-below-0"
+                               th:text="#{general.select-all-that-apply}"></p>
+                            <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
       checkboxFieldset(inputName='contactProviderMethod',
       ariaLabel='header',
       content=~{::contactList})}">
-                <th:block th:ref="contactList">
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='contactProviderMethod',value='EMAIL', label=#{after-submit-contact-provider.email})}"/>
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='contactProviderMethod',value='TEXT', label=#{after-submit-contact-provider.text})}"/>
-                    <th:block
-                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='contactProviderMethod',value='OTHER', label=#{after-submit-contact-provider.other})}"/>
-                </th:block>
-            </th:block>
-        </th:block>
-    </th:block>
+                                <th:block th:ref="contactList">
+                                    <th:block
+                                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='contactProviderMethod',value='EMAIL', label=#{after-submit-contact-provider.email})}"/>
+                                    <th:block
+                                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='contactProviderMethod',value='TEXT', label=#{after-submit-contact-provider.text})}"/>
+                                    <th:block
+                                            th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='contactProviderMethod',value='OTHER', label=#{after-submit-contact-provider.other})}"/>
+                                </th:block>
+                            </th:block>
+                            <div class="form-card__footer">
+                                <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                      text=#{general.inputs.continue})}"/>
+                            </div>
+                        </th:block>
+                    </th:block>
+                </main>
+            </div>
+        </section>
+    </div>
+    <th:block th:replace="~{fragments/footer :: footer}"/>
+    </body>
+    </html>
 </th:block>
