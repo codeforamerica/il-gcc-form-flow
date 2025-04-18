@@ -148,17 +148,17 @@ public class TransmissionsRecurringJob {
             // sent to DTS in the prior job run. And when we eventually are CCMS only, the same will happen for Submissions that
             // do not have transmissions. The time when this logging will be helpful is when both are turned on, and somehow
             // we have a Submission that was sent to DTS and not to CCMS or vice versa in a prior run!
-            log.warn(
+            log.info(
                     "Submissions without transmissions and transactions do not match. Sending {} submissions. Ignoring {} without transmissions. Ignoring {} without transactions.",
                     unsentSubmissions.size(), submissionIdsWithoutTransmissionsOnly.size(),
                     submissionIdsWithoutTransactionsOnly.size());
 
             if (!submissionIdsWithoutTransmissionsOnly.isEmpty()) {
-                log.warn("Ignored {} submissions without transmissions. [{}]", submissionIdsWithoutTransmissionsOnly.size(), submissionIdsWithoutTransmissionsOnly);
+                log.info("Ignored {} submissions without transmissions. [{}]", submissionIdsWithoutTransmissionsOnly.size(), submissionIdsWithoutTransmissionsOnly);
             }
 
             if (!submissionIdsWithoutTransactionsOnly.isEmpty()) {
-                log.warn("Ignored {} submissions without transactions. [{}]", submissionIdsWithoutTransactionsOnly.size(), submissionIdsWithoutTransactionsOnly);
+                log.info("Ignored {} submissions without transactions. [{}]", submissionIdsWithoutTransactionsOnly.size(), submissionIdsWithoutTransactionsOnly);
             }
         }
 
@@ -185,7 +185,7 @@ public class TransmissionsRecurringJob {
                                 uploadedDocumentTransmissionJob, s3PresignService, expiredFamilySubmission);
                     }
                     if (isCCMSIntegrationEnabled) {
-                        ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(expiredFamilySubmission);
+                        ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(expiredFamilySubmission.getId());
                     }
                     updateProviderStatus(expiredFamilySubmission);
                     sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
