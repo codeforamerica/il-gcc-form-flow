@@ -1,6 +1,7 @@
 package org.ilgcc.jobs;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.email.SendGridEmailService;
@@ -22,8 +23,8 @@ public class SendRecurringEmailJob {
         this.sendGridEmailService = sendGridEmailService;
     }
 
-    public void enqueueSendEmailJob(ILGCCEmail email) {
-        JobId jobId = jobScheduler.enqueue(() -> sendEmailRequest(email));
+    public void enqueueSendEmailJob(ILGCCEmail email, Long delay) {
+        JobId jobId = jobScheduler.schedule(ZonedDateTime.now().plusMinutes(delay), () -> sendEmailRequest(email));
         log.info("Enqueued {} email job with ID: {} for resource organization with ID: {}", email.getEmailType(), jobId,
                 email.getOrgId());
 
