@@ -16,12 +16,12 @@ import org.springframework.stereotype.Component;
 public class IsLicensedOrLicenseExemptHomeCareProvider implements Condition {
     
     private final List<String> homeCareProviderTypes = List.of(
-            LICENSED_DAY_CARE_HOME.toString(),
-            LICENSED_GROUP_CHILD_CARE_HOME.toString(),
-            LICENSE_EXEMPT_NONRELATIVE_IN_CHILDS_HOME.toString(),
-            LICENSE_EXEMPT_NONRELATIVE_IN_PROVIDER_HOME.toString(),
-            LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.toString(),
-            LICENSE_EXEMPT_RELATIVE_IN_PROVIDER_HOME.toString()
+            LICENSED_DAY_CARE_HOME.name(),
+            LICENSED_GROUP_CHILD_CARE_HOME.name(),
+            LICENSE_EXEMPT_NONRELATIVE_IN_CHILDS_HOME.name(),
+            LICENSE_EXEMPT_NONRELATIVE_IN_PROVIDER_HOME.name(),
+            LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.name(),
+            LICENSE_EXEMPT_RELATIVE_IN_PROVIDER_HOME.name()
     ); 
     
     @Override
