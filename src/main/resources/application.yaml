@@ -83,6 +83,9 @@ spring:
       production:
         - production
         - form-flow-library
+      qa:
+        - qa
+        - form-flow-library
   thymeleaf:
     template-resolver-order: 0
     check-template-location: true
