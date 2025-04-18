@@ -34,29 +34,35 @@ public class ValidateProviderEmail implements Action {
     Locale locale = LocaleContextHolder.getLocale();
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> formData = formSubmission.getFormData();
-    String providerEmail = formData.get(INPUT_NAME).toString();
-    //Stops Sendgrid call if email is blank or fail our EMAIL_REGEX test
-    if (providerEmail == null || !providerEmail.matches(RegexUtils.EMAIL_REGEX)) {
-      return errorMessages;
-    }
-    try {
-      HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(providerEmail);
-      if (emailValidationResult.getOrDefault("endpointReached", "").equals("success")) {
-        if (emailValidationResult.get("emailIsValid").equals("true")) {
-          return errorMessages;
-        } else {
-          if (emailValidationResult.get("hasSuggestion").equals("true")) {
-            errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.with-suggested-email-address",
-                new Object[]{emailValidationResult.get("suggestedEmail")}, locale)));
+    String providerEmail = formData.getOrDefault(INPUT_NAME, "").toString();
+
+    return callSendGridAndValidateEmail(locale, errorMessages, providerEmail, sendGridEmailValidationService, INPUT_NAME,
+        messageSource);
+  }
+
+  static Map<String, List<String>> callSendGridAndValidateEmail(Locale locale, Map<String, List<String>> errorMessages,
+      String providerEmail, SendGridEmailValidationService sendGridEmailValidationService, String inputName,
+      MessageSource messageSource) {
+    if (providerEmail.matches(RegexUtils.EMAIL_REGEX)) {
+      try {
+        HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(providerEmail);
+        if (emailValidationResult.getOrDefault("endpointReached", "").equals("success")) {
+          if (emailValidationResult.get("emailIsValid").equals("true")) {
+            return errorMessages;
           } else {
-            errorMessages.put(INPUT_NAME,
-                List.of(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, locale)));
+            if (emailValidationResult.get("hasSuggestion").equals("true")) {
+              errorMessages.put(inputName, List.of(messageSource.getMessage("errors.invalid-email.with-suggested-email-address",
+                  new Object[]{emailValidationResult.get("suggestedEmail")}, locale)));
+            } else {
+              errorMessages.put(inputName,
+                  List.of(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, locale)));
+            }
           }
         }
-      }
 
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
     return errorMessages;
   }

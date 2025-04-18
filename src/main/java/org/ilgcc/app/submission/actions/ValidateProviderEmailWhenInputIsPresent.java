@@ -1,6 +1,8 @@
 package org.ilgcc.app.submission.actions;
 
 
+import static org.ilgcc.app.submission.actions.ValidateProviderEmail.callSendGridAndValidateEmail;
+
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
@@ -34,39 +36,13 @@ public class ValidateProviderEmailWhenInputIsPresent implements Action {
     Locale locale = LocaleContextHolder.getLocale();
     Map<String, List<String>> errorMessages = new HashMap<>();
     Map<String, Object> formData = formSubmission.getFormData();
-    String providerEmail = formData.get(INPUT_NAME).toString();
-
-    if (providerEmail == null) {
-      return errorMessages;
-    }
+    String providerEmail = formData.getOrDefault(INPUT_NAME, "").toString();
 
     if (providerEmail.isBlank()){
       errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.blank", null, locale)));
     }
 
-
-    if (!providerEmail.matches(RegexUtils.EMAIL_REGEX)){
-      return errorMessages;
-    }
-    try {
-      HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(providerEmail);
-      if (emailValidationResult.getOrDefault("endpointReached", "").equals("success")) {
-        if (emailValidationResult.get("emailIsValid").equals("true")) {
-          return errorMessages;
-        } else {
-          if (emailValidationResult.get("hasSuggestion").equals("true")) {
-            errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.with-suggested-email-address",
-                new Object[]{emailValidationResult.get("suggestedEmail")}, locale)));
-          } else {
-            errorMessages.put(INPUT_NAME,
-                List.of(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, locale)));
-          }
-        }
-      }
-
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    return errorMessages;
+    return callSendGridAndValidateEmail(locale, errorMessages, providerEmail, sendGridEmailValidationService, INPUT_NAME,
+        messageSource);
   }
 }
