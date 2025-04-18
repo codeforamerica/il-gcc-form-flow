@@ -7,6 +7,7 @@ import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import formflow.library.utils.RegexUtils;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidateProviderEmailWhenInputIsPresent implements Action {
 
+  private final HttpSession httpSession;
   @Autowired
   MessageSource messageSource;
 
@@ -30,6 +32,9 @@ public class ValidateProviderEmailWhenInputIsPresent implements Action {
   SendGridEmailValidationService sendGridEmailValidationService;
   private final String INPUT_NAME = "familyIntendedProviderEmail";
 
+  public ValidateProviderEmailWhenInputIsPresent(HttpSession httpSession) {
+    this.httpSession = httpSession;
+  }
   @Override
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
 
@@ -43,6 +48,6 @@ public class ValidateProviderEmailWhenInputIsPresent implements Action {
     }
 
     return callSendGridAndValidateEmail(locale, errorMessages, providerEmail, sendGridEmailValidationService, INPUT_NAME,
-        messageSource);
+        messageSource, httpSession);
   }
 }
