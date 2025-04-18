@@ -791,6 +791,8 @@ flow:
   registration-tax-id-ssn:
     condition: EnableProviderRegistration
     nextScreens:
+      - name: registration-tax-id-itin
+        condition: SkipIfHomeCareProviderWithITIN
       - name: registration-service-languages
   registration-tax-id-itin:
     condition: EnableProviderRegistrationItin
