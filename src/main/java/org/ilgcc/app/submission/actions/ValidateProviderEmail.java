@@ -54,7 +54,7 @@ public class ValidateProviderEmail implements Action {
           if (emailValidationResult.get("emailIsValid").equals("true")) {
             return errorMessages;
           } else {
-            if(httpSession.getAttribute(SESSION_KEY_INVALID_PROVIDER_EMAIL).equals(providerEmail)) {
+            if(httpSession.getAttribute(SESSION_KEY_INVALID_PROVIDER_EMAIL) != null && httpSession.getAttribute(SESSION_KEY_INVALID_PROVIDER_EMAIL).equals(providerEmail)) {
               return errorMessages;
             }
             if (emailValidationResult.get("hasSuggestion").equals("true")) {
