@@ -1,15 +1,19 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_INVALID_PROVIDER_EMAIL;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +31,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 
 @ActiveProfiles("test")
@@ -42,10 +48,8 @@ class ValidateProviderEmailWhenInputIsPresentTest {
   private ValidateProviderEmailWhenInputIsPresent validateProviderEmailWhenInputIsPresentAction;
 
   private AutoCloseable closeable;
-  private String suggestedEmail = "foo@bar.com";
-  private String VALID_EMAIL = "bar@foo.com";
-  private String INVALID_EMAIL = "bar@gemaildas.com";
-  private String MALFORMED_EMAIL = "foo@bar";
+  private final String suggestedEmail = "foo@bar.com";
+  private final String INVALID_EMAIL = "bar@gemaildas.com";
   private final String PROVIDER_EMAIL_INPUT = "familyIntendedProviderEmail";
 
 
@@ -62,6 +66,15 @@ class ValidateProviderEmailWhenInputIsPresentTest {
         .thenReturn("Make sure the email address is valid. Did you mean foo@bar.com?");
     when(messageSource.getMessage("errors.invalid-email.blank", null, Locale.getDefault()))
         .thenReturn("Enter your provider's email");
+  }
+
+  void setupMockSession(String attributeValueForSomeKey) {
+    HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+    HttpSession mockSession = mock(HttpSession.class);
+
+    when(mockSession.getAttribute(SESSION_KEY_INVALID_PROVIDER_EMAIL)).thenReturn(attributeValueForSomeKey);
+    when(mockRequest.getSession()).thenReturn(mockSession);
+    RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(mockRequest));
   }
 
   @AfterEach
@@ -83,8 +96,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
 
   @Test
   void shouldNotValidateEmailIfEmailIsRegexEmailPatternNotMet() throws IOException {
-    HashMap<String, String> result = new HashMap<>();
-    result.put("ShouldNotReachThisService", "true");
+    String MALFORMED_EMAIL = "foo@bar";
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, MALFORMED_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
 
@@ -99,6 +111,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     emailIsValidReturn.put("endpointReached", "success");
     emailIsValidReturn.put("emailIsValid", "true");
 
+    String VALID_EMAIL = "bar@foo.com";
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, VALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
     when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL))
@@ -113,7 +126,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     emailIsInvalidReturn.put("endpointReached", "success");
     emailIsInvalidReturn.put("emailIsValid", "false");
     emailIsInvalidReturn.put("hasSuggestion", "false");
-
+    setupMockSession("");
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
     when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
@@ -130,7 +143,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     emailIsInvalidReturn.put("emailIsValid", "false");
     emailIsInvalidReturn.put("hasSuggestion", "true");
     emailIsInvalidReturn.put("suggestedEmail", suggestedEmail);
-
+    setupMockSession("");
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
     when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
@@ -138,5 +151,22 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertFalse(errors.isEmpty());
     assertThat(errors.get(PROVIDER_EMAIL_INPUT).contains("Make sure the email address is valid. Did you mean foo@bar.com?")).isTrue();
+  }
+
+  @Test
+  void shouldNotReturnErrorWhenInvalidEmailIsPassedIntoInputFieldTwice() throws IOException {
+    HashMap<String, String> emailIsInvalidReturn = new HashMap<>();
+    emailIsInvalidReturn.put("endpointReached", "success");
+    emailIsInvalidReturn.put("emailIsValid", "false");
+    emailIsInvalidReturn.put("hasSuggestion", "true");
+    emailIsInvalidReturn.put("suggestedEmail", suggestedEmail);
+
+    setupMockSession(INVALID_EMAIL);
+    Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
+    FormSubmission formSubmission = new FormSubmission(formData);
+    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
+        .thenReturn(emailIsInvalidReturn);
+    Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
+    assertTrue(errors.isEmpty());
   }
 }
