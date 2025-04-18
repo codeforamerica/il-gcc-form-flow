@@ -5,6 +5,7 @@ import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
+import formflow.library.utils.RegexUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,10 @@ public class SendGridEmailValidationService {
 
   public HashMap<String, String> validateEmail(String emailAddress) throws IOException {
     HashMap<String, String> emailValidationResult = new HashMap<>();
+    if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(RegexUtils.EMAIL_REGEX)) {
+      log.error("Email address will not be validated because email address is null, empty, or fails our basic email validation");
+      return emailValidationResult;
+    }
     if (ENABLE_EMAIL_VALIDATION) {
       try {
         Response response = getSendGridResponse(emailAddress);
