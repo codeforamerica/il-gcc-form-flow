@@ -185,7 +185,7 @@ public class TransmissionsRecurringJob {
                                 uploadedDocumentTransmissionJob, s3PresignService, expiredFamilySubmission);
                     }
                     if (isCCMSIntegrationEnabled) {
-                        ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(expiredFamilySubmission);
+                        ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(expiredFamilySubmission.getId());
                     }
                     updateProviderStatus(expiredFamilySubmission);
                     sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
