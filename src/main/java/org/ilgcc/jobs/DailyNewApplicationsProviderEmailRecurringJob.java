@@ -42,6 +42,8 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
     private String orgEmailsRaw;
     private Map<String, List<String>> organizationEmailRecipients = new HashMap<>();
 
+    private int minuteOffset = 0;
+
     @PostConstruct
     void parseMap() {
         if (orgEmailsRaw != null) {
@@ -99,6 +101,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
 
         List<ResourceOrganization> activeResourceOrganizations = ccmsDataService.getActiveResourceOrganizations();
 
+        minuteOffset = 1;
 
         organizationEmailRecipients.keySet().forEach(orgId -> {
 
@@ -144,7 +147,9 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
             ILGCCEmail email = new ILGCCEmail(currentRecipient,
                     new DailyNewApplicationsProviderEmailTemplate(emailData, messageSource).createTemplate(),
                     emailData.get("processingOrgId").toString());
-            sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(i));
+            log.info("minuteOffset: {}", minuteOffset);
+            sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(minuteOffset));
+            minuteOffset++;
         }
 
     }
