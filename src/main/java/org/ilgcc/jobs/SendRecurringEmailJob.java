@@ -24,7 +24,9 @@ public class SendRecurringEmailJob {
     }
 
     public void enqueueSendEmailJob(ILGCCEmail email, Long delay) {
-        JobId jobId = jobScheduler.schedule(ZonedDateTime.now().plusMinutes(delay), () -> sendEmailRequest(email));
+        ZonedDateTime nowPlus = ZonedDateTime.now().plusMinutes(delay);
+        log.info("nowPlus: {}", nowPlus);
+        JobId jobId = jobScheduler.schedule(nowPlus, () -> sendEmailRequest(email));
         log.info("Enqueued {} email job with ID: {} for resource organization with ID: {}", email.getEmailType(), jobId,
                 email.getOrgId());
 
@@ -33,6 +35,7 @@ public class SendRecurringEmailJob {
     @Job(name = "Send Email Request", retries = 3)
     public void sendEmailRequest(ILGCCEmail email) throws IOException {
         try {
+            log.info("Sending email request.");
             sendGridEmailService.sendEmail(email);
             log.info("Successfully sent the {} for resource organization with ID {} to Sendgrid.", email.getEmailType(),
                     email.getOrgId());

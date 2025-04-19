@@ -147,6 +147,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
             ILGCCEmail email = new ILGCCEmail(currentRecipient,
                     new DailyNewApplicationsProviderEmailTemplate(emailData, messageSource).createTemplate(),
                     emailData.get("processingOrgId").toString());
+            log.info("minuteOffset: {}", minuteOffset);
             sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(minuteOffset));
             minuteOffset++;
         }
