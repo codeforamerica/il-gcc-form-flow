@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import java.math.BigInteger;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -138,12 +139,13 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
         log.info("SendDailyNewApplicationsProviderEmail enqueuing {} emails for {} and processing org: {}", recipients.size(),
                 emailData.get("currentEmailDate"), emailData.get("processingOrgName"));
 
-        recipients.forEach(recipient -> {
-            ILGCCEmail email = new ILGCCEmail(recipient,
+        for (int i = 0; i < recipients.size(); i++) {
+            String currentRecipient = recipients.get(i);
+            ILGCCEmail email = new ILGCCEmail(currentRecipient,
                     new DailyNewApplicationsProviderEmailTemplate(emailData, messageSource).createTemplate(),
                     emailData.get("processingOrgId").toString());
-            sendRecurringEmailJob.enqueueSendEmailJob(email);
-        });
+            sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(i));
+        }
 
     }
 }

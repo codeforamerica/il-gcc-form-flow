@@ -1,6 +1,7 @@
 package org.ilgcc.jobs;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -147,7 +148,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
-        verify(sendRecurringEmailJob, times(2)).enqueueSendEmailJob(any(ILGCCEmail.class));
+        verify(sendRecurringEmailJob, times(2)).enqueueSendEmailJob(any(ILGCCEmail.class), anyLong());
     }
 
     @Test
@@ -160,6 +161,6 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
-        verify(sendRecurringEmailJob, times(4)).enqueueSendEmailJob(any(ILGCCEmail.class));
+        verify(sendRecurringEmailJob, times(4)).enqueueSendEmailJob(any(ILGCCEmail.class), anyLong());
     }
 }
