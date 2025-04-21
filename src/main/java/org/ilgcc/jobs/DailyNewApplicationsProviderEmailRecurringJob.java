@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import java.math.BigInteger;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -42,7 +41,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
     private String orgEmailsRaw;
     private Map<String, List<String>> organizationEmailRecipients = new HashMap<>();
 
-    private int minuteOffset = 0;
+    private int secondsOffset = 0;
 
     @PostConstruct
     void parseMap() {
@@ -101,7 +100,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
 
         List<ResourceOrganization> activeResourceOrganizations = ccmsDataService.getActiveResourceOrganizations();
 
-        minuteOffset = 1;
+        secondsOffset = 15;
 
         organizationEmailRecipients.keySet().forEach(orgId -> {
 
@@ -147,9 +146,9 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
             ILGCCEmail email = new ILGCCEmail(currentRecipient,
                     new DailyNewApplicationsProviderEmailTemplate(emailData, messageSource).createTemplate(),
                     emailData.get("processingOrgId").toString());
-            log.info("minuteOffset: {}", minuteOffset);
-            sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(minuteOffset));
-            minuteOffset++;
+            log.info("secondsOffset: {}", secondsOffset);
+            sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(secondsOffset));
+            secondsOffset = secondsOffset + 15;
         }
 
     }
