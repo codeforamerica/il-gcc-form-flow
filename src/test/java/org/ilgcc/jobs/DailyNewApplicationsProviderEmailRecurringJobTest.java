@@ -152,7 +152,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     }
 
     @Test
-    void sendsMultipleEmailPerOrgWhenMultipleEmailsExist() {
+    void sendSingleEmailPerOrgWhenMultipleEmailsExist() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
                 transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, FOUR_RESOURCE_ORG_EMAILS);
 
@@ -161,6 +161,6 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
-        verify(sendRecurringEmailJob, times(4)).enqueueSendEmailJob(any(ILGCCEmail.class), anyLong());
+        verify(sendRecurringEmailJob, times(2)).enqueueSendEmailJob(any(ILGCCEmail.class), anyLong());
     }
 }
