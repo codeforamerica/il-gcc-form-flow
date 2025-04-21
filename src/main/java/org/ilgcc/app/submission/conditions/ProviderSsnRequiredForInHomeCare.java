@@ -25,11 +25,11 @@ public class ProviderSsnRequiredForInHomeCare implements Condition {
     private boolean enableProviderRegistration;
 
     @Value("${il-gcc.enable-provider-registration-with-itin}")
-    private boolean enableProviderRegistrationWithItin;
+    private boolean enableProviderRegistrationWithITIN;
 
     @Override
     public Boolean run(Submission submission) {
-        return !enableProviderRegistrationWithItin && enableProviderRegistration && displayScreen(submission);
+        return !enableProviderRegistrationWithITIN && enableProviderRegistration && displayScreen(submission);
     }
 
     private Boolean displayScreen(Submission submission) {

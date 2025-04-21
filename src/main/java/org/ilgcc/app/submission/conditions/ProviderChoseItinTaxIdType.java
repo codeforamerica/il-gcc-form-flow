@@ -5,10 +5,10 @@ import formflow.library.data.Submission;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderChoseItinTaxIdType implements Condition {
+public class ProviderChoseITINTaxIdType implements Condition {
 
   @Override
   public Boolean run(Submission submission) {
-    return submission.getInputData().containsKey("providerTaxIdType") && submission.getInputData().get("providerTaxIdType").equals("ITIN");
+    return "ITIN".equals(submission.getInputData().get("providerTaxIdType"));
   }
 }
