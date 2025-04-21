@@ -13,7 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 @Slf4j
 @TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true",
         "il-gcc.enable-provider-registration-with-itin=true"})
-public class ProviderresponseProviderRegistrationWithItinJourneyTest extends AbstractBasePageTest {
+public class ProviderresponseProviderRegistrationWithITINJourneyTest extends AbstractBasePageTest {
 
     @AfterEach
     protected void clearSubmissions() {
@@ -21,7 +21,7 @@ public class ProviderresponseProviderRegistrationWithItinJourneyTest extends Abs
     }
 
     @Test
-    public void providerRegistrationHomeProviderSelectItin() {
+    public void providerRegistrationHomeProviderSelectITIN() {
         setupRegistration();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
@@ -114,7 +114,7 @@ public class ProviderresponseProviderRegistrationWithItinJourneyTest extends Abs
     }
 
     @Test
-    void providerRegistrationNonHomeProviderSelectItin() {
+    void providerRegistrationNonHomeProviderSelectITIN() {
         setupRegistration();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
