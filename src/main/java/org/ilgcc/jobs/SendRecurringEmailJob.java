@@ -23,8 +23,8 @@ public class SendRecurringEmailJob {
         this.sendGridEmailService = sendGridEmailService;
     }
 
-    public void enqueueSendEmailJob(ILGCCEmail email, Long delay) {
-        ZonedDateTime nowPlus = ZonedDateTime.now().plusMinutes(delay);
+    public void enqueueSendEmailJob(ILGCCEmail email, Long delayInSeconds) {
+        ZonedDateTime nowPlus = ZonedDateTime.now().plusSeconds(delayInSeconds);
         log.info("nowPlus: {}", nowPlus);
         JobId jobId = jobScheduler.schedule(nowPlus, () -> sendEmailRequest(email));
         log.info("Enqueued {} email job with ID: {} for resource organization with ID: {}", email.getEmailType(), jobId,
