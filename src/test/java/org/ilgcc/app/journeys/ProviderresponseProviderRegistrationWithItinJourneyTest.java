@@ -220,16 +220,28 @@ public class ProviderresponseProviderRegistrationWithItinJourneyTest extends Abs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ssn.title"));
         testPage.goBack();
 
-        //registration-tax-id
+        // registration-tax-id
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        testPage.clickElementById("providerTaxIdType-ITIN-label");
+        testPage.clickContinue();
 
-        // toDo add itin test here and uncomment the last line
-//
-//
-//        //registration-service-languages
-//        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
-//        testPage.clickElementById("providerLanguagesOffered-Spanish-label");
-//        testPage.clickContinue();
+        // registration-home-provider-itin
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-itin.title"));
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-itin.error-blank"))).isTrue();
+
+        testPage.enter("providerITIN", "1231425");
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-itin.error-invalid"))).isTrue();
+        testPage.enter("providerITIN", "123456789");
+        testPage.clickContinue();
+
+        //registration-service-languages
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickElementById("providerLanguagesOffered-Spanish-label");
+        testPage.clickContinue();
     }
 
 
