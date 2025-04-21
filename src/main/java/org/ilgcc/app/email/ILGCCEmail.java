@@ -1,6 +1,8 @@
 package org.ilgcc.app.email;
 
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import com.sendgrid.helpers.mail.objects.Content;
@@ -22,21 +24,23 @@ public class ILGCCEmail implements Serializable {
     private Content body;
     private EmailType emailType;
     private UUID submissionId;
-    private Email recipientEmail;
+    private List<Email> recipientEmails = new ArrayList<>();
     private String orgId;
 
-    public ILGCCEmail(String recipientAddress, ILGCCEmailTemplate emailTemplate, UUID submissionId) {
+    public ILGCCEmail(@NotNull String recipientAddress, ILGCCEmailTemplate emailTemplate, UUID submissionId) {
         this.senderEmail = emailTemplate.getSenderEmail();
-        this.recipientEmail = new Email(recipientAddress);
+        this.recipientEmails.add(new Email(recipientAddress));
         this.subject = emailTemplate.getSubject();
         this.body = emailTemplate.getBody();
         this.emailType = emailTemplate.getEmailType();
         this.submissionId = submissionId;
     }
 
-    public ILGCCEmail(String recipientAddress, ILGCCEmailTemplate emailTemplate, String orgId) {
+    public ILGCCEmail(@NotNull List<String> recipientAddresses, ILGCCEmailTemplate emailTemplate, String orgId) {
         this.senderEmail = emailTemplate.getSenderEmail();
-        this.recipientEmail = new Email(recipientAddress);
+        for (String recipientAddress : recipientAddresses) {
+            this.recipientEmails.add(new Email(recipientAddress));
+        }
         this.subject = emailTemplate.getSubject();
         this.body = emailTemplate.getBody();
         this.emailType = emailTemplate.getEmailType();
@@ -62,9 +66,6 @@ public class ILGCCEmail implements Serializable {
             this.description = description;
         }
 
-        public String getDescription() {
-            return description;
-        }
     }
 
 }

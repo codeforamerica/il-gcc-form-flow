@@ -5,6 +5,8 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Email;
+import com.sendgrid.helpers.mail.objects.Personalization;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -19,8 +21,17 @@ public class SendGridEmailService {
     private final SendGrid sendGrid = new SendGrid(System.getenv("SENDGRID_API_KEY"));
 
     public Response sendEmail(ILGCCEmail ilgccEmail) throws IOException {
-        Mail mail = new Mail(ilgccEmail.getSenderEmail(), ilgccEmail.getSubject(), ilgccEmail.getRecipientEmail(),
-                ilgccEmail.getBody());
+        Mail mail = new Mail();
+        mail.setFrom(ilgccEmail.getSenderEmail());
+        mail.setSubject(ilgccEmail.getSubject());
+        mail.addContent(ilgccEmail.getBody());
+
+        for (Email email : ilgccEmail.getRecipientEmails()) {
+            Personalization personalization = new Personalization();
+            personalization.addTo(email);
+            mail.addPersonalization(personalization);
+        }
+
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");
