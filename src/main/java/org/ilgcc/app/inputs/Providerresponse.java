@@ -131,6 +131,7 @@ public class Providerresponse extends FlowInputs {
     private String providerTaxIdEIN;
 
     // registration terms
+    // Placeholder
     @NotEmpty(message = "{errors.validate.provider-agrees-to-legal-terms}")
     private List<String> providerAgreesToLegalTerms;
 
