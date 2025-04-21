@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SendGridEmailValidationService {
 
-    private boolean ENABLE_EMAIL_VALIDATION;
+    private final boolean ENABLE_EMAIL_VALIDATION;
     private final SendGrid sendGrid;
 
     @Autowired
@@ -93,10 +93,27 @@ public class SendGridEmailValidationService {
 
     public Boolean isValidEmail(@NotNull SendGridValidationResponseBody responseBody) {
         SendGridValidationResponseBody.Result result = responseBody.getResult();
+        boolean validAddressSyntax = result.hasValidAddressSyntax();
+        boolean hasMxOrARecord = result.hasMxOrARecord();
+        boolean isSuspectedDisposableAddress = result.isSuspectedDisposableAddress();
+        boolean hasKnownBounces = result.hasKnownBounces();
+
+        if (!validAddressSyntax){
+            log.debug("Invalid email address syntax");
+        }
+        if (!hasMxOrARecord){
+            log.debug("Invalid email Mx or Record syntax");
+        }
+        if (hasKnownBounces){
+            log.debug("Invalid email, has known bounces");
+        }
+        if (isSuspectedDisposableAddress){
+            log.debug("Invalid email, is suspected disposable address");
+        }
+
         return result.hasValidAddressSyntax() &&
                 result.hasMxOrARecord() &&
                 !result.isSuspectedDisposableAddress() &&
-                !result.hasKnownBounces() &&
-                !result.hasSuspectedBounces();
+                !result.hasKnownBounces();
     }
 }

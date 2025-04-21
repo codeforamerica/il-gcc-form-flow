@@ -48,6 +48,11 @@ public class SendGridValidationResponseBodyBuilder {
     return this;
   }
 
+  public SendGridValidationResponseBodyBuilder withIsSuspectedRoleAddress(boolean isSuspectedRoleAddress) {
+    this.isSuspectedDisposableAddress = isSuspectedRoleAddress;
+    return this;
+  }
+
   public SendGridValidationResponseBody build() {
     Domain domain = new Domain();
     domain.setHasValidAddressSyntax(hasValidAddressSyntax);
@@ -59,6 +64,8 @@ public class SendGridValidationResponseBodyBuilder {
     additional.setHasSuspectedBounces(hasSuspectedBounces);
 
     LocalPart localPart = new LocalPart(); // Set values if needed
+    boolean isSuspectedRoleAddress = false;
+    localPart.setSuspectedRoleAddress(isSuspectedRoleAddress);
 
     Checks checks = new Checks();
     checks.setDomain(domain);
@@ -68,7 +75,6 @@ public class SendGridValidationResponseBodyBuilder {
     Result result = new Result();
     result.setEmail(emailAddress);
     result.setHost("example.com");
-    result.setLocal("test");
     result.setVerdict("Valid");
     result.setScore(0.85);
     result.setChecks(checks);
