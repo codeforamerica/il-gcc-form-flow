@@ -32,6 +32,8 @@
                       <th:block
                           th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='SSN', label=#{registration-tax-id.ssn})}"/>
                       <th:block
+                          th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='ITIN', label=#{registration-tax-id.itin})}"/>
+                      <th:block
                           th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='FEIN', label=#{registration-tax-id.fein})}"/>
                     </th:block>
       </th:block>
