@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true"})
+@TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true", "il-gcc.enable-provider-registration-with-itin=false"})
 public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBasePageTest {
 
     @AfterEach
