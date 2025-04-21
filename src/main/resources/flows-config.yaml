@@ -655,8 +655,8 @@ flow:
     beforeSaveAction: SaveProviderNumberAsBigInteger
     afterSaveAction: SetResourceOrganization
     nextScreens:
-      - name: response
-  response:
+      - name: submit-response
+  submit-response:
     beforeDisplayAction: FindApplicationData
     beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
@@ -834,6 +834,12 @@ flow:
   registration-family-response-intro:
     nextScreens:
       - name: response
+  response:
+    beforeDisplayAction: FindApplicationData
+    beforeSaveAction: SendProviderAndFamilyEmails
+    afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
+    nextScreens:
+      - name: registration-submit-intro
   registration-submit-intro:
     condition: EnableProviderRegistration
     nextScreens:

@@ -237,7 +237,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
-        testPage.clickContinue();
+        testPage.clickButton("Submit");
 
         // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
@@ -354,7 +354,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("child-schedule-0")).isNotNull();
         assertThat(testPage.findElementTextById("child-start-0")).isEqualTo("01/10/2025");
         testPage.clickElementById("providerResponseAgreeToCare-true");
-        testPage.clickContinue();
+        testPage.clickButton("Submit");
     }
 
     @Test
@@ -545,7 +545,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         //response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.clickElementById("providerResponseAgreeToCare-true");
-        testPage.clickContinue();
+        testPage.clickButton("Submit");
 
         // registration-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
@@ -747,7 +747,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
-        testPage.clickContinue();
+        testPage.clickButton("Submit");
 
         // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
@@ -944,7 +944,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
-        testPage.clickContinue();
+        testPage.clickButton("Submit");
 
         // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
@@ -1113,7 +1113,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
-        testPage.clickContinue();
+        testPage.clickButton("Submit");
 
         // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
@@ -1262,7 +1262,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
-        testPage.clickContinue();
+        testPage.clickButton("Submit");
 
         // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
@@ -1420,7 +1420,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
-        testPage.clickContinue();
+        testPage.clickButton("Submit");
 
         // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
@@ -1605,7 +1605,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         testPage.selectRadio("providerResponseAgreeToCare", "true");
-        testPage.clickContinue();
+        testPage.clickButton("Submit");
 
         // registration-submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-intro.title"));
