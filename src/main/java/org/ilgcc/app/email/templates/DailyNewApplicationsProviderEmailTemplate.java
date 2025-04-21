@@ -55,34 +55,30 @@ public class DailyNewApplicationsProviderEmailTemplate {
                 new Object[]{emailData.get("processingOrgName")},
                 locale);
 
-        String p2 = messageSource.getMessage("email.automated-new-applications.body1",
-                new Object[]{emailData.get("transactionsAsOfDate")},
+        String p2 = messageSource.getMessage("email.automated-new-applications.header2", null,
                 locale);
 
-        String p3 = messageSource.getMessage("email.automated-new-applications.header2", null,
+        String p3 = messageSource.getMessage("email.automated-new-applications.body1",
+                new Object[]{transactions.size(), emailData.get("processingOrgName"), emailData.get("transactionsAsOfDate")},
                 locale);
 
-        String p4 = messageSource.getMessage("email.automated-new-applications.body2",
-                new Object[]{transactions.size(), emailData.get("processingOrgName")},
+        String p4 = messageSource.getMessage("email.automated-new-applications.header3", null,
                 locale);
 
-        String p5 = messageSource.getMessage("email.automated-new-applications.header3", null,
-                locale);
-
-        String p6 = "";
+        String p5 = "";
 
         if(!transactions.isEmpty()){
-            p6 = String.format("<table style='border: 1px solid #b7b7b7; padding: 8px; border-collapse: collapse;'>%s</table>",
+            p5 = String.format("<table style='border: 1px solid #b7b7b7; padding: 8px; border-collapse: collapse;'>%s</table>",
                     createTransactionsTableBody(transactions));
         }
 
-        String p7 = messageSource.getMessage("email.automated-new-application.cta", null,
+        String p6 = messageSource.getMessage("email.automated-new-application.cta", null,
                 locale);
 
-        String p8 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
-        String p9 = messageSource.getMessage("email.general.footer.cfa", null, locale);
+        String p7 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
+        String p8 = messageSource.getMessage("email.general.footer.cfa", null, locale);
 
-        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
     }
 
     private String createTransactionsTableBody(List<ResourceOrganizationTransaction> transactions) {

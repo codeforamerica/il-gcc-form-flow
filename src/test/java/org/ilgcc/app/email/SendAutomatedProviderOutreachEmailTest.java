@@ -95,13 +95,10 @@ public class SendAutomatedProviderOutreachEmailTest {
                 messageSource.getMessage("email.automated-new-applications.header1", new Object[]{FOUR_C_TEST_DATA.getName()},
                         locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.body1", new Object[]{"October 13, 2025"},
+                messageSource.getMessage("email.automated-new-applications.body1", new Object[]{"6", FOUR_C_TEST_DATA.getName(), "October 13, 2025"},
                         locale));
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.automated-new-applications.header2", null,
-                        locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.body2", new Object[]{"6", FOUR_C_TEST_DATA.getName()},
                         locale));
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.automated-new-applications.header3", null,
@@ -125,14 +122,10 @@ public class SendAutomatedProviderOutreachEmailTest {
                         new Object[]{PROJECT_CHILD_TEST_DATA.getName()},
                         locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.body1", new Object[]{"October 13, 2025"},
+                messageSource.getMessage("email.automated-new-applications.body1", new Object[]{"0", PROJECT_CHILD_TEST_DATA.getName(), "October 13, 2025"},
                         locale));
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.automated-new-applications.header2", null,
-                        locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.body2",
-                        new Object[]{"0", PROJECT_CHILD_TEST_DATA.getName()},
                         locale));
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.automated-new-applications.header3", null,
