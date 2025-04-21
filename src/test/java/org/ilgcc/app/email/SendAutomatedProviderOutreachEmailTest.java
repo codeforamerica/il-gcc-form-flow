@@ -84,7 +84,7 @@ public class SendAutomatedProviderOutreachEmailTest {
     @Test
     void correctlySetsEmailSubject() {
         assertThat(fourcEmailTemplate.getSubject()).isEqualTo(messageSource.getMessage("email.automated-new-applications.subject",
-                new Object[]{fourcEmailData.get("processingOrgName").toString(), fourcEmailData.get("currentEmailDate").toString()}, null));
+                new Object[]{fourcEmailData.get("processingOrgName").toString(), fourcEmailData.get("transactionsAsOfDate").toString()}, null));
     }
 
     @Test
