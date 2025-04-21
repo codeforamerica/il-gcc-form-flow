@@ -19,6 +19,7 @@ public class SendGridValidationResponseBodyTest {
         .withHasValidAddressSyntax(true).withHasMxOrARecord(true)
         .withIsSuspectedDisposableAddress(false)
         .withEmailAddress("test@example.com")
+        .withIsSuspectedRoleAddress(false)
         .withSuggestion("test.corrected@example.com").build();
   }
 
@@ -30,10 +31,11 @@ public class SendGridValidationResponseBodyTest {
     assertFalse(responseBody.getResult().hasKnownBounces());
     assertTrue(responseBody.getResult().hasMxOrARecord());
     assertFalse(responseBody.getResult().hasSuspectedBounces());
+    assertFalse(responseBody.getResult().isSuspectedRoleAddress());
   }
 
   @Test
-  void shouldSetHasSuggestionToTrueIfSuggestionIfSuggestionIsPresent() throws Exception {
+  void shouldSetHasSuggestionToTrueIfSuggestionIfSuggestionIsPresent() {
     assertTrue(responseBody.getResult().hasSuggestedEmailAddress());
     assertEquals("test.corrected@example.com", responseBody.getResult().getSuggestedEmailAddress());
   }

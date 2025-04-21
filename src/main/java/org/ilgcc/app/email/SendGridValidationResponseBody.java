@@ -16,7 +16,7 @@ public class SendGridValidationResponseBody {
     private String email;
     private String verdict;
     private double score;
-    private String local;
+    private String localPart;
     private String host;
     private String ip_address;
     private Checks checks;
@@ -48,6 +48,10 @@ public class SendGridValidationResponseBody {
 
     public String getSuggestedEmailAddress() {
       return suggestion;
+    }
+
+    public Boolean isSuspectedRoleAddress() {
+      return checks != null && checks.localPart != null && checks.localPart.isSuspectedRoleAddress;
     }
   }
 
