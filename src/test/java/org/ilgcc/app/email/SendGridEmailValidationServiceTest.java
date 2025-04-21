@@ -26,7 +26,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 @ActiveProfiles("test")
 public class SendGridEmailValidationServiceTest {
 
-  private SendGrid mockSendGrid = mock(SendGrid.class);
+  private final SendGrid mockSendGrid = mock(SendGrid.class);
 
   private static final String MOCK_VALID_EMAIL = "test@email.com";
   private static final String MOCK_INVALID_EMAIL = "invalid@email.com";
@@ -51,7 +51,8 @@ public class SendGridEmailValidationServiceTest {
         .withHasMxOrARecord(true)
         .withIsSuspectedDisposableAddress(false)
         .withHasKnownBounces(false)
-        .withHasSuspectedBounces(false).withEmailAddress("test@email.com").build();
+        .withHasSuspectedBounces(false)
+        .withEmailAddress("test@email.com").build();
 
     String responseBody = new ObjectMapper().writeValueAsString(validSendGridResponseBody);
     Response fakeResponse = new Response(200, responseBody, new HashMap<>());
@@ -152,7 +153,7 @@ public class SendGridEmailValidationServiceTest {
   }
 
   @Test
-  public void shouldSetEmailIsValidToFalseWhenHasSuspectedBouncesIsTrue() throws Exception {
+  public void shouldSetEmailToTrueIfAllOtherFieldsAreValidButHasSuspectedBouncesIsTrue() throws Exception {
     SendGridEmailValidationService sendGridEmailValidationService = new SendGridEmailValidationService(true, mockSendGrid);
     SendGridEmailValidationService spysendGridEmailValidationService = spy(sendGridEmailValidationService);
 
@@ -166,11 +167,11 @@ public class SendGridEmailValidationServiceTest {
     String responseBody = new ObjectMapper().writeValueAsString(validSendGridResponseBody);
     Response fakeResponse = new Response(200, responseBody, new HashMap<>());
 
-    doReturn(fakeResponse).when(spysendGridEmailValidationService).getSendGridResponse(MOCK_INVALID_EMAIL);
+    doReturn(fakeResponse).when(spysendGridEmailValidationService).getSendGridResponse(MOCK_VALID_EMAIL);
 
-    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_INVALID_EMAIL);
+    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_VALID_EMAIL);
     assertEquals("success", result.get("endpointReached"));
-    assertEquals("false", result.get("emailIsValid"));
+    assertEquals("true", result.get("emailIsValid"));
   }
 
   @Test
