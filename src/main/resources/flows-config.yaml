@@ -755,6 +755,7 @@ flow:
         condition: selectedITIN
   registration-home-provider-itin:
     condition: EnableProviderRegistrationITIN
+    crossFieldValidationAction: ValidateITINNotBlank
     nextScreens:
       - name: registration-home-provider-dob
   registration-home-provider-dob:
