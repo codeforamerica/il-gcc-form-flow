@@ -112,11 +112,12 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
                 return;
             }
 
-            if(!currentOrg.isPresent()){
+            if (currentOrg.isEmpty()) {
                 log.info("The org id doesn't have a corresponding org: {} in the database. Skipping email", orgId);
                 return;
             }
-            enqueueOrgEmail(generateEmailData(transactions, currentOrg.get(), transactionsAsOfDate, currentDate), currentOrgRecipients);
+            enqueueOrgEmail(generateEmailData(transactions, currentOrg.get(), transactionsAsOfDate, currentDate),
+                    currentOrgRecipients);
         });
     }
 
@@ -141,15 +142,11 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
         log.info("SendDailyNewApplicationsProviderEmail enqueuing {} emails for {} and processing org: {}", recipients.size(),
                 emailData.get("currentEmailDate"), emailData.get("processingOrgName"));
 
-        for (int i = 0; i < recipients.size(); i++) {
-            String currentRecipient = recipients.get(i);
-            ILGCCEmail email = new ILGCCEmail(currentRecipient,
-                    new DailyNewApplicationsProviderEmailTemplate(emailData, messageSource).createTemplate(),
-                    emailData.get("processingOrgId").toString());
-            log.info("secondsOffset: {}", secondsOffset);
-            sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(secondsOffset));
-            secondsOffset = secondsOffset + 15;
-        }
-
+        ILGCCEmail email = new ILGCCEmail(recipients,
+                new DailyNewApplicationsProviderEmailTemplate(emailData, messageSource).createTemplate(),
+                emailData.get("processingOrgId").toString());
+        log.info("secondsOffset: {}", secondsOffset);
+        sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(secondsOffset));
+        secondsOffset = secondsOffset + 15;
     }
 }
