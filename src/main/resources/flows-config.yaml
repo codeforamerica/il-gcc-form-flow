@@ -791,7 +791,7 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-tax-id-itin
-        condition: SkipIfHomeCareProviderWithITIN
+        condition: ProviderChoseItinTaxIdType
       - name: registration-service-languages
   registration-tax-id-itin:
     condition: EnableProviderRegistrationItin
