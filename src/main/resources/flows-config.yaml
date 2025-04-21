@@ -613,30 +613,16 @@ flow:
         condition: IsConfirmationCodeInactive
       - name: paid-by-ccap
         condition: EnableProviderRegistration
-      - name: provider-number
+      - name: provider-info
   paid-by-ccap:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: provider-number
+      - name: provider-info
         condition: IsPaidByCCAP
       - name: registration-start
   #Existing Provider Flow
-  provider-number:
-    crossFieldValidationAction: ValidateProviderNumber
-    beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
-    beforeSaveAction: SaveProviderNumberAsBigInteger
-    afterSaveAction: SetResourceOrganization
-    nextScreens:
-      - name: response
-  response:
-    beforeDisplayAction: FindApplicationData
-    nextScreens:
-      - name: registration-submit-intro
-        condition: ProviderIsRegistering
-      - name: provider-info
-        condition: ProviderAgreedToCare
-      - name: confirm-deny-care
   provider-info:
+    beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
     nextScreens:
       - name: service-address
   service-address:
@@ -662,12 +648,16 @@ flow:
     nextScreens:
       - name: info-review
   info-review:
-    beforeSaveAction: SendProviderAndFamilyEmails
-    afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
-      - name: registration-submit-confirmation
-  confirm-deny-care:
-    beforeDisplayAction: FormatChildrenWhoNeedCareNames
+      - name: provider-number
+  provider-number:
+    crossFieldValidationAction: ValidateProviderNumber
+    beforeSaveAction: SaveProviderNumberAsBigInteger
+    afterSaveAction: SetResourceOrganization
+    nextScreens:
+      - name: response
+  response:
+    beforeDisplayAction: FindApplicationData
     beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
