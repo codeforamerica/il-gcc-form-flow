@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderItinRegistrationForInHomeCare implements Condition {
+public class ProviderITINRegistrationForInHomeCare implements Condition {
     // registration-home-provider-ssn when itin flag is off
     // registration-home-provider-tax-id when itin flag is on
 
@@ -31,11 +31,11 @@ public class ProviderItinRegistrationForInHomeCare implements Condition {
     private boolean enableProviderRegistration;
 
     @Value("${il-gcc.enable-provider-registration-with-itin}")
-    private boolean enableProviderRegistrationWithItin;
+    private boolean enableProviderRegistrationWithITIN;
 
     @Override
     public Boolean run(Submission submission) {
-        return enableProviderRegistrationWithItin && enableProviderRegistration && displayScreen(submission);
+        return enableProviderRegistrationWithITIN && enableProviderRegistration && displayScreen(submission);
     }
 
     private Boolean displayScreen(Submission submission) {
