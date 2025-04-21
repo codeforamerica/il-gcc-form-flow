@@ -751,7 +751,7 @@ flow:
       - name: registration-home-provider-tax-id
         condition: ProviderITINRegistrationForInHomeCare
       - name: registration-home-provider-ssn
-        condition: ProviderSsnRequiredForInHomeCare
+        condition: ProviderSSNRequiredForInHomeCare
       - name: registration-tax-id
   registration-home-provider-ssn:
     crossFieldValidationAction: ValidateHomeProviderSSN

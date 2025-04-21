@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderSsnRequiredForInHomeCare implements Condition {
+public class ProviderSSNRequiredForInHomeCare implements Condition {
     // registration-home-provider-ssn when itin flag is off
     // registration-home-provider-tax-id when itin flag is on
 

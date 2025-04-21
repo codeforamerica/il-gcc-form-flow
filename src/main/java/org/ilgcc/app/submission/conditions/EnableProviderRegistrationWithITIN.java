@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnableProviderRegistrationITIN implements Condition {
+public class EnableProviderRegistrationWithITIN implements Condition {
 
     private boolean enableProviderRegistrationWithITIN;
 
-    public EnableProviderRegistrationITIN(@Value("${il-gcc.enable-provider-registration-with-itin}") boolean enableProviderRegistrationWithITIN){
+    public EnableProviderRegistrationWithITIN(
+            @Value("${il-gcc.enable-provider-registration-with-itin}") boolean enableProviderRegistrationWithITIN) {
         this.enableProviderRegistrationWithITIN = enableProviderRegistrationWithITIN;
     }
 

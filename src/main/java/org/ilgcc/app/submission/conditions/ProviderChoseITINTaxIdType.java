@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProviderChoseITINTaxIdType implements Condition {
 
-  @Override
-  public Boolean run(Submission submission) {
-    return "ITIN".equals(submission.getInputData().get("providerTaxIdType"));
-  }
+    @Override
+    public Boolean run(Submission submission) {
+        return "ITIN".equals(submission.getInputData().get("providerTaxIdType"));
+    }
 }
