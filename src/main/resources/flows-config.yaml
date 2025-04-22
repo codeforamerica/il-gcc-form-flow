@@ -752,7 +752,7 @@ flow:
         condition: ProviderITINRegistrationForInHomeCare
       - name: registration-home-provider-ssn
         condition: ProviderSSNRequiredForInHomeCare
-      - name: registration-tax-id
+      - name: registration-payment-tax-id
   registration-home-provider-ssn:
     crossFieldValidationAction: ValidateHomeProviderSSN
     nextScreens:
@@ -773,8 +773,8 @@ flow:
     onPostAction: CreateProviderIdentityCheckDOB
     condition: ProviderDOBRequired
     nextScreens:
-      - name: registration-tax-id
-  registration-tax-id:
+      - name: registration-payment-tax-id
+  registration-payment-tax-id:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-tax-id-ssn
