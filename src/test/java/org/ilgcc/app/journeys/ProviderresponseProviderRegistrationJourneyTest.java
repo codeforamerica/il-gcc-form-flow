@@ -491,16 +491,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         // paid-by-ccap
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
         testPage.clickYes();
-
-        //provider-number
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "12345678901");
-        testPage.clickContinue();
-
-        //response
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        testPage.clickElementById("providerResponseAgreeToCare-true");
-        testPage.clickContinue();
+        
         //provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info.title"));
         testPage.enter("providerResponseBusinessName", "Business Name");
@@ -545,6 +536,16 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
         assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
         testPage.clickButton("Continue");
+
+        //provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
+        testPage.enter("providerResponseProviderNumber", "12345678901");
+        testPage.clickContinue();
+
+        //response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        testPage.clickElementById("providerResponseAgreeToCare-true");
+        testPage.clickButton("Submit");
 
         // registration-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));

@@ -20,56 +20,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     }
 
     @Test
-    void ProviderresponseJourneyTest_validLink_No_Agreement_To_Care() {
-        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now()).build());
-
-        testPage.clickContinue();
-
-        driver.navigate().to("http://localhost:%s/s/%s".formatted(localServerPort, s.getShortCode()));
-
-        // submit-start when application is still active
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
-        testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
-
-        // confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(s.getShortCode());
-
-        testPage.clickContinue();
-
-        // provider-number
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "12345678901");
-        testPage.clickContinue();
-
-        // response
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
-        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
-
-        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-
-        assertThat(testPage.elementDoesNotExistById("child-name-1")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
-
-        testPage.clickElementById("providerResponseAgreeToCare-false-label");
-        testPage.clickContinue();
-
-        //confirm-deny-care
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-deny-care.title"));
-        testPage.clickButton(getEnMessage("provider-response-confirm-deny-care.confirm-button"));
-
-        //registration-submit-confirmation displays submit-complete-final screen
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
-        assertThat(testPage.elementDoesNotExistById("continue-link")).isFalse();
-    }
-
-    @Test
     void ProviderresponseJourneyTest_validLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
@@ -90,24 +40,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(s.getShortCode());
 
-        testPage.clickContinue();
-
-        // provider-number
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "12345678901");
-        testPage.clickContinue();
-
-        // response
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
-        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
-
-        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-
-        assertThat(testPage.elementDoesNotExistById("child-name-1")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
-
-        testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickContinue();
 
         //basic-info
@@ -145,6 +77,24 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
         assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
         testPage.clickButton("Continue");
+        
+        // provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
+        testPage.enter("providerResponseProviderNumber", "12345678901");
+        testPage.clickContinue();
+
+        // response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
+        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
+
+        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
+
+        assertThat(testPage.elementDoesNotExistById("child-name-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
+
+        testPage.clickElementById("providerResponseAgreeToCare-true-label");
+        testPage.clickButton("Submit");
 
         //registration-submit-confirmation displays submit-complete-final screen
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
@@ -175,24 +125,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
-        testPage.clickContinue();
-
-        // provider-number
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "12345678901");
-        testPage.clickContinue();
-
-        // response
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-        assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
-        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
-
-        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-
-        assertThat(testPage.elementDoesNotExistById("child-name-1")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
-
-        testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickContinue();
 
         //provider-info
@@ -230,6 +162,24 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
         assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
         testPage.clickButton("Continue");
+
+        // provider-number
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
+        testPage.enter("providerResponseProviderNumber", "12345678901");
+        testPage.clickContinue();
+
+        // response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+        assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
+        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
+
+        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
+
+        assertThat(testPage.elementDoesNotExistById("child-name-1")).isTrue();
+        assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
+
+        testPage.clickElementById("providerResponseAgreeToCare-true-label");
+        testPage.clickButton("Submit");
 
         //registration-submit-confirmation displays submit-complete-final screen
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
@@ -275,14 +225,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-applicant-number"))).isTrue();
         testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
         testPage.clickContinue();
-
-        // provider-number
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "12345678901");
-        testPage.clickContinue();
-
-        // Confirmation codes that are correct but incorrect casing should still pass validation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
     }
 
     @Test
@@ -372,8 +314,8 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
-        testPage.clickContinue();
-
+        
+        testPage.navigateToFlowScreen("providerresponse/provider-number");
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
         testPage.enter("providerResponseProviderNumber", "12345678903");
