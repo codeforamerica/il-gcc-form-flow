@@ -148,7 +148,7 @@ The [Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/ac
 feature Spring Boot provides to monitor and interact with your application. It opens endpoints that can be queried to get information
 about your application, like health and build information.
 
-The starter app, by default, enables full access to all actuator endpoints in the dev profile for
+The IL GCC app, by default, enables full access to all actuator endpoints in the dev profile for
 local development. However, in other profiles, it restricts access, allowing only the health and
 build information endpoints to be available for use outside of local development.
 
@@ -277,7 +277,7 @@ dependencies.
 
 ## Application Won't Run After IntelliJ Update
 
-Sometimes an IntelliJ update will cause the `StarterApplication` run context to fail. Here are some
+Sometimes an IntelliJ update will cause the `ILGCCApplication` run context to fail. Here are some
 ways to attempt to fix it.
 
 1. Invalidate the cache
