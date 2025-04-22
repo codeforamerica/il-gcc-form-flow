@@ -159,7 +159,6 @@ public class Providerresponse extends FlowInputs {
     private String homeProviderTaxIDselection;
     
     //registration-home-provider-itin
-    @NotBlank(message = "{registration-home-provider-itin.error-blank}")
     @Pattern(regexp = "^$|\\d{9}", message = "{registration-home-provider-itin.error-invalid}")
     private String providerITIN;
 

@@ -228,7 +228,6 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         // registration-home-provider-itin
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-itin.title"));
         testPage.clickContinue();
-
         assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-itin.error-blank"))).isTrue();
 
         testPage.enter("providerITIN", "1231425");
