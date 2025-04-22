@@ -202,8 +202,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         assertThat(testPage.findElementTextById("provider-email")).isEqualTo("foo@bar.com");
         testPage.clickContinue();
 
-        //registration-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        //registration-payment-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-FEIN-label");
         testPage.clickContinue();
 
@@ -211,8 +211,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ein.title"));
         testPage.goBack();
 
-        //registration-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        //registration-payment-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
@@ -220,8 +220,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ssn.title"));
         testPage.goBack();
 
-        // registration-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        // registration-payment-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-ITIN-label");
         testPage.clickContinue();
 
