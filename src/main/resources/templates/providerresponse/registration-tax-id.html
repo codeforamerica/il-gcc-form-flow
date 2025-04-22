@@ -1,9 +1,9 @@
 <th:block
     th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
-    title=#{registration-payment-tax-id.title},
-    header=#{registration-payment-tax-id.header},
-    subtext=#{registration-payment-tax-id.helper},
+    title=#{registration-tax-id.title},
+    header=#{registration-tax-id.header},
+    subtext=#{registration-tax-id.helper},
     formAction=${formAction},
     iconFragment=~{fragments/gcc-icons :: care-financial},
     buttonLabel=#{general.button.continue},
@@ -17,10 +17,10 @@
         content=~{::revealContent},
         forceShowContent='false')}">
         <th:block th:ref="revealLabel">
-          <th:span th:text="#{registration-payment-tax-id.reveal-header}"></th:span>
+          <th:span th:text="#{registration-tax-id.reveal-header}"></th:span>
         </th:block>
         <th:block th:ref="revealContent">
-          <th:span th:utext="#{registration-payment-tax-id.reveal-body}"></th:span>
+          <th:span th:utext="#{registration-tax-id.reveal-body}"></th:span>
         </th:block>
       </th:block>
     </div>
@@ -30,17 +30,14 @@
                     content=~{::radioContent})}">
       <th:block th:ref="radioContent">
         <th:block
-          th:with="">
+            th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='SSN', label=#{registration-tax-id.ssn})}"/>
+        <th:block
+            th:if="${@environment.getProperty('il-gcc.enable-provider-registration-with-itin') == 'true'}">
           <th:block
-              th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='SSN', label=#{registration-payment-tax-id.ssn})}"/>
-          <th:block
-              th:if="${@environment.getProperty('il-gcc.enable-provider-registration-with-itin') == 'true'}">
-            <th:block
-                th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='ITIN', label=#{registration-payment-tax-id.itin})}"/>
-          </th:block>
-          <th:block
-              th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='FEIN', label=#{registration-payment-tax-id.fein})}"/>
+              th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='ITIN', label=#{registration-tax-id.itin})}"/>
         </th:block>
+        <th:block
+            th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='FEIN', label=#{registration-tax-id.fein})}"/>
       </th:block>
     </th:block>
   </th:block>

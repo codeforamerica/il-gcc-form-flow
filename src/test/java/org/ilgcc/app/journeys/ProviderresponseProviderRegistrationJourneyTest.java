@@ -118,8 +118,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerIdentityCheckDateOfBirthDay", "25");
         testPage.enter("providerIdentityCheckDateOfBirthYear", "1985");
         testPage.clickContinue();
-        //registration-payment-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        //registration-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
@@ -437,8 +437,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("provider-email")).isEqualTo("foo@bar.com");
         testPage.clickContinue();
 
-        //registration-payment-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        //registration-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
@@ -627,8 +627,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerIdentityCheckDateOfBirthDay", "25");
         testPage.enter("providerIdentityCheckDateOfBirthYear", "1985");
         testPage.clickContinue();
-        //registration-payment-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        //registration-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
@@ -896,8 +896,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerIdentityCheckDateOfBirthYear", "1985");
         testPage.clickContinue();
 
-        //registration-payment-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        //registration-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-FEIN-label");
         testPage.clickContinue();
 
@@ -1059,8 +1059,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.enter("providerIdentityCheckSSN", "123456789");
         testPage.clickContinue();
 
-        //registration-payment-tax-id.title
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        //registration-tax-id.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
@@ -1221,8 +1221,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
         testPage.clickContinue();
 
-        //registration-payment-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        //registration-tax-id.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-FEIN-label");
         testPage.clickContinue();
 
@@ -1379,8 +1379,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         testPage.clickContinue();
 
-        //registration-payment-tax-id.title
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        //registration-tax-id.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
@@ -1561,8 +1561,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("provider-email")).isEqualTo("foo@bar.com");
         testPage.clickContinue();
 
-        //registration-payment-tax-id.title
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        //registration-tax-id.title
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
