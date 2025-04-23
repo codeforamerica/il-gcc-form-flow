@@ -8,12 +8,10 @@
     import com.fasterxml.jackson.databind.ObjectMapper;
     import java.net.InetAddress;
     import java.net.UnknownHostException;
-    import java.util.Arrays;
     import java.util.UUID;
     import lombok.extern.slf4j.Slf4j;
     import org.ilgcc.app.config.CCMSApiConfiguration;
     import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.core.env.Environment;
     import org.springframework.http.HttpHeaders;
     import org.springframework.http.MediaType;
     import org.springframework.stereotype.Service;
@@ -29,13 +27,11 @@
         private final ObjectMapper objectMapper = new ObjectMapper();
 
         @Autowired
-        public CCMSApiClient(CCMSApiConfiguration configuration, Environment env) {
+        public CCMSApiClient(CCMSApiConfiguration configuration) {
             this.configuration = configuration;
             this.client = WebClient.builder()
                     .baseUrl(configuration.getBaseUrl())
                     .build();
-
-            String[] activeProfiles = env.getActiveProfiles();
         }
         
         public JsonNode sendRequest(String endpoint, CCMSTransaction requestBody) throws JsonProcessingException {
@@ -76,9 +72,6 @@
         private HttpHeaders createRequestHeaders() {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            if (configuration.getUserName() != null && !configuration.getUserName().isBlank() && configuration.getPassword() != null && !configuration.getPassword().isBlank()) {
-                headers.setBasicAuth(configuration.getUserName(), configuration.getPassword());
-            }
             headers.set(CORRELATION_ID.getValue(), String.valueOf(UUID.randomUUID()));
             headers.set(OCP_APIM_SUBSCRIPTION_KEY.getValue(), configuration.getApiSubscriptionKey());
             return headers;
