@@ -36,7 +36,6 @@
                     .build();
 
             String[] activeProfiles = env.getActiveProfiles();
-            isProduction = Arrays.asList(activeProfiles).contains("production");
         }
         
         public JsonNode sendRequest(String endpoint, CCMSTransaction requestBody) throws JsonProcessingException {
