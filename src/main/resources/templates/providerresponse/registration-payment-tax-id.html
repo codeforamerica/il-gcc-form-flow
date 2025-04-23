@@ -33,7 +33,7 @@
             th:with="homeProvider = ${!inputData.getOrDefault('homeProviderTaxIDselection', '').equals('')},
                      hideSSNProviderTypeInput=${homeProvider && (inputData.get('homeProviderTaxIDselection').equals('ITIN'))},
                      hideITINOption = ${homeProvider && (inputData.getOrDefault('homeProviderTaxIDselection', '').equals('SSN'))}">
-          <th:block th:unless="${hideSSNProviderTypeInput}">
+          <th:block th:unless="${@environment.getProperty('il-gcc.enable-provider-registration-with-itin') == 'true' && hideSSNProviderTypeInput}">
             <th:block
                 th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='SSN', label=#{registration-payment-tax-id.ssn})}"/>
           </th:block>
