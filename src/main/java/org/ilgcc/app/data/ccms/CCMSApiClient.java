@@ -17,6 +17,7 @@
     import org.springframework.http.HttpHeaders;
     import org.springframework.http.MediaType;
     import org.springframework.stereotype.Service;
+    import org.springframework.web.reactive.function.client.ClientResponse;
     import org.springframework.web.reactive.function.client.WebClient;
     
     @Service
@@ -26,8 +27,7 @@
         private final CCMSApiConfiguration configuration;
         private final WebClient client;
         private final ObjectMapper objectMapper = new ObjectMapper();
-        private final boolean isProduction;
-        
+
         @Autowired
         public CCMSApiClient(CCMSApiConfiguration configuration, Environment env) {
             this.configuration = configuration;
@@ -48,7 +48,7 @@
                     .retrieve()
                     .onStatus(status -> !status.is2xxSuccessful(), apiResponse -> {
                         log.error("Received an error response from CCMS when attempting to send transaction payload for submission with ID: {}. Error: {}",
-                                requestBody.getSubmissionId(), apiResponse);
+                                requestBody.getSubmissionId(), getResponseDetails(apiResponse));
                         return apiResponse.createException();
                     })
                     .bodyToMono(String.class)
@@ -65,7 +65,7 @@
                     .retrieve()
                     .onStatus(status -> !status.is2xxSuccessful(), apiResponse -> {
                         log.error("Received an error response from CCMS when attempting to fetch the work item ID for Transaction with ID: {}. Error: {}",
-                                requestBody.getTransactionId(), apiResponse);
+                                requestBody.getTransactionId(), getResponseDetails(apiResponse));
                         return apiResponse.createException();
                     })
                     .bodyToMono(String.class)
@@ -90,5 +90,15 @@
             } catch (UnknownHostException e) {
                 log.warn("Could not determine container IP address", e);
             }
+        }
+
+        private String getResponseDetails(ClientResponse response) {
+            StringBuilder responseDetails = new StringBuilder();
+            response.bodyToMono(String.class).subscribe(body -> {
+                responseDetails.append(" Status: ").append(response.statusCode());
+                responseDetails.append(" Headers: ").append(response.headers().asHttpHeaders());
+                responseDetails.append(" Body: ").append(body);
+            });
+            return responseDetails.toString();
         }
     }
