@@ -6,8 +6,6 @@
     import com.fasterxml.jackson.core.JsonProcessingException;
     import com.fasterxml.jackson.databind.JsonNode;
     import com.fasterxml.jackson.databind.ObjectMapper;
-    import java.net.InetAddress;
-    import java.net.UnknownHostException;
     import java.util.UUID;
     import lombok.extern.slf4j.Slf4j;
     import org.ilgcc.app.config.CCMSApiConfiguration;
@@ -34,7 +32,6 @@
         }
         
         public JsonNode sendRequest(String endpoint, CCMSTransaction requestBody) throws JsonProcessingException {
-            logContainerIp(endpoint);
             String response = client.post()
                     .uri(endpoint)
                     .headers(headers -> headers.addAll(createRequestHeaders()))
@@ -51,7 +48,6 @@
         }
         
         public JsonNode sendRequest(String endpoint, CCMSTransactionLookup requestBody) throws JsonProcessingException {
-            logContainerIp(endpoint);
             String response = client.post()
                     .uri(endpoint)
                     .headers(headers -> headers.addAll(createRequestHeaders()))
@@ -74,14 +70,5 @@
             headers.set(CORRELATION_ID.getValue(), String.valueOf(UUID.randomUUID()));
             headers.set(OCP_APIM_SUBSCRIPTION_KEY.getValue(), configuration.getApiSubscriptionKey());
             return headers;
-        }
-        
-        private void logContainerIp(String endpoint) {
-            try {
-                String localIp = InetAddress.getLocalHost().getHostAddress();
-                log.info("Sending CCMS request to {} from container IP: {}", endpoint, localIp);
-            } catch (UnknownHostException e) {
-                log.warn("Could not determine container IP address", e);
-            }
         }
     }

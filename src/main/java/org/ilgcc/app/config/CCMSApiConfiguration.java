@@ -11,7 +11,5 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class CCMSApiConfiguration {
     String apiSubscriptionKey;
-    String userName;
-    String password;
     String baseUrl;
 }
