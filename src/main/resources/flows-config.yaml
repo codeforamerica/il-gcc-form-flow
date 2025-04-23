@@ -613,16 +613,30 @@ flow:
         condition: IsConfirmationCodeInactive
       - name: paid-by-ccap
         condition: EnableProviderRegistration
-      - name: provider-info
+      - name: provider-number
   paid-by-ccap:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: provider-info
+      - name: provider-number
         condition: IsPaidByCCAP
       - name: registration-start
   #Existing Provider Flow
-  provider-info:
+  provider-number:
+    crossFieldValidationAction: ValidateProviderNumber
     beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
+    beforeSaveAction: SaveProviderNumberAsBigInteger
+    afterSaveAction: SetResourceOrganization
+    nextScreens:
+      - name: response
+  response:
+    beforeDisplayAction: FindApplicationData
+    nextScreens:
+      - name: registration-submit-intro
+        condition: ProviderIsRegistering
+      - name: provider-info
+        condition: ProviderAgreedToCare
+      - name: confirm-deny-care
+  provider-info:
     nextScreens:
       - name: service-address
   service-address:
@@ -648,16 +662,12 @@ flow:
     nextScreens:
       - name: info-review
   info-review:
+    beforeSaveAction: SendProviderAndFamilyEmails
+    afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
-      - name: provider-number
-  provider-number:
-    crossFieldValidationAction: ValidateProviderNumber
-    beforeSaveAction: SaveProviderNumberAsBigInteger
-    afterSaveAction: SetResourceOrganization
-    nextScreens:
-      - name: submit-response
-  submit-response:
-    beforeDisplayAction: FindApplicationData
+      - name: registration-submit-confirmation
+  confirm-deny-care:
+    beforeDisplayAction: FormatChildrenWhoNeedCareNames
     beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
@@ -755,6 +765,7 @@ flow:
         condition: selectedITIN
   registration-home-provider-itin:
     condition: EnableProviderRegistrationITIN
+    crossFieldValidationAction: ValidateITINNotBlank
     nextScreens:
       - name: registration-home-provider-dob
   registration-home-provider-dob:
@@ -834,12 +845,6 @@ flow:
   registration-family-response-intro:
     nextScreens:
       - name: response
-  response:
-    beforeDisplayAction: FindApplicationData
-    beforeSaveAction: SendProviderAndFamilyEmails
-    afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
-    nextScreens:
-      - name: registration-submit-intro
   registration-submit-intro:
     condition: EnableProviderRegistration
     nextScreens:

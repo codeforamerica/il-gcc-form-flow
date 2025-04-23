@@ -160,7 +160,6 @@ public class Providerresponse extends FlowInputs {
     
     //registration-home-provider-itin
     @Pattern(regexp = "^$|\\d{9}", message = "{registration-home-provider-itin.error-invalid}")
-    @NotBlank(message = "{registration-home-provider-itin.error-blank}")
     private String providerITIN;
 
     // registration-signature
