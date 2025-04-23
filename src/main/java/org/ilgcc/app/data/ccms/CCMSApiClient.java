@@ -1,11 +1,13 @@
     package org.ilgcc.app.data.ccms;
-    
+
     import static org.ilgcc.app.utils.enums.CCMSRequestHeaders.CORRELATION_ID;
     import static org.ilgcc.app.utils.enums.CCMSRequestHeaders.OCP_APIM_SUBSCRIPTION_KEY;
-    
+
     import com.fasterxml.jackson.core.JsonProcessingException;
     import com.fasterxml.jackson.databind.JsonNode;
     import com.fasterxml.jackson.databind.ObjectMapper;
+    import java.net.InetAddress;
+    import java.net.UnknownHostException;
     import java.util.Arrays;
     import java.util.UUID;
     import lombok.extern.slf4j.Slf4j;
@@ -38,14 +40,15 @@
         }
         
         public JsonNode sendRequest(String endpoint, CCMSTransaction requestBody) throws JsonProcessingException {
+            logContainerIp(endpoint);
             String response = client.post()
                     .uri(endpoint)
                     .headers(headers -> headers.addAll(createRequestHeaders()))
                     .bodyValue(requestBody)
                     .retrieve()
                     .onStatus(status -> !status.is2xxSuccessful(), apiResponse -> {
-                        log.error("Received an error response {} from CCMS when attempting to send transaction payload for submission with ID: {}",
-                                apiResponse.statusCode(), requestBody.getSubmissionId());
+                        log.error("Received an error response from CCMS when attempting to send transaction payload for submission with ID: {}. Error: {}",
+                                requestBody.getSubmissionId(), apiResponse);
                         return apiResponse.createException();
                     })
                     .bodyToMono(String.class)
@@ -54,14 +57,15 @@
         }
         
         public JsonNode sendRequest(String endpoint, CCMSTransactionLookup requestBody) throws JsonProcessingException {
+            logContainerIp(endpoint);
             String response = client.post()
                     .uri(endpoint)
                     .headers(headers -> headers.addAll(createRequestHeaders()))
                     .bodyValue(requestBody)
                     .retrieve()
                     .onStatus(status -> !status.is2xxSuccessful(), apiResponse -> {
-                        log.error("Received an error response {} from CCMS when attempting to fetch the work item ID for Transaction with ID: {}",
-                                apiResponse.statusCode(), requestBody.getTransactionId());
+                        log.error("Received an error response from CCMS when attempting to fetch the work item ID for Transaction with ID: {}. Error: {}",
+                                requestBody.getTransactionId(), apiResponse);
                         return apiResponse.createException();
                     })
                     .bodyToMono(String.class)
@@ -77,5 +81,14 @@
             headers.set(CORRELATION_ID.getValue(), String.valueOf(UUID.randomUUID()));
             headers.set(OCP_APIM_SUBSCRIPTION_KEY.getValue(), configuration.getApiSubscriptionKey());
             return headers;
+        }
+        
+        private void logContainerIp(String endpoint) {
+            try {
+                String localIp = InetAddress.getLocalHost().getHostAddress();
+                log.info("Sending CCMS request to {} from container IP: {}", endpoint, localIp);
+            } catch (UnknownHostException e) {
+                log.warn("Could not determine container IP address", e);
+            }
         }
     }
