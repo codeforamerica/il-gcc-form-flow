@@ -111,8 +111,110 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
 
         // registration-home-provider-dob
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-dob.title"));
+        testPage.enter("providerIdentityCheckDateOfBirthMonth", "12");
+        testPage.enter("providerIdentityCheckDateOfBirthYear", "1992");
+        testPage.enter("providerIdentityCheckDateOfBirthDay", "25");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        assertThat(testPage.findElementById("providerTaxIdType-ITIN-label")).isNotNull();
+        assertThat(testPage.findElementById("providerTaxIdType-FEIN-label")).isNotNull();
+        testPage.clickElementById("providerTaxIdType-ITIN-label");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-itin.title"));
+        testPage.clickContinue();
     }
 
+    @Test
+    public void providerRegistrationHomeProviderSelectSSN() {
+        setupRegistration();
+
+        testPage.navigateToFlowScreen("providerresponse/registration-licensing");
+
+        // registration-licensing
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-licensing.title"));
+        testPage.clickNo();
+
+        // registration-applicant
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-applicant.title"));
+        testPage.selectRadio("providerLicenseExemptType", "Self");
+        testPage.clickContinue();
+
+        // registration-unlicensed-care-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-unlicensed-care-location.title"));
+        testPage.selectRadio("providerLicenseExemptCareLocation", "Providers home");
+        testPage.clickContinue();
+
+        // registration-unlicensed-relationship
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-unlicensed-relationship.title"));
+        testPage.selectRadio("providerLicenseExemptRelationship", "Relative");
+        testPage.clickContinue();
+
+        // registration-basic-info-intro (
+        testPage.clickContinue();
+
+        // provider-info
+        testPage.enter("providerResponseFirstName", "LicenseExemptProvider");
+        testPage.enter("providerResponseLastName", "InChildHome");
+        testPage.clickContinue();
+
+        // service-address
+        testPage.enter("providerResponseServiceStreetAddress1", "972 Mission St");
+        testPage.enter("providerResponseServiceStreetAddress2", "5th floor");
+        testPage.enter("providerResponseServiceCity", "San Francisco");
+        testPage.selectFromDropdown("providerResponseServiceState", getEnMessage("state.ca"));
+        testPage.enter("providerResponseServiceZipCode", "94103");
+
+        testPage.clickContinue();
+
+        // confirm-service-address
+        testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
+
+        // mailing-address
+        testPage.clickElementById("providerMailingAddressSameAsServiceAddress-yes");
+        testPage.clickContinue();
+
+        // confirm-mailing-address
+        testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
+
+        // contact-info
+        testPage.enter("providerResponseContactPhoneNumber", "5555555555");
+        testPage.enter("providerResponseContactEmail", "foo@bar.com");
+        testPage.clickContinue();
+
+        // registration-info-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info-review.title"));
+        testPage.clickContinue();
+
+        // registration-home-provider-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-tax-id.title"));
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("errors.select-one-option"))).isTrue();
+
+        testPage.selectRadio("homeProviderTaxIDselection", "SSN");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-ssn.title"));
+        testPage.enter("providerIdentityCheckSSN", "5555555555");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-dob.title"));
+        testPage.enter("providerIdentityCheckDateOfBirthMonth", "12");
+        testPage.enter("providerIdentityCheckDateOfBirthYear", "1992");
+        testPage.enter("providerIdentityCheckDateOfBirthDay", "25");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
+        assertThat(testPage.findElementById("providerTaxIdType-SSN-label")).isNotNull();
+        assertThat(testPage.findElementById("providerTaxIdType-FEIN-label")).isNotNull();
+        testPage.clickElementById("providerTaxIdType-SSN-label");
+        testPage.clickContinue();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
+        testPage.clickContinue();
+    }
     @Test
     void providerRegistrationNonHomeProviderSelectITIN() {
         setupRegistration();
@@ -202,8 +304,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         assertThat(testPage.findElementTextById("provider-email")).isEqualTo("foo@bar.com");
         testPage.clickContinue();
 
-        //registration-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        //registration-payment-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-FEIN-label");
         testPage.clickContinue();
 
@@ -211,8 +313,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ein.title"));
         testPage.goBack();
 
-        //registration-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        //registration-payment-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-SSN-label");
         testPage.clickContinue();
 
@@ -220,8 +322,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ssn.title"));
         testPage.goBack();
 
-        // registration-tax-id
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id.title"));
+        // registration-payment-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
         testPage.clickElementById("providerTaxIdType-ITIN-label");
         testPage.clickContinue();
 
