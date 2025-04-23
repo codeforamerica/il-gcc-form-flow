@@ -30,14 +30,14 @@
                     content=~{::radioContent})}">
       <th:block th:ref="radioContent">
         <th:block
-          th:with="hasNoProviderTaxIdSSNEntered=${inputData.getOrDefault('providerTaxIdSSN', '').equals('')},
-                   hasNoProviderITINEntered=${inputData.getOrDefault('providerITIN', '').equals('')}">
-          <th:block th:if="${hasNoProviderTaxIdSSNEntered}">
+            th:with="showITINOption=${!inputData.getOrDefault('homeProviderTaxIDselection', '').equals('SSN') && !inputData.getOrDefault('providerIdentityCheckSSN', '').isBlank()},
+                   hideSSNOption=${!inputData.getOrDefault('homeProviderTaxIDselection', '').equals('ITIN') && !inputData.getOrDefault('providerITIN', '').isBlank()}">
+          <th:block th:if="${hideSSNOption}">
             <th:block
                 th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='SSN', label=#{registration-payment-tax-id.ssn})}"/>
           </th:block>
           <th:block
-              th:if="${@environment.getProperty('il-gcc.enable-provider-registration-with-itin') == 'true' && hasNoProviderITINEntered}">
+              th:if="${@environment.getProperty('il-gcc.enable-provider-registration-with-itin') == 'true' && showITINOption}">
             <th:block
                 th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='ITIN', label=#{registration-payment-tax-id.itin})}"/>
           </th:block>
