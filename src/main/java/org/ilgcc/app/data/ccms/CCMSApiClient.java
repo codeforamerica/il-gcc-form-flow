@@ -76,7 +76,9 @@
         private HttpHeaders createRequestHeaders() {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBasicAuth(configuration.getUserName(), configuration.getPassword());
+            if (configuration.getUserName() != null && !configuration.getUserName().isBlank() && configuration.getPassword() != null && !configuration.getPassword().isBlank()) {
+                headers.setBasicAuth(configuration.getUserName(), configuration.getPassword());
+            }
             headers.set(CORRELATION_ID.getValue(), String.valueOf(UUID.randomUUID()));
             headers.set(OCP_APIM_SUBSCRIPTION_KEY.getValue(), configuration.getApiSubscriptionKey());
             return headers;
