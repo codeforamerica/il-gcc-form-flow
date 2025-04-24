@@ -20,7 +20,8 @@
                                     th:if="${submission.getInputData().containsKey('familySubmissionId')}"
                                     th:with="applicationData=${submission.getInputData().get('clientResponse')}, children=${submission.getInputData().get('clientResponseChildren')}">
                                 <div class="radio-button familyDetails">
-                                    <p th:id="parent-name" th:utext="${#messages.msg('provider-response-response.parent-name', applicationData.getOrDefault('clientResponseParentName', 'n/a'))}"></p>
+                                    <p th:id="parent-name"
+                                       th:utext="${#messages.msg('provider-response-response.parent-name', applicationData.getOrDefault('clientResponseParentName', 'n/a'))}"></p>
 
                                     <th:block th:if="${children.size().equals(1)}">
                                         <p th:utext="#{'provider-response-response.care-request.1-child'}"></p>
@@ -29,7 +30,8 @@
                                         <p th:utext="${#messages.msg('provider-response-response.care-request.multiple-children', children.size())}"></p>
                                     </th:block>
 
-                                    <p th:id="confirmation-code" th:utext="${#messages.msg('provider-response-response.confirmation-code', applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a'))}"></p>
+                                    <p th:id="confirmation-code"
+                                       th:utext="${#messages.msg('provider-response-response.confirmation-code', applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a'))}"></p>
                                 </div>
                                 <div class="familyDetailsReveal">
                                     <th:block
@@ -41,10 +43,11 @@
                                             forceShowContent=${children.size().equals(1)})}">
                                             <th:block th:ref="ref1">
                                                 <th:span th:id="${'child-name-'+iter.index}"
-                                                        th:utext="${#messages.msg('provider-response-response.child-name', iter.index + 1, child.getOrDefault('childName', 'n/a'))}"></th:span>
+                                                         th:utext="${#messages.msg('provider-response-response.child-name', iter.index + 1, child.getOrDefault('childName', 'n/a'))}"></th:span>
                                             </th:block>
                                             <th:block th:ref="revealContent">
-                                                <p th:id="${'child-age-'+iter.index}" th:utext="${#messages.msg('provider-response-response.child-age', child.getOrDefault('childAge', 'n/a'))}"></p>
+                                                <p th:id="${'child-age-'+iter.index}"
+                                                   th:utext="${#messages.msg('provider-response-response.child-age', child.getOrDefault('childAge', 'n/a'))}"></p>
 
                                                 <p class="response-header"
                                                    th:utext="#{provider-response-response.hours}"></p>
@@ -55,25 +58,41 @@
                                                 <p class="response-header"
                                                    th:utext="#{provider-response-response.start-date}"></p>
                                                 <p
-                                                   th:id="${'child-start-'+iter.index}"
-                                                   th:text="${child.getOrDefault('childStartDate', 'n/a')}"></p>
+                                                        th:id="${'child-start-'+iter.index}"
+                                                        th:text="${child.getOrDefault('childStartDate', 'n/a')}"></p>
                                             </th:block>
                                         </th:block>
                                     </th:block>
                                 </div>
                             </th:block>
                         </div>
-                        <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                        <div class="question-with-follow-up">
+                            <div class="question-with-follow-up__question">
+                                <th:block th:replace="~{fragments/inputs/radioFieldset ::
                                           radioFieldset(inputName='providerResponseAgreeToCare',
                                           ariaLabel=#{provider-response-response.title},
                                           content=~{::providerResponse})}">
-                            <th:block th:ref="providerResponse">
-                                <th:block
-                                        th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='true', label=#{provider-response-response.button.yes})}"/>
-                                <th:block
-                                        th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='false', label=#{provider-response-response.button.no})}"/>
+                                    <th:block th:ref="providerResponse">
+                                        <th:block
+                                                th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='true', label=#{provider-response-response.button.yes})}"/>
+                                        <th:block
+                                                th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='false', label=#{provider-response-response.button.no}, followUpId='#deny-reason-follow-up')}"/>
+                                    </th:block>
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="question-with-follow-up__follow-up" id="deny-reason-follow-up">
+                            <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                                      radioFieldset(inputName='providerResponseDenyCareReason',
+                                      label=#{provider-response-response.follow-up.label},
+                                      fieldsetHelpText=#{provider-response-response.follow-up.help},
+                                      content=~{::followUp})}">
+                                <th:block th:ref="followUp">
+                                    <th:block
+                                            th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseDenyCareReason',value='no space', label=#{provider-response-response.follow-up.option-1})}"/>
+                                </th:block>
                             </th:block>
-                        </th:block>
+                        </div>
                         <button id="form-submit-button"
                                 class="button button--primary"
                                 type="submit"
