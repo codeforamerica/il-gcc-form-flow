@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 /**
  * This test class uses providers created in the Database by FakeProviderDataImporter to confirm that the relationship between
@@ -24,6 +25,9 @@ import org.springframework.test.context.ActiveProfiles;
  * the columns are set correctly via manual inspection as well as the programmatic tests.
  */
 @SpringBootTest(classes = IlGCCApplication.class)
+@TestPropertySource(properties = {
+        "ACTIVE_CASELOAD_CODES=BB,QQ",
+})
 @ActiveProfiles("test")
 class ProviderAndSiteAdministeredResourceOrganizationTest {
 
