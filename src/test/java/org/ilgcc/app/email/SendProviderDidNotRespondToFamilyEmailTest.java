@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 
 import com.sendgrid.helpers.mail.objects.Email;
 import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepository;
 import formflow.library.data.SubmissionRepositoryService;
 import java.time.OffsetDateTime;
 import java.util.Locale;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.jobs.SendEmailJob;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +36,20 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
     SubmissionRepositoryService submissionRepositoryService;
 
     @Autowired
+    SubmissionRepository submissionRepository;
+
+    @Autowired
     MessageSource messageSource;
 
     private Submission familySubmission;
 
     private SendProviderDidNotRespondToFamilyEmail sendEmailClass;
 
-    private Locale locale = Locale.ENGLISH;
-
+    private final Locale locale = Locale.ENGLISH;
 
     @BeforeEach
     void setUp() {
-        familySubmission = new SubmissionTestBuilder()
+        familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
                 .with("parentContactEmail", "familyemail@test.com")
@@ -54,11 +58,14 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withCCRR()
                 .withShortCode("ABC123")
-                .build();
-
-        submissionRepositoryService.save(familySubmission);
+                .build());
 
         sendEmailClass = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
+    }
+
+    @AfterEach
+    void tearDown() {
+        submissionRepository.deleteAll();
     }
 
     @Test
