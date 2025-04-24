@@ -60,7 +60,7 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService {
     @Override
     public Optional<ResourceOrganization> getSiteAdministeredOrganizationByProviderId(BigInteger providerId) {
         return ccmsDataService.getSiteAdministeredResourceOrganizationByProviderId(
-                providerId);
+                providerId, ccmsDataService.getActiveSDAsBasedOnActiveCaseLoadCodes());
     }
 
     @Override

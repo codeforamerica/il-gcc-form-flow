@@ -44,6 +44,10 @@ public class FakeProviderDataImporter implements InitializingBean {
 
     public static ResourceOrganization ACTIVE_SITE_ADMIN_RESOURCE_ORG;
 
+    public static Provider ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA;
+
+    public static ResourceOrganization ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA;
+
     @Override
     public void afterPropertiesSet() {
         log.info("Starting creating fake provider data.");
@@ -174,6 +178,7 @@ public class FakeProviderDataImporter implements InitializingBean {
             ACTIVE_SITE_ADMIN_RESOURCE_ORG.setResourceOrgId(new BigInteger("10101"));
             ACTIVE_SITE_ADMIN_RESOURCE_ORG.setName("Sample Site Admin Resource Organization");
             ACTIVE_SITE_ADMIN_RESOURCE_ORG.setPhone("(999) 123-1234");
+            ACTIVE_SITE_ADMIN_RESOURCE_ORG.setCaseloadCode("SITE");
             ACTIVE_SITE_ADMIN_RESOURCE_ORG.setCity("Chicago");
             ACTIVE_SITE_ADMIN_RESOURCE_ORG.setSda((short) 2);
             resourceOrganizationRepository.save(ACTIVE_SITE_ADMIN_RESOURCE_ORG);
@@ -196,6 +201,40 @@ public class FakeProviderDataImporter implements InitializingBean {
 
         ACTIVE_SITE_ADMINISTERED_PROVIDER.setResourceOrganization(ACTIVE_SITE_ADMIN_RESOURCE_ORG);
         providerRepository.save(ACTIVE_SITE_ADMINISTERED_PROVIDER);
+
+        Optional<ResourceOrganization> resourceOrganizationOutsideSDA = resourceOrganizationRepository.findById(
+                new BigInteger("10102"));
+
+        if (resourceOrganizationOutsideSDA.isPresent()) {
+            ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA = activeResourceOrganization.get();
+        } else {
+            ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA = new ResourceOrganization();
+            ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA.setResourceOrgId(new BigInteger("10102"));
+            ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA.setName("Sample Site Admin Resource Organization Outside SDA");
+            ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA.setPhone("(999) 123-1234");
+            ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA.setCaseloadCode("SITE");
+            ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA.setCity("Chicago");
+            ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA.setSda((short) 10);
+            resourceOrganizationRepository.save(ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA);
+        }
+
+        Optional<Provider> activeSiteAdministeredProviderOutOfSDA = providerRepository.findById(new BigInteger("12345678910"));
+
+        if (activeSiteAdministeredProviderOutOfSDA.isPresent()) {
+            ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA = activeSiteAdministeredProviderOutOfSDA.get();
+        } else {
+            ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA = new Provider();
+            ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA.setProviderId(new BigInteger("12345678910"));
+            ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA.setName("Site Administered Provider");
+            ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA.setCity("Chicago");
+            ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA.setState("IL");
+            ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA.setZipCode("60613");
+            ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA.setStatus("A");
+            ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA.setDateOfLastApproval(OffsetDateTime.now().minusYears(2));
+        }
+
+        ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA.setResourceOrganization(ACTIVE_SITE_ADMIN_RESOURCE_ORG_OUTSIDE_ACTIVE_SDA);
+        providerRepository.save(ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA);
 
         log.info("Completed creating fake provider data.");
     }
