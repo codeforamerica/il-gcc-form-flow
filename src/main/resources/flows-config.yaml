@@ -662,6 +662,16 @@ flow:
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: registration-submit-confirmation
+  fein:
+    condition: EnableProviderResponseFEIN
+    nextScreens:
+      - name: provider-id-fein
+  provider-id-fein:
+    condition: EnableProviderResponseFEIN
+    nextScreens: null
+  confirm-application-submission-no-response:
+    condition: EnableProviderResponseFEIN
+    nextScreens: null
   #New Provider Flow
   registration-start:
     condition: EnableProviderRegistration
