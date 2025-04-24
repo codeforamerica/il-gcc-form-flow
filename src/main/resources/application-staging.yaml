@@ -32,5 +32,6 @@ management:
         include: '*'
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
+  enable-provider-response-with-fein: ${ENABLE_PROVIDER_RESPONSE_FEIN:true}
   dts:
     processing-org: '4c-ccap-apps-testing'
