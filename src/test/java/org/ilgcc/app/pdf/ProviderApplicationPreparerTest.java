@@ -367,4 +367,81 @@ public class ProviderApplicationPreparerTest {
         assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
         assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
+
+    @Test
+    public void correctlyMapsDataWhenProviderDoesNotHaveValidProviderId() {
+        providerSubmission = new SubmissionTestBuilder()
+                .withFlow("providerresponse")
+                .withProviderSubmissionData()
+                .withProviderStateLicense()
+                .with("providerMailingAddressSameAsServiceAddress[]", List.of("yes"))
+                .with("providerMailingStreetAddress1", "123 Main Street")
+                .with("providerMailingCity", "De Kalb")
+                .with("providerMailingState", "IL")
+                .with("providerMailingZipCode", "60112")
+                .withClientResponseConfirmationCode("testConfirmationCode")
+                .build();
+
+        submissionRepositoryService.save(providerSubmission);
+
+        familySubmission = new SubmissionTestBuilder()
+                .withFlow("gcc")
+                .withDayCareProvider()
+                .withSubmittedAtDate(OffsetDateTime.now())
+                .with("familyIntendedProviderName", "ProviderName")
+                .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
+                .with("familyIntendedProviderEmail", "mail@test.com")
+                .with("providerResponseSubmissionId", providerSubmission.getId())
+
+                .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+        assertThat(result.get("providerResponseFirstName")).isEqualTo(
+                new SingleField("providerResponseFirstName", "Provider", null));
+        assertThat(result.get("providerResponseLastName")).isEqualTo(
+                new SingleField("providerResponseLastName", "LastName", null));
+        assertThat(result.get("providerResponseBusinessName")).isEqualTo(
+                new SingleField("providerResponseBusinessName", "DayCare Place", null));
+
+        assertThat(result.get("providerMailingStreetAddress1")).isEqualTo(
+                new SingleField("providerMailingStreetAddress1", "123 Main Street", null));
+        assertThat(result.get("providerMailingCity")).isEqualTo(
+                new SingleField("providerMailingCity", "De Kalb", null));
+        assertThat(result.get("providerMailingState")).isEqualTo(
+                new SingleField("providerMailingState", "IL", null));
+        assertThat(result.get("providerMailingZipCode")).isEqualTo(
+                new SingleField("providerMailingZipCode", "60112", null));
+
+        assertThat(result.get("providerResponseServiceStreetAddress1")).isEqualTo(
+                new SingleField("providerResponseServiceStreetAddress1", "123 Main St", null));
+        assertThat(result.get("providerResponseServiceStreetAddress2")).isEqualTo(
+                new SingleField("providerResponseServiceStreetAddress2", "Unit 10", null));
+        assertThat(result.get("providerResponseServiceCity")).isEqualTo(
+                new SingleField("providerResponseServiceCity", "DeKalb", null));
+        assertThat(result.get("providerResponseServiceState")).isEqualTo(
+                new SingleField("providerResponseServiceState", "IL", null));
+        assertThat(result.get("providerResponseServiceZipCode")).isEqualTo(
+                new SingleField("providerResponseServiceZipCode", "60112", null));
+
+        assertThat(result.get("providerResponseContactEmail")).isEqualTo(
+                new SingleField("providerResponseContactEmail", "mail@daycareplace.org", null));
+        assertThat(result.get("providerResponseContactPhoneNumber")).isEqualTo(
+                new SingleField("providerResponseContactPhoneNumber", "(111) 222-3333", null));
+
+        assertThat(result.get("providerLicenseNumber")).isEqualTo(
+                new SingleField("providerLicenseNumber", "123453646 (IL)", null));
+
+        assertThat(result.get("clientResponseConfirmationCode")).isEqualTo(
+                new SingleField("clientResponseConfirmationCode", "testConfirmationCode", null));
+
+        assertThat(result.get("providerResponse")).isEqualTo(
+                new SingleField("providerResponse", "Unable to identify provider - no response to care arrangement", null));
+
+        assertThat(result.get("dayCareName")).isEqualTo(null);
+        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
+        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
+    }
+
+
 }
