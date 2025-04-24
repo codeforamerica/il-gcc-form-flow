@@ -8,8 +8,6 @@ form-flow:
     thumbnail-height: '50'
     max-files: '5' # 5 files maximum
     max-file-size: '1' # 1 MB file size limit
-    virus-scanning:
-      enabled: false
   address-validation:
     enabled: false
     smarty:
