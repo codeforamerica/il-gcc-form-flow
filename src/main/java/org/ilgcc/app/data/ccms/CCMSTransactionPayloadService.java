@@ -79,15 +79,23 @@ public class CCMSTransactionPayloadService {
         allFiles.addAll(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf"));
         for (int i = 0; i < allFiles.size(); i++) {
             UserFile userFile = allFiles.get(i);
-            CloudFile cloudFile = null;
+            CloudFile cloudFile;
             try {
                 cloudFile = cloudFileRepository.get(userFile.getRepositoryPath());
             } catch (Exception e) {
                 log.error(
-                        "There was an error when attempting to send uploaded file with id: {} in submission with id: {} to the document transfer service. It's possible the file had a virus, or could not be scanned.",
+                        "There was an error when attempting to send uploaded file with id: {} in submission with id: {} to CCMS. It's possible the file had a virus, or could not be scanned.",
                         userFile.getFileId(), familySubmission.getId(), e);
                 continue;
             }
+
+            if (cloudFile == null) {
+                log.error(
+                        "There was an error when attempting to send uploaded file with id: {} in submission with id: {} to CCMS. It's possible the file had a virus, or could not be scanned.",
+                        userFile.getFileId(), familySubmission.getId());
+                continue;
+            }
+
             transactionFiles.add(
                     new TransactionFile(
                             FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
