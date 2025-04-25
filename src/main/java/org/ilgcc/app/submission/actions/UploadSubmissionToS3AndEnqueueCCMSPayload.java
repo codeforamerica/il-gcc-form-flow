@@ -7,8 +7,11 @@ import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.FileNameUtility;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.PdfTransmissionJob;
@@ -53,6 +56,10 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
             if (CCMS_INTEGRATION_ENABLED) {
                 CCMSSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(submission.getId());
             }
+        } else {
+            submission.getInputData().putAll(Map.of("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name(),
+                    "providerApplicationResponseExpirationDate",
+                    ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt())));
         }
     }
 }
