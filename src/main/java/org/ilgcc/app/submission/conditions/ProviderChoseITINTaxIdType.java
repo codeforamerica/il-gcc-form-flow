@@ -11,6 +11,6 @@ public class ProviderChoseITINTaxIdType implements Condition {
     @Override
     public Boolean run(Submission submission) {
         Map<String, Object> inputData = submission.getInputData();
-        return ("ITIN".equals(inputData.get("providerTaxIdType").toString()) && inputData.getOrDefault("providerITIN", "").toString().isEmpty());
+        return ("ITIN".equals(inputData.getOrDefault("providerTaxIdType", "").toString()) && inputData.getOrDefault("providerITIN", "").toString().isEmpty());
     }
 }
