@@ -6,8 +6,6 @@ spring:
 form-flow:
   error:
     show-stack-trace: false
-  virus-scanning:
-    enabled: true
 management:
   endpoint:
     health:

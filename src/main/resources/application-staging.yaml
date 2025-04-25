@@ -6,8 +6,6 @@ spring:
 form-flow:
   error:
     show-stack-trace: false
-  virus-scanning:
-    enabled: true
   short-code:
     short-code-configs:
       gcc:
