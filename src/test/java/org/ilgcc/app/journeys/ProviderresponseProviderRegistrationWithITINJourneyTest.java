@@ -116,13 +116,19 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         testPage.enter("providerIdentityCheckDateOfBirthDay", "25");
         testPage.clickContinue();
 
+        //registration-payment-tax-id
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-payment-tax-id.title"));
         assertThat(testPage.findElementById("providerTaxIdType-ITIN-label")).isNotNull();
         assertThat(testPage.findElementById("providerTaxIdType-FEIN-label")).isNotNull();
+        testPage.clickContinue();
+
+        //registration-payment-tax-id
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
+        assertThat(testPage.hasErrorText(getEnMessage("errors.select-one-option"))).isNotNull();
         testPage.clickElementById("providerTaxIdType-ITIN-label");
         testPage.clickContinue();
 
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-itin.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
         testPage.clickContinue();
     }
 
