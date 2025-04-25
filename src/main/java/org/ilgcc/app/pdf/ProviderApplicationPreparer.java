@@ -181,8 +181,8 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
 
 
     private String providerResponse(Map<String, Object> providerInputData) {
-        Boolean hasEIN = providerInputData.containsKey("providerTaxIdEIN");
-        Boolean hasProviderNumber = providerInputData.containsKey("providerResponseProviderNumber");
+        boolean hasEIN = providerInputData.containsKey("providerTaxIdEIN");
+        boolean hasProviderNumber = providerInputData.containsKey("providerResponseProviderNumber");
         if (!hasEIN && !hasProviderNumber) {
             return "Unable to identify provider - no response to care arrangement";
         }
