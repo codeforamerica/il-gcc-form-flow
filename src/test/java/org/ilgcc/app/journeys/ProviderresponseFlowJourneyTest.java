@@ -1,6 +1,13 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_APPROVED_PROVIDER;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_DENIED_PROVIDER;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_STATUS_C_PROVIDER;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_STATUS_R_PROVIDER;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_WITHDRAWN_PROVIDER;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.OUTDATED_APPROVED_PROVIDER;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.OUTDATED_PENDING_PROVIDER;
 
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
@@ -80,7 +87,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "12345678901");
+        testPage.enter("providerResponseProviderNumber", CURRENT_APPROVED_PROVIDER.getProviderId().toString());
         testPage.clickContinue();
 
         // response
@@ -165,7 +172,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "12345678901");
+        testPage.enter("providerResponseProviderNumber", CURRENT_APPROVED_PROVIDER.getProviderId().toString());
         testPage.clickContinue();
 
         // response
@@ -318,40 +325,39 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("providerresponse/provider-number");
         // provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "12345678903");
+        testPage.enter("providerResponseProviderNumber", CURRENT_STATUS_R_PROVIDER.getProviderId().toString());
         testPage.clickContinue();
 
         // Errors
-        // Status = R
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
 
         // Status = D
-        testPage.enter("providerResponseProviderNumber", "12345678904");
+        testPage.enter("providerResponseProviderNumber", CURRENT_DENIED_PROVIDER.getProviderId().toString());
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
 
         // Status = W
-        testPage.enter("providerResponseProviderNumber", "12345678905");
+        testPage.enter("providerResponseProviderNumber", CURRENT_WITHDRAWN_PROVIDER.getProviderId().toString());
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
 
         // Status = C
-        testPage.enter("providerResponseProviderNumber", "12345678906");
+        testPage.enter("providerResponseProviderNumber", CURRENT_STATUS_C_PROVIDER.getProviderId().toString());
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
 
         // Status = A, 4 years old
-        testPage.enter("providerResponseProviderNumber", "12345678907");
+        testPage.enter("providerResponseProviderNumber", OUTDATED_APPROVED_PROVIDER.getProviderId().toString());
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();
 
         // Status = P, 5 years old
-        testPage.enter("providerResponseProviderNumber", "12345678908");
+        testPage.enter("providerResponseProviderNumber", OUTDATED_PENDING_PROVIDER.getProviderId().toString());
         testPage.clickContinue();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("errors.general-title"));
         assertThat(testPage.hasErrorText(getEnMessage("provider-response-provider-number.error.invalid-number"))).isTrue();

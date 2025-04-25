@@ -1,6 +1,7 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_APPROVED_PROVIDER;
 
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
@@ -539,7 +540,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //provider-number
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
-        testPage.enter("providerResponseProviderNumber", "12345678901");
+        testPage.enter("providerResponseProviderNumber", CURRENT_APPROVED_PROVIDER.getProviderId().toString());
         testPage.clickContinue();
 
         //response
