@@ -155,7 +155,11 @@ public class CCMSTransactionPayloadServiceTest {
                         Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedJpegPath)))
         );
 
-        CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(familySubmission);
+        Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(familySubmission);
+        assertThat(ccmsTransactionOptional.isPresent()).isTrue();
+
+        CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
+        
         assertThat(ccmsTransaction).isNotNull();
         assertThat(ccmsTransaction.getTransmissionType()).isEqualTo("application");
         assertThat(ccmsTransaction.getSubmissionId()).isEqualTo(familySubmission.getId());

@@ -61,18 +61,23 @@ public class CCMSSubmissionPayloadTransactionJob {
         Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
         if (submissionOptional.isPresent()) {
             Submission submission = submissionOptional.get();
-            CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(submission);
-            JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
-            log.info("Received response from CCMS when sending transaction payload: {}", response);
+            Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(submission);
+            if (ccmsTransactionOptional.isPresent()) {
+                CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
+                JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
+                log.info("Received response from CCMS when sending transaction payload: {}", response);
 
-            String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
+                String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
 
-            if (workItemId == null) {
-                log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
+                if (workItemId == null) {
+                    log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
+                }
+
+                transactionRepositoryService.createTransaction(UUID.fromString(response.get("transactionId").asText()),
+                        submission.getId(), workItemId);
+            } else {
+                log.warn("Could not create CCMS payload for submission : {}", submission.getId());
             }
-
-            transactionRepositoryService.createTransaction(UUID.fromString(response.get("transactionId").asText()),
-                    submission.getId(), workItemId);
         } else {
             throw new RuntimeException("Could not find submission with ID: " + submissionId);
         }
