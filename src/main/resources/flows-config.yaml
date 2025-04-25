@@ -669,7 +669,9 @@ flow:
       - name: provider-id-fein
   provider-id-fein:
     condition: EnableProviderResponseFEIN
-    nextScreens: null
+    crossFieldValidationAction: ValidateFEINIsNotBlank
+    nextScreens: 
+      - name: submit-response
   confirm-application-submission-no-response:
     condition: EnableProviderResponseFEIN
     nextScreens: null
