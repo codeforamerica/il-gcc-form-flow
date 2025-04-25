@@ -27,7 +27,7 @@ public class ProviderresponseProviderResponseWithFEINJourneyTest extends Abstrac
         Submission s = submissionRepositoryService.save(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
             .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
             .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
-            .with("earliestChildcareStartDate", "10/10/2011").withSubmittedAtDate(OffsetDateTime.now()).build();
+            .with("earliestChildcareStartDate", "10/10/2011").withSubmittedAtDate(OffsetDateTime.now()).build());
 
         s = submissionRepositoryService.save(s);
         submissionRepositoryService.generateAndSetUniqueShortCode(s);
