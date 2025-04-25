@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 
 import com.sendgrid.helpers.mail.objects.Email;
 import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepository;
 import formflow.library.data.SubmissionRepositoryService;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.jobs.SendEmailJob;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +37,21 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
     SubmissionRepositoryService submissionRepositoryService;
 
     @Autowired
+    SubmissionRepository submissionRepository;
+
+    @Autowired
     MessageSource messageSource;
 
     private Submission providerSubmission;
 
-    private Submission familySubmission;
-
     private SendProviderAgreesToCareFamilyConfirmationEmail sendEmailClass;
 
-    private Locale locale = Locale.ENGLISH;
+    private final Locale locale = Locale.ENGLISH;
 
 
     @BeforeEach
     void setUp() {
-        familySubmission = new SubmissionTestBuilder()
+        Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
                 .with("parentContactEmail", "familyemail@test.com")
@@ -56,11 +59,9 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withCCRR()
                 .withShortCode("ABC123")
-                .build();
+                .build());
 
-        submissionRepositoryService.save(familySubmission);
-
-        providerSubmission = new SubmissionTestBuilder()
+        providerSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                 .withFlow("providerresponse")
                 .with("familySubmissionId", familySubmission.getId().toString())
                 .with("providerResponseContactEmail", "provideremail@test.com")
@@ -69,13 +70,17 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
                 .with("providerResponseBusinessName", "BusinessName")
                 .with("providerCareStartDate", "01/10/2025")
                 .with("providerResponseAgreeToCare", "true")
-                .build();
-
-        submissionRepositoryService.save(providerSubmission);
+                .build());
 
         sendEmailClass = new SendProviderAgreesToCareFamilyConfirmationEmail(sendEmailJob, messageSource,
                 submissionRepositoryService);
     }
+
+    @AfterEach
+    void tearDown() {
+        submissionRepository.deleteAll();
+    }
+
 
     @Test
     void correctlySetsEmailRecipient() {

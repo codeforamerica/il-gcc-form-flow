@@ -28,7 +28,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class SendNewProviderConfirmationEmailTest {
+public class SendUnidentifiedProviderConfirmationEmailTest {
 
     @MockitoSpyBean
     SendEmailJob sendEmailJob;
@@ -44,33 +44,24 @@ public class SendNewProviderConfirmationEmailTest {
 
     private Submission providerSubmission;
 
-    private SendNewProviderConfirmationEmail sendEmailClass;
+    private SendUnidentifiedProviderConfirmationEmail sendEmailClass;
 
     private final Locale locale = Locale.ENGLISH;
 
 
     @BeforeEach
     void setUp() {
-        Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                .withFlow("gcc")
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
-                .withSubmittedAtDate(OffsetDateTime.now())
-                .withCCRR()
-                .withShortCode("ABC123")
-                .build());
+        Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder().withFlow("gcc").with("parentPreferredName", "FirstName")
+                .withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .withSubmittedAtDate(OffsetDateTime.now()).withCCRR().withShortCode("ABC123").build());
 
-        providerSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                .withFlow("providerresponse")
+        providerSubmission = submissionRepositoryService.save(new SubmissionTestBuilder().withFlow("providerresponse")
                 .with("familySubmissionId", familySubmission.getId().toString())
-                .with("providerResponseContactEmail", "provideremail@test.com")
-                .with("providerResponseFirstName", "ProviderFirst")
-                .with("providerResponseLastName", "ProviderLast")
-                .with("providerResponseBusinessName", "BusinessName")
-                .with("providerCareStartDate", "01/10/2025")
-                .with("providerResponseAgreeToCare", "true")
-                .build());
+                .with("providerResponseContactEmail", "provideremail@test.com").with("providerResponseFirstName", "ProviderFirst")
+                .with("providerResponseLastName", "ProviderLast").with("providerResponseBusinessName", "BusinessName")
+                .with("providerCareStartDate", "01/10/2025").with("providerResponseAgreeToCare", "true").build());
 
-        sendEmailClass = new SendNewProviderConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
+        sendEmailClass = new SendUnidentifiedProviderConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -111,24 +102,19 @@ public class SendNewProviderConfirmationEmailTest {
         assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                 new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
         assertThat(emailTemplate.getSubject()).isEqualTo(
-                messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{"ABC123"}, locale));
+                messageSource.getMessage("email.unidentified-provider-confirmation.subject", null, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
-        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation.p1", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.unidentified-provider-confirmation.p1", null, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.provider-confirmation.p2", new Object[]{"Sample Test CCRR"},
+                messageSource.getMessage("email.unidentified-provider-confirmation.p2", new Object[]{"Sample Test CCRR"},
                         locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation.p3",
-                new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation.p4",
-                new Object[]{"ABC123"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation.p5",
-                new Object[]{"Sample Test CCRR", "(603) 555-1244"},
-                locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.new-provider-confirmation.note",
-                new Object[]{"Sample Test CCRR"},
-                locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.unidentified-provider-confirmation.p3",
+                new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.unidentified-provider-confirmation.p4", new Object[]{"ABC123"}, locale));
+
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
