@@ -28,7 +28,7 @@ public class ValidateFEINIsNotBlank implements Action {
 
         Locale locale = LocaleContextHolder.getLocale();
         if (fein.isBlank()) {
-            errorMessages.put(FEIN, List.of(messageSource.getMessage("errors.invalid-phone-number", null, locale)));
+            errorMessages.put(FEIN, List.of(messageSource.getMessage("provider-id-fein.error-blank", null, locale)));
         }
         return errorMessages;
     }
