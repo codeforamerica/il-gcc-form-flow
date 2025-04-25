@@ -173,5 +173,5 @@ public class Providerresponse extends FlowInputs {
 
     private String providerConfirmationEmailSent;
 
-    private String providerHasFEINOrEIN;
+    private String providerHasFEIN;
 }

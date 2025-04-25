@@ -4,10 +4,10 @@ import formflow.library.data.Submission;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HasFEINOrEIN extends BasicCondition {
+public class HasFEIN extends BasicCondition {
 
     @Override
     public Boolean run(Submission submission) {
-        return run(submission, "providerHasFEINOrEIN", "true");
+        return run(submission, "providerHasFEIN", "true");
     }
 }
