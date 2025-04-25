@@ -143,6 +143,7 @@ il-gcc:
   ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
   ccms-transaction-delay-minutes: ${CCMS_TRANSACTION_DELAY_MINUTES:60}
   dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:true}
+  enable-provider-response-with-fein: ${ENABLE_PROVIDER_RESPONSE_FEIN:false}
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
