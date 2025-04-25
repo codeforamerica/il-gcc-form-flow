@@ -121,7 +121,7 @@ public class Providerresponse extends FlowInputs {
     private String providerIdentityCheckDateOfBirthYear;
     private String providerIdentityCheckDateOfBirthDate;
 
-    @NotBlank
+    @NotBlank(message = "{errors.select-one-option}")
     private String providerTaxIdType;
 
     @SSN(message="{errors.invalid-ssn}")
