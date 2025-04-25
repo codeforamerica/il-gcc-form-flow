@@ -327,11 +327,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         testPage.clickElementById("providerTaxIdType-ITIN-label");
         testPage.clickContinue();
 
-        // registration-home-provider-itin
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-itin.title"));
-        testPage.clickContinue();
-        assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-itin.error-blank"))).isTrue();
-
+        // registration-tax-id-itin
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-itin.title"));
         testPage.enter("providerITIN", "1231425");
         testPage.clickContinue();
 
