@@ -3,7 +3,6 @@ package org.ilgcc.app.pdf;
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getProviderApplicationResponseStatus;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
-import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
@@ -17,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.stereotype.Component;
@@ -29,15 +27,20 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
     Submission providerSubmission;
 
     @Override
-    public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
-        if (hasNotChosenProvider(submission)) {
-            return prepareNoProviderData(submission.getShortCode());
+    public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
+        if (hasNotChosenProvider(familySubmission)) {
+            return prepareNoProviderData(familySubmission.getShortCode());
         }
 
-        if (useProviderResponse(submission)) {
+        Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
+
+        if (providerSubmissionOptional.isPresent()) {
+            providerSubmission = providerSubmissionOptional.get();
             return prepareProviderResponse();
         } else {
-            return prepareFamilyIntendedProviderData(submission);
+            Optional<SubmissionStatus> submissionStatus = getProviderApplicationResponseStatus(familySubmission);
+            Boolean hasExpired = submissionStatus.isPresent() && submissionStatus.get().equals(SubmissionStatus.EXPIRED);
+            return prepareFamilyIntendedProviderData(familySubmission, hasExpired);
         }
     }
 
@@ -48,7 +51,6 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         Map<String, Object> providerInputData = providerSubmission.getInputData();
 
         List<String> providerFields = new ArrayList<>(Arrays.asList(
-                "providerResponseProviderNumber",
                 "providerResponseFirstName",
                 "providerResponseLastName",
                 "providerResponseBusinessName",
@@ -57,6 +59,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 "providerConviction",
                 "providerConvictionExplanation",
                 "providerIdentityCheckDateOfBirthDate",
+                "providerResponseProviderNumber",
                 "providerTaxIdEIN",
                 "providerResponseServiceStreetAddress1",
                 "providerResponseServiceStreetAddress2",
@@ -70,7 +73,8 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 "providerMailingZipCode"
         ));
 
-        for (String fieldName : providerFields) {
+        for (
+                String fieldName : providerFields) {
             results.put(fieldName,
                     new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
         }
@@ -78,21 +82,22 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         Map<String, String> client = (Map<String, String>) providerInputData.getOrDefault("clientResponse",
                 new HashMap<String, String>());
         results.put("clientResponseConfirmationCode", new SingleField("clientResponseConfirmationCode",
-                (String) client.getOrDefault("clientResponseConfirmationCode", ""), null));
+                client.getOrDefault("clientResponseConfirmationCode", ""), null));
 
         results.put("providerLicenseNumber",
                 new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
-
         results.put("providerSignature",
                 new SingleField("providerSignature", providerSignature(providerInputData), null));
         results.put("providerSignatureDate",
                 new SingleField("providerSignatureDate", providerSignatureDate(providerSubmission.getSubmittedAt()),
                         null));
+        results.put("providerResponse", new SingleField("providerResponse", providerResponse(providerInputData), null));
 
         return results;
     }
 
-    private Map<String, SubmissionField> prepareFamilyIntendedProviderData(Submission submission) {
+    private Map<String, SubmissionField> prepareFamilyIntendedProviderData(Submission submission,
+            Boolean providerApplicationExpired) {
         var results = new HashMap<String, SubmissionField>();
         Map<String, Object> inputData = submission.getInputData();
 
@@ -104,11 +109,14 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                         inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(), null));
         results.put("providerEmail",
                 new SingleField("providerEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
-        results.put("providerResponse",
-                new SingleField("providerResponse", providerResponse(submission), null));
 
         results.put("clientResponseConfirmationCode", new SingleField("clientResponseConfirmationCode",
                 submission.getShortCode(), null));
+
+        if (providerApplicationExpired) {
+            results.put("providerResponse",
+                    new SingleField("providerResponse", "No response from provider", null));
+        }
 
         return results;
     }
@@ -171,36 +179,18 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
 
     }
 
-    private boolean useProviderResponse(Submission familySubmission) {
-        Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
-        if (providerSubmissionOptional.isPresent()) {
-            providerSubmission = providerSubmissionOptional.get();
-            Map<String, Object> providerInputData = providerSubmission.getInputData();
-            if (providerInputData.containsKey("providerResponseAgreeToCare")) {
-                return providerInputData.get("providerResponseAgreeToCare").equals("true");
-            }
 
-            return true;
+    private String providerResponse(Map<String, Object> providerInputData) {
+        boolean hasEIN = providerInputData.containsKey("providerTaxIdEIN");
+        boolean hasProviderNumber = providerInputData.containsKey("providerResponseProviderNumber");
+        if (!hasEIN && !hasProviderNumber) {
+            return "Unable to identify provider - no response to care arrangement";
         }
-        return false;
-    }
-
-    private String providerResponse(Submission familySubmission) {
-        if (hasProviderResponse(familySubmission)) {
-            Map<String, Object> providerInputData = providerSubmission.getInputData();
-            if (providerInputData.containsKey("providerResponseAgreeToCare")) {
-                if (providerInputData.get("providerResponseAgreeToCare").equals("false")) {
-                    return "Provider declined";
-                } else {
-                    return "true";
-                }
-            }
+        if (providerInputData.get("providerResponseAgreeToCare").equals("false")) {
+            return "Provider declined";
+        } else {
+            return "";
         }
 
-        Optional<SubmissionStatus> submissionStatus = getProviderApplicationResponseStatus(familySubmission);
-        if (submissionStatus.isPresent() && submissionStatus.get().equals(SubmissionStatus.EXPIRED) || ProviderSubmissionUtilities.providerApplicationHasExpired(familySubmission)) {
-            return "No response from provider";
-        }
-        return "";
     }
 }
