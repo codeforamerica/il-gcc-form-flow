@@ -667,7 +667,7 @@ flow:
     condition: EnableProviderResponseFEIN
     nextScreens:
       - name: provider-id-fein
-        condition: HasFEINOrEIN
+        condition: HasFEIN
       - name: confirm-application-submission-no-response
   provider-id-fein:
     condition: EnableProviderResponseFEIN
