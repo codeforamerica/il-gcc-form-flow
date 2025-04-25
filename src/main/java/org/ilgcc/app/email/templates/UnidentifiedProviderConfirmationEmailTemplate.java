@@ -28,14 +28,14 @@ public class UnidentifiedProviderConfirmationEmailTemplate {
 
    }
    public ILGCCEmailTemplate createTemplate(){
-       return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData), new Content("text/html", setBodyCopy(emailData)), EmailType.UNIDENTIFIED_PROVIDER_CONFIRMATION_EMAIL);
+       return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)), EmailType.UNIDENTIFIED_PROVIDER_CONFIRMATION_EMAIL);
    }
 
     private Email senderEmail() {
         return  new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale));
     }
 
-    private String setSubject(Map<String, Object> emailData) {
+    private String setSubject() {
         return messageSource.getMessage("email.unidentified-provider-confirmation.subject", null, locale);
     }
 
