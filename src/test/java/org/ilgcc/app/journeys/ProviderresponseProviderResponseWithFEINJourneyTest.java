@@ -97,6 +97,10 @@ public class ProviderresponseProviderResponseWithFEINJourneyTest extends Abstrac
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-provider-number.title"));
         testPage.enter("providerResponseProviderNumber", "12345678901");
         assertThat(testPage.getElementText("skip-to-fein")).isEqualTo(getEnMessage("provider-response-provider-number.skip-text"));
-        testPage.clickContinue();
+        testPage.clickElementById("skip-to-fein");
+
+        //fein
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-fein.title"));
+        assertThat(testPage.getElementText("not-sure-hasEINOrFEIN-link")).isEqualTo(getEnMessage("general.skip.im-not-sure"));
     }
 }

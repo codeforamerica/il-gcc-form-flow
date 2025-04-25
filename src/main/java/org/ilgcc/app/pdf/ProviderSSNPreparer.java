@@ -23,7 +23,11 @@ public class ProviderSSNPreparer extends ProviderSubmissionFieldPreparer {
 
         Optional<Submission> providerSubmission = getProviderSubmission(familySubmission);
         var providerInputData = providerSubmission.get().getInputData();
-        if (providerInputData.containsKey("providerIdentityCheckSSN")) {
+        if (!providerInputData.getOrDefault("providerITIN", "").toString().isBlank()) {
+            results.put("providerSSN",
+                    new SingleField("providerSSN", (String) providerInputData.get("providerITIN"),
+                            null));
+        } else if (providerInputData.containsKey("providerIdentityCheckSSN")) {
             results.put("providerSSN",
                     new SingleField("providerSSN", (String) providerInputData.getOrDefault("providerIdentityCheckSSN", ""),
                             null));
@@ -34,6 +38,7 @@ public class ProviderSSNPreparer extends ProviderSubmissionFieldPreparer {
         } else {
             return results;
         }
+
         return results;
     }
 }

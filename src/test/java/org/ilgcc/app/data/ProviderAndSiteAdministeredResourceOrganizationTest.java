@@ -1,6 +1,9 @@
 package org.ilgcc.app.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.ACTIVE_SITE_ADMINISTERED_PROVIDER;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.ACTIVE_SITE_ADMIN_RESOURCE_ORG;
+import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_APPROVED_PROVIDER;
 
 import java.math.BigInteger;
 import java.util.Optional;
@@ -10,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 /**
  * This test class uses providers created in the Database by FakeProviderDataImporter to confirm that the relationship between
@@ -21,6 +25,9 @@ import org.springframework.test.context.ActiveProfiles;
  * the columns are set correctly via manual inspection as well as the programmatic tests.
  */
 @SpringBootTest(classes = IlGCCApplication.class)
+@TestPropertySource(properties = {
+        "ACTIVE_CASELOAD_CODES=BB,QQ",
+})
 @ActiveProfiles("test")
 class ProviderAndSiteAdministeredResourceOrganizationTest {
 
@@ -32,7 +39,7 @@ class ProviderAndSiteAdministeredResourceOrganizationTest {
 
     @Test
     public void testProviderWithoutSiteAdminResourceOrgLookup() {
-        BigInteger providerId = new BigInteger("12345678901");
+        BigInteger providerId = CURRENT_APPROVED_PROVIDER.getProviderId();
 
         assertThat(providerRepository.existsById(providerId)).isTrue();
 
@@ -49,8 +56,8 @@ class ProviderAndSiteAdministeredResourceOrganizationTest {
 
     @Test
     public void testProviderWithSiteAdminResourceOrgLookup() {
-        BigInteger providerId = new BigInteger("12345678909");
-        BigInteger resourceOrgId = new BigInteger("10101");
+        BigInteger providerId = ACTIVE_SITE_ADMINISTERED_PROVIDER.getProviderId();
+        BigInteger resourceOrgId = ACTIVE_SITE_ADMIN_RESOURCE_ORG.getResourceOrgId();
 
         assertThat(providerRepository.existsById(providerId)).isTrue();
 
@@ -60,8 +67,8 @@ class ProviderAndSiteAdministeredResourceOrganizationTest {
         Provider provider = providerOptional.get();
         assertThat(provider.getResourceOrganization()).isNotNull();
         assertThat(provider.getResourceOrganization().getResourceOrgId().equals(resourceOrgId)).isTrue();
-        assertThat(provider.getResourceOrganization().getName().equals("Sample Site Admin Resource Organization")).isTrue();
-        assertThat(provider.getResourceOrganization().getCity().equals("Chicago")).isTrue();
+        assertThat(provider.getResourceOrganization().getName().equals(ACTIVE_SITE_ADMIN_RESOURCE_ORG.getName())).isTrue();
+        assertThat(provider.getResourceOrganization().getCity().equals(ACTIVE_SITE_ADMIN_RESOURCE_ORG.getCity())).isTrue();
 
         Optional<ResourceOrganization> siteAdminOrgOptional = applicationRouterService.getSiteAdministeredOrganizationByProviderId(
                 providerId);

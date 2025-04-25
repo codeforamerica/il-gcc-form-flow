@@ -63,4 +63,22 @@ public class ProviderSSNPreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
         assertThat(result.get("providerSSN")).isEqualTo(new SingleField("providerSSN", "444-44-4444", null));
     }
+
+    @Test
+    public void setsITINAsSSNWhenAvailable() {
+        providerSubmission = new SubmissionTestBuilder()
+                .withFlow("providerresponse")
+                .withProviderSubmissionData()
+                .with("providerITIN", "123456789")
+                .with("providerTaxIdSSN", "444-44-4444")
+                .build();
+        submissionRepositoryService.save(providerSubmission);
+
+        familySubmission = new SubmissionTestBuilder()
+                .withFlow("gcc")
+                .with("providerResponseSubmissionId", providerSubmission.getId())
+                .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+        assertThat(result.get("providerSSN")).isEqualTo(new SingleField("providerSSN", "123456789", null));
+    }
 }
