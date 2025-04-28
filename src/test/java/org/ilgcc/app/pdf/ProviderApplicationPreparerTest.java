@@ -375,11 +375,12 @@ public class ProviderApplicationPreparerTest {
     }
 
     @Test
-    public void correctlyMapsDataWhenProviderDoesNotHaveValidProviderId() {
+    public void correctlyMapsDataWhenExistingProviderDoesNotHaveValidProviderId() {
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
                 .withProviderSubmissionData()
                 .withProviderStateLicense()
+                .with("providerPaidCcap", "true")
                 .with("providerMailingAddressSameAsServiceAddress[]", List.of("yes"))
                 .with("providerMailingStreetAddress1", "123 Main Street")
                 .with("providerMailingCity", "De Kalb")
