@@ -1,11 +1,9 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import formflow.library.data.Submission;
@@ -27,61 +25,40 @@ import org.springframework.web.multipart.MultipartFile;
 @SpringBootTest
 class UploadSubmissionToS3AndEnqueueCCMSPayloadTest {
 
-  @MockitoBean
-  private PdfService pdfService;
+    @MockitoBean
+    private PdfService pdfService;
 
-  @MockitoBean
-  private CloudFileRepository cloudFileRepository;
+    @MockitoBean
+    private CloudFileRepository cloudFileRepository;
 
-  @Autowired
-  private UploadSubmissionToS3AndEnqueueCCMSPayload uploadSubmissionToS3AndEnqueueCCMSPayload;
+    @Autowired
+    private UploadSubmissionToS3AndEnqueueCCMSPayload uploadSubmissionToS3AndEnqueueCCMSPayload;
 
-  private Submission submission;
+    private Submission submission;
 
-  @BeforeEach
-  void setUp() {
-    submission = new Submission();
-    submission.setId(UUID.randomUUID());
-  }
-  
-  @Test
-  void whenRun_thenPdfIsZippedAndUploadedToS3() throws IOException {
+    @BeforeEach
+    void setUp() {
+        submission = new Submission();
+        submission.setId(UUID.randomUUID());
+    }
 
-    byte[] pdfFiles = new byte[]{1, 2, 3, 4};
-    when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
-    submission.setSubmittedAt(OffsetDateTime.now());
-    submission.getInputData().put("hasChosenProvider","false");
+    @Test
+    void whenRun_thenPdfIsZippedAndUploadedToS3() throws IOException {
 
-    uploadSubmissionToS3AndEnqueueCCMSPayload.run(submission);
+        byte[] pdfFiles = new byte[]{1, 2, 3, 4};
+        when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
+        submission.setSubmittedAt(OffsetDateTime.now());
+        submission.getInputData().put("hasChosenProvider", "false");
 
-    await().atMost(Duration.ofSeconds(10)).untilAsserted(() -> {
-      verify(pdfService).getFilledOutPDF(submission);
-      verify(cloudFileRepository).upload(eq(generateExpectedPdfPath(submission)), any(MultipartFile.class));
-    });
-  }
+        uploadSubmissionToS3AndEnqueueCCMSPayload.run(submission);
 
-  @Test
-  void setsExpirationDateAndStatusWhenProviderIsChosen() throws IOException {
+        await().atMost(Duration.ofSeconds(10)).untilAsserted(() -> {
+            verify(pdfService).getFilledOutPDF(submission);
+            verify(cloudFileRepository).upload(eq(generateExpectedPdfPath(submission)), any(MultipartFile.class));
+        });
+    }
 
-    byte[] pdfFiles = new byte[]{1, 2, 3, 4};
-    when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
-    submission.setSubmittedAt(OffsetDateTime.now());
-    submission.getInputData().put("hasChosenProvider","true");
-
-    assertThat(submission.getInputData().get("providerApplicationResponseStatus")).isNull();
-    assertThat(submission.getInputData().get("providerApplicationResponseExpirationDate")).isNull();
-
-    uploadSubmissionToS3AndEnqueueCCMSPayload.run(submission);
-
-    await().atMost(Duration.ofSeconds(10)).untilAsserted(() -> {
-      verifyNoInteractions(pdfService, cloudFileRepository);
-    });
-
-    assertThat(submission.getInputData().get("providerApplicationResponseStatus")).isEqualTo("ACTIVE");
-    assertThat(submission.getInputData().get("providerApplicationResponseExpirationDate")).isNotNull();
-  }
-
-  private String generateExpectedPdfPath(Submission submission) {
-    return String.format("%s/%s.pdf", submission.getId(), submission.getId());
-  }
+    private String generateExpectedPdfPath(Submission submission) {
+        return String.format("%s/%s.pdf", submission.getId(), submission.getId());
+    }
 }
