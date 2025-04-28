@@ -83,7 +83,7 @@ public class ProviderResponseRecurringJob {
 
     @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
     @Job(name = "No provider response job")
-    public void noProviderResponseJob() {
+    public void runNoProviderResponseJob() {
 
         if (!isDTSIntegrationEnabled && !isCCMSIntegrationEnabled) {
             // Nothing is enabled. This seems wrong!

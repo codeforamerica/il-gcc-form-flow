@@ -174,7 +174,7 @@ public class ProviderResponseRecurringJobTest {
                 .build();
         submissionRepository.save(unsubmittedSubmission);
 
-        providerResponseRecurringJob.noProviderResponseJob();
+        providerResponseRecurringJob.runNoProviderResponseJob();
 
         //Confirms that the method was called on the expired submission
         verify(enqueueDocumentTransfer, times(1)).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
@@ -208,7 +208,7 @@ public class ProviderResponseRecurringJobTest {
 
         transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId(), null);
 
-        providerResponseRecurringJob.noProviderResponseJob();
+        providerResponseRecurringJob.runNoProviderResponseJob();
 
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
@@ -244,7 +244,7 @@ public class ProviderResponseRecurringJobTest {
         transmissionRepositoryService.save(new Transmission(transmittedSubmission, null, Date.from(OffsetDateTime.now()
                 .toInstant()), Queued, APPLICATION_PDF, null));
 
-        providerResponseRecurringJob.noProviderResponseJob();
+        providerResponseRecurringJob.runNoProviderResponseJob();
 
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
@@ -279,7 +279,7 @@ public class ProviderResponseRecurringJobTest {
 
         transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId(), null);
 
-        providerResponseRecurringJob.noProviderResponseJob();
+        providerResponseRecurringJob.runNoProviderResponseJob();
 
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
@@ -298,7 +298,7 @@ public class ProviderResponseRecurringJobTest {
                 .build();
         submissionRepository.save(expiredUntransmittedSubmissionWithProviderResponse);
 
-        providerResponseRecurringJob.noProviderResponseJob();
+        providerResponseRecurringJob.runNoProviderResponseJob();
 
         verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(any(), any(), any(), any(), any());
         verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(any(), any(), any(), any());
