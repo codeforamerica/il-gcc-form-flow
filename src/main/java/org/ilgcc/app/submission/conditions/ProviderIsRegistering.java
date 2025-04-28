@@ -12,7 +12,8 @@ public class ProviderIsRegistering extends BasicCondition {
 
     @Override
     public Boolean run(Submission submission) {
-        boolean providerNotPaidByCCAP = submission.getInputData().getOrDefault("providerPaidCcap", "false").toString().equals("false");
+        // providerPaidCcap doesn't exist when enable provider registration flag is turned off.
+        boolean providerNotPaidByCCAP = submission.getInputData().getOrDefault("providerPaidCcap", "true").toString().equals("false");
 
         return enableProviderRegistration && providerNotPaidByCCAP;
     }
