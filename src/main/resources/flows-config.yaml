@@ -414,7 +414,7 @@ flow:
     nextScreens:
       - name: submit-sign-name
   submit-sign-name:
-    beforeSaveAction: GenerateShortLinks
+    beforeSaveAction: GenerateShortLinkAndStoreProviderApplicationStatus
     afterSaveAction: UploadSubmissionToS3AndEnqueueCCMSPayload
     nextScreens:
       - name: after-submit-contact-provider
