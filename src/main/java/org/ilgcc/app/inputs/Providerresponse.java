@@ -127,7 +127,8 @@ public class Providerresponse extends FlowInputs {
     @SSN(message="{errors.invalid-ssn}")
     @Encrypted
     private String providerTaxIdSSN;
-    @Pattern(regexp = "\\d{9}", message = "{registration-tax-id-ein.error}")
+    
+    @Pattern(regexp = "\\d{2}-\\d{7}", message = "{registration-tax-id-ein.error}")
     private String providerTaxIdEIN;
 
     // registration terms
