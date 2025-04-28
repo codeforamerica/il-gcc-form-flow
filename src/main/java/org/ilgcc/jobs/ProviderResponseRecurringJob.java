@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class NoProviderResponseJob {
+public class ProviderResponseRecurringJob {
 
     private final S3PresignService s3PresignService;
     private final TransmissionRepositoryService transmissionRepositoryService;
@@ -49,7 +49,7 @@ public class NoProviderResponseJob {
 
     private final SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
 
-    public NoProviderResponseJob(S3PresignService s3PresignService,
+    public ProviderResponseRecurringJob(S3PresignService s3PresignService,
             TransmissionRepositoryService transmissionRepositoryService,
             TransactionRepositoryService transactionRepositoryService,
             UserFileRepositoryService userFileRepositoryService,

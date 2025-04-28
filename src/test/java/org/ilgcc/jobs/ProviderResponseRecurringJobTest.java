@@ -47,7 +47,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
         classes = IlGCCApplication.class
 )
 @ActiveProfiles("test")
-public class NoProviderResponseJobTest {
+public class ProviderResponseRecurringJobTest {
 
     @Autowired
     private SubmissionRepository submissionRepository;
@@ -91,7 +91,7 @@ public class NoProviderResponseJobTest {
     @Mock
     private EnqueueDocumentTransfer enqueueDocumentTransfer;
 
-    private NoProviderResponseJob noProviderResponseJob;
+    private ProviderResponseRecurringJob providerResponseRecurringJob;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
@@ -117,7 +117,7 @@ public class NoProviderResponseJobTest {
     @BeforeEach
     void setUp() {
         sendProviderDidNotRespondToFamilyEmail = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
-        noProviderResponseJob = new NoProviderResponseJob(
+        providerResponseRecurringJob = new ProviderResponseRecurringJob(
                 s3PresignService,
                 transmissionRepositoryService,
                 transactionRepositoryService,
@@ -144,8 +144,8 @@ public class NoProviderResponseJobTest {
     }
 
     @Test
-    public void noProviderResponseJobEnabledWhenFlagIsOn() {
-        assertTrue(context.containsBean("noProviderResponseJob"));
+    public void providerResponseRecurringJobEnabledWhenFlagIsOn() {
+        assertTrue(context.containsBean("providerResponseRecurringJob"));
     }
 
 //    @Test
@@ -174,7 +174,7 @@ public class NoProviderResponseJobTest {
                 .build();
         submissionRepository.save(unsubmittedSubmission);
 
-        noProviderResponseJob.noProviderResponseJob();
+        providerResponseRecurringJob.noProviderResponseJob();
 
         //Confirms that the method was called on the expired submission
         verify(enqueueDocumentTransfer, times(1)).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
@@ -208,14 +208,14 @@ public class NoProviderResponseJobTest {
 
         transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId(), null);
 
-        noProviderResponseJob.noProviderResponseJob();
+        providerResponseRecurringJob.noProviderResponseJob();
 
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
 
     @Test
     void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmissionOnly_CCMS_Off() {
-        noProviderResponseJob = new NoProviderResponseJob(
+        providerResponseRecurringJob = new ProviderResponseRecurringJob(
                 s3PresignService,
                 transmissionRepositoryService,
                 transactionRepositoryService,
@@ -244,14 +244,14 @@ public class NoProviderResponseJobTest {
         transmissionRepositoryService.save(new Transmission(transmittedSubmission, null, Date.from(OffsetDateTime.now()
                 .toInstant()), Queued, APPLICATION_PDF, null));
 
-        noProviderResponseJob.noProviderResponseJob();
+        providerResponseRecurringJob.noProviderResponseJob();
 
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
 
     @Test
     void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransactionOnly_DTS_Off() {
-        noProviderResponseJob = new NoProviderResponseJob(
+        providerResponseRecurringJob = new ProviderResponseRecurringJob(
                 s3PresignService,
                 transmissionRepositoryService,
                 transactionRepositoryService,
@@ -279,7 +279,7 @@ public class NoProviderResponseJobTest {
 
         transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId(), null);
 
-        noProviderResponseJob.noProviderResponseJob();
+        providerResponseRecurringJob.noProviderResponseJob();
 
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
@@ -298,7 +298,7 @@ public class NoProviderResponseJobTest {
                 .build();
         submissionRepository.save(expiredUntransmittedSubmissionWithProviderResponse);
 
-        noProviderResponseJob.noProviderResponseJob();
+        providerResponseRecurringJob.noProviderResponseJob();
 
         verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(any(), any(), any(), any(), any());
         verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(any(), any(), any(), any());
