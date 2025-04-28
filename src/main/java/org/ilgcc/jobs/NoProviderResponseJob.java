@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class TransmissionsRecurringJob {
+public class NoProviderResponseJob {
 
     private final S3PresignService s3PresignService;
     private final TransmissionRepositoryService transmissionRepositoryService;
@@ -47,9 +47,9 @@ public class TransmissionsRecurringJob {
     private final boolean isCCMSIntegrationEnabled;
     private final boolean isDTSIntegrationEnabled;
 
-    private final  SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
+    private final SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
 
-    public TransmissionsRecurringJob(S3PresignService s3PresignService,
+    public NoProviderResponseJob(S3PresignService s3PresignService,
             TransmissionRepositoryService transmissionRepositoryService,
             TransactionRepositoryService transactionRepositoryService,
             UserFileRepositoryService userFileRepositoryService,
@@ -113,7 +113,8 @@ public class TransmissionsRecurringJob {
                 isCCMSIntegrationEnabled);
 
         Set<Submission> unsentSubmissions;
-        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmissions(lastRun);
+        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmissions(
+                lastRun);
         Set<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransactions(lastRun);
 
         if (submissionsWithoutTransmissions.equals(submissionsWithoutTransactions)) {
@@ -132,8 +133,10 @@ public class TransmissionsRecurringJob {
             unsentSubmissions.retainAll(submissionsWithoutTransactions);
 
             // Next, we want to log the UUIDs for whichever Submissions aren't getting sent from the two Sets
-            Set<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId).collect(Collectors.toSet());
-            Set<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream().map(Submission::getId).collect(Collectors.toSet());
+            Set<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId)
+                    .collect(Collectors.toSet());
+            Set<UUID> submissionIdsWithoutTransactions = submissionsWithoutTransactions.stream().map(Submission::getId)
+                    .collect(Collectors.toSet());
 
             // Find Submissions without transmissions, but that apparently have a transaction
             Set<UUID> submissionIdsWithoutTransmissionsOnly = new HashSet<>(submissionIdsWithoutTransmissions);
@@ -154,11 +157,13 @@ public class TransmissionsRecurringJob {
                     submissionIdsWithoutTransactionsOnly.size());
 
             if (!submissionIdsWithoutTransmissionsOnly.isEmpty()) {
-                log.info("Ignored {} submissions without transmissions. [{}]", submissionIdsWithoutTransmissionsOnly.size(), submissionIdsWithoutTransmissionsOnly);
+                log.info("Ignored {} submissions without transmissions. [{}]", submissionIdsWithoutTransmissionsOnly.size(),
+                        submissionIdsWithoutTransmissionsOnly);
             }
 
             if (!submissionIdsWithoutTransactionsOnly.isEmpty()) {
-                log.info("Ignored {} submissions without transactions. [{}]", submissionIdsWithoutTransactionsOnly.size(), submissionIdsWithoutTransactionsOnly);
+                log.info("Ignored {} submissions without transactions. [{}]", submissionIdsWithoutTransactionsOnly.size(),
+                        submissionIdsWithoutTransactionsOnly);
             }
         }
 
@@ -173,25 +178,29 @@ public class TransmissionsRecurringJob {
         } else {
             for (Submission expiredFamilySubmission : expiredUnsentSubmissions) {
                 if (!hasProviderResponse(expiredFamilySubmission)) {
-                    log.info("No provider response found for family submission {}. DTS: {} CCMS: {}", expiredFamilySubmission.getId(),
+                    log.info("No provider response found for family submission {}. DTS: {} CCMS: {}",
+                            expiredFamilySubmission.getId(),
                             isDTSIntegrationEnabled,
                             isCCMSIntegrationEnabled);
 
                     if (isDTSIntegrationEnabled) {
                         enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository,
                                 pdfTransmissionJob,
-                                expiredFamilySubmission, FileNameUtility.getFileNameForPdf(expiredFamilySubmission, "No-Provider-Response"));
+                                expiredFamilySubmission,
+                                FileNameUtility.getFileNameForPdf(expiredFamilySubmission, "No-Provider-Response"));
                         enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                                 uploadedDocumentTransmissionJob, s3PresignService, expiredFamilySubmission);
                     }
                     if (isCCMSIntegrationEnabled) {
-                        ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(expiredFamilySubmission.getId());
+                        ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(
+                                expiredFamilySubmission.getId());
                     }
                     updateProviderStatus(expiredFamilySubmission);
                     sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
                 } else {
                     log.warn(
-                            String.format("TransmissionsRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission or transaction. Check familySubmission: %s",
+                            String.format(
+                                    "TransmissionsRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission or transaction. Check familySubmission: %s",
                                     expiredFamilySubmission.getId()));
                 }
             }

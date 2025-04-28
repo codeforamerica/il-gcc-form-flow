@@ -21,14 +21,12 @@ import java.util.Date;
 import java.util.UUID;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.JobrunrJobRepository;
-import org.ilgcc.app.data.Transaction;
 import org.ilgcc.app.data.TransactionRepository;
 import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.Transmission;
 import org.ilgcc.app.data.TransmissionRepository;
 import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.email.ILGCCEmail;
-import org.ilgcc.app.email.SendFamilyConfirmationEmail;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
@@ -49,7 +47,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
         classes = IlGCCApplication.class
 )
 @ActiveProfiles("test")
-public class TransmissionsRecurringJobTest {
+public class NoProviderResponseJobTest {
 
     @Autowired
     private SubmissionRepository submissionRepository;
@@ -93,7 +91,7 @@ public class TransmissionsRecurringJobTest {
     @Mock
     private EnqueueDocumentTransfer enqueueDocumentTransfer;
 
-    private TransmissionsRecurringJob transmissionsRecurringJob;
+    private NoProviderResponseJob noProviderResponseJob;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
@@ -119,7 +117,7 @@ public class TransmissionsRecurringJobTest {
     @BeforeEach
     void setUp() {
         sendProviderDidNotRespondToFamilyEmail = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
-        transmissionsRecurringJob = new TransmissionsRecurringJob(
+        noProviderResponseJob = new NoProviderResponseJob(
                 s3PresignService,
                 transmissionRepositoryService,
                 transactionRepositoryService,
@@ -146,8 +144,8 @@ public class TransmissionsRecurringJobTest {
     }
 
     @Test
-    public void transmissionRecurringJobEnabledWhenFlagIsOn() {
-        assertTrue(context.containsBean("transmissionsRecurringJob"));
+    public void noProviderResponseJobEnabledWhenFlagIsOn() {
+        assertTrue(context.containsBean("noProviderResponseJob"));
     }
 
 //    @Test
@@ -176,7 +174,7 @@ public class TransmissionsRecurringJobTest {
                 .build();
         submissionRepository.save(unsubmittedSubmission);
 
-        transmissionsRecurringJob.noProviderResponseJob();
+        noProviderResponseJob.noProviderResponseJob();
 
         //Confirms that the method was called on the expired submission
         verify(enqueueDocumentTransfer, times(1)).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
@@ -210,14 +208,14 @@ public class TransmissionsRecurringJobTest {
 
         transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId(), null);
 
-        transmissionsRecurringJob.noProviderResponseJob();
+        noProviderResponseJob.noProviderResponseJob();
 
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
 
     @Test
     void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmissionOnly_CCMS_Off() {
-        transmissionsRecurringJob = new TransmissionsRecurringJob(
+        noProviderResponseJob = new NoProviderResponseJob(
                 s3PresignService,
                 transmissionRepositoryService,
                 transactionRepositoryService,
@@ -246,14 +244,14 @@ public class TransmissionsRecurringJobTest {
         transmissionRepositoryService.save(new Transmission(transmittedSubmission, null, Date.from(OffsetDateTime.now()
                 .toInstant()), Queued, APPLICATION_PDF, null));
 
-        transmissionsRecurringJob.noProviderResponseJob();
+        noProviderResponseJob.noProviderResponseJob();
 
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
 
     @Test
     void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransactionOnly_DTS_Off() {
-        transmissionsRecurringJob = new TransmissionsRecurringJob(
+        noProviderResponseJob = new NoProviderResponseJob(
                 s3PresignService,
                 transmissionRepositoryService,
                 transactionRepositoryService,
@@ -281,7 +279,7 @@ public class TransmissionsRecurringJobTest {
 
         transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId(), null);
 
-        transmissionsRecurringJob.noProviderResponseJob();
+        noProviderResponseJob.noProviderResponseJob();
 
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
@@ -300,7 +298,7 @@ public class TransmissionsRecurringJobTest {
                 .build();
         submissionRepository.save(expiredUntransmittedSubmissionWithProviderResponse);
 
-        transmissionsRecurringJob.noProviderResponseJob();
+        noProviderResponseJob.noProviderResponseJob();
 
         verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(any(), any(), any(), any(), any());
         verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(any(), any(), any(), any());
