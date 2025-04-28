@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.data.Transaction;
 import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.ccms.CCMSApiClient;
 import org.ilgcc.app.data.ccms.CCMSTransaction;
@@ -58,28 +59,35 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     @Job(name = "Send CCMS Submission Payload", retries = 3)
     public void sendCCMSTransaction(@NotNull UUID submissionId) throws JsonProcessingException {
-        Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
-        if (submissionOptional.isPresent()) {
-            Submission submission = submissionOptional.get();
-            Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(submission);
-            if (ccmsTransactionOptional.isPresent()) {
-                CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
-                JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
-                log.info("Received response from CCMS when sending transaction payload: {}", response);
+        Transaction existingTransaction = transactionRepositoryService.getBySubmissionId(submissionId);
+        if (existingTransaction == null) {
+            Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
+            if (submissionOptional.isPresent()) {
+                Submission submission = submissionOptional.get();
+                Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
+                        submission);
+                if (ccmsTransactionOptional.isPresent()) {
+                    CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
+                    JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
+                    log.info("Received response from CCMS when sending transaction payload: {}", response);
 
-                String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
+                    String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
 
-                if (workItemId == null) {
-                    log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
+                    if (workItemId == null) {
+                        log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
+                    }
+
+                    transactionRepositoryService.createTransaction(UUID.fromString(response.get("transactionId").asText()),
+                            submission.getId(), workItemId);
+                } else {
+                    log.warn("Could not create CCMS payload for submission : {}", submission.getId());
                 }
-
-                transactionRepositoryService.createTransaction(UUID.fromString(response.get("transactionId").asText()),
-                        submission.getId(), workItemId);
             } else {
-                log.warn("Could not create CCMS payload for submission : {}", submission.getId());
+                throw new RuntimeException("Could not find submission with ID: " + submissionId);
             }
+
         } else {
-            throw new RuntimeException("Could not find submission with ID: " + submissionId);
+            log.info("Transaction {} already exists for submission {}, skipping CCMS transaction", existingTransaction.getTransactionId(), submissionId);
         }
     }
 }
