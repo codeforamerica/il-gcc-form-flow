@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.enums.ProviderDenialReason;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.stereotype.Component;
 
@@ -185,7 +186,12 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         boolean hasEIN = providerInputData.containsKey("providerTaxIdEIN");
         boolean hasProviderNumber = providerInputData.containsKey("providerResponseProviderNumber");
         if ("false".equals(providerInputData.get("providerResponseAgreeToCare"))) {
-            return "Provider declined";
+            if (providerInputData.get("providerResponseDenyCareReason") != null && !providerInputData.get("providerResponseDenyCareReason").toString().isEmpty()) {
+                return ProviderDenialReason.valueOf(
+                        providerInputData.get("providerResponseDenyCareReason").toString()).getPdfValue();
+            } else {
+                return ProviderDenialReason.NO_REASON_SELECTED.getPdfValue();
+            }
         }
 
         if (returningProvider && !hasEIN && !hasProviderNumber) {

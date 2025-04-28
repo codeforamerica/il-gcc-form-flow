@@ -9,10 +9,15 @@ import formflow.library.pdf.SubmissionField;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.enums.ProviderDenialReason;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -374,6 +379,43 @@ public class ProviderApplicationPreparerTest {
         assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 
+    @ParameterizedTest
+    @MethodSource("providerDenialReasons")
+    public void correctlyMapsProviderResponseWhenProviderDeniesCareAndSelectsReasonForDenial(ProviderDenialReason reason) {
+        providerSubmission = new SubmissionTestBuilder()
+                .withFlow("providerresponse")
+                .withProviderSubmissionData()
+                .withProviderStateLicense()
+                .with("providerResponseProviderNumber", "12345678901")
+                .with("providerMailingAddressSameAsServiceAddress[]", List.of("yes"))
+                .with("providerMailingStreetAddress1", "123 Main Street")
+                .with("providerMailingCity", "De Kalb")
+                .with("providerMailingState", "IL")
+                .with("providerMailingZipCode", "60112")
+                .with("providerResponseAgreeToCare", "false")
+                .with("providerResponseDenyCareReason", reason.name())
+                .withClientResponseConfirmationCode("testConfirmationCode")
+                .with("providerTaxIdEIN", "12-1234567")
+                .build();
+
+        submissionRepositoryService.save(providerSubmission);
+
+        familySubmission = new SubmissionTestBuilder()
+                .withFlow("gcc")
+                .withDayCareProvider()
+                .withSubmittedAtDate(OffsetDateTime.now())
+                .with("familyIntendedProviderName", "ProviderName")
+                .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
+                .with("familyIntendedProviderEmail", "mail@test.com")
+                .with("providerResponseSubmissionId", providerSubmission.getId())
+
+                .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+        assertThat(result.get("providerResponse")).isEqualTo(
+                new SingleField("providerResponse", reason.getPdfValue(), null));
+    }
+
     @Test
     public void correctlyMapsDataWhenExistingProviderDoesNotHaveValidProviderId() {
         providerSubmission = new SubmissionTestBuilder()
@@ -450,5 +492,8 @@ public class ProviderApplicationPreparerTest {
         assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 
-
+    static Stream<Arguments> providerDenialReasons() {
+        return Stream.of(ProviderDenialReason.values())
+                .map(reason -> Arguments.of(reason));
+    }
 }

@@ -63,17 +63,44 @@
                                 </div>
                             </th:block>
                         </div>
-                        <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                        <div class="question-with-follow-up">
+                            <div class="question-with-follow-up__question">
+                                <th:block th:replace="~{fragments/inputs/radioFieldset ::
                                           radioFieldset(inputName='providerResponseAgreeToCare',
-                                          ariaLabel=#{provider-response-response.title},
+                                          ariaLabel='header',
                                           content=~{::providerResponse})}">
-                            <th:block th:ref="providerResponse">
-                                <th:block
-                                        th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='true', label=#{provider-response-response.button.yes})}"/>
-                                <th:block
-                                        th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='false', label=#{provider-response-response.button.no})}"/>
-                            </th:block>
-                        </th:block>
+                                    <th:block th:ref="providerResponse">
+                                        <th:block
+                                                th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='true', label=#{provider-response-response.button.yes})}"/>
+                                        <th:block
+                                                th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseAgreeToCare',value='false', label=#{provider-response-response.button.no}, followUpId='#deny-reason-follow-up')}"/>
+                                    </th:block>
+                                </th:block>
+                            </div>
+                            <div class="question-with-follow-up__follow-up spacing-below-35"
+                                 id="deny-reason-follow-up">
+                                <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                                      radioFieldset(inputName='providerResponseDenyCareReason',
+                                      label=#{provider-response-response.follow-up.label},
+                                      fieldsetHelpText=#{provider-response-response.follow-up.help},
+                                      content=~{::followUp})}">
+                                    <th:block th:ref="followUp" th:with="
+                                        noSpace=${T(org.ilgcc.app.utils.enums.ProviderDenialReason).NO_SPACE},
+                                        badStartDate=${T(org.ilgcc.app.utils.enums.ProviderDenialReason).BAD_START_DATE},
+                                        badHours=${T(org.ilgcc.app.utils.enums.ProviderDenialReason).BAD_HOURS}, 
+                                        other=${T(org.ilgcc.app.utils.enums.ProviderDenialReason).OTHER}">
+                                        <th:block
+                                                th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseDenyCareReason', value=${noSpace}, label=#{provider-response-response.follow-up.option-1})}"/>
+                                        <th:block
+                                                th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseDenyCareReason', value=${badStartDate}, label=#{provider-response-response.follow-up.option-2})}"/>
+                                        <th:block
+                                                th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseDenyCareReason', value=${badHours}, label=#{provider-response-response.follow-up.option-3})}"/>
+                                        <th:block
+                                                th:replace="~{fragments/inputs/radio :: radio(inputName='providerResponseDenyCareReason', value=${other}, label=#{provider-response-response.follow-up.option-4})}"/>
+                                    </th:block>
+                                </th:block>
+                            </div>
+                        </div>
                         <button id="form-submit-button"
                                 class="button button--primary"
                                 type="submit"

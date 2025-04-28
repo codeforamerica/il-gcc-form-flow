@@ -179,6 +179,7 @@ inputFields:
   providerTaxIdEIN: PROVIDER_FEIN
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
   clientResponseConfirmationCode: APPLICATION_CONFIRMATION_CODE
+#  providerResponseDenyCareReason: PROVIDER_RESPONSE
 
   dayCareName: PROVIDER_NAME_CORPORATE
   dayCareIdNumber: PROVIDER_ID_NUMBER

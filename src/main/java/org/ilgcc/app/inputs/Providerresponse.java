@@ -27,6 +27,8 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank
     private String providerResponseAgreeToCare;
+    
+    private String providerResponseDenyCareReason;
 
     private String providerResponseBusinessName;
 
