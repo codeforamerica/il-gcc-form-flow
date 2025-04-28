@@ -910,7 +910,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //registration-tax-id-ein
         assertThat(testPage.hasErrorText(getEnMessage("registration-tax-id-ein.error"))).isTrue();
-        testPage.enter("providerTaxIdEIN", "123456789");
+        testPage.enter("providerTaxIdEIN", "12-3456789");
         testPage.clickContinue();
 
         //Test Prefer Not to Answer Implementation
@@ -1230,7 +1230,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         //registration-tax-id-ein
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ein.title"));
-        testPage.enter("providerTaxIdEIN", "123456789");
+        testPage.enter("providerTaxIdEIN", "12-3456789");
         testPage.clickContinue();
 
         //registration-service-languages-error

@@ -12,13 +12,13 @@
     <th:block th:replace="~{fragments/inputs/overrides/text ::
       text(inputName='providerTaxIdEIN',
       placeholder='XX-XXXXXXX',
-      extraClasses='fein-input',
+      extraClasses='js-format-fein',
       ariaLabel='header')}"/>
   </th:block>
 </th:block>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     // Extend Honeycrisp numeric formatting with FEIN formatter see: https://github.com/codeforamerica/honeycrisp-gem/blob/0e15fc7d74a330866049d58516c6f2449958fb1b/app/assets/javascripts/honeycrisp.js#L315
-    formatNumericInput('.fein-input', {2: '-'}, 9);
+    formatNumericInput('.js-format-fein', {2: '-'}, 9);
   });
 </script>
