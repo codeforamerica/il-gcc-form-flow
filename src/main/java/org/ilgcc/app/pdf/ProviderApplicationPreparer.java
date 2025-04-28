@@ -186,7 +186,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         if (!hasEIN && !hasProviderNumber) {
             return "Unable to identify provider - no response to care arrangement";
         }
-        if (providerInputData.get("providerResponseAgreeToCare").equals("false")) {
+        if ("false".equals(providerInputData.get("providerResponseAgreeToCare"))) {
             return "Provider declined";
         } else {
             return "";
