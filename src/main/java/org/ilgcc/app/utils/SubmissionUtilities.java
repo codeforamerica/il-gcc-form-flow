@@ -61,7 +61,7 @@ public class SubmissionUtilities {
             if (firstName != null) {
                 return firstName.toString();
             } else {
-                log.error("parentFirstName is null which is impossible because it is a required field.");
+                log.warn("parentFirstName is null which is impossible because it is a required field.");
                 return null;
             }
         }
