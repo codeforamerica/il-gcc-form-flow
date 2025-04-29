@@ -366,6 +366,10 @@ p.normal {
   margin-bottom: 3rem;
 }
 
+.footer-30-up {
+  margin-top: 3rem;
+}
+
 .eligibility-table th:first-child,
 .eligibility-table td:first-child {
   text-align: left;
@@ -809,6 +813,9 @@ div.move-40-up {
   margin-top: -4.0rem;
 }
 
+div.move-20-up {
+  margin-top: -1.5rem;
+}
 .display-box-green {
   border: 2px #008060 solid;
   border-radius: 5px;
