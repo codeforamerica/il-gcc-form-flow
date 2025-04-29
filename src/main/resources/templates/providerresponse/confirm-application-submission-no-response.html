@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}">
-<head th:replace="~{fragments/head :: head(title=#{})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{confirm-application-submission-no-response.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,16 +8,19 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: important-notice}"></th:block>
         <th:block
-            th:replace="~{fragments/cardHeader :: cardHeader(header=#{}, subtext=#{})}"/>
-          <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::})}">
-            <th:block th:ref="">
+            th:replace="~{fragments/cardHeader :: cardHeader(header=#{confirm-application-submission-no-response.header})}"/>
+          <th:block th:replace="~{fragments/form :: form(action=|/flow/${flow}/${screen}/submit|, content=~{::formContent})}">
+            <th:block th:ref="formContent">
               <div class="form-card__content">
-                
+                <p th:utext="#{confirm-application-submission-no-response.body.p1}"></p>
+                <p th:text="#{confirm-application-submission-no-response.body.p2}"></p>
+                <p th:utext="#{confirm-application-submission-no-response.body.p3}"></p>
               </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
-                  text=#{general.inputs.continue})}"/>
+                  text=#{confirm-application-submission-no-response.submit})}"/>
             </div>
           </th:block>
         </th:block>

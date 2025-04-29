@@ -675,7 +675,8 @@ flow:
   confirm-application-submission-no-response:
     condition: EnableProviderResponseFEIN
     afterSaveAction: SendUnidentifiedProviderAndFamilyConfirmationEmails
-    nextScreens: null
+    nextScreens:
+      - name: registration-submit-confirmation
   #New Provider Flow
   registration-start:
     condition: EnableProviderRegistration
