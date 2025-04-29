@@ -728,9 +728,11 @@ flow:
     nextScreens:
       - name: registration-info
   registration-info:
+    condition: EnableProviderRegistration
     nextScreens:
       - name: registration-service-address
   registration-service-address:
+    condition: EnableProviderRegistration
     nextScreens:
       - name: registration-confirm-address
   registration-confirm-address:
@@ -750,9 +752,11 @@ flow:
     nextScreens:
       - name: registration-contact-info
   registration-contact-info:
+    condition: EnableProviderRegistration
     nextScreens:
       - name: registration-info-review
   registration-info-review:
+    condition: EnableProviderRegistration
     nextScreens:
       - name: registration-home-provider-tax-id
         condition: ProviderITINRegistrationForInHomeCare
@@ -760,10 +764,12 @@ flow:
         condition: ProviderSSNRequiredForInHomeCare
       - name: registration-payment-tax-id
   registration-home-provider-ssn:
+    condition: EnableProviderRegistration
     crossFieldValidationAction: ValidateHomeProviderSSN
     nextScreens:
       - name: registration-home-provider-dob
   registration-home-provider-tax-id:
+    condition: EnableProviderRegistration
     nextScreens:
       - name: registration-home-provider-ssn
         condition: selectedSSN
@@ -849,9 +855,11 @@ flow:
     nextScreens:
       - name: registration-household-add-person
   registration-family-response-intro:
+    condition: EnableProviderRegistration
     nextScreens:
       - name: response
   response:
+    condition: EnableProviderRegistration
     beforeDisplayAction: FindApplicationData
     beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
@@ -879,6 +887,8 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-submit-confirmation
+        condition: EnableProviderRegistration
+      - name: submit-start
   registration-submit-confirmation:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
@@ -886,9 +896,11 @@ flow:
   registration-household-delete-person:
     nextScreens: null
   registration-doc-upload-recommended-docs:
+    condition: EnableProviderRegistration
     nextScreens:
       - name: registration-doc-upload-add-files
   registration-doc-upload-add-files:
+    condition: EnableProviderRegistration
     nextScreens:
       - name: registration-doc-upload-submit-confirmation
   registration-doc-upload-submit-confirmation:
