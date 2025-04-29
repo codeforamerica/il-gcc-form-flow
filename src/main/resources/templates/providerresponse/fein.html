@@ -13,7 +13,7 @@
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-              <div class="spacing-below-60 move-40-up">
+              <div class="spacing-below-60 move-20-up">
                 <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
             controlId='r1',
             linkLabel=~{::revealLabel1},
@@ -35,7 +35,7 @@
                   ariaDescribe='header')}"/>
               </div>
             </div>
-            <div class="form-card__footer">
+            <div class="form-card__footer footer-30-up">
               <a href="/flow/providerresponse/confirm-application-submission-no-response"
                  th:id="not-sure-hasEINOrFEIN-link"
                  th:text="#{general.skip.im-not-sure}"></a>
