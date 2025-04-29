@@ -16,7 +16,7 @@
               <div class="form-card__content">
                 <p th:utext="#{confirm-application-submission-no-response.body.p1}"></p>
                 <p th:text="#{confirm-application-submission-no-response.body.p2}"></p>
-                <p th:utext="#{confirm-application-submission-no-response.body.p3}"></p>
+                <p th:utext="#{confirm-application-submission-no-response.body.p3(${submission.getInputData().getOrDefault('ccrrName', '')})}"></p>
               </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
