@@ -20,8 +20,27 @@ public class ProviderresponseProviderResponseWithFEINJourneyTest extends Abstrac
         super.clearSubmissions();
     }
 
+
+
+
     @Test
-    public void existingProviderBasicflow() {
+    public void whenAProviderResponseNoToProvidingFEINOrProviderNumber(){
+        existingProviderBasicFlow();
+
+        //fein
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-fein.title"));
+        assertThat(testPage.getElementText("not-sure-hasFEIN-link")).isEqualTo(getEnMessage("general.skip.im-not-sure"));
+        testPage.clickNo();
+
+        //confirm-application-submission-no-response
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-application-submission-no-response.title"));
+        testPage.clickButton("Submit application");
+
+        //registration-submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+    }
+
+    public void existingProviderBasicFlow() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         Submission s = submissionRepositoryService.save(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
@@ -98,9 +117,5 @@ public class ProviderresponseProviderResponseWithFEINJourneyTest extends Abstrac
         testPage.enter("providerResponseProviderNumber", "12345678901");
         assertThat(testPage.getElementText("skip-to-fein")).isEqualTo(getEnMessage("provider-response-provider-number.skip-text"));
         testPage.clickElementById("skip-to-fein");
-
-        //fein
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-fein.title"));
-        assertThat(testPage.getElementText("not-sure-hasEINOrFEIN-link")).isEqualTo(getEnMessage("general.skip.im-not-sure"));
     }
 }

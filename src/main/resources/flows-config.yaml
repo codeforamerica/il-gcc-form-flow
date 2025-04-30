@@ -676,8 +676,10 @@ flow:
       - name: submit-response
   confirm-application-submission-no-response:
     condition: EnableProviderResponseFEIN
+    beforeDisplayAction: GetCCRRNameFromFamilySubmission
     afterSaveAction: SendUnidentifiedProviderAndFamilyConfirmationEmails
-    nextScreens: null
+    nextScreens:
+      - name: registration-submit-confirmation
   #New Provider Flow
   registration-start:
     condition: EnableProviderRegistration
