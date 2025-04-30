@@ -58,7 +58,6 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentBirthMonth", "12");
         testPage.enter("parentBirthDay", "25");
         testPage.enter("parentBirthYear", "1985");
-        testPage.enter("parentSsn", "123-45-6789");
         testPage.clickElementById("parentGender-MALE-label");
         testPage.clickContinue();
 
@@ -119,7 +118,6 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentPartnerBirthMonth", "12");
         testPage.enter("parentPartnerBirthDay", "25");
         testPage.enter("parentPartnerBirthYear", "2018");
-        testPage.enter("parentPartnerSSN", "123-456-7890");
         testPage.clickContinue();
 
         // parent-partner-contact
@@ -150,7 +148,6 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-add-adults-detail.title"));
         testPage.enter("adultDependentFirstName", "ada");
         testPage.enter("adultDependentLastName", "dolt");
-        testPage.enter("adultDependentSSN", "123-456-7890");
         testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
 

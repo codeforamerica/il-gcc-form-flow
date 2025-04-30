@@ -40,11 +40,6 @@
                 autoCompleteYear='bday-year',
                 required='true',
                 label=#{parent-info-basic-1.dob-question})}"/>
-              <th:block
-                  th:replace="~{fragments/inputs/ssn :: ssn(
-                  inputName='parentSsn',
-                  label=#{parent-info-basic-2.ssn-question},
-                  helpText=#{parent-info-basic-2.ssn-helptext})}"/>
               <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
                   checkboxFieldset(inputName='parentGender',
                     label=#{parent-info-basic-2.gender-question},

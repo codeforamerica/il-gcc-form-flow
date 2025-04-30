@@ -3,8 +3,6 @@ package org.ilgcc.app.inputs;
 import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Money;
 import formflow.library.data.annotations.Phone;
-import formflow.library.data.annotations.SSN;
-import formflow.library.inputs.Encrypted;
 import formflow.library.utils.RegexUtils;
 import jakarta.validation.constraints.*;
 
@@ -51,10 +49,6 @@ public class Gcc extends FlowInputs {
     private String parentBirthMonth;
     private String parentBirthYear;
     private String parentBirthDate;
-
-    @SSN(message="{errors.invalid-ssn}")
-    @Encrypted
-    private String parentSsn;
     private List<String> parentGender;
 
     // parent-info-service
@@ -116,9 +110,6 @@ public class Gcc extends FlowInputs {
     private String parentPartnerBirthMonth;
     private String parentPartnerBirthYear;
     private String parentPartnerBirthDate;
-    @SSN(message="{errors.invalid-ssn}")
-    @Encrypted
-    private String parentPartnerSSN;
 
     // parent-partner-contact
     @Phone(message = "{errors.invalid-phone-number}")
@@ -148,9 +139,6 @@ public class Gcc extends FlowInputs {
     private String adultDependentBirthdateMonth;
     private String adultDependentBirthdateYear;
     private String adultDependentBirthdateDate;
-    @SSN(message="{errors.invalid-ssn}")
-    @Encrypted
-    private String adultDependentSSN;
     @NotEmpty(message = "{errors.select-a-relationship}")
     private String adultDependentRelationship;
 
