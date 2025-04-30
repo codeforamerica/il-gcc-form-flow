@@ -17,31 +17,31 @@ public class OfflineTimeRange {
         this.end = LocalTime.parse(end);
     }
 
-    public boolean isNowWithinRange(ZonedDateTime now) {
-        LocalTime currentTime = now.toLocalTime();
+    public boolean isTimeWithinRange(ZonedDateTime time) {
+        LocalTime localTime = time.toLocalTime();
         if (start.equals(end)) {
             // 24 hour offline
             return true;
         } else if (start.isBefore(end)) {
-            return !currentTime.isBefore(start) && !currentTime.isAfter(end);
+            return !localTime.isBefore(start) && !localTime.isAfter(end);
         } else {
             // Overnight offline
-            return !currentTime.isBefore(start) || !currentTime.isAfter(end);
+            return !localTime.isBefore(start) || !localTime.isAfter(end);
         }
     }
 
-    public Long secondsUntilEnd(ZonedDateTime now) {
-        ZonedDateTime endDateTime = now.with(end);
+    public Long secondsUntilEnd(ZonedDateTime time) {
+        ZonedDateTime endDateTime = time.with(end);
 
         if (start.isAfter(end)) {
             // Overnight range: end is on the next day
-            if (now.toLocalTime().isBefore(end)) {
+            if (time.toLocalTime().isBefore(end)) {
                 endDateTime = endDateTime.plusDays(1);
             }
         }
 
-        if (isNowWithinRange(now)) {
-            return Duration.between(now, endDateTime).getSeconds();
+        if (isTimeWithinRange(time)) {
+            return Duration.between(time, endDateTime).getSeconds();
         }
 
         return null;
