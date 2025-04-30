@@ -37,4 +37,19 @@ public class JobrunrJobRepository {
             return null;  // Return null if no value is found
         }).stream().findFirst();
     }
+
+    public int getScheduledCCMSJobCount() {
+        String sql = "SELECT COUNT(id) FROM jobrunr_jobs j " +
+                "WHERE j.scheduledAt IS NOT NULL " +
+                "AND j.state = ? " +
+                "AND j.jobSignature LIKE ?";
+
+        Integer result = jdbcTemplate.queryForObject(
+                sql,
+                Integer.class,
+                "SCHEDULED", "%sendCCMSTransaction%"
+        );
+
+        return result != null ? result : 0;
+    }
 }
