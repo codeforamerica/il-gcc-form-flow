@@ -174,7 +174,7 @@ inputFields:
   providerLanguageOther: PROVIDER_LANGUAGE_OTHER
   providerLanguageOtherDetail: PROVIDER_LANGUAGE_OTHER_DETAIL
   providerSignature: PROVIDER_SIGNATURE
-  providerTaxIdEIN: PROVIDER_FEIN
+  providerTaxIdFEIN: PROVIDER_FEIN
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
   clientResponseConfirmationCode: APPLICATION_CONFIRMATION_CODE
   dayCareName: PROVIDER_NAME_CORPORATE

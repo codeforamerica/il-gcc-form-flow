@@ -315,8 +315,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         testPage.clickElementById("providerTaxIdType-FEIN-label");
         testPage.clickContinue();
 
-        // registration-tax-id-ein
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ein.title"));
+        // registration-tax-id-fein
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-fein.title"));
         testPage.goBack();
 
         //registration-payment-tax-id

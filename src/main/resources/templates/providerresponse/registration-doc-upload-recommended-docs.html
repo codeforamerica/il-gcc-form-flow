@@ -50,8 +50,8 @@
                                 <p th:text="#{registration-doc-upload-recommended-docs.w9.body}"></p>
                             </div>
                             <div class="spacing-below-60"
-                                 th:if="${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).einIRSLetter(providerTaxIdType)}"
-                                 th:id="ein-recommendation">
+                                 th:if="${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).feinIRSLetter(providerTaxIdType)}"
+                                 th:id="fein-recommendation">
                                 <th:block
                                         th:replace="~{fragments/gcc-icons :: income}"></th:block>
                                 <h2 class="h3 spacing-below-0 spacing-above-0"

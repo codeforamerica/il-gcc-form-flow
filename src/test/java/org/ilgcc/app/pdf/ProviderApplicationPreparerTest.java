@@ -231,7 +231,7 @@ public class ProviderApplicationPreparerTest {
                 .with("providerMailingZipCode", "60112")
                 .with("providerResponseAgreeToCare", "false")
                 .withClientResponseConfirmationCode("testConfirmationCode")
-                .with("providerTaxIdEIN", "12-1234567")
+                .with("providerTaxIdFEIN", "12-1234567")
                 .build();
 
         submissionRepositoryService.save(providerSubmission);
@@ -288,8 +288,8 @@ public class ProviderApplicationPreparerTest {
 
         assertThat(result.get("clientResponseConfirmationCode")).isEqualTo(
                 new SingleField("clientResponseConfirmationCode", "testConfirmationCode", null));
-        assertThat(result.get("providerTaxIdEIN")).isEqualTo(
-                new SingleField("providerTaxIdEIN", "12-1234567", null));
+        assertThat(result.get("providerTaxIdFEIN")).isEqualTo(
+                new SingleField("providerTaxIdFEIN", "12-1234567", null));
 
         assertThat(result.get("dayCareName")).isEqualTo(null);
         assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
@@ -311,7 +311,7 @@ public class ProviderApplicationPreparerTest {
                 .with("providerMailingZipCode", "60112")
                 .with("providerResponseAgreeToCare", "true")
                 .withClientResponseConfirmationCode("testConfirmationCode")
-                .with("providerTaxIdEIN", "12-1234567")
+                .with("providerTaxIdFEIN", "12-1234567")
                 .build();
 
         submissionRepositoryService.save(providerSubmission);
@@ -367,8 +367,8 @@ public class ProviderApplicationPreparerTest {
 
         assertThat(result.get("clientResponseConfirmationCode")).isEqualTo(
                 new SingleField("clientResponseConfirmationCode", "testConfirmationCode", null));
-        assertThat(result.get("providerTaxIdEIN")).isEqualTo(
-                new SingleField("providerTaxIdEIN", "12-1234567", null));
+        assertThat(result.get("providerTaxIdFEIN")).isEqualTo(
+                new SingleField("providerTaxIdFEIN", "12-1234567", null));
 
         assertThat(result.get("providerResponse")).isEqualTo(
                 new SingleField("providerResponse", "", null));

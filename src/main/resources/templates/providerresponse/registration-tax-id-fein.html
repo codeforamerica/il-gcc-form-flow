@@ -1,16 +1,16 @@
 <th:block
   th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
-    title=#{registration-tax-id-ein.title},
-    header=#{registration-tax-id-ein.header},
-    subtext=#{registration-tax-id-ein.helper},
+    title=#{registration-tax-id-fein.title},
+    header=#{registration-tax-id-fein.header},
+    subtext=#{registration-tax-id-fein.helper},
     iconFragment=~{fragments/gcc-icons :: licensed-provider},
     buttonLabel=#{general.button.continue},
     formAction=${formAction},
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
     <th:block th:replace="~{fragments/inputs/overrides/text ::
-      text(inputName='providerTaxIdEIN',
+      text(inputName='providerTaxIdFEIN',
       placeholder='XX-XXXXXXX',
       extraClasses='js-format-fein',
       ariaLabel='header')}"/>

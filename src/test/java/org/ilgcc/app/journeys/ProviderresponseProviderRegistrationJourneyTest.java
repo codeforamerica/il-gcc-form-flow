@@ -125,7 +125,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
-        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
+        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-fein.title"));
 
         //registration-service-languages-error
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
@@ -635,7 +635,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
-        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
+        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-fein.title"));
 
         //registration-service-languages-error
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
@@ -903,14 +903,14 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerTaxIdType-FEIN-label");
         testPage.clickContinue();
 
-        //registration-tax-id-ein (error)
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ein.title"));
-        testPage.enter("providerTaxIdEIN", "12345");
+        //registration-tax-id-fein (error)
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-fein.title"));
+        testPage.enter("providerTaxIdFEIN", "12345");
         testPage.clickContinue();
 
-        //registration-tax-id-ein
-        assertThat(testPage.hasErrorText(getEnMessage("registration-tax-id-ein.error"))).isTrue();
-        testPage.enter("providerTaxIdEIN", "12-3456789");
+        //registration-tax-id-fein
+        assertThat(testPage.hasErrorText(getEnMessage("registration-tax-id-fein.error"))).isTrue();
+        testPage.enter("providerTaxIdFEIN", "12-3456789");
         testPage.clickContinue();
 
         //Test Prefer Not to Answer Implementation
@@ -971,7 +971,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("id-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("child-care-license-recommendation")).isTrue();
         assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
-        assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("fein-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
 
@@ -1067,7 +1067,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ssn.title"));
-        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-ein.title"));
+        assertThat(testPage.getTitle()).isNotEqualTo(getEnMessage("registration-tax-id-fein.title"));
 
         //registration-service-languages
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-service-languages.title"));
@@ -1228,9 +1228,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerTaxIdType-FEIN-label");
         testPage.clickContinue();
 
-        //registration-tax-id-ein
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ein.title"));
-        testPage.enter("providerTaxIdEIN", "12-3456789");
+        //registration-tax-id-fein
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-fein.title"));
+        testPage.enter("providerTaxIdFEIN", "12-3456789");
         testPage.clickContinue();
 
         //registration-service-languages-error
@@ -1289,7 +1289,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.elementDoesNotExistById("id-recommendation")).isTrue();
         assertThat(testPage.elementDoesNotExistById("child-care-license-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("w9-recommendation")).isFalse();
-        assertThat(testPage.elementDoesNotExistById("ein-recommendation")).isFalse();
+        assertThat(testPage.elementDoesNotExistById("fein-recommendation")).isFalse();
         assertThat(testPage.elementDoesNotExistById("license-exempt-letter-recommendation")).isTrue();
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
 

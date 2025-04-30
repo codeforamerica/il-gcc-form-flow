@@ -16,7 +16,7 @@
                           showSocialSecurityCardRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).ssnCardRequired(providerType, providerTaxIdType)},
                           showIdCardRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).idCardRequired(providerType)},
                           showChildCareLicenseRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).childCareLicenseRequired(providerType)},
-                          showEinIRSLetterInfo=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).einIRSLetter(providerTaxIdType)},
+                          showFeinIRSLetterInfo=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).feinIRSLetter(providerTaxIdType)},
                           showLicenseExemptLetterRequired=${T(org.ilgcc.app.utils.ProviderRecommendedDocumentsUtilities).licenseExemptLetterRequired(providerType)}">
                 <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
                   controlId='r1',
@@ -44,9 +44,9 @@
                       <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.w9.header}"></h2>
                       <p th:text="#{registration-doc-upload-add-files.w9.body}"></p>
                     </div>
-                    <div th:if="${showEinIRSLetterInfo}" th:id="show-irs-letter-required" class="spacing-above-15">
-                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.ein.header}"></h2>
-                      <p th:text="#{registration-doc-upload-add-files.ein.body}"></p>
+                    <div th:if="${showFeinIRSLetterInfo}" th:id="show-irs-letter-required" class="spacing-above-15">
+                      <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.fein.header}"></h2>
+                      <p th:text="#{registration-doc-upload-add-files.fein.body}"></p>
                     </div>
                     <div th:if="${showLicenseExemptLetterRequired}" th:id="show-license-exempt-letter-required" class="spacing-above-15">
                       <h2 class="h4 spacing-below-0" th:text="#{registration-doc-upload-add-files.license-exempt.header}"></h2>
