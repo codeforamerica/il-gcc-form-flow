@@ -71,6 +71,7 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     @PostConstruct
     void init() {
+        // On startup, if we have offline time ranges, we need to load them from the json
         if (ccmsOfflineTimeRangesJson != null) {
             try {
                 log.info("Parsing CCMS offline times: " + ccmsOfflineTimeRangesJson);
@@ -82,6 +83,8 @@ public class CCMSSubmissionPayloadTransactionJob {
                 int previouslyScheduledCCMSJobs = jobrunrJobRepository.getScheduledCCMSJobCount();
                 log.info("Found {} previously scheduled CCMS jobs", previouslyScheduledCCMSJobs);
 
+                // this value should be one offset unit, plus if there are previously scheduled jobs and the instance was restarted,
+                // add those into the equation.
                 totalCcmsTransactionDelayOffset =
                         ccmsTransactionDelayOffset + (ccmsTransactionDelayOffset * previouslyScheduledCCMSJobs);
             } catch (JsonProcessingException e) {
@@ -159,6 +162,8 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     @Job(name = "Send CCMS Submission Payload", retries = 3)
     public void sendCCMSTransaction(@NotNull UUID submissionId) throws JsonProcessingException {
+        // TODO -- MARC: If somehow a previously scheduled job is now in an offline range, do not do this job and instead
+        // TODO -- MARC: schedule a new job in the future when the offline range ends.
         Transaction existingTransaction = transactionRepositoryService.getBySubmissionId(submissionId);
         if (existingTransaction == null) {
             Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
