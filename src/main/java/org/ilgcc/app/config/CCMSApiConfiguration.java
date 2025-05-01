@@ -44,6 +44,7 @@ public class CCMSApiConfiguration {
                 log.error(
                         "CCMSApiConfiguration: Could not parse CCMS offline times. Make sure you set the CCMS_OFFLINE_TIME_RANGES environment variable properly.",
                         e);
+                ccmsOfflineTimeRanges = new ArrayList<>();
             }
         } else {
             ccmsOfflineTimeRanges = new ArrayList<>();
@@ -51,6 +52,10 @@ public class CCMSApiConfiguration {
     }
 
     public boolean isOnlineAt(ZonedDateTime dateTime) {
-        return !ccmsOfflineTimeRanges.stream().anyMatch(range -> range.isTimeWithinRange(dateTime));
+        if (!ccmsOfflineTimeRanges.isEmpty()) {
+            return !ccmsOfflineTimeRanges.stream().anyMatch(range -> range.isTimeWithinRange(dateTime));
+        } else {
+            return true;
+        }
     }
 }
