@@ -43,16 +43,16 @@ public class CCMSSubmissionPayloadTransactionJob {
     private final SubmissionRepositoryService submissionRepositoryService;
     private final JobrunrJobRepository jobrunrJobRepository;
 
-    @Value("${il-gcc.ccms-transaction-delay-minutes}")
+    @Value("${il-gcc.ccms-api.transaction-delay-minutes}")
     private int jobDelayMinutes;
 
-    @Value("${il-gcc.ccms-offline-time-ranges}")
+    @Value("${il-gcc.ccms-api.offline-time-ranges}")
     private String ccmsOfflineTimeRangesJson;
 
     private static final ZoneId CENTRAL_ZONE = ZoneId.of("America/Chicago");
     private List<OfflineTimeRange> ccmsOfflineTimeRanges;
 
-    @Value("${il-gcc.ccms-offline-transaction-delay-offset:15}")
+    @Value("${il-gcc.ccms-api.offline-transaction-delay-offset:15}")
     private int ccmsTransactionDelayOffset;
 
     private int totalCcmsTransactionDelayOffset;
