@@ -98,41 +98,39 @@ public class CCMSSubmissionPayloadTransactionJob {
     }
 
     public void enqueueCCMSTransactionPayloadWithDelay(@NotNull UUID submissionId) {
-
         ZonedDateTime now = ZonedDateTime.now(CENTRAL_ZONE);
-        if (isOfflineAt(now.plusMinutes(jobDelayMinutes))) {
-            enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
-        } else {
+        if (isOnlineAt(now.plusMinutes(jobDelayMinutes))) {
             // If CCMS is (back) online *in the future*, make sure that we're resetting the initial total offset for the next time
             // CCMS is offline... but only if a job that might get enqueued *instantly* won't actually be sent during the current
             // offline time range
-            if (!isOfflineAt(now)) {
+            if (isOnlineNow()) {
                 totalCcmsTransactionDelayOffset = ccmsTransactionDelayOffset;
             }
 
             JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofMinutes(jobDelayMinutes)),
                     () -> sendCCMSTransaction(submissionId));
-            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in {} minutes", jobId,
-                    submissionId, jobDelayMinutes);
+            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in {} minutes",
+                    jobId, submissionId, jobDelayMinutes);
+        } else {
+            enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
         }
     }
 
     public void enqueueSubmissionCCMSPayloadTransactionJobInstantly(@NotNull UUID submissionId) {
-
-        ZonedDateTime now = ZonedDateTime.now(CENTRAL_ZONE);
-        if (isOfflineAt(now)) {
-            enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
-        } else {
+        if (isOnlineNow()) {
             // If CCMS is (back) online, make sure that we're resetting the initial total offset for the next time
             // CCMS is offline... but only a job that might get enqueued *not instantly* won't be delayed into an upcoming
             // offline time range
-            if (!isOfflineAt(now.plusMinutes(jobDelayMinutes))) {
+            if (isOnlineAt(ZonedDateTime.now(CENTRAL_ZONE).plusMinutes(jobDelayMinutes))) {
                 totalCcmsTransactionDelayOffset = ccmsTransactionDelayOffset;
             }
 
             JobId jobId = jobScheduler.enqueue(() -> sendCCMSTransaction(submissionId));
             log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}", jobId,
                     submissionId);
+
+        } else {
+            enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
         }
     }
 
@@ -162,43 +160,51 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     @Job(name = "Send CCMS Submission Payload", retries = 3)
     public void sendCCMSTransaction(@NotNull UUID submissionId) throws JsonProcessingException {
-        // TODO -- MARC: If somehow a previously scheduled job is now in an offline range, do not do this job and instead
-        // TODO -- MARC: schedule a new job in the future when the offline range ends.
         Transaction existingTransaction = transactionRepositoryService.getBySubmissionId(submissionId);
         if (existingTransaction == null) {
-            Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
-            if (submissionOptional.isPresent()) {
-                Submission submission = submissionOptional.get();
-                Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
-                        submission);
-                if (ccmsTransactionOptional.isPresent()) {
-                    CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
-                    JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
-                    log.info("Received response from CCMS when sending transaction payload: {}", response);
+            if (isOnlineNow()) {
+                Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
+                if (submissionOptional.isPresent()) {
+                    Submission submission = submissionOptional.get();
+                    Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
+                            submission);
+                    if (ccmsTransactionOptional.isPresent()) {
+                        CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
+                        JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
+                        log.info("Received response from CCMS when sending transaction payload: {}", response);
 
-                    String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
+                        String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
 
-                    if (workItemId == null) {
-                        log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
+                        if (workItemId == null) {
+                            log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
+                        }
+
+                        transactionRepositoryService.createTransaction(UUID.fromString(response.get("transactionId").asText()),
+                                submission.getId(), workItemId);
+                    } else {
+                        log.warn("Could not create CCMS payload for submission : {}", submission.getId());
                     }
-
-                    transactionRepositoryService.createTransaction(UUID.fromString(response.get("transactionId").asText()),
-                            submission.getId(), workItemId);
                 } else {
-                    log.warn("Could not create CCMS payload for submission : {}", submission.getId());
+                    throw new RuntimeException("Could not find submission with ID: " + submissionId);
                 }
             } else {
-                throw new RuntimeException("Could not find submission with ID: " + submissionId);
+                log.info(
+                        "Skipping CCMS transaction because CCMS is currently offline. Requeuing CCMS Payload Transaction job for {}",
+                        submissionId);
+                enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
             }
-
         } else {
             log.info("Transaction {} already exists for submission {}, skipping CCMS transaction",
                     existingTransaction.getTransactionId(), submissionId);
         }
     }
 
-    private boolean isOfflineAt(ZonedDateTime dateTime) {
-        return ccmsOfflineTimeRanges.stream().anyMatch(range -> range.isTimeWithinRange(dateTime));
+    private boolean isOnlineNow() {
+        return isOnlineAt(ZonedDateTime.now(CENTRAL_ZONE));
+    }
+
+    private boolean isOnlineAt(ZonedDateTime dateTime) {
+        return !ccmsOfflineTimeRanges.stream().anyMatch(range -> range.isTimeWithinRange(dateTime));
     }
 
     private long getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {
