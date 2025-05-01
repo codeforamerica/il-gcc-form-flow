@@ -109,8 +109,8 @@ public class CCMSSubmissionPayloadTransactionJob {
 
             JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofMinutes(jobDelayMinutes)),
                     () -> sendCCMSTransaction(submissionId));
-            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}", jobId,
-                    submissionId);
+            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in {} minutes", jobId,
+                    submissionId, jobDelayMinutes);
         }
     }
 
