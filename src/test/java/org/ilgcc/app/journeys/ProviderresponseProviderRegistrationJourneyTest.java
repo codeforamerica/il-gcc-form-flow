@@ -5,10 +5,13 @@ import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_APPRO
 
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
@@ -307,9 +310,16 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
 
-        // registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
+        // submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        // New provider who agreed to care should see this header
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.new-provider.header"));
+        // If they registered they should see the survey legend that says how was the registration experience
+        WebElement surveyLegend = driver.findElement(By.xpath("//legend[@id='providerSurveyProviderDifficulty-legend']/span"));
+        assertThat(surveyLegend.getText()).isEqualTo(getEnMessage("submit-confirmation.new-provider.experience-question"));
+        // We should see the notice about contacting CCR&R
+        List<WebElement> notices = driver.findElements(By.cssSelector(".notice.notice--gray"));
+        assertThat(notices).isNotEmpty();
     }
 
     @Test
@@ -548,9 +558,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickElementById("providerResponseAgreeToCare-true");
         testPage.clickButton("Submit");
 
-        // registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.existing-provider.header"));
+        // submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.existing-provider.header"));
 
     }
 
@@ -817,9 +827,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
 
-        // registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
+        // submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.new-provider.header"));
     }
 
     @Test
@@ -994,9 +1004,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
 
-        // registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
+        // submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.new-provider.header"));
 
     }
 
@@ -1162,9 +1172,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
 
-        // registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
+        // submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.new-provider.header"));
     }
 
     @Test
@@ -1311,9 +1321,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
 
-        // registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
+        // submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.new-provider.header"));
     }
 
     @Test
@@ -1469,9 +1479,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
 
-        // registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
+        // submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.new-provider.header"));
     }
 
     @Test
@@ -1659,46 +1669,8 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.clickContinue();
 
-        // registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("registration-submit-confirmation.new-provider.header"));
-    }
-
-    private String createAValidLink() {
-        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).with("earliestChildcareStartDate", "10/10/2011")
-                .withSubmittedAtDate(OffsetDateTime.now()).build());
-
-        testPage.clickContinue();
-
-        driver.navigate().to("http://localhost:%s/s/%s".formatted(localServerPort, s.getShortCode()));
-
-        return s.getShortCode();
-    }
-
-    private void setupRegistration() {
-        String confirmationCode = createAValidLink();
-        // submit-start
-        testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
-
-        // confirmation-code
-        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(confirmationCode);
-        testPage.clickContinue();
-
-        // paid-by-ccap
-        testPage.clickNo();
-
-        // registration-start
-        testPage.clickButton(getEnMessage("registration-start.button"));
-
-        // registration-getting-started
-        testPage.clickContinue();
-
-        // registration-provide-care-intro
-        testPage.clickContinue();
+        // submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.new-provider.header"));
     }
 }

@@ -4,7 +4,7 @@ form-flow:
     - flow: gcc
       redirect: after-submit-contact-provider
     - flow: providerresponse
-      redirect: registration-submit-confirmation
+      redirect: submit-confirmation
   design-system:
     name: honeycrisp
   languages: en, es

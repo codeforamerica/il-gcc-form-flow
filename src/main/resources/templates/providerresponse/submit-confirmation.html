@@ -1,0 +1,24 @@
+<th:block th:with="isExistingProvider=${submission.getInputData().getOrDefault('providerPaidCcap', 'false').equals('true')},
+                   cannotBeIdentified=${inputData.get('providerResponseProviderNumber') == null && inputData.get('providerTaxIdEIN') == null},
+                   displaySubmitCompleteFinalScreen=${@environment.getProperty('il-gcc.allow-provider-registration-flow') == 'false'}">
+    <th:block th:if="${displaySubmitCompleteFinalScreen}">
+        <th:block th:replace="~{fragments/screens/submit-complete-final-fragment :: screen}"></th:block>
+    </th:block>
+    <th:block th:unless="${displaySubmitCompleteFinalScreen}"
+        th:replace="~{fragments/screens/submit-confirmation ::
+      screen(
+        title=#{submit-confirmation.title},
+        header=${cannotBeIdentified ? 
+            #messages.msg('submit-confirmation.denied-care-or-unidentifiable.header') : 
+            (isExistingProvider ? 
+                #messages.msg('submit-confirmation.existing-provider.header') : 
+                #messages.msg('submit-confirmation.new-provider.header')
+            )},
+        surveyDifficultyInputName='providerSurveyProviderDifficulty',
+        surveyDifficultyInputLabel=${isExistingProvider ? 'submit-confirmation.existing-provider.experience-question' : 'submit-confirmation.new-provider.experience-question'},
+        notice=#{'submit-confirmation.existing-provider.notice'},
+        surveyAdditionalCommentsInputName='providerSurveyAdditionalComments',
+        surveyAdditionalCommentsLabel=#{submit-confirmation.general.comments.label},
+        experienceQuestion=${isExistingProvider ? #messages.msg('submit-confirmation.existing-provider.experience-question') : #messages.msg('submit-confirmation.new-provider.experience-question')})}">
+    </th:block>
+</th:block>

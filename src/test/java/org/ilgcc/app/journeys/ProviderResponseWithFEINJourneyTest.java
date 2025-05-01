@@ -4,27 +4,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
 @TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true",
         "il-gcc.enable-provider-response-with-fein=true"})
-public class ProviderresponseProviderResponseWithFEINJourneyTest extends AbstractBasePageTest {
+public class ProviderResponseWithFEINJourneyTest extends AbstractBasePageTest {
 
     @AfterEach
     protected void clearSubmissions() {
         super.clearSubmissions();
     }
 
-
-
-
     @Test
-    public void whenAProviderResponseNoToProvidingFEINOrProviderNumber(){
+    public void whenAProviderRespondsNoToProvidingFEINOrProviderNumber(){
         existingProviderBasicFlow();
 
         //fein
@@ -36,8 +36,16 @@ public class ProviderresponseProviderResponseWithFEINJourneyTest extends Abstrac
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-application-submission-no-response.title"));
         testPage.clickButton("Submit application");
 
-        //registration-submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-confirmation.title"));
+        //submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        // Assert shows correct header language when the provider did not provide any way to identify them
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.denied-care-or-unidentifiable.header"));
+        // They did not register and should see the provider experience version of the survey language
+        WebElement surveyLegend = driver.findElement(By.xpath("//legend[@id='providerSurveyProviderDifficulty-legend']/span"));
+        assertThat(surveyLegend.getText()).isEqualTo(getEnMessage("submit-confirmation.existing-provider.experience-question"));
+        // We should not see the notice about contacting CCR&R because they are a new provider
+        List<WebElement> notices = driver.findElements(By.cssSelector(".notice.notice--gray"));
+        assertThat(notices).isNotEmpty();
     }
 
     public void existingProviderBasicFlow() {
