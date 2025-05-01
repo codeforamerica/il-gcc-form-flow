@@ -1,5 +1,6 @@
 <th:block th:with="isExistingProvider=${submission.getInputData().getOrDefault('providerPaidCcap', 'false').equals('true')},
                    cannotBeIdentified=${inputData.get('providerResponseProviderNumber') == null && inputData.get('providerTaxIdEIN') == null},
+                   declinedCare=${inputData.get('providerResponseAgreeToCare') != null && inputData.get('providerResponseAgreeToCare').equals('false')},
                    displaySubmitCompleteFinalScreen=${@environment.getProperty('il-gcc.allow-provider-registration-flow') == 'false'}">
     <th:block th:if="${displaySubmitCompleteFinalScreen}">
         <th:block th:replace="~{fragments/screens/submit-complete-final-fragment :: screen}"></th:block>
@@ -8,7 +9,7 @@
         th:replace="~{fragments/screens/submit-confirmation ::
       screen(
         title=#{submit-confirmation.title},
-        header=${cannotBeIdentified ? 
+        header=${cannotBeIdentified || declinedCare ? 
             #messages.msg('submit-confirmation.denied-care-or-unidentifiable.header') : 
             (isExistingProvider ? 
                 #messages.msg('submit-confirmation.existing-provider.header') : 
