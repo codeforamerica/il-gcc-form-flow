@@ -63,8 +63,6 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
                     new SingleField("familyMemberDateOfBirth", formatAdultDependentDateOfBirth(adult), iteration));
             results.put("familyMemberRelationship_" + iteration,
                 new SingleField("familyMemberRelationship", (String) adult.getOrDefault("adultDependentRelationship", ""), iteration));
-            results.put("familyMemberSSN_" + iteration,
-                new SingleField("familyMemberSSN", (String) adult.getOrDefault("adultDependentSSN", ""), iteration));
             iteration++;
         }
 

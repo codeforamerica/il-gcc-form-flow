@@ -100,7 +100,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentBirthMonth", "12");
         testPage.enter("parentBirthDay", "25");
         testPage.enter("parentBirthYear", "1985");
-        testPage.enter("parentSsn", "123-45-6789");
         testPage.clickElementById("parentGender-MALE-label");
         testPage.clickContinue();
 
@@ -161,7 +160,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("parentPartnerBirthMonth", "12");
         testPage.enter("parentPartnerBirthDay", "25");
         testPage.enter("parentPartnerBirthYear", "2018");
-        testPage.enter("parentPartnerSSN", "123-456-7890");
         testPage.clickContinue();
 
         // parent-partner-contact
@@ -199,7 +197,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("parent-add-adults.add-member"));
         testPage.enter("adultDependentFirstName", "adaa");
         testPage.enter("adultDependentLastName", "doltt");
-        testPage.enter("adultDependentSSN", "112-456-7893");
         testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
         testPage.clickButton(getEnMessage("parent-add-adults.im-done"));

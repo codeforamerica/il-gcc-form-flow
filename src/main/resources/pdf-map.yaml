@@ -21,7 +21,6 @@ inputFields:
   parentPartnerFirstName: PARTNER_NAME_FIRST
   parentPartnerLastName: PARTNER_NAME_LAST
   partnerFullName: PARTNER_NAME_FULL
-  parentPartnerSSN: PARTNER_SSN
   parentPartnerDateOfBirth: PARTNER_DOB
   parentPartnerPhoneNumber: PARTNER_PHONE_NUMBER
   parentPartnerIsServing: PARTNER_MILITARY_ACTIVE_DUTY
@@ -40,7 +39,6 @@ inputFields:
 
   parentIsServing: APPLICANT_MILITARY_ACTIVE_DUTY
   parentInMilitaryReserveOrNationalGuard: APPLICANT_MILITARY_NATIONAL_GUARD
-  parentSsn: APPLICANT_SSN
   parentBirthDate: APPLICANT_DOB
   parentExperiencingHomelessness: APPLICANT_HOMELESSNESS
   applicantSchoolName: APPLICANT_EDUCATION_SCHOOL_NAME
@@ -197,7 +195,6 @@ subflowInfo:
       familyMemberLastName: FAMILY_MEMBER_NAME_LAST
       familyMemberDateOfBirth: FAMILY_MEMBER_DOB
       familyMemberRelationship: FAMILY_MEMBER_RELATIONSHIP
-      familyMemberSSN: FAMILY_MEMBER_NAME_SSN
   needChildcareForChildren:
     totalIterations: 4
     inputFields:

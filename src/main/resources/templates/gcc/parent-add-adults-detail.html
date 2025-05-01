@@ -33,11 +33,6 @@
                 date(inputName='adultDependentBirthdate',
                 groupName='adultDependentBirthdate',
                 label=#{general.question.their-date-of-birth})}"/>
-              <th:block
-                  th:replace="~{fragments/inputs/ssn :: ssn(
-                  inputName='adultDependentSSN',
-                  label=#{parent-add-adults-detail.ssn-question},
-                  helpText=#{parent-add-adults-detail.ssn-helper})}"/>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
