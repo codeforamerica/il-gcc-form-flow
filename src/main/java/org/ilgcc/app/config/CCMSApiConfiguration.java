@@ -7,6 +7,8 @@ import jakarta.annotation.PostConstruct;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -57,5 +59,11 @@ public class CCMSApiConfiguration {
         } else {
             return true;
         }
+    }
+
+    public long getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {
+        Optional<Long> seconds = ccmsOfflineTimeRanges.stream().filter(range -> range.isTimeWithinRange(startTime))
+                .map(range -> range.secondsUntilEnd(startTime)).filter(Objects::nonNull).findFirst();
+        return seconds.isPresent() ? seconds.get() : 0;
     }
 }

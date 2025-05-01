@@ -192,8 +192,6 @@ public class CCMSSubmissionPayloadTransactionJob {
     }
 
     private long getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {
-        Optional<Long> seconds = ccmsOfflineTimeRanges.stream().filter(range -> range.isTimeWithinRange(startTime))
-                .map(range -> range.secondsUntilEnd(startTime)).filter(Objects::nonNull).findFirst();
-        return seconds.isPresent() ? seconds.get() : 0;
+        return ccmsApiClient.getConfiguration().getSecondsUntilEndOfOfflineRangeStartingAt(startTime);
     }
 }
