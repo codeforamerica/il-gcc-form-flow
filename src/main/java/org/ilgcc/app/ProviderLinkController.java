@@ -55,7 +55,7 @@ public class ProviderLinkController {
         if (sanitizedConfirmationCode != null) {
             Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(
                     sanitizedConfirmationCode.toUpperCase());
-            if (familySubmission.isPresent()) {
+            if (familySubmission.isPresent() && !"false".equals(familySubmission.get().getInputData().get("hasChosenProvider"))) {
                 setFamilySessionData(familySubmission.get(), newSession);
                 checkRefererValue(referer, newSession);
             } else {
