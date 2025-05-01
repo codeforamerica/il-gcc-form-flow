@@ -28,7 +28,6 @@ public class CCMSApiConfiguration {
     private String offlineTimeRanges;
     private int offlineTransactionDelayOffset;
 
-    @Getter
     private List<OfflineTimeRange> ccmsOfflineTimeRanges;
 
     @PostConstruct
