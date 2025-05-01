@@ -143,7 +143,7 @@ il-gcc:
   enable-provider-messaging: ${ENABLE_PROVIDER_MESSAGING:false}
   ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
   ccms-transaction-delay-minutes: ${CCMS_TRANSACTION_DELAY_MINUTES:60}
-  ccms-offline-time-ranges: '${CCMS_OFFLINE_TIME_RANGES: [{"start": "10:00", "end": "13:00"}, {"start": "22:00", "end": "02:00"}]}'
+  ccms-offline-time-ranges: '${CCMS_OFFLINE_TIME_RANGES: [{"start": "23:00", "end": "05:00"}]}'
   ccms-offline-transaction-delay-offset: ${CCMS_OFFLINE_TRANSACTION_DELAY_OFFSET:15}
   dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:true}
   enable-provider-response-with-fein: ${ENABLE_PROVIDER_RESPONSE_FEIN:false}
