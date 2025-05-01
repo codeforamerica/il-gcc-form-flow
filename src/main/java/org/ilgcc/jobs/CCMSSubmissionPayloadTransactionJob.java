@@ -3,9 +3,7 @@ package org.ilgcc.jobs;
 import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_ENDPOINT;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import jakarta.annotation.PostConstruct;
@@ -29,7 +27,6 @@ import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -43,16 +40,10 @@ public class CCMSSubmissionPayloadTransactionJob {
     private final SubmissionRepositoryService submissionRepositoryService;
     private final JobrunrJobRepository jobrunrJobRepository;
 
-    @Value("${il-gcc.ccms-api.transaction-delay-minutes}")
     private int jobDelayMinutes;
-
-    @Value("${il-gcc.ccms-api.offline-time-ranges}")
-    private String ccmsOfflineTimeRangesJson;
 
     private static final ZoneId CENTRAL_ZONE = ZoneId.of("America/Chicago");
     private List<OfflineTimeRange> ccmsOfflineTimeRanges;
-
-    @Value("${il-gcc.ccms-api.offline-transaction-delay-offset:15}")
     private int ccmsTransactionDelayOffset;
 
     private int totalCcmsTransactionDelayOffset;
@@ -71,27 +62,20 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     @PostConstruct
     void init() {
-        // On startup, if we have offline time ranges, we need to load them from the json
-        if (ccmsOfflineTimeRangesJson != null) {
-            try {
-                log.info("Parsing CCMS offline times: " + ccmsOfflineTimeRangesJson);
-                ObjectMapper objectMapper = new ObjectMapper();
-                this.ccmsOfflineTimeRanges = objectMapper.readValue(ccmsOfflineTimeRangesJson, new TypeReference<>() {
-                });
-                log.info("Parsed CCMS offline times. Number of ranges: {}", ccmsOfflineTimeRanges.size());
+        jobDelayMinutes = ccmsApiClient.getConfiguration().getTransactionDelayMinutes();
+        ccmsOfflineTimeRanges = ccmsApiClient.getConfiguration().getCcmsOfflineTimeRanges();
 
-                int previouslyScheduledCCMSJobs = jobrunrJobRepository.getScheduledCCMSJobCount();
-                log.info("Found {} previously scheduled CCMS jobs", previouslyScheduledCCMSJobs);
+        // On startup, if we have offline time ranges...
+        if (ccmsOfflineTimeRanges != null && !ccmsOfflineTimeRanges.isEmpty()) {
+            int previouslyScheduledCCMSJobs = jobrunrJobRepository.getScheduledCCMSJobCount();
+            log.info("Found {} previously scheduled CCMS jobs", previouslyScheduledCCMSJobs);
 
-                // this value should be one offset unit, plus if there are previously scheduled jobs and the instance was restarted,
-                // add those into the equation.
-                totalCcmsTransactionDelayOffset =
-                        ccmsTransactionDelayOffset + (ccmsTransactionDelayOffset * previouslyScheduledCCMSJobs);
-            } catch (JsonProcessingException e) {
-                log.error(
-                        "CCMSSubmissionPayloadTransactionJob: Could not parse CCMS offline times. Make sure you set the CCMS_OFFLINE_TIME_RANGES environment variable properly.",
-                        e);
-            }
+            // this value should be one offset unit, plus if there are previously scheduled jobs and the instance was restarted,
+            // add those into the equation.
+            ccmsTransactionDelayOffset = ccmsApiClient.getConfiguration().getOfflineTransactionDelayOffset();
+
+            totalCcmsTransactionDelayOffset =
+                    ccmsTransactionDelayOffset + (ccmsTransactionDelayOffset * previouslyScheduledCCMSJobs);
         } else {
             ccmsOfflineTimeRanges = new ArrayList<>();
         }
@@ -204,7 +188,7 @@ public class CCMSSubmissionPayloadTransactionJob {
     }
 
     private boolean isOnlineAt(ZonedDateTime dateTime) {
-        return !ccmsOfflineTimeRanges.stream().anyMatch(range -> range.isTimeWithinRange(dateTime));
+        return ccmsApiClient.getConfiguration().isOnlineAt(dateTime);
     }
 
     private long getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {
