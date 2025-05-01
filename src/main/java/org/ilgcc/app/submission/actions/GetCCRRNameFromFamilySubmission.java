@@ -5,15 +5,10 @@ import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getFamilySubmissio
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.data.CCMSDataServiceImpl;
-import org.ilgcc.app.data.County;
-import org.ilgcc.app.data.ResourceOrganization;
-import org.ilgcc.app.submission.router.ApplicationRouterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +22,7 @@ public class GetCCRRNameFromFamilySubmission implements Action {
     private Optional<Submission> familySubmissionOptional;
     private static final String CCRR_NAME_INPUT = "ccrrName";
 
-  @Override
+    @Override
     public void run(Submission providerSubmission) {
         Map<String, Object> providerInputData = providerSubmission.getInputData();
         //get family submission from provider submission
@@ -38,11 +33,11 @@ public class GetCCRRNameFromFamilySubmission implements Action {
             if (familySubmissionOptional.isPresent()) {
                 Map<String, Object> familyInputData = familySubmissionOptional.get().getInputData();
                 if (familyInputData.containsKey(CCRR_NAME_INPUT)) {
-                    providerInputData.put(CCRR_NAME_INPUT ,familyInputData.getOrDefault(CCRR_NAME_INPUT, ""));
-                }else {
-                  log.error("Could not find CCR&R name for the familySubmissionId: {}", familySubmissionID);
+                    providerInputData.put(CCRR_NAME_INPUT, familyInputData.getOrDefault(CCRR_NAME_INPUT, ""));
+                } else {
+                    log.error("Could not find CCR&R name for the familySubmissionId: {}", familySubmissionID);
                 }
-            }else {
+            } else {
                 log.error("Could not find submission for the familySubmissionId: {}", familySubmissionID);
             }
         });
