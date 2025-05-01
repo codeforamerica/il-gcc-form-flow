@@ -134,29 +134,23 @@ public class CCMSSubmissionPayloadTransactionJob {
     }
 
     private void enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(@NotNull UUID submissionId) {
+        // We can check if we're still in the offline range and if we are, we will have the number of seconds until the end of the offline range
+        long secondsUntilEndOfOfflineRange = getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime.now(CENTRAL_ZONE));
+
         // At a minimum, delay the job for the total number of seconds accumulated so far. For example, if the ccmsTransactionDelayOffset
         // is 15 seconds and this the first delayed job, we delay 15 seconds. But if this is the 4th delayed job, we would
         // delay 60 seconds (1st delayed 15, 2nd delayed 30, 3rd delayed 45...)
-        long jobDelaySeconds = totalCcmsTransactionDelayOffset;
 
-        Optional<Long> secondsUntilEndOfOfflineRange = getSecondsUntilEndOfOfflineRangeStartingAt(
-                ZonedDateTime.now(CENTRAL_ZONE));
-        // But if we still need to wait until the end of the offline range, we can check if we're still in the offline range
-        // and if we are, we will have the number of seconds until the end of the offline range
-        if (secondsUntilEndOfOfflineRange.isPresent()) {
-            // and then we can make sure we run the jobs starting once the offline range ends
-            // Every time this job runs, we'll be closer to the end of the offline range so the
-            // number of seconds we're adding to the delay caused by previously queued jobs will
-            // continue to go down.
-            jobDelaySeconds = jobDelaySeconds + secondsUntilEndOfOfflineRange.get();
-        }
+        // And then we can make sure we run this job starting once the offline range ends + the offset caused by prior offline
+        // scheduled jobs, so we can have them staggered by the offset
+        long jobDelaySeconds = totalCcmsTransactionDelayOffset + secondsUntilEndOfOfflineRange;
 
         JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofSeconds(jobDelaySeconds)),
                 () -> sendCCMSTransaction(submissionId));
 
         log.info(
                 "CCMS offline for another {} seconds. Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in: {} seconds",
-                secondsUntilEndOfOfflineRange.get(), jobId, submissionId, jobDelaySeconds);
+                secondsUntilEndOfOfflineRange, jobId, submissionId, jobDelaySeconds);
 
         // And finally we can bump up the amount of time we need to wait for the next job. As the number of delayed jobs increases,
         // this will increase.
@@ -202,8 +196,9 @@ public class CCMSSubmissionPayloadTransactionJob {
         return ccmsOfflineTimeRanges.stream().anyMatch(range -> range.isTimeWithinRange(dateTime));
     }
 
-    private Optional<Long> getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {
-        return ccmsOfflineTimeRanges.stream().filter(range -> range.isTimeWithinRange(startTime))
+    private long getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {
+        Optional<Long> seconds = ccmsOfflineTimeRanges.stream().filter(range -> range.isTimeWithinRange(startTime))
                 .map(range -> range.secondsUntilEnd(startTime)).filter(Objects::nonNull).findFirst();
+        return seconds.isPresent() ? seconds.get() : 0;
     }
 }
