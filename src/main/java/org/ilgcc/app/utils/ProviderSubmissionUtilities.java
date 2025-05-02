@@ -162,12 +162,21 @@ public class ProviderSubmissionUtilities {
         return formatListIntoReadableString(childNames, joiner);
     }
 
-    private static Integer childAge(Map<String, Object> child) {
+    private static String childAge(Map<String, Object> child) {
         var bdayString = String.format("%s/%s/%s", child.get("childDateOfBirthMonth"), child.get("childDateOfBirthDay"),
                 child.get("childDateOfBirthYear"));
 
         LocalDate dateOfBirth = LocalDate.parse(bdayString, MM_DD_YYYY);
-        return Period.between(dateOfBirth, LocalDate.now()).getYears();
+
+        Integer childYears = Period.between(dateOfBirth, LocalDate.now()).getYears();
+        Integer childMonths = Period.between(dateOfBirth, LocalDate.now()).getMonths();
+
+        if(childYears <= 1){
+            return String.format("%s months", (childYears * 12) + childMonths);
+        } else {
+            return String.valueOf(childYears);
+        }
+
     }
 
     private static String formatHourschedule(Map<String, Object> child, String prefix, String day) {

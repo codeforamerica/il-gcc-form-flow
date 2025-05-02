@@ -197,6 +197,33 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("children", children);
         return this;
     }
+
+    public SubmissionTestBuilder withToddler(String firstName, String lastName, String needFinancialAssistanceForChild, Integer childAgeMonths) {
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().get("children");
+        if (children == null) {
+            children = new ArrayList<>();
+        }
+
+        Map<String, Object> child = new HashMap<>();
+
+        OffsetDateTime toddlerBirthDate = OffsetDateTime.now().minusMonths(childAgeMonths.longValue()).minusDays(1);
+
+        String uuid = "%s-%s".formatted(firstName, lastName).toLowerCase();
+        child.put("uuid", uuid);
+        child.put("childFirstName", firstName);
+        child.put("childLastName", lastName);
+        child.put("childInCare", "true");
+        child.put("childDateOfBirthMonth", toddlerBirthDate.getMonthValue());
+        child.put("childDateOfBirthDay", toddlerBirthDate.getDayOfMonth());
+        child.put("childDateOfBirthYear", toddlerBirthDate.getYear());
+        child.put("needFinancialAssistanceForChild", needFinancialAssistanceForChild);
+        child.put("childIsUsCitizen", "Yes");
+        child.put("ccapStartDate", "01/10/2025");
+        child.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
+        children.add(child);
+        submission.getInputData().put("children", children);
+        return this;
+    }
     public SubmissionTestBuilder withProviderHouseholdMember(
         String firstName,
         String lastName,
