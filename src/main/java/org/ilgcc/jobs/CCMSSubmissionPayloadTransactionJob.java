@@ -14,7 +14,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +27,7 @@ import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.stereotype.Service;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Service
@@ -46,7 +46,9 @@ public class CCMSSubmissionPayloadTransactionJob {
     private List<OfflineTimeRange> ccmsOfflineTimeRanges;
     private int ccmsTransactionDelayOffset;
 
-    private int totalCcmsTransactionDelayOffset;
+    // a primitive int isn't threadsafe, but AtomicInteger is. This will ensure multiple threads
+    // creating delayed jobs always have the correct time offset.
+    private final AtomicInteger totalCcmsTransactionDelayOffset = new AtomicInteger(0);
 
     public CCMSSubmissionPayloadTransactionJob(JobScheduler jobScheduler,
             CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
@@ -74,8 +76,7 @@ public class CCMSSubmissionPayloadTransactionJob {
             // add those into the equation.
             ccmsTransactionDelayOffset = ccmsApiClient.getConfiguration().getOfflineTransactionDelayOffset();
 
-            totalCcmsTransactionDelayOffset =
-                    ccmsTransactionDelayOffset + (ccmsTransactionDelayOffset * previouslyScheduledCCMSJobs);
+            totalCcmsTransactionDelayOffset.set(ccmsTransactionDelayOffset + (ccmsTransactionDelayOffset * previouslyScheduledCCMSJobs));
         } else {
             ccmsOfflineTimeRanges = new ArrayList<>();
         }
@@ -88,7 +89,7 @@ public class CCMSSubmissionPayloadTransactionJob {
             // CCMS is offline... but only if a job that might get enqueued *instantly* won't actually be sent during the current
             // offline time range
             if (isOnlineNow()) {
-                totalCcmsTransactionDelayOffset = ccmsTransactionDelayOffset;
+                totalCcmsTransactionDelayOffset.set(ccmsTransactionDelayOffset);
             }
 
             JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofMinutes(jobDelayMinutes)),
@@ -106,7 +107,7 @@ public class CCMSSubmissionPayloadTransactionJob {
             // CCMS is offline... but only a job that might get enqueued *not instantly* won't be delayed into an upcoming
             // offline time range
             if (isOnlineAt(ZonedDateTime.now(CENTRAL_ZONE).plusMinutes(jobDelayMinutes))) {
-                totalCcmsTransactionDelayOffset = ccmsTransactionDelayOffset;
+                totalCcmsTransactionDelayOffset.set(ccmsTransactionDelayOffset);
             }
 
             JobId jobId = jobScheduler.enqueue(() -> sendCCMSTransaction(submissionId));
@@ -128,7 +129,7 @@ public class CCMSSubmissionPayloadTransactionJob {
 
         // And then we can make sure we run this job starting once the offline range ends + the offset caused by prior offline
         // scheduled jobs, so we can have them staggered by the offset
-        long jobDelaySeconds = totalCcmsTransactionDelayOffset + secondsUntilEndOfOfflineRange;
+        long jobDelaySeconds = totalCcmsTransactionDelayOffset.get() + secondsUntilEndOfOfflineRange;
 
         JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofSeconds(jobDelaySeconds)),
                 () -> sendCCMSTransaction(submissionId));
@@ -139,7 +140,7 @@ public class CCMSSubmissionPayloadTransactionJob {
 
         // And finally we can bump up the amount of time we need to wait for the next job. As the number of delayed jobs increases,
         // this will increase.
-        totalCcmsTransactionDelayOffset = totalCcmsTransactionDelayOffset + ccmsTransactionDelayOffset;
+        totalCcmsTransactionDelayOffset.getAndAdd(ccmsTransactionDelayOffset);
     }
 
     @Job(name = "Send CCMS Submission Payload", retries = 3)
