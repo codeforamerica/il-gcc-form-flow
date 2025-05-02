@@ -5,10 +5,12 @@ import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.FileNameUtility;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
 import org.ilgcc.jobs.PdfTransmissionJob;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
 
+    private final SubmissionRepositoryService submissionRepositoryService;
     private final PdfService pdfService;
     private final CloudFileRepository cloudFileRepository;
     private final PdfTransmissionJob pdfTransmissionJob;
@@ -31,6 +34,7 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
             PdfTransmissionJob pdfTransmissionJob,
             CCMSSubmissionPayloadTransactionJob CCMSSubmissionPayloadTransactionJob,
             EnqueueDocumentTransfer enqueueDocumentTransfer,
+            SubmissionRepositoryService submissionRepositoryService,
             @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
             @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled) {
         this.pdfService = pdfService;
@@ -38,6 +42,7 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
         this.pdfTransmissionJob = pdfTransmissionJob;
         this.CCMSSubmissionPayloadTransactionJob = CCMSSubmissionPayloadTransactionJob;
         this.enqueueDocumentTransfer = enqueueDocumentTransfer;
+        this.submissionRepositoryService = submissionRepositoryService;
         CCMS_INTEGRATION_ENABLED = ccmsIntegrationEnabled;
         DTS_INTEGRATION_ENABLED = dtsIntegrationEnabled;
     }
@@ -45,6 +50,9 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
     @Override
     public void run(Submission submission) {
         if (hasNotChosenProvider(submission)) {
+            submission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.INACTIVE.name());
+            submissionRepositoryService.save(submission);
+
             if (DTS_INTEGRATION_ENABLED) {
                 enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
                         submission, FileNameUtility.getFileNameForPdf(submission, "Form-Family"));

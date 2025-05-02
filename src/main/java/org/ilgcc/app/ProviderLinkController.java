@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +56,7 @@ public class ProviderLinkController {
         if (sanitizedConfirmationCode != null) {
             Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(
                     sanitizedConfirmationCode.toUpperCase());
-            if (familySubmission.isPresent() && !"false".equals(familySubmission.get().getInputData().get("hasChosenProvider"))) {
+            if (familySubmission.isPresent() && !ProviderSubmissionUtilities.isFamilyConfirmationCodeInactive(familySubmission.get())) {
                 setFamilySessionData(familySubmission.get(), newSession);
                 checkRefererValue(referer, newSession);
             } else {

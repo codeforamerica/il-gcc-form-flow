@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -59,7 +60,7 @@ public class ValidateConfirmationCode implements Action {
             Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(
                     providerProvidedConfirmationCode.toUpperCase());
 
-            if (familySubmission.isPresent() && !"false".equals(familySubmission.get().getInputData().get("hasChosenProvider"))) {
+            if (familySubmission.isPresent() && !ProviderSubmissionUtilities.isFamilyConfirmationCodeInactive(familySubmission.get())) {
                 setFamilySessionData(familySubmission.get(), httpSession);
             } else {
                 setErrorMessages(errorMessages);
