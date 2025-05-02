@@ -5,7 +5,6 @@ import static java.util.Collections.emptyList;
 
 import formflow.library.data.Submission;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
