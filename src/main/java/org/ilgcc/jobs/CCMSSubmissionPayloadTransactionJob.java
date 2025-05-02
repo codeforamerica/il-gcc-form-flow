@@ -52,7 +52,7 @@ public class CCMSSubmissionPayloadTransactionJob {
         log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}", jobId, submissionId);
     }
 
-    public void enqueueSubmissionCCMSPayloadTransactionJobInstantly(@NotNull UUID submissionId) {
+    public void enqueueCCMSTransactionPayloadInstantly(@NotNull UUID submissionId) {
         JobId jobId = jobScheduler.enqueue(() -> sendCCMSTransaction(submissionId));
         log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}", jobId, submissionId);
     }

@@ -192,7 +192,7 @@ public class ProviderResponseRecurringJob {
                                 uploadedDocumentTransmissionJob, s3PresignService, expiredFamilySubmission);
                     }
                     if (isCCMSIntegrationEnabled) {
-                        ccmsSubmissionPayloadTransaction.enqueueSubmissionCCMSPayloadTransactionJobInstantly(
+                        ccmsSubmissionPayloadTransaction.enqueueCCMSTransactionPayloadInstantly(
                                 expiredFamilySubmission.getId());
                     }
                     updateProviderStatus(expiredFamilySubmission);

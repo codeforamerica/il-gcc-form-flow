@@ -4,6 +4,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
+import jakarta.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -284,7 +285,12 @@ public class ProviderSubmissionUtilities {
         } else {
             return Optional.empty();
         }
+    }
 
+
+    public static boolean isFamilySubmissionStatusNotInactive(@NotNull Submission familySubmission) {
+        Optional<SubmissionStatus> statusOptional = getProviderApplicationResponseStatus(familySubmission);
+        return statusOptional.isEmpty() || !SubmissionStatus.INACTIVE.equals(statusOptional.get());
     }
 
     public static SubmissionStatus calculateProviderApplicationResponseStatus(Submission familySubmission) {
