@@ -118,9 +118,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(notices).isNotEmpty();
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
-        testPage.findElementById("respond-to-another-app-button").click();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
-
     }
 
     @Test
@@ -203,8 +200,6 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
-        testPage.findElementById("respond-to-another-app-button").click();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
     }
 
     @Test

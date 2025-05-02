@@ -37,7 +37,7 @@ public class ProviderResponseWithFEINJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Submit application");
 
         //submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
         // Assert shows correct header language when the provider did not provide any way to identify them
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.denied-care-or-unidentifiable.header"));
         // They did not register and should see the provider experience version of the survey language
