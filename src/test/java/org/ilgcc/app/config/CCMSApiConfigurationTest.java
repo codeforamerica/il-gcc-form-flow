@@ -56,47 +56,58 @@ public class CCMSApiConfigurationTest {
         // 9:30am - ONLINE
         today = today.withHour(9).withMinute(30).withSecond(0).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(today)).isTrue();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(today)).isEqualTo(0);
 
         // 9:30pm - ONLINE
         today = today.withHour(21).withMinute(30).withSecond(0).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(today)).isTrue();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(today)).isEqualTo(0);
 
         // 10:59:59pm - ONLINE
         today = today.withHour(22).withMinute(59).withSecond(59).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(today)).isTrue();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(today)).isEqualTo(0);
 
         // 11:00:00pm - OFFLINE
         today = today.withHour(23).withMinute(0).withSecond(0).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(today)).isFalse();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(today)).isEqualTo(6 * 60 * 60);
 
         // 11:00:01pm - OFFLINE
-        today = today.withHour(23).withMinute(0).withSecond(0).withNano(0);
+        today = today.withHour(23).withMinute(0).withSecond(1).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(today)).isFalse();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(today)).isEqualTo((6 * 60 * 60) - 1);
 
         // 11:59:59pm - OFFLINE
         today = today.withHour(23).withMinute(59).withSecond(59).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(today)).isFalse();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(today)).isEqualTo(1 + (5 * 60 * 60));
 
         // Tomorrow 12:00:00am - OFFLINE
         ZonedDateTime tomorrow = today.plusDays(1);
         tomorrow = tomorrow.withHour(0).withMinute(0).withSecond(0).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(tomorrow)).isFalse();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(tomorrow)).isEqualTo((5 * 60 * 60));
 
         // Tomorrow 4:59:59am - OFFLINE
         tomorrow = tomorrow.withHour(4).withMinute(59).withSecond(59).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(tomorrow)).isFalse();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(tomorrow)).isEqualTo(1);
 
         // Tomorrow 5:00:00am - OFFLINE
         tomorrow = tomorrow.withHour(5).withMinute(0).withSecond(0).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(tomorrow)).isFalse();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(tomorrow)).isEqualTo(0);
 
         // Tomorrow 5:00:01am - ONLINE
         tomorrow = tomorrow.withHour(5).withMinute(0).withSecond(1).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(tomorrow)).isTrue();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(tomorrow)).isEqualTo(0);
 
         // Tomorrow 11:00:01pm - OFFLINE
         tomorrow = tomorrow.withHour(23).withMinute(0).withSecond(1).withNano(0);
         assertThat(ccmsApiConfiguration.isOnlineAt(tomorrow)).isFalse();
+        assertThat(ccmsApiConfiguration.getSecondsUntilEndOfOfflineRangeStartingAt(tomorrow)).isEqualTo((6 * 60 * 60) - 1);
     }
 
     @Test

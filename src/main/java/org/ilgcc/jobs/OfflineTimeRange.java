@@ -35,7 +35,7 @@ public class OfflineTimeRange {
 
         if (start.isAfter(end)) {
             // Overnight range: end is on the next day
-            if (time.toLocalTime().isBefore(end)) {
+            if (time.toLocalTime().isAfter(end)) {
                 endDateTime = endDateTime.plusDays(1);
             }
         }
