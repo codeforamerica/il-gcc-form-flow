@@ -162,7 +162,7 @@ public class Providerresponse extends FlowInputs {
     private String homeProviderTaxIDselection;
     
     //registration-home-provider-itin
-    @Pattern(regexp = "^$|\\d{9}", message = "{registration-home-provider-itin.error-invalid}")
+    @Pattern(regexp = "^9\\d{2}-\\d{2}-\\d{4}$", message = "{registration-tax-id-itin.error}")
     private String providerITIN;
 
     // registration-signature
