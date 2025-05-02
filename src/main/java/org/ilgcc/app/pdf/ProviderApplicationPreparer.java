@@ -61,7 +61,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
                 "providerConvictionExplanation",
                 "providerIdentityCheckDateOfBirthDate",
                 "providerResponseProviderNumber",
-                "providerTaxIdEIN",
+                "providerTaxIdFEIN",
                 "providerResponseServiceStreetAddress1",
                 "providerResponseServiceStreetAddress2",
                 "providerResponseServiceCity",
@@ -183,7 +183,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
 
     private String providerResponse(Map<String, Object> providerInputData) {
         boolean returningProvider = providerInputData.getOrDefault("providerPaidCcap", "true").toString().equals("true");
-        boolean hasEIN = providerInputData.containsKey("providerTaxIdEIN");
+        boolean hasFEIN = providerInputData.containsKey("providerTaxIdFEIN");
         boolean hasProviderNumber = providerInputData.containsKey("providerResponseProviderNumber");
         if ("false".equals(providerInputData.get("providerResponseAgreeToCare"))) {
             if (providerInputData.get("providerResponseDenyCareReason") != null && !providerInputData.get("providerResponseDenyCareReason").toString().isEmpty()) {
@@ -194,7 +194,7 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
             }
         }
 
-        if (returningProvider && !hasEIN && !hasProviderNumber) {
+        if (returningProvider && !hasFEIN && !hasProviderNumber) {
             return "Unable to identify provider - no response to care arrangement";
         }
 

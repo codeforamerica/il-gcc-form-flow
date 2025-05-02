@@ -795,10 +795,10 @@ flow:
         condition: NeedsSSNForTaxID
       - name: registration-tax-id-itin
         condition: ProviderChoseITINTaxIdType
-      - name: registration-tax-id-ein
+      - name: registration-tax-id-fein
         condition: ProviderChoseEINAsTaxIdType
       - name: registration-service-languages
-  registration-tax-id-ein:
+  registration-tax-id-fein:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-service-languages
