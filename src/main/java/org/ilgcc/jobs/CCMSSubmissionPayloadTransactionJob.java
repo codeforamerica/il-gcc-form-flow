@@ -100,7 +100,7 @@ public class CCMSSubmissionPayloadTransactionJob {
         }
     }
 
-    public void enqueueSubmissionCCMSPayloadTransactionJobInstantly(@NotNull UUID submissionId) {
+    public void enqueueCCMSTransactionPayloadInstantly(@NotNull UUID submissionId) {
         if (isOnlineNow()) {
             // If CCMS is (back) online, make sure that we're resetting the initial total offset for the next time
             // CCMS is offline... but only a job that might get enqueued *not instantly* won't be delayed into an upcoming
