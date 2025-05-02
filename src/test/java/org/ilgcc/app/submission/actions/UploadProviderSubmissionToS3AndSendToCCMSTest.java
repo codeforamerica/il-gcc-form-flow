@@ -11,6 +11,7 @@ import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.time.OffsetDateTime;
+import org.ilgcc.app.data.SubmissionSenderService;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
@@ -44,9 +45,10 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
     @MockitoBean
     private CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
 
-
     private Submission familySubmission;
     Submission providerSubmission;
+
+    private SubmissionSenderService submissionSenderService;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
@@ -78,7 +80,7 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
 
     @Test
     void ProviderSubmissionIsEnqueued() {
-        uploadProviderSubmissionToS3AndSendToCCMS = new UploadProviderSubmissionToS3AndSendToCCMS(
+        submissionSenderService = new SubmissionSenderService(
                 pdfService,
                 cloudFileRepository,
                 pdfTransmissionJob,
@@ -86,10 +88,12 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
                 submissionRepositoryService,
                 userFileRepositoryService,
                 uploadedDocumentTransmissionJob,
-                s3PresignService, 
+                s3PresignService,
                 ccmsSubmissionPayloadTransactionJob,
                 true,
                 true);
+
+        uploadProviderSubmissionToS3AndSendToCCMS = new UploadProviderSubmissionToS3AndSendToCCMS(submissionSenderService);
         uploadProviderSubmissionToS3AndSendToCCMS.run(providerSubmission);
 
         verify(enqueueDocumentTransfer, times(1)).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
