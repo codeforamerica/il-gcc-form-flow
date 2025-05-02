@@ -129,9 +129,9 @@ public class Providerresponse extends FlowInputs {
     @SSN(message="{errors.invalid-ssn}")
     @Encrypted
     private String providerTaxIdSSN;
-    
-    @Pattern(regexp = "\\d{2}-\\d{7}", message = "{registration-tax-id-ein.error}")
-    private String providerTaxIdEIN;
+
+    @Pattern(regexp = "\\d{2}-\\d{7}", message = "{registration-tax-id-fein.error}")
+    private String providerTaxIdFEIN;
 
     // registration terms
     @NotEmpty(message = "{errors.validate.provider-agrees-to-legal-terms}")
@@ -169,7 +169,7 @@ public class Providerresponse extends FlowInputs {
     @NotBlank(message = "{errors.validate.provider-signed-name}")
     private String providerSignedName;
 
-    // registration-submit-confirmation
+    // submit-confirmation
     private String providerSurveyFamilyDifficulty;
     private String providerSurveyProviderDifficulty;
     private String providerSurveyAdditionalComments;

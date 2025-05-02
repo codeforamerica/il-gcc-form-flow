@@ -36,7 +36,7 @@ public class ProviderRecommendedDocumentsUtilities {
         return providerTypesRequired.contains(providerType);
     }
 
-    public static boolean einIRSLetter(String providerTaxIdType) {
+    public static boolean feinIRSLetter(String providerTaxIdType) {
         return providerTaxIdType.equals("FEIN");
     }
 

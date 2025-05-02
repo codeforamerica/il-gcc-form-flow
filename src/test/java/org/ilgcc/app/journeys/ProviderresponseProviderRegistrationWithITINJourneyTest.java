@@ -2,8 +2,6 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import formflow.library.data.Submission;
-import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
@@ -22,7 +20,7 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
 
     @Test
     public void providerRegistrationHomeProviderSelectITIN() {
-        setupRegistration();
+        setupRegistrationWithITIN();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -134,7 +132,7 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
 
     @Test
     public void providerRegistrationHomeProviderSelectSSN() {
-        setupRegistration();
+        setupRegistrationWithITIN();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -223,7 +221,7 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
     }
     @Test
     void providerRegistrationNonHomeProviderSelectITIN() {
-        setupRegistration();
+        setupRegistrationWithITIN();
 
         testPage.navigateToFlowScreen("providerresponse/registration-licensing");
 
@@ -315,8 +313,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         testPage.clickElementById("providerTaxIdType-FEIN-label");
         testPage.clickContinue();
 
-        // registration-tax-id-ein
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-ein.title"));
+        // registration-tax-id-fein
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-tax-id-fein.title"));
         testPage.goBack();
 
         //registration-payment-tax-id
@@ -349,24 +347,14 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
     }
 
 
-    private void setupRegistration() {
-        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).with("earliestChildcareStartDate", "10/10/2011")
-                .withSubmittedAtDate(OffsetDateTime.now()).build());
-
-        testPage.clickContinue();
-
-        driver.navigate().to("http://localhost:%s/s/%s".formatted(localServerPort, s.getShortCode()));
+    private void setupRegistrationWithITIN() {
+        String shortCode = createAValidLink();
 
         // submit-start
         testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
 
         // confirmation-code
-        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(s.getShortCode());
+        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(shortCode);
         testPage.clickContinue();
 
         // paid-by-ccap
