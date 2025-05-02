@@ -12,11 +12,14 @@ import static org.ilgcc.app.data.importer.FakeProviderDataImporter.OUTDATED_PEND
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 @Slf4j
 public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
@@ -103,13 +106,18 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickButton("Submit");
 
-        //registration-submit-confirmation displays submit-complete-final screen
+        //submit-confirmation displays submit-complete-final screen
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        // Existing provider who agreed to care should see this header
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("provider-response-submit-complete-final.header"));
+        // If they are an existing provider they should see the survey legend that says how was the response experience
+        WebElement surveyLegend = driver.findElement(By.xpath("//legend[@id='providerSurveyProviderDifficulty-legend']/span"));
+        assertThat(surveyLegend.getText()).isEqualTo(getEnMessage("submit-confirmation.existing-provider.experience-question"));
+        // We should see the notice about contacting CCR&R because they are an existing provider who agreed to care
+        List<WebElement> notices = driver.findElements(By.cssSelector(".notice.notice--gray"));
+        assertThat(notices).isNotEmpty();
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
-        testPage.findElementById("respond-to-another-app-button").click();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
-
     }
 
     @Test
@@ -188,12 +196,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickButton("Submit");
 
-        //registration-submit-confirmation displays submit-complete-final screen
+        //submit-confirmation displays submit-complete-final screen
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
-        testPage.findElementById("respond-to-another-app-button").click();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
     }
 
     @Test

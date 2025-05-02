@@ -1,14 +1,29 @@
 package org.ilgcc.app.utils;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+
 import com.google.common.collect.Iterables;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepository;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-import org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData;
 import org.ilgcc.app.data.TransmissionRepository;
+import org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
@@ -22,22 +37,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Callable;
 import org.springframework.test.context.TestPropertySource;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import({WebDriverConfiguration.class, FakeResourceOrganizationAndCountyData.class})
@@ -281,6 +281,44 @@ public abstract class AbstractBasePageTest {
 
         //activities-partner-commute-time
         testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
+        testPage.clickContinue();
+    }
+
+    protected String createAValidLink() {
+        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
+
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
+                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
+                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
+                .withConstantChildcareSchedule(0).with("earliestChildcareStartDate", "10/10/2011")
+                .withSubmittedAtDate(OffsetDateTime.now()).build());
+
+        testPage.clickContinue();
+
+        driver.navigate().to("http://localhost:%s/s/%s".formatted(localServerPort, s.getShortCode()));
+
+        return s.getShortCode();
+    }
+
+    protected void setupRegistration() {
+        String confirmationCode = createAValidLink();
+        // submit-start
+        testPage.clickButton(getEnMessage("provider-response-submit-start.active.button"));
+
+        // confirmation-code
+        assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(confirmationCode);
+        testPage.clickContinue();
+
+        // paid-by-ccap
+        testPage.clickNo();
+
+        // registration-start
+        testPage.clickButton(getEnMessage("registration-start.button"));
+
+        // registration-getting-started
+        testPage.clickContinue();
+
+        // registration-provide-care-intro
         testPage.clickContinue();
     }
 }

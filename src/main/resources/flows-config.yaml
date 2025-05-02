@@ -661,7 +661,7 @@ flow:
     beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
-      - name: registration-submit-confirmation
+      - name: submit-confirmation
  #Existing Provider Flow: FEIN
   fein:
     condition: EnableProviderResponseFEIN
@@ -679,7 +679,7 @@ flow:
     beforeDisplayAction: GetCCRRNameFromFamilySubmission
     afterSaveAction: SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission
     nextScreens:
-      - name: registration-submit-confirmation
+      - name: submit-confirmation
   #New Provider Flow
   registration-start:
     condition: EnableProviderRegistration
@@ -888,13 +888,13 @@ flow:
   registration-submit-next-steps:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: registration-submit-confirmation
+      - name: submit-confirmation
         condition: EnableProviderRegistration
       - name: submit-start
-  registration-submit-confirmation:
+  submit-confirmation:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
-      - name: registration-submit-confirmation
+      - name: submit-confirmation
   registration-household-delete-person:
     nextScreens: null
   registration-doc-upload-recommended-docs:
@@ -920,7 +920,7 @@ landmarks:
   afterSubmitPages:
     - submit-complete-final
     - registration-submit-complete
-    - registration-submit-confirmation
+    - submit-confirmation
     - registration-submit-next-steps
     - registration-doc-upload-recommended-docs
     - registration-doc-upload-add-files

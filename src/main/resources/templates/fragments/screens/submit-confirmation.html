@@ -17,10 +17,10 @@
                     <th:block th:replace="~{fragments/gcc-icons :: check-mark}"></th:block>
                     <div th:if="${lockedSubmissionMessage}" class="notice--warning">
                         <p th:text="${lockedSubmissionMessage}"></p></div>
-                    <div class="registration-submit-confirmation-header">
+                    <div class="submit-confirmation-header">
                         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${header})}"/>
                     </div>
-                    <div th:if="${includedNotice}" class="notice notice--gray">
+                    <div class="notice notice--gray">
                         <p th:text="${notice}"></p>
                     </div>
                     <p th:utext="#{submit-confirmation.general.subtext(${submittedDate}, ${submittedTime}, ${session.confirmationCode})}"></p>
