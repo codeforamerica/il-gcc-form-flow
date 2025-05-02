@@ -288,9 +288,9 @@ public class ProviderSubmissionUtilities {
     }
 
 
-    public static boolean isFamilyConfirmationCodeInactive(@NotNull Submission familySubmission) {
+    public static boolean isFamilySubmissionStatusNotInactive(@NotNull Submission familySubmission) {
         Optional<SubmissionStatus> statusOptional = getProviderApplicationResponseStatus(familySubmission);
-        return statusOptional.isPresent() && SubmissionStatus.INACTIVE.equals(statusOptional.get());
+        return statusOptional.isEmpty() || !SubmissionStatus.INACTIVE.equals(statusOptional.get());
     }
 
     public static SubmissionStatus calculateProviderApplicationResponseStatus(Submission familySubmission) {

@@ -60,7 +60,8 @@ public class ValidateConfirmationCode implements Action {
             Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(
                     providerProvidedConfirmationCode.toUpperCase());
 
-            if (familySubmission.isPresent() && !ProviderSubmissionUtilities.isFamilyConfirmationCodeInactive(familySubmission.get())) {
+            if (familySubmission.isPresent() && ProviderSubmissionUtilities.isFamilySubmissionStatusNotInactive(
+                    familySubmission.get())) {
                 setFamilySessionData(familySubmission.get(), httpSession);
             } else {
                 setErrorMessages(errorMessages);
