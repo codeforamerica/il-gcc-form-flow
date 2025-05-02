@@ -43,7 +43,6 @@ public class ProviderResponseWithFEINJourneyTest extends AbstractBasePageTest {
         // They did not register and should see the provider experience version of the survey language
         WebElement surveyLegend = driver.findElement(By.xpath("//legend[@id='providerSurveyProviderDifficulty-legend']/span"));
         assertThat(surveyLegend.getText()).isEqualTo(getEnMessage("submit-confirmation.existing-provider.experience-question"));
-        // We should not see the notice about contacting CCR&R because they are a new provider
         List<WebElement> notices = driver.findElements(By.cssSelector(".notice.notice--gray"));
         assertThat(notices).isNotEmpty();
     }
