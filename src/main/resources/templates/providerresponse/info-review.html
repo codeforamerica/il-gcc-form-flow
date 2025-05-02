@@ -19,8 +19,9 @@
                                     th:text="#{provider-response-info-review.basic-info}"></strong>
                             </p>
                             <ol class="list--bulleted">
-                                <li id="business-name"
-                                    th:text="${inputData.get('providerResponseBusinessName')}"></li>
+                                <th:block th:if="${!inputData.getOrDefault('providerResponseBusinessName', '').isEmpty()}">
+                                    <li id="business-name" th:text="${inputData.get('providerResponseBusinessName')}"></li>
+                                </th:block>
                                 <li id="full-name"
                                     th:text="|${inputData.get('providerResponseFirstName')} ${inputData.get('providerResponseLastName')}|"></li>
                             </ol>
