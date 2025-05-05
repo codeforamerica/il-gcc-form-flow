@@ -106,7 +106,11 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         testPage.clickContinue();
 
         assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-itin.error-invalid"))).isTrue();
-        testPage.enter("providerITIN", "123456789");
+        testPage.enter("providerITIN", "123-45-6789");
+        testPage.clickContinue();
+
+        assertThat(testPage.hasErrorText(getEnMessage("registration-tax-id-itin.error"))).isTrue();
+        testPage.enter("providerITIN", "923-45-6781");
         testPage.clickContinue();
 
         // registration-home-provider-dob
@@ -338,8 +342,8 @@ public class ProviderresponseProviderRegistrationWithITINJourneyTest extends Abs
         testPage.enter("providerITIN", "1231425");
         testPage.clickContinue();
 
-        assertThat(testPage.hasErrorText(getEnMessage("registration-home-provider-itin.error-invalid"))).isTrue();
-        testPage.enter("providerITIN", "123456789");
+        assertThat(testPage.hasErrorText(getEnMessage("registration-tax-id-itin.error"))).isTrue();
+        testPage.enter("providerITIN", "923-45-6781");
         testPage.clickContinue();
 
         //registration-service-languages
