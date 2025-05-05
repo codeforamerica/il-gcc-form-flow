@@ -81,7 +81,7 @@ flow:
   parent-contact-info:
     crossFieldValidationAction: ValidateParentContactProvideEmail
     nextScreens:
-      - parent-info-review
+      - name: parent-info-review
   parent-info-review:
     nextScreens:
       - name: parent-have-a-partner
