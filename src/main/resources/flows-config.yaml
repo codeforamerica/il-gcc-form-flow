@@ -143,6 +143,8 @@ flow:
         condition: ReachedMaxChildrenNeedingAssistance
       - name: children-ccap-info
         condition: NeedsFinancialAssistanceForChild
+      - name: children-ccap-child-other-ed
+        condition: EnableMultipleProviders
       - name: children-add
   children-ccap-max-number:
     subflow: children
