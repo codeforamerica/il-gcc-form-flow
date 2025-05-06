@@ -41,7 +41,11 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
     private String orgEmailsRaw;
     private Map<String, List<String>> organizationEmailRecipients = new HashMap<>();
 
-    private int secondsOffset = 0;
+    @Value("${il-gcc.resource-org-emails-delay-seconds}")
+    private int secondsOffset;
+
+    @Value("${il-gcc.resource-org-emails-delay-seconds}")
+    private int secondsOffsetIncrement;
 
     @PostConstruct
     void parseMap() {
@@ -100,8 +104,6 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
 
         List<ResourceOrganization> activeResourceOrganizations = ccmsDataService.getActiveResourceOrganizations();
 
-        secondsOffset = 15;
-
         organizationEmailRecipients.keySet().forEach(orgId -> {
 
             List<String> currentOrgRecipients = organizationEmailRecipients.get(orgId);
@@ -147,6 +149,6 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
                 emailData.get("processingOrgId").toString());
         log.info("secondsOffset: {}", secondsOffset);
         sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(secondsOffset));
-        secondsOffset = secondsOffset + 15;
+        secondsOffset = secondsOffset + secondsOffsetIncrement;
     }
 }
