@@ -537,6 +537,30 @@ flow:
     condition: ContactProviderViaOther
     nextScreens:
       - name: doc-upload-recommended-docs
+  providers-intro:
+    condition: SkipTemplate
+    nextScreens: null
+  providers-chosen:
+    condition: SkipTemplate
+    nextScreens: null
+  providers-no-provider-intro:
+    condition: SkipTemplate
+    nextScreens: null
+  providers-all-ccap-children:
+    condition: SkipTemplate
+    nextScreens: null
+  providers-add:
+    condition: SkipTemplate
+    nextScreens: null
+  providers-info:
+    condition: SkipTemplate
+    nextScreens: null
+  delete-provider:
+    condition: SkipTemplate
+    nextScreens: null
+  provider-info-confirm:
+    condition: SkipTemplate
+    nextScreens: null
   doc-upload-confirm:
     nextScreens: null
   children-delete:
