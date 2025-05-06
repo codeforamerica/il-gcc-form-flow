@@ -540,7 +540,6 @@ flow:
     nextScreens:
       - name: doc-upload-recommended-docs
   providers-intro:
-    condition: SkipTemplate
     nextScreens: null
   providers-chosen:
     condition: SkipTemplate
