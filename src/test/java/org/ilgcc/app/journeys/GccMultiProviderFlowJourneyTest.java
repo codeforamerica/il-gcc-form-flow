@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
-public class GccProviderMultiProviderFlowJourneyTest extends AbstractBasePageTest {
+public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
     @Test
-    void ProviderMessagingStepsHappyPathHasChosenProvider() {
+    void MultiProviderFlowJourneyTest() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
         saveSubmission(getSessionSubmissionTestBuilder()
@@ -22,6 +22,6 @@ public class GccProviderMultiProviderFlowJourneyTest extends AbstractBasePageTes
                 .build());
 
         testPage.navigateToFlowScreen("gcc/providers-intro");
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
     }
 }
