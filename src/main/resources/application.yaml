@@ -141,6 +141,7 @@ il-gcc:
   enable-provider-registration-with-itin: ${ENABLE_PROVIDER_REGISTRATION_WITH_ITIN:false}
   enable-new-sda-caseload-codes: ${ENABLE_NEW_SDA_CASELOAD_CODES:false}
   enable-provider-messaging: ${ENABLE_PROVIDER_MESSAGING:false}
+  enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:false}
   ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
   dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:true}
   enable-provider-response-with-fein: ${ENABLE_PROVIDER_RESPONSE_FEIN:false}
