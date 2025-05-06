@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{providers-intro.title})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{providers-intro.title-header})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -13,7 +13,7 @@
           <th:block>
             <p class="text--grey-dark" th:id="providers-intro-step" th:text="${#messages.msg('general.step-header', '3' , '6')}"></p>
           </th:block>
-          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{providers-intro.header})}"/>
+          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{providers-intro.title-header})}"/>
         </div>
         <div class="form-card__content">
           <div class="boxed-content provider-intro-boxed-content-margin">
