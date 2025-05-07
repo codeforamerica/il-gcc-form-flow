@@ -540,28 +540,28 @@ flow:
     nextScreens:
       - name: doc-upload-recommended-docs
   providers-intro:
-    condition: SkipTemplate
+    condition: EnableMultipleProviders
     nextScreens: null
   providers-chosen:
-    condition: SkipTemplate
+    condition: EnableMultipleProviders
     nextScreens: null
   providers-no-provider-intro:
-    condition: SkipTemplate
+    condition: EnableMultipleProviders
     nextScreens: null
   providers-all-ccap-children:
-    condition: SkipTemplate
+    condition: EnableMultipleProviders
     nextScreens: null
   providers-add:
-    condition: SkipTemplate
+    condition: EnableMultipleProviders
     nextScreens: null
   providers-info:
-    condition: SkipTemplate
+    condition: EnableMultipleProviders
     nextScreens: null
   delete-provider:
-    condition: SkipTemplate
+    condition: EnableMultipleProviders
     nextScreens: null
   provider-info-confirm:
-    condition: SkipTemplate
+    condition: EnableMultipleProviders
     nextScreens: null
   doc-upload-confirm:
     nextScreens: null
