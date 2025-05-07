@@ -169,8 +169,8 @@ public class ProviderSubmissionUtilities {
         Map<String, Integer> childAge = new HashMap<>();
         LocalDate dateOfBirth = LocalDate.parse(bdayString, MM_DD_YYYY);
 
-        Integer childYears = Period.between(dateOfBirth, LocalDate.now()).getYears();
-        Integer childMonths = Period.between(dateOfBirth, LocalDate.now()).getMonths();
+        int childYears = Period.between(dateOfBirth, LocalDate.now()).getYears();
+        int childMonths = Period.between(dateOfBirth, LocalDate.now()).getMonths();
 
         if (childYears <= 1) {
             childAge.put("months", ((childYears * 12) + childMonths));
