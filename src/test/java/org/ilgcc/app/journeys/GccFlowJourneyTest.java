@@ -315,7 +315,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
         List<String> li = testPage.getTextBySelector(".child-name");
         assertThat(li).doesNotContain("ShouldBe Removed");
-        assertThat(li).containsExactly("mugully glopklin", "child mcchild");
+        assertThat(li).containsExactly("child mcchild", "mugully glopklin");
         testPage.clickButton(getEnMessage("children-add.thats-all"));
 
         //activities-parent-intro
