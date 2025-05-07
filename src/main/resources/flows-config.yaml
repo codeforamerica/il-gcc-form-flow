@@ -144,7 +144,7 @@ flow:
       - name: children-ccap-info
         condition: NeedsFinancialAssistanceForChild
       - name: children-ccap-child-other-ed
-        condition: EnableMultipleProviders
+        condition: NeedsCCAPWithMultipleProviderFlagOn
       - name: children-add
   children-ccap-max-number:
     subflow: children
