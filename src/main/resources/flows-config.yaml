@@ -541,7 +541,7 @@ flow:
       - name: doc-upload-recommended-docs
   providers-intro:
     condition: EnableMultipleProviders
-    nextScreens: null
+    nextScreens: providers-chosen
   providers-chosen:
     condition: EnableMultipleProviders
     nextScreens: null
