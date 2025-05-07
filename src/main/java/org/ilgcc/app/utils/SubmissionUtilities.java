@@ -149,15 +149,13 @@ public class SubmissionUtilities {
     }
 
     public static List<Map<String, Object>> getChildrenNeedingAssistance(Submission submission) {
-        return getChildren(submission).stream().filter(
-                        child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("true"))
-                .toList();
+        return getChildren(submission).stream()
+                .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("true")).toList();
     }
 
     public static List<Map<String, Object>> getChildrenNotNeedingAssistance(Submission submission) {
-        return getChildren(submission).stream().filter(
-                        child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("false"))
-                .toList();
+        return getChildren(submission).stream()
+                .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("false")).toList();
     }
 
     public static Map<String, List<Map<String, Object>>> getChildrenByStatus(Submission submission) {
