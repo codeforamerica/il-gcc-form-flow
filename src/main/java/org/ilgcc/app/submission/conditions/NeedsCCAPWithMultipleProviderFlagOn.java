@@ -18,7 +18,7 @@ public class NeedsCCAPWithMultipleProviderFlagOn implements Condition {
     @Override
     public Boolean run(Submission submission, String uuid) {
         var children = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
-        for(var child : children) {
+        for (var child : children) {
             if(child.get("uuid").equals(uuid)) {
                 return enableMultipleProviders && child.getOrDefault("needFinancialAssistanceForChild", "false").equals("true");
             }
