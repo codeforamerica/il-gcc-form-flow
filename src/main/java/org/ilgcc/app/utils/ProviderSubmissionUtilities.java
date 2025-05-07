@@ -125,25 +125,25 @@ public class ProviderSubmissionUtilities {
         applicationData.put("familyIntendedProviderEmail",
                 familySubmission.getInputData().getOrDefault("familyIntendedProviderEmail", ""));
         applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
-        applicationData.put("ccapStartDate", ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
-                Optional.empty()));
+        applicationData.put("ccapStartDate",
+                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
+                        Optional.empty()));
 
         return applicationData;
     }
 
-    public static List<Map<String, String>> getChildrenDataForProviderResponse(Submission applicantSubmission) {
-        List<Map<String, String>> children = new ArrayList<>();
+    public static List<Map<String, Object>> getChildrenDataForProviderResponse(Submission applicantSubmission) {
+        List<Map<String, Object>> children = new ArrayList<>();
 
         if (!SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission).isEmpty()) {
             for (var child : SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission)) {
-                Map<String, String> childObject = new HashMap<>();
+                Map<String, Object> childObject = new HashMap<>();
                 String firstName = (String) child.get("childFirstName");
                 String lastName = (String) child.get("childLastName");
-
                 childObject.put("childName", String.format("%s %s", firstName, lastName));
-                childObject.put("childAge", String.format("Age %s", childAge(child)));
+                childObject.put("childAge", childAge(child));
                 childObject.put("childCareHours", hoursRequested(child));
-                childObject.put("childStartDate", (String) child.get("ccapStartDate"));
+                childObject.put("childStartDate", child.get("ccapStartDate"));
                 children.add(childObject);
             }
         }
@@ -162,20 +162,22 @@ public class ProviderSubmissionUtilities {
         return formatListIntoReadableString(childNames, joiner);
     }
 
-    private static String childAge(Map<String, Object> child) {
+    private static Map<String, Integer> childAge(Map<String, Object> child) {
         var bdayString = String.format("%s/%s/%s", child.get("childDateOfBirthMonth"), child.get("childDateOfBirthDay"),
                 child.get("childDateOfBirthYear"));
 
+        Map<String, Integer> childAge = new HashMap<>();
         LocalDate dateOfBirth = LocalDate.parse(bdayString, MM_DD_YYYY);
 
         Integer childYears = Period.between(dateOfBirth, LocalDate.now()).getYears();
         Integer childMonths = Period.between(dateOfBirth, LocalDate.now()).getMonths();
 
-        if(childYears <= 1){
-            return String.format("%s months", (childYears * 12) + childMonths);
+        if (childYears <= 1) {
+            childAge.put("months", ((childYears * 12) + childMonths));
         } else {
-            return String.valueOf(childYears);
+            childAge.put("years", childYears);
         }
+        return childAge;
 
     }
 
@@ -191,20 +193,20 @@ public class ProviderSubmissionUtilities {
         return "";
     }
 
-    private static String hoursRequested(Map<String, Object> child) {
-        List sameHoursEveryday = (List) child.get("childcareHoursSameEveryDay[]");
-        List daysRequested = (List) child.get("childcareWeeklySchedule[]");
-        List<String> dateString = new ArrayList<>();
-        for (var day : daysRequested) {
+    private static Map<String, String> hoursRequested(Map<String, Object> child) {
+        List<String> sameHoursEveryday = (List) child.get("childcareHoursSameEveryDay[]");
+        List<String> daysRequested = (List) child.get("childcareWeeklySchedule[]");
+        Map<String, String> dates = new HashMap<>();
+        for (String day : daysRequested) {
             if (sameHoursEveryday.equals(List.of("yes"))) {
-                dateString.add(String.format("<li>%s %s to %s</li>", day, formatHourschedule(child, "Start", "AllDays"),
+                dates.put(day, String.format("%s - %s", formatHourschedule(child, "Start", "AllDays"),
                         formatHourschedule(child, "End", "AllDays")));
             } else {
-                dateString.add(String.format("<li>%s %s to %s</li>", day, formatHourschedule(child, "Start", (String) day),
-                        formatHourschedule(child, "End", (String) day)));
+                dates.put(day, String.format("%s - %s", formatHourschedule(child, "Start", day),
+                        formatHourschedule(child, "End", day)));
             }
         }
-        return String.join("", dateString);
+        return dates;
     }
 
     public static ZonedDateTime threeBusinessDaysFromSubmittedAtDate(OffsetDateTime submittedAtDate) {
