@@ -25,7 +25,7 @@
                                 <div class="boxed-content text--left">
                                     <th:block
                                             th:with="childrenNeedingAssistance=${children.get('needFinancialAssistance')}">
-                                        <th:block th:if="${childrenNeedingAssistance.size()>0}">
+                                        <th:block th:if="${childrenNeedingAssistance.size() > 0}">
                                             <div class="padding-left-25"><strong
                                                     th:text="#{children-add.child-care-assistance-header}"></strong>
                                             </div>
@@ -48,7 +48,7 @@
                                     </th:block>
                                     <th:block
                                             th:with="childrenNotNeedingAssistance=${children.get('notNeedingFinancialAssistance')}">
-                                        <th:block th:if="${childrenNotNeedingAssistance.size()>0}">
+                                        <th:block th:if="${childrenNotNeedingAssistance.size() > 0}">
                                             <div class="padding-left-25 spacing-above-35"><strong
                                                     th:text="#{children-add.other}"></strong></div>
                                             <ul class="subflow-list list--bulleted">
