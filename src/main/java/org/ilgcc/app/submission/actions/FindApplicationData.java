@@ -44,7 +44,7 @@ public class FindApplicationData implements Action {
                 newChild.put("childName", child.get("childName").toString());
                 newChild.put("childStartDate", child.get("childStartDate").toString());
                 newChild.put("childAge", localizeChildAge(child));
-                newChild.put("childCareHours", localizeChildCareHours(child).toString());
+                newChild.put("childCareHours", localizeChildCareHours(child));
 
                 childDataToDisplay.add(newChild);
             });

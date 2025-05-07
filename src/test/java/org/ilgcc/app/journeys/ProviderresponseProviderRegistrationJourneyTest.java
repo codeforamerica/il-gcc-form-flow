@@ -353,7 +353,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
 
         assertThat(testPage.findElementTextById("child-name-0")).contains("Toddler Baby");
-        assertThat(testPage.findElementTextById("child-age-0")).contains("Age 13 months");
+        assertThat(testPage.findElementTextById("child-age-0")).contains("13 months");
         assertThat(testPage.findElementTextById("child-schedule-0")).isNotNull();
         assertThat(testPage.findElementTextById("child-start-0")).isEqualTo("01/10/2025");
 
