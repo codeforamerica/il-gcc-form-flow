@@ -326,9 +326,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
         Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).with("earliestChildcareStartDate", "10/10/2011")
+                .with("parentPreferredName", "FirstName")
+                .withChild("Second", "Child", "false")
+                .withChild("NoAssistance", "Child", "false")
+                .withToddler("Toddler", "Baby", "true", 13)
+                .withConstantChildcareSchedule(2).with("earliestChildcareStartDate", "10/10/2011")
                 .withSubmittedAtDate(OffsetDateTime.now()).build());
 
         testPage.clickContinue();
@@ -359,10 +361,11 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
         assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
 
-        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-        assertThat(testPage.findElementTextById("child-age-0")).contains("Age 22");
+        assertThat(testPage.findElementTextById("child-name-0")).contains("Toddler Baby");
+        assertThat(testPage.findElementTextById("child-age-0")).contains("13 months");
         assertThat(testPage.findElementTextById("child-schedule-0")).isNotNull();
         assertThat(testPage.findElementTextById("child-start-0")).isEqualTo("01/10/2025");
+
         testPage.clickElementById("providerResponseAgreeToCare-true");
         testPage.clickContinue();
     }
