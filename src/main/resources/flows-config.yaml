@@ -547,7 +547,13 @@ flow:
       - name: providers-chosen
   providers-chosen:
     condition: EnableMultipleProviders
-    nextScreens: null
+    nextScreens:
+      - name: providers-all-ccap-children
+        condition: HasProviderForMoreThanOneChild
+      - name: providers-add
+        condition: HasProviderForOneChild
+      - name: providers-no-provider-intro
+        condition: HasNoChosenProviders
   providers-no-provider-intro:
     condition: EnableMultipleProviders
     nextScreens: null
