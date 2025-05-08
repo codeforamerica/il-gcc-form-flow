@@ -545,8 +545,6 @@ flow:
     condition: EnableMultipleProviders
     nextScreens:
       - name: providers-chosen
-        condition: EnableProviderMessagingFlagOn
-      - name: submit-complete
   providers-chosen:
     condition: EnableMultipleProviders
     nextScreens: null
