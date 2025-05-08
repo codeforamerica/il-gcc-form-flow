@@ -556,7 +556,8 @@ flow:
         condition: HasNoChosenProviders
   providers-no-provider-intro:
     condition: EnableMultipleProviders
-    nextScreens: null
+    nextScreens:
+      - name: activities-parent-intro
   providers-all-ccap-children:
     condition: EnableMultipleProviders
     nextScreens: null
