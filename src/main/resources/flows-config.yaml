@@ -560,7 +560,8 @@ flow:
       - name: activities-parent-intro
   providers-all-ccap-children:
     condition: EnableMultipleProviders
-    nextScreens: null
+    nextScreens:
+      - name: providers-add
   providers-add:
     condition: EnableMultipleProviders
     nextScreens: null
