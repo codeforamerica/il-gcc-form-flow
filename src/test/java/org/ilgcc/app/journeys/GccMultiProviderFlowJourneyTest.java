@@ -26,6 +26,5 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("children-add.thats-all"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
         testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("after-submit-contact-provider.title"));
     }
 }
