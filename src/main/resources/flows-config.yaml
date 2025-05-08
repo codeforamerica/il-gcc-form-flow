@@ -130,6 +130,8 @@ flow:
   children-add:
     beforeDisplayAction: RemoveIncompleteChildIterations
     nextScreens:
+      - name: providers-intro
+        condition: EnableMultipleProviders
       - name: activities-parent-intro
   children-info-basic:
     crossFieldValidationAction: ValidateChildBirth
@@ -541,7 +543,10 @@ flow:
       - name: doc-upload-recommended-docs
   providers-intro:
     condition: EnableMultipleProviders
-    nextScreens: null
+    nextScreens:
+      - name: after-submit-contact-provider
+        condition: EnableProviderMessagingFlagOn
+      - name: submit-complete
   providers-chosen:
     condition: EnableMultipleProviders
     nextScreens: null
