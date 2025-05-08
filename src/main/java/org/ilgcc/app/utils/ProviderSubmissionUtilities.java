@@ -163,7 +163,7 @@ public class ProviderSubmissionUtilities {
     }
 
     private static Map<String, Integer> childAge(Map<String, Object> child) {
-        var bdayString = String.format("%s/%s/%s", child.get("childDateOfBirthMonth"), child.get("childDateOfBirthDay"),
+        String bdayString = String.format("%s/%s/%s", child.get("childDateOfBirthMonth"), child.get("childDateOfBirthDay"),
                 child.get("childDateOfBirthYear"));
 
         Map<String, Integer> childAge = new HashMap<>();
