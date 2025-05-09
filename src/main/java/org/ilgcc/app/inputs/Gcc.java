@@ -653,4 +653,6 @@ public class Gcc extends FlowInputs {
     private String providerApplicationResponseExpirationDate;
 
     private String hasConfirmedIntendedProviderPhoneNumber;
+
+    private String choseProviderForEveryChildInNeedOfCare;
 }

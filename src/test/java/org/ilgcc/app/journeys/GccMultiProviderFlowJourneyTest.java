@@ -10,15 +10,15 @@ import org.springframework.test.context.TestPropertySource;
 public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
     @Test
-    void MultiProviderFlowJourneyTest() {
+    void MultiProviderNavigationWhenMoreThanOneChildNeedsCareJourneyTest() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
         saveSubmission(getSessionSubmissionTestBuilder()
                 .withParentBasicInfo()
                 .with("familyIntendedProviderName", "ACME Daycare")
-                .withChild("test", "tested", "true")
                 .with("applicationCounty", "LEE")
-                .with("hasChosenProvider", "true")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
                 .withShortCode("familyShortCode")
                 .build());
 
@@ -26,5 +26,31 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("children-add.thats-all"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
         testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
+        testPage.clickYes();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
+        testPage.clickYes();
+    }
+    @Test
+    void MultiProviderNavigationWhenNoProviderJourneyTest() {
+        testPage.navigateToFlowScreen("gcc/parent-info-disability");
+
+        saveSubmission(getSessionSubmissionTestBuilder()
+            .withParentBasicInfo()
+            .with("familyIntendedProviderName", "ACME Daycare")
+            .with("applicationCounty", "LEE")
+            .withChild("First", "Child", "true")
+            .withChild("Second", "Child", "true")
+            .withShortCode("familyShortCode")
+            .build());
+
+        testPage.navigateToFlowScreen("gcc/providers-intro");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
+        testPage.clickContinue();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
+        testPage.clickNo();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-no-provider-intro.title"));
+        testPage.clickButton(getEnMessage("providers-no-provider-intro.continue"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
     }
 }

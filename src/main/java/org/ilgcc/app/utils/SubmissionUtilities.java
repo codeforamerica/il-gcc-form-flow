@@ -208,6 +208,9 @@ public class SubmissionUtilities {
     public static boolean hasNotChosenProvider(Submission submission) {
         return "false".equals(submission.getInputData().get("hasChosenProvider"));
     }
+    public static boolean hasChosenProvider(Submission submission) {
+        return "true".equals(submission.getInputData().get("hasChosenProvider"));
+    }
 
     public static boolean hasProviderResponse(Submission submission) {
         return getProviderSubmissionId(submission).isPresent();
