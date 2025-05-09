@@ -573,10 +573,16 @@ flow:
       - name: providers-add
   providers-add:
     condition: EnableMultipleProviders
-    nextScreens: null
+    nextScreens:
+      - name: providers-info
   providers-info:
     condition: EnableMultipleProviders
-    nextScreens: null
+    nextScreens:
+      - name: providers-contact-info
+  providers-contact-info:
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: providers-add
   delete-provider:
     condition: EnableMultipleProviders
     nextScreens: null
@@ -594,6 +600,11 @@ flow:
   delete-partner-job:
     nextScreens: null
 subflows:
+  providers:
+    entryScreen: providers-add
+    iterationStartScreen: providers-info
+    reviewScreen: providers-add
+    deleteConfirmationScreen: delete-provider
   children:
     entryScreen: children-add
     iterationStartScreen: children-info-basic
