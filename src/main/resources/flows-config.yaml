@@ -589,7 +589,8 @@ flow:
       - name: providers-add
   delete-provider:
     condition: EnableMultipleProviders
-    nextScreens: null
+    nextScreens:
+      - name: null
   provider-info-confirm:
     condition: EnableMultipleProviders
     nextScreens: null
