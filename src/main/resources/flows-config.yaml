@@ -591,9 +591,10 @@ flow:
     condition: EnableMultipleProviders
     nextScreens:
       - name: null
-  provider-info-confirm:
+  providers-info-confirm:
     condition: EnableMultipleProviders
-    nextScreens: null
+    nextScreens:
+      - name: null
   doc-upload-confirm:
     nextScreens: null
   children-delete:

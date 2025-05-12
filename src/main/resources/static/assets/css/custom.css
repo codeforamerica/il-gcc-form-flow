@@ -41,7 +41,7 @@ html, body {
   }
 }
 
-.form-group > fieldset > legend > p.text--help+p.text--error {
+.form-group > fieldset > legend > p.text--help + p.text--error {
   margin-top: 2.5rem;
 }
 
@@ -187,11 +187,12 @@ a, .button--link {
   width: 100%;
   display: flex;
   justify-content: center;
-    > i {
-      line-height: inherit;
-      font-size: 1.3em;
-      margin: auto 8px auto 0;
-    }
+
+  > i {
+    line-height: inherit;
+    font-size: 1.3em;
+    margin: auto 8px auto 0;
+  }
 }
 
 .button--wide.fake-button {
@@ -210,7 +211,7 @@ a, .button--link {
   transform: none;
   transition: none;
   top: 0;
-  box-shadow: 0 2px 0 rgba(0,0,0, .5);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .5);
 }
 
 
@@ -345,25 +346,25 @@ p.normal {
   font-weight: normal;
   font-size: 2.5rem;
 }
-.padding-bottom-15{
+
+.padding-bottom-15 {
   padding-bottom: 15rem;
 }
+
 .eligibility-table th.bold {
   font-weight: bold;
 }
 
-.registration-submit-header header{
+.registration-submit-header header {
   margin-bottom: 0;
 }
 
-.onboarding-2-part ul{
+.onboarding-2-part ul {
   padding-left: 2rem;
 }
-.onboarding-2-part-header header{
-  margin-bottom: 3.5rem;
-}
-.submit-confirmation-header header{
-  margin-bottom: 3rem;
+
+.standard-header header {
+  margin-bottom: 2.5rem;
 }
 
 .footer-30-up {
@@ -486,26 +487,30 @@ p.normal {
   padding: 15px 15px;
   font-size: 1.5rem;
 }
-.notice-white hr{
+
+.notice-white hr {
   margin: 1.5rem;
 }
 
-.email-header-example p{
+.email-header-example p {
   margin-top: 0;
   margin-bottom: 0;
 }
+
 .steps-box {
   display: flex;
   align-items: flex-start;
   gap: 20px;
 }
-.open-text-app header{
+
+.open-text-app header {
   margin-bottom: 0;
 }
 
-.open-text-app-paragraph{
+.open-text-app-paragraph {
   margin-bottom: 5rem;
 }
+
 .steps-box svg {
   flex-shrink: 0;
 }
@@ -745,16 +750,18 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
   border: none;
   border-bottom: 2px solid var(--hc-red);
 }
+
 .confirmation-example {
   font-size: medium;
   word-wrap: break-word;
 }
+
 @media only screen and (min-width: 601px) {
   .notice--toolbar {
     margin-left: -3.5rem;
     margin-right: -3.5rem;
   }
-  
+
   .hide-on-desktop {
     display: none;
   }
@@ -775,19 +782,22 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
 }
 
 .familyDetailsReveal {
-  .reveal{
+  .reveal {
     background-color: #EBFFFA;
     border: 2px #008060 solid;
   }
+
   .reveal__button {
     background-color: #EBFFFA;
     border: none;
   }
+
   .reveal__content {
     background-color: #EBFFFA;
     border: none;
   }
-  .response-header{
+
+  .response-header {
     margin: 0;
   }
 }
@@ -801,9 +811,11 @@ ul.list--bulleted ul.list--bulleted.list--sublist li {
     margin-bottom: 0;
   }
 }
-.response-line-margins{
+
+.response-line-margins {
   margin: 35px 0;
 }
+
 #confirmation-code-help-text {
   font-size: 1.6rem;
   color: #5F5854;
@@ -816,6 +828,7 @@ div.move-40-up {
 div.move-20-up {
   margin-top: -1.5rem;
 }
+
 .display-box-green {
   border: 2px #008060 solid;
   border-radius: 5px;
