@@ -597,7 +597,7 @@ flow:
       - name: null
   doc-upload-confirm:
     nextScreens: null
-  children-delete:
+  delete-child:
     nextScreens: null
   delete-person:
     nextScreens: null
@@ -615,7 +615,7 @@ subflows:
     entryScreen: children-add
     iterationStartScreen: children-info-basic
     reviewScreen: children-add
-    deleteConfirmationScreen: children-delete
+    deleteConfirmationScreen: delete-child
   adultDependents:
     entryScreen: parent-add-adults
     iterationStartScreen: parent-add-adults-detail
