@@ -200,7 +200,7 @@ public class ProviderResponseRecurringJob {
                 } else {
                     log.warn(
                             String.format(
-                                    "TransmissionsRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission or transaction. Check familySubmission: %s",
+                                    "ProviderResponseRecurringJob: The Family and Provider Applications were submitted but they do not have a corresponding transmission or transaction. Check familySubmission: %s",
                                     expiredFamilySubmission.getId()));
                 }
             }
