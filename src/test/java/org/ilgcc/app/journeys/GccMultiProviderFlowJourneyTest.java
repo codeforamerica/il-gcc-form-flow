@@ -53,4 +53,32 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("providers-no-provider-intro.continue"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
     }
+
+    @Test
+    void SkipsSingleProviderOnboardingScreens() {
+        testPage.navigateToFlowScreen("gcc/onboarding-2-part");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-2-part.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("onboarding-2-part.header"));
+        testPage.clickContinue();
+
+        //onboarding-language-preference
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
+        testPage.selectFromDropdown("languageRead", "English");
+        testPage.selectFromDropdown("languageSpeak", "Español");
+        testPage.clickContinue();
+
+        // onboarding-county
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
+        testPage.selectFromDropdown("applicationCounty", "DEKALB");
+        testPage.clickContinue();
+
+        // Skips all provider screens and goes to parent-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
+    }
+
+    @Test
+    void SkipsChildrenScheduleScreens() {
+
+
+    }
 }
