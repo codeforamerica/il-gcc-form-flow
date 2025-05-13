@@ -126,6 +126,46 @@ public class ApplicationPreparerTest {
     }
 
     @Test
+    public void copiesAddress2ToAddress1IfExists() {
+        submission = new SubmissionTestBuilder().with("parentHomeStreetAddress1", "972 Mission St")
+                .with("parentHomeStreetAddress2", "5th floor").with("parentMailingStreetAddress1", "123 Mission St")
+                .with("parentMailingStreetAddress2", "55th floor").build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        assertThat(result.get("parentHomeStreetAddress1")).isEqualTo(
+                new SingleField("parentHomeStreetAddress1", "972 Mission St, 5th floor", null));
+        assertThat(result.get("parentMailingStreetAddress1")).isEqualTo(
+                new SingleField("parentMailingStreetAddress1", "123 Mission St, 55th floor", null));
+    }
+
+    @Test
+    public void doesNotCopyAddress2ToAddress1IfDoesNotExist() {
+        submission = new SubmissionTestBuilder().with("parentHomeStreetAddress1", "972 Mission St").with("parentMailingStreetAddress1", "123 Mission St").build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        assertThat(result.get("parentHomeStreetAddress1")).isEqualTo(
+                new SingleField("parentHomeStreetAddress1", "972 Mission St", null));
+        assertThat(result.get("parentMailingStreetAddress1")).isEqualTo(
+                new SingleField("parentMailingStreetAddress1", "123 Mission St", null));
+    }
+
+    @Test
+    public void doesNotCopyAddress2ToAddress1IfItIsBlank() {
+        submission = new SubmissionTestBuilder().with("parentHomeStreetAddress1", "972 Mission St")
+                .with("parentHomeStreetAddress2", "").with("parentMailingStreetAddress1", "123 Mission St")
+                .with("parentMailingStreetAddress2", "").build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        assertThat(result.get("parentHomeStreetAddress1")).isEqualTo(
+                new SingleField("parentHomeStreetAddress1", "972 Mission St", null));
+        assertThat(result.get("parentMailingStreetAddress1")).isEqualTo(
+                new SingleField("parentMailingStreetAddress1", "123 Mission St", null));
+    }
+
+    @Test
     public void shouldSelectFoodAssistanceCheckboxIfSnapIsSelected() {
         submission = new SubmissionTestBuilder()
                 .with("unearnedIncomePrograms[]", List.of("SNAP")).build();

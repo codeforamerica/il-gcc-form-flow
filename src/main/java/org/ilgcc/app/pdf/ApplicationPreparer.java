@@ -1,6 +1,5 @@
 package org.ilgcc.app.pdf;
 
-import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
@@ -48,6 +47,8 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         var parentLastName = inputData.getOrDefault("parentLastName", "");
         results.put("parentFullName",
                 new SingleField("parentFullName", String.format("%s, %s", parentLastName, parentFirstName), null));
+        results.put("parentHomeStreetAddress1", setAddressData("parentHome", inputData));
+        results.put("parentMailingStreetAddress1", setAddressData("parentMailing", inputData));
         String partnerFirstName = inputData.getOrDefault("parentPartnerFirstName", "").toString();
         String partnerLastName = inputData.getOrDefault("parentPartnerLastName", "").toString();
         results.put("partnerFullName",
@@ -68,32 +69,46 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
                 new SingleField("otherMonthlyIncomeApplicant", String.format("%.0f", Math.floor(totalExpenses)), null));
 
         List<String> unearnedIncomePrograms = (List<String>) inputData.getOrDefault("unearnedIncomePrograms[]", List.of());
-        if (!unearnedIncomePrograms.isEmpty()){
-            if (unearnedIncomePrograms.contains("SNAP")){
+        if (!unearnedIncomePrograms.isEmpty()) {
+            if (unearnedIncomePrograms.contains("SNAP")) {
                 results.put("unearnedIncomePrograms-snap", new SingleField("unearnedIncomePrograms-snap", "true", null));
             }
-            if (unearnedIncomePrograms.contains("HOMELESS_SHELTER_OR_PREVENTION_PROGRAMS")){
-                results.put("unearnedIncomePrograms-homeless-shelters", new SingleField("unearnedIncomePrograms-homeless-shelters", "true", null));
+            if (unearnedIncomePrograms.contains("HOMELESS_SHELTER_OR_PREVENTION_PROGRAMS")) {
+                results.put("unearnedIncomePrograms-homeless-shelters",
+                        new SingleField("unearnedIncomePrograms-homeless-shelters", "true", null));
             }
-            if (unearnedIncomePrograms.contains("CASH_ASSISTANCE")){
+            if (unearnedIncomePrograms.contains("CASH_ASSISTANCE")) {
                 results.put("unearnedIncomePrograms-tanf", new SingleField("unearnedIncomePrograms-tanf", "true", null));
             }
-            if (unearnedIncomePrograms.contains("HOUSING_VOUCHERS")){
-                results.put("unearnedIncomePrograms-housing-vouchers", new SingleField("unearnedIncomePrograms-housing-vouchers", "true", null));
+            if (unearnedIncomePrograms.contains("HOUSING_VOUCHERS")) {
+                results.put("unearnedIncomePrograms-housing-vouchers",
+                        new SingleField("unearnedIncomePrograms-housing-vouchers", "true", null));
             }
         }
 
-        List<String> unearnedIncomeReferral = (List<String>) inputData.getOrDefault("unearnedIncomeReferralServices[]", List.of());
-        if (unearnedIncomeReferral.contains("SAFE_SUPPORT")){
+        List<String> unearnedIncomeReferral = (List<String>) inputData.getOrDefault("unearnedIncomeReferralServices[]",
+                List.of());
+        if (unearnedIncomeReferral.contains("SAFE_SUPPORT")) {
             results.put("referralServicesDomesticViolence", new SingleField("referralServicesDomesticViolence", "true", null));
         }
-        if (unearnedIncomeReferral.contains("HOUSING_SUPPORT")){
+        if (unearnedIncomeReferral.contains("HOUSING_SUPPORT")) {
             results.put("referralServicesHomelessness", new SingleField("referralServicesHomelessness", "true", null));
         }
-        if (unearnedIncomeReferral.contains("DISABILITY_SUPPORT")){
-            results.put("referralServicesPhysicalOrMentalDisability", new SingleField("referralServicesPhysicalOrMentalDisability", "true", null));
+        if (unearnedIncomeReferral.contains("DISABILITY_SUPPORT")) {
+            results.put("referralServicesPhysicalOrMentalDisability",
+                    new SingleField("referralServicesPhysicalOrMentalDisability", "true", null));
         }
 
         return results;
+    }
+
+    private SingleField setAddressData(String addressPrefix, Map<String, Object> inputData) {
+        String street1Key = String.format("%sStreetAddress1", addressPrefix);
+        String street2Key = String.format("%sStreetAddress2", addressPrefix);
+        String streetAddress2 = (String) inputData.getOrDefault(street2Key, "");
+        String streetAddress1 = (String) inputData.getOrDefault(street1Key, "");
+
+        String address = streetAddress1 + (!streetAddress2.isBlank() ? ", " + streetAddress2 : "");
+        return new SingleField(street1Key, address, null);
     }
 }
