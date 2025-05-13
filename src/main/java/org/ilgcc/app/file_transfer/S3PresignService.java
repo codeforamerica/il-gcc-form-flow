@@ -7,7 +7,6 @@ import org.ilgcc.app.config.DocumentTransferConfiguration;
 import org.ilgcc.app.exception.S3ObjectNotFoundException;
 import org.ilgcc.app.exception.S3ObjectNotScannedException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -25,7 +24,6 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
 @Service
-@Profile("!qa")
 @Slf4j
 public class S3PresignService {
 
