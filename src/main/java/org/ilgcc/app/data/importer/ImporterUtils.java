@@ -28,7 +28,14 @@ public class ImporterUtils {
         // If there's a line with an element wrapped in double quotes that also has a comma, remove that comma
         // For example: ACME Daycare, "Smith, Thomas", 1 Main St --> ACME Daycare, "Smith Thomas", 1 Main St
         String line = row.replaceAll("\"([^\"]*?),\\s*([^\"]*)\"", "\"$1 $2\"");
-        return line.split(",");
+
+        // The limit of -1 as the second param means that if there's a trailing blank value in the comma separated list, it'll
+        // be returned. For example, if the String to split is: "Marc,Testing,123,,,"
+        // Without the -1, the split would return ["Marc", "Testing","123"]
+        // With the -1, the split would return ["Marc", "Testing","123","","",""]
+        // Since the Providers data can end with empty values for SSN and FEIN per row, we want to/need to return the empty string
+        // values in the String[]
+        return line.split(",", -1);
     }
 
     public static String getCleanedValue(String value) {

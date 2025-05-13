@@ -25,30 +25,33 @@ public class ProviderImporter {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HH.mm.ss");
     private static final DateTimeFormatter dateColumnFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
-    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, date_of_last_approval, resource_org_id, status, site_provider_org_id) VALUES\n";
+    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, date_of_last_approval, resource_org_id, status, fein, site_provider_org_id) VALUES\n";
     private static final String SQL_BEGIN = "BEGIN;\n";
     private static final String SQL_COMMIT = "COMMIT;\n\n";
 
     private static final String SQL_DELETE = "\tDELETE FROM providers WHERE provider_id IN ";
-    private static final String SQL_CONFLICT = "\nON CONFLICT (provider_id)\n" +
-            "DO UPDATE SET\n" +
-            "\ttype = excluded.type,\n" +
-            "\tname = excluded.name,\n" +
-            "\tdba_name = excluded.dba_name,\n" +
-            "\tstreet_address = excluded.street_address,\n" +
-            "\tcity = excluded.city,\n" +
-            "\tstate = excluded.state,\n" +
-            "\tzip_code = excluded.zip_code,\n" +
-            "\tdate_of_last_approval = excluded.date_of_last_approval,\n" +
-            "\tresource_org_id = excluded.resource_org_id,\n" +
-            "\tstatus = excluded.status,\n" +
-            "\tsite_provider_org_id = excluded.site_provider_org_id;\n";
+    private static final String SQL_CONFLICT = """
+            ON CONFLICT (provider_id)
+            DO UPDATE SET
+            \ttype = excluded.type,
+            \tname = excluded.name,
+            \tdba_name = excluded.dba_name,
+            \tstreet_address = excluded.street_address,
+            \tcity = excluded.city,
+            \tstate = excluded.state,
+            \tzip_code = excluded.zip_code,
+            \tdate_of_last_approval = excluded.date_of_last_approval,
+            \tresource_org_id = excluded.resource_org_id,
+            \tstatus = excluded.status,
+            \tfein = excluded.fein,
+            \tsite_provider_org_id = excluded.site_provider_org_id;
+            """;
 
     private static final String TYPE_HEADER = "Provider Type";
     private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", TYPE_HEADER, "RSRCE_NAME", "DO_BUSN_AS_NAME",
-            "STR_ADR", "CITY", "ST", "ZIP", "Date of Last Approval", "Maintaining R&R", "Provider Status");
+            "STR_ADR", "CITY", "ST", "ZIP", "Date of Last Approval", "Maintaining R&R", "Provider Status", "SSN/FEIN Indicator", "SSN", "FEIN");
 
-    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of();
+    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of("SSN/FEIN Indicator", "SSN");
     private static final List<String> DATE_COLUMN_HEADERS = List.of("Date of Last Approval");
     private static final List<String> REDACTED_COLUMN_HEADERS = List.of("RSRCE_NAME", "STR_ADR");
 
@@ -98,7 +101,7 @@ public class ProviderImporter {
             List<String> lines = Files.readAllLines(Paths.get(fileNameAndPath));
             System.out.println("\n\nThere are " + lines.size() + " rows in " + fileNameAndPath);
 
-            if (!COLUMN_HEADERS.equals(Arrays.asList(lines.get(0).split(",")))) {
+            if (!COLUMN_HEADERS.equals(Arrays.asList(lines.getFirst().split(",")))) {
                 System.out.println("Column headers have changed. Unable to generate SQL because the data format has changed.");
                 return;
             }

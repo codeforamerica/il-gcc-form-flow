@@ -33,4 +33,17 @@ public class ProviderRepositoryService {
             return false;
         }
     }
+
+    public boolean isFEINValid(String fein) {
+        if (!Objects.isNull(fein) && !fein.isEmpty()) {
+            try {
+                return providerRepository.existsByStatusInAndFEINAndDateOfLastApprovalAfter(VALID_STATUSES,
+                        new BigInteger(fein.replaceAll("\\D", "")), LocalDate.now().minusYears(3));
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }
