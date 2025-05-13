@@ -25,7 +25,7 @@ public class ProviderImporter {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HH.mm.ss");
     private static final DateTimeFormatter dateColumnFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
-    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, date_of_last_approval, resource_org_id, status, site_provider_org_id) VALUES\n";
+    private static final String SQL_INSERT = "\tINSERT INTO providers (provider_id, type, name, dba_name, street_address, city, state, zip_code, date_of_last_approval, resource_org_id, status, fein, site_provider_org_id) VALUES\n";
     private static final String SQL_BEGIN = "BEGIN;\n";
     private static final String SQL_COMMIT = "COMMIT;\n\n";
 
@@ -42,14 +42,16 @@ public class ProviderImporter {
             "\tdate_of_last_approval = excluded.date_of_last_approval,\n" +
             "\tresource_org_id = excluded.resource_org_id,\n" +
             "\tstatus = excluded.status,\n" +
+            "\tfein = excluded.fein,\n" +
             "\tsite_provider_org_id = excluded.site_provider_org_id;\n";
 
     private static final String TYPE_HEADER = "Provider Type";
     private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", TYPE_HEADER, "RSRCE_NAME", "DO_BUSN_AS_NAME",
-            "STR_ADR", "CITY", "ST", "ZIP", "Date of Last Approval", "Maintaining R&R", "Provider Status");
+            "STR_ADR", "CITY", "ST", "ZIP", "Date of Last Approval", "Maintaining R&R", "Provider Status", "SSN/FEIN Indicator", "SSN", "FEIN");
 
-    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of();
+    private static final List<String> EXCLUDED_COLUMN_HEADERS = List.of("SSN/FEIN Indicator", "SSN");
     private static final List<String> DATE_COLUMN_HEADERS = List.of("Date of Last Approval");
+    private static final List<String> BIGINT_COLUMN_HEADERS = List.of("RSRCE_ID", "FEIN");
     private static final List<String> REDACTED_COLUMN_HEADERS = List.of("RSRCE_NAME", "STR_ADR");
 
     private static final List<String> EXCLUDED_IDS = List.of("460328258720008");
@@ -128,6 +130,14 @@ public class ProviderImporter {
                     dateColumnsIndices.add(index);
                 }
             }
+
+//            Set<Integer> bigintColumnsIndices = new HashSet<>();
+//            for (String bigintColumnHeader : BIGINT_COLUMN_HEADERS) {
+//                int index = COLUMN_HEADERS.indexOf(bigintColumnHeader);
+//                if (index != -1) {
+//                    bigintColumnsIndices.add(index);
+//                }
+//            }
 
             System.out.println("\nEverything looks ok in the provider CSV format!");
 
@@ -238,7 +248,7 @@ public class ProviderImporter {
                         }
                     }
                     sb.append(valueToInsert);
-                    if (i < values.length - 1) {
+                    if (i < values.length - 2) {
                         sb.append(", ");
                     } else {
                         sb.append(", ");

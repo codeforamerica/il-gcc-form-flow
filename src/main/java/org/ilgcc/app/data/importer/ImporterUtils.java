@@ -28,7 +28,7 @@ public class ImporterUtils {
         // If there's a line with an element wrapped in double quotes that also has a comma, remove that comma
         // For example: ACME Daycare, "Smith, Thomas", 1 Main St --> ACME Daycare, "Smith Thomas", 1 Main St
         String line = row.replaceAll("\"([^\"]*?),\\s*([^\"]*)\"", "\"$1 $2\"");
-        return line.split(",");
+        return line.split(",", -1);
     }
 
     public static String getCleanedValue(String value) {

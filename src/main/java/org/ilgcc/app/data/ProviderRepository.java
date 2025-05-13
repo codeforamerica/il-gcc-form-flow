@@ -17,4 +17,10 @@ public interface ProviderRepository extends JpaRepository<Provider, BigInteger> 
     boolean existsByStatusInAndProviderIdAndDateOfLastApprovalAfter(@Param("statuses") List<String> statuses,
             @Param("providerId") BigInteger providerId, @Param("threeYearsAgo") LocalDate threeYearsAgo);
 
+    @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END FROM providers "
+            + "WHERE status IN :statuses AND fein = :fein "
+            + "AND date_of_last_approval >= :threeYearsAgo", nativeQuery = true)
+    boolean existsByStatusInAndFEINAndDateOfLastApprovalAfter(@Param("statuses") List<String> statuses,
+            @Param("fein") BigInteger fein, @Param("threeYearsAgo") LocalDate threeYearsAgo);
+
 }
