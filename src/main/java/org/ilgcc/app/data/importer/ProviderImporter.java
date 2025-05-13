@@ -241,7 +241,7 @@ public class ProviderImporter {
                         }
                     }
                     sb.append(valueToInsert);
-                    if (i < values.length - 2) {
+                    if (i < values.length - 1) {
                         sb.append(", ");
                     } else {
                         sb.append(", ");
