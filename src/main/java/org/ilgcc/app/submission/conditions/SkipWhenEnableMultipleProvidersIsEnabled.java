@@ -15,7 +15,7 @@ public class SkipWhenEnableMultipleProvidersIsEnabled implements Condition {
     public Boolean run(Submission submission) {
         return !enableMultipleProviders;
     }
-    
+
     @Override
     public Boolean run(Submission submission, String uuid) {
         return !enableMultipleProviders;

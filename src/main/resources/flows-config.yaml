@@ -165,19 +165,23 @@ flow:
       - name: children-ccap-in-care
   children-ccap-in-care:
     subflow: children
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
       - name: children-ccap-start-date
   children-ccap-start-date:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     subflow: children
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
     beforeSaveAction: SaveCCAPStartDate
     nextScreens:
       - name: children-childcare-weekly-schedule
   children-childcare-weekly-schedule:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     subflow: children
     nextScreens:
       - name: children-childcare-hourly-schedule
   children-childcare-hourly-schedule:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     beforeDisplayAction: SetSubflowWeeklyScheduleGroup
     subflow: children
     crossFieldValidationAction: ValidateChildcareHourlySchedule

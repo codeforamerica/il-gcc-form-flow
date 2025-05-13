@@ -9,6 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true", "il-gcc.enable-provider-messaging=true"})
 public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
+
     @Test
     void MultiProviderNavigationWhenMoreThanOneChildNeedsCareJourneyTest() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
@@ -31,18 +32,19 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
         testPage.clickYes();
     }
+
     @Test
     void MultiProviderNavigationWhenNoProviderJourneyTest() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
         saveSubmission(getSessionSubmissionTestBuilder()
-            .withParentBasicInfo()
-            .with("familyIntendedProviderName", "ACME Daycare")
-            .with("applicationCounty", "LEE")
-            .withChild("First", "Child", "true")
-            .withChild("Second", "Child", "true")
-            .withShortCode("familyShortCode")
-            .build());
+                .withParentBasicInfo()
+                .with("familyIntendedProviderName", "ACME Daycare")
+                .with("applicationCounty", "LEE")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
+                .withShortCode("familyShortCode")
+                .build());
 
         testPage.navigateToFlowScreen("gcc/providers-intro");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
@@ -78,7 +80,43 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
     @Test
     void SkipsChildrenScheduleScreens() {
+        testPage.navigateToFlowScreen("gcc/parent-intro-family-info");
 
+        // parent-intro-family-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-intro-family-info.title"));
+        testPage.clickButton(getEnMessage("parent-intro-family-info.continue"));
 
+        //children-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
+        testPage.clickContinue();
+
+        // children-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+        testPage.clickButton(getEnMessage("children-add.add-button"));
+
+        //children-info-basic
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-basic.title"));
+        testPage.enter("childFirstName", "child");
+        testPage.enter("childLastName", "mcchild");
+        testPage.enter("childDateOfBirthMonth", "12");
+        testPage.enter("childDateOfBirthDay", "25");
+        testPage.enter("childDateOfBirthYear", "2018");
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.foster-child"));
+        testPage.clickContinue();
+
+        //children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickYes();
+
+        //children-ccap-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
+        testPage.clickElementById("childGender-MALE");
+        testPage.clickElementById("none__checkbox-childRaceEthnicity");
+        testPage.clickContinue();
+
+        // skips children-ccap-in-care, children-ccap-start-date, children-ccap-weekly-schedule, and children-childcare-hourly-schedule
+
+        //children-ccap-child-other-ed
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
     }
 }
