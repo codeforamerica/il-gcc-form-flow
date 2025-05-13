@@ -7,23 +7,28 @@ flow:
     nextScreens:
       - name: onboarding-language-pref
   onboarding-chosen-provider:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
       - name: onboarding-no-provider-intro
         condition: NoProviderChosen
       - name: onboarding-provider-info
   onboarding-provider-info:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     crossFieldValidationAction: ValidateProviderEmail
     nextScreens:
       - name: onboarding-provider-info-review
   onboarding-no-provider-intro:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
       - name: parent-info-intro
   pilot-offboard:
     nextScreens: null
   onboarding-provider-info-review:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
       - name: onboarding-provider-info-confirm
   onboarding-provider-info-confirm:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
       - name: parent-info-intro
   onboarding-county:
@@ -160,19 +165,23 @@ flow:
       - name: children-ccap-in-care
   children-ccap-in-care:
     subflow: children
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
       - name: children-ccap-start-date
   children-ccap-start-date:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     subflow: children
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
     beforeSaveAction: SaveCCAPStartDate
     nextScreens:
       - name: children-childcare-weekly-schedule
   children-childcare-weekly-schedule:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     subflow: children
     nextScreens:
       - name: children-childcare-hourly-schedule
   children-childcare-hourly-schedule:
+    condition: SkipWhenEnableMultipleProvidersIsEnabled
     beforeDisplayAction: SetSubflowWeeklyScheduleGroup
     subflow: children
     crossFieldValidationAction: ValidateChildcareHourlySchedule
