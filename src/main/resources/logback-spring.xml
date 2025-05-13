@@ -21,10 +21,26 @@
       <appender-ref ref="LocalConsole"/>
     </root>
   </springProfile>
-
-  <springProfile name="staging | demo | production">
+  
+  <springProfile name="staging | qa | demo | production">
     <root level="INFO | WARN | ERROR">
       <appender-ref ref="JsonConsole"/>
     </root>
+  </springProfile>
+
+  <!-- Fallback when no profile is active -->
+  <springProfile name="default">
+    <root level="DEBUG">
+      <appender-ref ref="LocalConsole"/>
+    </root>
+
+    <!-- Add a specific logger to highlight that the default profile is being used -->
+    <logger name="org.springframework.boot.context.logging" level="DEBUG" additivity="false">
+      <appender-ref ref="LocalConsole"/>
+    </logger>
+
+    <logger name="DEFAULT_PROFILE_LOG" level="DEBUG" additivity="false">
+      <appender-ref ref="LocalConsole"/>
+    </logger>
   </springProfile>
 </configuration>

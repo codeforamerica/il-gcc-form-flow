@@ -12,8 +12,6 @@ import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
@@ -26,35 +24,25 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 @Service
 @Slf4j
 public class S3PresignService {
-
-    private final Region region;
-    private final String secretKey;
-    private final String accessKey;
+    
     private final String bucketName;
     private final S3Presigner s3Presigner;
     private final S3Client s3Client;
     private final Long presignedUrlDuration;
     
-    public S3PresignService(@Value("${form-flow.aws.access_key}") String accessKey,
-            @Value("${form-flow.aws.secret_key}") String secretKey,
+    public S3PresignService(
             @Value("${form-flow.aws.s3_bucket_name}") String bucketName,
             @Value("${form-flow.aws.region}") String region,
             DocumentTransferConfiguration documentTransferConfiguration) {
-        this.region = Region.of(region);
-        this.secretKey = secretKey;
-        this.accessKey = accessKey;
         this.bucketName = bucketName;
         this.presignedUrlDuration = documentTransferConfiguration.getPresignedUrlDuration();
 
-        AwsBasicCredentials awsCreds = AwsBasicCredentials.create(this.accessKey, this.secretKey);
-        
         this.s3Client = S3Client.builder()
-                .region(this.region)
-                .credentialsProvider(StaticCredentialsProvider.create(awsCreds))
+                .region(Region.of(region))
                 .build();
+
         this.s3Presigner = S3Presigner.builder()
-                .region(this.region)
-                .credentialsProvider(StaticCredentialsProvider.create(awsCreds))
+                .region(Region.of(region))
                 .build();
     }
 
