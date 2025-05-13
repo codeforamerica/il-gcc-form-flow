@@ -6,11 +6,7 @@ on:
     types: [ completed ]
     branches: [ main ]
   workflow_dispatch:
-    inputs:
-      ref:
-        description: 'Branch, tag, or SHA to deploy'
-        required: true
-        default: 'main'
+    inputs: { }
         
 jobs:
   deploy:
@@ -56,9 +52,9 @@ jobs:
           # Set the required variables
           repo_owner="codeforamerica" 
           repo_name="il-gcc-infra"  
-          event_type="plan" 
+          event_type="deploy" 
           environment="staging"
-          config="staging"
+          config="qa"
           
           curl -L \
             -X POST \
