@@ -16,12 +16,12 @@
           <th:block th:ref="contact-info">
             <div class="form-card__content">
               <th:block th:replace="~{fragments/inputs/text ::
-                            text(inputName='providerEmail',
+                            text(inputName='familyIntendedProviderEmail',
                             label=#{providers-contact-info.entry.email},
                             helpText=#{providers-contact-info.entry.email-help})}" />
               <th:block
                   th:replace="~{fragments/inputs/phone :: phone(
-                            inputName='providerPhoneNumber',
+                            inputName='familyIntendedProviderPhoneNumber',
                             label=#{providers-contact-info.entry.phone-number},
                             helpText=#{providers-contact-info.entry.phone-number-help})}"/>
             </div>

@@ -207,7 +207,7 @@ public class SubmissionTestBuilder {
         Map<String, Object> provider = new HashMap<>();
         String uuid = "%s-%s".formatted(providerName, orderAdded).toLowerCase();
         provider.put("uuid", uuid);
-        provider.put("providerName", providerName);
+        provider.put("familyIntendedProviderName", providerName);
         provider.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
         providers.add(provider);
         submission.getInputData().put("providers", providers);

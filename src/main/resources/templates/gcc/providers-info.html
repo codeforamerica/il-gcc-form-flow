@@ -13,21 +13,21 @@
           <th:block th:ref="formContent">
             <div class="form-card__content">
               <th:block th:replace="~{fragments/inputs/text ::
-                text(inputName='providerName',
+                text(inputName='familyIntendedProviderName',
                 label=#{providers-info.name},
                 helpText=#{providers-info.name.subtext})}" />
               <th:block th:replace="~{fragments/inputs/text ::
-                  text(inputName='providerStreetAddress',
+                  text(inputName='familyIntendedProviderStreetAddress',
                   label=#{providers-info.street-address},
                   helpText=#{providers-info.street-address.subtext})}"/>
               <th:block th:replace="~{fragments/inputs/text ::
-                  text(inputName='providerCity',
+                  text(inputName='familyIntendedProviderCity',
                   label=#{providers-info.city})}"/>
               <th:block th:replace="~{fragments/inputs/state ::
-                  state(inputName='providerState',
+                  state(inputName='familyIntendedProviderState',
                   label=#{providers-info.state})}"/>
               <th:block th:replace="~{fragments/inputs/zipcode ::
-                  zipcode(inputName='providerZipCode',
+                  zipcode(inputName='familyIntendedProviderZipCode',
                   label=#{providers-info.zip-code})}"/>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
