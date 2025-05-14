@@ -5,7 +5,7 @@ import formflow.library.data.Submission;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderChoseEINAsTaxIdType implements Condition {
+public class ProviderChoseFEINAsTaxIdType implements Condition {
 
   @Override
   public Boolean run(Submission submission) {

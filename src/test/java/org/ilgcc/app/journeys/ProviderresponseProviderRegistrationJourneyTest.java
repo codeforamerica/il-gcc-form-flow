@@ -830,7 +830,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         testPage.clickContinue();
 
         //registration-tax-id-fein
-        assertThat(testPage.hasErrorText(getEnMessage("registration-tax-id-fein.error"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("provider-id-fein.error-invalid-format"))).isTrue();
         testPage.enter("providerTaxIdFEIN", "12-3456789");
         testPage.clickContinue();
 

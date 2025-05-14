@@ -1,5 +1,7 @@
 package org.ilgcc.app.inputs;
 
+import static org.ilgcc.app.inputs.InputsConstants.ZIPCODE_REGEX;
+
 import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Money;
 import formflow.library.data.annotations.Phone;
@@ -66,7 +68,7 @@ public class Gcc extends FlowInputs {
     private String parentHomeState;
 
     @NotBlank(message = "{errors.provide-zip}")
-    @Pattern(regexp = "^$|^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
     private String parentHomeZipCode;
 
     private String useSuggestedParentHomeAddress;
@@ -81,7 +83,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-state}")
     private String parentMailingState;
     @NotBlank(message = "{errors.provide-zip}")
-    @Pattern(regexp = "^$|^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
     private String parentMailingZipCode;
     private String useSuggestedParentMailingAddress;
     private String parentConfirmSuggestedAddress;
