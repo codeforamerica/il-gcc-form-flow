@@ -658,16 +658,9 @@ public class Gcc extends FlowInputs {
 
     private String choseProviderForEveryChildInNeedOfCare;
 
-    @NotBlank(message = "{errors.require-company-name}")
-    private String providerName;
-
-    @Phone(message = "{errors.invalid-phone-number}")
-    private String providerPhoneNumber;
-    private String providerStreetAddress;
-    private String providerCity;
-    private String providerState;
+    private String familyIntendedProviderStreetAddress;
+    private String familyIntendedProviderCity;
+    private String familyIntendedProviderState;
     @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
-    private String providerZipCode;
-
-    private String providerEmail;
+    private String familyIntendedProviderZipCode;
 }
