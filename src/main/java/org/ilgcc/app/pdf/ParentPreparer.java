@@ -93,6 +93,10 @@ public class ParentPreparer implements SubmissionFieldPreparer {
                     new SingleField("applicantEducationHighestLevel", "BA degree", null));
         }
 
+        List<String> activitiesParentChildcareReason = (List) inputData.getOrDefault("activitiesParentChildcareReason[]", List.of());
+        results.put("activitiesParentChildcareReason_SCHOOL_TANF",
+                new SingleField("activitiesParentChildcareReason_SCHOOL_TANF", String.valueOf(activitiesParentChildcareReason.contains("TANF_TRAINING") || activitiesParentChildcareReason.contains("SCHOOL")), null));
+
         return results;
     }
 
