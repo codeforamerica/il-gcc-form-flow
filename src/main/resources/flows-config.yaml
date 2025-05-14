@@ -563,15 +563,18 @@ flow:
     nextScreens:
       - name: providers-add
   providers-add:
+    beforeDisplayAction: SetProvidersAndMaxProvidersInGCC
     condition: EnableMultipleProviders
     nextScreens:
       - name: providers-info
   providers-info:
     condition: EnableMultipleProviders
+    subflow: providers
     nextScreens:
       - name: providers-contact-info
   providers-contact-info:
     condition: EnableMultipleProviders
+    subflow: providers
     nextScreens:
       - name: providers-add
   delete-provider:
