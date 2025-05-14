@@ -807,15 +807,8 @@ flow:
     condition: EnableProviderRegistration
     nextScreens:
       - name: registration-home-provider-tax-id
-        condition: ProviderITINRegistrationForInHomeCare
-      - name: registration-home-provider-ssn
-        condition: ProviderSSNRequiredForInHomeCare
+        condition: RegistrationForInHomeCare
       - name: registration-payment-tax-id
-  registration-home-provider-ssn:
-    condition: EnableProviderRegistration
-    crossFieldValidationAction: ValidateHomeProviderSSN
-    nextScreens:
-      - name: registration-home-provider-dob
   registration-home-provider-tax-id:
     condition: EnableProviderRegistration
     nextScreens:
@@ -823,8 +816,12 @@ flow:
         condition: selectedSSN
       - name: registration-home-provider-itin
         condition: selectedITIN
+  registration-home-provider-ssn:
+    condition: EnableProviderRegistration
+    crossFieldValidationAction: ValidateHomeProviderSSN
+    nextScreens:
+      - name: registration-home-provider-dob
   registration-home-provider-itin:
-    condition: EnableProviderRegistrationITIN
     crossFieldValidationAction: ValidateITINNotBlank
     nextScreens:
       - name: registration-home-provider-dob
@@ -851,11 +848,8 @@ flow:
   registration-tax-id-ssn:
     condition: EnableProviderRegistration
     nextScreens:
-      - name: registration-tax-id-itin
-        condition: ProviderChoseITINTaxIdType
       - name: registration-service-languages
   registration-tax-id-itin:
-    condition: EnableProviderRegistrationITIN
     nextScreens:
       - name: registration-service-languages
   registration-service-languages:
