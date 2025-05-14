@@ -19,7 +19,7 @@ public class SetProvidersAndMaxProvidersInGCC implements Action {
         List<Map<String, Object>> careProviders = (List<Map<String, Object>>) familyInputData.getOrDefault("providers", emptyList());
         boolean maxProvidersReached = hasMaxProvidersBeenReached(familyInputData, careProviders);
         submission.getInputData().put("maxProvidersReached", maxProvidersReached);
-        submission.getInputData().put("providers", careProviders);
+        submission.getInputData().put("careProviders", careProviders);
     }
 
 
