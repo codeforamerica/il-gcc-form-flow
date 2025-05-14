@@ -717,7 +717,7 @@ flow:
       - name: confirm-application-submission-no-response
   provider-id-fein:
     condition: EnableProviderResponseFEIN
-    crossFieldValidationAction: ValidateFEINIsNotBlank
+    crossFieldValidationAction: ValidateFEIN
     nextScreens: 
       - name: submit-response
   confirm-application-submission-no-response:
@@ -842,7 +842,7 @@ flow:
       - name: registration-tax-id-itin
         condition: ProviderChoseITINTaxIdType
       - name: registration-tax-id-fein
-        condition: ProviderChoseEINAsTaxIdType
+        condition: ProviderChoseFEINAsTaxIdType
       - name: registration-service-languages
   registration-tax-id-fein:
     condition: EnableProviderRegistration

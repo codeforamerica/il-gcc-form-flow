@@ -1,5 +1,8 @@
 package org.ilgcc.app.inputs;
 
+import static org.ilgcc.app.inputs.InputsConstants.FEIN_REGEX;
+import static org.ilgcc.app.inputs.InputsConstants.ZIPCODE_REGEX;
+
 import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Phone;
 import formflow.library.data.annotations.SSN;
@@ -50,7 +53,7 @@ public class Providerresponse extends FlowInputs {
     private String providerResponseServiceState;
 
     @NotBlank(message = "{errors.provide-zip}")
-    @Pattern(regexp = "^$|^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
     private String providerResponseServiceZipCode;
 
     private String useSuggestedProviderResponseServiceAddress;
@@ -67,7 +70,7 @@ public class Providerresponse extends FlowInputs {
     @NotBlank(message = "{errors.provide-state}")
     private String providerMailingState;
     @NotBlank(message = "{errors.provide-zip}")
-    @Pattern(regexp = "^$|^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
     private String providerMailingZipCode;
 
     private String providerMailingAddressSameAsServiceAddress;
@@ -130,7 +133,7 @@ public class Providerresponse extends FlowInputs {
     @Encrypted
     private String providerTaxIdSSN;
 
-    @Pattern(regexp = "\\d{2}-\\d{7}", message = "{registration-tax-id-fein.error}")
+    @Pattern(regexp = FEIN_REGEX, message = "{provider-id-fein.error-invalid-format}")
     private String providerTaxIdFEIN;
 
     // registration terms
