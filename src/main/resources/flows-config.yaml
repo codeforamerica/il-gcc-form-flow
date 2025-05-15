@@ -543,9 +543,9 @@ flow:
   submit-contact-provider-text-confirmation:
     condition: EnableProviderMessagingFlagOn
     nextScreens:
-    - name: submit-share-confirmation-code
-      condition: ContactProviderViaOther
-    - name: doc-upload-recommended-docs
+      - name: submit-share-confirmation-code
+        condition: ContactProviderViaOther
+      - name: doc-upload-recommended-docs
   submit-share-confirmation-code:
     condition: ContactProviderViaOther
     nextScreens:
@@ -708,7 +708,7 @@ flow:
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: submit-confirmation
- #Existing Provider Flow: FEIN
+  #Existing Provider Flow: FEIN
   fein:
     condition: EnableProviderResponseFEIN
     nextScreens:
@@ -876,6 +876,8 @@ flow:
   registration-checks-trainings-notice:
     condition: BackgroundCheckOrTrainingRequired
     nextScreens:
+      - name: registration-family-response-intro
+        condition: ProviderIsLicenseExemptChildCareCenter
       - name: registration-convictions
   registration-convictions:
     condition: EnableProviderRegistration
