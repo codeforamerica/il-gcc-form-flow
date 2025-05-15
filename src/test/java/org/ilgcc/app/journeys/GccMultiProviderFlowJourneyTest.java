@@ -9,118 +9,166 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true", "il-gcc.enable-provider-messaging=true"})
 public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
-  @Test
-  void AllowsForThreeProvidersToBeAddedWhenClientAnswersYesToHavingChosenAProviderForEveryChildJourneyTest() {
-    testPage.navigateToFlowScreen("gcc/parent-info-disability");
+    @Test
+    void AllowsForThreeProvidersToBeAddedWhenClientAnswersYesToHavingChosenAProviderForEveryChildJourneyTest() {
+        testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
-    saveSubmission(getSessionSubmissionTestBuilder()
-        .withParentBasicInfo()
-        .with("familyIntendedProviderName", "ACME Daycare")
-        .with("applicationCounty", "LEE")
-        .withChild("First", "Child", "true")
-        .withChild("Second", "Child", "true")
-        .withShortCode("familyShortCode")
-        .build());
+        saveSubmission(getSessionSubmissionTestBuilder()
+                .withParentBasicInfo()
+                .with("familyIntendedProviderName", "ACME Daycare")
+                .with("applicationCounty", "LEE")
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
+                .withShortCode("familyShortCode")
+                .build());
 
-    testPage.navigateToFlowScreen("gcc/children-add");
-    testPage.clickButton(getEnMessage("children-add.thats-all"));
+        testPage.navigateToFlowScreen("gcc/children-add");
+        testPage.clickButton(getEnMessage("children-add.thats-all"));
 
-    //providers-intro
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
-    testPage.clickContinue();
+        //providers-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
+        testPage.clickContinue();
 
-    //providers-chosen
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
-    testPage.clickYes();
+        //providers-chosen
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
+        testPage.clickYes();
 
-    //providers-all-ccap-children
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
-    testPage.clickYes();
+        //providers-all-ccap-children
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
+        testPage.clickYes();
 
-    //First Iteration
-    //providers-add
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
-    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        //First Iteration
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
-    //providers-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info.header"));
-    testPage.clickContinue();
+        //providers-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info.header"));
+        testPage.clickContinue();
 
-    assertThat(testPage.hasErrorText(getEnMessage("errors.provide-street"))).isTrue();
-    assertThat(testPage.hasErrorText(getEnMessage("errors.provide-city"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-street"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-city"))).isTrue();
 
-    testPage.enter("familyIntendedProviderName", "ACME Daycare");
-    testPage.enter("familyIntendedProviderAddress", "101 Test St");
-    testPage.enter("familyIntendedProviderCity", "Chicago");
-    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-    testPage.enter("familyIntendedProviderZipCode", "60302");
-    testPage.clickContinue();
+        testPage.enter("familyIntendedProviderName", "ACME Daycare");
+        testPage.enter("familyIntendedProviderAddress", "101 Test St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.enter("familyIntendedProviderZipCode", "60302");
+        testPage.clickContinue();
 
-    //providers-contact-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
-    testPage.enter("familyIntendedProviderEmail", "test.com");
-    testPage.enter("familyIntendedProviderPhoneNumber", "555-55");
-    testPage.clickContinue();
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.enter("familyIntendedProviderEmail", "test.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "555-55");
+        testPage.clickContinue();
 
-    assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
-    assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-email"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
+        assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-email"))).isTrue();
 
-    testPage.enter("familyIntendedProviderEmail", "test@test.com");
-    testPage.enter("familyIntendedProviderPhoneNumber", "(555)555-5555");
-    testPage.clickContinue();
+        testPage.enter("familyIntendedProviderEmail", "test@test.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(555)555-5555");
+        testPage.clickContinue();
 
-    //providers-add
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
-    assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
-    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
-    //Second Iteration
-    //provider-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-    testPage.enter("familyIntendedProviderName", "Nope Test");
-    testPage.enter("familyIntendedProviderAddress", "151 Second St");
-    testPage.enter("familyIntendedProviderCity", "Chicago");
-    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-    testPage.enter("familyIntendedProviderZipCode", "60402");
-    testPage.clickContinue();
+        //Second Iteration
+        //provider-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+        testPage.enter("familyIntendedProviderName", "Nope Test");
+        testPage.enter("familyIntendedProviderAddress", "151 Second St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.enter("familyIntendedProviderZipCode", "60402");
+        testPage.clickContinue();
 
-    //providers-contact-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
-    testPage.enter("familyIntendedProviderEmail", "second@test.com");
-    testPage.enter("familyIntendedProviderPhoneNumber", "(333)333-2222");
-    testPage.clickContinue();
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.enter("familyIntendedProviderEmail", "second@test.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(333)333-2222");
+        testPage.clickContinue();
 
-    //providers-add
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-    assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
-    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
-    //Third Iteration
-    //provider-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-    testPage.enter("familyIntendedProviderName", "Third Provider");
-    testPage.enter("familyIntendedProviderAddress", "441 Third St");
-    testPage.enter("familyIntendedProviderCity", "Chicago");
-    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-    testPage.enter("familyIntendedProviderZipCode", "60702");
-    testPage.clickContinue();
+        //Third Iteration
+        //provider-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+        testPage.enter("familyIntendedProviderName", "Third Provider");
+        testPage.enter("familyIntendedProviderAddress", "441 Third St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.enter("familyIntendedProviderZipCode", "60702");
+        testPage.clickContinue();
 
-    //providers-contact-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
-    testPage.enter("familyIntendedProviderEmail", "third@test.com");
-    testPage.enter("familyIntendedProviderPhoneNumber", "(243)555-5555");
-    testPage.clickContinue();
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.enter("familyIntendedProviderEmail", "third@test.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(243)555-5555");
+        testPage.clickContinue();
 
-    //providers-add
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header.max-providers-reached"));
-    assertThat(testPage.findElementTextById("continue-link")).isNotEqualTo(getEnMessage("providers-add.button.that-is-all"));
-    assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("general.button.continue"));
-    testPage.clickContinue();
-  }
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header.max-providers-reached"));
+        assertThat(testPage.findElementTextById("continue-link")).isNotEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("general.button.continue"));
+
+        //delete-provider -- don't actually delete!
+        assertThat(testPage.findElementsByClass("spacing-below-0").get(4).getText()).isEqualTo("Nope Test");
+        testPage.findElementsByClass("subflow-delete").get(1).click();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("delete-confirmation.title"));
+        testPage.clickButton(getEnMessage("delete-confirmation.no"));
+
+        // back to providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+
+        //delete-provider -- actually delete!
+        assertThat(testPage.findElementsByClass("spacing-below-0").get(4).getText()).isEqualTo("Nope Test");
+        testPage.findElementsByClass("subflow-delete").get(1).click();
+
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("delete-confirmation.title"));
+        testPage.clickButton(getEnMessage("delete-confirmation.yes"));
+
+        // back to providers-add -- check the provider is gone and then re-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+
+        //provider-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+        testPage.enter("familyIntendedProviderName", "Nope Test");
+        testPage.enter("familyIntendedProviderAddress", "151 Second St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.enter("familyIntendedProviderZipCode", "60402");
+        testPage.clickContinue();
+
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.enter("familyIntendedProviderEmail", "second@test.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(333)333-2222");
+        testPage.clickContinue();
+
+        // back to providers-add -- check the provider count is back to the max
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header.max-providers-reached"));
+        assertThat(testPage.findElementTextById("continue-link")).isNotEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("general.button.continue"));
+
+        testPage.clickContinue();
+
+        //providers-info-confirm
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info-confirm.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info-confirm.header"));
+    }
 
   @Test
   void AllowsOnlyTwoProvidersToBeAddedWhenClientAnswersNoToHavingChosenAProviderForEveryChildJourneyTest() {
