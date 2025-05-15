@@ -17,7 +17,7 @@
                     <th:block th:replace="~{fragments/gcc-icons :: check-mark}"></th:block>
                     <div th:if="${lockedSubmissionMessage}" class="notice--warning">
                         <p th:text="${lockedSubmissionMessage}"></p></div>
-                    <div class="submit-confirmation-header">
+                    <div class="standard-header">
                         <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${header})}"/>
                     </div>
                     <div class="notice notice--gray">

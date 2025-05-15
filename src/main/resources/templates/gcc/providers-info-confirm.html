@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{onboarding-2-part.title})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{providers-info-confirm.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,18 +8,15 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/gcc-icons :: support}"></th:block>
+        <th:block th:replace="~{fragments/gcc-icons :: important-notice}"></th:block>
         <div class="standard-header">
           <th:block
-              th:replace="~{fragments/cardHeader :: cardHeader(header=#{onboarding-2-part.header})}"/>
+                  th:replace="~{fragments/cardHeader :: cardHeader(header=#{providers-info-confirm.header})}"/>
         </div>
         <div class="form-card__content onboarding-2-part">
-          <ul class="list--numbered bold spacing-below-35">
-            <li class="spacing-below-35" th:utext="#{onboarding-2-part.li.first-part}"></li>
-            <li th:utext="#{onboarding-2-part.li.second-part}"></li>
-          </ul>
-          <p th:text="#{onboarding-2-part.notice}"
-              class="notice--warning"></p>
+          <p th:utext="#{providers-info-confirm.body}"></p>
+          <p th:text="#{providers-info-confirm.notice}"
+             class="notice--warning"></p>
         </div>
         <div class="form-card__footer">
           <th:block th:replace="~{fragments/continueButton :: continue}"/>
