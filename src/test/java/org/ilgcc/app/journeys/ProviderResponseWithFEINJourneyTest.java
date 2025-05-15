@@ -14,8 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true",
-        "il-gcc.enable-provider-response-with-fein=true"})
+@TestPropertySource(properties = {"il-gcc.enable-provider-response-with-fein=true"})
 public class ProviderResponseWithFEINJourneyTest extends AbstractBasePageTest {
 
     @AfterEach
@@ -90,15 +89,6 @@ public class ProviderResponseWithFEINJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Continue");
 
         // confirm-service-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
-        testPage.clickButton("Use this address");
-
-        //mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response.mailing-address.title"));
-        testPage.clickElementById("providerMailingAddressSameAsServiceAddress-yes");
-        testPage.clickContinue();
-
-        //confirm-mailing-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 

@@ -10,13 +10,10 @@ import static org.ilgcc.app.utils.enums.ProviderType.LICENSE_EXEMPT_RELATIVE_IN_
 import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderITINRegistrationForInHomeCare implements Condition {
-    // registration-home-provider-ssn when itin flag is off
-    // registration-home-provider-tax-id when itin flag is on
+public class RegistrationForInHomeCare implements Condition {
 
     final static List providerTypesRequired = List.of(
             LICENSED_DAY_CARE_HOME.name(),
@@ -26,19 +23,9 @@ public class ProviderITINRegistrationForInHomeCare implements Condition {
             LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.name(),
             LICENSE_EXEMPT_RELATIVE_IN_PROVIDER_HOME.name()
     );
-
-    @Value("${il-gcc.allow-provider-registration-flow}")
-    private boolean enableProviderRegistration;
-
-    @Value("${il-gcc.enable-provider-registration-with-itin}")
-    private boolean enableProviderRegistrationWithITIN;
-
+    
     @Override
     public Boolean run(Submission submission) {
-        return enableProviderRegistrationWithITIN && enableProviderRegistration && displayScreen(submission);
-    }
-
-    private Boolean displayScreen(Submission submission) {
         String providerType = (String) submission.getInputData().getOrDefault("providerType", "");
         return providerTypesRequired.contains(providerType);
     }
