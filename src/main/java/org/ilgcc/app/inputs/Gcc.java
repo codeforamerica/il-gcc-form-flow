@@ -1,5 +1,6 @@
 package org.ilgcc.app.inputs;
 
+import static org.ilgcc.app.inputs.InputsConstants.ZIPCODE_OR_EMPTY_REGEX;
 import static org.ilgcc.app.inputs.InputsConstants.ZIPCODE_REGEX;
 
 import formflow.library.data.FlowInputs;
@@ -68,7 +69,7 @@ public class Gcc extends FlowInputs {
     private String parentHomeState;
 
     @NotBlank(message = "{errors.provide-zip}")
-    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_OR_EMPTY_REGEX, message = "{errors.invalid-zipcode}")
     private String parentHomeZipCode;
 
     private String useSuggestedParentHomeAddress;
@@ -83,7 +84,7 @@ public class Gcc extends FlowInputs {
     @NotBlank(message = "{errors.provide-state}")
     private String parentMailingState;
     @NotBlank(message = "{errors.provide-zip}")
-    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_OR_EMPTY_REGEX, message = "{errors.invalid-zipcode}")
     private String parentMailingZipCode;
     private String useSuggestedParentMailingAddress;
     private String parentConfirmSuggestedAddress;
@@ -271,7 +272,7 @@ public class Gcc extends FlowInputs {
     private String employerStreetAddress;
     private String employerCity;
     private String employerState;
-    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
     private String employerZipCode;
 
     //activities-employer-start-date
@@ -376,7 +377,7 @@ public class Gcc extends FlowInputs {
     private String applicantSchoolStreetAddress;
     private String applicantSchoolCity;
     private String applicantSchoolState;
-    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
     private String applicantSchoolZipCode;
 
     // activities-ed-program-method
@@ -476,7 +477,7 @@ public class Gcc extends FlowInputs {
     private String partnerEmployerStreetAddress;
     private String partnerEmployerCity;
     private String partnerEmployerState;
-    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
     private String partnerEmployerZipCode;
 
     //activities-partner-employer-start-date
@@ -501,7 +502,7 @@ public class Gcc extends FlowInputs {
     private String partnerEdStreetAddress;
     private String partnerEdCity;
     private String partnerEdState;
-    @Pattern(regexp = "^\\d{5}(?:-\\d{4})?$", message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
     private String partnerEdZipCode;
 
     // activities-partner-ed-program-method
@@ -657,4 +658,14 @@ public class Gcc extends FlowInputs {
     private String hasConfirmedIntendedProviderPhoneNumber;
 
     private String choseProviderForEveryChildInNeedOfCare;
+
+    @NotBlank(message = "{errors.provide-street}")
+    private String familyIntendedProviderAddress;
+    @NotBlank(message = "{errors.provide-city}")
+    private String familyIntendedProviderCity;
+    @NotBlank(message = "{errors.provide-state}")
+    private String familyIntendedProviderState;
+    @NotBlank
+    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
+    private String familyIntendedProviderZipCode;
 }

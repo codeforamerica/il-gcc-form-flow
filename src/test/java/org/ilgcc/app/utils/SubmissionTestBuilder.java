@@ -198,6 +198,23 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withProvider(String providerName, String orderAdded) {
+        List<Map<String, Object>> providers  = (List<Map<String, Object>>) submission.getInputData().get("providers");
+        if (providers == null) {
+            providers = new ArrayList<>();
+        }
+
+        Map<String, Object> provider = new HashMap<>();
+        String uuid = "%s-%s".formatted(providerName, orderAdded).toLowerCase();
+        provider.put("uuid", uuid);
+        provider.put("familyIntendedProviderName", providerName);
+        provider.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
+        providers.add(provider);
+        submission.getInputData().put("providers", providers);
+        return this;
+    }
+
+
     public SubmissionTestBuilder withToddler(String firstName, String lastName, String needFinancialAssistanceForChild, Integer childAgeMonths) {
         List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().get("children");
         if (children == null) {

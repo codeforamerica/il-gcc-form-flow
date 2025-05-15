@@ -1,7 +1,8 @@
 package org.ilgcc.app.inputs;
 
 import static org.ilgcc.app.inputs.InputsConstants.FEIN_REGEX;
-import static org.ilgcc.app.inputs.InputsConstants.ZIPCODE_REGEX;
+import static org.ilgcc.app.inputs.InputsConstants.ITIN_REGEX;
+import static org.ilgcc.app.inputs.InputsConstants.ZIPCODE_OR_EMPTY_REGEX;
 
 import formflow.library.data.FlowInputs;
 import formflow.library.data.annotations.Phone;
@@ -53,7 +54,7 @@ public class Providerresponse extends FlowInputs {
     private String providerResponseServiceState;
 
     @NotBlank(message = "{errors.provide-zip}")
-    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_OR_EMPTY_REGEX, message = "{errors.invalid-zipcode}")
     private String providerResponseServiceZipCode;
 
     private String useSuggestedProviderResponseServiceAddress;
@@ -70,7 +71,7 @@ public class Providerresponse extends FlowInputs {
     @NotBlank(message = "{errors.provide-state}")
     private String providerMailingState;
     @NotBlank(message = "{errors.provide-zip}")
-    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
+    @Pattern(regexp = ZIPCODE_OR_EMPTY_REGEX, message = "{errors.invalid-zipcode}")
     private String providerMailingZipCode;
 
     private String providerMailingAddressSameAsServiceAddress;
@@ -165,7 +166,7 @@ public class Providerresponse extends FlowInputs {
     private String homeProviderTaxIDselection;
     
     //registration-home-provider-itin
-    @Pattern(regexp = "^9\\d{2}-\\d{2}-\\d{4}$", message = "{registration-tax-id-itin.error}")
+    @Pattern(regexp = ITIN_REGEX, message = "{registration-tax-id-itin.error}")
     private String providerITIN;
 
     // registration-signature

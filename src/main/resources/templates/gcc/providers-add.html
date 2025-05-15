@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{providers-add.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,15 +8,79 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
+        <th:block th:with="providers=${inputData.get('careProviders')},
+                           hasProviders=${providers.size() > 0},
+                           maxProvidersReached=${inputData.get('maxProvidersReached')},
+                           header=${maxProvidersReached ? #messages.msg('providers-add.header.max-providers-reached') : #messages.msg('providers-add.header')},
+                           moreThanOneProviderSubtext=${maxProvidersReached ? #messages.msg('providers-add.subtext.max-providers-reached') : #messages.msg('providers-add.subtext.has-providers')}">
+          <th:block th:replace="~{fragments/gcc-icons :: care}"></th:block>
+          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${header},
+                                                                     subtext=${providers.size() == 0 ? #messages.msg('providers-add.subtext.no-providers-added') : moreThanOneProviderSubtext})}"/>
+          <th:block
+              th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+            <th:block th:ref="formContent">
+              <div class="form-card__content">
+                <th:block th:if="${hasProviders}">
+                  <div class="boxed-content text--centered">
+                    <th:block>
+                      <th:block th:if="${hasProviders}">
+                        <div class="padding-left-25"><strong
+                            th:text="#{providers-add.list.header}"></strong>
+                        </div>
+                        <ul class="subflow-list list--bulleted">
+                          <li th:each="provider, iter: ${providers}"
+                              class="spacing-below-10">
+                            <div>
+                              <p th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderName}"></p>
+                              <p th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderAddress}"></p>
+                              <p th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderPhoneNumber}"></p>
+                              <p th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderEmail}"></p>
+                              <span
+                                  class="text--small spacing-above-15 spacing-below-25 spacing-right-25">
+                                      <a th:href="'/flow/' + ${flow} + '/providers-info/' + ${provider.uuid} + '/edit'"
+                                         th:text="#{general.edit}"
+                                         class="subflow-delete padding-right-25"
+                                         th:id="'edit-iteration-' + ${provider.uuid}"></a>
+                                      <a th:href="'/flow/' + ${flow} + '/providers/' + ${provider.uuid} + '/deleteConfirmation'"
+                                         th:text="#{general.remove}"
+                                         class="subflow-delete padding-left-25"
+                                         th:id="'delete-iteration-' + ${provider.uuid}"></a>
+                                  </span>
+                            </div>
+                          </li>
+                        </ul>
+                      </th:block>
+                    </th:block>
+                  </div>
+                </th:block>
+              </div>
+              <div class="form-card__footer">
+                <th:block th:unless="${maxProvidersReached}">
+                  <div class="spacing-below-15">
+                    <a id="add-providers"
+                       th:href="'/flow/' + ${flow} + '/providers-info'"
+                       th:class="'button button--primary spacing-above-15'">
+                      <i class="icon-add"></i>
+                      <span th:text="#{providers-add.button.add-a-provider}"></span>
+                    </a>
+                  </div>
+                  <div>
+                    <a th:if="${hasProviders}"
+                       th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+                       th:text="#{providers-add.button.that-is-all}"
+                       class="button spacing-left-0"
+                       id="continue-link"></a>
+                  </div>
+                </th:block>
+                <th:block th:if="${maxProvidersReached}">
+                  <th:block th:replace="~{fragments/continueButton :: continue}"/>
+                </th:block>
+              </div>
+            </th:block>
           </th:block>
         </th:block>
       </main>
