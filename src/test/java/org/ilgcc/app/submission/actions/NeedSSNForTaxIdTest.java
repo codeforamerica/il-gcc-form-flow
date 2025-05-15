@@ -13,8 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(
-    classes = IlGCCApplication.class,
-    properties = "il-gcc.allow-provider-registration-flow=true"
+    classes = IlGCCApplication.class
 )
 
 @ActiveProfiles("test")

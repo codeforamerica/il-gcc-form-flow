@@ -14,8 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@TestPropertySource(properties = {"il-gcc.allow-provider-registration-flow=true",
-        "il-gcc.enable-provider-response-with-fein=true"})
+@TestPropertySource(properties = {"il-gcc.enable-provider-response-with-fein=true"})
 public class ProviderResponseWithFEINJourneyTest extends AbstractBasePageTest {
 
     @AfterEach

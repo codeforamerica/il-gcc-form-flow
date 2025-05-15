@@ -15,15 +15,8 @@ public class ProviderHouseholdRegistrationRequired implements Condition {
             ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_PROVIDER_HOME.name()
     );
 
-    @Value("${il-gcc.allow-provider-registration-flow}")
-    private boolean enableProviderRegistration;
-
     @Override
     public Boolean run(Submission submission) {
-        return enableProviderRegistration && displayScreen(submission);
-    }
-
-    private Boolean displayScreen(Submission submission) {
         String providerType = (String) submission.getInputData().getOrDefault("providerType", "");
         return providerTypesRequired.contains(providerType);
     }

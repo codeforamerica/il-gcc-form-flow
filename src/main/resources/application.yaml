@@ -140,7 +140,6 @@ il-gcc:
   enable-resource-org-emails: ${ENABLE_RESOURCE_ORG_EMAIL:false}
   resource-org-emails: ${RESOURCE_ORG_EMAILS:null}
   resource-org-emails-delay-seconds: ${RESOURCE_ORG_EMAILS_DELAY:15}
-  allow-provider-registration-flow: ${ALLOW_PROVIDER_REGISTRATION_FLOW:false}
   enable-new-sda-caseload-codes: ${ENABLE_NEW_SDA_CASELOAD_CODES:false}
   enable-provider-messaging: ${ENABLE_PROVIDER_MESSAGING:false}
   enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:false}

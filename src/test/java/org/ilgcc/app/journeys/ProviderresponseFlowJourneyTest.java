@@ -49,10 +49,13 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         assertThat(testPage.findElementById("providerResponseFamilyShortCode").getAttribute("value")).isEqualTo(s.getShortCode());
-
         testPage.clickContinue();
 
-        //basic-info
+        // paid-by-ccap
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
+        testPage.clickYes();
+
+        //provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info.title"));
         testPage.enter("providerResponseBusinessName", "Business Name");
         testPage.enter("providerResponseFirstName", "First Name");
@@ -141,6 +144,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
         testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
         testPage.clickContinue();
+
+        // paid-by-ccap
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
+        testPage.clickYes();
 
         //provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-info.title"));
@@ -394,7 +401,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     }
 
     @Test
-    void ProviderresponseJourneyTest_ConfirmationCodeInLinkInvalid() {
+    void ProviderresponseJourneyTest_ConfirmationCodeLinkInvalid() {
         driver.navigate().to("http://localhost:%s/s/sdfsjlfjsdf".formatted(localServerPort));
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("error-invalid-code.title"));
