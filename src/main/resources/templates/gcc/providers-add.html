@@ -30,23 +30,27 @@
                         <ul class="subflow-list list--bulleted">
                           <li th:each="provider, iter: ${providers}"
                               class="spacing-below-10">
-                                <div>
-                                  <p th:class="spacing-below-0" th:utext="${provider.familyIntendedProviderName}"></p>
-                                  <p th:class="spacing-below-0" th:utext="${provider.familyIntendedProviderStreetAddress}"></p>
-                                  <p th:class="spacing-below-0" th:utext="${provider.familyIntendedProviderPhoneNumber}"></p>
-                                  <p th:class="spacing-below-0" th:utext="${provider.familyIntendedProviderEmail}"></p>
-                                  <span class="text--small spacing-below-0 spacing-right-25">
-                                    <a th:href="'/flow/' + ${flow} + '/providers/' + ${provider.uuid} + '/deleteConfirmation'"
-                                       th:text="#{general.remove}"
-                                       class="subflow-delete"
-                                       th:id="'delete-iteration-' + ${provider.uuid}"></a>
-                                    <a th:href="'/flow/' + ${flow} + '/providers/' + ${provider.uuid} + '/deleteConfirmation'"
-                                       th:text="#{general.remove}"
-                                       class="subflow-delete"
-                                       th:id="'delete-iteration-' + ${provider.uuid}"></a>
+                            <div>
+                              <p th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderName}"></p>
+                              <p th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderAddress}"></p>
+                              <p th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderPhoneNumber}"></p>
+                              <p th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderEmail}"></p>
+                              <span
+                                  class="text--small spacing-above-15 spacing-below-25 spacing-right-25">
+                                      <a th:href="'/flow/' + ${flow} + '/providers-info/' + ${provider.uuid} + '/edit'"
+                                         th:text="#{general.edit}"
+                                         class="subflow-delete padding-right-25"
+                                         th:id="'edit-iteration-' + ${provider.uuid}"></a>
+                                      <a th:href="'/flow/' + ${flow} + '/providers/' + ${provider.uuid} + '/deleteConfirmation'"
+                                         th:text="#{general.remove}"
+                                         class="subflow-delete padding-left-25"
+                                         th:id="'delete-iteration-' + ${provider.uuid}"></a>
                                   </span>
-
-                                </div>
+                            </div>
                           </li>
                         </ul>
                       </th:block>
@@ -73,7 +77,7 @@
                   </div>
                 </th:block>
                 <th:block th:if="${maxProvidersReached}">
-                  <th:block th:replace="~{fragments/continueButton :: continue}" />
+                  <th:block th:replace="~{fragments/continueButton :: continue}"/>
                 </th:block>
               </div>
             </th:block>

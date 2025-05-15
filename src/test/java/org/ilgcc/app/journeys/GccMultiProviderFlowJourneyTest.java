@@ -9,42 +9,223 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true", "il-gcc.enable-provider-messaging=true"})
 public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
+  @Test
+  void AllowsForThreeProvidersToBeAddedWhenClientAnswersYesToHavingChosenAProviderForEveryChildJourneyTest() {
+    testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
-    @Test
-    void MultiProviderNavigationWhenMoreThanOneChildNeedsCareJourneyTest() {
-        testPage.navigateToFlowScreen("gcc/parent-info-disability");
+    saveSubmission(getSessionSubmissionTestBuilder()
+        .withParentBasicInfo()
+        .with("familyIntendedProviderName", "ACME Daycare")
+        .with("applicationCounty", "LEE")
+        .withChild("First", "Child", "true")
+        .withChild("Second", "Child", "true")
+        .withShortCode("familyShortCode")
+        .build());
+
+    testPage.navigateToFlowScreen("gcc/children-add");
+    testPage.clickButton(getEnMessage("children-add.thats-all"));
+
+    //providers-intro
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
+    testPage.clickContinue();
+
+    //providers-chosen
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
+    testPage.clickYes();
+
+    //providers-all-ccap-children
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
+    testPage.clickYes();
+
+    //First Iteration
+    //providers-add
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+
+    //providers-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info.header"));
+    testPage.clickContinue();
+
+    assertThat(testPage.hasErrorText(getEnMessage("errors.provide-street"))).isTrue();
+    assertThat(testPage.hasErrorText(getEnMessage("errors.provide-city"))).isTrue();
+
+    testPage.enter("familyIntendedProviderName", "ACME Daycare");
+    testPage.enter("familyIntendedProviderAddress", "101 Test St");
+    testPage.enter("familyIntendedProviderCity", "Chicago");
+    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+    testPage.enter("familyIntendedProviderZipCode", "60302");
+    testPage.clickContinue();
+
+    //providers-contact-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+    testPage.enter("familyIntendedProviderEmail", "test.com");
+    testPage.enter("familyIntendedProviderPhoneNumber", "555-55");
+    testPage.clickContinue();
+
+    assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-phone-number"))).isTrue();
+    assertThat(testPage.hasErrorText(getEnMessage("errors.invalid-email"))).isTrue();
+
+    testPage.enter("familyIntendedProviderEmail", "test@test.com");
+    testPage.enter("familyIntendedProviderPhoneNumber", "(555)555-5555");
+    testPage.clickContinue();
+
+    //providers-add
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+    assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+
+    //Second Iteration
+    //provider-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+    testPage.enter("familyIntendedProviderName", "Nope Test");
+    testPage.enter("familyIntendedProviderAddress", "151 Second St");
+    testPage.enter("familyIntendedProviderCity", "Chicago");
+    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+    testPage.enter("familyIntendedProviderZipCode", "60402");
+    testPage.clickContinue();
+
+    //providers-contact-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+    testPage.enter("familyIntendedProviderEmail", "second@test.com");
+    testPage.enter("familyIntendedProviderPhoneNumber", "(333)333-2222");
+    testPage.clickContinue();
+
+    //providers-add
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+    assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+
+    //Third Iteration
+    //provider-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+    testPage.enter("familyIntendedProviderName", "Third Provider");
+    testPage.enter("familyIntendedProviderAddress", "441 Third St");
+    testPage.enter("familyIntendedProviderCity", "Chicago");
+    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+    testPage.enter("familyIntendedProviderZipCode", "60702");
+    testPage.clickContinue();
+
+    //providers-contact-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+    testPage.enter("familyIntendedProviderEmail", "third@test.com");
+    testPage.enter("familyIntendedProviderPhoneNumber", "(243)555-5555");
+    testPage.clickContinue();
+
+    //providers-add
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header.max-providers-reached"));
+    assertThat(testPage.findElementTextById("continue-link")).isNotEqualTo(getEnMessage("providers-add.button.that-is-all"));
+    assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("general.button.continue"));
+    testPage.clickContinue();
+  }
+
+  @Test
+  void AllowsOnlyTwoProvidersToBeAddedWhenClientAnswersNoToHavingChosenAProviderForEveryChildJourneyTest() {
+    testPage.navigateToFlowScreen("gcc/parent-info-disability");
+
+    saveSubmission(getSessionSubmissionTestBuilder()
+        .withParentBasicInfo()
+        .with("familyIntendedProviderName", "ACME Daycare")
+        .with("applicationCounty", "LEE")
+        .withChild("First", "Child", "true")
+        .withChild("Second", "Child", "true")
+        .withShortCode("familyShortCode")
+        .build());
+
+    testPage.navigateToFlowScreen("gcc/children-add");
+    testPage.clickButton(getEnMessage("children-add.thats-all"));
+    //providers-intro
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
+    testPage.clickContinue();
+
+    //providers-chosen
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
+    testPage.clickYes();
+
+    //providers-all-ccap-children
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
+    testPage.clickNo();
+
+    //First Iteration
+    //providers-add
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+
+    //providers-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+
+    testPage.enter("familyIntendedProviderName", "First Daycare");
+    testPage.enter("familyIntendedProviderAddress", "222 Test St");
+    testPage.enter("familyIntendedProviderCity", "Chicago");
+    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+    testPage.enter("familyIntendedProviderZipCode", "60302");
+    testPage.clickContinue();
+
+    //providers-contact-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+
+    testPage.enter("familyIntendedProviderEmail", "test@first.com");
+    testPage.enter("familyIntendedProviderPhoneNumber", "(533)555-5555");
+    testPage.clickContinue();
+
+    //providers-add
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+    assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+
+    //Second Iteration
+    //provider-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+    testPage.enter("familyIntendedProviderName", "No Provider");
+    testPage.enter("familyIntendedProviderAddress", "323 Second St");
+    testPage.enter("familyIntendedProviderCity", "Chicago");
+    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+    testPage.enter("familyIntendedProviderZipCode", "62202");
+    testPage.clickContinue();
+
+    //providers-contact-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+    testPage.enter("familyIntendedProviderEmail", "test@second.com");
+    testPage.enter("familyIntendedProviderPhoneNumber", "(355)333-2222");
+    testPage.clickContinue();
+
+    //providers-add
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+    assertThat(testPage.findElementTextById("continue-link")).isNotEqualTo(getEnMessage("providers-add.button.that-is-all"));
+    testPage.clickLink(getEnMessage("general.edit"));
+
+    //providers-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+    assertThat(testPage.getInputValue("familyIntendedProviderName")).isEqualTo("First Daycare");
+    testPage.clickContinue();
+
+    //providers-contact-info
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+    testPage.clickContinue();
+
+    //providers-add
+    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+    testPage.clickContinue();
+
+  }
+
+  @Test
+  void MultiProviderNavigationWhenNoProviderJourneyTest() {
+    testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
         saveSubmission(getSessionSubmissionTestBuilder()
-                .withParentBasicInfo()
-                .with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", "LEE")
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
-                .withShortCode("familyShortCode")
-                .build());
-
-        testPage.navigateToFlowScreen("gcc/children-add");
-        testPage.clickButton(getEnMessage("children-add.thats-all"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
-        testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
-        testPage.clickYes();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
-        testPage.clickYes();
-    }
-
-    @Test
-    void MultiProviderNavigationWhenNoProviderJourneyTest() {
-        testPage.navigateToFlowScreen("gcc/parent-info-disability");
-
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .withParentBasicInfo()
-                .with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", "LEE")
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
-                .withShortCode("familyShortCode")
-                .build());
+            .withParentBasicInfo()
+            .with("familyIntendedProviderName", "ACME Daycare")
+            .with("applicationCounty", "LEE")
+            .withChild("First", "Child", "true")
+            .withChild("Second", "Child", "true")
+            .withShortCode("familyShortCode")
+            .build());
 
         testPage.navigateToFlowScreen("gcc/providers-intro");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));

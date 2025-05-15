@@ -572,10 +572,10 @@ flow:
     nextScreens:
       - name: providers-add
   providers-add:
-    beforeDisplayAction: SetProvidersAndMaxProvidersInGCC
+    beforeDisplayAction: SetProvidersAndMaxProvidersInGCCWhileRemovingIncompleteIterations
     condition: EnableMultipleProviders
     nextScreens:
-      - name: providers-info
+      - name: provider-info-confirm
   providers-info:
     condition: EnableMultipleProviders
     subflow: providers
