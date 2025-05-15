@@ -20,7 +20,7 @@
         </th:block>
         <th:block th:if="${noEntryToDelete == null}">
           <th:block
-                  th:with="name=${session.entryToDelete.get('providerName')}">
+                  th:with="name=${session.entryToDelete.get('familyIntendedProviderName')}">
             <div class="form-card__content">
               <th:block th:replace="~{fragments/gcc-icons :: trash}"></th:block>
               <th:block

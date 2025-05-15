@@ -575,7 +575,7 @@ flow:
     beforeDisplayAction: SetProvidersAndMaxProvidersInGCCWhileRemovingIncompleteIterations
     condition: EnableMultipleProviders
     nextScreens:
-      - name: provider-info-confirm
+      - name: providers-info-confirm
   providers-info:
     condition: EnableMultipleProviders
     subflow: providers
@@ -594,7 +594,7 @@ flow:
   providers-info-confirm:
     condition: EnableMultipleProviders
     nextScreens:
-      - name: null
+      - name: schedules-intro
   doc-upload-confirm:
     nextScreens: null
   delete-child:
