@@ -583,6 +583,7 @@ flow:
       - name: providers-contact-info
   providers-contact-info:
     condition: EnableMultipleProviders
+    crossFieldValidationAction: ValidateProviderEmail
     subflow: providers
     nextScreens:
       - name: providers-add
