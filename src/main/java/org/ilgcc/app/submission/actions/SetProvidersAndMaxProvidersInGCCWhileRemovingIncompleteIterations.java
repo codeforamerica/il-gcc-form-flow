@@ -13,11 +13,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class SetProvidersAndMaxProvidersInGCCWhileRemovingIncompleteIterations implements Action {
+
     private final SubmissionRepositoryService submissionRepositoryService;
 
-    public SetProvidersAndMaxProvidersInGCCWhileRemovingIncompleteIterations(SubmissionRepositoryService submissionRepositoryService) {
+    public SetProvidersAndMaxProvidersInGCCWhileRemovingIncompleteIterations(
+            SubmissionRepositoryService submissionRepositoryService) {
         this.submissionRepositoryService = submissionRepositoryService;
     }
+
     @Override
     public void run(Submission submission) {
         Map<String, Object> familyInputData = submission.getInputData();
@@ -28,17 +31,19 @@ public class SetProvidersAndMaxProvidersInGCCWhileRemovingIncompleteIterations i
             submissionRepositoryService.save(submission);
         }
 
-        List<Map<String, Object>> careProviders = (List<Map<String, Object>>) familyInputData.getOrDefault("providers", emptyList());
+        List<Map<String, Object>> careProviders = (List<Map<String, Object>>) familyInputData.getOrDefault("providers",
+                emptyList());
         boolean maxProvidersReached = hasMaxProvidersBeenReached(familyInputData, careProviders);
         submission.getInputData().put("maxProvidersReached", maxProvidersReached);
         submission.getInputData().put("careProviders", careProviders);
     }
 
 
-    private boolean hasMaxProvidersBeenReached(Map<String, Object> familyInputData, List<Map<String, Object>>  careProviders) {
+    private boolean hasMaxProvidersBeenReached(Map<String, Object> familyInputData, List<Map<String, Object>> careProviders) {
         if (familyInputData.getOrDefault("choseProviderForEveryChildInNeedOfCare", "false").equals("true")) {
-            return ((long) careProviders.size() > 2);
-        }else
-            return ((long) careProviders.size() > 1);
+            return careProviders.size() > 2;
+        } else {
+            return careProviders.size() > 1;
+        }
     }
 }
