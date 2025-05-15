@@ -3,6 +3,7 @@ package org.ilgcc.app.journeys;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import formflow.library.data.Submission;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 @Slf4j
 public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBasePageTest {
@@ -360,6 +363,10 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
 
         assertThat(testPage.findElementTextById("child-name-0")).contains("Toddler Baby");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.id("child-age-0"), "13 months"));
+
         assertThat(testPage.findElementTextById("child-age-0")).contains("13 months");
         assertThat(testPage.findElementTextById("child-schedule-0")).isNotNull();
         assertThat(testPage.findElementTextById("child-start-0")).isEqualTo("01/10/2025");
