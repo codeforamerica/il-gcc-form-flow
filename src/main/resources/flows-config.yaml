@@ -594,7 +594,7 @@ flow:
   providers-info-confirm:
     condition: EnableMultipleProviders
     nextScreens:
-      - name: schedules-intro
+      - name: activities-parent-intro
   doc-upload-confirm:
     nextScreens: null
   delete-child:
