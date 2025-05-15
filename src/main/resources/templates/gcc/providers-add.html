@@ -11,7 +11,7 @@
         <th:block th:with="providers=${inputData.get('careProviders')},
                            hasProviders=${providers.size() > 0},
                            maxProvidersReached=${inputData.get('maxProvidersReached')},
-                           header=${maxProvidersReached ? #messages.msg('providers-add.header.max-providers-reached') : #messages.msg('providers-add.header')},
+                           header=${#messages.msg('providers-add.header')},
                            moreThanOneProviderSubtext=${maxProvidersReached ? #messages.msg('providers-add.subtext.max-providers-reached') : #messages.msg('providers-add.subtext.has-providers')}">
           <th:block th:replace="~{fragments/gcc-icons :: care}"></th:block>
           <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=${header},
@@ -30,16 +30,16 @@
                         <ul class="subflow-list list--bulleted">
                           <li th:each="provider, iter: ${providers}"
                               class="spacing-below-10">
-                            <div>
-                              <p th:class="spacing-below-0"
-                                 th:utext="${provider.familyIntendedProviderName}"></p>
-                              <p th:class="spacing-below-0"
-                                 th:utext="${provider.familyIntendedProviderAddress}"></p>
-                              <p th:class="spacing-below-0"
-                                 th:utext="${provider.familyIntendedProviderPhoneNumber}"></p>
-                              <p th:class="spacing-below-0"
-                                 th:utext="${provider.familyIntendedProviderEmail}"></p>
-                              <span
+                            <ul>
+                              <li th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderName}"></li>
+                              <li th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderAddress}"></li>
+                              <li th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderPhoneNumber}"></li>
+                              <li th:class="spacing-below-0"
+                                 th:utext="${provider.familyIntendedProviderEmail}"></li>
+                              <li
                                   class="text--small spacing-above-15 spacing-below-25 spacing-right-25">
                                       <a th:href="'/flow/' + ${flow} + '/providers-info/' + ${provider.uuid} + '/edit'"
                                          th:text="#{general.edit}"
@@ -49,8 +49,8 @@
                                          th:text="#{general.remove}"
                                          class="subflow-delete padding-left-25"
                                          th:id="'delete-iteration-' + ${provider.uuid}"></a>
-                                  </span>
-                            </div>
+                                  </li>
+                            </ul>
                           </li>
                         </ul>
                       </th:block>

@@ -55,7 +55,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderAddress", "101 Test St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-        testPage.enter("familyIntendedProviderZipCode", "60302");
         testPage.clickContinue();
 
         //providers-contact-info
@@ -84,7 +83,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderAddress", "151 Second St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-        testPage.enter("familyIntendedProviderZipCode", "60402");
         testPage.clickContinue();
 
         //providers-contact-info
@@ -105,7 +103,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderAddress", "441 Third St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-        testPage.enter("familyIntendedProviderZipCode", "60702");
         testPage.clickContinue();
 
         //providers-contact-info
@@ -148,7 +145,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderAddress", "151 Second St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-        testPage.enter("familyIntendedProviderZipCode", "60402");
         testPage.clickContinue();
 
         //providers-contact-info
@@ -210,7 +206,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("familyIntendedProviderAddress", "222 Test St");
     testPage.enter("familyIntendedProviderCity", "Chicago");
     testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-    testPage.enter("familyIntendedProviderZipCode", "60302");
     testPage.clickContinue();
 
     //providers-contact-info
@@ -233,7 +228,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
     testPage.enter("familyIntendedProviderAddress", "323 Second St");
     testPage.enter("familyIntendedProviderCity", "Chicago");
     testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-    testPage.enter("familyIntendedProviderZipCode", "62202");
     testPage.clickContinue();
 
     //providers-contact-info
