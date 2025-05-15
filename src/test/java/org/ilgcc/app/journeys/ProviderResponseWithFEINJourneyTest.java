@@ -92,15 +92,6 @@ public class ProviderResponseWithFEINJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
         testPage.clickButton("Use this address");
 
-        //mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response.mailing-address.title"));
-        testPage.clickElementById("providerMailingAddressSameAsServiceAddress-yes");
-        testPage.clickContinue();
-
-        //confirm-mailing-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("confirm-address.title"));
-        testPage.clickButton("Use this address");
-
         // contact-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-contact-info.title"));
         testPage.enter("providerResponseContactPhoneNumber", "5555555555");
