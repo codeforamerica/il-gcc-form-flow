@@ -240,7 +240,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
-        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
         testPage.clickLink(getEnMessage("general.edit"));
 
         //providers-info
@@ -254,9 +254,9 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //providers-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-        testPage.clickButton(getEnMessage("providers-add.button.that-is-all"));
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
+        testPage.clickButton(getEnMessage("providers-add.button.that-is-all"));
     }
 
     @Test
