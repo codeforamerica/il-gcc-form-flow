@@ -13,14 +13,9 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
     void AllowsForThreeProvidersToBeAddedWhenClientAnswersYesToHavingChosenAProviderForEveryChildJourneyTest() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .withParentBasicInfo()
-                .with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", "LEE")
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
-                .withShortCode("familyShortCode")
-                .build());
+        saveSubmission(getSessionSubmissionTestBuilder().withParentBasicInfo().with("familyIntendedProviderName", "ACME Daycare")
+                .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .withShortCode("familyShortCode").build());
 
         testPage.navigateToFlowScreen("gcc/children-add");
         testPage.clickButton(getEnMessage("children-add.thats-all"));
@@ -55,7 +50,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderAddress", "101 Test St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-        testPage.enter("familyIntendedProviderZipCode", "60302");
         testPage.clickContinue();
 
         //providers-contact-info
@@ -75,6 +69,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
         assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
         //Second Iteration
@@ -84,7 +80,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderAddress", "151 Second St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-        testPage.enter("familyIntendedProviderZipCode", "60402");
         testPage.clickContinue();
 
         //providers-contact-info
@@ -96,6 +91,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         //providers-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
         //Third Iteration
@@ -105,7 +102,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderAddress", "441 Third St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-        testPage.enter("familyIntendedProviderZipCode", "60702");
         testPage.clickContinue();
 
         //providers-contact-info
@@ -116,9 +112,10 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //providers-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header.max-providers-reached"));
-        assertThat(testPage.findElementTextById("continue-link")).isNotEqualTo(getEnMessage("providers-add.button.that-is-all"));
-        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("general.button.continue"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
 
         //delete-provider -- don't actually delete!
         assertThat(testPage.findElementsByClass("spacing-below-0").get(4).getText()).isEqualTo("Nope Test");
@@ -140,6 +137,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         // back to providers-add -- check the provider is gone and then re-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
         //provider-info
@@ -148,7 +147,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderAddress", "151 Second St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-        testPage.enter("familyIntendedProviderZipCode", "60402");
         testPage.clickContinue();
 
         //providers-contact-info
@@ -159,121 +157,115 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         // back to providers-add -- check the provider count is back to the max
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header.max-providers-reached"));
-        assertThat(testPage.findElementTextById("continue-link")).isNotEqualTo(getEnMessage("providers-add.button.that-is-all"));
-        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("general.button.continue"));
-
-        testPage.clickContinue();
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
+        testPage.clickButton(getEnMessage("providers-add.button.that-is-all"));
 
         //providers-info-confirm
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info-confirm.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info-confirm.header"));
     }
 
-  @Test
-  void AllowsOnlyTwoProvidersToBeAddedWhenClientAnswersNoToHavingChosenAProviderForEveryChildJourneyTest() {
-    testPage.navigateToFlowScreen("gcc/parent-info-disability");
+    @Test
+    void AllowsOnlyTwoProvidersToBeAddedWhenClientAnswersNoToHavingChosenAProviderForEveryChildJourneyTest() {
+        testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
-    saveSubmission(getSessionSubmissionTestBuilder()
-        .withParentBasicInfo()
-        .with("familyIntendedProviderName", "ACME Daycare")
-        .with("applicationCounty", "LEE")
-        .withChild("First", "Child", "true")
-        .withChild("Second", "Child", "true")
-        .withShortCode("familyShortCode")
-        .build());
+        saveSubmission(getSessionSubmissionTestBuilder().withParentBasicInfo().with("familyIntendedProviderName", "ACME Daycare")
+                .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .withShortCode("familyShortCode").build());
 
-    testPage.navigateToFlowScreen("gcc/children-add");
-    testPage.clickButton(getEnMessage("children-add.thats-all"));
-    //providers-intro
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
-    testPage.clickContinue();
+        testPage.navigateToFlowScreen("gcc/children-add");
+        testPage.clickButton(getEnMessage("children-add.thats-all"));
+        //providers-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));
+        testPage.clickContinue();
 
-    //providers-chosen
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
-    testPage.clickYes();
+        //providers-chosen
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
+        testPage.clickYes();
 
-    //providers-all-ccap-children
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
-    testPage.clickNo();
+        //providers-all-ccap-children
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
+        testPage.clickNo();
 
-    //First Iteration
-    //providers-add
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
-    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        //First Iteration
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
-    //providers-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+        //providers-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
 
-    testPage.enter("familyIntendedProviderName", "First Daycare");
-    testPage.enter("familyIntendedProviderAddress", "222 Test St");
-    testPage.enter("familyIntendedProviderCity", "Chicago");
-    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-    testPage.enter("familyIntendedProviderZipCode", "60302");
-    testPage.clickContinue();
+        testPage.enter("familyIntendedProviderName", "First Daycare");
+        testPage.enter("familyIntendedProviderAddress", "222 Test St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.clickContinue();
 
-    //providers-contact-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
 
-    testPage.enter("familyIntendedProviderEmail", "test@first.com");
-    testPage.enter("familyIntendedProviderPhoneNumber", "(533)555-5555");
-    testPage.clickContinue();
+        testPage.enter("familyIntendedProviderEmail", "test@first.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(533)555-5555");
+        testPage.clickContinue();
 
-    //providers-add
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-    assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
-    assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
-    testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
 
-    //Second Iteration
-    //provider-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-    testPage.enter("familyIntendedProviderName", "No Provider");
-    testPage.enter("familyIntendedProviderAddress", "323 Second St");
-    testPage.enter("familyIntendedProviderCity", "Chicago");
-    testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
-    testPage.enter("familyIntendedProviderZipCode", "62202");
-    testPage.clickContinue();
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
-    //providers-contact-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
-    testPage.enter("familyIntendedProviderEmail", "test@second.com");
-    testPage.enter("familyIntendedProviderPhoneNumber", "(355)333-2222");
-    testPage.clickContinue();
+        //Second Iteration
+        //provider-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+        testPage.enter("familyIntendedProviderName", "No Provider");
+        testPage.enter("familyIntendedProviderAddress", "323 Second St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.clickContinue();
 
-    //providers-add
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-    assertThat(testPage.findElementTextById("continue-link")).isNotEqualTo(getEnMessage("providers-add.button.that-is-all"));
-    testPage.clickLink(getEnMessage("general.edit"));
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.enter("familyIntendedProviderEmail", "test@second.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(355)333-2222");
+        testPage.clickContinue();
 
-    //providers-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-    assertThat(testPage.getInputValue("familyIntendedProviderName")).isEqualTo("First Daycare");
-    testPage.clickContinue();
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
+        testPage.clickLink(getEnMessage("general.edit"));
 
-    //providers-contact-info
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
-    testPage.clickContinue();
+        //providers-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+        assertThat(testPage.getInputValue("familyIntendedProviderName")).isEqualTo("First Daycare");
+        testPage.clickContinue();
 
-    //providers-add
-    assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
-    testPage.clickContinue();
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.clickContinue();
 
-  }
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
+        testPage.clickButton(getEnMessage("providers-add.button.that-is-all"));
+    }
 
-  @Test
-  void MultiProviderNavigationWhenNoProviderJourneyTest() {
-    testPage.navigateToFlowScreen("gcc/parent-info-disability");
+    @Test
+    void MultiProviderNavigationWhenNoProviderJourneyTest() {
+        testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
-        saveSubmission(getSessionSubmissionTestBuilder()
-            .withParentBasicInfo()
-            .with("familyIntendedProviderName", "ACME Daycare")
-            .with("applicationCounty", "LEE")
-            .withChild("First", "Child", "true")
-            .withChild("Second", "Child", "true")
-            .withShortCode("familyShortCode")
-            .build());
+        saveSubmission(getSessionSubmissionTestBuilder().withParentBasicInfo().with("familyIntendedProviderName", "ACME Daycare")
+                .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .withShortCode("familyShortCode").build());
 
         testPage.navigateToFlowScreen("gcc/providers-intro");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title-header"));

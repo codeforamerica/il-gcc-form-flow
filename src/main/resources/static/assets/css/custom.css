@@ -837,6 +837,23 @@ div.move-20-up {
   word-break: break-word;
 }
 
+.child-name {
+  width: 65%;
+}
+
+/* Force word wraps for subflow lists */
+.subflow-list {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  padding-right: 1.5em;
+}
+
+/* Force word wraps for headers */
+#header.h2 {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
 /* THIS NEEDS TO BE HERE, IF IT'S REMOVED IT WILL BREAK JAVASCRIPT FOR SAME AS HOME ADDRESS FUNCTIONALITY */
 .hidden {
   display: none !important;

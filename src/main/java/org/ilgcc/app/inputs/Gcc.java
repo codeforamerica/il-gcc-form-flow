@@ -665,7 +665,4 @@ public class Gcc extends FlowInputs {
     private String familyIntendedProviderCity;
     @NotBlank(message = "{errors.provide-state}")
     private String familyIntendedProviderState;
-    @NotBlank
-    @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
-    private String familyIntendedProviderZipCode;
 }
