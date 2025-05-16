@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SetProvidersAndMaxProvidersInGCCWhileRemovingIncompleteIterations implements Action {
+public class SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations implements Action {
 
     private final SubmissionRepositoryService submissionRepositoryService;
 
-    public SetProvidersAndMaxProvidersInGCCWhileRemovingIncompleteIterations(
+    public SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations(
             SubmissionRepositoryService submissionRepositoryService) {
         this.submissionRepositoryService = submissionRepositoryService;
     }
@@ -26,24 +26,22 @@ public class SetProvidersAndMaxProvidersInGCCWhileRemovingIncompleteIterations i
         Map<String, Object> familyInputData = submission.getInputData();
         var subflowData = (List<Map<String, Object>>) submission.getInputData().getOrDefault("providers", emptyList());
         if (!subflowData.isEmpty()) {
-            log.info("Removing incomplete provider iterations from submission {}", submission.getId());
             subflowData.removeIf(providerIteration -> !(boolean) providerIteration.getOrDefault("iterationIsComplete", false));
             submissionRepositoryService.save(submission);
         }
 
         List<Map<String, Object>> careProviders = (List<Map<String, Object>>) familyInputData.getOrDefault("providers",
                 emptyList());
-        boolean maxProvidersReached = hasMaxProvidersBeenReached(familyInputData, careProviders);
-        submission.getInputData().put("maxProvidersReached", maxProvidersReached);
+        submission.getInputData().put("maxProvidersAllowed", getMaxProvidersAllowed(familyInputData));
         submission.getInputData().put("careProviders", careProviders);
     }
 
 
-    private boolean hasMaxProvidersBeenReached(Map<String, Object> familyInputData, List<Map<String, Object>> careProviders) {
-        if (familyInputData.getOrDefault("choseProviderForEveryChildInNeedOfCare", "false").equals("true")) {
-            return careProviders.size() > 2;
+    private int getMaxProvidersAllowed(Map<String, Object> familyInputData) {
+        if ("true".equals(familyInputData.get("choseProviderForEveryChildInNeedOfCare"))) {
+            return 3;
         } else {
-            return careProviders.size() > 1;
+            return 2;
         }
     }
 }

@@ -9,9 +9,10 @@
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
         <th:block th:with="providers=${inputData.get('careProviders')},
-                           hasProviders=${providers.size() > 0},
-                           maxProvidersReached=${inputData.get('maxProvidersReached')},
-                           subtext=${hasProviders ? (maxProvidersReached ? #messages.msg('providers-add.subtext.max-providers-reached') : #messages.msg('providers-add.subtext.has-providers')) : #messages.msg('providers-add.subtext.no-providers-added')}">
+                            hasProviders=${providers.size() > 0},
+                            maxProvidersAllowed=${inputData.get('maxProvidersAllowed')},
+                            maxProvidersReached=${providers.size() == maxProvidersAllowed},
+                            subtext=${hasProviders ? (maxProvidersReached ? #messages.msg('providers-add.subtext.max-providers-reached', maxProvidersAllowed) : #messages.msg('providers-add.subtext.has-providers', maxProvidersAllowed)) : #messages.msg('providers-add.subtext.no-providers-added')}">
           <th:block th:replace="~{fragments/gcc-icons :: care}"></th:block>
           <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{providers-add.header}, subtext=${subtext})}"/>
           <th:block
