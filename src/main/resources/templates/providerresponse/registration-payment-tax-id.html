@@ -33,11 +33,13 @@
                         th:with="homeProvider = ${!inputData.getOrDefault('homeProviderTaxIDselection', '').equals('')},
                      hideSSNProviderTypeInput=${homeProvider && (inputData.get('homeProviderTaxIDselection').equals('ITIN'))},
                      hideITINOption = ${homeProvider && (inputData.getOrDefault('homeProviderTaxIDselection', '').equals('SSN'))}">
-                    <th:block th:unless="${hideSSNProviderTypeInput}"
-                              th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='SSN', label=#{registration-payment-tax-id.ssn})}"/>
-                    <th:block
-                            th:if="${!hideITINOption}"
-                            th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='ITIN', label=#{registration-payment-tax-id.itin})}"/>
+                    <th:block th:unless="${hideSSNProviderTypeInput}">
+                        <th:block
+                                th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='SSN', label=#{registration-payment-tax-id.ssn})}"/>
+                    </th:block>
+                    <th:block th:if="${!hideITINOption}">
+                        <th:block th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='ITIN', label=#{registration-payment-tax-id.itin})}"/>
+                    </th:block>
                     <th:block
                             th:replace="~{fragments/inputs/radio :: radio(inputName='providerTaxIdType',value='FEIN', label=#{registration-payment-tax-id.fein})}"/>
                 </th:block>
