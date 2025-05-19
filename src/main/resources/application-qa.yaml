@@ -41,3 +41,6 @@ il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
   dts:
     processing-org: '4c-ccap-apps-testing'
+sentry:
+  environment: qa
+  traces-sample-rate: 1.0
