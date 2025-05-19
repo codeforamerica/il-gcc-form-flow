@@ -492,6 +492,8 @@ flow:
     condition: EnableProviderMessagingFlagOn
     beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
+      - name: contact-providers-start
+        condition: EnableMultipleProviders
       - name: submit-contact-provider-email
         condition: ContactProviderViaEmail
       - name: submit-contact-provider-text
@@ -595,6 +597,64 @@ flow:
     condition: EnableMultipleProviders
     nextScreens:
       - name: activities-parent-intro
+  contact-providers-start:
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: contact-providers-email-address
+  contact-providers-email-address:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-confirm-email-address
+  contact-providers-confirm-email-address:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-edit-email
+  contact-providers-edit-email:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-email-sent
+  contact-providers-email-sent:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-phone-number
+  contact-providers-phone-number:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-confirm-phone-number
+  contact-providers-confirm-phone-number:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-edit-phone-number
+  contact-providers-edit-phone-number:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-text
+  contact-providers-text:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-share-code
+  contact-providers-share-code:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-review
+  contact-providers-review:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
+      - name: doc-upload-recommended-docs
+  contact-provider-child-without-provider:
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: doc-upload-recommended-docs
   doc-upload-confirm:
     nextScreens: null
   delete-child:
@@ -631,6 +691,11 @@ subflows:
     iterationStartScreen: activities-partner-employer-name
     reviewScreen: activities-partner-add-job
     deleteConfirmationScreen: delete-partner-job
+  contactProviders:
+    entryScreen: contact-providers-start
+    iterationStartScreen: contact-providers-email-address
+    reviewScreen: contact-providers-review
+    deleteConfirmationScreen: contact-providers-start
 landmarks:
   firstScreen: onboarding-getting-started
   afterSubmitPages:
