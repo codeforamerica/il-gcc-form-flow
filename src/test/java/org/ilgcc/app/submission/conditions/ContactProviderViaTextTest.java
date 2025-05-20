@@ -13,7 +13,7 @@ class ContactProviderViaTextTest {
     
     Submission testSubmission;
     
-    ContactProviderViaText contactProviderViaText = new ContactProviderViaText(true);
+    ContactProviderViaText contactProviderViaText = new ContactProviderViaText();
 
     @BeforeEach
     void setUp() {
