@@ -50,19 +50,11 @@ public class ProviderApplicationPreparerTest {
                 .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-        assertThat(result.get("providerNameCorporate")).isEqualTo(new SingleField("providerNameCorporate", "ProviderName", null));
+        assertThat(result.get("providerResponseBusinessName")).isEqualTo(new SingleField("providerResponseBusinessName", "ProviderName", null));
         assertThat(result.get("providerPhoneNumber")).isEqualTo(new SingleField("providerPhoneNumber", "(125) 785-67896", null));
         assertThat(result.get("providerEmail")).isEqualTo(new SingleField("providerEmail", "mail@test.com", null));
         assertThat(result.get("providerResponse")).isEqualTo(
                 new SingleField("providerResponse", "No response from provider", null));
-
-        assertThat(result.get("dayCareName")).isEqualTo(null);
-        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressApt")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressCity")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressState")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 
     @Test
@@ -113,7 +105,6 @@ public class ProviderApplicationPreparerTest {
                 .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-        assertThat(result.get("providerNameCorporate")).isNull();
 
         assertThat(result.get("providerResponseFirstName")).isEqualTo(
                 new SingleField("providerResponseFirstName", "Provider", null));
@@ -182,8 +173,6 @@ public class ProviderApplicationPreparerTest {
                 .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-        assertThat(result.get("providerNameCorporate")).isNull();
-
         assertThat(result.get("providerResponseFirstName")).isEqualTo(
                 new SingleField("providerResponseFirstName", "Provider", null));
         assertThat(result.get("providerResponseLastName")).isEqualTo(
@@ -290,11 +279,6 @@ public class ProviderApplicationPreparerTest {
                 new SingleField("clientResponseConfirmationCode", "testConfirmationCode", null));
         assertThat(result.get("providerTaxIdFEIN")).isEqualTo(
                 new SingleField("providerTaxIdFEIN", "12-1234567", null));
-
-        assertThat(result.get("dayCareName")).isEqualTo(null);
-        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 
     @Test
@@ -372,11 +356,6 @@ public class ProviderApplicationPreparerTest {
 
         assertThat(result.get("providerResponse")).isEqualTo(
                 new SingleField("providerResponse", "", null));
-
-        assertThat(result.get("dayCareName")).isEqualTo(null);
-        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 
     @ParameterizedTest
@@ -485,11 +464,6 @@ public class ProviderApplicationPreparerTest {
 
         assertThat(result.get("providerResponse")).isEqualTo(
                 new SingleField("providerResponse", "Unable to identify provider - no response to care arrangement", null));
-
-        assertThat(result.get("dayCareName")).isEqualTo(null);
-        assertThat(result.get("dayCareIdNumber")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressStreet")).isEqualTo(null);
-        assertThat(result.get("dayCareAddressZip")).isEqualTo(null);
     }
 
     static Stream<Arguments> providerDenialReasons() {

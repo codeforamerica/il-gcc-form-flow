@@ -141,7 +141,6 @@ inputFields:
   receivedTimestamp: RECEIVED_TIMESTAMP
 
   providerResponseProviderNumber: PROVIDER_ID_NUMBER
-  providerNameCorporate: PROVIDER_NAME_CORPORATE
   providerPhoneNumber: PROVIDER_PHONE_NUMBER
   providerEmail: PROVIDER_EMAIL
   providerResponse: PROVIDER_RESPONSE
@@ -176,13 +175,6 @@ inputFields:
   providerTaxIdFEIN: PROVIDER_FEIN
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
   clientResponseConfirmationCode: APPLICATION_CONFIRMATION_CODE
-  dayCareName: PROVIDER_NAME_CORPORATE
-  dayCareIdNumber: PROVIDER_ID_NUMBER
-  dayCareAddressStreet: PROVIDER_ADDRESS_SERVICE_STREET
-  dayCareAddressApt: PROVIDER_ADDRESS_SERVICE_APT
-  dayCareAddressCity: PROVIDER_ADDRESS_SERVICE_CITY
-  dayCareAddressState: PROVIDER_ADDRESS_SERVICE_STATE
-  dayCareAddressZip: PROVIDER_ADDRESS_SERVICE_ZIP
 dbFields:
   submittedAt: APPLICANT_SIGNATURE_DATE
 

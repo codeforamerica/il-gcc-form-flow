@@ -102,8 +102,9 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
         var results = new HashMap<String, SubmissionField>();
         Map<String, Object> inputData = submission.getInputData();
 
-        results.put("providerNameCorporate",
-                new SingleField("providerNameCorporate", inputData.getOrDefault("familyIntendedProviderName", "").toString(),
+
+        results.put("providerResponseBusinessName",
+                new SingleField("providerResponseBusinessName", inputData.getOrDefault("familyIntendedProviderName", "").toString(),
                         null));
         results.put("providerPhoneNumber",
                 new SingleField("providerPhoneNumber",
@@ -124,11 +125,11 @@ public class ProviderApplicationPreparer extends ProviderSubmissionFieldPreparer
 
     private Map<String, SubmissionField> prepareNoProviderData(String shortCode) {
         var results = new HashMap<String, SubmissionField>();
-        results.put("providerNameCorporate",
-                new SingleField("providerNameCorporate", "No qualified provider",
+        results.put("providerResponseBusinessName",
+                new SingleField("providerResponseBusinessName", "No qualified provider",
                         null));
-        results.put("dayCareIdNumber",
-                new SingleField("dayCareIdNumber", "460328258720008",
+        results.put("providerResponseProviderNumber",
+                new SingleField("providerResponseProviderNumber", "460328258720008",
                         null));
         results.put("providerResponse",
                 new SingleField("providerResponse", "No provider chosen", null));
