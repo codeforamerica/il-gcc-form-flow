@@ -66,8 +66,6 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
         Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
         if (providerSubmissionOptional.isPresent()) {
             results.putAll(mapProviderInputDataToSubmissionFields(providerSubmissionOptional.get().getInputData()));
-            results.put("clientResponseConfirmationCode",
-                    new SingleField("clientResponseConfirmationCode", familySubmission.getShortCode(), null));
             results.put("providerSignatureDate",
                     new SingleField("providerSignatureDate",
                             providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
