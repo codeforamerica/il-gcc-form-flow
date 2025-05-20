@@ -3,13 +3,11 @@ package org.ilgcc.app.pdf;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import formflow.library.data.Submission;
-import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
-import java.time.OffsetDateTime;
 import java.util.Map;
-import java.util.UUID;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.pdf.helpers.ProviderApplicationPreparerHelper;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class ProviderApplicationPreparerNoProviderChosenTest {
 
     @Autowired
-    private ProviderApplicationPreparer preparer;
+    private ProviderApplicationPreparerHelper preparer;
 
     private Submission familySubmission;
 

@@ -1,28 +1,18 @@
-package org.ilgcc.app.pdf;
+package org.ilgcc.app.pdf.helpers;
 
-import static org.ilgcc.app.utils.SubmissionUtilities.hasProviderResponse;
-
-import formflow.library.data.Submission;
-import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderSSNPreparer extends ProviderSubmissionFieldPreparer {
+public class ProviderSSNPreparerHelper extends InputDataPreparerHelper {
 
     @Override
-    public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
-        var results = new HashMap<String, SubmissionField>();
-        if (!hasProviderResponse(familySubmission)) {
-            return results;
-        }
+    public Map<String, SubmissionField> prepareSubmissionFields(Map<String, Object> providerInputData) {
+        Map<String, SubmissionField> results = new HashMap<>();
 
-        Optional<Submission> providerSubmission = getProviderSubmission(familySubmission);
-        var providerInputData = providerSubmission.get().getInputData();
         if (!providerInputData.getOrDefault("providerITIN", "").toString().isBlank()) {
             results.put("providerSSN",
                     new SingleField("providerSSN", (String) providerInputData.get("providerITIN"),

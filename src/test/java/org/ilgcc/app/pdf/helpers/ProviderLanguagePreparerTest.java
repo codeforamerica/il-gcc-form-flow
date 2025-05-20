@@ -10,6 +10,7 @@ import formflow.library.pdf.SubmissionField;
 import java.util.List;
 import java.util.Map;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ProviderLanguagePreparerTest {
 
 
     @Autowired
-    private ProviderLanguagesPreparer preparer;
+    private ProviderLanguagesPreparerHelper preparer;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;

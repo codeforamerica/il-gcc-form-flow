@@ -8,6 +8,7 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.Map;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class ProviderSSNPreparerTest {
 
 
     @Autowired
-    private ProviderSSNPreparer preparer;
+    private ProviderSSNPreparerHelper preparer;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;

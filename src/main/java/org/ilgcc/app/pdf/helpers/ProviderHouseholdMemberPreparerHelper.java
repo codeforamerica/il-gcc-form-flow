@@ -1,29 +1,21 @@
-package org.ilgcc.app.pdf;
+package org.ilgcc.app.pdf.helpers;
 
 import static java.util.Collections.emptyList;
 
-import formflow.library.data.Submission;
-import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderHouseholdMemberPreparer extends ProviderSubmissionFieldPreparer {
+public class ProviderHouseholdMemberPreparerHelper extends InputDataPreparerHelper {
 
     @Override
-    public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
-        var results = new HashMap<String, SubmissionField>();
-        Optional<Submission> providerSubmission = getProviderSubmission(familySubmission);
-        if (providerSubmission.isEmpty()) {
-            return results;
-        }
+    public Map<String, SubmissionField> prepareSubmissionFields(Map<String, Object> providerInputData) {
+        Map<String, SubmissionField> results = new HashMap<>();
 
-        var providerInputData = providerSubmission.get().getInputData();
         int iteration = 1;
 
         var providerHouseholdMembers = (List<Map<String, Object>>) providerInputData.getOrDefault("providerHouseholdMembers", emptyList());

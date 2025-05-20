@@ -8,6 +8,7 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.Map;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.app.utils.enums.ProviderType;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ public class ProviderTypePreparerTest {
 
 
     @Autowired
-    private ProviderTypePreparer preparer;
+    private ProviderTypePreparerHelper preparer;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.ilgcc.app.IlGCCApplication;
+import org.ilgcc.app.pdf.helpers.ProviderApplicationPreparerHelper;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.app.utils.enums.ProviderDenialReason;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
@@ -29,7 +30,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class ProviderApplicationPreparerTest {
 
     @Autowired
-    private ProviderApplicationPreparer preparer;
+    private ProviderApplicationPreparerHelper preparer;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;

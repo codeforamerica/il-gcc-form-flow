@@ -65,6 +65,9 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
                 + PreparerUtilities.numberValueOf(unemploymentIncome) + PreparerUtilities.numberValueOf(royaltiesIncome)
                 + PreparerUtilities.numberValueOf(pensionIncome) + PreparerUtilities.numberValueOf(workersIncome);
 
+        results.put("childcareStartDate",
+                new SingleField("childcareStartDate", inputData.get("earliestChildcareStartDate").toString(), null));
+
         results.put("otherMonthlyIncomeApplicant",
                 new SingleField("otherMonthlyIncomeApplicant", String.format("%.0f", Math.floor(totalExpenses)), null));
 

@@ -1,29 +1,21 @@
-package org.ilgcc.app.pdf;
+package org.ilgcc.app.pdf.helpers;
 
-import formflow.library.data.Submission;
-import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.ilgcc.app.utils.enums.ProviderLanguagesOffered;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderLanguagesPreparer extends ProviderSubmissionFieldPreparer {
+public class ProviderLanguagesPreparerHelper extends InputDataPreparerHelper {
 
   @Override
-  public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
-    var results = new HashMap<String, SubmissionField>();
-    Optional<Submission> providerSubmission = getProviderSubmission(familySubmission);
-    if (providerSubmission.isEmpty()) {
-      return results;
-    }
+  public Map<String, SubmissionField> prepareSubmissionFields(Map<String, Object> providerInputData) {
+    Map<String, SubmissionField> results = new HashMap<>();
 
-    var providerInputData = providerSubmission.get().getInputData();
     List<String> otherLanguages = new ArrayList<>();
     if (providerInputData.containsKey("providerLanguagesOffered[]")) {
       List<String> providerLanguagesOffered = (List<String>) providerInputData.get("providerLanguagesOffered[]");
