@@ -1,5 +1,16 @@
 <th:block
-        th:with="hasChosenProvider=${submission.getInputData().getOrDefault('hasChosenProvider', 'false')}">
+        th:with="multipleProviderFlagIsOn=${@environment.getProperty('il-gcc.enable-multiple-providers').equalsIgnoreCase('true')},
+                 hasChosenProvider=${submission.getInputData().getOrDefault('hasChosenProvider', 'false').equalsIgnoreCase('true')}">
     <th:block
-            th:replace="${hasChosenProvider} ? ~{fragments/screens/choose-messaging-method :: screen} : ~{fragments/screens/find-provider :: screen}"/>
+        th:if="${multipleProviderFlagIsOn && hasChosenProvider}">
+        <th:block th:replace="~{fragments/screens/after-submit-contact-multiple-providers :: screen}"/>
+    </th:block>
+    <th:block
+     th:if="${!multipleProviderFlagIsOn && hasChosenProvider}">
+        <th:block th:replace="~{fragments/screens/choose-messaging-method :: screen}"/>
+    </th:block>
+    <th:block th:if="${!hasChosenProvider}">
+        <th:block
+            th:replace="~{fragments/screens/after-submit-no-provider :: screen}"/>
+    </th:block>
 </th:block>

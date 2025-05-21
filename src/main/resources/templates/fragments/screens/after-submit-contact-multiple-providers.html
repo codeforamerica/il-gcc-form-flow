@@ -1,0 +1,36 @@
+<th:block th:fragment="screen">
+  <!DOCTYPE html>
+  <html th:lang="${#locale.language}">
+  <head th:replace="~{fragments/head :: head(title=#{after-submit-contact-provider.multiple-providers.title})}"></head>
+  <body>
+  <div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+      <div class="grid">
+        <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+        <main id="content" role="main" class="form-card spacing-above-35"
+              th:with="moreThanOneProvider=${inputData.containsKey('providers') && inputData.get('providers').size() > 1}">
+          <th:block th:replace="~{fragments/gcc-icons :: mail-sent-success}"></th:block>
+          <div th:if="${lockedSubmissionMessage}" class="notice--warning">
+            <p th:text="${lockedSubmissionMessage}"></p>
+          </div>
+          <th:block
+              th:replace="~{fragments/cardHeader :: cardHeader(header=${moreThanOneProvider ? #messages.msg('after-submit-contact-provider.multiple-providers.title') : #messages.msg('after-submit-contact-provider.single-provider.title')}, subtext=${moreThanOneProvider ? #messages.msg('after-submit-contact-provider.multiple-providers.body') :  #messages.msg('after-submit-contact-provider.single-provider.body')})}"/>
+          <div class="form-card__content move-40-up">
+            <ul class="list--numbered">
+              <li th:utext="#{after-submit-contact-provider.multiple-providers.li-1}"></li>
+              <li th:utext="#{after-submit-contact-provider.multiple-providers.li-2}"></li>
+              <li th:utext="#{after-submit-contact-provider.multiple-providers.li-3}"></li>
+            </ul>
+          </div>
+          <div class="form-card__footer">
+            <th:block th:replace="~{fragments/continueButton :: continue}"/>
+          </div>
+        </main>
+      </div>
+    </section>
+  </div>
+  <th:block th:replace="~{fragments/footer :: footer}"/>
+  </body>
+  </html>
+</th:block>
