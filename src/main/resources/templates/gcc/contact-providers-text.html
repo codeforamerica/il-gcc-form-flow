@@ -43,26 +43,30 @@
         <th:block th:with="providerName='PROVIDER FROM LOOP GOES HERE'">
           <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${providerName})}"/>
           <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{contact-providers-text.header(${providerName})})}"/>
-          <div class="form-card__content">
-            <div>
-              <p th:utext="#{contact-providers-text.body.p1}"></p>
-              <p class="open-text-app-paragraph" th:utext="#{contact-providers-text.body.p2}"></p>
-            </div>
-            <div class="center"
-                 th:with="shortCode=${submission.getShortCode()},
-                          shareableLink=${submission.getInputData.getOrDefault('shareableLink', '')},
-                          textMessageContent=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(fieldData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-providers-text.message', shareableLink, shortCode))}">
+          <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+            <th:block th:ref="formContent">
+              <div class="form-card__content">
+                <div>
+                  <p th:utext="#{contact-providers-text.body.p1}"></p>
+                  <p class="open-text-app-paragraph" th:utext="#{contact-providers-text.body.p2}"></p>
+                </div>
+                <div class="center"
+                     th:with="shortCode=${submission.getShortCode()},
+                              shareableLink=${submission.getInputData.getOrDefault('shareableLink', '')},
+                              textMessageContent=${T(org.ilgcc.app.utils.TextUtilities).generateTextMessage(fieldData.get('familyIntendedProviderPhoneNumber'), #messages.msg('contact-providers-text.message', shareableLink, shortCode))}">
 
-              <a target="_blank" th:id="contact-provider-by-text-confirmation" th:href="${textMessageContent}"
-                 class="button button--wide">
-                <i aria-hidden="true"  class="icon-insert_comment"></i>
-                <span th:text="#{submit-contact-provider-text-confirmation.text-action}"></span>
-              </a>
-            </div>
-          </div>
-          <div class="form-card__footer">
-            <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-          </div>
+                  <a target="_blank" th:id="contact-provider-by-text-confirmation" th:href="${textMessageContent}"
+                     class="button button--wide">
+                    <i aria-hidden="true"  class="icon-insert_comment"></i>
+                    <span th:text="#{submit-contact-provider-text-confirmation.text-action}"></span>
+                  </a>
+                </div>
+              </div>
+              <div class="form-card__footer">
+                <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+              </div>
+            </th:block>
+          </th:block>
         </th:block>
       </main>
     </div>
