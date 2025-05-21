@@ -635,6 +635,8 @@ flow:
     condition: ContactProviderViaText
     subflow: contactProviders
     nextScreens:
+      - name: contact-providers-text
+        condition: HasConfirmedProviderPhoneNumber
       - name: contact-providers-edit-phone-number
   contact-providers-edit-phone-number:
     condition: ContactProviderViaText
