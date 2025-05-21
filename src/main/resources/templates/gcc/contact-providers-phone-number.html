@@ -12,9 +12,9 @@
       <th:block th:ref="formContent">
         <div class="form-card__content">
           <p th:text="#{'contact-providers-phone-number.subtext'}"></p>
-          <th:block th:replace="~{fragments/inputs/text ::
-                text(inputName='familyIntendedProviderPhoneNumber',
-                ariaLabel='header')}"/>
+          <th:block th:replace="~{fragments/inputs/phone :: phone(
+            inputName='familyIntendedProviderPhoneNumber',
+            ariaLabel='header')}"/>
         </div>
       </th:block>
     </th:block>

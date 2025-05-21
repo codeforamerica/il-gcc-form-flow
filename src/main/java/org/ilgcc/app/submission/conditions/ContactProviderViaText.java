@@ -12,6 +12,9 @@ public class ContactProviderViaText implements Condition {
     
     private final boolean enableProviderMessaging;
 
+    @Value("${il-gcc.enable-multiple-providers}")
+    private boolean enableMultipleProviders;
+
     public ContactProviderViaText(@Value("${il-gcc.enable-provider-messaging}") boolean enableProviderMessaging) {
         this.enableProviderMessaging = enableProviderMessaging;
     }
@@ -20,5 +23,11 @@ public class ContactProviderViaText implements Condition {
     public Boolean run(Submission submission) {
         Map<String, Object> inputData = submission.getInputData();
         return enableProviderMessaging && SubmissionUtilities.isSelectedAsProviderContactMethod(inputData,"TEXT");
+    }
+
+    @Override
+    public Boolean run(Submission submission, String subflowUuid) {
+        Map<String, Object> inputData = submission.getInputData();
+        return enableMultipleProviders && SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "TEXT");
     }
 }
