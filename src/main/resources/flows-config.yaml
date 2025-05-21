@@ -603,6 +603,7 @@ flow:
       - name: contact-providers-email-address
   contact-providers-email-address:
     condition: DisplayContactProvidersEmailScreen
+    crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-confirm-email-address

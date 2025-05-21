@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class DisplayContactProvidersEmailScreen extends EnableMultipleProviders implements Condition {
 
     @Override
-    public Boolean run(Submission submission) {
+    public Boolean run(Submission submission, String uuid) {
         Map<String, Object> inputData = submission.getInputData();
         return super.run(submission) && SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "EMAIL")
                 && isMissingProviderEmail(inputData);
