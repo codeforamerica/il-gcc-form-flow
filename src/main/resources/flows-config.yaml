@@ -619,7 +619,7 @@ flow:
     condition: EnableMultipleProviders
     subflow: contactProviders
     nextScreens:
-      - name: contact-providers-email-sent
+      - name: contact-providers-confirm-email-address
   contact-providers-email-sent:
     condition: EnableMultipleProviders
     subflow: contactProviders
