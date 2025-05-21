@@ -26,8 +26,8 @@ public class SendAutomatedProviderEmail implements Action {
     }
 
     @Override
-    public void run(Submission familySubmission, String id) {
-        Optional<Map<String, Object>> subflow = Optional.of(familySubmission.getSubflowEntryByUuid("contactProviders", id));
+    public void run(Submission familySubmission, String contactProvidersSubflowUUID) {
+        Optional<Map<String, Object>> subflow = Optional.of(familySubmission.getSubflowEntryByUuid("contactProviders", contactProvidersSubflowUUID));
         if ("true".equals(subflow.get().get("hasConfirmedIntendedProviderEmail"))) {
             sendAutomatedProviderOutreachEmail.send(familySubmission);
         }
