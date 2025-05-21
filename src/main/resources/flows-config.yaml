@@ -602,7 +602,7 @@ flow:
     nextScreens:
       - name: contact-providers-email-address
   contact-providers-email-address:
-    condition: EnableMultipleProviders
+    condition: DisplayContactProvidersEmailScreen
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-confirm-email-address
