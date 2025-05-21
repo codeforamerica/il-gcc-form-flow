@@ -642,7 +642,7 @@ flow:
     condition: ContactProviderViaText
     subflow: contactProviders
     nextScreens:
-      - name: contact-providers-text
+      - name:  contact-providers-confirm-phone-number
   contact-providers-text:
     condition: ContactProviderViaText
     subflow: contactProviders
