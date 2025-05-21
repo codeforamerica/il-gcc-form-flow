@@ -141,8 +141,6 @@ inputFields:
   receivedTimestamp: RECEIVED_TIMESTAMP
 
   providerResponseProviderNumber: PROVIDER_ID_NUMBER
-  providerPhoneNumber: PROVIDER_PHONE_NUMBER
-  providerEmail: PROVIDER_EMAIL
   providerResponse: PROVIDER_RESPONSE
   providerResponseFirstName: PROVIDER_NAME_FIRST
   providerResponseLastName: PROVIDER_NAME_LAST
