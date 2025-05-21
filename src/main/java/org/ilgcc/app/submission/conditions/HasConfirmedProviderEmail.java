@@ -4,7 +4,7 @@ import formflow.library.data.Submission;
 import org.springframework.stereotype.Component;
 
 @Component
-public class hasConfirmedProviderEmail extends BasicCondition {
+public class HasConfirmedProviderEmail extends BasicCondition {
 
     @Override
     public Boolean run(Submission submission) {

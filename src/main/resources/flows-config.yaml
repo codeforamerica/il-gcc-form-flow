@@ -511,7 +511,7 @@ flow:
     afterSaveAction: SendAutomatedProviderEmail
     nextScreens:
       - name: submit-contact-provider-email-confirmation
-        condition: hasConfirmedProviderEmail
+        condition: HasConfirmedProviderEmail
       - name: submit-edit-provider-email
   submit-edit-provider-email:
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
@@ -609,8 +609,11 @@ flow:
       - name: contact-providers-confirm-email-address
   contact-providers-confirm-email-address:
     condition: EnableMultipleProviders
+    afterSaveAction: SendAutomatedProviderEmail
     subflow: contactProviders
     nextScreens:
+      - name: contact-providers-email-sent
+        condition: HasConfirmedProviderEmail
       - name: contact-providers-edit-email
   contact-providers-edit-email:
     condition: EnableMultipleProviders
