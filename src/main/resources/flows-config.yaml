@@ -627,7 +627,7 @@ flow:
     nextScreens:
       - name: contact-providers-phone-number
   contact-providers-phone-number:
-    condition: EnableMultipleProviders
+    condition: DisplayContactProvidersPhoneNumberScreen
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-confirm-phone-number
