@@ -141,7 +141,6 @@ il-gcc:
   resource-org-emails: ${RESOURCE_ORG_EMAILS:null}
   resource-org-emails-delay-seconds: ${RESOURCE_ORG_EMAILS_DELAY:15}
   enable-new-sda-caseload-codes: ${ENABLE_NEW_SDA_CASELOAD_CODES:false}
-  enable-provider-messaging: ${ENABLE_PROVIDER_MESSAGING:false}
   enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:false}
   ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
   dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:true}

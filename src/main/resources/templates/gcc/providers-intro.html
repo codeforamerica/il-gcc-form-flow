@@ -1,37 +1,8 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{providers-intro.title-header})}"></head>
-<body>
-<div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <div class="text--centered">
-          <th:block th:replace="~{fragments/gcc-icons :: care}"></th:block>
-          <th:block>
-            <p class="text--grey-dark" th:id="providers-intro-step" th:text="${#messages.msg('general.step-header', '3' , '6')}"></p>
-          </th:block>
-          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{providers-intro.title-header})}"/>
-        </div>
-        <div class="form-card__content">
-          <div class="boxed-content">
-            <p class="text--centered"><strong th:text="#{providers-intro.box.header}"></strong></p>
-            <ol class="list--numbered">
-              <li th:text="#{providers-intro.box.one}"></li>
-              <li th:text="#{providers-intro.box.two}"></li>
-              <li th:text="#{providers-intro.box.three}"></li>
-            </ol>
-          </div>
-        </div>
-        <div class="form-card__footer text--centered">
-          <th:block th:replace="~{fragments/continueButton :: continue}" />
-        </div>
-      </main>
-    </div>
-  </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+<th:block
+        th:replace="~{fragments/screens/family-application-intro-screen ::
+      screen(
+        textPrefix='providers-intro',
+        iconFragment=~{fragments/gcc-icons :: care},
+        currentStep='3'
+        )}">
+</th:block>
