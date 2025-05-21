@@ -617,6 +617,7 @@ flow:
       - name: contact-providers-edit-email
   contact-providers-edit-email:
     condition: EnableMultipleProviders
+    crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-confirm-email-address
