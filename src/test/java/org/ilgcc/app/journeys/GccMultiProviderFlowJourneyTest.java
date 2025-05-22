@@ -360,14 +360,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("submit-sign-name.submit-application"));
 
         // after-submit-contact-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("after-submit-contact-provider.title"));
-        testPage.clickElementById("contactProviderMethod-EMAIL-label");
-        testPage.clickElementById("contactProviderMethod-TEXT-label");
-        testPage.clickElementById("contactProviderMethod-OTHER-label");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("after-submit-contact-provider.multiple-providers.title"));
         testPage.clickContinue();
-
-        // contact-providers-start
-
     }
 
     @Test
