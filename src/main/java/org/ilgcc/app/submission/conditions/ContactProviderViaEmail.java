@@ -4,14 +4,10 @@ import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
 import java.util.Map;
 import org.ilgcc.app.utils.SubmissionUtilities;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ContactProviderViaEmail implements Condition {
-
-    @Value("${il-gcc.enable-provider-messaging}")
-    private boolean enableProviderMessaging;
 
     @Value("${il-gcc.enable-multiple-providers}")
     private boolean enableMultipleProviders;
@@ -19,7 +15,7 @@ public class ContactProviderViaEmail implements Condition {
     @Override
     public Boolean run(Submission submission) {
         Map<String, Object> inputData = submission.getInputData();
-        return enableProviderMessaging && SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "EMAIL");
+        return SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "EMAIL");
     }
 
     @Override

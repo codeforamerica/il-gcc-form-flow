@@ -12,21 +12,21 @@
                 <div>
                     <header class="form-card__header spacing-below-0">
                         <h1 id="header-doc-upload" class="h2"
-                            th:utext="#{submit-complete.header}"></h1>
+                            th:utext="#{registration-submit-complete.header}"></h1>
                     </header>
                     <div class="form-card__content notice notice--gray">
-                        <div th:utext="#{submit-complete.info-box.pg-1}"></div>
-                        <p th:utext="#{submit-complete.info-box.pg-2}"></p>
+                        <div th:utext="#{registration-submit-complete.info-box.pg-1}"></div>
+                        <p th:utext="#{registration-submit-complete.info-box.pg-2}"></p>
                     </div>
                     <div class="form-card__footer">
                         <th:block th:id="continue-link" th:class="button"
-                                  th:replace="~{fragments/continueButton :: continue(text=#{submit-complete.yes-add-document-now})}"/>
+                                  th:replace="~{fragments/continueButton :: continue(text=#{registration-submit-complete.yes-add-document-now})}"/>
                         <th:block>
                             <a th:href="'/flow/' + ${flow} + '/registration-submit-next-steps'"
                                data-mixpanel="skip-to-next-steps-link"
                                class="button"
                                id="skip-to-next-steps-link"
-                               th:text="#{submit-complete.button.do-this-later}"></a>
+                               th:text="#{registration-submit-complete.button.do-this-later}"></a>
                         </th:block>
 
                     </div>

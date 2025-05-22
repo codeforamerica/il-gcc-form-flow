@@ -256,12 +256,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.button.do-this-later"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.button.do-this-later"));
 
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.goBack();
-        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.yes-add-document-now"));
 
         // registration-doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
@@ -683,12 +683,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.button.do-this-later"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.button.do-this-later"));
 
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.goBack();
-        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.yes-add-document-now"));
 
         // registration-doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
@@ -882,7 +882,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.yes-add-document-now"));
 
         // registration-doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
@@ -1053,7 +1053,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.yes-add-document-now"));
 
         // registration-doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
@@ -1202,7 +1202,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.yes-add-document-now"));
 
         // registration-doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
@@ -1361,7 +1361,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.yes-add-document-now"));
 
         // registration-doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));
@@ -1537,12 +1537,12 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-submit-complete
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.button.do-this-later"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.button.do-this-later"));
 
         // registration-submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-submit-next-steps.title"));
         testPage.goBack();
-        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+        testPage.clickButton(getEnMessage("registration-submit-complete.yes-add-document-now"));
 
         // registration-doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-doc-upload-recommended-docs.title"));

@@ -64,25 +64,9 @@
                         <div class="form-card__footer">
                             <th:block
                                     th:replace="~{fragments/continueButton :: continue(text=#{doc-upload-recommended-docs.submit})}"/>
-                            <div th:with="hasChosenNoProvider=${submission.getInputData().getOrDefault('hasChosenProvider', 'true')}, enableProviderMessaging=${@environment.getProperty('il-gcc.enable-provider-messaging') == 'true'}">
-                                <th:block th:if="${enableProviderMessaging}">
-                                    <a th:href="'/flow/' + ${flow} + '/submit-next-steps'"
-                                       th:text="#{doc-upload-recommended-docs.skip}"
-                                       class='button'></a>
-                                </th:block>
-                                <th:block th:unless="${enableProviderMessaging}">
-                                    <th:block th:unless="${hasChosenNoProvider == 'true'}">
-                                        <a th:href="'/flow/' + ${flow} + '/no-provider-intro'"
-                                           th:text="#{doc-upload-recommended-docs.skip}"
-                                           class='button'></a>
-                                    </th:block>
-                                    <th:block th:if="${hasChosenNoProvider == 'true'}">
-                                        <a th:href="'/flow/' + ${flow} + '/contact-provider-intro'"
-                                           th:text="#{doc-upload-recommended-docs.skip}"
-                                           class='button'></a>
-                                    </th:block>
-                                </th:block>
-                            </div>
+                            <a th:href="'/flow/' + ${flow} + '/submit-next-steps'"
+                               th:text="#{doc-upload-recommended-docs.skip}"
+                               class='button'></a>
                         </div>
                     </th:block>
                 </th:block>
