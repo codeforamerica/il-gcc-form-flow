@@ -28,7 +28,7 @@ public class ProviderRegistrationPreparer extends InputDataPreparerHelper {
 
         results.put("providerLicenseNumber", new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
         results.put("childcareStartDate",
-                new SingleField("childcareStartDate", providerInputData.get("providerCareStartDate").toString(), null));
+                new SingleField("childcareStartDate", providerInputData.getOrDefault("providerCareStartDate", "").toString(), null));
 
         return results;
     }
