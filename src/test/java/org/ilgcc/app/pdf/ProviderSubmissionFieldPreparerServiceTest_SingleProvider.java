@@ -28,13 +28,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(
-        classes = IlGCCApplication.class
+        classes = IlGCCApplication.class,
+        properties = "il-gcc.enable-multiple-providers=false"
 )
 @ActiveProfiles("test")
 public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
 
     @Autowired
-    private ProviderSubmissionFieldPreparerService preparer = new ProviderSubmissionFieldPreparerService(false);
+    private ProviderSubmissionFieldPreparerService preparer;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
@@ -199,6 +200,13 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
         @Nested
         class whenProviderIsRegistering {
 
+            @BeforeEach
+            void setup() {
+                providerSubmission.getInputData().put("providerPaidCcap", "false");
+                providerSubmission.getInputData().put("providerCareStartDate", "10/10/2025");
+                submissionRepositoryService.save(providerSubmission);
+            }
+
             @ParameterizedTest
             @MethodSource("providerTypeMaps")
             public void mapsProviderType(ProviderType providerType) {
@@ -215,22 +223,6 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
             static Stream<Arguments> providerTypeMaps() {
                 return Stream.of(ProviderType.values())
                         .map(providerType -> Arguments.of(providerType));
-            }
-
-            @Test
-            public void doesNotSetProviderTypeIfNull() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
-                        .build();
-                submissionRepositoryService.save(providerSubmission);
-
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .build();
-                Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-                assertThat(result.get("providerType")).isEqualTo(null);
             }
 
             @Test
@@ -274,115 +266,18 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
             }
 
             @Test
-            public void usesEarliestChildCareDateWhenProviderStartDateIsNotSet() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
-                        .build();
+            public void setsChildCareStartDateBasedOnProviderCareStartDate() {
+                providerSubmission.getInputData().put("providerCareStartDate", "12/11/2023");
 
                 submissionRepositoryService.save(providerSubmission);
-
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .withDayCareProvider()
-                        .withSubmittedAtDate(OffsetDateTime.now())
-                        .with("familyIntendedProviderName", "ProviderName")
-                        .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
-                        .with("familyIntendedProviderEmail", "mail@test.com")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .with("earliestChildcareStartDate", "01/12/2023")
-
-                        .build();
-
-                Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-                assertThat(result.get("childcareStartDate")).isEqualTo(new SingleField("childcareStartDate", "01/12/2023", null));
-
-            }
-
-            @Test
-            public void usesProviderCareStartDateWhenPresent() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
-                        .withProviderStateLicense()
-                        .with("providerResponseAgreeToCare", "true")
-                        .with("providerCareStartDate", "12/11/2023")
-                        .build();
-
-                submissionRepositoryService.save(providerSubmission);
-
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .withDayCareProvider()
-                        .withSubmittedAtDate(OffsetDateTime.now())
-                        .with("familyIntendedProviderName", "ProviderName")
-                        .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
-                        .with("familyIntendedProviderEmail", "mail@test.com")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .with("earliestChildcareStartDate", "11/11/2025")
-                        .build();
 
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
                 assertThat(result.get("childcareStartDate")).isEqualTo(new SingleField("childcareStartDate", "12/11/2023", null));
             }
 
             @Test
-            public void ignoresProviderCareStartDateWhenNull() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
-                        .withProviderStateLicense()
-                        .with("providerResponseAgreeToCare", "true")
-                        .with("providerCareStartDate", "")
-                        .build();
-
-                submissionRepositoryService.save(providerSubmission);
-
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .withDayCareProvider()
-                        .withSubmittedAtDate(OffsetDateTime.now())
-                        .with("familyIntendedProviderName", "ProviderName")
-                        .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
-                        .with("familyIntendedProviderEmail", "mail@test.com")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .with("earliestChildcareStartDate", "11/11/2025")
-                        .build();
-
-                Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-                assertThat(result.get("childcareStartDate")).isEqualTo(new SingleField("childcareStartDate", "11/11/2025", null));
-            }
-
-            @Test
-            public void shouldPrintProviderHouseholdMembersDateOfBirthToPDFIfMonthDayAndYearIsPresentAndIterationIsComplete() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
-                        .withProviderHouseholdMember("1-Iteration",
-                                "One",
-                                "30",
-                                "10",
-                                "2004",
-                                "brother",
-                                "555-555-5555")
-
-                        .build();
-                submissionRepositoryService.save(providerSubmission);
-
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .build();
-                Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-                assertThat(result.get("providerHouseholdMemberDateOfBirth_1")).isEqualTo(
-                        new SingleField("providerHouseholdMemberDateOfBirth", "10/30/2004", 1));
-            }
-
-            @Test
-            public void shouldPrintMultipleProviderHouseholdMembersInfoToPDFFields() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
+            public void mapsProviderHouseholdMembersWhenTheyExist() {
+                providerSubmission = new SubmissionTestBuilder(providerSubmission)
                         .withProviderHouseholdMember("1-Iteration",
                                 "One",
                                 "30",
@@ -400,10 +295,6 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
                         .build();
                 submissionRepositoryService.save(providerSubmission);
 
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .build();
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
                 assertThat(result.get("providerHouseholdMemberFirstName_1")).isEqualTo(
                         new SingleField("providerHouseholdMemberFirstName", "1-Iteration", 1));
@@ -428,78 +319,49 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
                         new SingleField("providerHouseholdMemberDateOfBirth", "6/28/2000", 2));
             }
 
-
             @Test
-            public void doesNotSetProviderLanguageIfProviderLanguagesOfferedIsNotPresent() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
+            public void mapsLicenseNumberWhenProviderIsLicensed() {
+                providerSubmission = new SubmissionTestBuilder(providerSubmission)
+                        .withProviderStateLicense()
                         .build();
                 submissionRepositoryService.save(providerSubmission);
 
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .build();
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-                assertThat(result.get("providerLanguageEnglish")).isEqualTo(null);
-                assertThat(result.get("providerLanguageSpanish")).isEqualTo(null);
-                assertThat(result.get("providerLanguagePolish")).isEqualTo(null);
-                assertThat(result.get("providerLanguageChinese")).isEqualTo(null);
-                assertThat(result.get("providerLanguageOther")).isEqualTo(null);
-                assertThat(result.get("providerLanguageOtherDetail")).isEqualTo(null);
+
+                assertThat(result.get("providerLicenseNumber")).isEqualTo(
+                        new SingleField("providerLicenseNumber", "123453646 (IL)", null));
             }
 
-
             @Test
-            public void shouldPrintProviderIdentityCheckSSNToPDFIfPresent() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
-                        .with("providerIdentityCheckSSN", "445-32-6666")
-                        .with("providerTaxIdSSN", "555-55-5555")
-                        .build();
+            public void mapsProviderIdentityCheckSSNToProviderSSN() {
+                providerSubmission.getInputData().put("providerIdentityCheckSSN", "445-32-6666");
+                providerSubmission.getInputData().put("providerTaxIdSSN", "555-55-5555");
+                providerSubmission.getInputData().put("providerITIN", "");
+
                 submissionRepositoryService.save(providerSubmission);
 
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .build();
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
                 assertThat(result.get("providerSSN")).isEqualTo(new SingleField("providerSSN", "445-32-6666", null));
             }
 
             @Test
-            public void shouldPrintProviderTaxIdSSNIfPresent() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
-                        .with("providerTaxIdSSN", "444-44-4444")
-                        .build();
+            public void mapsProviderTaxIdSSNToProviderSSN() {
+                providerSubmission.getInputData().put("providerIdentityCheckSSN", "");
+                providerSubmission.getInputData().put("providerTaxIdSSN", "555-55-5555");
+                providerSubmission.getInputData().put("providerITIN", "");
                 submissionRepositoryService.save(providerSubmission);
 
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .build();
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-                assertThat(result.get("providerSSN")).isEqualTo(new SingleField("providerSSN", "444-44-4444", null));
+                assertThat(result.get("providerSSN")).isEqualTo(new SingleField("providerSSN", "555-55-5555", null));
             }
 
             @Test
-            public void setsITINAsSSNWhenAvailable() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
-                        .with("providerITIN", "123456789")
-                        .with("providerTaxIdSSN", "444-44-4444")
-                        .build();
+            public void mapsITINToProviderSSN() {
+                providerSubmission.getInputData().put("providerIdentityCheckSSN", "");
+                providerSubmission.getInputData().put("providerTaxIdSSN", "555-55-5555");
+                providerSubmission.getInputData().put("providerITIN", "123456789");
                 submissionRepositoryService.save(providerSubmission);
 
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-                        .build();
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
                 assertThat(result.get("providerSSN")).isEqualTo(new SingleField("providerSSN", "123456789", null));
             }
@@ -510,98 +372,52 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
         class whenExistingProvider {
 
             @Test
-            public void isVerifiedAndAcceptsCare() {
+            public void isVerifiedByProviderIdAndAcceptsCare() {
+                providerSubmission.getInputData().put("providerResponseAgreeToCare", "true");
+                providerSubmission.getInputData().put("providerResponseProviderNumber", "123456789720008");
+                submissionRepositoryService.save(providerSubmission);
+
+                Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+
+                assertThat(result.get("providerResponseProviderNumber")).isEqualTo(
+                        new SingleField("providerResponseProviderNumber", "123456789720008", null));
+                assertThat(result.get("providerResponse")).isEqualTo(new SingleField("providerResponse", "",
+                        null));
+            }
+
+
+            @Test
+            public void isVerifiedByFEINAndAcceptsCare() {
                 providerSubmission.getInputData().put("providerTaxIdFEIN", "12-1234567");
                 providerSubmission.getInputData().put("providerResponseAgreeToCare", "true");
                 submissionRepositoryService.save(providerSubmission);
 
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
 
-                assertThat(result.get("providerResponse")).isEqualTo(
-                        new SingleField("providerResponse", "Provider declined", null));
-            }
-
-            @Test
-            public void mapsFEIN() {
-                Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-
                 assertThat(result.get("providerTaxIdFEIN")).isEqualTo(
                         new SingleField("providerTaxIdFEIN", "12-1234567", null));
+                assertThat(result.get("providerResponse")).isEqualTo(new SingleField("providerResponse", "",
+                        null));
             }
 
             @Test
-            public void isNotVerified() {
-                providerSubmission = new SubmissionTestBuilder()
-                        .withFlow("providerresponse")
-                        .withProviderSubmissionData()
-                        .withProviderStateLicense()
-                        .with("providerPaidCcap", "true")
-                        .with("providerMailingAddressSameAsServiceAddress[]", List.of("yes"))
-                        .with("providerMailingStreetAddress1", "123 Main Street")
-                        .with("providerMailingCity", "De Kalb")
-                        .with("providerMailingState", "IL")
-                        .with("providerMailingZipCode", "60112")
-                        .withClientResponseConfirmationCode("testConfirmationCode")
-                        .build();
-
-                submissionRepositoryService.save(providerSubmission);
-
-                familySubmission = new SubmissionTestBuilder()
-                        .withFlow("gcc")
-                        .withDayCareProvider()
-                        .withSubmittedAtDate(OffsetDateTime.now())
-                        .with("familyIntendedProviderName", "ProviderName")
-                        .with("familyIntendedProviderPhoneNumber", "(125) 785-67896")
-                        .with("familyIntendedProviderEmail", "mail@test.com")
-                        .with("providerResponseSubmissionId", providerSubmission.getId())
-
-                        .build();
-
+            public void isUnverifiedAndAcceptsCare() {
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-                assertThat(result.get("providerResponseFirstName")).isEqualTo(
-                        new SingleField("providerResponseFirstName", "Provider", null));
-                assertThat(result.get("providerResponseLastName")).isEqualTo(
-                        new SingleField("providerResponseLastName", "LastName", null));
-                assertThat(result.get("providerResponseBusinessName")).isEqualTo(
-                        new SingleField("providerResponseBusinessName", "DayCare Place", null));
 
-                assertThat(result.get("providerMailingStreetAddress1")).isEqualTo(
-                        new SingleField("providerMailingStreetAddress1", "123 Main Street", null));
-                assertThat(result.get("providerMailingCity")).isEqualTo(
-                        new SingleField("providerMailingCity", "De Kalb", null));
-                assertThat(result.get("providerMailingState")).isEqualTo(
-                        new SingleField("providerMailingState", "IL", null));
-                assertThat(result.get("providerMailingZipCode")).isEqualTo(
-                        new SingleField("providerMailingZipCode", "60112", null));
-
-                assertThat(result.get("providerResponseServiceStreetAddress1")).isEqualTo(
-                        new SingleField("providerResponseServiceStreetAddress1", "123 Main St", null));
-                assertThat(result.get("providerResponseServiceStreetAddress2")).isEqualTo(
-                        new SingleField("providerResponseServiceStreetAddress2", "Unit 10", null));
-                assertThat(result.get("providerResponseServiceCity")).isEqualTo(
-                        new SingleField("providerResponseServiceCity", "DeKalb", null));
-                assertThat(result.get("providerResponseServiceState")).isEqualTo(
-                        new SingleField("providerResponseServiceState", "IL", null));
-                assertThat(result.get("providerResponseServiceZipCode")).isEqualTo(
-                        new SingleField("providerResponseServiceZipCode", "60112", null));
-
-                assertThat(result.get("providerResponseContactEmail")).isEqualTo(
-                        new SingleField("providerResponseContactEmail", "mail@daycareplace.org", null));
-                assertThat(result.get("providerResponseContactPhoneNumber")).isEqualTo(
-                        new SingleField("providerResponseContactPhoneNumber", "(111) 222-3333", null));
-
-                assertThat(result.get("providerLicenseNumber")).isEqualTo(
-                        new SingleField("providerLicenseNumber", "123453646 (IL)", null));
-
-                assertThat(result.get("clientResponseConfirmationCode")).isEqualTo(
-                        new SingleField("clientResponseConfirmationCode", "testConfirmationCode", null));
-
+                assertThat(result.get("providerResponseProviderNumber")).isEqualTo(
+                        new SingleField("providerResponseProviderNumber", "", null));
+                assertThat(result.get("providerTaxIdFEIN")).isEqualTo(
+                        new SingleField("providerTaxIdFEIN", "", null));
                 assertThat(result.get("providerResponse")).isEqualTo(
                         new SingleField("providerResponse", "Unable to identify provider - no response to care arrangement",
                                 null));
             }
 
-
+            @Test
+            public void childCareStartDateIsNotSetByProviderPreparer() {
+                Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+                assertThat(result.get("childcareStartDate")).isNull();
+            }
         }
 
     }

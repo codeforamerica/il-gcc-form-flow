@@ -21,6 +21,7 @@ import org.ilgcc.app.pdf.helpers.FamilyIntendedProviderPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderApplicationPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderHouseholdMemberPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
+import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,9 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
     @Autowired
     FamilyIntendedProviderPreparerHelper familyIntendedProviderPreparerHelper;
 
+    @Autowired
+    ProviderRegistrationPreparer providerRegistrationPreparer;
+
     public ProviderSubmissionFieldPreparerService(
             @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.enableMultipleProviders = enableMultipleProviders;
@@ -65,7 +69,10 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
         Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
         if (providerSubmissionOptional.isPresent()) {
-            results.putAll(mapProviderInputDataToSubmissionFields(providerSubmissionOptional.get().getInputData()));
+            if("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
+                results.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
+            }
+            results.putAll(providerApplicationPreparerHelper.prepareSubmissionFields(providerSubmissionOptional.get().getInputData()));
             results.put("providerSignatureDate",
                     new SingleField("providerSignatureDate",
                             providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
@@ -84,13 +91,13 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
         return results;
     }
 
-    public Map<String, SubmissionField> mapProviderInputDataToSubmissionFields(Map<String, Object> providerInputData) {
+    public Map<String, SubmissionField> mapProviderRegistrationData(Map<String, Object> registeringProviderInputData) {
         Map<String, SubmissionField> providerSubmissionFields = new HashMap<>();
-        providerSubmissionFields.putAll(providerApplicationPreparerHelper.prepareSubmissionFields(providerInputData));
-        providerSubmissionFields.putAll(providerHouseholdMemberPreparer.prepareSubmissionFields(providerInputData));
-        providerSubmissionFields.putAll(providerLanguagesPreparerHelper.prepareSubmissionFields(providerInputData));
-        providerSubmissionFields.putAll(providerTypePreparerHelper.prepareSubmissionFields(providerInputData));
-        providerSubmissionFields.putAll(providerSSNPreparerHelper.prepareSubmissionFields(providerInputData));
+            providerSubmissionFields.putAll(providerRegistrationPreparer.prepareSubmissionFields(registeringProviderInputData));
+            providerSubmissionFields.putAll(providerHouseholdMemberPreparer.prepareSubmissionFields(registeringProviderInputData));
+            providerSubmissionFields.putAll(providerLanguagesPreparerHelper.prepareSubmissionFields(registeringProviderInputData));
+            providerSubmissionFields.putAll(providerTypePreparerHelper.prepareSubmissionFields(registeringProviderInputData));
+            providerSubmissionFields.putAll(providerSSNPreparerHelper.prepareSubmissionFields(registeringProviderInputData));
 
         return providerSubmissionFields;
     }

@@ -21,12 +21,11 @@ public class ProviderApplicationPreparerHelper extends InputDataPreparerHelper {
 
         List<String> providerFields = new ArrayList<>(
                 Arrays.asList("providerResponseFirstName", "providerResponseLastName", "providerResponseBusinessName",
-                        "providerResponseContactPhoneNumber", "providerResponseContactEmail", "providerConviction",
-                        "providerConvictionExplanation", "providerIdentityCheckDateOfBirthDate", "providerResponseProviderNumber",
+                        "providerResponseContactPhoneNumber", "providerResponseContactEmail", "providerResponseProviderNumber",
                         "providerTaxIdFEIN", "providerResponseServiceStreetAddress1", "providerResponseServiceStreetAddress2",
                         "providerResponseServiceCity", "providerResponseServiceState", "providerResponseServiceZipCode",
                         "providerMailingStreetAddress1", "providerMailingStreetAddress2", "providerMailingCity",
-                        "providerMailingState", "providerMailingZipCode", "childcareStartDate"));
+                        "providerMailingState", "providerMailingZipCode"));
 
         for (String fieldName : providerFields) {
             results.put(fieldName, new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
@@ -38,7 +37,6 @@ public class ProviderApplicationPreparerHelper extends InputDataPreparerHelper {
                 new SingleField("clientResponseConfirmationCode", client.getOrDefault("clientResponseConfirmationCode", ""),
                         null));
 
-        results.put("providerLicenseNumber", new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
         results.put("providerSignature", new SingleField("providerSignature", providerSignature(providerInputData), null));
         results.put("providerResponse", new SingleField("providerResponse", providerResponse(providerInputData), null));
 
@@ -60,21 +58,6 @@ public class ProviderApplicationPreparerHelper extends InputDataPreparerHelper {
         } else {
             return String.format("%s %s, %s", firstname, lastName, businessName);
         }
-    }
-
-    private String providerLicense(Map<String, Object> providerInputData) {
-        String providerHasStateLicense = (String) providerInputData.getOrDefault("providerCurrentlyLicensed", "false");
-        String providerLicenseNumber = (String) providerInputData.getOrDefault("providerLicenseNumber", "");
-        String providerLicenseState = (String) providerInputData.getOrDefault("providerLicenseState", "");
-        if (providerHasStateLicense.equalsIgnoreCase("true")) {
-            if (providerLicenseState.isEmpty()) {
-                return providerLicenseNumber;
-            } else {
-                return String.format("%s (%s)", providerLicenseNumber, providerLicenseState);
-            }
-        }
-        return "";
-
     }
 
     private String providerResponse(Map<String, Object> providerInputData) {

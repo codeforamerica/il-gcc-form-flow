@@ -17,13 +17,13 @@ public class ProviderSSNPreparerHelper extends InputDataPreparerHelper {
             results.put("providerSSN",
                     new SingleField("providerSSN", (String) providerInputData.get("providerITIN"),
                             null));
-        } else if (providerInputData.containsKey("providerIdentityCheckSSN")) {
+        } else if (!providerInputData.getOrDefault("providerIdentityCheckSSN", "").toString().isBlank()) {
             results.put("providerSSN",
-                    new SingleField("providerSSN", (String) providerInputData.getOrDefault("providerIdentityCheckSSN", ""),
+                    new SingleField("providerSSN", (String) providerInputData.get("providerIdentityCheckSSN"),
                             null));
-        } else if (providerInputData.containsKey("providerTaxIdSSN")) {
+        } else if (!providerInputData.getOrDefault("providerTaxIdSSN", "").toString().isBlank()) {
             results.put("providerSSN",
-                    new SingleField("providerSSN", (String) providerInputData.getOrDefault("providerTaxIdSSN", ""),
+                    new SingleField("providerSSN", (String) providerInputData.get("providerTaxIdSSN"),
                             null));
         } else {
             return results;
