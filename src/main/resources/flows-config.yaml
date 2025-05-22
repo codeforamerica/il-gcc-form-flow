@@ -497,7 +497,7 @@ flow:
   after-submit-contact-provider:
     beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
-      - name: contact-providers-start
+      - name: contact-providers-fake-start
         condition: EnableMultipleProviders
       - name: submit-contact-provider-email
         condition: ContactProviderViaEmail
@@ -553,10 +553,20 @@ flow:
     condition: ContactProviderViaOther
     nextScreens:
       - name: doc-upload-recommended-docs
-  contact-providers-start:
+  contact-providers-fake-start:
     condition: EnableMultipleProviders
     nextScreens:
+      - name: contact-providers-start
+  contact-providers-start:
+    condition: EnableMultipleProviders
+    subflow: contactProviders
+    nextScreens:
       - name: contact-providers-email-address
+        condition: ContactProviderViaEmail
+      - name: contact-providers-phone-number
+        condition: ContactProviderViaText
+      - name: contact-providers-share-code
+        condition: ContactProviderViaOther
   contact-providers-email-address:
     condition: DisplayContactProvidersEmailScreen
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
@@ -578,10 +588,14 @@ flow:
     nextScreens:
       - name: contact-providers-confirm-email-address
   contact-providers-email-sent:
-    condition: ContactProviderViaEmail
+    condition: ContactProviderViaText
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-phone-number
+        condition: ContactProviderViaText
+      - name: contact-providers-share-code
+        condition: ContactProviderViaOther
+      - name: contact-providers-review
   contact-providers-phone-number:
     condition: DisplayContactProvidersPhoneNumberScreen
     subflow: contactProviders
@@ -604,8 +618,10 @@ flow:
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-share-code
+        condition: ContactProviderViaOther
+      - name: contact-providers-review
   contact-providers-share-code:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaOther
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-review
@@ -655,8 +671,8 @@ subflows:
     reviewScreen: activities-partner-add-job
     deleteConfirmationScreen: delete-partner-job
   contactProviders:
-    entryScreen: contact-providers-start
-    iterationStartScreen: contact-providers-email-address
+    entryScreen: contact-providers-fake-start
+    iterationStartScreen: contact-providers-start
     reviewScreen: contact-providers-review
     deleteConfirmationScreen: contact-providers-start
 landmarks:
@@ -680,7 +696,6 @@ landmarks:
     - submit-provider-edit-text
     - submit-contact-provider-text-confirmation
     - submit-share-confirmation-code
-    - contact-providers-start
     - contact-providers
     - contact-providers-start
     - contact-providers-email-address
