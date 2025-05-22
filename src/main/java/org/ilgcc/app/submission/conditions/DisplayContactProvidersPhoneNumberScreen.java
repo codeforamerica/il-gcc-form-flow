@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 public class DisplayContactProvidersPhoneNumberScreen extends EnableMultipleProviders implements Condition {
 
     @Override
-    public Boolean run(Submission submission, String uuid) {
-        Map<String, Object> inputData = submission.getInputData();
-        return super.run(submission) && SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "TEXT")
-                && isMissingProviderPhoneNumber(inputData);
+    public Boolean run(Submission submission, String subflowUuid) {
+        Map<String, Object> subflowData = submission.getSubflowEntryByUuid("contactProviders", subflowUuid);
+        return super.run(submission) && SubmissionUtilities.isSelectedAsProviderContactMethod(subflowData, "TEXT")
+                && isMissingProviderPhoneNumber(subflowData);
     }
 
-    private Boolean isMissingProviderPhoneNumber(Map<String, Object> inputData) {
-        return inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString().isBlank();
+    private Boolean isMissingProviderPhoneNumber(Map<String, Object> subflowData) {
+        return subflowData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString().isBlank();
     }
 
 }

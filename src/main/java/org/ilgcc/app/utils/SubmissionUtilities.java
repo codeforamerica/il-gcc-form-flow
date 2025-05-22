@@ -5,6 +5,7 @@ import static java.util.Collections.emptyList;
 
 import formflow.library.data.Submission;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -227,5 +228,10 @@ public class SubmissionUtilities {
     public static boolean isSelectedAsProviderContactMethod(Map<String, Object> inputData, @NotBlank String providerContactMethod) {
         List<String> contactProviderMethodList = (List<String>) inputData.getOrDefault("contactProviderMethod[]", List.of());
         return contactProviderMethodList.contains(providerContactMethod);
+    }
+
+    public static boolean isSelectedAsProviderContactMethod(@NotNull Submission submission, @NotBlank String subflowUuid, @NotBlank String providerContactMethod) {
+        Map<String, Object> subflow = submission.getSubflowEntryByUuid("contactProviders", subflowUuid);
+        return subflow != null && isSelectedAsProviderContactMethod(subflow, providerContactMethod);
     }
 }

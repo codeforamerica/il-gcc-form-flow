@@ -24,7 +24,6 @@ public class ContactProviderViaOther implements Condition {
 
     @Override
     public Boolean run(Submission submission, String subflowUuid) {
-        Map<String, Object> inputData = submission.getInputData();
-        return enableMultipleProviders && SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "OTHER");
+        return enableMultipleProviders && SubmissionUtilities.isSelectedAsProviderContactMethod(submission, subflowUuid, "OTHER");
     }
 }
