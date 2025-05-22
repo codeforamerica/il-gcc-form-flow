@@ -18,7 +18,7 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
             results.putAll(prepareNoProviderData());
         } else {
 
-            // toDo: we can keep the same field name for each provider in providers[];
+            // toDo: we can keep the same field name for each provider in providers;
             String submissionStatus = (String) familyInputData.getOrDefault("providerSubmissionStatus", "");
             Boolean hasExpired = SubmissionStatus.EXPIRED.name().equals(submissionStatus);
             results.put("childcareStartDate",

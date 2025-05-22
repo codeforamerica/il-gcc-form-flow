@@ -52,7 +52,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
-                .with("providers[]", List.of(provider))
+                .with("providers", List.of(provider))
                 .build();
 
     }

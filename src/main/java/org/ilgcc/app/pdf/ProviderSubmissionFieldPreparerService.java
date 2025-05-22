@@ -80,7 +80,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
         } else {
             if (enableMultipleProviders) {
                 List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
-                        .getOrDefault("providers[]", emptyList());
+                        .getOrDefault("providers", emptyList());
 
                 Map<String, Object> firstProvider = providers.getFirst();
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(firstProvider));
