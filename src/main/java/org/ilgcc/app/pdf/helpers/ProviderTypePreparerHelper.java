@@ -17,7 +17,7 @@ public class ProviderTypePreparerHelper extends InputDataPreparerHelper {
         if (providerInputData.containsKey("providerType")) {
             String providerTypeName = (String) providerInputData.get("providerType");
             String providerTypePDFValue = ProviderType.setPdfFieldNameFromName(providerTypeName);
-            if(!providerTypePDFValue.isBlank()){
+            if (!providerTypePDFValue.isBlank()) {
                 results.put("providerType", new SingleField("providerType", providerTypePDFValue, null));
             }
         }

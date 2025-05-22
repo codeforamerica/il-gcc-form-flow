@@ -69,10 +69,11 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
         Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
         if (providerSubmissionOptional.isPresent()) {
-            if("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
+            if ("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
                 results.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
             }
-            results.putAll(providerApplicationPreparerHelper.prepareSubmissionFields(providerSubmissionOptional.get().getInputData()));
+            results.putAll(
+                    providerApplicationPreparerHelper.prepareSubmissionFields(providerSubmissionOptional.get().getInputData()));
             results.put("providerSignatureDate",
                     new SingleField("providerSignatureDate",
                             providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
@@ -93,11 +94,11 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
     public Map<String, SubmissionField> mapProviderRegistrationData(Map<String, Object> registeringProviderInputData) {
         Map<String, SubmissionField> providerSubmissionFields = new HashMap<>();
-            providerSubmissionFields.putAll(providerRegistrationPreparer.prepareSubmissionFields(registeringProviderInputData));
-            providerSubmissionFields.putAll(providerHouseholdMemberPreparer.prepareSubmissionFields(registeringProviderInputData));
-            providerSubmissionFields.putAll(providerLanguagesPreparerHelper.prepareSubmissionFields(registeringProviderInputData));
-            providerSubmissionFields.putAll(providerTypePreparerHelper.prepareSubmissionFields(registeringProviderInputData));
-            providerSubmissionFields.putAll(providerSSNPreparerHelper.prepareSubmissionFields(registeringProviderInputData));
+        providerSubmissionFields.putAll(providerRegistrationPreparer.prepareSubmissionFields(registeringProviderInputData));
+        providerSubmissionFields.putAll(providerHouseholdMemberPreparer.prepareSubmissionFields(registeringProviderInputData));
+        providerSubmissionFields.putAll(providerLanguagesPreparerHelper.prepareSubmissionFields(registeringProviderInputData));
+        providerSubmissionFields.putAll(providerTypePreparerHelper.prepareSubmissionFields(registeringProviderInputData));
+        providerSubmissionFields.putAll(providerSSNPreparerHelper.prepareSubmissionFields(registeringProviderInputData));
 
         return providerSubmissionFields;
     }

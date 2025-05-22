@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InputDataPreparerHelper {
+
     public Map<String, SubmissionField> prepareSubmissionFields(Map<String, Object> inputData) {
         return new HashMap<>();
     }

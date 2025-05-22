@@ -22,7 +22,8 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
             String submissionStatus = (String) familyInputData.getOrDefault("providerSubmissionStatus", "");
             Boolean hasExpired = SubmissionStatus.EXPIRED.name().equals(submissionStatus);
             results.put("childcareStartDate",
-                    new SingleField("childcareStartDate", familyInputData.getOrDefault("earliestChildcareStartDate", "").toString(), null));
+                    new SingleField("childcareStartDate",
+                            familyInputData.getOrDefault("earliestChildcareStartDate", "").toString(), null));
             results.putAll(prepareFamilyIntendedProviderData(familyInputData, hasExpired));
         }
 
@@ -38,10 +39,12 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
         results.put("providerResponseBusinessName", new SingleField("providerResponseBusinessName",
                 inputData.getOrDefault("familyIntendedProviderName", "").toString(), null));
         results.put("providerResponseContactPhoneNumber",
-                new SingleField("providerResponseContactPhoneNumber", inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(),
+                new SingleField("providerResponseContactPhoneNumber",
+                        inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(),
                         null));
         results.put("providerResponseContactEmail",
-                new SingleField("providerResponseContactEmail", inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
+                new SingleField("providerResponseContactEmail",
+                        inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
 
         if (providerApplicationExpired) {
             results.put("providerResponse", new SingleField("providerResponse", "No response from provider", null));
