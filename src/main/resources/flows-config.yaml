@@ -564,7 +564,7 @@ flow:
     nextScreens:
       - name: contact-providers-confirm-email-address
   contact-providers-confirm-email-address:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaEmail
     afterSaveAction: SendAutomatedProviderEmail
     subflow: contactProviders
     nextScreens:
@@ -572,33 +572,35 @@ flow:
         condition: HasConfirmedProviderEmail
       - name: contact-providers-edit-email
   contact-providers-edit-email:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaEmail
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-confirm-email-address
   contact-providers-email-sent:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaEmail
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-phone-number
   contact-providers-phone-number:
-    condition: EnableMultipleProviders
+    condition: DisplayContactProvidersPhoneNumberScreen
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-confirm-phone-number
   contact-providers-confirm-phone-number:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaText
     subflow: contactProviders
     nextScreens:
+      - name: contact-providers-text
+        condition: HasConfirmedProviderPhoneNumber
       - name: contact-providers-edit-phone-number
   contact-providers-edit-phone-number:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaText
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-text
   contact-providers-text:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaText
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-share-code
@@ -678,6 +680,19 @@ landmarks:
     - submit-provider-edit-text
     - submit-contact-provider-text-confirmation
     - submit-share-confirmation-code
+    - contact-providers-start
+    - contact-providers
+    - contact-providers-start
+    - contact-providers-email-address
+    - contact-providers-confirm-email-address
+    - contact-providers-edit-email
+    - contact-providers-email-sent
+    - contact-providers-phone-number
+    - contact-providers-confirm-phone-number
+    - contact-providers-edit-phone-number
+    - contact-providers-text
+    - contact-providers-share-code
+    - contact-providers-review
 ---
 name: providerresponse
 flow:
