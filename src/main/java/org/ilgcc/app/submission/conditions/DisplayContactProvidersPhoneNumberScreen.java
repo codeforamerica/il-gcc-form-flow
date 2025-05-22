@@ -13,10 +13,10 @@ public class DisplayContactProvidersPhoneNumberScreen extends EnableMultipleProv
     public Boolean run(Submission submission, String uuid) {
         Map<String, Object> inputData = submission.getInputData();
         return super.run(submission) && SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "TEXT")
-                && isMissingProviderEmail(inputData);
+                && isMissingProviderPhoneNumber(inputData);
     }
 
-    private Boolean isMissingProviderEmail(Map<String, Object> inputData) {
+    private Boolean isMissingProviderPhoneNumber(Map<String, Object> inputData) {
         return inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString().isBlank();
     }
 

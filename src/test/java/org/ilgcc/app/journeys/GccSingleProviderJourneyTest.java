@@ -24,7 +24,7 @@ import static org.awaitility.Awaitility.await;
 import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_FOUR_C_COUNTY;
 
 @Slf4j
-public class GccFlowJourneyTest extends AbstractBasePageTest {
+public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
 
     @Autowired
     SubmissionRepository repository;
@@ -33,7 +33,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
     protected void clearSubmissions() {
         super.clearSubmissions();
     }
-    
+
     @Test
     void fullGccFlow() throws IOException {
         // Home page
@@ -90,7 +90,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // parent-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
-        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 6");
+        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 5");
         testPage.clickContinue();
         // parent-info-basic-1
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
@@ -205,7 +205,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("parent-intro-family-info.continue"));
         //children-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
-        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 6");
+        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 5");
         testPage.clickContinue();
         // children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
@@ -320,7 +320,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-parent-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
-        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 3 of 6");
+        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 3 of 5");
         testPage.clickContinue();
         //activities-parent-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
@@ -667,7 +667,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         //unearned-income-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
-        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 4 of 6");
+        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 4 of 5");
         testPage.clickContinue();
 
         //unearned-income-source
@@ -704,7 +704,7 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-intro.title"));
-        assertThat(testPage.findElementTextById("submit-intro-step")).isEqualTo("Step 5 of 6");
+        assertThat(testPage.findElementTextById("submit-intro-step")).isEqualTo("Step 5 of 5");
         testPage.clickContinue();
 
         // submit-ccap-terms
@@ -718,9 +718,18 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("partnerSignedName", "partner parent");
         testPage.clickButton(getEnMessage("submit-sign-name.submit-application"));
 
-        // submit-complete
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-complete.title"));
-        testPage.clickButton(getEnMessage("submit-complete.yes-add-document-now"));
+        // after-submit-contact-provider
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("after-submit-contact-provider.title"));
+        testPage.clickContinue();
+
+        // after-submit-contact-provider
+        assertThat(testPage.hasErrorText(getEnMessage("errors.submit-contact-method"))).isTrue();
+        testPage.clickElementById("contactProviderMethod-OTHER-label");
+        testPage.clickContinue();
+
+        // submit-share-confirmation-code
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
+        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
 
         // doc-upload-recommended docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
@@ -740,19 +749,6 @@ public class GccFlowJourneyTest extends AbstractBasePageTest {
         testPage.goBack();
         testPage.goBack();
         testPage.clickButton(getEnMessage("doc-upload-recommended-docs.skip"));
-
-        // contact-provider-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-intro.title"));
-        testPage.clickContinue();
-
-        // contact-provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-info.title"));
-        testPage.clickContinue();
-
-        // contact-provider-message
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("contact-provider-message.title"));
-        testPage.clickElementById("copy-message-to-clipboard");
-        testPage.clickButton(getEnMessage("general.button.continue"));
 
         // submit-next-steps
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-next-steps.title"));

@@ -4,19 +4,15 @@ import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DisplaySubmitContactProviderTextScreen implements Condition {
 
-    @Value("${il-gcc.enable-provider-messaging}")
-    private boolean enableProviderMessaging;
-
     @Override
     public Boolean run(Submission submission) {
         Map<String, Object> inputData = submission.getInputData();
-        return enableProviderMessaging && selectedTextAsProviderContactMethod(inputData) && isMissingProviderPhoneNumber(inputData);
+        return selectedTextAsProviderContactMethod(inputData) && isMissingProviderPhoneNumber(inputData);
     }
 
     private Boolean isMissingProviderPhoneNumber(Map<String, Object> inputData){
