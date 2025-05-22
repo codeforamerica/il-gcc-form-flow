@@ -605,7 +605,7 @@ flow:
     nextScreens:
       - name: contact-providers-share-code
   contact-providers-share-code:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaOther
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-review
