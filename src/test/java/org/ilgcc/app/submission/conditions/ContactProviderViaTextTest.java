@@ -13,7 +13,7 @@ class ContactProviderViaTextTest {
     
     Submission testSubmission;
     
-    ContactProviderViaText contactProviderViaText = new ContactProviderViaText();
+    ContactProviderViaText contactProviderViaText;
 
     @BeforeEach
     void setUp() {
@@ -25,12 +25,21 @@ class ContactProviderViaTextTest {
     }
     
     @Test
-    void selectedTextAsProviderContactMethod_shouldReturnTrueWhenUserSelectedText() {
+    void contactProviderViaText_shouldReturnTrueWhenUserSelectedText() {
+        contactProviderViaText = new ContactProviderViaText(false);
+        assertThat(contactProviderViaText.run(testSubmission)).isTrue();
+
+        contactProviderViaText = new ContactProviderViaText(true);
         assertThat(contactProviderViaText.run(testSubmission)).isTrue();
     }
 
     @Test
-    void selectedTextAsProviderContactMethod_shouldReturnFalseWhenUserDidNotSelectText() {
+    void contactProviderViaText_shouldReturnFalseWhenUserDidNotSelectText() {
+        contactProviderViaText = new ContactProviderViaText(false);
+        testSubmission.getInputData().put("contactProviderMethod[]", List.of("EMAIL", "OTHER"));
+        assertThat(contactProviderViaText.run(testSubmission)).isFalse();
+
+        contactProviderViaText = new ContactProviderViaText(true);
         testSubmission.getInputData().put("contactProviderMethod[]", List.of("EMAIL", "OTHER"));
         assertThat(contactProviderViaText.run(testSubmission)).isFalse();
     }

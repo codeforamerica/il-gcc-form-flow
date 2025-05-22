@@ -10,8 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContactProviderViaText implements Condition {
 
-    @Value("${il-gcc.enable-multiple-providers}")
-    private boolean enableMultipleProviders;
+    private final boolean enableMultipleProviders;
+
+    public ContactProviderViaText(@Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
+        this.enableMultipleProviders = enableMultipleProviders;
+    }
 
     @Override
     public Boolean run(Submission submission) {
