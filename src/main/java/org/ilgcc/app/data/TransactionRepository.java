@@ -14,13 +14,14 @@ import org.springframework.stereotype.Repository;
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
 
     @Query(value =
-            "SELECT s FROM Submission s " +
-                    "LEFT JOIN Transaction t ON t.submissionId = s.id " +
-                    "WHERE s.submittedAt IS NOT NULL " +
-                    "AND s.submittedAt >= :sinceDate " +
+            "SELECT s.* FROM submissions s " +
+                    "LEFT JOIN transactions t ON t.submission_id = s.id " +
+                    "WHERE s.submitted_at IS NOT NULL " +
+                    "AND s.submitted_at >= :sinceDate " +
                     "AND s.flow = 'gcc' " +
-                    "AND t.transactionId IS NULL " +
-                    "ORDER BY s.updatedAt ASC")
+                    "AND t.transaction_id IS NULL " +
+                    "ORDER BY s.updated_at ASC",
+            nativeQuery = true)
     Set<Submission> findSubmissionsWithoutTransactions(@Param("sinceDate") OffsetDateTime sinceDate);
 
     @Query(value = """
