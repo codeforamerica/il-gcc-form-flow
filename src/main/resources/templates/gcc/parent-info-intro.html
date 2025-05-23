@@ -1,38 +1,8 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{parent-info-intro.title})}"></head>
-<body>
-<div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <div class="text--centered">
-          <th:block th:replace="~{fragments/gcc-icons :: person}"></th:block>
-          <th:block
-                  th:with="stepCount = ${@environment.getProperty('il-gcc.enable-provider-messaging') == 'true' ? '5' : '6'}">
-            <p class="text--grey-dark" th:id="parent-info-intro-step" th:text="${#messages.msg('general.step-header', '1' , stepCount)}"></p>
-          </th:block>
-          <th:block
-              th:replace="~{fragments/cardHeader :: cardHeader(header=#{parent-info-intro.title})}"/>
-        </div>
-        <div class="form-card__content">
-          <div class="boxed-content">
-            <p class="text--centered"><strong th:text="#{parent-info-intro.box.header}"></strong></p>
-            <ol class="list--numbered">
-              <li th:text="#{parent-info-intro.box.one}"></li>
-              <li th:text="#{parent-info-intro.box.two}"></li>
-            </ol>
-          </div>
-        </div>
-        <div class="form-card__footer text--centered">
-          <th:block th:replace="~{fragments/continueButton :: continue}"/>
-        </div>
-      </main>
-    </div>
-  </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+<th:block
+        th:replace="~{fragments/screens/family-application-intro-screen ::
+      screen(
+        textPrefix='parent-info-intro',
+        iconFragment=~{fragments/gcc-icons :: person},
+        currentStep='1'
+        )}">
+</th:block>

@@ -9,16 +9,21 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ContactProviderViaText implements Condition {
-    
-    private final boolean enableProviderMessaging;
 
-    public ContactProviderViaText(@Value("${il-gcc.enable-provider-messaging}") boolean enableProviderMessaging) {
-        this.enableProviderMessaging = enableProviderMessaging;
+    private final boolean enableMultipleProviders;
+
+    public ContactProviderViaText(@Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
+        this.enableMultipleProviders = enableMultipleProviders;
     }
 
     @Override
     public Boolean run(Submission submission) {
         Map<String, Object> inputData = submission.getInputData();
-        return enableProviderMessaging && SubmissionUtilities.isSelectedAsProviderContactMethod(inputData,"TEXT");
+        return SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "TEXT");
+    }
+
+    @Override
+    public Boolean run(Submission submission, String subflowUuid) {
+        return enableMultipleProviders && SubmissionUtilities.isSelectedAsProviderContactMethod(submission, subflowUuid,"TEXT");
     }
 }

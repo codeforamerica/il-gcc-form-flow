@@ -7,26 +7,17 @@ import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 
 class HasConfirmedProviderPhoneNumberTest {
-
     @Test
-    void shouldReturnFalseWhenEnableProviderMessagingIsOff() {
-        Submission testSubmission = new SubmissionTestBuilder().with("hasConfirmedIntendedProviderPhoneNumber", "true").build();
-
-        HasConfirmedProviderPhoneNumber hasConfirmedProviderPhoneNumber = new HasConfirmedProviderPhoneNumber(false);
-        assertThat(hasConfirmedProviderPhoneNumber.run(testSubmission)).isFalse();
-    }
-
-    @Test
-    void shouldReturnFalseWhenEnableProviderMessagingIsOnButConfirmedProviderPhoneNumberIsFalse() {
+    void shouldReturnFalseWhenConfirmedProviderPhoneNumberIsFalse() {
         Submission testSubmission = new SubmissionTestBuilder().with("hasConfirmedIntendedProviderPhoneNumber", "false").build();
-        HasConfirmedProviderPhoneNumber hasConfirmedProviderPhoneNumber = new HasConfirmedProviderPhoneNumber(true);
+        HasConfirmedProviderPhoneNumber hasConfirmedProviderPhoneNumber = new HasConfirmedProviderPhoneNumber();
         assertThat(hasConfirmedProviderPhoneNumber.run(testSubmission)).isFalse();
     }
 
     @Test
-    void shouldReturnTrueWhenEnableProviderMessagingIsOnAndConfirmedProviderPhoneNumberIsTrue() {
+    void shouldReturnTrueWhenConfirmedProviderPhoneNumberIsTrue() {
         Submission testSubmission = new SubmissionTestBuilder().with("hasConfirmedIntendedProviderPhoneNumber", "true").build();
-        HasConfirmedProviderPhoneNumber hasConfirmedProviderPhoneNumber = new HasConfirmedProviderPhoneNumber(true);
+        HasConfirmedProviderPhoneNumber hasConfirmedProviderPhoneNumber = new HasConfirmedProviderPhoneNumber();
         assertThat(hasConfirmedProviderPhoneNumber.run(testSubmission)).isTrue();
     }
 }

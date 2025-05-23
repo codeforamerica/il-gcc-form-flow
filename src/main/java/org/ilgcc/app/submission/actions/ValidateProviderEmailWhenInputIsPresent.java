@@ -1,14 +1,11 @@
 package org.ilgcc.app.submission.actions;
 
-
 import static org.ilgcc.app.submission.actions.ValidateProviderEmail.callSendGridAndValidateEmail;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
-import formflow.library.utils.RegexUtils;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -24,30 +21,33 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidateProviderEmailWhenInputIsPresent implements Action {
 
-  private final HttpSession httpSession;
-  @Autowired
-  MessageSource messageSource;
+    private final HttpSession httpSession;
 
-  @Autowired
-  SendGridEmailValidationService sendGridEmailValidationService;
-  private final String INPUT_NAME = "familyIntendedProviderEmail";
+    @Autowired
+    MessageSource messageSource;
 
-  public ValidateProviderEmailWhenInputIsPresent(HttpSession httpSession) {
-    this.httpSession = httpSession;
-  }
-  @Override
-  public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
+    @Autowired
+    SendGridEmailValidationService sendGridEmailValidationService;
 
-    Locale locale = LocaleContextHolder.getLocale();
-    Map<String, List<String>> errorMessages = new HashMap<>();
-    Map<String, Object> formData = formSubmission.getFormData();
-    String providerEmail = formData.getOrDefault(INPUT_NAME, "").toString();
+    private final String INPUT_NAME = "familyIntendedProviderEmail";
 
-    if (providerEmail.isBlank()){
-      errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.blank", null, locale)));
+    public ValidateProviderEmailWhenInputIsPresent(HttpSession httpSession) {
+        this.httpSession = httpSession;
     }
 
-    return callSendGridAndValidateEmail(locale, errorMessages, providerEmail, sendGridEmailValidationService, INPUT_NAME,
-        messageSource, httpSession);
-  }
+    @Override
+    public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
+
+        Locale locale = LocaleContextHolder.getLocale();
+        Map<String, List<String>> errorMessages = new HashMap<>();
+        Map<String, Object> formData = formSubmission.getFormData();
+        String providerEmail = formData.getOrDefault(INPUT_NAME, "").toString();
+
+        if (providerEmail.isBlank()) {
+            errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.blank", null, locale)));
+        }
+
+        return callSendGridAndValidateEmail(locale, errorMessages, providerEmail, sendGridEmailValidationService, INPUT_NAME,
+                messageSource, httpSession);
+    }
 }

@@ -198,6 +198,51 @@ flow:
     subflow: children
     nextScreens:
       - name: children-add
+  providers-intro:
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: providers-chosen
+  providers-chosen:
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: providers-all-ccap-children
+        condition: HasProviderForMoreThanOneChild
+      - name: providers-add
+        condition: HasProviderForOneChild
+      - name: providers-no-provider-intro
+        condition: HasNoChosenProviders
+  providers-no-provider-intro:
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: activities-parent-intro
+  providers-all-ccap-children:
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: providers-add
+  providers-add:
+    beforeDisplayAction: SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: providers-info-confirm
+  providers-info:
+    condition: EnableMultipleProviders
+    subflow: providers
+    nextScreens:
+      - name: providers-contact-info
+  providers-contact-info:
+    condition: EnableMultipleProviders
+    crossFieldValidationAction: ValidateProviderEmail
+    subflow: providers
+    nextScreens:
+      - name: providers-add
+  delete-provider:
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: null
+  providers-info-confirm:
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: activities-parent-intro
   activities-parent-intro:
     nextScreens:
       - name: activities-parent-type
@@ -431,14 +476,8 @@ flow:
     afterSaveAction: UploadSubmissionToS3AndEnqueueCCMSPayload
     nextScreens:
       - name: after-submit-contact-provider
-        condition: EnableProviderMessagingFlagOn
-      - name: submit-complete
-  submit-complete:
-    nextScreens:
-      - name: doc-upload-recommended-docs
-        condition: HasRecommendedDocumentsToUpload
-      - name: doc-upload-add-files
   doc-upload-recommended-docs:
+    condition: HasRecommendedDocumentsToUpload
     nextScreens:
       - name: doc-upload-add-files
   doc-upload-add-files:
@@ -448,40 +487,7 @@ flow:
     afterSaveAction: SendUploadedFileToDocumentTransferService
     nextScreens:
       - name: submit-next-steps
-        condition: EnableProviderMessagingFlagOn
-      - name: no-provider-intro
-        condition: NoProviderChosen
-      - name: contact-provider-intro
-  contact-provider-intro:
-    nextScreens:
-      - name: contact-provider-info
-  contact-provider-info:
-    nextScreens:
-      - name: contact-provider-message
-  confirm-delivery:
-    nextScreens:
-      - name: submit-provider-agreement-handoff
-  submit-provider-agreement-handoff:
-    nextScreens:
-      - name: next-steps-pdf-delivery
   submit-next-steps:
-    nextScreens:
-      - name: complete-submit-confirmation
-  next-steps-pdf-delivery:
-    nextScreens:
-      - name: complete-submit-confirmation
-  no-provider-intro:
-    beforeDisplayAction: SendFamilyConfirmationEmails
-    nextScreens:
-      - name: no-provider-notice
-  no-provider-notice:
-    nextScreens:
-      - name: submit-next-steps
-  contact-provider-message:
-    beforeDisplayAction: SendFamilyConfirmationEmails
-    nextScreens:
-      - name: submit-next-steps
-  complete-next-steps:
     nextScreens:
       - name: complete-submit-confirmation
   complete-submit-confirmation:
@@ -489,10 +495,9 @@ flow:
     nextScreens:
       - name: complete-submit-confirmation
   after-submit-contact-provider:
-    condition: EnableProviderMessagingFlagOn
     beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
-      - name: contact-providers-start
+      - name: contact-providers-fake-start
         condition: EnableMultipleProviders
       - name: submit-contact-provider-email
         condition: ContactProviderViaEmail
@@ -511,16 +516,14 @@ flow:
     afterSaveAction: SendAutomatedProviderEmail
     nextScreens:
       - name: submit-contact-provider-email-confirmation
-        condition: hasConfirmedProviderEmail
+        condition: HasConfirmedProviderEmail
       - name: submit-edit-provider-email
   submit-edit-provider-email:
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
-    condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-confirm-provider-email
   submit-contact-provider-email-confirmation:
     beforeDisplayAction: FormatSubmittedAtDate
-    condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-contact-provider-text
         condition: ContactProviderViaText
@@ -539,11 +542,9 @@ flow:
         condition: HasConfirmedProviderPhoneNumber
       - name: submit-provider-edit-text
   submit-provider-edit-text:
-    condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-confirm-provider-number
   submit-contact-provider-text-confirmation:
-    condition: EnableProviderMessagingFlagOn
     nextScreens:
       - name: submit-share-confirmation-code
         condition: ContactProviderViaOther
@@ -552,97 +553,75 @@ flow:
     condition: ContactProviderViaOther
     nextScreens:
       - name: doc-upload-recommended-docs
-  providers-intro:
+  contact-providers-fake-start:
     condition: EnableMultipleProviders
     nextScreens:
-      - name: providers-chosen
-  providers-chosen:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: providers-all-ccap-children
-        condition: HasProviderForMoreThanOneChild
-      - name: providers-add
-        condition: HasProviderForOneChild
-      - name: providers-no-provider-intro
-        condition: HasNoChosenProviders
-  providers-no-provider-intro:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: activities-parent-intro
-  providers-all-ccap-children:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: providers-add
-  providers-add:
-    beforeDisplayAction: SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: providers-info-confirm
-  providers-info:
-    condition: EnableMultipleProviders
-    subflow: providers
-    nextScreens:
-      - name: providers-contact-info
-  providers-contact-info:
-    condition: EnableMultipleProviders
-    crossFieldValidationAction: ValidateProviderEmail
-    subflow: providers
-    nextScreens:
-      - name: providers-add
-  delete-provider:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: null
-  providers-info-confirm:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: activities-parent-intro
+      - name: contact-providers-start
   contact-providers-start:
     condition: EnableMultipleProviders
+    subflow: contactProviders
     nextScreens:
       - name: contact-providers-email-address
+        condition: ContactProviderViaEmail
+      - name: contact-providers-phone-number
+        condition: ContactProviderViaText
+      - name: contact-providers-share-code
+        condition: ContactProviderViaOther
   contact-providers-email-address:
-    condition: EnableMultipleProviders
+    condition: DisplayContactProvidersEmailScreen
+    crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-confirm-email-address
   contact-providers-confirm-email-address:
-    condition: EnableMultipleProviders
-    subflow: contactProviders
-    nextScreens:
-      - name: contact-providers-edit-email
-  contact-providers-edit-email:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaEmail
+    afterSaveAction: SendAutomatedProviderEmail
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-email-sent
+        condition: HasConfirmedProviderEmail
+      - name: contact-providers-edit-email
+  contact-providers-edit-email:
+    condition: ContactProviderViaEmail
+    crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-confirm-email-address
   contact-providers-email-sent:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaText
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-phone-number
+        condition: ContactProviderViaText
+      - name: contact-providers-share-code
+        condition: ContactProviderViaOther
+      - name: contact-providers-review
   contact-providers-phone-number:
-    condition: EnableMultipleProviders
+    condition: DisplayContactProvidersPhoneNumberScreen
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-confirm-phone-number
   contact-providers-confirm-phone-number:
-    condition: EnableMultipleProviders
-    subflow: contactProviders
-    nextScreens:
-      - name: contact-providers-edit-phone-number
-  contact-providers-edit-phone-number:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaText
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-text
+        condition: HasConfirmedProviderPhoneNumber
+      - name: contact-providers-edit-phone-number
+  contact-providers-edit-phone-number:
+    condition: ContactProviderViaText
+    subflow: contactProviders
+    nextScreens:
+      - name: contact-providers-confirm-phone-number
   contact-providers-text:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaText
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-share-code
+        condition: ContactProviderViaOther
+      - name: contact-providers-review
   contact-providers-share-code:
-    condition: EnableMultipleProviders
+    condition: ContactProviderViaOther
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-review
@@ -692,14 +671,13 @@ subflows:
     reviewScreen: activities-partner-add-job
     deleteConfirmationScreen: delete-partner-job
   contactProviders:
-    entryScreen: contact-providers-start
-    iterationStartScreen: contact-providers-email-address
+    entryScreen: contact-providers-fake-start
+    iterationStartScreen: contact-providers-start
     reviewScreen: contact-providers-review
     deleteConfirmationScreen: contact-providers-start
 landmarks:
   firstScreen: onboarding-getting-started
   afterSubmitPages:
-    - submit-complete
     - submit-next-steps
     - doc-upload-recommended-docs
     - doc-upload-add-files
@@ -707,13 +685,7 @@ landmarks:
     - contact-provider-intro
     - contact-provider-info
     - contact-provider-message
-    - complete-next-steps
     - complete-submit-confirmation
-    - confirm-delivery
-    - submit-provider-agreement-handoff
-    - next-steps-pdf-delivery
-    - no-provider-intro
-    - no-provider-notice
     - after-submit-contact-provider
     - submit-contact-provider-email
     - submit-confirm-provider-email
@@ -724,6 +696,18 @@ landmarks:
     - submit-provider-edit-text
     - submit-contact-provider-text-confirmation
     - submit-share-confirmation-code
+    - contact-providers
+    - contact-providers-start
+    - contact-providers-email-address
+    - contact-providers-confirm-email-address
+    - contact-providers-edit-email
+    - contact-providers-email-sent
+    - contact-providers-phone-number
+    - contact-providers-confirm-phone-number
+    - contact-providers-edit-phone-number
+    - contact-providers-text
+    - contact-providers-share-code
+    - contact-providers-review
 ---
 name: providerresponse
 flow:

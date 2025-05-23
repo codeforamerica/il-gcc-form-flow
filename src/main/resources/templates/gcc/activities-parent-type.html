@@ -17,7 +17,7 @@
             <div class="form-card__content">
               <!--              Display parent name here-->
               <div
-                  th:with="childcareReasons=${T(org.ilgcc.app .utils.ChildcareReasonOption).values()},
+                  th:with="childcareReasons=${T(org.ilgcc.app.utils.ChildcareReasonOption).values()},
                            parentHasPartner=${fieldData.getOrDefault('parentHasQualifyingPartner', 'false')}">
                 <div>
                   <div class="spacing-below-25">

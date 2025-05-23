@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
+<head th:replace="~{fragments/head :: head(title=#{contact-providers-confirm-email-address.title})}"></head>
 <body>
 <div class="page-wrapper">
   <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -8,15 +8,20 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
+        <th:block th:with="providerName='PROVIDER FROM LOOP GOES HERE'">
+          <th:block th:replace="~{fragments/inputs/headerNameUnderlined :: headerNameUnderlined(text=${providerName})}"/>
+          <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{contact-providers-confirm-email-address.header(${providerName})})}"/>
+          <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
+            <th:block th:ref="formContent">
+              <div class="grid__item address-validation spacing-below-60">
+                <div class="display-box-green" id="email-entered-label">
+                  <p><strong th:text="#{contact-providers-confirm-email-address.body}"></strong>
+                  </p>
+                  <div id="intended-provider-email" th:text="${fieldData.get('familyIntendedProviderEmail')}"></div>
+                </div>
+              </div>
+              <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(inputName='hasConfirmedIntendedProviderEmail', ariaDescribe='header')}"/>
+            </th:block>
           </th:block>
         </th:block>
       </main>

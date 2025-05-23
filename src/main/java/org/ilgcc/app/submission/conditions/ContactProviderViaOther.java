@@ -10,13 +10,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContactProviderViaOther implements Condition {
 
-    @Value("${il-gcc.enable-provider-messaging}")
+    private final boolean enableMultipleProviders;
 
-    private boolean enableProviderMessaging;
+    public ContactProviderViaOther(@Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
+        this.enableMultipleProviders = enableMultipleProviders;
+    }
 
     @Override
     public Boolean run(Submission submission) {
         Map<String, Object> inputData = submission.getInputData();
-        return enableProviderMessaging && SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "OTHER");
+        return SubmissionUtilities.isSelectedAsProviderContactMethod(inputData, "OTHER");
+    }
+
+    @Override
+    public Boolean run(Submission submission, String subflowUuid) {
+        return enableMultipleProviders && SubmissionUtilities.isSelectedAsProviderContactMethod(submission, subflowUuid, "OTHER");
     }
 }
