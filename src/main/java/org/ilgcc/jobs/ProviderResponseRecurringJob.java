@@ -113,8 +113,7 @@ public class ProviderResponseRecurringJob {
                 isCCMSIntegrationEnabled);
 
         Set<Submission> unsentSubmissions;
-        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmissions(
-                lastRun);
+        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmissions(lastRun);
         Set<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransactions(lastRun);
 
         if (submissionsWithoutTransmissions.equals(submissionsWithoutTransactions)) {
