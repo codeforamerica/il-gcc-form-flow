@@ -143,7 +143,7 @@ il-gcc:
   enable-new-sda-caseload-codes: ${ENABLE_NEW_SDA_CASELOAD_CODES:false}
   enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:false}
   ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
-  dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:true}
+  dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:false}
   enable-provider-response-with-fein: ${ENABLE_PROVIDER_RESPONSE_FEIN:false}
   dts:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
