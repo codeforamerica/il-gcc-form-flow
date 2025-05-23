@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HasChosenAtLeastOneProvider implements Condition {
+public class AskAboutContactingProviders implements Condition {
     private final boolean enableMultipleProviders;
 
-    public HasChosenAtLeastOneProvider(@Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
+    public AskAboutContactingProviders(@Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.enableMultipleProviders = enableMultipleProviders;
     }
     @Override

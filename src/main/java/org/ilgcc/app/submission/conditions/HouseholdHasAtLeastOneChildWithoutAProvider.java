@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HasOneChildOrMoreWithoutAProvider implements Condition {
+public class HouseholdHasAtLeastOneChildWithoutAProvider implements Condition {
     private final boolean enableMultipleProviders;
 
-    public HasOneChildOrMoreWithoutAProvider(@Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
+    public HouseholdHasAtLeastOneChildWithoutAProvider(@Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.enableMultipleProviders = enableMultipleProviders;
     }
     @Override

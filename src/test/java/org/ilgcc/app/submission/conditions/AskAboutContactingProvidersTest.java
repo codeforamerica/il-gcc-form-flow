@@ -6,12 +6,12 @@ import formflow.library.data.Submission;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 
-class HasChosenAtLeastOneProviderTest {
+class AskAboutContactingProvidersTest {
   @Test
   void shouldReturnFalseWhenEnableMultipleProvidersIsFalse() {
     boolean mockEnableMultipleProviders = false;
     Submission submission = new SubmissionTestBuilder().with("hasChosenProvider", "true").build();
-    HasChosenAtLeastOneProvider condition = new HasChosenAtLeastOneProvider(mockEnableMultipleProviders);
+    AskAboutContactingProviders condition = new AskAboutContactingProviders(mockEnableMultipleProviders);
 
     assertFalse(condition.run(submission));
   }
@@ -20,7 +20,7 @@ class HasChosenAtLeastOneProviderTest {
   void shouldReturnFalseWhenEnableMultipleProvidersIsTrueAndHasChoseProviderIsFalse() {
     boolean mockEnableMultipleProviders = true;
     Submission submission = new SubmissionTestBuilder().with("hasChosenProvider", "false").build();
-    HasChosenAtLeastOneProvider condition = new HasChosenAtLeastOneProvider(mockEnableMultipleProviders);
+    AskAboutContactingProviders condition = new AskAboutContactingProviders(mockEnableMultipleProviders);
 
     assertFalse(condition.run(submission));
   }
@@ -29,7 +29,7 @@ class HasChosenAtLeastOneProviderTest {
   void shouldReturnFalseWhenEnableMultipleProvidersIsTrueAndHasChoseProviderIsTrue() {
     boolean mockEnableMultipleProviders = true;
     Submission submission = new SubmissionTestBuilder().with("hasChosenProvider", "true").build();
-    HasChosenAtLeastOneProvider condition = new HasChosenAtLeastOneProvider(mockEnableMultipleProviders);
+    AskAboutContactingProviders condition = new AskAboutContactingProviders(mockEnableMultipleProviders);
     assertTrue(condition.run(submission));
   }
 }

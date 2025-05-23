@@ -6,14 +6,14 @@ import formflow.library.data.Submission;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 
-class HasOneChildOrMoreWithoutAProviderTest {
+class HouseholdHasAtLeastOneChildWithoutAProviderTest {
 
   @Test
   void shouldReturnFalseWhenEnableMultipleProvidersIsFalse() {
     boolean mockEnableMultipleProviders = false;
     String mockContactProviderUUID = "mockContactProviderUUID";
     Submission submission = new SubmissionTestBuilder().with("choseProviderForEveryChildInNeedOfCare", "false").build();
-    HasOneChildOrMoreWithoutAProvider condition = new HasOneChildOrMoreWithoutAProvider(mockEnableMultipleProviders);
+    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider(mockEnableMultipleProviders);
 
     assertFalse(condition.run(submission, mockContactProviderUUID));
   }
@@ -23,7 +23,7 @@ class HasOneChildOrMoreWithoutAProviderTest {
     boolean mockEnableMultipleProviders = true;
     String mockContactProviderUUID = "mockContactProviderUUID";
     Submission submission = new SubmissionTestBuilder().with("choseProviderForEveryChildInNeedOfCare", "true").build();
-    HasOneChildOrMoreWithoutAProvider condition = new HasOneChildOrMoreWithoutAProvider(mockEnableMultipleProviders);
+    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider(mockEnableMultipleProviders);
 
     assertFalse(condition.run(submission, mockContactProviderUUID));
   }
@@ -34,7 +34,7 @@ class HasOneChildOrMoreWithoutAProviderTest {
     boolean mockEnableMultipleProviders = true;
     String mockContactProviderUUID = "mockContactProviderUUID";
     Submission submission = new SubmissionTestBuilder().with("choseProviderForEveryChildInNeedOfCare", "false").build();
-    HasOneChildOrMoreWithoutAProvider condition = new HasOneChildOrMoreWithoutAProvider(mockEnableMultipleProviders);
+    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider(mockEnableMultipleProviders);
     assertTrue(condition.run(submission, mockContactProviderUUID));
   }
 }

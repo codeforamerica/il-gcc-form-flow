@@ -498,7 +498,7 @@ flow:
     beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
       - name: contact-providers-fake-start
-        condition: HasChosenAtLeastOneProvider
+        condition: AskAboutContactingProviders
       - name: submit-contact-provider-email
         condition: ContactProviderViaEmail
       - name: submit-contact-provider-text
@@ -630,7 +630,7 @@ flow:
     subflow: contactProviders
     nextScreens:
       - name: contact-provider-child-without-provider
-        condition: HasOneChildOrMoreWithoutAProvider
+        condition: HouseholdHasAtLeastOneChildWithoutAProvider
       - name: doc-upload-recommended-docs
   contact-provider-child-without-provider:
     condition: EnableMultipleProviders
