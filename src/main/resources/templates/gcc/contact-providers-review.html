@@ -14,12 +14,12 @@
           <th:block th:ref="formContent">
             <div class="form-card__content">
               <th:block th:with="providers=${inputData.get('providers')},
-                                 fakeProviderContactMethodChoice='[FAKE_PROVIDER_CONTACT_METHOD]',
-                                 fakeUpdatedProviderEmailAddress='[FAKE_UPDATED_PROVIDER_EMAIL_ADDRESS]',
-                                 fakeUpdatedProviderPhoneNumber='[FAKE_UPDATED_PROVIDER_PHONE_NUMBER]'">
+                                 fakeProviderContactMethodChoice='[FAKE_CONTACT_METHOD]',
+                                 fakeUpdatedProviderEmailAddress='[FAKE_EMAIL_ADDRESS]',
+                                 fakeUpdatedProviderPhoneNumber='[FAKE_PHONE_NUMBER]'">
                 <th:block th:each="provider, iter: ${providers}">
                   <p class="headerElement h3" th:utext="${provider.familyIntendedProviderName}"></p>
-                  <ul class="list--bulleted spacing-below-60">
+                  <ul class="subflow-list list--bulleted spacing-below-60">
                     <li th:utext="${fakeProviderContactMethodChoice}"></li>
                     <li th:utext="${fakeUpdatedProviderEmailAddress}"></li>
                     <li th:utext="${fakeUpdatedProviderPhoneNumber}"></li>
