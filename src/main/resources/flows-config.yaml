@@ -498,7 +498,7 @@ flow:
     beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
       - name: contact-providers-fake-start
-        condition: EnableMultipleProviders
+        condition: HasChosenAtLeastOneProvider
       - name: submit-contact-provider-email
         condition: ContactProviderViaEmail
       - name: submit-contact-provider-text
@@ -629,6 +629,8 @@ flow:
     condition: EnableMultipleProviders
     subflow: contactProviders
     nextScreens:
+      - name: contact-provider-child-without-provider
+        condition: HasOneChildOrMoreWithoutAProvider
       - name: doc-upload-recommended-docs
   contact-provider-child-without-provider:
     condition: EnableMultipleProviders
@@ -708,6 +710,7 @@ landmarks:
     - contact-providers-text
     - contact-providers-share-code
     - contact-providers-review
+    - contact-providers-fake-start
 ---
 name: providerresponse
 flow:

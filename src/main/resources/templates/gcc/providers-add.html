@@ -8,7 +8,7 @@
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
       <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:with="providers=${inputData.get('careProviders')},
+        <th:block th:with="providers=${inputData.get('providers')},
                             hasProviders=${providers.size() > 0},
                             maxProvidersAllowed=${inputData.get('maxProvidersAllowed')},
                             maxProvidersReached=${providers.size() == maxProvidersAllowed},
