@@ -1,35 +1,36 @@
 <th:block th:fragment="screen">
-    <!DOCTYPE html>
-    <html th:lang="${#locale.language}">
-    <head th:replace="~{fragments/head :: head(title=#{after-submit-contact-provider.no-provider.title})}"></head>
-    <body>
-    <div class="page-wrapper">
-        <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-        <section class="slab">
-            <div class="grid">
-                <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-                <main id="content" role="main" class="form-card spacing-above-35">
-                    <th:block th:replace="~{fragments/gcc-icons :: important-notice}"></th:block>
-                    <div th:if="${lockedSubmissionMessage}" class="notice--warning">
-                        <p th:text="${lockedSubmissionMessage}"></p>
-                    </div>
-                    <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{after-submit-contact-provider.no-provider.header}, noSpacingBelow='true')}"/>
-                    <div class="form-card__content">
-                        <div class='notice spacing-below-60 notice--gray'>
-                            <p th:utext="${#messages.msg('after-submit-contact-provider.no-provider.p1', #messages.msg('illinois-cares-for-kids-link'))}"></p>
-                            <p th:utext="${#messages.msg('after-submit-contact-provider.no-provider.p2', submission.getInputData().getOrDefault('ccrrName', ''))}"></p>
-                            <p th:utext="#{after-submit-contact-provider.no-provider.p3}"></p>
-                        </div>
-                    </div>
-                    <div class="form-card__footer">
-                        <th:block th:replace="~{fragments/continueButton :: continue}"/>
-                    </div>
-                </main>
+  <!DOCTYPE html>
+  <html th:lang="${#locale.language}">
+  <head
+      th:replace="~{fragments/head :: head(title=#{after-submit-contact-provider.no-provider.title})}"></head>
+  <body>
+  <div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+      <div class="grid">
+        <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+        <main id="content" role="main" class="form-card spacing-above-35">
+          <th:block th:replace="~{fragments/gcc-icons :: important-notice}"></th:block>
+          <div th:if="${lockedSubmissionMessage}" class="notice--warning">
+            <p th:text="${lockedSubmissionMessage}"></p>
+          </div>
+          <th:block
+              th:replace="~{fragments/cardHeader :: cardHeader(header=#{after-submit-contact-provider.no-provider.header}, noSpacingBelow='true')}"/>
+          <div class="form-card__content">
+            <div class='notice spacing-below-60 notice--gray'>
+              <p th:utext="${#messages.msg('general.contact-provider.no-provider.notice.p1', #messages.msg('illinois-cares-for-kids-link'))}"></p>
+              <p th:utext="${#messages.msg('general.contact-provider.no-provider.notice.p2', submission.getInputData().getOrDefault('ccrrName', ''))}"></p>
+              <p th:utext="#{after-submit-contact-provider.no-provider.p3}"></p>
             </div>
-        </section>
-    </div>
-    <th:block th:replace="~{fragments/footer :: footer}"/>
-    </body>
-    </html>
+          </div>
+          <div class="form-card__footer">
+            <th:block th:replace="~{fragments/continueButton :: continue}"/>
+          </div>
+        </main>
+      </div>
+    </section>
+  </div>
+  <th:block th:replace="~{fragments/footer :: footer}"/>
+  </body>
+  </html>
 </th:block>

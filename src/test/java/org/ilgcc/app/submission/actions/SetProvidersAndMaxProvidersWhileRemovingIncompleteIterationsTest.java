@@ -24,7 +24,7 @@ class SetProvidersAndMaxProvidersWhileRemovingIncompleteIterationsTest {
                 .with("choseProviderForEveryChildInNeedOfCare", "true").build();
         action.run(submission);
         assertThat(submission.getInputData().get("maxProvidersAllowed")).isEqualTo(3);
-        assertThat(((List) submission.getInputData().get("careProviders")).size()).isEqualTo(3);
+        assertThat(((List<?>) submission.getInputData().get("providers")).size()).isEqualTo(3);
     }
 
     @Test
@@ -35,6 +35,6 @@ class SetProvidersAndMaxProvidersWhileRemovingIncompleteIterationsTest {
                 .with("choseProviderForEveryChildInNeedOfCare", "false").build();
         action.run(submission);
         assertThat(submission.getInputData().get("maxProvidersAllowed")).isEqualTo(2);
-        assertThat(((List) submission.getInputData().get("careProviders")).size()).isEqualTo(2);
+        assertThat(((List<?>) submission.getInputData().get("providers")).size()).isEqualTo(2);
     }
 }

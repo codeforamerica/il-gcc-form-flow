@@ -14,34 +14,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations implements Action {
 
-    private final SubmissionRepositoryService submissionRepositoryService;
+  private final SubmissionRepositoryService submissionRepositoryService;
 
-    public SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations(
-            SubmissionRepositoryService submissionRepositoryService) {
-        this.submissionRepositoryService = submissionRepositoryService;
+  public SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations(
+      SubmissionRepositoryService submissionRepositoryService) {
+    this.submissionRepositoryService = submissionRepositoryService;
+  }
+
+  @Override
+  public void run(Submission submission) {
+    Map<String, Object> familyInputData = submission.getInputData();
+    var subflowData = (List<Map<String, Object>>) submission.getInputData().getOrDefault("providers", emptyList());
+    if (!subflowData.isEmpty()) {
+      subflowData.removeIf(providerIteration -> !(boolean) providerIteration.getOrDefault("iterationIsComplete", false));
+      submissionRepositoryService.save(submission);
     }
 
-    @Override
-    public void run(Submission submission) {
-        Map<String, Object> familyInputData = submission.getInputData();
-        var subflowData = (List<Map<String, Object>>) submission.getInputData().getOrDefault("providers", emptyList());
-        if (!subflowData.isEmpty()) {
-            subflowData.removeIf(providerIteration -> !(boolean) providerIteration.getOrDefault("iterationIsComplete", false));
-            submissionRepositoryService.save(submission);
-        }
+    List<Map<String, Object>> providers = (List<Map<String, Object>>) familyInputData.getOrDefault("providers",
+        emptyList());
+    submission.getInputData().put("maxProvidersAllowed", getMaxProvidersAllowed(familyInputData));
+    submission.getInputData().put("providers", providers);
+  }
 
-        List<Map<String, Object>> careProviders = (List<Map<String, Object>>) familyInputData.getOrDefault("providers",
-                emptyList());
-        submission.getInputData().put("maxProvidersAllowed", getMaxProvidersAllowed(familyInputData));
-        submission.getInputData().put("careProviders", careProviders);
+
+  private int getMaxProvidersAllowed(Map<String, Object> familyInputData) {
+    if ("true".equals(familyInputData.get("choseProviderForEveryChildInNeedOfCare"))) {
+      return 3;
+    } else {
+      return 2;
     }
-
-
-    private int getMaxProvidersAllowed(Map<String, Object> familyInputData) {
-        if ("true".equals(familyInputData.get("choseProviderForEveryChildInNeedOfCare"))) {
-            return 3;
-        } else {
-            return 2;
-        }
-    }
+  }
 }

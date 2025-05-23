@@ -13,7 +13,19 @@
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
-                <!-- Put inputs here -->
+              <th:block th:with="providers=${inputData.get('providers')},
+                                 fakeProviderContactMethodChoice='[FAKE_CONTACT_METHOD]',
+                                 fakeUpdatedProviderEmailAddress='[FAKE_EMAIL_ADDRESS]',
+                                 fakeUpdatedProviderPhoneNumber='[FAKE_PHONE_NUMBER]'">
+                <th:block th:each="provider, iter: ${providers}">
+                  <p class="headerElement h3" th:utext="${provider.familyIntendedProviderName}"></p>
+                  <ul class="subflow-list list--bulleted spacing-below-60">
+                    <li th:utext="${fakeProviderContactMethodChoice}"></li>
+                    <li th:utext="${fakeUpdatedProviderEmailAddress}"></li>
+                    <li th:utext="${fakeUpdatedProviderPhoneNumber}"></li>
+                  </ul>
+                </th:block>
+              </th:block>
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
