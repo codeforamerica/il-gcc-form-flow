@@ -711,6 +711,7 @@ landmarks:
     - contact-providers-share-code
     - contact-providers-review
     - contact-providers-fake-start
+    - contact-provider-child-without-provider
 ---
 name: providerresponse
 flow:
