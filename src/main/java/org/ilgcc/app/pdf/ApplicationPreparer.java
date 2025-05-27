@@ -99,6 +99,9 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
                     new SingleField("referralServicesPhysicalOrMentalDisability", "true", null));
         }
 
+        results.put("clientResponseConfirmationCode",
+                new SingleField("clientResponseConfirmationCode", submission.getShortCode(), null));
+
         return results;
     }
 
