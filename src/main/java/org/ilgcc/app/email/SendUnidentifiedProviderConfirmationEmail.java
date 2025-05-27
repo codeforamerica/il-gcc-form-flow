@@ -45,8 +45,8 @@ public class SendUnidentifiedProviderConfirmationEmail extends SendEmail {
     }
 
     @Override
-    protected Boolean skipEmailSend(Submission submission) {
-        return submission.getInputData().getOrDefault("providerConfirmationEmailSent", "false").equals("true");
+    protected Boolean skipEmailSend(Map<String, Object> inputData) {
+        return inputData.getOrDefault("providerConfirmationEmailSent", "false").equals("true");
     }
 }
 

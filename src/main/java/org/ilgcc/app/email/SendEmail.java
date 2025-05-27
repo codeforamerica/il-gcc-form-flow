@@ -38,8 +38,25 @@ public abstract class SendEmail {
     }
 
     public void send(Submission submission) {
-        if (!skipEmailSend(submission)) {
-            Optional<Map<String, Object>> emailData = getEmailData(submission);
+        send(submission, null, null);
+    }
+
+    public void send(Submission submission, String subflowName, String subflowUuid) {
+
+        Map<String, Object> subflowData = null;
+        if (subflowName != null && subflowUuid != null) {
+            subflowData = submission.getSubflowEntryByUuid(subflowName, subflowUuid);
+            if (subflowData == null) {
+                String errorMsg =
+                        "subflow " + subflowName + " not found in submission " + submission.getId() + " for subflowUuid "
+                                + subflowUuid;
+                log.error(errorMsg);
+                throw new RuntimeException(errorMsg);
+            }
+        }
+
+        if (!skipEmailSend(subflowData != null ? subflowData : submission.getInputData())) {
+            Optional<Map<String, Object>> emailData = getEmailData(submission, subflowData);
 
             if (emailData.isEmpty()) {
                 return;
@@ -65,11 +82,15 @@ public abstract class SendEmail {
     }
 
     protected Optional<Map<String, Object>> getEmailData(Submission familySubmission) {
+        return getEmailData(familySubmission, null);
+    }
+
+    protected Optional<Map<String, Object>> getEmailData(Submission familySubmission, Map<String, Object> subflowData) {
         return Optional.empty();
     }
 
-    protected Boolean skipEmailSend(Submission submission) {
-        return submission.getInputData().getOrDefault(emailSentStatusInputName, "false").equals("true");
+    protected Boolean skipEmailSend(Map<String, Object> inputData) {
+        return inputData.getOrDefault(emailSentStatusInputName, "false").equals("true");
     }
 
     protected String getRecipientEmail(Map<String, Object> emailData) {

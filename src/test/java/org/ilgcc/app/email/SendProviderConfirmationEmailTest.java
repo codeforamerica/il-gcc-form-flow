@@ -142,10 +142,10 @@ public class SendProviderConfirmationEmailTest {
 
     @Test
     void correctlySkipsEmailSendWhenEmailStatusIsTrue() {
-        assertThat(sendEmailClass.skipEmailSend(providerSubmission)).isFalse();
+        assertThat(sendEmailClass.skipEmailSend(providerSubmission.getInputData())).isFalse();
 
         providerSubmission.getInputData().put("providerConfirmationEmailSent", "true");
-        assertThat(sendEmailClass.skipEmailSend(providerSubmission)).isTrue();
+        assertThat(sendEmailClass.skipEmailSend(providerSubmission.getInputData())).isTrue();
     }
 
     @Test

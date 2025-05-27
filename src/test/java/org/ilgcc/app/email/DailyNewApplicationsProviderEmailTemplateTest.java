@@ -139,10 +139,10 @@ public class DailyNewApplicationsProviderEmailTemplateTest {
 
     @Test
     void correctlySkipsEmailSendWhenEmailStatusIsTrue() {
-        assertThat(sendEmailClass.skipEmailSend(familySubmission)).isFalse();
+        assertThat(sendEmailClass.skipEmailSend(familySubmission.getInputData())).isFalse();
 
         familySubmission.getInputData().put("providerOutreachEmailSent", "true");
-        assertThat(sendEmailClass.skipEmailSend(familySubmission)).isTrue();
+        assertThat(sendEmailClass.skipEmailSend(familySubmission.getInputData())).isTrue();
     }
 
     @Test
