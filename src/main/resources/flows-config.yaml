@@ -497,7 +497,7 @@ flow:
   after-submit-contact-provider:
     beforeDisplayAction: SendFamilyConfirmationEmails
     nextScreens:
-      - name: contact-providers-fake-start
+      - name: contact-providers-start
         condition: AskAboutContactingProviders
       - name: submit-contact-provider-email
         condition: ContactProviderViaEmail
@@ -553,13 +553,11 @@ flow:
     condition: ContactProviderViaOther
     nextScreens:
       - name: doc-upload-recommended-docs
-  contact-providers-fake-start:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: contact-providers-start
   contact-providers-start:
-    condition: EnableMultipleProviders
     subflow: contactProviders
+    condition: EnableMultipleProviders
+    beforeDisplayAction: FormatSubmittedAtDate
+    beforeSaveAction: PopulateContactProvidersIteration
     nextScreens:
       - name: contact-providers-email-address
         condition: ContactProviderViaEmail
@@ -588,7 +586,7 @@ flow:
     nextScreens:
       - name: contact-providers-confirm-email-address
   contact-providers-email-sent:
-    condition: ContactProviderViaText
+    condition: ContactProviderViaEmail
     subflow: contactProviders
     nextScreens:
       - name: contact-providers-phone-number
@@ -627,7 +625,6 @@ flow:
       - name: contact-providers-review
   contact-providers-review:
     condition: EnableMultipleProviders
-    subflow: contactProviders
     nextScreens:
       - name: contact-provider-child-without-provider
         condition: HouseholdHasAtLeastOneChildWithoutAProvider
@@ -673,10 +670,13 @@ subflows:
     reviewScreen: activities-partner-add-job
     deleteConfirmationScreen: delete-partner-job
   contactProviders:
-    entryScreen: contact-providers-fake-start
+    relationship:
+      relatesTo: providers
+      relationAlias: providerUuid
+    entryScreen: after-submit-contact-provider
     iterationStartScreen: contact-providers-start
     reviewScreen: contact-providers-review
-    deleteConfirmationScreen: contact-providers-start
+    deleteConfirmationScreen: there-is-not-so-its-not-set
 landmarks:
   firstScreen: onboarding-getting-started
   afterSubmitPages:
@@ -710,7 +710,6 @@ landmarks:
     - contact-providers-text
     - contact-providers-share-code
     - contact-providers-review
-    - contact-providers-fake-start
     - contact-provider-child-without-provider
 ---
 name: providerresponse
