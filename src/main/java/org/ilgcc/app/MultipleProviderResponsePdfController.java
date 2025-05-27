@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.pdf.ILGCCAPPDFService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,17 +24,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping({"/provider-response-download"})
-public class ProviderResponsePdfController {
+@RequestMapping({"/download-zip"})
+public class MultipleProviderResponsePdfController {
 
     private final PdfService pdfService;
+
     private final SubmissionRepositoryService submissionRepositoryService;
 
     private final ILGCCAPPDFService ilgccappdfService;
 
     private final Boolean enableMultipleProviders;
 
-    public ProviderResponsePdfController(PdfService pdfService, SubmissionRepositoryService submissionRepositoryService,
+    public MultipleProviderResponsePdfController(PdfService pdfService, SubmissionRepositoryService submissionRepositoryService,
             ILGCCAPPDFService ilgccappdfService, @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.pdfService = pdfService;
         this.submissionRepositoryService = submissionRepositoryService;
@@ -47,53 +47,21 @@ public class ProviderResponsePdfController {
     @GetMapping({"{flow}/{submissionId}"})
     ResponseEntity<?> downloadPdf(@PathVariable String flow, @PathVariable String submissionId, HttpServletRequest request)
             throws IOException {
-        log.info("GET downloadPdf (url: {}): flow: {}, submissionId: {}", sanitizeString(request.getRequestURI().toLowerCase()),
+        log.info("GET downloadPdfZip (url: {}): flow: {}, submissionId: {}",
+                sanitizeString(request.getRequestURI().toLowerCase()),
                 sanitizeString(flow),
                 sanitizeString(submissionId));
 
-        Optional<Submission> optionalProviderSubmission = this.submissionRepositoryService.findById(
-                UUID.fromString(submissionId));
-        if (optionalProviderSubmission.isEmpty()) {
-            log.warn("Attempted to download PDF with provider submission id: {} but no submission was found",
-                    sanitizeString(submissionId));
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(String.format("Attempted to download PDF with provider submission id: %s but no submission was found",
-                            sanitizeString(submissionId)));
-        }
-
-        Submission providerSubmission = optionalProviderSubmission.get();
-        Object providerResponseFamilyShortCode = providerSubmission.getInputData()
-                .getOrDefault("providerResponseFamilyShortCode", null);
-
-        if (providerResponseFamilyShortCode == null) {
-            log.warn(
-                    "Attempted to download PDF with provider submission id: {} but no providerResponseFamilyShortCode was found",
-                    sanitizeString(submissionId));
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
-                    "Attempted to download PDF with provider submission id: %s but no providerResponseFamilyShortCode was found.",
-                    sanitizeString(submissionId)));
-        }
-
-        Optional<Submission> optionalFamilySubmission = submissionRepositoryService.findByShortCode(
-                providerResponseFamilyShortCode.toString().toUpperCase());
+        Optional<Submission> optionalFamilySubmission = submissionRepositoryService.findById(UUID.fromString(submissionId));
         if (optionalFamilySubmission.isEmpty()) {
-            log.warn(
-                    "Attempted to download PDF with provider submission id: {} but no family submission was found with confirmation code: {}",
-                    sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString()));
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
-                    "Attempted to download PDF with provider submission id: %s but no family submission was found with confirmation code: %s",
-                    sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString())));
+            log.warn("Attempted to download PDF with family submission id: {} but no submission was found",
+                    sanitizeString(submissionId));
         }
 
         Submission familySubmission = optionalFamilySubmission.get();
-        // This will always set the current provider app as the provider app for the family application
-        // Note that many provider apps can be tied to a single family application
-        // This is only for testing purposes in the provider app in dev and staging
-        familySubmission.getInputData().put("providerResponseSubmissionId", submissionId);
-        submissionRepositoryService.save(familySubmission);
 
-        log.info("Downloading PDF with provider submission_id: {} and family submission_id: {}", sanitizeString(submissionId),
-                sanitizeString(String.valueOf(familySubmission.getId())));
+        log.info("Downloading PDF with provider submission_id: {} and family submission_id: {}", sanitizeString(submissionId));
+
         Map<String, byte[]> multiplePDFs = this.ilgccappdfService.generatePDFs(familySubmission);
         HttpHeaders headers = new HttpHeaders();
         if (enableMultipleProviders && multiplePDFs.keySet().size() > 1) {
