@@ -33,7 +33,7 @@ public class SendNewProviderConfirmationEmail extends SendEmail {
     }
 
     @Override
-    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission) {
+    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission, Map<String, Object> subflowData) {
         Optional<Submission> familySubmission = getFamilyApplication(providerSubmission);
         if (familySubmission.isPresent()) {
             return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));

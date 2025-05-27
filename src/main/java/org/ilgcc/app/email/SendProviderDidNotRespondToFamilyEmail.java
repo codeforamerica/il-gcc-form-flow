@@ -32,7 +32,7 @@ public class SendProviderDidNotRespondToFamilyEmail extends SendEmail {
     }
 
     @Override
-    protected Optional<Map<String, Object>> getEmailData(Submission familySubmission) {
+    protected Optional<Map<String, Object>> getEmailData(Submission familySubmission, Map<String, Object> subflowData) {
         return Optional.of(getFamilySubmissionDataForEmails(familySubmission));
     }
 }
