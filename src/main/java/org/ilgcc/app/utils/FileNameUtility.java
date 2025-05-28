@@ -74,6 +74,10 @@ public class FileNameUtility {
                         getDashFormattedSubmittedAtDateWithTime(submission)));
     }
 
+    public static String getPDFFileNameZip(Submission submission){
+        return String.format("%s-CCAP-Application.zip", submission.getId());
+    }
+
     public static String getCCMSFileNameForApplicationPDF(Submission submission) {
         return String.format("%s-CCAP-Application-Form.pdf", submission.getId());
     }

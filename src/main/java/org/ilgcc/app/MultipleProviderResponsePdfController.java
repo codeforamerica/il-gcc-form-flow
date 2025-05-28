@@ -1,19 +1,17 @@
 package org.ilgcc.app;
 
+import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
+
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
-import formflow.library.pdf.PdfService;
 import jakarta.servlet.http.HttpServletRequest;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.pdf.ILGCCAPPDFService;
-import org.springframework.beans.factory.annotation.Value;
+import org.ilgcc.app.pdf.MultiProviderPDFService;
+import org.ilgcc.app.utils.FileNameUtility;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,20 +25,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping({"/download-zip"})
 public class MultipleProviderResponsePdfController {
 
-    private final PdfService pdfService;
-
     private final SubmissionRepositoryService submissionRepositoryService;
 
-    private final ILGCCAPPDFService ilgccappdfService;
+    private final MultiProviderPDFService pdfService;
 
-    private final Boolean enableMultipleProviders;
-
-    public MultipleProviderResponsePdfController(PdfService pdfService, SubmissionRepositoryService submissionRepositoryService,
-            ILGCCAPPDFService ilgccappdfService, @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
-        this.pdfService = pdfService;
+    public MultipleProviderResponsePdfController(SubmissionRepositoryService submissionRepositoryService,
+            MultiProviderPDFService pdfService) {
         this.submissionRepositoryService = submissionRepositoryService;
-        this.ilgccappdfService = ilgccappdfService;
-        this.enableMultipleProviders = enableMultipleProviders;
+        this.pdfService = pdfService;
     }
 
 
@@ -60,40 +52,22 @@ public class MultipleProviderResponsePdfController {
 
         Submission familySubmission = optionalFamilySubmission.get();
 
-        log.info("Downloading PDF with provider submission_id: {} and family submission_id: {}", sanitizeString(submissionId));
+        log.info("Downloading PDF with provider submission_id: {} and family submission_id: {}", sanitizeString(submissionId), sanitizeString(familySubmission.getId().toString()));
 
-        Map<String, byte[]> multiplePDFs = this.ilgccappdfService.generatePDFs(familySubmission);
+        Map<String, byte[]> multiplePDFs = this.pdfService.generatePDFs(familySubmission);
         HttpHeaders headers = new HttpHeaders();
-        if (enableMultipleProviders && multiplePDFs.keySet().size() > 1) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            try (ZipOutputStream zos = new ZipOutputStream(baos)) {
-                for (Map.Entry<String, byte[]> entry : multiplePDFs.entrySet()) {
-                    String fileName = entry.getKey();
-                    byte[] fileContent = entry.getValue();
-
-                    ZipEntry zipEntry = new ZipEntry(fileName);
-                    zos.putNextEntry(zipEntry);
-                    zos.write(fileContent);
-                    zos.closeEntry();
-                }
-                zos.finish();
-            }
-
-            byte[] zipBytes = baos.toByteArray();
-            String zipFileName = this.pdfService.generatePdfName(familySubmission).replace(".pdf", ".zip");
-
+        if (multiplePDFs.keySet().size() > 1) {
+            String zipFileName = FileNameUtility.getPDFFileNameZip(familySubmission);
             headers.add("Content-Disposition", "attachment; filename=" + zipFileName);
             headers.setContentType(MediaType.valueOf("application/zip"));
             return ResponseEntity.ok()
                     .headers(headers)
-                    .body(zipBytes);
+                    .body(this.pdfService.zipped(multiplePDFs));
 
         } else {
-            byte[] data = this.pdfService.getFilledOutPDF(familySubmission);
             headers.add("Content-Disposition",
-                    "attachment; filename=%s".formatted(this.pdfService.generatePdfName(familySubmission)));
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(data);
+                    "attachment; filename=%s".formatted(getCCMSFileNameForApplicationPDF(familySubmission)));
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(multiplePDFs.values().stream().findFirst());
         }
 
     }

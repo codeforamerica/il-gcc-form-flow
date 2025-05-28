@@ -9,19 +9,23 @@ import formflow.library.pdf.PdfField;
 import formflow.library.pdf.PdfFieldMapper;
 import formflow.library.pdf.PdfService;
 import formflow.library.pdf.SubmissionField;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import org.ilgcc.app.pdf.helpers.FamilyIntendedProviderPreparerHelper;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ILGCCAPPDFService {
+public class MultiProviderPDFService {
 
     Submission submission;
 
@@ -37,15 +41,22 @@ public class ILGCCAPPDFService {
     @Autowired
     PDFFormFiller pdfFormFiller;
 
-    public ILGCCAPPDFService(Submission submission) {
+    private final Boolean enableMutipleProviders;
+
+    public MultiProviderPDFService(Submission submission,
+            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.submission = submission;
+        this.enableMutipleProviders = enableMultipleProviders;
     }
 
     public Map<String, byte[]> generatePDFs(Submission submission) throws IOException {
         Map<String, byte[]> allFiles = new HashMap<>();
 
         allFiles.put(getCCMSFileNameForApplicationPDF(submission), pdfService.getFilledOutPDF(submission));
-        allFiles.putAll(generateAdditionalProviderPDF(submission));
+
+        if (enableMutipleProviders) {
+            allFiles.putAll(generateAdditionalProviderPDF(submission));
+        }
 
         return allFiles;
     }
@@ -78,4 +89,26 @@ public class ILGCCAPPDFService {
         file.delete();
         return pdfByteArray;
     }
+
+    public byte[] zipped(Map<String, byte[]> multiplePDFs) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+            for (Map.Entry<String, byte[]> entry : multiplePDFs.entrySet()) {
+                String fileName = entry.getKey();
+                byte[] fileContent = entry.getValue();
+
+                ZipEntry zipEntry = new ZipEntry(fileName);
+                zos.putNextEntry(zipEntry);
+                zos.write(fileContent);
+                zos.closeEntry();
+            }
+            zos.finish();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return baos.toByteArray();
+    }
+
 }
