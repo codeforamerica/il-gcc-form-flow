@@ -65,9 +65,10 @@ public class MultipleProviderResponsePdfController {
                     .body(this.pdfService.zipped(multiplePDFs));
 
         } else {
+            String fileNameKey = getCCMSFileNameForApplicationPDF(familySubmission);
             headers.add("Content-Disposition",
-                    "attachment; filename=%s".formatted(getCCMSFileNameForApplicationPDF(familySubmission)));
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(multiplePDFs.values().stream().findFirst());
+                    "attachment; filename=%s".formatted(fileNameKey));
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(multiplePDFs.get(fileNameKey));
         }
 
     }

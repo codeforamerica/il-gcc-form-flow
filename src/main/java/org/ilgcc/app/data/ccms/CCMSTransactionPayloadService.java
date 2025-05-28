@@ -67,7 +67,7 @@ public class CCMSTransactionPayloadService {
         }
     }
 
-    private List<TransactionFile> getTransactionFiles(Submission familySubmission) throws IOException {
+    private List<TransactionFile> getTransactionFiles(Submission familySubmission) {
         List<TransactionFile> transactionFiles = new ArrayList<>();
 
         try {

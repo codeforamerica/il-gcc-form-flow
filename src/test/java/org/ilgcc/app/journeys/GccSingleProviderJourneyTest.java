@@ -839,7 +839,7 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
     private File getDownloadedPDF() throws IOException {
         // There should only be one
         String downloadUrl = repository.findAll().stream().findFirst()
-                .map(submission -> "%s/download-zip/gcc/%s".formatted(baseUrl, submission.getId()))
+                .map(submission -> "%s/download/gcc/%s".formatted(baseUrl, submission.getId()))
                 .orElseThrow(() -> new RuntimeException("Couldn't get url for pdf download"));
         driver.get(downloadUrl);
         await().until(pdfDownloadCompletes());
