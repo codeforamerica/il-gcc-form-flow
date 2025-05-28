@@ -13,7 +13,7 @@
           <p class="text--grey-dark" th:id="schedule-intro-step"
              th:text="${#messages.msg('general.step-header', '4' , '6')}"></p>
           <th:block
-              th:replace="~{fragments/cardHeader :: cardHeader(header=#{schedules-intro.header})}"/>
+              th:replace="~{fragments/cardHeader :: cardHeader(header=#{schedules-intro.title})}"/>
         </div>
         <div class="form-card__content">
           <div class="boxed-content">
@@ -23,11 +23,11 @@
               <th:block th:with="providers=${inputData.get('providers')},
                                  hasMoreThanOneProvider=${providers.size > 1}">
                 <th:block th:if="${hasMoreThanOneProvider}">
-                  <li th:text="#{schedules-intro.providers}"></li>
+                  <li th:text="#{schedules-intro.box.providers}"></li>
                 </th:block>
               </th:block>
-              <li th:text="#{schedules-intro.start-dates}"></li>
-              <li th:text="#{schedules-intro.schedules}"></li>
+              <li th:text="#{schedules-intro.box.start-dates}"></li>
+              <li th:text="#{schedules-intro.box.schedules}"></li>
             </ol>
           </div>
         </div>
