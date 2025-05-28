@@ -242,6 +242,10 @@ flow:
   providers-info-confirm:
     condition: EnableMultipleProviders
     nextScreens:
+      - name: schedules-intro
+  schedules-intro:
+    condition: EnableMultipleProviders
+    nextScreens:
       - name: activities-parent-intro
   activities-parent-intro:
     nextScreens:
