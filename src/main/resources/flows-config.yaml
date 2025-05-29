@@ -779,18 +779,15 @@ flow:
       - name: submit-confirmation
   #Existing Provider Flow: FEIN
   fein:
-    condition: EnableProviderResponseFEIN
     nextScreens:
       - name: provider-id-fein
         condition: HasFEIN
       - name: confirm-application-submission-no-response
   provider-id-fein:
-    condition: EnableProviderResponseFEIN
     crossFieldValidationAction: ValidateFEIN
     nextScreens: 
       - name: submit-response
   confirm-application-submission-no-response:
-    condition: EnableProviderResponseFEIN
     beforeDisplayAction: GetCCRRNameFromFamilySubmission
     afterSaveAction: SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission
     nextScreens:
