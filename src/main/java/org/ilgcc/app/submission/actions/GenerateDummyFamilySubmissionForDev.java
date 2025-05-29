@@ -2,7 +2,6 @@ package org.ilgcc.app.submission.actions;
 
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_CONFIRMATION_CODE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
-import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -20,6 +19,7 @@ import java.util.stream.IntStream;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -30,14 +30,17 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
     private final SubmissionRepository submissionRepository;
     private final HttpSession httpSession;
 
+    private final Boolean enableMultipleProviders;
+
     @Autowired
     Environment env;
 
     public GenerateDummyFamilySubmissionForDev(SubmissionRepositoryService submissionRepositoryService,
-            SubmissionRepository submissionRepository, HttpSession httpSession) {
+            SubmissionRepository submissionRepository, HttpSession httpSession, @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.submissionRepositoryService = submissionRepositoryService;
         this.submissionRepository = submissionRepository;
         this.httpSession = httpSession;
+        this.enableMultipleProviders = enableMultipleProviders;
     }
 
     @Override
@@ -65,8 +68,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
 
     private @NotNull Map<String, Object> createFamilySubmission(Submission providerSubmission) {
         Map<String, Object> inputData = new HashMap<>();
-        inputData.put("familyIntendedProviderName", "Dev Provider");
-        inputData.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
+
         inputData.put("parentFirstName", "Devy");
         inputData.put("parentLastName", "McDeverson");
         inputData.put("parentBirthMonth", "12");
@@ -78,6 +80,15 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
         inputData.put("parentHomeState", "CA - California");
         inputData.put("parentHomeZipCode", "94103");
         inputData.put("parentHasPartner", "false");
+        inputData.put("earliestChildcareStartDate", "01/10/2025");
+
+        if(enableMultipleProviders){
+            inputData.putAll(createMultipleProviders());
+        } else {
+            inputData.putAll(createSingleProvider(1));
+        }
+
+        inputData.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
         inputData.put("providerResponseSubmissionId", providerSubmission.getId().toString());
 
         List<Map<String, Object>> children = new ArrayList<>();
@@ -168,5 +179,48 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
         data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "Hour", hour);
         data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "Minute", minute);
         data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "AmPm", amOrPm);
+    }
+
+    public Map<String, Object> createMultipleProviders(){
+        Map<String, Object> intendedFamilyData = new HashMap<>();
+
+        List<Object> providers = new ArrayList<>();
+
+        Map<String, Object> provider1 = createSingleProvider(1);
+        provider1.put("iterationIsComplete", true);
+        provider1.put("familyIntendedProviderCity", "Chicago");
+        provider1.put("familyIntendedProviderState", "IL");
+        provider1.put("familyIntendedProviderAddress", "123 Main Street");
+
+        providers.add(provider1);
+
+        Map<String, Object> provider2 = createSingleProvider(2);
+        provider2.put("iterationIsComplete", true);
+        provider2.put("familyIntendedProviderCity", "Chicago");
+        provider2.put("familyIntendedProviderState", "IL");
+        provider2.put("familyIntendedProviderAddress", "223 Main Street");
+
+        providers.add(provider2);
+
+        Map<String, Object> provider3 = createSingleProvider(3);
+        provider3.put("iterationIsComplete", true);
+        provider3.put("familyIntendedProviderCity", "Chicago");
+        provider3.put("familyIntendedProviderState", "IL");
+        provider3.put("familyIntendedProviderAddress", "323 Main Street");
+
+        providers.add(provider3);
+
+        intendedFamilyData.put("providers", providers);
+
+        return intendedFamilyData;
+    }
+
+    public Map<String, Object> createSingleProvider(int num){
+        Map<String, Object> intendedFamilyData = new HashMap<>();
+        intendedFamilyData.put("familyIntendedProviderName", String.format("Dev Provider%s", num));
+        intendedFamilyData.put("familyIntendedProviderPhoneNumber", String.format("(510) 123-456%s", num));
+        intendedFamilyData.put("familyIntendedProviderEmail", String.format("dev_provider_%s_email@mail.com", num));
+
+        return intendedFamilyData;
     }
 }
