@@ -31,12 +31,6 @@ public class ProviderApplicationPreparerHelper extends InputDataPreparerHelper {
             results.put(fieldName, new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
         }
 
-        Map<String, String> client = (Map<String, String>) providerInputData.getOrDefault("clientResponse",
-                new HashMap<String, String>());
-        results.put("clientResponseConfirmationCode",
-                new SingleField("clientResponseConfirmationCode", client.getOrDefault("clientResponseConfirmationCode", ""),
-                        null));
-
         results.put("providerSignature", new SingleField("providerSignature", providerSignature(providerInputData), null));
         results.put("providerResponse", new SingleField("providerResponse", providerResponse(providerInputData), null));
 
