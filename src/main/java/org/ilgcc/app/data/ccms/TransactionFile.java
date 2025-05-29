@@ -41,7 +41,6 @@ public class TransactionFile {
     public enum FileTypeId {
         APPLICATION_PDF("67936"),
         UPLOADED_DOCUMENT("68752");
-        // what should be file type be for additional docs?
 
         private final String value;
 

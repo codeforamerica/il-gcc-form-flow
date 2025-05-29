@@ -8,7 +8,6 @@ import formflow.library.data.UserFile;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFile;
 import formflow.library.file.CloudFileRepository;
-import formflow.library.pdf.PdfService;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -17,14 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.FileNameUtility;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -75,11 +71,21 @@ public class CCMSTransactionPayloadService {
             for (Map.Entry<String, byte[]> entry : filledOutPDFs.entrySet()) {
                 String fileName = entry.getKey();
                 byte[] fileContent = entry.getValue();
-                TransactionFile applicationPdfJSON = new TransactionFile(
-                        fileName,
-                        FileTypeId.APPLICATION_PDF.getValue(),
-                        Base64.getEncoder().encodeToString(fileContent));
-                transactionFiles.add(applicationPdfJSON);
+
+                if (fileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))) {
+                    TransactionFile applicationPdfJSON = new TransactionFile(
+                            fileName,
+                            FileTypeId.APPLICATION_PDF.getValue(),
+                            Base64.getEncoder().encodeToString(fileContent));
+                    transactionFiles.add(applicationPdfJSON);
+                } else {
+                    TransactionFile applicationPdfJSON = new TransactionFile(
+                            fileName,
+                            FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                            Base64.getEncoder().encodeToString(fileContent));
+                    transactionFiles.add(applicationPdfJSON);
+                }
+
             }
         } catch (IOException e) {
             log.error(

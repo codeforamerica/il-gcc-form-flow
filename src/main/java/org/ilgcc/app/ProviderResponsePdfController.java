@@ -40,69 +40,93 @@ public class ProviderResponsePdfController {
     @GetMapping({"{flow}/{submissionId}"})
     ResponseEntity<?> downloadPdf(@PathVariable String flow, @PathVariable String submissionId, HttpServletRequest request)
             throws IOException {
-        log.info("GET downloadPdf (url: {}): flow: {}, submissionId: {}", sanitizeString(request.getRequestURI().toLowerCase()),
-                sanitizeString(flow),
-                sanitizeString(submissionId));
 
+        if (log.isDebugEnabled()) {
+            log.debug("GET downloadPdf (url: {}): flow: {}, submissionId: {}",
+                    sanitizeString(request.getRequestURI().toLowerCase()),
+                    sanitizeString(flow),
+                    sanitizeString(submissionId));
+        }
+
+        ResponseEntity response;
         Optional<Submission> optionalProviderSubmission = this.submissionRepositoryService.findById(
                 UUID.fromString(submissionId));
-        if (optionalProviderSubmission.isEmpty()) {
-            log.warn("Attempted to download PDF with provider submission id: {} but no submission was found",
-                    sanitizeString(submissionId));
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(String.format("Attempted to download PDF with provider submission id: %s but no submission was found",
+
+        if (optionalProviderSubmission.isPresent()) {
+            final Submission providerSubmission = optionalProviderSubmission.get();
+            final Object providerResponseFamilyShortCode = providerSubmission.getInputData()
+                    .getOrDefault("providerResponseFamilyShortCode", null);
+
+            if (null != providerResponseFamilyShortCode) {
+                Optional<Submission> optionalFamilySubmission = submissionRepositoryService.findByShortCode(
+                        providerResponseFamilyShortCode.toString().toUpperCase());
+
+                if (optionalFamilySubmission.isPresent()) {
+                    Submission familySubmission = optionalFamilySubmission.get();
+                    // This will always set the current provider app as the provider app for the family application
+                    // Note that many provider apps can be tied to a single family application
+                    // This is only for testing purposes in the provider app in dev and staging
+                    familySubmission.getInputData().put("providerResponseSubmissionId", submissionId);
+                    submissionRepositoryService.save(familySubmission);
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("Downloading PDF with provider submission_id: {} and family submission_id: {}",
+                                sanitizeString(submissionId),
+                                sanitizeString(String.valueOf(familySubmission.getId())));
+                    }
+
+                    Map<String, byte[]> multiplePDFs = this.pdfService.generatePDFs(familySubmission);
+                    HttpHeaders headers = new HttpHeaders();
+                    if (multiplePDFs.keySet().size() > 1) {
+                        String zipFileName = FileNameUtility.getPDFFileNameZip(familySubmission);
+                        headers.add("Content-Disposition", "attachment; filename=" + zipFileName);
+                        headers.setContentType(MediaType.valueOf("application/zip"));
+                        response = ResponseEntity.ok()
+                                .headers(headers)
+                                .body(this.pdfService.zipped(multiplePDFs));
+
+                    } else {
+                        String fileNameKey = getCCMSFileNameForApplicationPDF(familySubmission);
+                        headers.add("Content-Disposition",
+                                "attachment; filename=%s".formatted(fileNameKey));
+                        response = ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers)
+                                .body(multiplePDFs.get(fileNameKey));
+                    }
+                } else {
+                    if (log.isDebugEnabled()) {
+                        log.debug(
+                                "Attempted to download PDF with provider submission id: {} but no family submission was found with confirmation code: {}",
+                                sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString()));
+                    }
+
+                    response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
+                            "Attempted to download PDF with provider submission id: %s but no family submission was found with confirmation code: %s",
+                            sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString())));
+                }
+            } else {
+                if (log.isDebugEnabled()) {
+                    log.debug(
+                            "Attempted to download PDF with provider submission id: {} but no providerResponseFamilyShortCode was found",
+                            sanitizeString(submissionId));
+                }
+
+                response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
+                        "Attempted to download PDF with provider submission id: %s but no providerResponseFamilyShortCode was found.",
+                        sanitizeString(submissionId)));
+            }
+
+        } else {
+            if (log.isDebugEnabled()) {
+                log.debug("Attempted to download PDF with provider submission id: {} but no submission was found",
+                        sanitizeString(submissionId));
+            }
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(String.format(
+                            "Attempted to download PDF with provider submission id: %s but no submission was found",
                             sanitizeString(submissionId)));
         }
 
-        Submission providerSubmission = optionalProviderSubmission.get();
-        Object providerResponseFamilyShortCode = providerSubmission.getInputData()
-                .getOrDefault("providerResponseFamilyShortCode", null);
-
-        if (providerResponseFamilyShortCode == null) {
-            log.warn(
-                    "Attempted to download PDF with provider submission id: {} but no providerResponseFamilyShortCode was found",
-                    sanitizeString(submissionId));
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
-                    "Attempted to download PDF with provider submission id: %s but no providerResponseFamilyShortCode was found.",
-                    sanitizeString(submissionId)));
-        }
-
-        Optional<Submission> optionalFamilySubmission = submissionRepositoryService.findByShortCode(
-                providerResponseFamilyShortCode.toString().toUpperCase());
-        if (optionalFamilySubmission.isEmpty()) {
-            log.warn(
-                    "Attempted to download PDF with provider submission id: {} but no family submission was found with confirmation code: {}",
-                    sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString()));
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
-                    "Attempted to download PDF with provider submission id: %s but no family submission was found with confirmation code: %s",
-                    sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString())));
-        }
-
-        Submission familySubmission = optionalFamilySubmission.get();
-        // This will always set the current provider app as the provider app for the family application
-        // Note that many provider apps can be tied to a single family application
-        // This is only for testing purposes in the provider app in dev and staging
-        familySubmission.getInputData().put("providerResponseSubmissionId", submissionId);
-        submissionRepositoryService.save(familySubmission);
-
-        log.info("Downloading PDF with provider submission_id: {} and family submission_id: {}", sanitizeString(submissionId),
-                sanitizeString(String.valueOf(familySubmission.getId())));
-        Map<String, byte[]> multiplePDFs = this.pdfService.generatePDFs(familySubmission);
-        HttpHeaders headers = new HttpHeaders();
-        if (multiplePDFs.keySet().size() > 1) {
-            String zipFileName = FileNameUtility.getPDFFileNameZip(familySubmission);
-            headers.add("Content-Disposition", "attachment; filename=" + zipFileName);
-            headers.setContentType(MediaType.valueOf("application/zip"));
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(this.pdfService.zipped(multiplePDFs));
-
-        } else {
-            String fileNameKey = getCCMSFileNameForApplicationPDF(familySubmission);
-            headers.add("Content-Disposition",
-                    "attachment; filename=%s".formatted(fileNameKey));
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(multiplePDFs.get(fileNameKey));
-        }
+        return response;
 
     }
 
