@@ -1,6 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
 import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.SubmissionUtilities.getChildrenNeedingAssistance;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -32,13 +33,14 @@ public class SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations implem
 
     List<Map<String, Object>> providers = (List<Map<String, Object>>) familyInputData.getOrDefault("providers",
         emptyList());
-    submission.getInputData().put("maxProvidersAllowed", getMaxProvidersAllowed(familyInputData));
+    submission.getInputData().put("maxProvidersAllowed", getMaxProvidersAllowed(submission));
     submission.getInputData().put("providers", providers);
   }
 
 
-  private int getMaxProvidersAllowed(Map<String, Object> familyInputData) {
-    if ("true".equals(familyInputData.get("choseProviderForEveryChildInNeedOfCare"))) {
+  private int getMaxProvidersAllowed(Submission submission) {
+    // Families with only 1 child never get to see the screen that would set choseProviderForEveryChildInNeedOfCare
+    if ("true".equals(submission.getInputData().get("choseProviderForEveryChildInNeedOfCare")) || getChildrenNeedingAssistance(submission).size() == 1) {
       return 3;
     } else {
       return 2;
