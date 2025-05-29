@@ -13,7 +13,7 @@ public class HouseholdHasAtLeastOneChildWithoutAProvider implements Condition {
         this.enableMultipleProviders = enableMultipleProviders;
     }
     @Override
-    public Boolean run(Submission submission, String subflowUuid) {
+    public Boolean run(Submission submission) {
         boolean hasOneChildOrMoreWithoutAProvider = submission.getInputData().getOrDefault("choseProviderForEveryChildInNeedOfCare", "").equals("false");
         return enableMultipleProviders && hasOneChildOrMoreWithoutAProvider;
     }
