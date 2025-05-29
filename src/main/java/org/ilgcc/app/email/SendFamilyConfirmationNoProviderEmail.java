@@ -32,8 +32,8 @@ public class SendFamilyConfirmationNoProviderEmail extends SendEmail {
     }
 
     @Override
-    protected Optional<Map<String, Object>> getEmailData(Submission familySubmission) {
-        return Optional.of(getFamilySubmissionDataForEmails(familySubmission));
+    protected Optional<Map<String, Object>> getEmailData(Submission familySubmission, Map<String, Object> subflowData) {
+        return Optional.of(getFamilySubmissionDataForEmails(familySubmission, subflowData));
     }
 
 }

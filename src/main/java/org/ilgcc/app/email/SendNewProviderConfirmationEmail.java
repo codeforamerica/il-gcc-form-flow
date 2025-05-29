@@ -33,7 +33,7 @@ public class SendNewProviderConfirmationEmail extends SendEmail {
     }
 
     @Override
-    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission) {
+    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission, Map<String, Object> subflowData) {
         Optional<Submission> familySubmission = getFamilyApplication(providerSubmission);
         if (familySubmission.isPresent()) {
             return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
@@ -46,9 +46,9 @@ public class SendNewProviderConfirmationEmail extends SendEmail {
     }
 
     @Override
-    protected Boolean skipEmailSend(Submission submission) {
-        boolean emailSent = submission.getInputData().getOrDefault(emailSentStatusInputName, "false").equals("true");
-        boolean providerAgreedToCare = submission.getInputData().getOrDefault("providerResponseAgreeToCare", "false")
+    protected Boolean skipEmailSend(Map<String, Object> inputData) {
+        boolean emailSent = inputData.getOrDefault(emailSentStatusInputName, "false").equals("true");
+        boolean providerAgreedToCare = inputData.getOrDefault("providerResponseAgreeToCare", "false")
                 .equals("true");
 
         return emailSent || !providerAgreedToCare;

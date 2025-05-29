@@ -2,12 +2,12 @@ package org.ilgcc.app.email;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.context.MessageSource;
@@ -38,8 +38,25 @@ public abstract class SendEmail {
     }
 
     public void send(Submission submission) {
-        if (!skipEmailSend(submission)) {
-            Optional<Map<String, Object>> emailData = getEmailData(submission);
+        send(submission, null, null);
+    }
+
+    public void send(Submission submission, String subflowName, String subflowUuid) {
+
+        Map<String, Object> subflowData = null;
+        if (subflowName != null && subflowUuid != null) {
+            subflowData = submission.getSubflowEntryByUuid(subflowName, subflowUuid);
+            if (subflowData == null) {
+                String errorMsg =
+                        "subflow " + subflowName + " not found in submission " + submission.getId() + " for subflowUuid "
+                                + subflowUuid;
+                log.error(errorMsg);
+                throw new RuntimeException(errorMsg);
+            }
+        }
+
+        if (!skipEmailSend(subflowData != null ? subflowData : submission.getInputData())) {
+            Optional<Map<String, Object>> emailData = getEmailData(submission, subflowData);
 
             if (emailData.isEmpty()) {
                 return;
@@ -51,7 +68,7 @@ public abstract class SendEmail {
             if(!getRecipientEmail(emailData.get()).isBlank()){
                 ILGCCEmail email = new ILGCCEmail(getRecipientEmail(emailData.get()), emailTemplate(emailData.get()),
                         submission.getId());
-                sendEmail(email, submission);
+                sendEmail(email, submission, subflowName, subflowData);
             } else {
                 log.debug(
                         "{}: Skipping email send because because there is no {} associated with the submission: {}",
@@ -65,26 +82,37 @@ public abstract class SendEmail {
     }
 
     protected Optional<Map<String, Object>> getEmailData(Submission familySubmission) {
+        return getEmailData(familySubmission, null);
+    }
+
+    protected Optional<Map<String, Object>> getEmailData(Submission familySubmission, Map<String, Object> subflowData) {
         return Optional.empty();
     }
 
-    protected Boolean skipEmailSend(Submission submission) {
-        return submission.getInputData().getOrDefault(emailSentStatusInputName, "false").equals("true");
+    protected Boolean skipEmailSend(Map<String, Object> inputData) {
+        return inputData.getOrDefault(emailSentStatusInputName, "false").equals("true");
     }
 
     protected String getRecipientEmail(Map<String, Object> emailData) {
         return emailData.getOrDefault(recipientEmailInputName, "").toString();
     }
 
-    protected void sendEmail(ILGCCEmail email, Submission submission) {
+    protected void sendEmail(ILGCCEmail email, Submission submission, String subflowName, Map<String, Object> subflowData) {
         log.info("{}: About to enqueue the Send Email Job for submissionId: {}",
                 email.getEmailType().getDescription(), submission.getId());
         sendEmailJob.enqueueSendEmailJob(email);
-        updateEmailStatus(submission);
+        updateEmailStatus(submission, subflowName, subflowData);
     }
 
-    private void updateEmailStatus(Submission submission) {
-        submission.getInputData().put(emailSentStatusInputName, "true");
+    private void updateEmailStatus(Submission submission, String subflowName, Map<String, Object> subflowData) {
+        if (subflowData == null) {
+            submission.getInputData().put(emailSentStatusInputName, "true");
+        } else {
+            Map<String, Object> data = new HashMap<>() {{
+                put(emailSentStatusInputName, "true");
+            }};
+            submission.mergeFormDataWithSubflowIterationData(subflowName, subflowData, data);
+        }
         submissionRepositoryService.save(submission);
     }
 

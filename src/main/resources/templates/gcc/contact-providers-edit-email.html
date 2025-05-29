@@ -1,5 +1,5 @@
-<th:block th:with="providerName='PROVIDER FROM LOOP GOES HERE'">
-  <th:block th:replace="~{fragments/screens/child-care-provider-info ::
+<th:block th:with="providerName=${relatedSubflowIteration.get('familyIntendedProviderName')}">
+<th:block th:replace="~{fragments/screens/child-care-provider-info ::
         screen(
           title=#{contact-providers-edit-email.title},
           header=#{contact-providers-edit-email.header},

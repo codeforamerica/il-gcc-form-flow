@@ -109,9 +109,15 @@ public class ProviderSubmissionUtilities {
     }
 
     public static Map<String, Object> getFamilySubmissionDataForEmails(Submission familySubmission) {
+        return getFamilySubmissionDataForEmails(familySubmission, null);
+    }
+
+    public static Map<String, Object> getFamilySubmissionDataForEmails(Submission familySubmission,
+            Map<String, Object> subflowData) {
         Map<String, Object> applicationData = new HashMap<>();
 
-        applicationData.put("parentContactEmail", (String) familySubmission.getInputData().getOrDefault("parentContactEmail", ""));
+        applicationData.put("parentContactEmail",
+                (String) familySubmission.getInputData().getOrDefault("parentContactEmail", ""));
         applicationData.put("parentFirstName", (String) familySubmission.getInputData().get("parentFirstName"));
         applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
         applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
@@ -121,14 +127,15 @@ public class ProviderSubmissionUtilities {
         applicationData.put("familySubmissionId", familySubmission.getId());
         applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));
         applicationData.put("shareableLink", familySubmission.getInputData().getOrDefault("shareableLink", ""));
-        applicationData.put("familyIntendedProviderName",
-                familySubmission.getInputData().getOrDefault("familyIntendedProviderName", ""));
-        applicationData.put("familyIntendedProviderEmail",
-                familySubmission.getInputData().getOrDefault("familyIntendedProviderEmail", ""));
         applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
         applicationData.put("ccapStartDate",
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
                         Optional.empty()));
+
+        // provider specific fields can come from a subflow and not the main data
+        Map<String, Object> data = subflowData == null ? familySubmission.getInputData() : subflowData;
+        applicationData.put("familyIntendedProviderName", data.getOrDefault("familyIntendedProviderName", ""));
+        applicationData.put("familyIntendedProviderEmail", data.getOrDefault("familyIntendedProviderEmail", ""));
 
         return applicationData;
     }

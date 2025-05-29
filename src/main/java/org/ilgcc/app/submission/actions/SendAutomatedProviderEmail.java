@@ -29,7 +29,7 @@ public class SendAutomatedProviderEmail implements Action {
     public void run(Submission familySubmission, String contactProvidersSubflowUUID) {
         Optional<Map<String, Object>> subflow = Optional.of(familySubmission.getSubflowEntryByUuid("contactProviders", contactProvidersSubflowUUID));
         if ("true".equals(subflow.get().get("hasConfirmedIntendedProviderEmail"))) {
-            sendAutomatedProviderOutreachEmail.send(familySubmission);
+            sendAutomatedProviderOutreachEmail.send(familySubmission, "contactProviders", contactProvidersSubflowUUID);
         }
     }
 }
