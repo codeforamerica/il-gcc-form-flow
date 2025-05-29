@@ -46,7 +46,6 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
     private static String FAM_INTENDED_PROVIDER_NAME = "IntendedProviderName";
     private static String FAM_INTENDED_PROVIDER_PHONE = "(125) 785-67896";
     private static String FAM_INTENDED_PROVIDER_EMAIL = "mail@test.com";
-    private static String FAM_EARLIEST_CHILD_CARE_DATE = "11/12/2023";
 
     @BeforeEach
     void setUp() {
@@ -57,7 +56,6 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
                 .with("familyIntendedProviderName", FAM_INTENDED_PROVIDER_NAME)
                 .with("familyIntendedProviderPhoneNumber", FAM_INTENDED_PROVIDER_PHONE)
                 .with("familyIntendedProviderEmail", FAM_INTENDED_PROVIDER_EMAIL)
-                .with("earliestChildcareStartDate", FAM_EARLIEST_CHILD_CARE_DATE)
                 .build();
     }
 
@@ -75,8 +73,6 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
                     new SingleField("providerResponseContactPhoneNumber", FAM_INTENDED_PROVIDER_PHONE, null));
             assertThat(result.get("providerResponseContactEmail")).isEqualTo(
                     new SingleField("providerResponseContactEmail", FAM_INTENDED_PROVIDER_EMAIL, null));
-            assertThat(result.get("childcareStartDate")).isEqualTo(
-                    new SingleField("childcareStartDate", FAM_EARLIEST_CHILD_CARE_DATE, null));
             assertThat(result.get("providerResponse")).isEqualTo(
                     new SingleField("providerResponse", "No response from provider", null));
         }
@@ -92,8 +88,6 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
                     new SingleField("providerResponseContactPhoneNumber", FAM_INTENDED_PROVIDER_PHONE, null));
             assertThat(result.get("providerResponseContactEmail")).isEqualTo(
                     new SingleField("providerResponseContactEmail", FAM_INTENDED_PROVIDER_EMAIL, null));
-            assertThat(result.get("childcareStartDate")).isEqualTo(
-                    new SingleField("childcareStartDate", FAM_EARLIEST_CHILD_CARE_DATE, null));
             assertThat(result.get("providerResponse")).isNull();
         }
     }
