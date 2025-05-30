@@ -9,7 +9,6 @@ import formflow.library.data.UserFile;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFile;
 import formflow.library.file.S3CloudFileRepository;
-import formflow.library.pdf.PdfService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +20,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
+import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.DateUtilities;
+import org.ilgcc.app.utils.FileNameUtility;
 import org.jobrunr.spring.autoconfigure.JobRunrAutoConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +56,7 @@ public class CCMSTransactionPayloadServiceTest {
     UserFileRepositoryService userFileRepositoryService;
 
     @MockitoBean
-    PdfService pdfService;
+    MultiProviderPDFService pdfService;
 
     private Submission familySubmission;
     private Submission providerSubmission;
@@ -116,7 +117,7 @@ public class CCMSTransactionPayloadServiceTest {
         CloudFile providerPdfCloudFile1 = new CloudFile(100L, "testBase64String1".getBytes(), Map.of());
         CloudFile providerPdfCloudFile2 = new CloudFile(100L, "testBase64String2".getBytes(), Map.of());
 
-        when(pdfService.getFilledOutPDF(familySubmission)).thenReturn(Files.readAllBytes(testFilledCcapPdfPath));
+        when(pdfService.generatePDFs(familySubmission)).thenReturn(Map.of(FileNameUtility.getCCMSFileNameForApplicationPDF(familySubmission), Files.readAllBytes(testFilledCcapPdfPath)));
         when(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf")).thenReturn(
                 List.of(testConvertedPngPdf, testConvertedJpegPdf));
         when(submissionRepositoryService.findById(providerSubmission.getId())).thenReturn(Optional.ofNullable(providerSubmission));

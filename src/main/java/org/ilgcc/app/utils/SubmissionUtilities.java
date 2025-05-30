@@ -209,6 +209,7 @@ public class SubmissionUtilities {
     public static boolean hasNotChosenProvider(Submission submission) {
         return "false".equals(submission.getInputData().get("hasChosenProvider"));
     }
+
     public static boolean hasChosenProvider(Submission submission) {
         return "true".equals(submission.getInputData().get("hasChosenProvider"));
     }
@@ -233,5 +234,12 @@ public class SubmissionUtilities {
     public static boolean isSelectedAsProviderContactMethod(@NotNull Submission submission, @NotBlank String subflowUuid, @NotBlank String providerContactMethod) {
         Map<String, Object> subflow = submission.getSubflowEntryByUuid("contactProviders", subflowUuid);
         return subflow != null && isSelectedAsProviderContactMethod(subflow, providerContactMethod);
+    }
+
+    public static List<Map<String, Object>> providersList(Submission familySubmission){
+        if (familySubmission.getInputData().containsKey("providers")) {
+           return(List) familySubmission.getInputData().get("providers");
+        }
+        return emptyList();
     }
 }

@@ -47,7 +47,7 @@
               </th:block>
           </th:block>
           <p class="text--help spacing-above-95"
-             th:with="downloadUrl=|/download/${flow}/${submission.getId()}|"
+             th:with="downloadUrl=|/download-zip/${flow}/${submission.getId()}|"
              th:utext="#{submit-ccap-terms.help(${downloadUrl})}"></p>
           <th:block th:replace="~{fragments/inputs/checkboxMod ::
                                 checkboxMod(inputName='agreesToLegalTerms',

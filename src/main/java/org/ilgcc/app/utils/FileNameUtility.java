@@ -6,12 +6,12 @@ import static org.ilgcc.app.utils.SubmissionUtilities.getDashFormattedSubmittedA
 
 import formflow.library.data.Submission;
 import java.text.Normalizer;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.enums.CCRRSlug;
 
 @Slf4j
 public class FileNameUtility {
-
 
     public static String getFileNameForPdf(Submission submission) {
         String applicantNameLastToFirst = SubmissionUtilities.getApplicantNameLastToFirst(submission);
@@ -66,14 +66,24 @@ public class FileNameUtility {
 
     public static String getSharePointFilePath(Submission submission, boolean isProductionEnvironment) {
         return String.format("/%s/%s/%s",
-                CCRRSlug.getCCRRSlugFromOrgId(submission.getInputData().getOrDefault("organizationId", "56522729391679").toString()) + (isProductionEnvironment ? "" : "-testing"),
+                CCRRSlug.getCCRRSlugFromOrgId(
+                        submission.getInputData().getOrDefault("organizationId", "56522729391679").toString()) + (
+                        isProductionEnvironment ? "" : "-testing"),
                 getDashFormattedSubmittedAtDate(submission),
                 formatApplicantNameForFileName(getApplicantNameLastToFirst(submission) + "-" + submission.getShortCode() + "-" +
                         getDashFormattedSubmittedAtDateWithTime(submission)));
     }
-    
+
+    public static String getPDFFileNameZip(Submission submission){
+        return String.format("%s-CCAP-Application.zip", submission.getId());
+    }
+
     public static String getCCMSFileNameForApplicationPDF(Submission submission) {
         return String.format("%s-CCAP-Application-Form.pdf", submission.getId());
+    }
+
+    public static String getCCMSFileNameForAdditionalProviderPDF(UUID submissionId, int providerNumber, int providerCount) {
+        return String.format("%s-CCAP-Application-Form-Additional-Provider-%d-of-%d.pdf", submissionId, providerNumber, providerCount);
     }
 
     public static String getCCMSFileNameForUploadedDocument(Submission submission, int fileNumber, int totalFiles) {

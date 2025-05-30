@@ -8,16 +8,17 @@ import formflow.library.data.UserFile;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFile;
 import formflow.library.file.CloudFileRepository;
-import formflow.library.pdf.PdfService;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
+import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.FileNameUtility;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,11 @@ public class CCMSTransactionPayloadService {
 
     private final CloudFileRepository cloudFileRepository;
     private final UserFileRepositoryService userFileRepositoryService;
-    private final PdfService pdfService;
     private final SubmissionRepositoryService submissionRepositoryService;
-    
+    private final MultiProviderPDFService pdfService;
+
     public CCMSTransactionPayloadService(CloudFileRepository cloudFileRepository,
-            UserFileRepositoryService userFileRepositoryService, PdfService pdfService,
+            UserFileRepositoryService userFileRepositoryService, MultiProviderPDFService pdfService,
             SubmissionRepositoryService submissionRepositoryService) {
         this.cloudFileRepository = cloudFileRepository;
         this.userFileRepositoryService = userFileRepositoryService;
@@ -47,8 +48,10 @@ public class CCMSTransactionPayloadService {
                     familySubmission.getId(),
                     familySubmission.getShortCode(),
                     familySubmission.getInputData().get("organizationId").toString(),
-                    FileNameUtility.removeNonSpaceOrDashCharacters(familySubmission.getInputData().get("parentFirstName").toString()),
-                    FileNameUtility.removeNonSpaceOrDashCharacters(familySubmission.getInputData().get("parentLastName").toString()),
+                    FileNameUtility.removeNonSpaceOrDashCharacters(
+                            familySubmission.getInputData().get("parentFirstName").toString()),
+                    FileNameUtility.removeNonSpaceOrDashCharacters(
+                            familySubmission.getInputData().get("parentLastName").toString()),
                     familySubmission.getInputData().get("parentBirthDate").toString(),
                     getTransactionFiles(familySubmission),
                     DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime.now()),
@@ -62,13 +65,28 @@ public class CCMSTransactionPayloadService {
 
     private List<TransactionFile> getTransactionFiles(Submission familySubmission) {
         List<TransactionFile> transactionFiles = new ArrayList<>();
+
         try {
-            byte[] filledOutPDF = pdfService.getFilledOutPDF(familySubmission);
-            TransactionFile applicationPdfJSON = new TransactionFile(
-                    getCCMSFileNameForApplicationPDF(familySubmission), 
-                    FileTypeId.APPLICATION_PDF.getValue(),
-                    Base64.getEncoder().encodeToString(filledOutPDF));
-            transactionFiles.add(applicationPdfJSON);
+            Map<String, byte[]> filledOutPDFs = pdfService.generatePDFs(familySubmission);
+            for (Map.Entry<String, byte[]> entry : filledOutPDFs.entrySet()) {
+                String fileName = entry.getKey();
+                byte[] fileContent = entry.getValue();
+
+                if (fileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))) {
+                    TransactionFile applicationPdfJSON = new TransactionFile(
+                            fileName,
+                            FileTypeId.APPLICATION_PDF.getValue(),
+                            Base64.getEncoder().encodeToString(fileContent));
+                    transactionFiles.add(applicationPdfJSON);
+                } else {
+                    TransactionFile applicationPdfJSON = new TransactionFile(
+                            fileName,
+                            FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                            Base64.getEncoder().encodeToString(fileContent));
+                    transactionFiles.add(applicationPdfJSON);
+                }
+
+            }
         } catch (IOException e) {
             log.error(
                     "There was an error when generating the application PDF for sending to the CCMS Submission Endpoint for Submission with ID {}.",
@@ -76,14 +94,17 @@ public class CCMSTransactionPayloadService {
         }
 
         List<UserFile> allFiles = new ArrayList<>();
-        if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
+        if (familySubmission.getInputData().
+
+                containsKey("providerResponseSubmissionId")) {
             submissionRepositoryService.findById(
                             UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()))
                     .ifPresent(providerSubmission -> allFiles.addAll(
                             userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")));
         }
         allFiles.addAll(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf"));
-        for (int i = 0; i < allFiles.size(); i++) {
+        for (
+                int i = 0; i < allFiles.size(); i++) {
             UserFile userFile = allFiles.get(i);
             CloudFile cloudFile;
             try {
