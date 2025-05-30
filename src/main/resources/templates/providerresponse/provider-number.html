@@ -1,41 +1,39 @@
-<th:block th:with="enableProviderResponseWithFEINFlagISOn = ${@environment.getProperty('il-gcc.enable-provider-response-with-fein') == 'true'}">
-    <th:block
-        th:replace="~{fragments/inputs/screenWithOneInputAndSkip ::
-  screenWithOneInputAndSkip(
-    title=#{'provider-response-provider-number.title'},
-    iconFragment=~{fragments/gcc-icons :: registered-provider},
-    header=#{provider-response-provider-number.header},
-    required='true',
-    subtext=#{provider-response-provider-number.subtext},
-    buttonLabel=#{general.button.continue},
-    formAction=${formAction},
-    skipLocation=${enableProviderResponseWithFEINFlagISOn ? 'fein' : null},
-    skipText=${enableProviderResponseWithFEINFlagISOn ? #messages.msg('provider-response-provider-number.skip-text') : null},
-    inputContent=~{::inputContent})}">
+<th:block
+    th:replace="~{fragments/inputs/screenWithOneInputAndSkip ::
+screenWithOneInputAndSkip(
+title=#{'provider-response-provider-number.title'},
+iconFragment=~{fragments/gcc-icons :: registered-provider},
+header=#{provider-response-provider-number.header},
+required='true',
+subtext=#{provider-response-provider-number.subtext},
+buttonLabel=#{general.button.continue},
+formAction=${formAction},
+skipLocation='fein',
+skipText=#{'provider-response-provider-number.skip-text'},
+inputContent=~{::inputContent})}" xmlns:th="http://www.thymeleaf.org">
 
-        <th:block th:ref="inputContent">
-            <div class="spacing-below-60 move-40-up">
-                <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
-            controlId='r1',
-            linkLabel=~{::revealLabel1},
-            content=~{::revealContent1},
-            forceShowContent='false')}">
-                    <th:block th:ref="revealLabel1">
-                        <th:span th:text="#{provider-response-provider-number.accordion.title}"></th:span>
-                    </th:block>
-                    <th:block th:ref="revealContent1">
-                        <p th:text="#{provider-response-provider-number.accordion.intro}"></p>
-                        <ul class="list--bulleted">
-                            <li th:utext="#{provider-response-provider-number.accordion.document1}"></li>
-                            <li th:utext="#{provider-response-provider-number.accordion.document2}"></li>
-                            <li th:utext="#{provider-response-provider-number.accordion.document3}"></li>
-                            <li th:utext="#{provider-response-provider-number.accordion.document4}"></li>
-                        </ul>
-                    </th:block>
-                </th:block>
-            </div>
-            <th:block
-                th:replace="~{fragments/inputs/overrides/number :: number(inputName='providerResponseProviderNumber', ariaLabel='header', required='true')}"/>
+  <th:block th:ref="inputContent">
+    <div class="spacing-below-60 move-40-up">
+      <th:block th:replace="~{'fragments/honeycrisp/reveal' :: reveal(
+        controlId='r1',
+        linkLabel=~{::revealLabel1},
+        content=~{::revealContent1},
+        forceShowContent='false')}">
+        <th:block th:ref="revealLabel1">
+          <span th:text="#{provider-response-provider-number.accordion.title}"></span>
         </th:block>
-    </th:block>
+        <th:block th:ref="revealContent1">
+          <p th:text="#{provider-response-provider-number.accordion.intro}"></p>
+          <ul class="list--bulleted">
+            <li th:utext="#{provider-response-provider-number.accordion.document1}"></li>
+            <li th:utext="#{provider-response-provider-number.accordion.document2}"></li>
+            <li th:utext="#{provider-response-provider-number.accordion.document3}"></li>
+            <li th:utext="#{provider-response-provider-number.accordion.document4}"></li>
+          </ul>
+        </th:block>
+      </th:block>
+    </div>
+    <th:block
+        th:replace="~{fragments/inputs/overrides/number :: number(inputName='providerResponseProviderNumber', ariaLabel='header', required='true')}"/>
+  </th:block>
 </th:block>
