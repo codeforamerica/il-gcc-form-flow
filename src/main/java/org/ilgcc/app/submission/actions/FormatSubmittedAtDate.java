@@ -26,4 +26,9 @@ public class FormatSubmittedAtDate implements Action {
             submission.getInputData().put("formattedSubmittedAtTime", formattedSubmittedAtTime);
         }
     }
+
+    @Override
+    public void run(Submission submission, String subflowUuid) {
+        this.run(submission);
+    }
 }
