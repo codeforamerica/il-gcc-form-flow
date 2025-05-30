@@ -20,6 +20,8 @@
             </div>
         </div>
         <th:block
+                th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='qa')}"/>
+        <th:block
                 th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='staging')}"/>
         <th:block
                 th:replace="~{fragments/demoBanner :: demoBanner(demoText=${#messages.msg('demo.banner-text', linkText)}, profile='demo')}"/>
