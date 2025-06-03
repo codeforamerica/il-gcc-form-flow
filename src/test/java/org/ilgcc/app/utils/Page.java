@@ -3,7 +3,6 @@ package org.ilgcc.app.utils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import io.percy.selenium.Percy;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,24 +15,20 @@ public class Page {
 
   protected final RemoteWebDriver driver;
 
-  protected final Percy percy;
-
   protected final String localServerPort;
 
   public Page(RemoteWebDriver driver) {
     this.driver = driver;
-    this.percy = new Percy(driver);
     this.localServerPort= "";
   }
+
   public Page(RemoteWebDriver driver, String localServerPort) {
     this.driver = driver;
-    this.percy = new Percy(driver);
     this.localServerPort = localServerPort;
   }
 
   public String getTitle() {
     checkForBadMessageKeys();
-    percy.snapshot(driver.getTitle());
     return driver.getTitle();
   }
 
@@ -43,9 +38,7 @@ public class Page {
 
   public String getHeader() {
     checkForBadMessageKeys();
-    String header = driver.findElement(By.id("header")).getText();
-    percy.snapshot(header);
-    return header;
+      return driver.findElement(By.id("header")).getText();
   }
 
   private void checkForBadMessageKeys() {
@@ -117,7 +110,7 @@ public class Page {
   public void enter(String inputName, String value) {
     checkForBadMessageKeys();
     List<WebElement> formInputElements = driver.findElements(By.name(inputName));
-    WebElement firstElement = formInputElements.get(0);
+    WebElement firstElement = formInputElements.getFirst();
     FormInputHtmlTag formInputHtmlTag = FormInputHtmlTag.valueOf(firstElement.getTagName());
     switch (formInputHtmlTag) {
       case select -> selectFromDropdown(firstElement, value);
@@ -193,7 +186,7 @@ public class Page {
 
   private void waitForFooterToLoad() {
     await().atMost(Duration.ofSeconds(20)).ignoreExceptions().until(
-        () -> !driver.findElements(By.className("main-footer")).get(0).getAttribute("innerHTML")
+        () -> !driver.findElements(By.className("main-footer")).getFirst().getAttribute("innerHTML")
             .isBlank());
   }
 
@@ -368,12 +361,6 @@ public class Page {
     inputToSelect.click();
     waitForFooterToLoad();
   }
-
-//  public void chooseSentiment(Sentiment sentiment) {
-//    driver.findElement(
-//            By.cssSelector(String.format("label[for='%s']", sentiment.name().toLowerCase())))
-//        .click();
-//  }
 
   enum FormInputHtmlTag {
     input,
