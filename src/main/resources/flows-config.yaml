@@ -251,7 +251,7 @@ flow:
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-start
-        condition: EnableMultipleProviders
+        condition: BlockMultipleProviderScheduleScreens
       - name: unearned-income-intro
   schedules-start:
     condition: EnableMultipleProviders
