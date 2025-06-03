@@ -247,7 +247,7 @@ flow:
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-start
-        condition: EnableMultipleProviders
+        condition: BlockMultipleProviderScheduleScreens
       - name: activities-parent-intro
   schedules-start:
     condition: EnableMultipleProviders
