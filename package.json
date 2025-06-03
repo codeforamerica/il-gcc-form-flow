@@ -6,8 +6,5 @@
   "license": "ISC",
   "dependencies": {
     "@codeforamerica/uswds": "0.0.1-alpha.0"
-  },
-  "devDependencies": {
-    "@percy/cli": "^1.28.0"
   }
 }
