@@ -8,7 +8,6 @@ import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.
 import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
 public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
@@ -112,8 +111,8 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickNo();
 
         // children-info-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
-        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 5");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-single.title"));
+        assertThat(testPage.findElementTextById("children-info-intro-single-step")).isEqualTo("Step 2 of 5");
         testPage.clickContinue();
 
         // children-add

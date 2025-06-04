@@ -35,7 +35,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         // parent-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
-        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 5");
+        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 7");
         testPage.clickContinue();
         // parent-info-basic-1
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
@@ -101,8 +101,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickNo();
 
         //children-info-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
-        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 5");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-multiple.title"));
+        assertThat(testPage.findElementTextById("children-info-intro-multiple-step")).isEqualTo("Step 3 of 7");
         testPage.clickContinue();
 
         // children-add
@@ -219,11 +219,11 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //schedules-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
         testPage.clickContinue();
         //activities-parent-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
-        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 3 of 5");
+        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 2 of 7");
         testPage.clickContinue();
 
         //activities-parent-type
@@ -312,7 +312,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //unearned-income-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
-        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 4 of 5");
+        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 6 of 7");
         testPage.clickContinue();
 
         //unearned-income-source
@@ -349,7 +349,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         // submit-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-intro.title"));
-        assertThat(testPage.findElementTextById("submit-intro-step")).isEqualTo("Step 5 of 5");
+        assertThat(testPage.findElementTextById("submit-intro-step")).isEqualTo("Step 7 of 7");
         testPage.clickContinue();
 
         // submit-ccap-terms
