@@ -39,7 +39,6 @@ management:
         include: '*'
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
-  enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:true}
   dts:
     processing-org: '4c-ccap-apps-testing'
 sentry:
