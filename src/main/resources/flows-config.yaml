@@ -680,7 +680,6 @@ subflows:
     entryScreen: after-submit-contact-provider
     iterationStartScreen: contact-providers-start
     reviewScreen: contact-providers-review
-    deleteConfirmationScreen: there-is-none-so-its-not-set
 landmarks:
   firstScreen: onboarding-getting-started
   afterSubmitPages:
