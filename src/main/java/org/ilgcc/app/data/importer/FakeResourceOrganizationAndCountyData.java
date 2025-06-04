@@ -78,17 +78,17 @@ public class FakeResourceOrganizationAndCountyData implements InitializingBean {
 
         OUT_OF_SCOPE_DATA = new ResourceOrganization();
         OUT_OF_SCOPE_DATA.setResourceOrgId(new BigInteger("12345678901236"));
-        OUT_OF_SCOPE_DATA.setName("Illinois Action for Children");
-        OUT_OF_SCOPE_DATA.setSda(Short.valueOf("6"));
-        OUT_OF_SCOPE_DATA.setCaseloadCode("GG");
+        OUT_OF_SCOPE_DATA.setName("Provider in SDA not Launched");
+        OUT_OF_SCOPE_DATA.setSda(Short.valueOf("7"));
+        OUT_OF_SCOPE_DATA.setCaseloadCode("HH");
         OUT_OF_SCOPE_DATA.setPhone("123456789");
         OUT_OF_SCOPE_DATA.setEmail("test@gmail.com");
         resourceOrganizationRepository.save(OUT_OF_SCOPE_DATA);
 
         ACTIVE_OUT_OF_SCOPE_COUNTY = new County();
-        ACTIVE_OUT_OF_SCOPE_COUNTY.setCounty("COOK");
+        ACTIVE_OUT_OF_SCOPE_COUNTY.setCounty("County in SDA Not Launched");
         ACTIVE_OUT_OF_SCOPE_COUNTY.setZipCode(new BigInteger("60006"));
-        ACTIVE_OUT_OF_SCOPE_COUNTY.setCaseloadCode("GG");
+        ACTIVE_OUT_OF_SCOPE_COUNTY.setCaseloadCode("HH");
         countyRepository.save(ACTIVE_OUT_OF_SCOPE_COUNTY);
 
 
