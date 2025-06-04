@@ -1,8 +1,11 @@
 <th:block
-        th:replace="~{fragments/screens/family-application-intro-screen ::
+        th:with="currentStep=${@environment.getProperty('il-gcc.enable-multiple-providers') == 'true' ? '2' : '3'}">
+    <th:block
+            th:replace="~{fragments/screens/family-application-intro-screen ::
       screen(
         textPrefix='activities-parent-intro',
         iconFragment=~{fragments/gcc-icons :: income},
-        currentStep='3'
+        currentStep=${currentStep}
         )}">
+    </th:block>
 </th:block>

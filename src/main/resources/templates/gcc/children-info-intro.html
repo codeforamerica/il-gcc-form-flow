@@ -1,42 +1,12 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title=#{children-info-intro.title})}"></head>
-<body>
-<div class="page-wrapper">
-    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-    <section class="slab">
-        <div class="grid">
-            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-            <main id="content" role="main" class="form-card spacing-above-35">
-                <div class="text--centered">
-                    <th:block th:replace="~{fragments/gcc-icons :: household-family}"></th:block>
-                        <p class="text--grey-dark" th:id="children-info-intro-step"
-                           th:text="${#messages.msg('general.step-header', '2' , '5')}"></p>
-                    </th:block>
-                    <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{children-info-intro.title})}"/>
-                </div>
-                <div class="form-card__content">
-                    <div class="boxed-content">
-                        <p class="text--centered"><strong
-                                th:text="#{children-info-intro.box.header}"></strong></p>
-                        <ol class="list--numbered">
-                            <li th:text="#{children-info-intro.box.one}"></li>
-                            <li th:text="#{children-info-intro.box.two}"></li>
-                            <th:block
-                                    th:unless="${@environment.getProperty('il-gcc.enable-multiple-providers') == 'true'}">
-                                <li th:text="#{children-info-intro.box.three}"></li>
-                            </th:block>
-                        </ol>
-                    </div>
-                </div>
-                <div class="form-card__footer text--centered">
-                    <th:block th:replace="~{fragments/continueButton :: continue}"/>
-                </div>
-            </main>
-        </div>
-    </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+<th:block
+        th:with="textPrefix=${@environment.getProperty('il-gcc.enable-multiple-providers') == 'true' ? 'children-info-intro-multiple' : 'children-info-intro-single'},
+currentStep=${@environment.getProperty('il-gcc.enable-multiple-providers') == 'true' ? '3' : '2'}">
+    <th:block
+            th:replace="~{fragments/screens/family-application-intro-screen ::
+      screen(
+        textPrefix=${textPrefix},
+        iconFragment=~{fragments/gcc-icons :: household-family},
+        currentStep=${currentStep}
+        )}">
+    </th:block>
+</th:block>
