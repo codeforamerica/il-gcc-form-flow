@@ -10,7 +10,6 @@ form-flow:
     short-code-configs:
       gcc:
         prefix: STG-
-        creation-point: creation
   uploads:
     max-file-size: ${UPLOADS_MAX_FILE_SIZE:10}
     file-conversion:

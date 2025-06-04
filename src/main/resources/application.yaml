@@ -32,7 +32,7 @@ form-flow:
       service-url: ${CLAMAV_URL}
       block-if-unreachable: true
     file-conversion:
-      convert-to-pdf: ${CONVERT_UPLOADS_TO_PDF:false}
+      convert-to-pdf: ${CONVERT_UPLOADS_TO_PDF:true}
       prefix: ${CONVERTED_FILE_PREFIX:}
       suffix: ${CONVERTED_FILE_SUFFIX:}
   aws:

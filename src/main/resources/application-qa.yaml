@@ -20,6 +20,7 @@ form-flow:
     file-conversion:
       max-conversion-size: ${UPLOADS_MAX_CONVERSION_SIZE:10}
       max-pages: ${UPLOADS_MAX_PAGES:50}
+      suffix: ${CONVERTED_FILE_SUFFIX:-converted}
   validation:
     ssn-pattern: "\\d{3}-\\d{2}-\\d{4}"
   aws:
@@ -39,6 +40,7 @@ management:
         include: '*'
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
+  enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:true}
   dts:
     processing-org: '4c-ccap-apps-testing'
 sentry:
