@@ -204,8 +204,8 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-intro-family-info.title"));
         testPage.clickButton(getEnMessage("parent-intro-family-info.continue"));
         //children-info-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro.title"));
-        assertThat(testPage.findElementTextById("children-info-intro-step")).isEqualTo("Step 2 of 5");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-single.title"));
+        assertThat(testPage.findElementTextById("children-info-intro-single-step")).isEqualTo("Step 2 of 5");
         testPage.clickContinue();
         // children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
