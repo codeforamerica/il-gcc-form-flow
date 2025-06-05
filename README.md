@@ -26,16 +26,11 @@ Table of Contents
 
 # What is the IL GCC App
 
-The IL GCC Application (aka Illinois Get Childcare App) is a Spring Boot application built on the `form-flow` Java library. It
-It's a plain, straightforward (but modern) Spring app that uses common, frequently-used libraries throughout. 
+The IL GCC Application (aka Illinois Get Childcare App) is a Spring Boot application built on the `form-flow` Java library.
+It is a plain, straightforward (but modern) Spring app that uses common, frequently-used libraries throughout. 
 
 The IL GCC Application has been built to allow residents of Illinois to apply online for child care benefits, and 
-to allow child care providers to respond online to these applications.
-
-It contains example code for a simple, generic application for public benefits. An applicant
-can fill out screens with their basic info, upload supporting documents, then submit it all.
-Upon submission, they receive an email with a filled-in
-application PDF. The entire experience is in both English and Spanish.
+to allow child care providers to respond online to these applications. A family applicant can fill out screens with their basic info, upload supporting documents, then submit it all. Upon submission, they are prompted to contact their chosen provider(s). Subsequently, the provider(s) can accept/deny care, fill out screens with their respective info, upload their respective supporting documents if applicable, and submit it all. At that point, the combined application (containing the family and provider(s) data) along with all submitted supporting documents are transmitted to the State of Illinois' CCMS via an API request. The entire experience is in both English and Spanish.
 
 The `form-flow` Java library is included in the application's `build.gradle` along with all other 
 dependencies. The codebase for the `form-flow` library is [open source](https://github.com/codeforamerica/form-flow).
