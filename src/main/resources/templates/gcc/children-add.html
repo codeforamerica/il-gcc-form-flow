@@ -14,56 +14,61 @@
                 <th:block
                         th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                     <th:block th:ref="formContent"
-                              th:with="maxChildrenAdded=${inputData.containsKey('children') && inputData.get('children').size() >= 9}, hasChildren=${inputData.containsKey('children') && inputData.get('children').size() > 0}">
+                              th:with="maxChildrenAdded=${inputData.containsKey('children') && inputData.get('children').size() >= 9},
+                                        hasChildren=${inputData.containsKey('children') && inputData.get('children').size() > 0},
+                                        children=${T(org.ilgcc.app.utils.SubmissionUtilities).getChildrenByStatus(submission)},
+                                        childrenNeedingAssistance=${children.get('needFinancialAssistance')}">
                         <div class="form-card__content">
-                            <th:block th:if="${hasChildren}"
-                                      th:with="children=${T(org.ilgcc.app.utils.SubmissionUtilities).getChildrenByStatus(submission)}">
+                            <th:block th:if="${hasChildren}">
                                 <th:block th:if="${maxChildrenAdded}">
                                     <p th:text="#{'children-add.max-reached'}"
                                        class="notice--warning spacing-below-25"></p>
                                 </th:block>
                                 <div class="boxed-content text--left">
-                                    <th:block
-                                            th:with="childrenNeedingAssistance=${children.get('needFinancialAssistance')}">
-                                        <th:block th:if="${childrenNeedingAssistance.size() > 0}">
-                                            <div class="padding-left-25"><strong
-                                                    th:text="#{children-add.child-care-assistance-header}"></strong>
-                                            </div>
-                                            <ul class="subflow-list list--bulleted">
-                                                <li th:each="child, iter: ${childrenNeedingAssistance}"
-                                                    class="spacing-below-10">
-                                            <span class="space-between">
-                                              <span class="child-name"
-                                                    th:text="|${child.childFirstName} ${child.childLastName}|"/>
-                                              <span class="text--small spacing-below-0 spacing-right-25">
-                                                <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/deleteConfirmation'"
-                                                   th:text="#{general.remove}"
-                                                   class="subflow-delete"
-                                                   th:id="'delete-iteration-' + ${child.uuid}"></a>
-                                              </span>
-                                            </span>
-                                                </li>
-                                            </ul>
-                                        </th:block>
+                                    <div class="padding-left-25">
+                                        <strong th:text="#{children-add.child-care-assistance-header}"></strong>
+                                    </div>
+                                    <th:block th:if="${childrenNeedingAssistance.size() > 0}">
+                                        <ul class="subflow-list list--bulleted">
+                                            <li th:each="child, iter: ${childrenNeedingAssistance}"
+                                                class="spacing-below-10">
+                                                <span class="space-between">
+                                                  <span class="child-name"
+                                                        th:text="|${child.childFirstName} ${child.childLastName}|"/>
+                                                  <span class="text--small spacing-below-0 spacing-right-25">
+                                                    <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/deleteConfirmation'"
+                                                       th:text="#{general.remove}"
+                                                       class="subflow-delete"
+                                                       th:id="'delete-iteration-' + ${child.uuid}"></a>
+                                                  </span>
+                                                </span>
+                                            </li>
+                                        </ul>
                                     </th:block>
-                                    <th:block
-                                            th:with="childrenNotNeedingAssistance=${children.get('notNeedingFinancialAssistance')}">
+                                    <th:block th:unless="${childrenNeedingAssistance.size() > 0}">
+                                        <div class="padding-left-25 spacing-above-25">
+                                            <p>
+                                                <i th:text="#{children-add.no-children}"></i>
+                                            </p>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:with="childrenNotNeedingAssistance=${children.get('notNeedingFinancialAssistance')}">
                                         <th:block th:if="${childrenNotNeedingAssistance.size() > 0}">
                                             <div class="padding-left-25 spacing-above-35"><strong
                                                     th:text="#{children-add.other}"></strong></div>
                                             <ul class="subflow-list list--bulleted">
                                                 <li th:each="child, iter: ${childrenNotNeedingAssistance}"
                                                     class="spacing-below-10">
-                                            <span class="space-between">
-                                              <span class="child-name"
-                                                    th:text="|${child.childFirstName} ${child.childLastName}|"/>
-                                              <span class="text--small spacing-below-0 spacing-right-25">
-                                                <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/deleteConfirmation'"
-                                                   th:text="#{general.remove}"
-                                                   class="subflow-delete"
-                                                   th:id="'delete-iteration-' + ${child.uuid}"></a>
-                                              </span>
-                                            </span>
+                                                    <span class="space-between">
+                                                      <span class="child-name"
+                                                            th:text="|${child.childFirstName} ${child.childLastName}|"/>
+                                                      <span class="text--small spacing-below-0 spacing-right-25">
+                                                        <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/deleteConfirmation'"
+                                                           th:text="#{general.remove}"
+                                                           class="subflow-delete"
+                                                           th:id="'delete-iteration-' + ${child.uuid}"></a>
+                                                      </span>
+                                                    </span>
                                                 </li>
                                             </ul>
                                         </th:block>
@@ -71,6 +76,11 @@
                                 </div>
                             </th:block>
                         </div>
+                        <th:block th:if="${hasChildren && childrenNeedingAssistance.size() < 1}">
+                            <div>
+                                <p th:text="#{'children-add.no-children-warning'}" class="notice--warning spacing-below-0"></p>
+                            </div>
+                        </th:block>
                         <div class="form-card__footer">
                             <div class="spacing-below-15">
                                 <a id="add-children"
@@ -81,7 +91,7 @@
                                 </a>
                             </div>
                             <div>
-                                <a th:if="${hasChildren}"
+                                <a th:if="${hasChildren && childrenNeedingAssistance.size() > 0}"
                                    th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
                                    th:text="#{children-add.thats-all}"
                                    class="button spacing-left-0"
