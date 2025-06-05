@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 
 public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
 
@@ -73,5 +74,38 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
         // children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
         assertThat(testPage.findElementById("add-children").getAttribute("class").contains("disabled")).isTrue();
+    }
+
+    @Test
+    void NoCCAPChildrenDisplaysWarningAndRemovesButton() {
+        //children-info-intro
+        testPage.navigateToFlowScreen("gcc/children-info-intro");
+
+        saveSubmission(
+                getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails().withChild("First", "Child", "false")
+                        .withChild("Second", "Child", "false").build());
+
+        testPage.clickContinue();
+
+        // children-add
+        testPage.clickButton(getEnMessage("children-add.add-button"));
+
+        testPage.enter("childFirstName", "Third");
+        testPage.enter("childLastName", "Child");
+        testPage.enter("childDateOfBirthMonth", "1");
+        testPage.enter("childDateOfBirthDay", "1");
+        testPage.enter("childDateOfBirthYear", "2022");
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.child"));
+        testPage.clickContinue();
+
+        // children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickNo();
+
+        // children-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+        assertThat(testPage.findElementTextById("no-children-warning")).isEqualTo(getEnMessage("children-add.no-children-warning"));
+
+        assertThat(testPage.elementDoesNotExistById("continue-link")).isTrue();
     }
 }

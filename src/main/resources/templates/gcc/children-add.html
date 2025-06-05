@@ -78,7 +78,7 @@
                         </div>
                         <th:block th:if="${hasChildren && childrenNeedingAssistance.size() < 1}">
                             <div>
-                                <p th:text="#{'children-add.no-children-warning'}" class="notice--warning spacing-below-0"></p>
+                                <p id="no-children-warning" th:text="#{'children-add.no-children-warning'}" class="notice--warning spacing-below-0"></p>
                             </div>
                         </th:block>
                         <div class="form-card__footer">
