@@ -104,7 +104,8 @@ public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
 
         // children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
-        assertThat(testPage.findElementTextById("no-children-warning")).isEqualTo(getEnMessage("children-add.no-children-warning"));
+        assertThat(testPage.findElementTextById("no-children-warning")).isEqualTo(
+                getEnMessage("children-add.no-children-warning"));
 
         assertThat(testPage.elementDoesNotExistById("continue-link")).isTrue();
     }
