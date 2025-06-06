@@ -9,24 +9,27 @@
     iconFragment=~{fragments/gcc-icons :: care},
     inputContent=~{::inputContent})}">
     <th:block th:ref="inputContent">
-<!--       Be sure to have `ariaLabel='header'` to label the input with the header -->
+
+
+      <!-- Copy the below input if you want to add more -->
       <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
       checkboxFieldset(inputName='currentProvider',
       label=#{schedules-start.select-provider(${childName})},
       helpText=#{general.select-all-that-apply},
       ariaLabel='header',
       content=~{::providerList})}">
-        <th:block th:with="hasProviders=${submission.getInputData().containsKey('providers'),
+        <th:block th:ref="providerList">
+          <th:block th:with="hasProviders=${submission.getInputData().containsKey('providers'),
                            hasMoreThanOneProvider=${hasProviders && submission.getInputData().get('providers').size() > 1},
-                           providersList=${hasProviders ? submission.getInputData().get('providers') : }}">
-          <th:block th:ref="providerList">
-            <!-- Copy the below input if you want to add more -->
-            <th:block th:each="provider : ${submission.getInputData().get('providers')}">
-              <th:block
-                  th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='',value='', label=#{})}"/>
+                           providersList=${hasProviders ? submission.getInputData().get('providers') : null }}">
+            <th:block th:if="hasMoreThanOneProvider">
+              <th:block th:each="provider : ${submission.getInputData().get('providers')}">
+                <th:block
+                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='currentChildcareProvider',value=${provider.get('familyIntendedProviderName')}, label=#{provider.get('familyIntendedProviderName')})}"/>
+              </th:block>
             </th:block>
+            <th:block th:unless="hasMoreThanOneProvider"></th:block>
           </th:block>
-
         </th:block>
       </th:block>
     </th:block>
