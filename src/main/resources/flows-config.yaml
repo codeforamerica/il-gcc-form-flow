@@ -250,31 +250,38 @@ flow:
         condition: BlockMultipleProviderScheduleScreens
       - name: unearned-income-intro
   schedules-start:
+    subflow: childcareSchedules
     condition: EnableMultipleProviders
     beforeDisplayAction: PopulateChildcareSchedulesIteration
     nextScreens:
       - name: schedules-start-care
   schedules-start-care:
+    subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-start-date
   schedules-start-date:
+    subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-days
   schedules-days:
+    subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-hours
   schedules-hours:
+    subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-review
   schedules-review:
+    subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-same
   schedules-same:
+    subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
       - name: activities-parent-intro
