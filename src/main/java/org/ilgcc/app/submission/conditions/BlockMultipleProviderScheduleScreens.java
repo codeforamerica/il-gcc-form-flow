@@ -10,7 +10,7 @@ public class BlockMultipleProviderScheduleScreens implements Condition {
 
     @Value("${il-gcc.enable-multiple-providers}")
     private boolean enableMultipleProviders;
-    private final boolean allowScheduleScreensNavigation = false;
+    private final boolean allowScheduleScreensNavigation = true;
 
     @Override
     public Boolean run(Submission submission) {
