@@ -664,4 +664,6 @@ public class Gcc extends FlowInputs {
     private String familyIntendedProviderCity;
     @NotBlank(message = "{errors.provide-state}")
     private String familyIntendedProviderState;
+
+    private String currentChildcareProvider;
 }

@@ -1,4 +1,4 @@
-<th:block th:with="childName=${relatedSubflowIteration.get('childName')}
+<th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
                    hasProviders=${submission.getInputData().containsKey('providers')},
                    hasMoreThanOneProvider=${hasProviders && submission.getInputData().get('providers').size() > 1},
                    providersList=${submission.getInputData().get('providers')}">
@@ -7,27 +7,23 @@
   screenWithOneInput(
     title=#{schedules-start.title},
     header=#{schedules-start.header(${childName})},
-    subtext=${!hasMoreThanOneProvider ? messages.msg('schedules-start.single-provider.subtext', providerList.get(0)) : null},
+    subtext=${hasMoreThanOneProvider ? null : #messages.msg('schedules-start.single-provider.subtext', childName)},
     formAction=${formAction},
     buttonLabel=#{'general.inputs.continue'},
     iconFragment=~{fragments/gcc-icons :: care},
     inputContent=~{::inputContent})}">
     <th:block th:ref="inputContent">
       <!-- Copy the below input if you want to add more -->
-      <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
-      checkboxFieldset(inputName='currentProvider',
-      label=#{schedules-start.select-provider(${childName})},
-      helpText=#{general.select-all-that-apply},
-      ariaLabel='header',
-      content=~{::providerList})}">
-        <th:block th:ref="providerList">
-          <th:block th:utext="${submission}"></th:block>
-          <th:block>
-            <th:block th:if="hasMoreThanOneProvider">
-              <th:block th:each="provider : ${submission.getInputData().get('providers')}">
-                <th:block
-                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='currentChildcareProvider',value=${provider.get('familyIntendedProviderName')}, label=${provider.get('familyIntendedProviderName')})}"/>
-              </th:block>
+      <th:block th:if="${hasMoreThanOneProvider}">
+        <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+        checkboxFieldset(inputName='currentChildcareProvider',
+        label=#{schedules-start.select-provider(${childName})},
+        fieldsetHelpText=${#messages.msg('general.select-all-that-apply')},
+        content=~{::providers})}">
+          <th:block th:ref="providers">
+            <th:block th:each="provider : ${submission.getInputData().get('providers')}">
+              <th:block
+                  th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='currentChildcareProvider',value=${provider.get('familyIntendedProviderName')}, label=${provider.get('familyIntendedProviderName')})}"/>
             </th:block>
           </th:block>
         </th:block>
