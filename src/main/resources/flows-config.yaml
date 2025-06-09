@@ -117,6 +117,8 @@ flow:
     nextScreens:
       - name: parent-add-adults
         condition: HasAdultDependents
+      - name: activities-parent-intro
+        condition: EnableMultipleProviders
       - name: children-info-intro
   parent-add-adults:
     nextScreens:
@@ -128,6 +130,8 @@ flow:
       - name: parent-add-adults
   parent-intro-family-info:
     nextScreens:
+      - name: activities-parent-intro
+        condition: EnableMultipleProviders
       - name: children-info-intro
   children-info-intro:
     nextScreens:
@@ -252,7 +256,7 @@ flow:
   schedules-start:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
-    beforeDisplayAction: PopulateChildcareSchedulesIteration
+    beforeSaveAction: PopulateChildcareSchedulesIteration
     nextScreens:
       - name: schedules-start-care
   schedules-start-care:
@@ -298,6 +302,8 @@ flow:
         condition: PartnerIsWorking
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
+      - name: children-info-intro
+        condition: EnableMultipleProviders
       - name: unearned-income-intro
   activities-add-jobs:
     beforeDisplayAction: RemoveIncompleteJobIterations
@@ -308,6 +314,8 @@ flow:
         condition: PartnerIsWorking
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
+      - name: children-info-intro
+        condition: EnableMultipleProviders
       - name: unearned-income-intro
   activities-employer-name:
     subflow: jobs
@@ -391,12 +399,16 @@ flow:
         condition: PartnerIsWorking
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
+      - name: children-info-intro
+        condition: EnableMultipleProviders
       - name: unearned-income-intro
   activities-partner-add-job:
     beforeDisplayAction: RemoveIncompletePartnerJobIterations
     nextScreens:
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
+      - name: children-info-intro
+        condition: EnableMultipleProviders
       - name: unearned-income-intro
   activities-partner-employer-name:
     subflow: partnerJobs
@@ -476,6 +488,8 @@ flow:
   activities-partner-ed-program-dates:
     crossFieldValidationAction: ValidateMonthYearPartnerActivitiesProgram
     nextScreens:
+      - name: children-info-intro
+        condition: EnableMultipleProviders
       - name: unearned-income-intro
   unearned-income-intro:
     nextScreens:
@@ -718,7 +732,6 @@ subflows:
     entryScreen: after-submit-contact-provider
     iterationStartScreen: contact-providers-start
     reviewScreen: contact-providers-review
-    deleteConfirmationScreen: there-is-none-so-its-not-set
   childcareSchedules:
     relationship:
       relatesTo: children
@@ -726,7 +739,6 @@ subflows:
     entryScreen: schedules-intro
     iterationStartScreen: schedules-start
     reviewScreen: schedules-review
-    deleteConfirmationScreen: there-is-none-so-its-not-set
 landmarks:
   firstScreen: onboarding-getting-started
   afterSubmitPages:
