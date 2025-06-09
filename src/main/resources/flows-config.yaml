@@ -287,7 +287,7 @@ flow:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
-      - name: activities-parent-intro
+      - name: unearned-income-intro
   activities-parent-intro:
     nextScreens:
       - name: activities-parent-type
