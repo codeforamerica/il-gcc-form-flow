@@ -314,6 +314,10 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         testPage.clickContinue();
 
+        //schedules-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+        testPage.navigateToFlowScreen("gcc/unearned-income-intro");
+
         //unearned-income-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
         assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 6 of 7");

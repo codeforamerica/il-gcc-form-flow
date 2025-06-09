@@ -1,15 +1,9 @@
 package org.ilgcc.app.submission.actions;
 
 import formflow.library.config.submission.Action;
-import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
-import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.email.SendProviderAgreesToCareFamilyConfirmationEmail;
-import org.ilgcc.app.email.SendProviderConfirmationEmail;
-import org.ilgcc.app.email.SendProviderDeclinesCareFamilyConfirmationEmail;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -250,6 +250,43 @@ flow:
   schedules-intro:
     condition: EnableMultipleProviders
     nextScreens:
+      - name: schedules-start
+        condition: EnableMultipleProviders
+      - name: unearned-income-intro
+  schedules-start:
+    subflow: childcareSchedules
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: schedules-start-care
+  schedules-start-care:
+    subflow: childcareSchedules
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: schedules-start-date
+  schedules-start-date:
+    subflow: childcareSchedules
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: schedules-days
+  schedules-days:
+    subflow: childcareSchedules
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: schedules-hours
+  schedules-hours:
+    subflow: childcareSchedules
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: schedules-review
+  schedules-review:
+    subflow: childcareSchedules
+    condition: EnableMultipleProviders
+    nextScreens:
+      - name: schedules-same
+  schedules-same:
+    subflow: childcareSchedules
+    condition: EnableMultipleProviders
+    nextScreens:
       - name: unearned-income-intro
   activities-parent-intro:
     nextScreens:
@@ -694,6 +731,13 @@ subflows:
     entryScreen: after-submit-contact-provider
     iterationStartScreen: contact-providers-start
     reviewScreen: contact-providers-review
+  childcareSchedules:
+    relationship:
+      relatesTo: children
+      relationAlias: childrenUuid
+    entryScreen: schedules-intro
+    iterationStartScreen: schedules-start
+    reviewScreen: schedules-review
 landmarks:
   firstScreen: onboarding-getting-started
   afterSubmitPages:
