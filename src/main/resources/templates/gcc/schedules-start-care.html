@@ -2,7 +2,7 @@
   <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-start-care.title},
-      header=#{schedules-start-care.header(${providerName})},
+      header=#{schedules-start-care.header(${childName})},
       headerName='[PROVIDER_NAME]',
       formAction=${formAction},
       inputContent=~{::inputContent})}">
