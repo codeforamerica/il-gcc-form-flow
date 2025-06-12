@@ -282,7 +282,6 @@ flow:
     nextScreens:
       - name: schedules-review
   schedules-review:
-    subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-same
