@@ -16,7 +16,7 @@ public class HasProviderForMoreThanOneChild implements Condition {
     }
     @Override
     public Boolean run(Submission submission) {
-        boolean moreThanOneChildNeedsChildcareAssistance = getChildrenNeedingAssistance(submission).size() > 1;
+        boolean moreThanOneChildNeedsChildcareAssistance = getChildrenNeedingAssistance(submission.getInputData()).size() > 1;
         return enableMultipleProviders && hasChosenProvider(submission) && moreThanOneChildNeedsChildcareAssistance;
     }
 }
