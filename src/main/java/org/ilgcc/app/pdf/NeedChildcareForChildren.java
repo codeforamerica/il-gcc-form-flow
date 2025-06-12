@@ -10,6 +10,7 @@ import org.ilgcc.app.utils.GenderOption;
 import org.ilgcc.app.utils.RaceEthnicityOption;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,15 +20,22 @@ import static org.ilgcc.app.utils.PreparerUtilities.formatYesNo;
 @Component
 public class NeedChildcareForChildren implements SubmissionFieldPreparer {
 
+    private boolean enableMultipleProviders;
+
+    public NeedChildcareForChildren(
+            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
+        this.enableMultipleProviders = enableMultipleProviders;
+    }
+
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
         int iteration = 1;
         for (var child : SubmissionUtilities.firstFourChildrenNeedingAssistance(submission)) {
-            results.put("childFirstName_" + iteration,
-                    new SingleField("childFirstName", (String) child.getOrDefault("childFirstName", ""), iteration));
-            results.put("childLastName_" + iteration,
-                    new SingleField("childLastName", (String) child.getOrDefault("childLastName", ""), iteration));
+            results.put("familySectionChildFirstName_" + iteration,
+                    new SingleField("familySectionChildFirstName", (String) child.getOrDefault("childFirstName", ""), iteration));
+            results.put("familySectionChildLastName_" + iteration,
+                    new SingleField("familySectionChildLastName", (String) child.getOrDefault("childLastName", ""), iteration));
             results.put("childDateOfBirth_" + iteration,
                     new SingleField("childDateOfBirth", formatChildDateOfBirth(child), iteration));
             results.put("childRaceEthnicity_" + iteration, new SingleField("childRaceEthnicity",
@@ -41,25 +49,41 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
             results.put("childUSCitizen_" + iteration,
                     new SingleField("childUSCitizen", formatYesNo((String) child.getOrDefault("childIsUsCitizen", "")),
                             iteration));
-            results.put("childCareChildInSchool_" + iteration,
-                    new SingleField("childCareChildInSchool", (String) child.getOrDefault("childAttendsOtherEd", ""), iteration));
-            results.put("childRelationship_" + iteration,
-                    new SingleField("childRelationship", (String) child.get("childRelationship"), iteration));
-            results.put("childOtherEdHoursDescription_" + iteration,
-                new SingleField("childOtherEdHoursDescription", (String) child.getOrDefault("childOtherEdHoursDescription", ""), iteration));
+            results.put("familySectionChildRelationship_" + iteration,
+                    new SingleField("familySectionChildRelationship", (String) child.get("childRelationship"), iteration));
 
-            Map<String, String> careSchedule =
-                    SchedulePreparerUtility.hourlyScheduleKeys(
-                            child,
-                            "childcare",
-                            "childcareWeeklySchedule[]");
+            if(!enableMultipleProviders){
+                results.putAll(prepareChildCareSchedule(child, iteration));
+            }
 
-            results.putAll(
-                    SchedulePreparerUtility.createSubmissionFieldsFromDay(child, careSchedule, "childcare", "childCareSchedule",
-                            iteration));
             iteration++;
         }
         return results;
+    }
+
+    private Map<String, SubmissionField> prepareChildCareSchedule(Map<String, Object> child, int iteration){
+        var fields = new HashMap<String, SubmissionField>();
+        fields.put("childFirstName_" + iteration,
+                new SingleField("childFirstName", (String) child.getOrDefault("childFirstName", ""), iteration));
+        fields.put("childLastName_" + iteration,
+                new SingleField("childLastName", (String) child.getOrDefault("childLastName", ""), iteration));
+        fields.put("childRelationship_" + iteration,
+                new SingleField("childRelationship", (String) child.get("childRelationship"), iteration));
+        fields.put("childCareChildInSchool_" + iteration,
+                new SingleField("childCareChildInSchool", (String) child.getOrDefault("childAttendsOtherEd", ""), iteration));
+        fields.put("childOtherEdHoursDescription_" + iteration,
+                new SingleField("childOtherEdHoursDescription", (String) child.getOrDefault("childOtherEdHoursDescription", ""), iteration));
+
+        Map<String, String> careSchedule =
+                SchedulePreparerUtility.hourlyScheduleKeys(
+                        child,
+                        "childcare",
+                        "childcareWeeklySchedule[]");
+
+        fields.putAll(
+                SchedulePreparerUtility.createSubmissionFieldsFromDay(child, careSchedule, "childcare", "childCareSchedule",
+                        iteration));
+        return fields;
     }
 
     private String formatChildDateOfBirth(Map<String, Object> child) {
