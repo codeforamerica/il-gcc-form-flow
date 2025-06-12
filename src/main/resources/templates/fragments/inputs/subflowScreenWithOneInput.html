@@ -1,5 +1,6 @@
 <th:block
         th:fragment="subflowScreenWithOneInput"
+        th:with="hasNoSubmitButtonInput=${!#strings.isEmpty(noSubmitButton)}"
         th:assert="
       ${!#strings.isEmpty(title)},
       ${!#strings.isEmpty(header)},
@@ -27,8 +28,10 @@
                 <th:block th:replace="${inputContent}"/>
               </div>
               <div class="form-card__footer">
-                <th:block
-                        th:replace="~{fragments/inputs/submitButton :: submitButton(text=${buttonLabel != null ? buttonLabel : 'Submit'})}"/>
+                <th:block th:unless="${hasNoSubmitButtonInput && ('true'.equals(noSubmitButton.toString()))}">
+                  <th:block
+                      th:replace="~{fragments/inputs/submitButton :: submitButton(text=${buttonLabel != null ? buttonLabel : 'Submit'})}"/>
+                </th:block>
               </div>
             </th:block>
           </th:block>
