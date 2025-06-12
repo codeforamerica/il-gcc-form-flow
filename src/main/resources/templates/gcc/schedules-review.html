@@ -9,22 +9,53 @@
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block th:replace="~{fragments/gcc-icons :: documents-search}"></th:block>
-                <th:block th:with="hasProvider=${true}">
+                <th:block
+                        th:with="childcareSchedules=${fieldData.get('childcareSchedules')},
+                        hasProvider=${true}">
                     <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{schedules-review.header}, subtext=#{placeholder})}"/>
+                            th:replace="~{fragments/cardHeader :: cardHeader(header= ${#messages.msg('schedules-review.header')}, subtext=${hasProvider ? #messages.msg('schedules-review.body') : #messages.msg('schedules-review.no-provider.body')})}"/>
                     <th:block
                             th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
                         <th:block th:ref="formContent">
                             <div class="form-card__content">
-                                <!-- Put inputs here -->
+
+                                <th:block th:each="childcareIteration: ${childcareSchedules}">
+                                    <th:block
+                                            th:with="childDetails=${T(org.ilgcc.app.utils.SchedulePreparerUtility).relatedSubflowIterationData(submission.getInputData(), 'children', childcareIteration.get('childrenUuid'))}">
+                                        <p class="text--left"><strong
+                                                th:text="${childDetails.get('childFirstName') + ' ' + childDetails.get('childLastName')}"></strong>
+                                        </p>
+                                        <ol class="list--bulleted">
+                                            <li
+                                                    th:each="providerSchedule: ${childcareIteration.get('providerSchedules')}"
+                                                    class="spacing-below-15">
+                                                <span th:text="${providerSchedule.getOrDefault('repeatForValue', '[PROVIDER NAME]')}"></span>
+                                                <br>
+                                                <span th:text="${#messages.msg('schedules-review.start-date', providerSchedule.getOrDefault('startData', '[START DATE]'))}"></span>
+                                                <br>
+                                                <span th:text="${providerSchedule.getOrDefault('startData', '[DAY, HOURS]')}"></span>
+
+                                                <p class="text--small spacing-above-10">
+                                                    <a th:href="'/flow/gcc/schedules-start-care/' + ${childcareIteration.get('uuid')} +'/' + ${providerSchedule.get('uuid')} + '/edit'"
+                                                       th:text="#{schedules-review.edit}"
+                                                       th:id="'edit-iteration-' + ${childcareIteration.get('uuid')}"
+                                                       class="subflow-edit"></a>
+                                                </p>
+                                                </span>
+                                            </li>
+                                        </ol>
+
+                                    </th:block>
+
+                                </th:block>
                             </div>
                             <div class="form-card__footer">
-                                <th:block
-                                        th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
+                                <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                      text=#{general.button.continue})}"/>
                             </div>
                         </th:block>
                     </th:block>
-                </th:block>
+                    <!--                </th:block>-->
             </main>
         </div>
     </section>

@@ -22,7 +22,7 @@ public class EnableMultipleProviders implements Condition {
     }
 
     @Override
-    public Boolean run(Submission submission, String uuid, String repeatsForUui) {
+    public Boolean run(Submission submission, String uuid, String repeatsForUuid) {
         return enableMultipleProviders;
     }
 }
