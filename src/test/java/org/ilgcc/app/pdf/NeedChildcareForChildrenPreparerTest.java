@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class NeedChildcareForChildrenPreparerTest {
 
-    NeedChildcareForChildren preparer = new NeedChildcareForChildren();
+    NeedChildcareForChildren preparer = new NeedChildcareForChildren(false);
 
     private Submission submission;
 
@@ -23,6 +23,14 @@ public class NeedChildcareForChildrenPreparerTest {
                 .withChild("Sixth", "Child", "true").build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("familySectionChildFirstName_1")).isEqualTo(new SingleField("familySectionChildFirstName", "First",
+                1));
+        assertThat(result.get("familySectionChildFirstName_2")).isEqualTo(new SingleField("familySectionChildFirstName", "Second",
+                2));
+        assertThat(result.get("familySectionChildFirstName_3")).isEqualTo(new SingleField("familySectionChildFirstName", "Third",
+                3));
+        assertThat(result.get("familySectionChildFirstName_4")).isEqualTo(new SingleField("familySectionChildFirstName", "Fourth",
+                4));
         assertThat(result.get("childFirstName_1")).isEqualTo(new SingleField("childFirstName", "First", 1));
         assertThat(result.get("childFirstName_2")).isEqualTo(new SingleField("childFirstName", "Second", 2));
         assertThat(result.get("childFirstName_3")).isEqualTo(new SingleField("childFirstName", "Third", 3));
