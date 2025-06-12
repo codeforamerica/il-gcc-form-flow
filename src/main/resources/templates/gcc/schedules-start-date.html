@@ -1,10 +1,12 @@
-<th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')}">
+<th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
+                   providerName='[PROVIDER_NAME]'">
   <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-start-date.title},
-      header=#{schedules-start-date.header.already-started(${childName})},
+      header=#{schedules-start-date.header.already-started(${childName}, ${providerName})},
       headerName='[PROVIDER_NAME]',
       formAction=${formAction},
+      buttonLabel=#{'general.inputs.continue'},
       inputContent=~{::inputContent})}">
     <th:block th:ref="inputContent">
       <th:block th:ref="formContent">

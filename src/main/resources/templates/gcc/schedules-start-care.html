@@ -1,8 +1,9 @@
-<th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')}">
+<th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
+                   providerName='[PROVIDER_NAME]'">
   <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-start-care.title},
-      header=#{schedules-start-care.header(${childName})},
+      header=#{schedules-start-care.header(${childName}, ${providerName})},
       headerName='[PROVIDER_NAME]',
       formAction=${formAction},
       noSubmitButton='true',
