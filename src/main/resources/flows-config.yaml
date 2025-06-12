@@ -737,7 +737,10 @@ subflows:
   childcareSchedules:
     relationship:
       relatesTo: children
-      relationAlias: childUuid
+      relationAlias: childrenUuid
+      repeatFor:
+        inputName: currentChildcareProvider
+        saveDataAs: providerSchedules
     entryScreen: schedules-intro
     iterationStartScreen: schedules-start
     reviewScreen: schedules-review
