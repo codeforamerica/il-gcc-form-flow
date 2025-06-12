@@ -144,8 +144,8 @@ public class ProviderSubmissionUtilities {
     public static List<Map<String, Object>> getChildrenDataForProviderResponse(Submission applicantSubmission) {
         List<Map<String, Object>> children = new ArrayList<>();
 
-        if (!SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission).isEmpty()) {
-            for (var child : SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission)) {
+        if (!SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission.getInputData()).isEmpty()) {
+            for (var child : SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission.getInputData())) {
                 Map<String, Object> childObject = new HashMap<>();
                 String firstName = (String) child.get("childFirstName");
                 String lastName = (String) child.get("childLastName");
@@ -160,7 +160,7 @@ public class ProviderSubmissionUtilities {
     }
 
     public static String formatChildNamesAsCommaSeparatedList(Submission applicantSubmission, String joiner) {
-        List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission);
+        List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission.getInputData());
         List<String> childNames = new ArrayList<>();
         for (var child : children) {
             String firstName = (String) child.get("childFirstName");
@@ -344,7 +344,7 @@ public class ProviderSubmissionUtilities {
     }
 
     public static List<String> getChildrenInitialsListFromApplication(Submission familySubmission) {
-        List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(familySubmission);
+        List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(familySubmission.getInputData());
         List<String> childrenInitials = new ArrayList<String>();
         for (var child : children) {
             String firstName = (String) child.get("childFirstName");

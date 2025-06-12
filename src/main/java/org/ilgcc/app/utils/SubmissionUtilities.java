@@ -145,39 +145,39 @@ public class SubmissionUtilities {
         }
     }
 
-    public static List<Map<String, Object>> getChildren(Submission submission) {
-        return (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
+    public static List<Map<String, Object>> getChildren(Map<String, Object> inputData) {
+        return (List<Map<String, Object>>) inputData.getOrDefault("children", emptyList());
     }
 
-    public static List<Map<String, Object>> getChildrenNeedingAssistance(Submission submission) {
-        return getChildren(submission).stream()
+    public static List<Map<String, Object>> getChildrenNeedingAssistance(Map<String, Object> inputData) {
+        return getChildren(inputData).stream()
                 .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("true")).toList();
     }
 
-    public static List<Map<String, Object>> getChildrenNotNeedingAssistance(Submission submission) {
-        return getChildren(submission).stream()
+    public static List<Map<String, Object>> getChildrenNotNeedingAssistance(Map<String, Object> inputData) {
+        return getChildren(inputData).stream()
                 .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("false")).toList();
     }
 
     public static Map<String, List<Map<String, Object>>> getChildrenByStatus(Submission submission) {
         Map<String, List<Map<String, Object>>> children = new HashMap<>();
-        children.put("needFinancialAssistance", getChildrenNeedingAssistance(submission));
-        children.put("notNeedingFinancialAssistance", getChildrenNotNeedingAssistance(submission));
+        children.put("needFinancialAssistance", getChildrenNeedingAssistance(submission.getInputData()));
+        children.put("notNeedingFinancialAssistance", getChildrenNotNeedingAssistance(submission.getInputData()));
         return children;
     }
 
     public static List<Map<String, Object>> firstFourChildrenNeedingAssistance(Submission submission) {
-        int childrenNeedingAssistance = getChildrenNeedingAssistance(submission).size();
+        int childrenNeedingAssistance = getChildrenNeedingAssistance(submission.getInputData()).size();
         if (childrenNeedingAssistance < 4) {
-            return getChildrenNeedingAssistance(submission).subList(0, childrenNeedingAssistance);
+            return getChildrenNeedingAssistance(submission.getInputData()).subList(0, childrenNeedingAssistance);
         } else {
-            return getChildrenNeedingAssistance(submission).subList(0, 4);
+            return getChildrenNeedingAssistance(submission.getInputData()).subList(0, 4);
         }
     }
 
     public static List<Map<String, Object>> getAdditionalChildrenNeedingAssistance(Submission submission) {
-        int childrenNeedingAssistance = getChildrenNeedingAssistance(submission).size();
-        return getChildrenNeedingAssistance(submission).subList(4, childrenNeedingAssistance);
+        int childrenNeedingAssistance = getChildrenNeedingAssistance(submission.getInputData()).size();
+        return getChildrenNeedingAssistance(submission.getInputData()).subList(4, childrenNeedingAssistance);
     }
 
     public static String generatePdfPath(Submission submission) {
