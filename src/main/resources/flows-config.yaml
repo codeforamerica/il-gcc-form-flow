@@ -267,6 +267,7 @@ flow:
   schedules-start-date:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
+    crossFieldValidationAction: ValidateChildrenCCAPStartDate
     nextScreens:
       - name: schedules-days
   schedules-days:
