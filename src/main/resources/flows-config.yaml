@@ -261,7 +261,7 @@ flow:
       - name: schedules-start-care
   schedules-start-care:
     subflow: childcareSchedules
-    condition: EnableMultipleProviders
+    condition: DisplaySchedulesStartCareScreen
     nextScreens:
       - name: schedules-start-date
   schedules-start-date:
@@ -735,7 +735,7 @@ subflows:
   childcareSchedules:
     relationship:
       relatesTo: children
-      relationAlias: childrenUuid
+      relationAlias: childUuid
     entryScreen: schedules-intro
     iterationStartScreen: schedules-start
     reviewScreen: schedules-review

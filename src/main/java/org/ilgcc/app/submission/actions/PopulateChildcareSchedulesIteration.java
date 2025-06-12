@@ -13,13 +13,13 @@ public class PopulateChildcareSchedulesIteration implements Action {
     @Override
     public void run(Submission submission, String subflowUuid) {
         Map<String, Object> childcareSchedulesSubflow = submission.getSubflowEntryByUuid("childcareSchedules", subflowUuid);
-        if (childcareSchedulesSubflow.containsKey("childrenUuid")) {
-            String childrenUuid = (String) childcareSchedulesSubflow.get("childrenUuid");
-            Map<String, Object> childrenSubflow = submission.getSubflowEntryByUuid("children", childrenUuid);
-            if (childrenSubflow != null) {
-                Map<String, Object> childcareScheduleData = childcareSchedulesSubflow;
-                childcareScheduleData.put("childFirstName", childrenSubflow.get("childFirstName"));
-                submission.mergeFormDataWithSubflowIterationData("childcareSchedules", childcareSchedulesSubflow, childcareScheduleData);
+        if (childcareSchedulesSubflow.containsKey("childUuid")) {
+            String childUuid = (String) childcareSchedulesSubflow.get("childUuid");
+            Map<String, Object> childSubflow = submission.getSubflowEntryByUuid("children", childUuid);
+            if (childSubflow != null) {
+              childcareSchedulesSubflow.put("childFirstName", childSubflow.get("childFirstName"));
+                submission.mergeFormDataWithSubflowIterationData("childcareSchedules", childcareSchedulesSubflow,
+                    childcareSchedulesSubflow);
             }
         }
     }
