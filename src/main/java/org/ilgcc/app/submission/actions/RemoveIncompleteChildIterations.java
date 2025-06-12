@@ -43,7 +43,7 @@ public class RemoveIncompleteChildIterations implements Action {
     }
 
     private String findEarliestCCAPDate(Submission submission) {
-        List<Map<String, Object>> childrenNeedingAssistance = SubmissionUtilities.getChildrenNeedingAssistance(submission);
+        List<Map<String, Object>> childrenNeedingAssistance = SubmissionUtilities.getChildrenNeedingAssistance(submission.getInputData());
 
         if (childrenNeedingAssistance.isEmpty()) {
             return "";
