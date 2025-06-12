@@ -25,6 +25,10 @@
               <th:block
                   th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='currentChildcareProvider',value=${provider.get('familyIntendedProviderName')}, label=${provider.get('familyIntendedProviderName')})}"/>
             </th:block>
+            <th:block>
+              <th:block
+                  th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='currentChildcareProvider',value='NO_PROVIDER', label=#{schedules-start.no-provider})}"/>
+            </th:block>
           </th:block>
         </th:block>
       </th:block>
