@@ -792,10 +792,10 @@ flow:
       - name: paid-by-ccap
   multiple-providers:
     nextScreens:
-      name: confirm-provider
+      - name: confirm-provider
   confirm-provider:
     nextScreens:
-      name: paid-by-ccap
+      - name: paid-by-ccap
   paid-by-ccap:
     nextScreens:
       - name: provider-info
