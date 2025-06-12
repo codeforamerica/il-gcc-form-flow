@@ -1,5 +1,7 @@
 package org.ilgcc.app.submission.conditions;
 
+import static java.util.Collections.emptyList;
+
 import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
 import java.util.List;
@@ -13,7 +15,10 @@ public class DisplaySchedulesStartCareScreen extends EnableMultipleProviders imp
     @Override
     public Boolean run(Submission submission, String subflowUuid) {
         Map<String, Object> childcareSubflow = submission.getSubflowEntryByUuid("childcareSchedules", subflowUuid);
-        return super.run(submission) && hasSelectedOneProvider(childcareSubflow);
+        return super.run(submission) && (hasSelectedOneProvider(childcareSubflow) || hasOnlyOneProvider(submission));
+    }
+    private boolean hasOnlyOneProvider(Submission submission) {
+      return ((List<Map<String, Object>>) submission.getInputData().getOrDefault("providers", emptyList())).size() <= 1;
     }
     private boolean hasSelectedOneProvider(Map<String, Object> childcareSubflow) {
          return Optional.ofNullable(childcareSubflow.get("currentChildcareProvider[]"))
