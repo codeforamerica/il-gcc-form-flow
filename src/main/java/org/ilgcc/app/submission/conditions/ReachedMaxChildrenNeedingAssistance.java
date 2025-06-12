@@ -18,7 +18,7 @@ public class ReachedMaxChildrenNeedingAssistance implements Condition {
         for (var child : children) {
             if (child.get("uuid").equals(uuid)) {
                 if (child.getOrDefault("needFinancialAssistanceForChild", "false").equals("true")) {
-                    var childrenNeededAssistance = SubmissionUtilities.getChildrenNeedingAssistance(submission);
+                    var childrenNeededAssistance = SubmissionUtilities.getChildrenNeedingAssistance(submission.getInputData());
 
                     return childrenNeededAssistance.size() > 4;
                 }

@@ -22,7 +22,7 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
         var results = new HashMap<String, SubmissionField>();
         int iteration = 1;
 
-        if (SubmissionUtilities.getChildrenNeedingAssistance(submission).size() > 4) {
+        if (SubmissionUtilities.getChildrenNeedingAssistance(submission.getInputData()).size() > 4) {
             var seekingAssistance = SubmissionUtilities.getAdditionalChildrenNeedingAssistance(submission);
             for (var child : seekingAssistance) {
                 results.put("familyMemberFirstName_" + iteration,

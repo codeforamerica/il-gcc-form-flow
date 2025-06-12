@@ -8,6 +8,7 @@ import formflow.library.pdf.SubmissionFieldPreparer;
 import java.util.List;
 import org.ilgcc.app.utils.GenderOption;
 import org.ilgcc.app.utils.RaceEthnicityOption;
+import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 import java.util.HashMap;
@@ -46,6 +47,16 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
                     new SingleField("childRelationship", (String) child.get("childRelationship"), iteration));
             results.put("childOtherEdHoursDescription_" + iteration,
                 new SingleField("childOtherEdHoursDescription", (String) child.getOrDefault("childOtherEdHoursDescription", ""), iteration));
+
+            Map<String, String> careSchedule =
+                    SchedulePreparerUtility.hourlyScheduleKeys(
+                            child,
+                            "childcare",
+                            "childcareWeeklySchedule[]");
+
+            results.putAll(
+                    SchedulePreparerUtility.createSubmissionFieldsFromDay(child, careSchedule, "childcare", "childCareSchedule",
+                            iteration));
             iteration++;
         }
         return results;
