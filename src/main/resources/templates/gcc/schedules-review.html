@@ -21,7 +21,7 @@
 
                                 <th:block th:each="childcareIteration: ${childcareSchedules}">
                                     <th:block
-                                            th:with="childDetails=${T(org.ilgcc.app.utils.SchedulePreparerUtility).relatedSubflowIterationData(submission.getInputData(), 'children', childcareIteration.get('childrenUuid'))}">
+                                            th:with="childDetails=${T(org.ilgcc.app.utils.SchedulePreparerUtility).relatedSubflowIterationData(submission.getInputData(), 'children', childcareIteration.get('childUuid'))}">
                                         <p class="text--left"><strong
                                                 th:text="${childDetails.get('childFirstName') + ' ' + childDetails.get('childLastName')}"></strong>
                                         </p>
@@ -31,7 +31,7 @@
                                                     class="spacing-below-15">
                                                 <span th:text="${providerSchedule.getOrDefault('repeatForValue', '[PROVIDER NAME]')}"></span>
                                                 <br>
-                                                <span th:text="${#messages.msg('schedules-review.start-date', providerSchedule.getOrDefault('startData', '[START DATE]'))}"></span>
+                                                <span th:text="${#messages.msg('schedules-review.start-date', providerSchedule.getOrDefault('ccapStartDate', '[START DATE]'))}"></span>
                                                 <br>
                                                 <span th:text="${providerSchedule.getOrDefault('startData', '[DAY, HOURS]')}"></span>
 
