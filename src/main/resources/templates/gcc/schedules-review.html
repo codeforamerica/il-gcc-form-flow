@@ -33,7 +33,7 @@
                                                 <br>
                                                 <span th:text="${#messages.msg('schedules-review.start-date', providerSchedule.getOrDefault('ccapStartDate', '[START DATE]'))}"></span>
                                                 <br>
-                                                <span th:text="${providerSchedule.getOrDefault('startData', '[DAY, HOURS]')}"></span>
+                                                <span th:text="${providerSchedule.getOrDefault('childCareScheduleLocalized', '[DAY, HOURS]')}"></span>
 
                                                 <p class="text--small spacing-above-10">
                                                     <a th:href="'/flow/gcc/schedules-start-care/' + ${childcareIteration.get('uuid')} +'/' + ${providerSchedule.get('uuid')} + '/edit'"
