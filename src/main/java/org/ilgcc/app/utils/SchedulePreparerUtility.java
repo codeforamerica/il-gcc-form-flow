@@ -4,12 +4,16 @@ import static java.util.stream.Collectors.toMap;
 
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -125,42 +129,21 @@ public class SchedulePreparerUtility {
     public static List<Map<String, Object>> getRelatedChildrenSchedulesForProvider(Map<String, Object> inputData,
             String providerKey) {
         List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) inputData.get("childcareSchedules");
+        Set<Map<String,Object>> providerSchedules = new HashSet<>();
 
-        return childcareSchedules;
+        childcareSchedules.forEach(childCareSchedule -> {
+            List<Map<String,Object>> providerSchedulesTemp = (List) childCareSchedule.getOrDefault("providerSchedules",
+                    Collections.EMPTY_LIST);
+            providerSchedulesTemp.forEach(schedule -> {
+                schedule.put("child", relatedSubflowIterationData(inputData, "children",
+                        schedule.getOrDefault("childrenUuid", "").toString()));
+                providerSchedules.add(schedule);
+            });
+        });
 
-        if (childcareSchedules.isEmpty()) {
-            return Collections.EMPTY_LIST;
-        }
+        Map<String, List<Map<String, Object>>> mapOfProviderSchedules =
+                providerSchedules.stream().collect(Collectors.groupingBy(provider -> provider.get("repeatForValue").toString()));
 
-        return childcareSchedules.stream()
-                .filter(Map.class::isInstance)
-                .map(schedule -> (Map<String, Object>) schedule)
-                .flatMap(schedule -> {
-                    Object providerSchedulesObj = schedule.get("providerSchedules");
-
-                    if ((providerSchedulesObj instanceof List<?> providerSchedules)) {
-                        return providerSchedules.stream()
-                                .filter(Map.class::isInstance)
-                                .map(item -> {
-                                    Map<String, Object> provider = new HashMap<>((Map<String, Object>) item);
-                                    // You can enrich here, for example:
-                                    provider.put("childDetails", relatedSubflowIterationData(inputData, "children",
-                                            provider.get("childUuid").toString()));
-                                    return provider;
-                                });
-                    })
-
-//                    .filter(map -> map.get("providerSchedulesValue") != null)
-//                            .collect(Collectors.groupingBy(
-//                                    provider -> provider.get("providerSchedulesValue").toString()
-//                            ));
-//                    }
-
-
+        return mapOfProviderSchedules.getOrDefault(providerKey, Collections.EMPTY_LIST);
     }
-//
-//        if(!childcareSchedules.isEmpty()){
-//
-//        }
-}
 }
