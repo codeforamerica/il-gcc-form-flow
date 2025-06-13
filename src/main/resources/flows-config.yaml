@@ -283,7 +283,7 @@ flow:
     nextScreens:
       - name: schedules-review
   schedules-review:
-    beforeDisplayAction: LocalizeChildSchedules
+    beforeDisplayAction: LocalizeChildcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-same
