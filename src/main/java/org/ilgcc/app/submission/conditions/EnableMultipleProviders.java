@@ -20,4 +20,9 @@ public class EnableMultipleProviders implements Condition {
     public Boolean run(Submission submission, String uuid) {
         return enableMultipleProviders;
     }
+
+    @Override
+    public Boolean run(Submission submission, String uuid, String repeatsForUuid) {
+        return enableMultipleProviders;
+    }
 }

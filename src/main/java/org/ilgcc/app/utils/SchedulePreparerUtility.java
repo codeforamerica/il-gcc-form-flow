@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toMap;
 
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,5 +108,17 @@ public class SchedulePreparerUtility {
         } else {
             throw new IllegalArgumentException("List field does not contain a list");
         }
+    }
+
+    public static Map<String, Object> relatedSubflowIterationData(Map<String, Object> inputData, String relatedSubflowName,
+            String subflowUUID){
+
+        List<Map<String, Object>> nestedIterations = (List<Map<String, Object>>) inputData.getOrDefault(relatedSubflowName,
+                Collections.EMPTY_LIST);
+
+        Optional<Map<String, Object>> currentIteration = nestedIterations.stream()
+                .filter(iteration -> iteration.get("uuid").equals(subflowUUID)).findFirst();
+
+        return currentIteration.isPresent() ? currentIteration.get() : null;
     }
 }

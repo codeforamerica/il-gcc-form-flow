@@ -268,6 +268,7 @@ flow:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
+    beforeSaveAction: SaveCCAPStartDate
     nextScreens:
       - name: schedules-days
   schedules-days:
@@ -277,11 +278,12 @@ flow:
       - name: schedules-hours
   schedules-hours:
     subflow: childcareSchedules
+    beforeDisplayAction: SetSubflowWeeklyScheduleGroup
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-review
   schedules-review:
-    subflow: childcareSchedules
+    beforeDisplayAction: LocalizeChildcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-same
@@ -737,6 +739,9 @@ subflows:
     relationship:
       relatesTo: children
       relationAlias: childUuid
+      repeatFor:
+        inputName: currentChildcareProvider
+        saveDataAs: providerSchedules
     entryScreen: schedules-intro
     iterationStartScreen: schedules-start
     reviewScreen: schedules-review
