@@ -85,10 +85,10 @@ public class MultiProviderPDFService {
                 if (!mergedChildrenAndSchedules.isEmpty()) {
                     for (int j = 0; j < mergedChildrenAndSchedules.size(); j++) {
                         submissionFields.putAll(needChildcareForChildrenPreparer.prepareChildCareSchedule(mergedChildrenAndSchedules.get(j),
-                                j));
+                                j+1));
                     }
                 }
-                additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(submission.getId(), i, providers.size() - 1),
+                additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size() - 1),
                         getFilledOutPDF("src/main/resources/pdfs/IL-CCAP-Form-Additional-Provider.pdf",
                                 submissionFields.values().stream().toList()));
             }

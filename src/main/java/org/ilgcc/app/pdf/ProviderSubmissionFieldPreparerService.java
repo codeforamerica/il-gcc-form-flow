@@ -98,7 +98,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                 if (!mergedChildrenAndSchedules.isEmpty()) {
                     for (int i = 0; i < mergedChildrenAndSchedules.size(); i++) {
                         results.putAll(needChildcareForChildrenPreparer.prepareChildCareSchedule(mergedChildrenAndSchedules.get(i),
-                                i));
+                                i+1));
                     }
                 }
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(firstProvider));
