@@ -4,11 +4,16 @@ import static java.util.stream.Collectors.toMap;
 
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -107,5 +112,38 @@ public class SchedulePreparerUtility {
         } else {
             throw new IllegalArgumentException("List field does not contain a list");
         }
+    }
+
+    public static Map<String, Object> relatedSubflowIterationData(Map<String, Object> inputData, String relatedSubflowName,
+            String subflowUUID) {
+
+        List<Map<String, Object>> nestedIterations = (List<Map<String, Object>>) inputData.getOrDefault(relatedSubflowName,
+                Collections.EMPTY_LIST);
+
+        Optional<Map<String, Object>> currentIteration = nestedIterations.stream()
+                .filter(iteration -> iteration.get("uuid").equals(subflowUUID)).findFirst();
+
+        return currentIteration.isPresent() ? currentIteration.get() : null;
+    }
+
+    public static List<Map<String, Object>> getRelatedChildrenSchedulesForProvider(Map<String, Object> inputData,
+            String providerKey) {
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) inputData.get("childcareSchedules");
+        Set<Map<String,Object>> providerSchedules = new HashSet<>();
+
+        childcareSchedules.forEach(childCareSchedule -> {
+            List<Map<String,Object>> providerSchedulesTemp = (List) childCareSchedule.getOrDefault("providerSchedules",
+                    Collections.EMPTY_LIST);
+            providerSchedulesTemp.forEach(schedule -> {
+                schedule.putAll(relatedSubflowIterationData(inputData, "children",
+                        childCareSchedule.getOrDefault("childUuid", "").toString()));
+                providerSchedules.add(schedule);
+            });
+        });
+
+        Map<String, List<Map<String, Object>>> mapOfProviderSchedules =
+                providerSchedules.stream().collect(Collectors.groupingBy(provider -> provider.get("repeatForValue").toString()));
+
+        return mapOfProviderSchedules.getOrDefault(providerKey, Collections.EMPTY_LIST);
     }
 }
