@@ -1,5 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.SchedulePreparerUtility.relatedSubflowIterationData;
+
 import formflow.library.data.Submission;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,34 @@ public class SaveCCAPStartDate extends VerifyDate {
         }
         String formattedDate = DateUtilities.getFormattedDateFromMonthDateYearInputs(PREFIX, childSubflowData);
         childSubflowData.put(PREFIX + "Date", formattedDate);
+
+        String earliestCCAPStart = (String) submission.getInputData().getOrDefault(INPUT_NAME, "");
+
+        if (earliestCCAPStart == null || earliestCCAPStart.isBlank()) {
+            submission.getInputData().put(INPUT_NAME, formattedDate);
+        } else {
+            String earliestDate = getEarliestDate(earliestCCAPStart, formattedDate);
+            if (earliestDate != null) {
+                submission.getInputData().put(INPUT_NAME, earliestDate);
+            }
+        }
+    }
+
+    @Override
+    public void run(Submission submission, String subflowUuid, String repeatForIterationUuid) {
+        log.info(String.format("Running %s", this.getClass().getName()));
+        Map<String, Object> childSubflowData = submission.getSubflowEntryByUuid("childcareSchedules", subflowUuid);
+        Map<String, Object> repeatForSubflowIteration = relatedSubflowIterationData(childSubflowData, "providerSchedules",
+                repeatForIterationUuid);
+
+        String currentChildStartDate = DateUtilities.getFormattedDateFromMonthDateYearInputs(PREFIX, repeatForSubflowIteration
+                );
+
+        if (DateUtilities.isDateInvalid(currentChildStartDate)) {
+            return;
+        }
+        String formattedDate = DateUtilities.getFormattedDateFromMonthDateYearInputs(PREFIX, repeatForSubflowIteration);
+        repeatForSubflowIteration.put(PREFIX + "Date", formattedDate);
 
         String earliestCCAPStart = (String) submission.getInputData().getOrDefault(INPUT_NAME, "");
 
