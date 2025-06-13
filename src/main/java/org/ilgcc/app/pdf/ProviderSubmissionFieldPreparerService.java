@@ -1,6 +1,7 @@
 package org.ilgcc.app.pdf;
 
 import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.getProviderSubmissionId;
 
@@ -57,6 +58,9 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
     @Autowired
     ProviderRegistrationPreparer providerRegistrationPreparer;
 
+    @Autowired
+    NeedChildcareForChildren needChildcareForChildrenPreparer;
+
     public ProviderSubmissionFieldPreparerService(
             @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.enableMultipleProviders = enableMultipleProviders;
@@ -82,7 +86,21 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                 List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
                         .getOrDefault("providers", emptyList());
 
+                List<Map<String, Object>> childCareSchedules = (List<Map<String, Object>>) familySubmission.getInputData()
+                        .getOrDefault("childcareSchedules", emptyList());
+
                 Map<String, Object> firstProvider = providers.getFirst();
+                List<Map<String, Object>> mergedChildrenAndSchedules =
+                        getRelatedChildrenSchedulesForProvider(familySubmission.getInputData(),
+                                firstProvider.get(
+                                        "familyIntendedProviderName").toString());
+
+                if (!mergedChildrenAndSchedules.isEmpty()) {
+                    for (int i = 0; i < mergedChildrenAndSchedules.size(); i++) {
+                        results.putAll(needChildcareForChildrenPreparer.prepareChildCareSchedule(mergedChildrenAndSchedules.get(i),
+                                i));
+                    }
+                }
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(firstProvider));
             } else {
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission.getInputData()));

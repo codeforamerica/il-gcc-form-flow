@@ -61,7 +61,7 @@ public class NeedChildcareForChildren implements SubmissionFieldPreparer {
         return results;
     }
 
-    private Map<String, SubmissionField> prepareChildCareSchedule(Map<String, Object> child, int iteration){
+    public Map<String, SubmissionField> prepareChildCareSchedule(Map<String, Object> child, int iteration){
         var fields = new HashMap<String, SubmissionField>();
         fields.put("childFirstName_" + iteration,
                 new SingleField("childFirstName", (String) child.getOrDefault("childFirstName", ""), iteration));

@@ -2,6 +2,7 @@ package org.ilgcc.app.pdf;
 
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForAdditionalProviderPDF;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.PDFFormFiller;
@@ -41,6 +42,9 @@ public class MultiProviderPDFService {
     @Autowired
     PDFFormFiller pdfFormFiller;
 
+    @Autowired
+    NeedChildcareForChildren needChildcareForChildrenPreparer;
+
     private final Boolean enableMutipleProviders;
 
     public MultiProviderPDFService(Submission submission,
@@ -61,10 +65,10 @@ public class MultiProviderPDFService {
         return allFiles;
     }
 
-    Map<String, byte[]> generateAdditionalProviderPDF(Submission submission) throws IOException {
+    Map<String, byte[]> generateAdditionalProviderPDF(Submission familySubmission) throws IOException {
         Map<String, byte[]> additionalPDFs = new HashMap<>();
 
-        List<Map<String, Object>> providers = SubmissionUtilities.providersList(submission);
+        List<Map<String, Object>> providers = SubmissionUtilities.providersList(familySubmission);
         if (providers.size() > 1) {
             for (int i = 1; i < providers.size(); i++) {
                 Map<String, Object> currentProvider = providers.get(i);
@@ -72,6 +76,18 @@ public class MultiProviderPDFService {
 
                 Map<String, SubmissionField> submissionFields = familyIntendedProviderPreparerHelper.prepareSubmissionFields(
                         currentProvider);
+
+                List<Map<String, Object>> mergedChildrenAndSchedules =
+                        getRelatedChildrenSchedulesForProvider(familySubmission.getInputData(),
+                                currentProvider.get(
+                                        "familyIntendedProviderName").toString());
+
+                if (!mergedChildrenAndSchedules.isEmpty()) {
+                    for (int j = 0; j < mergedChildrenAndSchedules.size(); j++) {
+                        submissionFields.putAll(needChildcareForChildrenPreparer.prepareChildCareSchedule(mergedChildrenAndSchedules.get(j),
+                                j));
+                    }
+                }
                 additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(submission.getId(), i, providers.size() - 1),
                         getFilledOutPDF("src/main/resources/pdfs/IL-CCAP-Form-Additional-Provider.pdf",
                                 submissionFields.values().stream().toList()));
