@@ -121,4 +121,46 @@ public class SchedulePreparerUtility {
 
         return currentIteration.isPresent() ? currentIteration.get() : null;
     }
+
+    public static List<Map<String, Object>> getRelatedChildrenSchedulesForProvider(Map<String, Object> inputData,
+            String providerKey) {
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) inputData.get("childcareSchedules");
+
+        return childcareSchedules;
+
+        if (childcareSchedules.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+
+        return childcareSchedules.stream()
+                .filter(Map.class::isInstance)
+                .map(schedule -> (Map<String, Object>) schedule)
+                .flatMap(schedule -> {
+                    Object providerSchedulesObj = schedule.get("providerSchedules");
+
+                    if ((providerSchedulesObj instanceof List<?> providerSchedules)) {
+                        return providerSchedules.stream()
+                                .filter(Map.class::isInstance)
+                                .map(item -> {
+                                    Map<String, Object> provider = new HashMap<>((Map<String, Object>) item);
+                                    // You can enrich here, for example:
+                                    provider.put("childDetails", relatedSubflowIterationData(inputData, "children",
+                                            provider.get("childUuid").toString()));
+                                    return provider;
+                                });
+                    })
+
+//                    .filter(map -> map.get("providerSchedulesValue") != null)
+//                            .collect(Collectors.groupingBy(
+//                                    provider -> provider.get("providerSchedulesValue").toString()
+//                            ));
+//                    }
+
+
+    }
+//
+//        if(!childcareSchedules.isEmpty()){
+//
+//        }
+}
 }
