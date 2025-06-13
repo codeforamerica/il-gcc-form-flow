@@ -201,7 +201,7 @@ public class ProviderSubmissionUtilities {
         return "";
     }
 
-    private static Map<String, String> hoursRequested(Map<String, Object> child) {
+    public static Map<String, String> hoursRequested(Map<String, Object> child) {
         List<String> sameHoursEveryday = (List) child.get("childcareHoursSameEveryDay[]");
         List<String> daysRequested = (List) child.get("childcareWeeklySchedule[]");
         Map<String, String> dates = new HashMap<>();
