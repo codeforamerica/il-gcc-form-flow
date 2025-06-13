@@ -135,8 +135,8 @@ public class SchedulePreparerUtility {
             List<Map<String,Object>> providerSchedulesTemp = (List) childCareSchedule.getOrDefault("providerSchedules",
                     Collections.EMPTY_LIST);
             providerSchedulesTemp.forEach(schedule -> {
-                schedule.put("child", relatedSubflowIterationData(inputData, "children",
-                        schedule.getOrDefault("childrenUuid", "").toString()));
+                schedule.putAll(relatedSubflowIterationData(inputData, "children",
+                        childCareSchedule.getOrDefault("childUuid", "").toString()));
                 providerSchedules.add(schedule);
             });
         });
