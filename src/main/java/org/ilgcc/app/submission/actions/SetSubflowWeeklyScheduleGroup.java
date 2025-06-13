@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -30,7 +31,8 @@ public class SetSubflowWeeklyScheduleGroup implements Action {
   @Override
   public void run(Submission submission, String id) {
 
-    Map<String, Object> subflowEntry = submission.getSubflowEntryByUuid("children", id);
+    Map<String, Object> subflowEntry = Optional.ofNullable(submission.getSubflowEntryByUuid("children", id))
+                                          .orElse(submission.getSubflowEntryByUuid("childcareSchedules", id));
     if (!subflowEntry.containsKey("childcareWeeklySchedule[]")) {
       return;
     }

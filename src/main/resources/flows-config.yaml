@@ -278,6 +278,7 @@ flow:
       - name: schedules-hours
   schedules-hours:
     subflow: childcareSchedules
+    beforeDisplayAction: SetSubflowWeeklyScheduleGroup
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-review
