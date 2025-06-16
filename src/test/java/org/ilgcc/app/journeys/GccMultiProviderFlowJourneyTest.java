@@ -715,16 +715,21 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
         saveSubmission(getSessionSubmissionTestBuilder().withParentBasicInfo().with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .with("applicationCounty", "LEE").withChild("First", "Child", "true")
                 .withShortCode("familyShortCode").build());
 
         testPage.navigateToFlowScreen("gcc/providers-intro");
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title"));
         testPage.clickContinue();
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
         testPage.clickNo();
+
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-no-provider-intro.title"));
         testPage.clickButton(getEnMessage("providers-no-provider-intro.continue"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
+
+        //schedules-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
     }
 }
