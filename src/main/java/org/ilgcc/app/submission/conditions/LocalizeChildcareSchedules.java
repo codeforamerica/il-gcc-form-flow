@@ -46,7 +46,7 @@ public class LocalizeChildcareSchedules implements Action {
         List<String> dateString = new ArrayList<>();
         childCareHours.forEach((key, val) -> {
             String dayKey = String.format("general.week.%s", key);
-            dateString.add(String.format("%s %s</br>", messageSource.getMessage(dayKey, null,
+            dateString.add(String.format("%s, %s</br>", messageSource.getMessage(dayKey, null,
                     LocaleContextHolder.getLocale()), val));
         });
 

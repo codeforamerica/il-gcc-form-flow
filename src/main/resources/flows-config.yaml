@@ -218,7 +218,7 @@ flow:
   providers-no-provider-intro:
     condition: EnableMultipleProviders
     nextScreens:
-      - name: activities-parent-intro
+      - name: schedules-intro
   providers-all-ccap-children:
     condition: EnableMultipleProviders
     nextScreens:
@@ -256,7 +256,6 @@ flow:
   schedules-start:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
-    beforeSaveAction: PopulateChildcareSchedulesIteration
     nextScreens:
       - name: schedules-start-care
   schedules-start-care:
@@ -286,7 +285,7 @@ flow:
     beforeDisplayAction: LocalizeChildcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
-      - name: schedules-same
+      - name: unearned-income-intro
   schedules-same:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
