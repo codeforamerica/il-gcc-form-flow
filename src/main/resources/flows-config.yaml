@@ -790,6 +790,14 @@ flow:
     nextScreens:
       - name: submit-start
         condition: IsConfirmationCodeInactive
+      - name: multiple-providers
+        condition: EnableMultipleProviders
+      - name: paid-by-ccap
+  multiple-providers:
+    nextScreens:
+      - name: confirm-provider
+  confirm-provider:
+    nextScreens:
       - name: paid-by-ccap
   paid-by-ccap:
     nextScreens:
