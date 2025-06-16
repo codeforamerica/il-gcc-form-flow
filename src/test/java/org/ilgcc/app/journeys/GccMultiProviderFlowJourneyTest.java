@@ -316,7 +316,18 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //schedules-start
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
-        testPage.navigateToFlowScreen("gcc/unearned-income-intro");
+        assertThat(testPage.getHeader()).contains("Child");
+        testPage.clickElementById("currentChildcareProvider-ACME Daycare");
+        testPage.clickElementById("currentChildcareProvider-NO_PROVIDER-label");
+        testPage.clickContinue();
+
+        //schedules-start-care
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("ACME Daycare");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickYes();
+
+
 
         //unearned-income-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
