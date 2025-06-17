@@ -1,10 +1,10 @@
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
-                   providerName='[PROVIDER_NAME]'">
+                   providerName=${repeatForIteration.getOrDefault('repeatForValue', '[PROVIDER NAME]').equals('NO_PROVIDER') ? #messages.msg('schedules-review.no-provider') : repeatForIteration.getOrDefault('repeatForValue', '[PROVIDER NAME]')}">
   <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-start-date.title},
       header=#{schedules-start-date.header.already-started(${childName}, ${providerName})},
-      headerName='[PROVIDER_NAME]',
+      headerName=${providerName},
       formAction=${formAction},
       buttonLabel=#{'general.inputs.continue'},
       inputContent=~{::inputContent})}">

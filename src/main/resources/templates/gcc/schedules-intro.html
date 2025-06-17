@@ -1,5 +1,6 @@
 <th:block
-        th:with="textPrefix=${inputData.get('providers').size > 1 ? 'schedules-intro-multiple' : 'schedules-intro-single'}">
+        th:with="hasProviders=${submission.getInputData().containsKey('providers')},
+        textPrefix=${hasProviders && inputData.get('providers').size > 1 ? 'schedules-intro-multiple' : 'schedules-intro-single'}">
     <th:block
             th:replace="~{fragments/screens/family-application-intro-screen ::
       screen(
