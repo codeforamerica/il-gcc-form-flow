@@ -1,6 +1,7 @@
 package org.ilgcc.app.data.importer;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,8 +9,10 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ResourceOrganizationImporter {
@@ -20,7 +23,7 @@ public class ResourceOrganizationImporter {
 
     private static final String SQL_TRUNCATE = "\n\tTRUNCATE TABLE resource_organizations CASCADE;\n";
 
-    private static final String SQL_INSERT = "\tINSERT INTO resource_organizations (resource_org_id, name, street_address, city, state, zip_code, caseload_code, phone) VALUES\n";
+    private static final String SQL_INSERT = "\tINSERT INTO resource_organizations (resource_org_id, name, street_address, city, state, zip_code, caseload_code, phone, sda) VALUES\n";
 
     private static final String SQL_COMMIT = "COMMIT;\n\n";
 
@@ -55,6 +58,14 @@ public class ResourceOrganizationImporter {
 
             System.out.println("\nEverything looks ok in the CSV format! Preparing to generate SQL.");
 
+            Map<BigInteger, BigInteger> resourceOrgToSDAMapping = doResourceOrgSDAMapping();
+            if (resourceOrgToSDAMapping.isEmpty()) {
+                System.out.println("No resource organization to SDA mappings were found. Unable to generate SQL.");
+                return;
+            } else {
+                System.out.println("Adding resource organization to SDA mappings to SQL script.");
+            }
+
             LocalDateTime now = LocalDateTime.now();
             String timestamp = now.format(formatter);
             String sqlFileName = "resource-organization-data-" + timestamp + ".sql";
@@ -77,7 +88,8 @@ public class ResourceOrganizationImporter {
                 if (resourceOrgIdsAdded.contains(values[0])) {
                     System.out.println("Skipping resource organization because it is duplicated: " + values[0]);
                 } else {
-                    resourceOrgIdsAdded.add(values[0]);
+                    String resourceOrgId = values[0];
+                    resourceOrgIdsAdded.add(resourceOrgId);
                     for (int i = 0; i < values.length; i++) {
                         StringBuilder valueToInsert = new StringBuilder();
                         if (values[i] == null || values[i].isBlank()) {
@@ -92,6 +104,12 @@ public class ResourceOrganizationImporter {
                         if (i < values.length - 1) {
                             sb.append(", ");
                         } else {
+                            BigInteger orgId = new BigInteger(resourceOrgId);
+                            if (resourceOrgToSDAMapping.containsKey(orgId)) {
+                                sb.append(",'").append(resourceOrgToSDAMapping.get(orgId)).append("'");
+                            } else {
+                                sb.append(",'").append("NULL").append("'");
+                            }
                             String endOfLineCharacter = j % (lines.size() - 1) == 0 ? ";" : ",";
                             sb.append(")").append(endOfLineCharacter).append("\n");
                         }
@@ -108,5 +126,47 @@ public class ResourceOrganizationImporter {
         } catch (IOException e) {
             System.out.println("Error while generating SQL: \n\n" + e.getMessage());
         }
+    }
+
+    private static Map<BigInteger, BigInteger> doResourceOrgSDAMapping() throws IOException {
+        Path directoryPath = ImporterUtils.createDataImportDirectory();
+        Path resourceOrgSDAData = directoryPath.resolve("resource-org-sda-data.csv");
+        Map<BigInteger, BigInteger> resourceOrgToSDAMapping = new HashMap<>();
+
+        if (Files.exists(resourceOrgSDAData)) {
+            System.out.println("data-import/resource-org-sda-data.csv exists.");
+
+            List<String> resourceOrgSDADataLines = Files.readAllLines(resourceOrgSDAData);
+            System.out.println("\n\nThere are " + resourceOrgSDADataLines.size() + " rows in " + resourceOrgSDAData);
+
+            int duplicates = 0;
+            for (int j = 1; j < resourceOrgSDADataLines.size(); j++) {
+                String[] values = resourceOrgSDADataLines.get(j).split(",");
+                try {
+                    BigInteger resourceOrgId = new BigInteger(values[0]);
+                    BigInteger sda = new BigInteger(values[1]);
+
+                    if (resourceOrgToSDAMapping.containsKey(resourceOrgId)) {
+                        if (!resourceOrgToSDAMapping.get(resourceOrgId).equals(sda)) {
+                            System.out.println("Duplicate Resource Org ID " + resourceOrgId + ". Already has " + resourceOrgToSDAMapping.get(resourceOrgId) + ". Trying to store " + sda);
+                        } else {
+                            System.out.println(resourceOrgId + " " + sda);
+                            duplicates++;
+                        }
+                        continue;
+                    }
+                    resourceOrgToSDAMapping.put(resourceOrgId, sda);
+
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    continue;
+                }
+            }
+            System.out.println("There are " + resourceOrgToSDAMapping.size() + " Ids mapped from " + resourceOrgSDAData);
+            System.out.println("There were " + duplicates + " duplicates.");
+        } else {
+            System.out.println("data-import/resource-org-sda-data.csv does not exist!");
+        }
+        return resourceOrgToSDAMapping;
     }
 }
