@@ -25,6 +25,7 @@ import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -83,8 +84,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                             providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
         } else {
             if (enableMultipleProviders) {
-                List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
-                        .getOrDefault("providers", emptyList());
+                List<Map<String, Object>> providers = SubmissionUtilities.providersList(familySubmission.getInputData());
 
                 List<Map<String, Object>> childCareSchedules = (List<Map<String, Object>>) familySubmission.getInputData()
                         .getOrDefault("childcareSchedules", emptyList());
