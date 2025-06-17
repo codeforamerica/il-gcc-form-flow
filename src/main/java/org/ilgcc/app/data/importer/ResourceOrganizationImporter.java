@@ -77,8 +77,7 @@ public class ResourceOrganizationImporter {
                 if (resourceOrgIdsAdded.contains(values[0])) {
                     System.out.println("Skipping resource organization because it is duplicated: " + values[0]);
                 } else {
-                    String resourceOrgId = values[0];
-                    resourceOrgIdsAdded.add(resourceOrgId);
+                    resourceOrgIdsAdded.add(values[0]);
                     for (int i = 0; i < values.length; i++) {
                         StringBuilder valueToInsert = new StringBuilder();
                         if (values[i] == null || values[i].isBlank()) {
