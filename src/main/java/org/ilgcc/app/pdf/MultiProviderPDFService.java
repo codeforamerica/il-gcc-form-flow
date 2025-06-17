@@ -68,8 +68,10 @@ public class MultiProviderPDFService {
     Map<String, byte[]> generateAdditionalProviderPDF(Submission familySubmission) throws IOException {
         Map<String, byte[]> additionalPDFs = new HashMap<>();
 
-        List<Map<String, Object>> providers = SubmissionUtilities.providersList(familySubmission);
+        List<Map<String, Object>> providers = SubmissionUtilities.providersList(familySubmission.getInputData());
+        
         if (providers.size() > 1) {
+            // if providers is empty, it means that all children have NO_PROVIDER
             for (int i = 1; i < providers.size(); i++) {
                 Map<String, Object> currentProvider = providers.get(i);
                 // TODO: Add logic for providers responding to the application
@@ -88,6 +90,7 @@ public class MultiProviderPDFService {
                                 j+1));
                     }
                 }
+
                 additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size() - 1),
                         getFilledOutPDF("src/main/resources/pdfs/IL-CCAP-Form-Additional-Provider.pdf",
                                 submissionFields.values().stream().toList()));

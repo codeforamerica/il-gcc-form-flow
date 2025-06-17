@@ -236,10 +236,16 @@ public class SubmissionUtilities {
         return subflow != null && isSelectedAsProviderContactMethod(subflow, providerContactMethod);
     }
 
-    public static List<Map<String, Object>> providersList(Submission familySubmission){
-        if (familySubmission.getInputData().containsKey("providers")) {
-           return(List) familySubmission.getInputData().get("providers");
+    public static List<Map<String, Object>> providersList(Map<String, Object> inputData){
+        if (inputData.containsKey("providers")) {
+           return(List) inputData.get("providers");
         }
-        return emptyList();
+        Map<String, Object> NO_PROVIDER = new HashMap<>();
+        NO_PROVIDER.put("providerResponseBusinessName", "No Provider");
+        NO_PROVIDER.put("familyIntendedProviderName", "NO_PROVIDER");
+        NO_PROVIDER.put("providerResponseProviderNumber", "460328258720008");
+        NO_PROVIDER.put("providerResponse", "No provider chosen");
+
+        return List.of(NO_PROVIDER);
     }
 }

@@ -16,6 +16,10 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
 
         if ("false".equals(familyInputData.get("hasChosenProvider"))) {
             results.putAll(prepareNoProviderData());
+        } else if (familyInputData.containsKey(
+                "familyIntendedProviderName") && familyInputData.get(
+                "familyIntendedProviderName").equals("NO_PROVIDER")) {
+            return results;
         } else {
             // toDo: we can keep the same field name for each provider in providers;
             String submissionStatus = (String) familyInputData.getOrDefault("providerSubmissionStatus", "");
