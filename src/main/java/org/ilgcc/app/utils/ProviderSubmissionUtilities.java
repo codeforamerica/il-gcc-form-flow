@@ -137,6 +137,7 @@ public class ProviderSubmissionUtilities {
         Map<String, Object> data = subflowData == null ? familySubmission.getInputData() : subflowData;
         applicationData.put("familyIntendedProviderName", data.getOrDefault("familyIntendedProviderName", ""));
         applicationData.put("familyIntendedProviderEmail", data.getOrDefault("familyIntendedProviderEmail", ""));
+        applicationData.put("providerType", "Individual");
 
         return applicationData;
     }

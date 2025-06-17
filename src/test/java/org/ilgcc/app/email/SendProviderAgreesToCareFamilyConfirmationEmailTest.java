@@ -117,21 +117,21 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
         assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                 new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
         assertThat(emailTemplate.getSubject()).isEqualTo(
-                messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
+                messageSource.getMessage("email.provider-agrees-to-care.subject", null, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale));
+                messageSource.getMessage("email.provider-agrees-to-care.p1", new Object[]{"FirstName"}, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name",
-                        new Object[]{"BusinessName", "Sample Test CCRR"},
+                messageSource.getMessage("email.provider-agrees-to-care.p2-program",
+                        new Object[]{"BusinessName"},
                         locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
+        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-agrees-to-care.p3",
                 new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p4",
+        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-agrees-to-care.p4",
                 new Object[]{"ABC123"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p5",
+        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-agrees-to-care.p5",
                 new Object[]{"Sample Test CCRR", "(603) 555-1244"},
                 locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
