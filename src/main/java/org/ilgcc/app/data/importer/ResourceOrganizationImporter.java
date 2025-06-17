@@ -20,12 +20,12 @@ public class ResourceOrganizationImporter {
 
     private static final String SQL_TRUNCATE = "\n\tTRUNCATE TABLE resource_organizations CASCADE;\n";
 
-    private static final String SQL_INSERT = "\tINSERT INTO resource_organizations (resource_org_id, name, street_address, city, state, zip_code, caseload_code, phone) VALUES\n";
+    private static final String SQL_INSERT = "\tINSERT INTO resource_organizations (resource_org_id, name, street_address, city, state, zip_code, caseload_code, phone, sda) VALUES\n";
 
     private static final String SQL_COMMIT = "COMMIT;\n\n";
 
     private static final List<String> COLUMN_HEADERS = List.of("RSRCE_ID", "RSRCE_LONG_NAME", "ADR", "CITY", "ST", "ZIP",
-            "CSLD_CD", "TELE_NUM");
+            "CSLD_CD", "TELE_NUM", "SDA");
 
     private static final List<String> INTEGER_HEADERS = List.of("RSRCE_ID");
 
