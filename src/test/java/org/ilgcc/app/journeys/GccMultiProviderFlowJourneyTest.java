@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_FOUR_C_COUNTY;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
@@ -315,9 +317,10 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //schedules-start
+        List<Map<String,Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         assertThat(testPage.getHeader()).containsIgnoringCase("Child");
-        testPage.clickElementById("currentChildcareProvider-ACME Daycare");
+        testPage.clickElementById(String.format("currentChildcareProvider-%s-label", providers.get(0).get("uuid")));
         testPage.clickElementById("currentChildcareProvider-NO_PROVIDER-label");
         testPage.clickContinue();
 

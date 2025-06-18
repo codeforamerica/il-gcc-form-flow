@@ -1,6 +1,7 @@
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
-                   providerName=${repeatForIteration.getOrDefault('repeatForValue', '[PROVIDER NAME]').equals('NO_PROVIDER') ? #messages.msg('schedules-review.no-provider') : repeatForIteration.getOrDefault('repeatForValue', '[PROVIDER NAME]')},
-                   onlyOneDay=${repeatForIteration.get('childcareWeeklySchedule[]').size <= 1}">
+                    provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, repeatForIteration.get('repeatForValue').toString())},
+                    providerName=${repeatForIteration.get('repeatForValue').equals('NO_PROVIDER') ? #messages.msg('schedules-review.no-provider') : provider.get('familyIntendedProviderName')},
+                    onlyOneDay=${repeatForIteration.get('childcareWeeklySchedule[]').size <= 1}">
   <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-hours.title},

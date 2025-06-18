@@ -64,7 +64,7 @@ public class MultiProviderPDFService {
     Map<String, byte[]> generateAdditionalProviderPDF(Submission submission) throws IOException {
         Map<String, byte[]> additionalPDFs = new HashMap<>();
 
-        List<Map<String, Object>> providers = SubmissionUtilities.getProviders(submission);
+        List<Map<String, Object>> providers = SubmissionUtilities.getProviders(submission.getInputData());
         if (providers.size() > 1) {
             for (int i = 1; i < providers.size(); i++) {
                 Map<String, Object> currentProvider = providers.get(i);

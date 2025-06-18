@@ -29,9 +29,11 @@
                                             <li
                                                     th:each="providerSchedule: ${childcareIteration.get('providerSchedules')}"
                                                     class="spacing-below-15">
-                                                <th:block
-                                                        th:with="providerName=${providerSchedule.getOrDefault('repeatForValue', '[PROVIDER NAME]')}">
-                                                    <span th:text="${providerName.equals('NO_PROVIDER') ? #messages.msg('schedules-review.no-provider') : providerName}"></span>
+
+                                                <th:block th:with="
+                                                        provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, providerSchedule.get('repeatForValue').toString())},
+                                                providerName=${providerSchedule.get('repeatForValue').equals('NO_PROVIDER') ? #messages.msg('schedules-review.no-provider') : provider.get('familyIntendedProviderName')}">
+                                                    <span th:text="${providerName}"></span>
                                                 </th:block>
                                                 <br>
                                                 <span th:text="${#messages.msg('schedules-review.start-date', providerSchedule.getOrDefault('ccapStartDate', 'n/a'))}"></span>

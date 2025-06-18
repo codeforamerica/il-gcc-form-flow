@@ -1,21 +1,21 @@
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
-                   providerName=${repeatForIteration.getOrDefault('repeatForValue', '[PROVIDER NAME]')}">
-  <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
+                   provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, repeatForIteration.get('repeatForValue').toString())}">
+    <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-start-care.title},
-      header=#{schedules-start-care.header(${childName}, ${providerName})},
-      headerName=${providerName},
+      header=#{schedules-start-care.header(${childName}, ${provider.get('familyIntendedProviderName')})},
+      headerName=${provider.get('familyIntendedProviderName')},
       formAction=${formAction},
       noSubmitButton='true',
       inputContent=~{::inputContent})}">
-    <th:block th:ref="inputContent">
-      <th:block th:ref="formContent">
-        <div class="form-card__content">
-          <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(
+        <th:block th:ref="inputContent">
+            <th:block th:ref="formContent">
+                <div class="form-card__content">
+                    <th:block th:replace="~{fragments/inputs/yesOrNo :: yesOrNo(
             inputName='childInCare',
             ariaDescribe='header')}"/>
-        </div>
-      </th:block>
+                </div>
+            </th:block>
+        </th:block>
     </th:block>
-  </th:block>
 </th:block>
