@@ -226,26 +226,44 @@ public class SubmissionUtilities {
         return Optional.empty();
     }
 
-    public static boolean isSelectedAsProviderContactMethod(Map<String, Object> inputData, @NotBlank String providerContactMethod) {
+    public static boolean isSelectedAsProviderContactMethod(Map<String, Object> inputData,
+            @NotBlank String providerContactMethod) {
         List<String> contactProviderMethodList = (List<String>) inputData.getOrDefault("contactProviderMethod[]", List.of());
         return contactProviderMethodList.contains(providerContactMethod);
     }
 
-    public static boolean isSelectedAsProviderContactMethod(@NotNull Submission submission, @NotBlank String subflowUuid, @NotBlank String providerContactMethod) {
+    public static boolean isSelectedAsProviderContactMethod(@NotNull Submission submission, @NotBlank String subflowUuid,
+            @NotBlank String providerContactMethod) {
         Map<String, Object> subflow = submission.getSubflowEntryByUuid("contactProviders", subflowUuid);
         return subflow != null && isSelectedAsProviderContactMethod(subflow, providerContactMethod);
     }
 
-    public static List<Map<String, Object>> providersList(Map<String, Object> inputData){
+    public static List<Map<String, Object>> providersList(Map<String, Object> inputData) {
         if (inputData.containsKey("providers")) {
-           return(List) inputData.get("providers");
+            return (List) inputData.get("providers");
         }
-        Map<String, Object> NO_PROVIDER = new HashMap<>();
-        NO_PROVIDER.put("providerResponseBusinessName", "No Provider");
-        NO_PROVIDER.put("familyIntendedProviderName", "NO_PROVIDER");
-        NO_PROVIDER.put("providerResponseProviderNumber", "460328258720008");
-        NO_PROVIDER.put("providerResponse", "No provider chosen");
 
-        return List.of(NO_PROVIDER);
+        return emptyList();
+    }
+
+    public static Map<String, Object> providerByName(List<Map<String, Object>> providers, String providerName) {
+
+        Optional<Map<String, Object>> providerOptional = providers.stream()
+                .filter(provider -> provider.get("familyIntendedProviderName").equals(providerName)).findFirst();
+
+        if (providerOptional.isEmpty() && !providerName.equals("NO_PROVIDER")) {
+            log.debug("There is a child care schedule associated with the familyIntendedProviderName (%s) but no provider with "
+                    + "that name so adding it as a No Provider");
+            Map<String, Object> NO_PROVIDER = new HashMap<>();
+
+            NO_PROVIDER.put("providerResponseBusinessName", "No Provider");
+            NO_PROVIDER.put("familyIntendedProviderName", "NO_PROVIDER");
+            NO_PROVIDER.put("providerResponseProviderNumber", "460328258720008");
+            NO_PROVIDER.put("providerResponse", "No provider chosen");
+
+            return NO_PROVIDER;
+        } else {
+            return providerOptional.get();
+        }
     }
 }

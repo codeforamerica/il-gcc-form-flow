@@ -17,9 +17,11 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.ilgcc.app.pdf.helpers.FamilyIntendedProviderPreparerHelper;
+import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,31 +71,39 @@ public class MultiProviderPDFService {
         Map<String, byte[]> additionalPDFs = new HashMap<>();
 
         List<Map<String, Object>> providers = SubmissionUtilities.providersList(familySubmission.getInputData());
-        
-        if (providers.size() > 1) {
-            // if providers is empty, it means that all children have NO_PROVIDER
-            for (int i = 1; i < providers.size(); i++) {
-                Map<String, Object> currentProvider = providers.get(i);
-                // TODO: Add logic for providers responding to the application
+
+        Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
+                getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+
+        if(mergedChildrenAndSchedules.isEmpty()){
+            return additionalPDFs;
+        }
+
+        List<String> providerNamesChildSchedules = mergedChildrenAndSchedules.keySet().stream().toList();
+
+        if (providerNamesChildSchedules.size() > 1) {
+            for (int i = 1; i < providerNamesChildSchedules.size(); i++) {
+                Map<String, Object> currentProvider = SubmissionUtilities.providerByName(providers,
+                        providerNamesChildSchedules.get(i));
 
                 Map<String, SubmissionField> submissionFields = familyIntendedProviderPreparerHelper.prepareSubmissionFields(
                         currentProvider);
 
-                List<Map<String, Object>> mergedChildrenAndSchedules =
-                        getRelatedChildrenSchedulesForProvider(familySubmission.getInputData(),
-                                currentProvider.get(
-                                        "familyIntendedProviderName").toString());
+                List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
+                        mergedChildrenAndSchedules.get(providerNamesChildSchedules.get(i));
 
-                if (!mergedChildrenAndSchedules.isEmpty()) {
-                    for (int j = 0; j < mergedChildrenAndSchedules.size(); j++) {
-                        submissionFields.putAll(needChildcareForChildrenPreparer.prepareChildCareSchedule(mergedChildrenAndSchedules.get(j),
-                                j+1));
-                    }
+                for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
+
+                    submissionFields.putAll(
+                            needChildcareForChildrenPreparer.prepareChildCareSchedule(
+                                    listOfChildcareSchedulesForCurrentProvider.get(j),
+                                    j + 1));
                 }
-
                 additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size() - 1),
                         getFilledOutPDF("src/main/resources/pdfs/IL-CCAP-Form-Additional-Provider.pdf",
                                 submissionFields.values().stream().toList()));
+
+
             }
         }
 

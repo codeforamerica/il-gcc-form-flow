@@ -115,7 +115,7 @@ public class SchedulePreparerUtility {
     }
 
     public static Map<String, Object> relatedSubflowIterationData(Map<String, Object> inputData, String relatedSubflowName,
-            String subflowUUID){
+            String subflowUUID) {
 
         List<Map<String, Object>> nestedIterations = (List<Map<String, Object>>) inputData.getOrDefault(relatedSubflowName,
                 Collections.EMPTY_LIST);
@@ -126,13 +126,17 @@ public class SchedulePreparerUtility {
         return currentIteration.isPresent() ? currentIteration.get() : null;
     }
 
-    public static List<Map<String, Object>> getRelatedChildrenSchedulesForProvider(Map<String, Object> inputData,
-            String providerKey) {
-        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) inputData.get("childcareSchedules");
-        Set<Map<String,Object>> providerSchedules = new HashSet<>();
+    public static Map<String, List<Map<String, Object>>> getRelatedChildrenSchedulesForProvider(Map<String, Object> inputData) {
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) inputData.getOrDefault("childcareSchedules",
+                Collections.EMPTY_LIST);
+        Set<Map<String, Object>> providerSchedules = new HashSet<>();
+
+        if (childcareSchedules.isEmpty()) {
+            return new HashMap<>();
+        }
 
         childcareSchedules.forEach(childCareSchedule -> {
-            List<Map<String,Object>> providerSchedulesTemp = (List) childCareSchedule.getOrDefault("providerSchedules",
+            List<Map<String, Object>> providerSchedulesTemp = (List) childCareSchedule.getOrDefault("providerSchedules",
                     Collections.EMPTY_LIST);
             providerSchedulesTemp.forEach(schedule -> {
                 schedule.putAll(relatedSubflowIterationData(inputData, "children",
@@ -141,9 +145,6 @@ public class SchedulePreparerUtility {
             });
         });
 
-        Map<String, List<Map<String, Object>>> mapOfProviderSchedules =
-                providerSchedules.stream().collect(Collectors.groupingBy(provider -> provider.get("repeatForValue").toString()));
-
-        return mapOfProviderSchedules.getOrDefault(providerKey, Collections.EMPTY_LIST);
+        return providerSchedules.stream().collect(Collectors.groupingBy(provider -> provider.get("repeatForValue").toString()));
     }
 }

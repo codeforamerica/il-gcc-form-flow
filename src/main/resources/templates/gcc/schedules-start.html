@@ -24,7 +24,7 @@
                         <th:block
                                 th:each="provider : ${submission.getInputData().get('providers')}">
                             <th:block
-                                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='currentChildcareProvider',value=${provider.get('familyIntendedProviderName')}, label=${provider.get('familyIntendedProviderName')})}"/>
+                                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='currentChildcareProvider',value=${provider.get('uuid')}, label=${provider.get('familyIntendedProviderName')})}"/>
                         </th:block>
                         <th:block>
                             <th:block

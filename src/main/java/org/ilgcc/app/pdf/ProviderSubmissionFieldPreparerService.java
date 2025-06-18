@@ -1,6 +1,5 @@
 package org.ilgcc.app.pdf;
 
-import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.getProviderSubmissionId;
@@ -18,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.pdf.helpers.FamilyIntendedProviderPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderApplicationPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderHouseholdMemberPreparerHelper;
@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPreparer {
 
     private boolean enableMultipleProviders;
@@ -86,22 +87,30 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
             if (enableMultipleProviders) {
                 List<Map<String, Object>> providers = SubmissionUtilities.providersList(familySubmission.getInputData());
 
-                List<Map<String, Object>> childCareSchedules = (List<Map<String, Object>>) familySubmission.getInputData()
-                        .getOrDefault("childcareSchedules", emptyList());
+                Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
+                        getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
 
-                Map<String, Object> firstProvider = providers.getFirst();
-                List<Map<String, Object>> mergedChildrenAndSchedules =
-                        getRelatedChildrenSchedulesForProvider(familySubmission.getInputData(),
-                                firstProvider.get(
-                                        "familyIntendedProviderName").toString());
+                String firstProviderName = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
 
-                if (!mergedChildrenAndSchedules.isEmpty()) {
-                    for (int i = 0; i < mergedChildrenAndSchedules.size(); i++) {
-                        results.putAll(needChildcareForChildrenPreparer.prepareChildCareSchedule(mergedChildrenAndSchedules.get(i),
-                                i+1));
+                if (null != firstProviderName) {
+                    Map<String, Object> firstProviderObject = SubmissionUtilities.providerByName(providers,
+                            firstProviderName);
+
+                    Map<String, SubmissionField> submissionFields = familyIntendedProviderPreparerHelper.prepareSubmissionFields(
+                            firstProviderObject);
+
+                    List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
+                            mergedChildrenAndSchedules.get(firstProviderName);
+
+                    for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
+                        submissionFields.putAll(
+                                needChildcareForChildrenPreparer.prepareChildCareSchedule(
+                                        listOfChildcareSchedulesForCurrentProvider.get(j),
+                                        j + 1));
                     }
+
+                    results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(firstProviderObject));
                 }
-                results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(firstProvider));
             } else {
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission.getInputData()));
             }

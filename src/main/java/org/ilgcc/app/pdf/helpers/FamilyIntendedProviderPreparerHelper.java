@@ -16,10 +16,6 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
 
         if ("false".equals(familyInputData.get("hasChosenProvider"))) {
             results.putAll(prepareNoProviderData());
-        } else if (familyInputData.containsKey(
-                "familyIntendedProviderName") && familyInputData.get(
-                "familyIntendedProviderName").equals("NO_PROVIDER")) {
-            return results;
         } else {
             // toDo: we can keep the same field name for each provider in providers;
             String submissionStatus = (String) familyInputData.getOrDefault("providerSubmissionStatus", "");
@@ -45,6 +41,17 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
         results.put("providerResponseContactEmail",
                 new SingleField("providerResponseContactEmail",
                         inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
+
+        results.put("providerMailingStreetAddress1",
+                new SingleField("providerMailingStreetAddress1",
+                        inputData.getOrDefault("familyIntendedProviderCity", "").toString(), null));
+
+        results.put("providerMailingCity",
+                new SingleField("providerMailingCity",
+                        inputData.getOrDefault("familyIntendedProviderCity", "").toString(), null));
+        results.put("providerMailingState",
+                new SingleField("providerMailingState",
+                        inputData.getOrDefault("familyIntendedProviderState", "").toString(), null));
 
         if (providerApplicationExpired) {
             results.put("providerResponse", new SingleField("providerResponse", "No response from provider", null));
