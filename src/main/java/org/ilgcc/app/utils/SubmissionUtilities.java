@@ -236,7 +236,7 @@ public class SubmissionUtilities {
         return subflow != null && isSelectedAsProviderContactMethod(subflow, providerContactMethod);
     }
 
-    public static List<Map<String, Object>> providersList(Submission familySubmission){
+    public static List<Map<String, Object>> getProviders(Submission familySubmission){
         if (familySubmission.getInputData().containsKey("providers")) {
            return(List) familySubmission.getInputData().get("providers");
         }
