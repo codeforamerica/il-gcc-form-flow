@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 public class DisplaySchedulesStartCareScreen extends EnableMultipleProviders implements Condition {
 
     @Override
+    public Boolean run(Submission submission, String subflowUUID) {
+        return true;
+    }
+
+    @Override
     public Boolean run(Submission submission, String subflowUuid, String repeatForIterationUuid) {
         Map<String, Object> childcareSubflow = submission.getSubflowEntryByUuid("childcareSchedules", subflowUuid);
         Map<String, Object> repeatForSubflowIteration = relatedSubflowIterationData(childcareSubflow, "providerSchedules",
