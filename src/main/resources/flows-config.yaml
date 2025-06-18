@@ -256,6 +256,7 @@ flow:
   schedules-start:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
+    onPostAction: IfOneOrNoProvidersUpdateCurrentChildcareProviders
     nextScreens:
       - name: schedules-start-care
   schedules-start-care:
