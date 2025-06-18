@@ -27,6 +27,7 @@ public class EnqueueDocumentTransfer {
 
     private final static String CONTENT_TYPE = "application/pdf";
 
+    @Deprecated
     public void enqueuePDFDocumentBySubmission(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob, Submission submission, String fileNameForPdf) {
         try {
@@ -59,6 +60,7 @@ public class EnqueueDocumentTransfer {
 
     }
 
+    @Deprecated
     public void enqueueUploadedDocumentBySubmission(UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, S3PresignService s3PresignService,
             Submission submission) {

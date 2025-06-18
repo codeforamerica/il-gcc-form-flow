@@ -36,7 +36,8 @@ public class UploadedDocumentTransmissionJob {
         this.documentTransferRequestService = documentTransferRequestService;
         this.transmissionRepositoryService = transmissionRepositoryService;
     }
-    
+
+    @Deprecated
     public void enqueueUploadedDocumentTransmissionJob(Submission submission, UserFile userFile, String fileName) {
         Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
         Transmission uploadedDocumentTransmission = transmissionRepositoryService.save(new Transmission(submission, userFile, now, Queued, UPLOADED_DOCUMENT, null));
@@ -47,7 +48,8 @@ public class UploadedDocumentTransmissionJob {
                 .scheduleIn(Duration.ofSeconds(5))
                 .<UploadedDocumentTransmissionJob>withDetails(x -> x.sendUploadedDocumentTransferRequest(submission, userFile, fileName, uploadedDocumentTransmissionId)));
     }
-    
+
+    @Deprecated
     public void sendUploadedDocumentTransferRequest(Submission submission, UserFile userFile, String fileName, UUID uploadedDocumentTransmissionId)
             throws IOException, URISyntaxException {
         String presignedUrl = s3PresignService.generatePresignedUrl(userFile.getRepositoryPath());
