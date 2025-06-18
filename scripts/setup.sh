@@ -1,5 +1,6 @@
 set -e
 
+# jenv is used for managing java versions (not required)
 install_jenv() {
     if ! grep -q jenv "$1"; then
       echo "export PATH=""$HOME"/.jenv/bin:"$PATH""" >> "$1"
@@ -8,8 +9,8 @@ install_jenv() {
     fi
 }
 
-echo '--- StarterApp Setup Script ---'
-echo '--- Make sure homebrew is installed ---'
+echo '--- IL-GCC Setup Script ---'
+echo '--- Make sure Homebrew is installed ---'
 
 if ! brew --version; then
   curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
@@ -77,4 +78,4 @@ echo '--- Run tests --- '
 
 ./gradlew clean test
 
-echo '--- StarterApp Setup Script Complete ---'
+echo '--- IL-GCC Setup Script Complete ---'
