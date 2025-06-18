@@ -57,7 +57,6 @@ public class SetProviderSubmissionStatusAndConnectApplications implements Action
                     httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS,
                             statusFromFamilyApp.get());
                 } else {
-                    // TODO: Is this still needed or at this point should all family submissions have the statusFromFamilyApp above?
                     SubmissionStatus calculatedSubmissionStatus = calculateProviderApplicationResponseStatus(familySubmission);
                     httpSession.setAttribute(SESSION_KEY_PROVIDER_SUBMISSION_STATUS,
                             calculatedSubmissionStatus);
