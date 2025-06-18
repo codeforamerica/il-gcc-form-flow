@@ -20,6 +20,7 @@ import org.ilgcc.app.file_transfer.S3PresignService;
 import org.jobrunr.scheduling.BackgroundJob;
 import org.springframework.stereotype.Service;
 
+@Deprecated
 @Slf4j
 @Service
 public class UploadedDocumentTransmissionJob {
