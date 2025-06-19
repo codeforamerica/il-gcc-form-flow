@@ -1,11 +1,13 @@
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
-                    provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, repeatForIteration.get('repeatForValue').toString())},
-                    providerName=${repeatForIteration.get('repeatForValue').equals('NO_PROVIDER') ? #messages.msg('schedules-review.no-provider') : provider.get('familyIntendedProviderName')},
-                    onlyOneDay=${repeatForIteration.get('childcareWeeklySchedule[]').size <= 1}">
+                   provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, repeatForIteration.get('repeatForValue').toString())},
+                   providerName=${repeatForIteration.get('repeatForValue').equals('NO_PROVIDER') ? 'No Provider' : provider.get('familyIntendedProviderName')},
+                   postfix=${'No Provider'.equals(providerName) ? 'no-provider' : T(org.ilgcc.app.utils.SubmissionUtilities).getPostFix(repeatForIteration)},
+                   messagePropertyString=${T(org.ilgcc.app.utils.SubmissionUtilities).generateMessageKey('schedules-hours.header', postfix)},
+                   onlyOneDay=${repeatForIteration.get('childcareWeeklySchedule[]').size <= 1}">
   <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-hours.title},
-      header=#{schedules-hours.header.already-started(${providerName}, ${childName})},
+      header=${'No Provider'.equals(providerName) ? #messages.msg('schedules-hours.header.no-provider', childName) : #messages.msg(messagePropertyString, childName, providerName)},
       headerName=${providerName},
       formAction=${formAction},
       buttonLabel=#{'general.inputs.continue'},
