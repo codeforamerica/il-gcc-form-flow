@@ -373,7 +373,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         // skips schedules-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
-        assertThat(testPage.getHeader()).containsIgnoringCase("No provider chosen");
+        assertThat(testPage.getHeader()).containsIgnoringCase(getEnMessageWithParams("schedules-start-date.header.no-provider",
+            new Object[]{"Child"}));
         assertThat(testPage.getHeader()).containsIgnoringCase("Child");
         testPage.enter("ccapStartMonth", "10");
         testPage.enter("ccapStartDay", "15");
@@ -383,15 +384,15 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //schedules-days
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
-        assertThat(testPage.getHeader()).containsIgnoringCase("No provider chosen");
-        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        assertThat(testPage.getHeader()).containsIgnoringCase(getEnMessageWithParams("schedules-days.header.no-provider",
+            new Object[]{"Child"}));
         testPage.clickElementById("childcareWeeklySchedule-Monday");
         testPage.clickContinue();
 
         //schedules-hours
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
-        assertThat(testPage.getHeader()).containsIgnoringCase("No provider chosen");
-        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        assertThat(testPage.getHeader()).containsIgnoringCase(getEnMessageWithParams("schedules-hours.header.no-provider",
+            new Object[]{"Child"}));
         testPage.selectFromDropdown("childcareStartTimeMondayHour", "10");
         testPage.enter("childcareStartTimeMondayMinute", "00");
         testPage.selectFromDropdown("childcareStartTimeMondayAmPm", "AM");
