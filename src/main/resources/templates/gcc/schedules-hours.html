@@ -7,7 +7,7 @@
   <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-hours.title},
-      header=${'No Provider'.equals(providerName) ? #messages.msg('schedules-hours.header.no-provider', childName) : #messages.msg(messagePropertyString, childName, providerName)},
+      header=${'No Provider'.equals(providerName) ? #messages.msg('schedules-hours.header.no-provider', childName) : #messages.msg(messagePropertyString, providerName, childName)},
       headerName=${providerName},
       formAction=${formAction},
       buttonLabel=#{'general.inputs.continue'},
@@ -23,18 +23,19 @@
                  )}"/>
           </div>
           <div id="same-each-day">
-            <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTimeAllDays', endInputName='childcareEndTimeAllDays', required='true', label=${repeatForIteration.get('displayWeeklySchedule')})}" />
+            <th:block
+                th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTimeAllDays', endInputName='childcareEndTimeAllDays', required='true', label=${repeatForIteration.get('displayWeeklySchedule')})}"/>
           </div>
           <div id="days-of-the-week">
             <th:block th:each="day: ${repeatForIteration.get('childcareWeeklySchedule[]')}">
-              <th:block th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTime' + ${day}, endInputName='childcareEndTime' + ${day}, required='true', label=#{${'general.week.' + day}})}" />
+              <th:block
+                  th:replace="~{fragments/inputs/timeRange :: timeRange(startInputName='childcareStartTime' + ${day}, endInputName='childcareEndTime' + ${day}, required='true', label=#{${'general.week.' + day}})}"/>
             </th:block>
           </div>
         </div>
       </th:block>
     </th:block>
   </th:block>
-</th:block>
 <script th:inline="javascript">
   $(document).ready(function () {
     const $childcareHoursSameEveryDay = $('#childcareHoursSameEveryDay-yes')
@@ -42,9 +43,9 @@
     const $individualDays = $('#days-of-the-week')
 
     //on load
-    if($childcareHoursSameEveryDay.is(':checked')){
+    if ($childcareHoursSameEveryDay.is(':checked')) {
       $individualDays.toggleClass('hidden')
-    }else{
+    } else {
       $sameEveryDay.toggleClass('hidden')
     }
     disableFields()
@@ -53,13 +54,14 @@
     $childcareHoursSameEveryDay.change(function () {
       toggleSameTimeEveryDay();
     })
+
     function toggleSameTimeEveryDay() {
       $sameEveryDay.toggleClass('hidden')
       $individualDays.toggleClass('hidden')
       disableFields()
     }
 
-    function disableFields(){
+    function disableFields() {
       if ($sameEveryDay.hasClass('hidden')) {
         $('#same-each-day :input').prop('disabled', true);
         $('#days-of-the-week :input').prop('disabled', false);

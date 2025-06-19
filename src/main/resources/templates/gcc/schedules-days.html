@@ -6,7 +6,7 @@
     <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-days.title},
-      header=${'No Provider'.equals(providerName) ? #messages.msg('schedules-days.header.no-provider', childName) : #messages.msg(messagePropertyString, childName, providerName)},
+      header=${'No Provider'.equals(providerName) ? #messages.msg('schedules-days.header.no-provider', childName) : #messages.msg(messagePropertyString, providerName, childName)},
       headerName=${providerName},
       formAction=${formAction},
       required='true',
