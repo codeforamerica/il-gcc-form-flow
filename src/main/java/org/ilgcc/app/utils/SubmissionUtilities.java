@@ -260,4 +260,12 @@ public class SubmissionUtilities {
         return new HashMap<>();
 
     }
+
+    public static String getPostFix(Map<String, Object> currentProvider) {
+        return currentProvider.getOrDefault("childInCare", "false").equals("true") ? "already-started" : "not-started";
+    }
+
+    public static String generateMessageKey(String prefix, String postfix) {
+        return String.format("%s.%s", prefix, postfix);
+    }
 }
