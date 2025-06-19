@@ -14,6 +14,7 @@ import org.ilgcc.jobs.UploadedDocumentTransmissionJob;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Deprecated
 @Slf4j
 @Component
 public class SendUploadedFileToDocumentTransferService implements Action {

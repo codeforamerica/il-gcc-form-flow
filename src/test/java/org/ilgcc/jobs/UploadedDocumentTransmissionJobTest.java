@@ -44,6 +44,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 
+@Deprecated
 @SpringBootTest(classes = IlGCCApplication.class)
 @ActiveProfiles("test")
 @TestPropertySource(properties = {
