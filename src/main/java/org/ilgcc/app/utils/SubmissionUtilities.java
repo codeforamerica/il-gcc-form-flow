@@ -236,10 +236,28 @@ public class SubmissionUtilities {
         return subflow != null && isSelectedAsProviderContactMethod(subflow, providerContactMethod);
     }
 
-    public static List<Map<String, Object>> getProviders(Submission familySubmission){
-        if (familySubmission.getInputData().containsKey("providers")) {
-           return(List) familySubmission.getInputData().get("providers");
+    public static List<Map<String, Object>> getProviders(Map<String, Object> inputData){
+        if (inputData.containsKey("providers")) {
+           return(List) inputData.get("providers");
         }
         return emptyList();
+    }
+
+    public static Map<String, Object> getCurrentProvider(Map<String, Object> inputData, String uuid) {
+        List<Map<String, Object>> providers = getProviders(inputData);
+
+        Optional<Map<String, Object>> providerOptional = providers.stream()
+                .filter(provider -> provider.get("uuid").equals(uuid)).findFirst();
+
+        if (providerOptional.isPresent()) {
+            return providerOptional.get();
+        }
+
+        if (providerOptional.isEmpty() && !uuid.equals("NO_PROVIDER")) {
+            log.debug(String.format("There is a child care schedule associated with the providerUUID (%s) but no provider with "
+                    + "that uuid", uuid));
+        }
+        return new HashMap<>();
+
     }
 }

@@ -85,7 +85,7 @@ public class SetProviderSubmissionStatusAndConnectApplications implements Action
         Map<String, Object> inputData = familySubmission.getInputData();
 
         if (enableMultipleProviders) {
-            List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission);
+            List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
             if (providers.size() == 1) {
                 // If we have exactly 1 provider, just get that provider's name and use it.
                 return providers.getFirst().get("familyIntendedProviderName").toString();
