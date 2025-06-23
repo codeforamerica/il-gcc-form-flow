@@ -1,6 +1,6 @@
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
                    provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, repeatForIteration.get('repeatForValue').toString())},
-                   providerName=${repeatForIteration.get('repeatForValue').equals('NO_PROVIDER') ? 'No Provider' : provider.get('familyIntendedProviderName')}">
+                   providerName=${provider.get('familyIntendedProviderName')}">
     <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-start-care.title},

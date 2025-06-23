@@ -266,12 +266,21 @@ public class SubmissionUtilities {
     /**
      * This method generates a suffix that can be added to the end of a message string to indicate if a providerSchedule includes whether
      * the provider has already started care.
-     * @param currentProvider - The current providerSchedule that includes the <strong>childInCare</strong> input
+     * @param currentProvider - The current providerSchedule
      * @return TRUE: a String <strong>already-started</strong>
      * FALSE: A String <strong>not-started</strong>
      */
     public static String getSuffixForMessagesWhereChildIsInCare(Map<String, Object> currentProvider) {
-        return currentProvider.getOrDefault("childInCare", "false").equals("true") ? PROVIDER_HAS_STARTED_CHILDCARE : PROVIDER_HAS_NOT_STARTED_CHILDCARE;
+        if (currentProvider.containsKey("repeatForValue")) {
+            if (currentProvider.get("repeatForValue").toString().equals("NO_PROVIDER")) {
+                return "no-provider";
+            }else {
+                return currentProvider.getOrDefault("childInCare", "false").equals("true") ? PROVIDER_HAS_STARTED_CHILDCARE : PROVIDER_HAS_NOT_STARTED_CHILDCARE;
+            }
+        }else {
+            log.warn("repeatForValue is missing in providerSchedules map");
+            return null;
+        }
     }
 
     public static String generateMessageKey(String prefix, String suffix) {
