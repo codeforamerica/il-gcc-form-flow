@@ -31,9 +31,6 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
     @Autowired
     private ProviderSubmissionFieldPreparerService preparer;
 
-    @Autowired
-    private SubmissionRepositoryService submissionRepositoryService;
-
     private Submission familySubmission;
 
     private static String FAM_INTENDED_PROVIDER_NAME = "IntendedProviderName";
@@ -49,12 +46,25 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
         provider.put("familyIntendedProviderEmail", FAM_INTENDED_PROVIDER_EMAIL);
         provider.put("familyIntendedProviderPhoneNumber", FAM_INTENDED_PROVIDER_PHONE);
 
+        Map<String, Object> child = new HashMap<>();
+        child.put("uuid", "child-uuid");
+        child.put("childFirstName", "First");
+        child.put("childLastName", "Child");
+        child.put("childInCare", "true");
+        child.put("childDateOfBirthMonth", "10");
+        child.put("childDateOfBirthDay", "11");
+        child.put("childDateOfBirthYear", "2002");
+        child.put("needFinancialAssistanceForChild", true);
+        child.put("childIsUsCitizen", "Yes");
+        child.put("ccapStartDate", "01/10/2025");
+
         familySubmission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
                 .with("providers", List.of(provider))
+                .with("children", List.of(child))
+                .withChildcareScheduleForProvider("child-uuid", "first-provider-uuid")
                 .build();
-
     }
 
     @Nested
@@ -65,6 +75,10 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
             familySubmission.getInputData().put("providerSubmissionStatus", SubmissionStatus.ACTIVE.name());
 
             Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+
+            assertThat(result.get("childFirstName_1")).isEqualTo(new SingleField("childFirstName", "First", 1));
+            assertThat(result.get("childLastName_1")).isEqualTo(new SingleField("childLastName", "Child", 1));
+
             assertThat(result.get("providerResponseBusinessName")).isEqualTo(
                     new SingleField("providerResponseBusinessName", FAM_INTENDED_PROVIDER_NAME, null));
             assertThat(result.get("providerResponseContactPhoneNumber")).isEqualTo(
@@ -72,6 +86,25 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
             assertThat(result.get("providerResponseContactEmail")).isEqualTo(
                     new SingleField("providerResponseContactEmail", FAM_INTENDED_PROVIDER_EMAIL, null));
             assertThat(result.get("providerResponse")).isNull();
+
+            assertThat(result.get("childCareScheduleMondayStart_1")).isEqualTo(
+                    new SingleField("childCareScheduleMondayStart", "10:24", 1));
+            assertThat(result.get("childCareScheduleMondayStartAmPm_1")).isEqualTo(
+                    new SingleField("childCareScheduleMondayStartAmPm", "AM", 1));
+
+            assertThat(result.get("childCareScheduleTuesdayStart_1")).isEqualTo(
+                    new SingleField("childCareScheduleTuesdayStart", "10:24", 1));
+            assertThat(result.get("childCareScheduleTuesdayStartAmPm_1")).isEqualTo(
+                    new SingleField("childCareScheduleTuesdayStartAmPm", "AM", 1));
+
+            assertThat(result.get("childCareScheduleMondayEnd_1")).isEqualTo(
+                    new SingleField("childCareScheduleMondayEnd", "10:21", 1));
+            assertThat(result.get("childCareScheduleMondayEndAmPm_1")).isEqualTo(
+                    new SingleField("childCareScheduleMondayEndAmPm", "PM", 1));
+            assertThat(result.get("childCareScheduleTuesdayEnd_1")).isEqualTo(
+                    new SingleField("childCareScheduleTuesdayEnd", "10:21", 1));
+            assertThat(result.get("childCareScheduleTuesdayEndAmPm_1")).isEqualTo(
+                    new SingleField("childCareScheduleTuesdayEndAmPm", "PM", 1));
         }
     }
 

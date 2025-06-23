@@ -2,6 +2,7 @@ package org.ilgcc.app.pdf;
 
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForAdditionalProviderPDF;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.PDFFormFiller;
@@ -16,9 +17,11 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.ilgcc.app.pdf.helpers.FamilyIntendedProviderPreparerHelper;
+import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +44,9 @@ public class MultiProviderPDFService {
     @Autowired
     PDFFormFiller pdfFormFiller;
 
+    @Autowired
+    NeedChildcareChildrenPreparer needChildcareChildrenPreparer;
+
     private final Boolean enableMutipleProviders;
 
     public MultiProviderPDFService(Submission submission,
@@ -61,20 +67,43 @@ public class MultiProviderPDFService {
         return allFiles;
     }
 
-    Map<String, byte[]> generateAdditionalProviderPDF(Submission submission) throws IOException {
+    Map<String, byte[]> generateAdditionalProviderPDF(Submission familySubmission) throws IOException {
         Map<String, byte[]> additionalPDFs = new HashMap<>();
 
         List<Map<String, Object>> providers = SubmissionUtilities.getProviders(submission.getInputData());
-        if (providers.size() > 1) {
-            for (int i = 1; i < providers.size(); i++) {
-                Map<String, Object> currentProvider = providers.get(i);
-                // TODO: Add logic for providers responding to the application
+
+        Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
+                getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+
+        if(mergedChildrenAndSchedules.isEmpty()){
+            return additionalPDFs;
+        }
+
+        List<String> providerSchedulesByUuid = mergedChildrenAndSchedules.keySet().stream().toList();
+
+        if (providerSchedulesByUuid.size() > 1) {
+            for (int i = 1; i < providerSchedulesByUuid.size(); i++) {
+                Map<String, Object> currentProvider = SubmissionUtilities.getCurrentProvider(submission.getInputData(),
+                        providerSchedulesByUuid.get(i));
 
                 Map<String, SubmissionField> submissionFields = familyIntendedProviderPreparerHelper.prepareSubmissionFields(
-                        currentProvider);
-                additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(submission.getId(), i, providers.size() - 1),
+                        submission, currentProvider);
+
+                List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
+                        mergedChildrenAndSchedules.get(providerSchedulesByUuid.get(i));
+
+                for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
+
+                    submissionFields.putAll(
+                            needChildcareChildrenPreparer.prepareChildCareSchedule(
+                                    listOfChildcareSchedulesForCurrentProvider.get(j),
+                                    j + 1));
+                }
+                additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size() - 1),
                         getFilledOutPDF("src/main/resources/pdfs/IL-CCAP-Form-Additional-Provider.pdf",
                                 submissionFields.values().stream().toList()));
+
+
             }
         }
 

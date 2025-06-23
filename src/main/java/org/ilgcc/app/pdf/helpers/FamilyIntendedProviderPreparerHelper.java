@@ -1,5 +1,6 @@
 package org.ilgcc.app.pdf.helpers;
 
+import formflow.library.data.Submission;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.HashMap;
@@ -24,8 +25,20 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
         }
 
         return results;
+    }
 
+    public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, Map<String, Object> providerData) {
+        Map<String, SubmissionField> results = new HashMap<>();
 
+        if ("NO_PROVIDER".equals(providerData.get("uuid"))) {
+            results.putAll(prepareNoProviderData());
+        } else {
+            String submissionStatus = (String) submission.getInputData().getOrDefault("providerSubmissionStatus", "");
+            Boolean hasExpired = SubmissionStatus.EXPIRED.name().equals(submissionStatus);
+            results.putAll(prepareFamilyIntendedProviderData(providerData, hasExpired));
+        }
+
+        return results;
     }
 
     private Map<String, SubmissionField> prepareFamilyIntendedProviderData(Map<String, Object> inputData,
@@ -41,6 +54,17 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
         results.put("providerResponseContactEmail",
                 new SingleField("providerResponseContactEmail",
                         inputData.getOrDefault("familyIntendedProviderEmail", "").toString(), null));
+
+        results.put("providerMailingStreetAddress1",
+                new SingleField("providerMailingStreetAddress1",
+                        inputData.getOrDefault("familyIntendedProviderCity", "").toString(), null));
+
+        results.put("providerMailingCity",
+                new SingleField("providerMailingCity",
+                        inputData.getOrDefault("familyIntendedProviderCity", "").toString(), null));
+        results.put("providerMailingState",
+                new SingleField("providerMailingState",
+                        inputData.getOrDefault("familyIntendedProviderState", "").toString(), null));
 
         if (providerApplicationExpired) {
             results.put("providerResponse", new SingleField("providerResponse", "No response from provider", null));

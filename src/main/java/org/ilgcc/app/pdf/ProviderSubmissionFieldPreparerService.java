@@ -1,6 +1,6 @@
 package org.ilgcc.app.pdf;
 
-import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.getProviderSubmissionId;
 
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.pdf.helpers.FamilyIntendedProviderPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderApplicationPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderHouseholdMemberPreparerHelper;
@@ -24,11 +25,13 @@ import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPreparer {
 
     private boolean enableMultipleProviders;
@@ -57,6 +60,9 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
     @Autowired
     ProviderRegistrationPreparer providerRegistrationPreparer;
 
+    @Autowired
+    NeedChildcareChildrenPreparer needChildcareChildrenPreparer;
+
     public ProviderSubmissionFieldPreparerService(
             @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.enableMultipleProviders = enableMultipleProviders;
@@ -79,11 +85,33 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                             providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
         } else {
             if (enableMultipleProviders) {
-                List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
-                        .getOrDefault("providers", emptyList());
+                Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
+                        getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
 
-                Map<String, Object> firstProvider = providers.getFirst();
-                results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(firstProvider));
+                String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
+
+                if (null != providerUuid) {
+                    Map<String, Object> firstProviderObject = new HashMap<>();
+                    if (providerUuid == "NO_PROVIDER") {
+                        firstProviderObject.put("uuid", "NO_PROVIDER");
+                    } else {
+                        firstProviderObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
+                                providerUuid);
+                    }
+
+                    List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
+                            mergedChildrenAndSchedules.get(providerUuid);
+
+                    for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
+                        results.putAll(
+                                needChildcareChildrenPreparer.prepareChildCareSchedule(
+                                        listOfChildcareSchedulesForCurrentProvider.get(j),
+                                        j + 1));
+                    }
+
+                    results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
+                            firstProviderObject));
+                }
             } else {
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission.getInputData()));
             }
