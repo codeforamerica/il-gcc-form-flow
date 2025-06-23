@@ -11,7 +11,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IfOneOrNoProvidersUpdateCurrentChildcareProviders implements Action {
+public class UpdateCurrentChildcareProviderIfOneOrNoProviders implements Action {
 
     @Override
     @SuppressWarnings("unchecked")

@@ -33,6 +33,8 @@ public class SubmissionUtilities {
             .withZone(ZoneId.of("America/Chicago"));
     public static final String PROGRAM_SCHEDULE = "programSchedule";
 
+    public static final String PROVIDER_HAS_STARTED_CHILDCARE = "already-started";
+    public static final String PROVIDER_HAS_NOT_STARTED_CHILDCARE = "not-started";
     /**
      * Formats the date portion of {@code submittedAt} to look like "February 7, 2023".
      *
@@ -261,11 +263,18 @@ public class SubmissionUtilities {
 
     }
 
-    public static String getPostFix(Map<String, Object> currentProvider) {
-        return currentProvider.getOrDefault("childInCare", "false").equals("true") ? "already-started" : "not-started";
+    /**
+     * This method generates a suffix that can be added to the end of a message string to indicate if a providerSchedule includes whether
+     * the provider has already started care.
+     * @param currentProvider - The current providerSchedule that includes the <strong>childInCare</strong> input
+     * @return TRUE: a String <strong>already-started</strong>
+     * FALSE: A String <strong>not-started</strong>
+     */
+    public static String getSuffixForMessagesWhereChildIsInCare(Map<String, Object> currentProvider) {
+        return currentProvider.getOrDefault("childInCare", "false").equals("true") ? PROVIDER_HAS_STARTED_CHILDCARE : PROVIDER_HAS_NOT_STARTED_CHILDCARE;
     }
 
-    public static String generateMessageKey(String prefix, String postfix) {
-        return String.format("%s.%s", prefix, postfix);
+    public static String generateMessageKey(String prefix, String suffix) {
+        return String.format("%s.%s", prefix, suffix);
     }
 }
