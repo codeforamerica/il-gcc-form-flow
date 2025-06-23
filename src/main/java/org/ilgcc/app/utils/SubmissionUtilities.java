@@ -35,6 +35,7 @@ public class SubmissionUtilities {
 
     public static final String PROVIDER_HAS_STARTED_CHILDCARE = "already-started";
     public static final String PROVIDER_HAS_NOT_STARTED_CHILDCARE = "not-started";
+    public static final String NO_PROVIDER = "no-provider";
     /**
      * Formats the date portion of {@code submittedAt} to look like "February 7, 2023".
      *
@@ -273,7 +274,7 @@ public class SubmissionUtilities {
     public static String getSuffixForMessagesWhereChildIsInCare(Map<String, Object> currentProvider) {
         if (currentProvider.containsKey("repeatForValue")) {
             if (currentProvider.get("repeatForValue").toString().equals("NO_PROVIDER")) {
-                return "no-provider";
+                return NO_PROVIDER;
             }else {
                 return currentProvider.getOrDefault("childInCare", "false").equals("true") ? PROVIDER_HAS_STARTED_CHILDCARE : PROVIDER_HAS_NOT_STARTED_CHILDCARE;
             }
