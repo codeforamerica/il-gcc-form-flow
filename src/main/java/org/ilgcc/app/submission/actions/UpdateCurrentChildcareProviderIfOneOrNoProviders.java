@@ -15,13 +15,14 @@ public class UpdateCurrentChildcareProviderIfOneOrNoProviders implements Action 
 
     @Override
     @SuppressWarnings("unchecked")
-    public void run(FormSubmission formSubmission, Submission submission, String id){
-        List<Map<String, Object>> providers = (List<Map<String, Object>>) submission.getInputData().getOrDefault("providers", emptyList());
+    public void run(FormSubmission formSubmission, Submission submission, String id) {
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) submission.getInputData()
+            .getOrDefault("providers", emptyList());
         List<String> currentChildcareProviders = new ArrayList<>();
         if (providers.size() <= 1) {
-            if (providers.isEmpty()){
+            if (providers.isEmpty()) {
                 currentChildcareProviders.add("NO_PROVIDER");
-            }else {
+            } else {
                 currentChildcareProviders.add(providers.getFirst().getOrDefault("uuid", "").toString());
             }
             formSubmission.getFormData().putIfAbsent("currentChildcareProvider[]", currentChildcareProviders);
