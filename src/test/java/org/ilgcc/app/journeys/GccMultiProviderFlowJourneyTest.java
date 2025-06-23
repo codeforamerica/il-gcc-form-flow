@@ -796,7 +796,17 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
         testPage.clickLink(getEnMessage("general.edit"));
-
+        
+        //providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        assertThat(testPage.findElementById("providerType-Care Program").isSelected()).isTrue();
+        testPage.clickContinue();
+        
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        assertThat(testPage.getInputValue("childCareProgramName")).isEqualTo("First Daycare");
+        testPage.clickContinue();
+        
         //providers-location
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         assertThat(testPage.getInputValue("familyIntendedProviderAddress")).isEqualTo("222 Test St");

@@ -144,7 +144,6 @@ inputFields:
   providerResponse: PROVIDER_RESPONSE
   providerResponseFirstName: PROVIDER_NAME_FIRST
   providerResponseLastName: PROVIDER_NAME_LAST
-  providerFirstName: PROVIDER_NAME_FIRST
   providerResponseBusinessName: PROVIDER_NAME_CORPORATE
   providerResponseServiceStreetAddress1: PROVIDER_ADDRESS_SERVICE_STREET
   providerResponseServiceStreetAddress2: PROVIDER_ADDRESS_SERVICE_APT
