@@ -7,8 +7,8 @@
   <section class="slab">
     <div class="grid">
       <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main th:with="providerIsIndividual=${@providerIsIndividual.run(submission)},
-                     providerIsCareProgram=${@providerIsCareProgram.run(submission)},
+      <main th:with="providerIsIndividual=${@providerIsIndividual.run(submission, currentSubflowItem.get('uuid'))},
+                     providerIsCareProgram=${@providerIsCareProgram.run(submission, currentSubflowItem.get('uuid'))},
                      subtext=${providerIsCareProgram} ? #{providers-name.at-least-one} : null,
                      helpText=${providerIsCareProgram} ? #{providers-name.help-text} : null,"
                      id="content" role="main" class="form-card spacing-above-35">

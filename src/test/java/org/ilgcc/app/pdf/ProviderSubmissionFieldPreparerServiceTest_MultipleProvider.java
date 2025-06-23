@@ -33,7 +33,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
 
     private Submission familySubmission;
 
-    private static String FAM_INTENDED_PROVIDER_NAME = "IntendedProviderName";
+    private static String FAM_INTENDED_PROVIDER_NAME = "ChildCareProgramName";
     private static String FAM_INTENDED_PROVIDER_PHONE = "(125) 785-67896";
     private static String FAM_INTENDED_PROVIDER_EMAIL = "mail@test.com";
 
@@ -42,7 +42,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
         Map<String, Object> provider = new HashMap<>();
         provider.put("uuid", "first-provider-uuid");
         provider.put("iterationIsComplete", true);
-        provider.put("familyIntendedProviderName", FAM_INTENDED_PROVIDER_NAME);
+        provider.put("childCareProgramName", FAM_INTENDED_PROVIDER_NAME);
         provider.put("familyIntendedProviderEmail", FAM_INTENDED_PROVIDER_EMAIL);
         provider.put("familyIntendedProviderPhoneNumber", FAM_INTENDED_PROVIDER_PHONE);
 

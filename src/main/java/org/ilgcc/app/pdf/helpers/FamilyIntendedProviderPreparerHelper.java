@@ -46,7 +46,11 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
         Map<String, SubmissionField> results = new HashMap<>();
 
         results.put("providerResponseBusinessName", new SingleField("providerResponseBusinessName",
-                inputData.getOrDefault("familyIntendedProviderName", "").toString(), null));
+                inputData.getOrDefault("childCareProgramName", "").toString(), null));
+        results.put("providerResponseFirstName", new SingleField("providerResponseFirstName",
+                inputData.getOrDefault("providerFirstName", "").toString(), null));
+        results.put("providerResponseLastName", new SingleField("providerResponseLastName",
+                inputData.getOrDefault("providerLastName", "").toString(), null));
         results.put("providerResponseContactPhoneNumber",
                 new SingleField("providerResponseContactPhoneNumber",
                         inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(),

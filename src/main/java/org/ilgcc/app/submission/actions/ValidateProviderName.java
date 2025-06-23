@@ -23,9 +23,8 @@ public class ValidateProviderName implements Action {
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
         Map<String, List<String>> errorMessages = new HashMap<>();
         Locale locale = LocaleContextHolder.getLocale();
-        
-        boolean providerIsIndividual = submission.getInputData().getOrDefault("providerType", "").equals("Individual");
-        boolean providerIsCareProgram = submission.getInputData().getOrDefault("providerType", "").equals("Care Program");
+        boolean providerIsCareProgram = formSubmission.getFormData().containsKey("childCareProgramName");
+        boolean providerIsIndividual = !formSubmission.getFormData().containsKey("childCareProgramName");
         String providerFirstName = formSubmission.getFormData().getOrDefault("providerFirstName", "").toString();
         String providerLastName = formSubmission.getFormData().getOrDefault("providerLastName", "").toString();
         String providerCareProgramName = formSubmission.getFormData().getOrDefault("childCareProgramName", "").toString();
@@ -35,7 +34,7 @@ public class ValidateProviderName implements Action {
                 errorMessages.put("providerFirstName", List.of(messageSource.getMessage("provider-name.enter-full-name", null, locale)));
             }
             if (providerLastName.isBlank()) {
-                errorMessages.put("providerFirstName", List.of(messageSource.getMessage("provider-name.enter-full-name", null, locale)));
+                errorMessages.put("providerLastName", List.of(messageSource.getMessage("provider-name.enter-full-name", null, locale)));
             }
         } 
         else if (providerIsCareProgram) {

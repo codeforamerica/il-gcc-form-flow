@@ -176,7 +176,7 @@ flow:
     condition: SkipWhenEnableMultipleProvidersIsEnabled
     subflow: children
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
-    beforeSaveAction: SaveCCAPStartDate
+    onPostAction: SaveCCAPStartDate
     nextScreens:
       - name: children-childcare-weekly-schedule
   children-childcare-weekly-schedule:
@@ -229,13 +229,16 @@ flow:
     nextScreens:
       - name: providers-type
   providers-type:
+    subflow: providers
     nextScreens:
       - name: providers-name
   providers-name:
+    subflow: providers
+    onPostAction: SetFamilyIntendedProviderName
     crossFieldValidationAction: ValidateProviderName
     nextScreens:
       - name: providers-location
-  providers-info:
+  providers-location:
     condition: EnableMultipleProviders
     subflow: providers
     nextScreens:
@@ -712,7 +715,7 @@ flow:
 subflows:
   providers:
     entryScreen: providers-add
-    iterationStartScreen: providers-info
+    iterationStartScreen: providers-type
     reviewScreen: providers-add
     deleteConfirmationScreen: delete-provider
   children:

@@ -38,7 +38,7 @@
                               <li th:class="spacing-below-0"
                                   th:utext="${provider.familyIntendedProviderEmail}"></li>
                               <li class="text--small spacing-above-15 spacing-below-25 spacing-right-25">
-                                <a th:href="'/flow/' + ${flow} + '/providers-info/' + ${provider.uuid} + '/edit'"
+                                <a th:href="'/flow/' + ${flow} + '/providers-location/' + ${provider.uuid} + '/edit'"
                                    th:text="#{general.edit}"
                                    class="subflow-delete padding-right-25"
                                    th:id="'edit-iteration-' + ${provider.uuid}"></a>
@@ -64,7 +64,7 @@
                   </a>
                 </div>
                 <div th:if="${hasProviders}">
-                  <a th:href="'/flow/' + ${flow} + '/' + ${screen} + '/navigation'"
+                  <a th:href="'/flow/' + ${flow} + '/providers-info-confirm'"
                      th:text="#{providers-add.button.that-is-all}"
                      class="button spacing-left-0"
                      id="continue-link"></a>
