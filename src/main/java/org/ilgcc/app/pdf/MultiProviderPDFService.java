@@ -17,11 +17,9 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.ilgcc.app.pdf.helpers.FamilyIntendedProviderPreparerHelper;
-import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,7 +68,7 @@ public class MultiProviderPDFService {
     Map<String, byte[]> generateAdditionalProviderPDF(Submission familySubmission) throws IOException {
         Map<String, byte[]> additionalPDFs = new HashMap<>();
 
-        List<Map<String, Object>> providers = SubmissionUtilities.getProviders(submission.getInputData());
+        List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
 
         Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
                 getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
@@ -83,11 +81,11 @@ public class MultiProviderPDFService {
 
         if (providerSchedulesByUuid.size() > 1) {
             for (int i = 1; i < providerSchedulesByUuid.size(); i++) {
-                Map<String, Object> currentProvider = SubmissionUtilities.getCurrentProvider(submission.getInputData(),
+                Map<String, Object> currentProvider = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
                         providerSchedulesByUuid.get(i));
 
                 Map<String, SubmissionField> submissionFields = familyIntendedProviderPreparerHelper.prepareSubmissionFields(
-                        submission, currentProvider);
+                        familySubmission, currentProvider);
 
                 List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
                         mergedChildrenAndSchedules.get(providerSchedulesByUuid.get(i));
@@ -99,7 +97,7 @@ public class MultiProviderPDFService {
                                     listOfChildcareSchedulesForCurrentProvider.get(j),
                                     j + 1));
                 }
-                additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size() - 1),
+                additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size()),
                         getFilledOutPDF("src/main/resources/pdfs/IL-CCAP-Form-Additional-Provider.pdf",
                                 submissionFields.values().stream().toList()));
 

@@ -92,7 +92,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
                 if (null != providerUuid) {
                     Map<String, Object> firstProviderObject = new HashMap<>();
-                    if (providerUuid == "NO_PROVIDER") {
+                    if (providerUuid.equals("NO_PROVIDER")) {
                         firstProviderObject.put("uuid", "NO_PROVIDER");
                     } else {
                         firstProviderObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
