@@ -227,7 +227,14 @@ flow:
     beforeDisplayAction: SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations
     condition: EnableMultipleProviders
     nextScreens:
-      - name: providers-info-confirm
+      - name: providers-type
+  providers-type:
+    nextScreens:
+      - name: providers-name
+  providers-name:
+    crossFieldValidationAction: ValidateProviderName
+    nextScreens:
+      - name: providers-location
   providers-info:
     condition: EnableMultipleProviders
     subflow: providers

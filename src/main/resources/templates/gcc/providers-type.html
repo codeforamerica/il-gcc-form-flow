@@ -1,0 +1,29 @@
+<th:block
+  th:replace="~{fragments/inputs/overrides/screenWithOneInput ::
+  screenWithOneInput(
+    title=#{providers-type.title},
+    required=true,
+    iconFragment=~{fragments/gcc-icons :: care},
+    header=#{providers-type.header},
+    headerClasses='spacing-below-0',
+    inputName='providerType',
+    formAction=${formAction},
+    inputContent=~{::inputContent})}">
+  <th:block th:ref="inputContent">
+    <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                  radioFieldset(inputName='providerType',
+                  ariaLabel='header',
+                  content=~{::content})}">
+                  <th:block th:ref="content">
+                    <th:block
+                        th:replace="~{fragments/inputs/radio :: radio(inputName='providerType', value='Individual', 
+                        label=#{providers-type.option1}, 
+                        radioHelpText=#{providers-type.option1-help})}"/>
+                    <th:block
+                            th:replace="~{fragments/inputs/radio :: radio(inputName='providerType', value='Care Program', 
+                        label=#{providers-type.option2}, 
+                        radioHelpText=#{providers-type.option2-help})}"/>
+                  </th:block>
+                </th:block>
+  </th:block>
+</th:block>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(title=#{providers-name.title})}"></head>
+<body>
+<div class="page-wrapper">
+  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+  <section class="slab">
+    <div class="grid">
+      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+      <main th:with="providerIsIndividual=${@providerIsIndividual.run(submission)},
+                     providerIsCareProgram=${@providerIsCareProgram.run(submission)},
+                     subtext=${providerIsCareProgram} ? #{providers-name.at-least-one} : null,
+                     helpText=${providerIsCareProgram} ? #{providers-name.help-text} : null,"
+                     id="content" role="main" class="form-card spacing-above-35">
+        <th:block th:replace="~{fragments/gcc-icons :: care}"></th:block>
+        <th:block
+            th:replace="~{fragments/cardHeader :: cardHeader(required=${providerIsCareProgram}, header=#{providers-name.header}, subtext=${subtext})}"/>
+          <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::content})}">
+            <th:block th:ref="content">
+              <div class="form-card__content">
+                <th:block th:if="${providerIsCareProgram}">
+                  <th:block th:replace="~{fragments/inputs/text ::
+                  text(inputName='childCareProgramName',
+                  label=#{provider-name.care-program},
+                  helpText=#{provider-name.business-name})}"/>
+                </th:block>
+                <th:block th:replace="~{fragments/inputs/text ::
+                  text(inputName='providerFirstName',
+                  required=${providerIsIndividual},
+                  label=#{providers-name.first-name},
+                  helpText=${helpText})}"/>
+                <th:block th:replace="~{fragments/inputs/text ::
+                  text(inputName='providerLastName',
+                  required=${providerIsIndividual},
+                  label=#{providers-name.last-name},
+                  helpText=${helpText})}"/>
+              </div>
+            <div class="form-card__footer">
+              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
+                  text=#{general.inputs.continue})}"/>
+            </div>
+          </th:block>
+        </th:block>
+      </main>
+    </div>
+  </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}" />
+</body>
+</html>
