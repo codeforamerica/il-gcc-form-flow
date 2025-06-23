@@ -55,6 +55,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
                 .withFlow("gcc")
                 .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
                 .with("parentContactEmail", "familyemail@test.com")
+                .with("providerType", "Individual")
                 .with("languageRead", "English")
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withCCRR()
@@ -110,7 +111,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
     }
 
     @Test
-    void correctlySetsEmailTemplateData() {
+    void correctlySetsEmailTemplateDataWhenIndividualProvider() {
         Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
         ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
 
@@ -124,8 +125,8 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.provider-agrees-to-care.p1", new Object[]{"FirstName"}, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.provider-agrees-to-care.p2-program",
-                        new Object[]{"BusinessName"},
+                messageSource.getMessage("email.provider-agrees-to-care.p2-individual",
+                        new Object[]{"P.P."},
                         locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.provider-agrees-to-care.p3",
                 new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));

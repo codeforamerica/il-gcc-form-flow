@@ -45,14 +45,16 @@ public class ProviderAgreesToCareFamilyConfirmationEmailTemplate {
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
-        String p1 = messageSource.getMessage("email.provider-agrees-to-care.p1", new Object[]{emailData.get("parentFirstName")}, locale);
+        String p1 = messageSource.getMessage("email.provider-agrees-to-care.p1", new Object[]{emailData.get("parentFirstName")},
+                locale);
 
         String providerType = emailData.get("providerType").toString();
-        String providerName = emailData.get("providerName").toString();
-        String p2 = providerType.equals("individual") ? messageSource.getMessage(
-                "email.provider-agrees-to-care.p2-individual", new Object[]{providerName},
+        String programName = emailData.get("childCareProgramName").toString();
+        String childCareProviderInitials = emailData.get("childCareProviderInitials").toString();
+        String p2 = providerType.equals("Individual") ? messageSource.getMessage(
+                "email.provider-agrees-to-care.p2-individual", new Object[]{childCareProviderInitials},
                 locale) : messageSource.getMessage(
-                "email.provider-agrees-to-care.p2-program", new Object[]{providerName},
+                "email.provider-agrees-to-care.p2-program", new Object[]{programName},
                 locale);
 
         String p3 = messageSource.getMessage("email.provider-agrees-to-care.p3",

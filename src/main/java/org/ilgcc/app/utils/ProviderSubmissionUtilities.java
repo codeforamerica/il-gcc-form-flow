@@ -101,6 +101,10 @@ public class ProviderSubmissionUtilities {
         applicationData.put("providerResponseContactEmail",
                 providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
+        applicationData.put("childCareProgramName", providerSubmission.getInputData().getOrDefault("providerResponseBusinessName", ""));
+        applicationData.put("childCareProviderInitials", getInitials(providerSubmission.getInputData().getOrDefault(
+                "providerResponseFirstName", "").toString(),
+                providerSubmission.getInputData().getOrDefault("providerResponseLastName", "").toString()));
         applicationData.put("providerSubmissionId", providerSubmission.getId());
         applicationData.put("ccapStartDate",
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
@@ -137,7 +141,11 @@ public class ProviderSubmissionUtilities {
         Map<String, Object> data = subflowData == null ? familySubmission.getInputData() : subflowData;
         applicationData.put("familyIntendedProviderName", data.getOrDefault("familyIntendedProviderName", ""));
         applicationData.put("familyIntendedProviderEmail", data.getOrDefault("familyIntendedProviderEmail", ""));
-        applicationData.put("providerType", "Individual");
+        applicationData.put("providerType", data.getOrDefault("providerType", ""));
+        applicationData.put("childCareProgramName", data.getOrDefault("childCareProgramName", ""));
+        applicationData.put("childCareProviderInitials",
+                getInitials(data.getOrDefault("providerFirstName", "").toString(),
+                data.getOrDefault("providerLastName", "").toString()));
 
         return applicationData;
     }
@@ -350,9 +358,17 @@ public class ProviderSubmissionUtilities {
         for (var child : children) {
             String firstName = (String) child.get("childFirstName");
             String lastName = (String) child.get("childLastName");
-            childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
+            childrenInitials.add(getInitials(firstName, lastName));
         }
         return childrenInitials;
+    }
+
+    public static String getInitials(String firstName, String lastName) {
+        if(!firstName.isBlank() && !lastName.isBlank()){
+            return String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0));
+        }
+
+        return "n/a";
     }
 
     public static String formatListIntoReadableString(List<String> dataList, String joiner) {
