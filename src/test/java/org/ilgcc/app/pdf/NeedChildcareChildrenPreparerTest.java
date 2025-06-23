@@ -10,9 +10,9 @@ import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 
-public class NeedChildcareForChildrenPreparerTest {
+public class NeedChildcareChildrenPreparerTest {
 
-    NeedChildcareForChildren preparer = new NeedChildcareForChildren();
+    NeedChildcareChildrenPreparer preparer = new NeedChildcareChildrenPreparer(false);
 
     private Submission submission;
 
@@ -23,12 +23,86 @@ public class NeedChildcareForChildrenPreparerTest {
                 .withChild("Sixth", "Child", "true").build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("familySectionChildFirstName_1")).isEqualTo(new SingleField("familySectionChildFirstName", "First",
+                1));
+        assertThat(result.get("familySectionChildFirstName_2")).isEqualTo(new SingleField("familySectionChildFirstName", "Second",
+                2));
+        assertThat(result.get("familySectionChildFirstName_3")).isEqualTo(new SingleField("familySectionChildFirstName", "Third",
+                3));
+        assertThat(result.get("familySectionChildFirstName_4")).isEqualTo(new SingleField("familySectionChildFirstName", "Fourth",
+                4));
         assertThat(result.get("childFirstName_1")).isEqualTo(new SingleField("childFirstName", "First", 1));
         assertThat(result.get("childFirstName_2")).isEqualTo(new SingleField("childFirstName", "Second", 2));
         assertThat(result.get("childFirstName_3")).isEqualTo(new SingleField("childFirstName", "Third", 3));
         assertThat(result.get("childFirstName_4")).isEqualTo(new SingleField("childFirstName", "Fourth", 4));
         assertThat(result.get("childFirstName_5")).isEqualTo(null);
         assertThat(result.get("childFirstName_6")).isEqualTo(null);
+    }
+
+    @Test
+    public void generatesChildrenSchedule(){
+        submission = new SubmissionTestBuilder()
+                .withChild("First", "Child", "true")
+                .withConstantChildcareSchedule(0)
+                .withChild("Second", "Child", "true")
+                .withVaryingChildcareSchedule(1)
+                .build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        // Asserting the first child
+        assertThat(result.get("childCareScheduleMondayStart_1")).isEqualTo(
+                new SingleField("childCareScheduleMondayStart", "09:00", 1));
+        assertThat(result.get("childCareScheduleMondayStartAmPm_1")).isEqualTo(
+                new SingleField("childCareScheduleMondayStartAmPm", "AM", 1));
+
+        assertThat(result.get("childCareScheduleTuesdayStart_1")).isEqualTo(null);
+        assertThat(result.get("childCareScheduleTuesdayStartAmPm_1")).isEqualTo(null);
+
+        assertThat(result.get("childCareScheduleWednesdayStart_1")).isEqualTo(
+                new SingleField("childCareScheduleWednesdayStart", "09:00", 1));
+        assertThat(result.get("childCareScheduleWednesdayStartAmPm_1")).isEqualTo(
+                new SingleField("childCareScheduleWednesdayStartAmPm", "AM", 1));
+        assertThat(result.get("childCareScheduleMondayEnd_1")).isEqualTo(
+                new SingleField("childCareScheduleMondayEnd", "05:00", 1));
+        assertThat(result.get("childCareScheduleMondayEndAmPm_1")).isEqualTo(
+                new SingleField("childCareScheduleMondayEndAmPm", "PM", 1));
+        assertThat(result.get("childCareScheduleWednesdayEnd_1")).isEqualTo(
+                new SingleField("childCareScheduleWednesdayEnd", "05:00", 1));
+        assertThat(result.get("childCareScheduleWednesdayEndAmPm_1")).isEqualTo(
+                new SingleField("childCareScheduleWednesdayEndAmPm", "PM", 1));
+
+        // Asserting the second child
+        assertThat(result.get("childCareScheduleMondayStart_2")).isEqualTo(null);
+        assertThat(result.get("childCareScheduleMondayStartAmPm_2")).isEqualTo(null);
+
+        assertThat(result.get("childCareScheduleTuesdayStart_2")).isEqualTo(
+                new SingleField("childCareScheduleTuesdayStart", "09:00", 2));
+        assertThat(result.get("childCareScheduleTuesdayStartAmPm_2")).isEqualTo(
+                new SingleField("childCareScheduleTuesdayStartAmPm", "AM", 2));
+        assertThat(result.get("childCareScheduleTuesdayEnd_2")).isEqualTo(
+                new SingleField("childCareScheduleTuesdayEnd", "12:00", 2));
+        assertThat(result.get("childCareScheduleTuesdayEndAmPm_2")).isEqualTo(
+                new SingleField("childCareScheduleTuesdayEndAmPm", "PM", 2));
+
+        assertThat(result.get("childCareScheduleWednesdayStart_2")).isEqualTo(
+                new SingleField("childCareScheduleWednesdayStart", "01:00", 2));
+        assertThat(result.get("childCareScheduleWednesdayStartAmPm_2")).isEqualTo(
+                new SingleField("childCareScheduleWednesdayStartAmPm", "PM", 2));
+        assertThat(result.get("childCareScheduleWednesdayEnd_2")).isEqualTo(
+                new SingleField("childCareScheduleWednesdayEnd", "03:00", 2));
+        assertThat(result.get("childCareScheduleWednesdayEndAmPm_2")).isEqualTo(
+                new SingleField("childCareScheduleWednesdayEndAmPm", "PM", 2));
+
+        assertThat(result.get("childCareScheduleSaturdayStart_2")).isEqualTo(
+                new SingleField("childCareScheduleSaturdayStart", "01:13", 2));
+        assertThat(result.get("childCareScheduleSaturdayStartAmPm_2")).isEqualTo(
+                new SingleField("childCareScheduleSaturdayStartAmPm", "PM", 2));
+        assertThat(result.get("childCareScheduleSaturdayEnd_2")).isEqualTo(
+                new SingleField("childCareScheduleSaturdayEnd", "03:10", 2));
+        assertThat(result.get("childCareScheduleSaturdayEndAmPm_2")).isEqualTo(
+                new SingleField("childCareScheduleSaturdayEndAmPm", "PM", 2));
+
     }
 
     @Test

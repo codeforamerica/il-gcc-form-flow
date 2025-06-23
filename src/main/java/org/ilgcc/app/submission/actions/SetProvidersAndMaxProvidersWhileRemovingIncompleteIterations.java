@@ -40,7 +40,7 @@ public class SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations implem
 
   private int getMaxProvidersAllowed(Submission submission) {
     // Families with only 1 child never get to see the screen that would set choseProviderForEveryChildInNeedOfCare
-    if ("true".equals(submission.getInputData().get("choseProviderForEveryChildInNeedOfCare")) || getChildrenNeedingAssistance(submission).size() == 1) {
+    if ("true".equals(submission.getInputData().get("choseProviderForEveryChildInNeedOfCare")) || getChildrenNeedingAssistance(submission.getInputData()).size() == 1) {
       return 3;
     } else {
       return 2;

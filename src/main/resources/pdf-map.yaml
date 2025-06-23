@@ -177,6 +177,17 @@ dbFields:
   submittedAt: APPLICANT_SIGNATURE_DATE
 
 subflowInfo:
+  ccapFamilyMembers:
+    totalIterations: 4
+    inputFields:
+      familySectionChildFirstName: FAMILY_SECTION_CHILD_NAME_FIRST
+      familySectionChildLastName: FAMILY_SECTION_CHILD_NAME_LAST
+      childDateOfBirth: CHILD_DOB
+      childGender: CHILD_GENDER
+      childRaceEthnicity: CHILD_ETHNIC_ORIGIN
+      familySectionChildRelationship: FAMILY_SECTION_CHILD_RELATIONSHIP_TO_PARENT
+      childSpecialNeeds: CHILD_SPECIAL_NEEDS
+      childUSCitizen: CHILD_US_CITIZEN
   otherFamilyMembers:
     totalIterations: 5
     inputFields:
@@ -184,18 +195,13 @@ subflowInfo:
       familyMemberLastName: FAMILY_MEMBER_NAME_LAST
       familyMemberDateOfBirth: FAMILY_MEMBER_DOB
       familyMemberRelationship: FAMILY_MEMBER_RELATIONSHIP
-  needChildcareForChildren:
+  needChildCareChildren:
     totalIterations: 4
     inputFields:
       childFirstName: CHILD_NAME_FIRST
       childLastName: CHILD_NAME_LAST
-      childDateOfBirth: CHILD_DOB
-      childGender: CHILD_GENDER
-      childRaceEthnicity: CHILD_ETHNIC_ORIGIN
-      childSpecialNeeds: CHILD_SPECIAL_NEEDS
-      childUSCitizen: CHILD_US_CITIZEN
-      childCareChildInSchool: CHILD_CARE_CHILD_IN_SCHOOL
       childRelationship: CHILD_RELATIONSHIP_TO_PARENT
+      childCareChildInSchool: CHILD_CARE_CHILD_IN_SCHOOL
       childOtherEdHoursDescription: CHILD_CARE_CHILD_SCHOOL_HOURS
       childCareScheduleMondayStart: CHILD_CARE_SCHEDULE_MONDAY_START
       childCareScheduleMondayStartAmPm: CHILD_CARE_SCHEDULE_MONDAY_START_AM_PM
