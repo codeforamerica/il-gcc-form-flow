@@ -265,11 +265,16 @@ public class SubmissionUtilities {
     }
 
     /**
-     * This method generates a suffix that can be added to the end of a message string to indicate if a providerSchedule includes whether
-     * the provider has already started care.
-     * @param currentProvider - The current providerSchedule
-     * @return TRUE: a String <strong>already-started</strong>
-     * FALSE: A String <strong>not-started</strong>
+     * Generates a suffix to append to a message string indicating the type of header based on whether the iteration is a no provider
+     * iteration.  When there is a provider, is that child in care determines the suffix returned
+     *
+     * @param currentProvider the current provider schedule
+     * @return a string representing the care status:
+     *         <ul>
+     *             <li><strong>"already-started"</strong> if {@code childInCare} is {@code true}</li>
+     *             <li><strong>"not-started"</strong> if {@code childInCare} is {@code false}</li>
+     *             <li><strong>"no-provider"</strong> if {@code repeatForValue} is {@code NO_PROVIDER}</li>
+     *         </ul>
      */
     public static String getSuffixForMessagesWhereChildIsInCare(Map<String, Object> currentProvider) {
         if (currentProvider.containsKey("repeatForValue")) {
