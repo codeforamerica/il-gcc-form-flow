@@ -57,7 +57,7 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
 
         results.put("providerMailingStreetAddress1",
                 new SingleField("providerMailingStreetAddress1",
-                        inputData.getOrDefault("familyIntendedProviderCity", "").toString(), null));
+                        inputData.getOrDefault("familyIntendedProviderAddress", "").toString(), null));
 
         results.put("providerMailingCity",
                 new SingleField("providerMailingCity",
