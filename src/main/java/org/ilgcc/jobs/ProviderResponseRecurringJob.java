@@ -28,6 +28,7 @@ import org.jobrunr.jobs.annotations.Recurring;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Deprecated
 @Slf4j
 @Service
 public class ProviderResponseRecurringJob {

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+@Deprecated
 @Slf4j
 @Component
 public class EnqueueDocumentTransfer {
@@ -27,6 +28,7 @@ public class EnqueueDocumentTransfer {
 
     private final static String CONTENT_TYPE = "application/pdf";
 
+    @Deprecated
     public void enqueuePDFDocumentBySubmission(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob, Submission submission, String fileNameForPdf) {
         try {
@@ -59,6 +61,7 @@ public class EnqueueDocumentTransfer {
 
     }
 
+    @Deprecated
     public void enqueueUploadedDocumentBySubmission(UserFileRepositoryService userFileRepositoryService,
             UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob, S3PresignService s3PresignService,
             Submission submission) {
