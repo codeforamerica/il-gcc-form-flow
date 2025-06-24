@@ -73,15 +73,11 @@ public class CCMSTransactionPayloadService {
                 byte[] fileContent = entry.getValue();
 
                 if (fileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))) {
-                    TransactionFile applicationPdfJSON = new TransactionFile(
-                            fileName,
-                            FileTypeId.APPLICATION_PDF.getValue(),
+                    TransactionFile applicationPdfJSON = new TransactionFile(fileName, FileTypeId.APPLICATION_PDF.getValue(),
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(applicationPdfJSON);
                 } else {
-                    TransactionFile applicationPdfJSON = new TransactionFile(
-                            fileName,
-                            FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                    TransactionFile applicationPdfJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(),
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(applicationPdfJSON);
                 }
@@ -94,17 +90,14 @@ public class CCMSTransactionPayloadService {
         }
 
         List<UserFile> allFiles = new ArrayList<>();
-        if (familySubmission.getInputData().
-
-                containsKey("providerResponseSubmissionId")) {
+        if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
             submissionRepositoryService.findById(
-                            UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()))
-                    .ifPresent(providerSubmission -> allFiles.addAll(
+                    UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString())).ifPresent(
+                    providerSubmission -> allFiles.addAll(
                             userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")));
         }
         allFiles.addAll(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf"));
-        for (
-                int i = 0; i < allFiles.size(); i++) {
+        for (int i = 0; i < allFiles.size(); i++) {
             UserFile userFile = allFiles.get(i);
             CloudFile cloudFile;
             try {
@@ -123,12 +116,9 @@ public class CCMSTransactionPayloadService {
                 continue;
             }
 
-            transactionFiles.add(
-                    new TransactionFile(
-                            FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
-                            FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                            Base64.getEncoder().encodeToString(cloudFile.getFileBytes())
-                    ));
+            transactionFiles.add(new TransactionFile(
+                    FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
+                    FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes())));
         }
 
         return transactionFiles;
