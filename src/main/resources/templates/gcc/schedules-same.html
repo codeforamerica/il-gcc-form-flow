@@ -1,28 +1,31 @@
-<!DOCTYPE html>
-<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head(title='TEMPLATE')}"></head>
-<body>
-<div class="page-wrapper">
-  <div th:replace="~{fragments/toolbar :: toolbar}"></div>
-  <section class="slab">
-    <div class="grid">
-      <div th:replace="~{fragments/goBack :: goBackLink}"></div>
-      <main id="content" role="main" class="form-card spacing-above-35">
-        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{placeholder}, subtext=#{placeholder})}"/>
-        <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
-          <th:block th:ref="formContent">
-            <div class="form-card__content">
-                <!-- Put inputs here -->
-            </div>
-            <div class="form-card__footer">
-              <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-            </div>
-          </th:block>
-        </th:block>
-      </main>
-    </div>
-  </section>
-</div>
-<th:block th:replace="~{fragments/footer :: footer}"/>
-</body>
-</html>
+<th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
+                   provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, repeatForIteration.get('repeatForValue').toString())},
+                   noProvider=${repeatForIteration.get('repeatForValue').equals('NO_PROVIDER')},
+                   providerName=${noProvider ? #messages.msg('general.schedules.header.no-provider') : provider.get('familyIntendedProviderName')}">
+  <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
+    subflowScreenWithOneInput(
+      title=#{schedules-same.title},
+      header=${noProvider ? #messages.msg('schedules-same.header.no-provider') : #messages.msg(schedules-same.header.with-provider, providerName)},
+      headerName=${providerName},
+      formAction=${formAction},
+      buttonLabel=#{'general.inputs.continue'},
+      inputContent=~{::inputContent})}">
+    <th:block th:ref="inputContent">
+      <th:block th:ref="formContent">
+        <div class="form-card__content">
+          <th:block th:replace="~{fragments/inputs/radioFieldset ::
+                        radioFieldset(inputName='sameSchedule',
+                        label=${noProvider ? #messages.msg(schedules-same.header.no-provider) :  #messages.msg(schedules-same.checkbox-header.with-provider, providerName, childName)},
+                        content=~{::sameScheduleInput})}">
+                        <th:block th:ref="sameScheduleInput">
+                          <th:block
+                              th:replace="~{fragments/inputs/radio :: radio(inputName='sameSchedule', value='true', label=#{schedules-same.checkbox.yes)}"/>
+                          <th:block
+                              th:replace="~{fragments/inputs/radio :: radio(inputName='sameSchedule', value='false', label=#{schedules-same.checkbox.no)}"/>
+                        </th:block>
+                      </th:block>
+        </div>
+      </th:block>
+    </th:block>
+  </th:block>
+</th:block>
