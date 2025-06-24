@@ -176,7 +176,7 @@ flow:
     condition: SkipWhenEnableMultipleProvidersIsEnabled
     subflow: children
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
-    onPostAction: SaveCCAPStartDate
+    beforeSaveAction: SaveCCAPStartDate
     nextScreens:
       - name: children-childcare-weekly-schedule
   children-childcare-weekly-schedule:
