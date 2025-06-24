@@ -1,10 +1,13 @@
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
-provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, repeatForIteration.get('repeatForValue').toString())},
-                    providerName=${repeatForIteration.get('repeatForValue').equals('NO_PROVIDER') ? #messages.msg('schedules-review.no-provider') : provider.get('familyIntendedProviderName')}">
+                   provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, repeatForIteration.get('repeatForValue').toString())},
+                   noProvider=${repeatForIteration.get('repeatForValue').equals('NO_PROVIDER')},
+                   providerName=${noProvider ? #messages.msg('general.schedules.header.no-provider') : provider.get('familyIntendedProviderName')},
+                   suffix=${T(org.ilgcc.app.utils.SubmissionUtilities).getSuffixForMessagesWhereChildIsInCare(repeatForIteration)},
+                   messagePropertyString=${T(org.ilgcc.app.utils.SubmissionUtilities).generateMessageKey('schedules-days.header', suffix)}">
     <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-days.title},
-      header=#{schedules-days.header.already-started(${providerName}, ${childName})},
+      header=${noProvider ? #messages.msg(messagePropertyString, childName) : #messages.msg(messagePropertyString, providerName, childName)},
       headerName=${providerName},
       formAction=${formAction},
       required='true',

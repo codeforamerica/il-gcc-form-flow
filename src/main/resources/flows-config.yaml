@@ -256,6 +256,7 @@ flow:
   schedules-start:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
+    onPostAction: UpdateCurrentChildcareProviderIfOneOrNoProviders
     nextScreens:
       - name: schedules-start-care
   schedules-start-care:
@@ -738,8 +739,9 @@ subflows:
     relationship:
       relatesTo: children
       relationAlias: childUuid
+      filter: ChildrenInNeedOfChildCare
       repeatFor:
-        inputName: currentChildcareProvider
+        inputName: childcareProvidersForCurrentChild
         saveDataAs: providerSchedules
     entryScreen: schedules-intro
     iterationStartScreen: schedules-start
