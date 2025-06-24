@@ -227,8 +227,18 @@ flow:
     beforeDisplayAction: SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations
     condition: EnableMultipleProviders
     nextScreens:
-      - name: providers-info-confirm
-  providers-info:
+      - name: providers-type
+  providers-type:
+    subflow: providers
+    nextScreens:
+      - name: providers-name
+  providers-name:
+    subflow: providers
+    onPostAction: SetFamilyIntendedProviderName
+    crossFieldValidationAction: ValidateProviderName
+    nextScreens:
+      - name: providers-location
+  providers-location:
     condition: EnableMultipleProviders
     subflow: providers
     nextScreens:
@@ -705,7 +715,7 @@ flow:
 subflows:
   providers:
     entryScreen: providers-add
-    iterationStartScreen: providers-info
+    iterationStartScreen: providers-type
     reviewScreen: providers-add
     deleteConfirmationScreen: delete-provider
   children:

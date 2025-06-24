@@ -45,8 +45,24 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
             Boolean providerApplicationExpired) {
         Map<String, SubmissionField> results = new HashMap<>();
 
-        results.put("providerResponseBusinessName", new SingleField("providerResponseBusinessName",
-                inputData.getOrDefault("familyIntendedProviderName", "").toString(), null));
+        String familyIntendedProviderName = inputData.getOrDefault("familyIntendedProviderName", "").toString();
+
+        String childCareProgramName = inputData.getOrDefault("childCareProgramName", "").toString();
+
+        if (!familyIntendedProviderName.isEmpty()) {
+            results.put("providerResponseBusinessName", new SingleField("providerResponseBusinessName",
+                    familyIntendedProviderName, null));
+        }
+
+        if (!childCareProgramName.isEmpty()) {
+            results.put("providerResponseBusinessName", new SingleField("providerResponseBusinessName",
+                    childCareProgramName, null));
+        }
+
+        results.put("providerResponseFirstName", new SingleField("providerResponseFirstName",
+                inputData.getOrDefault("providerFirstName", "").toString(), null));
+        results.put("providerResponseLastName", new SingleField("providerResponseLastName",
+                inputData.getOrDefault("providerLastName", "").toString(), null));
         results.put("providerResponseContactPhoneNumber",
                 new SingleField("providerResponseContactPhoneNumber",
                         inputData.getOrDefault("familyIntendedProviderPhoneNumber", "").toString(),

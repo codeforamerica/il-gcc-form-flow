@@ -53,7 +53,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
                 .withFlow("gcc")
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
                 .withDayCareProvider()
-                .with("familyIntendedProviderName", FAM_INTENDED_PROVIDER_NAME)
+                .with("childCareProgramName", FAM_INTENDED_PROVIDER_NAME)
                 .with("familyIntendedProviderPhoneNumber", FAM_INTENDED_PROVIDER_PHONE)
                 .with("familyIntendedProviderEmail", FAM_INTENDED_PROVIDER_EMAIL)
                 .build();

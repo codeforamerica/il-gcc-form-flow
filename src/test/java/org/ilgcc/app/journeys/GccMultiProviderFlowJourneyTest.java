@@ -250,16 +250,41 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
-
-        //providers-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info.header"));
+        
+        //providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Individual");
+        testPage.clickContinue();
+        
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        assertThat(testPage.elementDoesNotExistById("childCareProgramName")).isTrue();
+        assertThat(testPage.findElementById("providerFirstName")).isNotNull();
+        assertThat(testPage.findElementById("providerLastName")).isNotNull();
+        
+        // Go back and Select Care Program
+        testPage.goBack();
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+        
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        assertThat(testPage.findElementById("childCareProgramName")).isNotNull();
+        assertThat(testPage.findElementById("providerFirstName")).isNotNull();
+        assertThat(testPage.findElementById("providerLastName")).isNotNull();
+        testPage.enter("childCareProgramName", "ACME Daycare");
         testPage.clickContinue();
 
+        //providers-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-location.header"));
+        testPage.clickContinue();
+        
+        
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-street"))).isTrue();
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-city"))).isTrue();
-
-        testPage.enter("familyIntendedProviderName", "ACME Daycare");
+        
         testPage.enter("familyIntendedProviderAddress", "101 Test St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
@@ -287,9 +312,18 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
         //Second Iteration
+        // providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+        
+        // providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "Nope Test");
+        testPage.clickContinue();
+        
         //provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-        testPage.enter("familyIntendedProviderName", "Nope Test");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         testPage.enter("familyIntendedProviderAddress", "151 Second St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
@@ -492,16 +526,25 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        
+        //providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+        
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "ACME Daycare");
+        testPage.clickContinue();
 
-        //providers-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info.header"));
+        //providers-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-location.header"));
         testPage.clickContinue();
 
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-street"))).isTrue();
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-city"))).isTrue();
 
-        testPage.enter("familyIntendedProviderName", "ACME Daycare");
         testPage.enter("familyIntendedProviderAddress", "101 Test St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
@@ -529,9 +572,18 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
         //Second Iteration
-        //provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-        testPage.enter("familyIntendedProviderName", "Nope Test");
+        // providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+        
+        // providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "Nope Test");
+        testPage.clickContinue();
+
+        //provider-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         testPage.enter("familyIntendedProviderAddress", "151 Second St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
@@ -551,9 +603,19 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
         //Third Iteration
-        //provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-        testPage.enter("familyIntendedProviderName", "Third Provider");
+        //providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+        
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "Third Provider");
+        testPage.clickContinue();
+        
+        
+        //provider-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         testPage.enter("familyIntendedProviderAddress", "441 Third St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
@@ -595,10 +657,19 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        
+        //provider-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+        
+        //provider-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "Nope Test");
+        testPage.clickContinue();
 
-        //provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-        testPage.enter("familyIntendedProviderName", "Nope Test");
+        //provider-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         testPage.enter("familyIntendedProviderAddress", "151 Second St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
@@ -648,11 +719,20 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        
+        //providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+        
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "First Daycare");
+        testPage.clickContinue();
 
-        //providers-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+        //providers-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
 
-        testPage.enter("familyIntendedProviderName", "First Daycare");
         testPage.enter("familyIntendedProviderAddress", "222 Test St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
@@ -687,9 +767,18 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
         //Second Iteration
+        //provider-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+        
+        //provider-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "No Provider");
+        testPage.clickContinue();
+        
         //provider-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-        testPage.enter("familyIntendedProviderName", "No Provider");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         testPage.enter("familyIntendedProviderAddress", "323 Second St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
@@ -707,10 +796,21 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
         testPage.clickLink(getEnMessage("general.edit"));
+        
+        //providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        assertThat(testPage.findElementById("providerType-Care Program").isSelected()).isTrue();
+        testPage.clickContinue();
+        
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        assertThat(testPage.getInputValue("childCareProgramName")).isEqualTo("First Daycare");
+        testPage.clickContinue();
+        
+        //providers-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
+        assertThat(testPage.getInputValue("familyIntendedProviderAddress")).isEqualTo("222 Test St");
 
-        //providers-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
-        assertThat(testPage.getInputValue("familyIntendedProviderName")).isEqualTo("First Daycare");
         testPage.clickContinue();
 
         //providers-contact-info
@@ -773,10 +873,18 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
-        //providers-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info.title"));
+        //providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
 
-        testPage.enter("familyIntendedProviderName", "First Daycare");
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "First Daycare");
+        testPage.clickContinue();
+
+        //providers-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         testPage.enter("familyIntendedProviderAddress", "222 Test St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");

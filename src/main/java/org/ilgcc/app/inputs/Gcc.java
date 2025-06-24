@@ -667,4 +667,13 @@ public class Gcc extends FlowInputs {
 
     @NotEmpty
     private List<String> childcareProvidersForCurrentChild;
+
+    // providers-type
+    @NotBlank(message = "{errors.select-one-option}")
+    private String providerType;
+
+    // providers-name
+    private String childCareProgramName;
+    private String providerFirstName;
+    private String providerLastName;
 }

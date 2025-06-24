@@ -1,0 +1,15 @@
+<header th:classappend="${headerClasses}"
+        th:fragment="cardHeaderForSingleInputScreen"
+        th:with="
+    hasSubtext=${!#strings.isEmpty(subtext)},
+    requiredInputsForFlow=${requiredInputs.get(flow)},
+      isRequiredInput=${(requiredInputsForFlow != null && inputName != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)}"
+        th:assert="${!#strings.isEmpty(header)}"
+        class="form-card__header">
+  <h1 id="header" class="h2">
+    <span th:text="${header + ' '}"></span><span th:if="${isRequiredInput}" class="required-input" th:text="#{general.required-field}"></span>
+  </h1>
+  <p id="header-help-message"
+     th:if="${hasSubtext}"
+     th:utext="${subtext}"></p>
+</header>
