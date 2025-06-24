@@ -666,5 +666,5 @@ public class Gcc extends FlowInputs {
     private String familyIntendedProviderState;
 
     @NotEmpty
-    private List<String> currentChildcareProvider;
+    private List<String> childcareProvidersForCurrentChild;
 }

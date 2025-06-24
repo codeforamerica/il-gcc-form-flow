@@ -18,14 +18,14 @@ public class UpdateCurrentChildcareProviderIfOneOrNoProviders implements Action 
     public void run(FormSubmission formSubmission, Submission submission, String id) {
         List<Map<String, Object>> providers = (List<Map<String, Object>>) submission.getInputData()
             .getOrDefault("providers", emptyList());
-        List<String> currentChildcareProviders = new ArrayList<>();
+        List<String> childcareProvidersForCurrentChild = new ArrayList<>();
         if (providers.size() <= 1) {
             if (providers.isEmpty()) {
-                currentChildcareProviders.add("NO_PROVIDER");
+                childcareProvidersForCurrentChild.add("NO_PROVIDER");
             } else {
-                currentChildcareProviders.add(providers.getFirst().getOrDefault("uuid", "").toString());
+                childcareProvidersForCurrentChild.add(providers.getFirst().getOrDefault("uuid", "").toString());
             }
-            formSubmission.getFormData().putIfAbsent("currentChildcareProvider[]", currentChildcareProviders);
+            formSubmission.getFormData().put("childcareProvidersForCurrentChild[]", childcareProvidersForCurrentChild);
         }
     }
 }

@@ -16,7 +16,7 @@
             <!-- Copy the below input if you want to add more -->
             <th:block th:if="${hasMoreThanOneProvider}">
                 <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
-        checkboxFieldset(inputName='currentChildcareProvider',
+        checkboxFieldset(inputName='childcareProvidersForCurrentChild',
         label=#{schedules-start.select-provider(${childName})},
         fieldsetHelpText=${#messages.msg('general.select-all-that-apply')},
         content=~{::providers})}">
@@ -24,11 +24,11 @@
                         <th:block
                                 th:each="provider : ${submission.getInputData().get('providers')}">
                             <th:block
-                                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='currentChildcareProvider',value=${provider.get('uuid')}, label=${provider.get('familyIntendedProviderName')})}"/>
+                                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareProvidersForCurrentChild',value=${provider.get('uuid')}, label=${provider.get('familyIntendedProviderName')})}"/>
                         </th:block>
                         <th:block>
                             <th:block
-                                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='currentChildcareProvider',value='NO_PROVIDER', label=#{schedules-start.no-provider})}"/>
+                                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareProvidersForCurrentChild',value='NO_PROVIDER', label=#{schedules-start.no-provider})}"/>
                         </th:block>
                     </th:block>
                 </th:block>
