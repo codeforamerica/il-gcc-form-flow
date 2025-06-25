@@ -809,6 +809,7 @@ flow:
         condition: EnableMultipleProviders
       - name: paid-by-ccap
   multiple-providers:
+    beforeDisplayAction: SetProvidersData
     nextScreens:
       - name: confirm-provider
   confirm-provider:

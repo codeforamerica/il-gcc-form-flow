@@ -76,6 +76,16 @@ public class ProviderSubmissionUtilities {
         return Optional.empty();
     }
 
+    public static Optional<String> getFamilySubmissionByShortCode(Submission providerSubmission) {
+        if (providerSubmission.getInputData().containsKey("providerResponseFamilyShortCode")) {
+            String providerResponseFamilyShortCode = (String) providerSubmission.getInputData().get(
+                    "providerResponseFamilyShortCode");
+            return Optional.of(providerResponseFamilyShortCode);
+        }
+
+        return Optional.empty();
+    }
+
     public static Map<String, String> getFamilySubmissionForProviderResponse(Optional<Submission> familySubmission) {
         Map<String, String> applicationData = new HashMap<>();
 
@@ -140,6 +150,63 @@ public class ProviderSubmissionUtilities {
         applicationData.put("familyIntendedProviderEmail", data.getOrDefault("familyIntendedProviderEmail", ""));
 
         return applicationData;
+    }
+
+    public static List<Map<String, Object>> getMultipleProviderDataForProviderResponse(Submission familySubmission) {
+        List<Map<String, Object>> displayProviders = new ArrayList<>();
+
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
+                .getOrDefault("providers",
+                        Collections.EMPTY_LIST);
+
+        if (!providers.isEmpty()) {
+            for (var provider : providers) {
+                Map<String, Object> providerObject = new HashMap<>();
+                providerObject.put("uuid", provider.get("uuid"));
+
+                String providerType = provider.get("providerType").toString();
+                if (providerType.equals("Individual")) {
+                    providerObject.put("displayName", getInitials(provider.getOrDefault("providerFirstName", "").toString(),
+                            provider.getOrDefault(
+                                    "providerLastName", "").toString()));
+                    providerObject.put("location", String.format("%s, %s", provider.getOrDefault("familyIntendedProviderCity",
+                            "").toString(), provider.getOrDefault("familyIntendedProviderState",
+                            "").toString()));
+                    providerObject.put("providerType", provider.get("providerType"));
+
+                    displayProviders.add(providerObject);
+                } else {
+                    providerObject.put("displayName", provider.getOrDefault("familyIntendedProviderName", ""));
+                    providerObject.put("location", String.format("%s<br/>%s, %s", provider.getOrDefault(
+                            "familyIntendedProviderAddress",
+                            "").toString(), provider.getOrDefault(
+                            "familyIntendedProviderCity",
+                            "").toString(), provider.getOrDefault("familyIntendedProviderState",
+                            "").toString()));
+                    providerObject.put("providerType", provider.get("providerType"));
+                    displayProviders.add(providerObject);
+                }
+            }
+        }
+
+        return displayProviders;
+    }
+
+    public static Map<String, Object> getCurrentProvider(Submission providerSubmission){
+        String currentProviderUuid = providerSubmission.getInputData().getOrDefault("currentProviderUuid", "").toString();
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) providerSubmission.getInputData().getOrDefault("providersData",
+                Collections.EMPTY_LIST);
+
+        Optional<Map<String, Object>> currentProvider = Optional.empty();
+        if(!currentProviderUuid.isBlank() && !providers.isEmpty()){
+            currentProvider = providers.stream().filter(provider -> provider.get("uuid").equals(currentProviderUuid)).findFirst();
+        }
+
+        if(currentProvider.isPresent()){
+            return currentProvider.get();
+        } else {
+            return null;
+        }
     }
 
     public static List<Map<String, Object>> getChildrenDataForProviderResponse(Submission applicantSubmission) {
@@ -376,5 +443,13 @@ public class ProviderSubmissionUtilities {
             return providerResponseBusinessName;
         }
         return (String) providerSubmission.getInputData().getOrDefault("providerResponseFirstName", "");
+    }
+
+    public static String getInitials(String firstName, String lastName) {
+        if (!firstName.isBlank() && !lastName.isBlank()) {
+            return String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0));
+        }
+
+        return "n/a";
     }
 }
