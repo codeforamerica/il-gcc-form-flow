@@ -123,7 +123,7 @@ public class SchedulePreparerUtility {
         Optional<Map<String, Object>> currentIteration = nestedIterations.stream()
                 .filter(iteration -> iteration.get("uuid").equals(subflowUUID)).findFirst();
 
-        return currentIteration.isPresent() ? currentIteration.get() : null;
+        return currentIteration.orElse(null);
     }
 
     public static Map<String, List<Map<String, Object>>> getRelatedChildrenSchedulesForProvider(Map<String, Object> inputData) {
