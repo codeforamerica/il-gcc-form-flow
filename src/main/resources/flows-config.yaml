@@ -816,7 +816,12 @@ flow:
   confirm-provider:
     condition: EnableMultipleProviders
     nextScreens:
+      - name: error-response-recorded
+        condition: HasProviderResponse
       - name: paid-by-ccap
+  error-response-recorded:
+    condition: EnableMultipleProviders
+    nextScreens: null
   paid-by-ccap:
     nextScreens:
       - name: provider-info

@@ -8,9 +8,9 @@ public enum ProviderSubmissionStatus {
     ACTIVE("care", "provider-response-submit-start.active.header", "provider-response-submit-start.active.notice",
             "provider-response-submit-start.active.button"),
     EXPIRED("orange-clock", "provider-response-submit-start.expired.header", "provider-response-submit-start.expired.notice",
-            "provider-response-submit-start.expired.button"),
+            "general.button.return.home"),
     RESPONDED("documents-check", "provider-response-submit-start.responded.header",
-            "provider-response-submit-start.responded.notice", "provider-response-submit-start.responded.button");
+            "provider-response-submit-start.responded.notice", "general.button.return.home");
 
     private final String icon;
     private final String headerLabel;
