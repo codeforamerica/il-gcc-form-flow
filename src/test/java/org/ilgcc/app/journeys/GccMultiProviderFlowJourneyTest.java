@@ -496,6 +496,30 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         // after-submit-contact-provider
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("after-submit-contact-provider.multiple-providers.title"));
         testPage.clickContinue();
+
+        // contact-providers iteration #1
+        assertThat(testPage.getHeader()).isEqualTo(getRequiredEnMessageWithParams("contact-providers-start.header",  new Object[]{"ACME Daycare"}));
+        testPage.clickElementById("contactProviderMethod-OTHER-label");
+        testPage.clickContinue();
+
+        assertThat(testPage.getHeader()).contains(getEnMessageWithParams("contact-providers-share-code.header",  new Object[]{"ACME Daycare", ""}).trim());
+        testPage.clickContinue();
+
+        // contact-providers iteration #2
+        assertThat(testPage.getHeader()).isEqualTo(getRequiredEnMessageWithParams("contact-providers-start.header",  new Object[]{"Nope Test"}));
+        testPage.clickElementById("contactProviderMethod-OTHER-label");
+        testPage.clickContinue();
+
+        assertThat(testPage.getHeader()).contains(getEnMessageWithParams("contact-providers-share-code.header",  new Object[]{"Nope Test", ""}).trim());
+        testPage.clickContinue();
+
+        // contact-providers-review
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("contact-providers-review.header"));
+        testPage.clickContinue();
+
+        // doc-upload-recommended-docs
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("doc-upload-recommended-docs.header"));
+
     }
 
     @Test
