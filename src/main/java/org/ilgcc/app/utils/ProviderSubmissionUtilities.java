@@ -12,6 +12,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -203,7 +204,7 @@ public class ProviderSubmissionUtilities {
     }
 
     public static Map<String, String> hoursRequested(Map<String, Object> child) {
-        List<String> sameHoursEveryday = (List) child.get("childcareHoursSameEveryDay[]");
+        List<String> sameHoursEveryday = (List) child.getOrDefault("childcareHoursSameEveryDay[]", Collections.EMPTY_LIST);
         List<String> daysRequested = (List) child.get("childcareWeeklySchedule[]");
         Map<String, String> dates = new LinkedHashMap<>();
         for (String day : daysRequested) {
