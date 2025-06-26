@@ -228,7 +228,7 @@ public class ProviderSubmissionUtilities {
         childObject.put("childName", String.format("%s %s", firstName, lastName));
         childObject.put("childAge", childAge(child));
         childObject.put("childCareHours", hoursRequested(child));
-        childObject.put("childStartDate", child.get("ccapStartDate"));
+        childObject.put("childStartDate", child.getOrDefault("ccapStartDate", "n/a"));
         return childObject;
     }
 
