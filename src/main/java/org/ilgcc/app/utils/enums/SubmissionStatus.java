@@ -8,8 +8,7 @@ public enum SubmissionStatus {
     ACTIVE(true),
     EXPIRED(false),
     RESPONDED(false),
-    INACTIVE(false),
-    INCOMPLETE(true);
+    INACTIVE(false);
 
     private final boolean isActive;
 

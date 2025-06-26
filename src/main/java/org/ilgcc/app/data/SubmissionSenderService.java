@@ -108,8 +108,6 @@ public class SubmissionSenderService {
 
                     if (allProvidersResponded) {
                         familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
-                    } else {
-                        familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.INCOMPLETE.name());
                     }
 
                 } else {
