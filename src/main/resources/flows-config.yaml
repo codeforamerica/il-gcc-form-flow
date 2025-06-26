@@ -796,7 +796,7 @@ flow:
   submit-start:
     beforeDisplayAction: SetProviderSubmissionStatusAndConnectApplications
     nextScreens:
-      - name: paid-by-ccap
+      - name: multiple-providers
         condition: ShouldSkipConfirmationCode
       - name: confirmation-code
   confirmation-code:
