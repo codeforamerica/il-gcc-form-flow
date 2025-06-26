@@ -68,7 +68,7 @@ public class FindApplicationData implements Action {
             childData.forEach(child -> {
                 Map<String, String> newChild = new HashMap<>();
                 newChild.put("childName", child.get("childName").toString());
-                newChild.put("childStartDate", child.getOrDefault("childStartDate", "n/a").toString());
+                newChild.put("childStartDate", child.get("childStartDate").toString());
                 newChild.put("childAge", localizeChildAge(child));
                 newChild.put("childCareHours", localizeChildCareHours(child));
 
