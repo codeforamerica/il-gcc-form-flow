@@ -210,7 +210,7 @@ public class ProviderSubmissionUtilities {
         }
     }
 
-    public static List<Map<String, Object>> getChildrenDataForProviderResponse(Map<String, Object> inputData) {
+    public static List<Map<String, Object>> getChildrenData(Map<String, Object> inputData) {
         List<Map<String, Object>> children = new ArrayList<>();
 
         if (!SubmissionUtilities.getChildrenNeedingAssistance(inputData).isEmpty()) {

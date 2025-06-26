@@ -59,7 +59,7 @@ public class FindApplicationData implements Action {
                     });
                 }
             } else {
-                childData = ProviderSubmissionUtilities.getChildrenDataForProviderResponse(
+                childData = ProviderSubmissionUtilities.getChildrenData(
                         familySubmission.get().getInputData());
             }
 
