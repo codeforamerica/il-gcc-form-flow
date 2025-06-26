@@ -20,7 +20,7 @@ management:
         include: '*'
 server:
   ssl:
-    enabled: true
+    enabled: ${SSL_ENABLED:true}
     key-store: ./localhost+2.p12
     key-store-type: PKCS12
     key-store-password: ${KEY_STORE_PASSWORD}
