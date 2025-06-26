@@ -8,7 +8,7 @@
         <div class="grid">
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
-                <th:block th:with="providerName='PROVIDER NAME HERE'">
+                <th:block th:with="providerName=${T(org.ilgcc.app.utils.ProviderSubmissionUtilities).getCurrentProvider(submission).get('displayName')}">
                         <th:block th:replace="~{fragments/gcc-icons :: code}"></th:block>
                         <th:block
                                 th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-error-response-recorded.header(${providerName})}, subtext=#{provider-response-error-response-recorded.subtext})}"/>
