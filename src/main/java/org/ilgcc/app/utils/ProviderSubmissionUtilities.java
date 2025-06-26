@@ -76,7 +76,7 @@ public class ProviderSubmissionUtilities {
         return Optional.empty();
     }
 
-    public static Optional<String> getFamilySubmissionByShortCode(Submission providerSubmission) {
+    public static Optional<String> getFamilySubmissionShortCode(Submission providerSubmission) {
         if (providerSubmission.getInputData().containsKey("providerResponseFamilyShortCode")) {
             String providerResponseFamilyShortCode = (String) providerSubmission.getInputData().get(
                     "providerResponseFamilyShortCode");
@@ -86,7 +86,7 @@ public class ProviderSubmissionUtilities {
         return Optional.empty();
     }
 
-    public static Map<String, String> getFamilySubmissionForProviderResponse(Optional<Submission> familySubmission) {
+    public static Map<String, String> getFamilySubmission(Optional<Submission> familySubmission) {
         Map<String, String> applicationData = new HashMap<>();
 
         if (familySubmission.isPresent()) {
@@ -152,7 +152,7 @@ public class ProviderSubmissionUtilities {
         return applicationData;
     }
 
-    public static List<Map<String, Object>> getMultipleProviderDataForProviderResponse(Submission familySubmission) {
+    public static List<Map<String, Object>> getFamilyIntendedProviders(Submission familySubmission) {
         List<Map<String, Object>> displayProviders = new ArrayList<>();
 
         List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
@@ -192,17 +192,18 @@ public class ProviderSubmissionUtilities {
         return displayProviders;
     }
 
-    public static Map<String, Object> getCurrentProvider(Submission providerSubmission){
+    public static Map<String, Object> getCurrentProvider(Submission providerSubmission) {
         String currentProviderUuid = providerSubmission.getInputData().getOrDefault("currentProviderUuid", "").toString();
-        List<Map<String, Object>> providers = (List<Map<String, Object>>) providerSubmission.getInputData().getOrDefault("providersData",
-                Collections.EMPTY_LIST);
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) providerSubmission.getInputData()
+                .getOrDefault("providersData",
+                        Collections.EMPTY_LIST);
 
         Optional<Map<String, Object>> currentProvider = Optional.empty();
-        if(!currentProviderUuid.isBlank() && !providers.isEmpty()){
+        if (!currentProviderUuid.isBlank() && !providers.isEmpty()) {
             currentProvider = providers.stream().filter(provider -> provider.get("uuid").equals(currentProviderUuid)).findFirst();
         }
 
-        if(currentProvider.isPresent()){
+        if (currentProvider.isPresent()) {
             return currentProvider.get();
         } else {
             return null;

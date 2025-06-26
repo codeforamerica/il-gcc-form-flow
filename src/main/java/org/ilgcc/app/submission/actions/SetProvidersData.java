@@ -25,11 +25,11 @@ public class SetProvidersData implements Action {
     @Override
     public void run(Submission providerSubmission) {
         Optional<String> familySubmissionShortCode =
-                ProviderSubmissionUtilities.getFamilySubmissionByShortCode(providerSubmission);
+                ProviderSubmissionUtilities.getFamilySubmissionShortCode(providerSubmission);
         if (familySubmissionShortCode.isPresent()) {
             Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(familySubmissionShortCode.get());
 
-            List<Map<String, Object>> providersData = ProviderSubmissionUtilities.getMultipleProviderDataForProviderResponse(
+            List<Map<String, Object>> providersData = ProviderSubmissionUtilities.getFamilyIntendedProviders(
                     familySubmission.get());
 
             providerSubmission.getInputData().put("providersData", providersData);
