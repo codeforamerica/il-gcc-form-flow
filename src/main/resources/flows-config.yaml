@@ -817,7 +817,7 @@ flow:
     condition: EnableMultipleProviders
     nextScreens:
       - name: error-response-recorded
-        condition: HasProviderResponse
+        condition: CurrentProviderHasResponded
       - name: paid-by-ccap
   error-response-recorded:
     condition: EnableMultipleProviders
