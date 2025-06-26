@@ -210,22 +210,26 @@ public class ProviderSubmissionUtilities {
         }
     }
 
-    public static List<Map<String, Object>> getChildrenDataForProviderResponse(Submission applicantSubmission) {
+    public static List<Map<String, Object>> getChildrenDataForProviderResponse(Map<String, Object> inputData) {
         List<Map<String, Object>> children = new ArrayList<>();
 
-        if (!SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission.getInputData()).isEmpty()) {
-            for (var child : SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission.getInputData())) {
-                Map<String, Object> childObject = new HashMap<>();
-                String firstName = (String) child.get("childFirstName");
-                String lastName = (String) child.get("childLastName");
-                childObject.put("childName", String.format("%s %s", firstName, lastName));
-                childObject.put("childAge", childAge(child));
-                childObject.put("childCareHours", hoursRequested(child));
-                childObject.put("childStartDate", child.get("ccapStartDate"));
-                children.add(childObject);
+        if (!SubmissionUtilities.getChildrenNeedingAssistance(inputData).isEmpty()) {
+            for (var child : SubmissionUtilities.getChildrenNeedingAssistance(inputData)) {
+                children.add(setChildData(child));
             }
         }
         return children;
+    }
+
+    public static Map<String,Object> setChildData(Map<String, Object> child){
+        Map<String, Object> childObject = new HashMap<>();
+        String firstName = (String) child.get("childFirstName");
+        String lastName = (String) child.get("childLastName");
+        childObject.put("childName", String.format("%s %s", firstName, lastName));
+        childObject.put("childAge", childAge(child));
+        childObject.put("childCareHours", hoursRequested(child));
+        childObject.put("childStartDate", child.get("ccapStartDate"));
+        return childObject;
     }
 
     public static String formatChildNamesAsCommaSeparatedList(Submission applicantSubmission, String joiner) {
