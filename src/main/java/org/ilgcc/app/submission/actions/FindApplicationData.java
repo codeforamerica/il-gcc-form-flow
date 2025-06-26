@@ -32,7 +32,7 @@ public class FindApplicationData implements Action {
         if (familySubmissionId.isPresent()) {
             Optional<Submission> familySubmission = submissionRepositoryService.findById(familySubmissionId.get());
             providerSubmission.getInputData()
-                    .put("clientResponse", ProviderSubmissionUtilities.getFamilySubmissionForProviderResponse(familySubmission));
+                    .put("clientResponse", ProviderSubmissionUtilities.getFamilySubmission(familySubmission));
 
             List<Map<String, Object>> childData = ProviderSubmissionUtilities.getChildrenDataForProviderResponse(
                     familySubmission.get());

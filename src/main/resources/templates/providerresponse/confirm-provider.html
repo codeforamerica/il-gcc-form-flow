@@ -10,14 +10,15 @@
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block th:replace="~{fragments/gcc-icons :: care}"></th:block>
                 <th:block
-                        th:with="selectedProviderIsIndividual=${true}, providerName=${'[PROVIDER]'}">
-                    <th:block th:if="${selectedProviderIsIndividual}">
+                        th:with="selectedProviderIsIndividual=${true},
+                        currentProvider=${T(org.ilgcc.app.utils.ProviderSubmissionUtilities).getCurrentProvider(submission)}">
+                    <th:block th:if="${currentProvider.getOrDefault('providerType', '').equals('Individual')}">
                         <th:block
-                                th:replace="~{fragments/cardHeader :: cardHeader(header=${#messages.msg('provider-response-confirm-provider.individual.header', providerName)}, subtext=#{provider-response-confirm-provider.individual.subtext})}"/>
+                                th:replace="~{fragments/cardHeader :: cardHeader(header=${#messages.msg('provider-response-confirm-provider.individual.header', currentProvider.get('displayName'))}, subtext=#{provider-response-confirm-provider.individual.subtext})}"/>
                     </th:block>
-                    <th:block th:unless="${selectedProviderIsIndividual}">
+                    <th:block th:if="${currentProvider.getOrDefault('providerType', '').equals('Care Program')}">
                         <th:block
-                                th:replace="~{fragments/cardHeader :: cardHeader(header=${#messages.msg('provider-response-confirm-provider.program.header', providerName)})}"/>
+                                th:replace="~{fragments/cardHeader :: cardHeader(header=${#messages.msg('provider-response-confirm-provider.program.header', currentProvider.get('displayName'))})}"/>
                     </th:block>
                     <th:block
                             th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
@@ -33,7 +34,7 @@
                                         <a id="selected-wrong-provider-individual"
                                            th:href="'/flow/' + ${flow} + '/multiple-providers'"
                                            class="spacing-above-15">
-                                            <span th:text="${selectedProviderIsIndividual ? #messages.msg('provider-response-confirm-provider.individual.cta', providerName) : #messages.msg('provider-response-confirm-provider.program.cta', providerName)}"></span>
+                                            <span th:text="${#messages.msg('provider-response-confirm-provider.program.cta', currentProvider.get('displayName'))}"></span>
                                         </a>
                                     </div>
                                 </div>
