@@ -163,6 +163,7 @@ public class ProviderSubmissionUtilities {
             for (var provider : providers) {
                 Map<String, Object> providerObject = new HashMap<>();
                 providerObject.put("uuid", provider.get("uuid"));
+                providerObject.put("providerResponseStatus", provider.get("providerResponseStatus"));
 
                 String providerType = provider.get("providerType").toString();
                 if (providerType.equals("Individual")) {
@@ -173,7 +174,6 @@ public class ProviderSubmissionUtilities {
                             "").toString(), provider.getOrDefault("familyIntendedProviderState",
                             "").toString()));
                     providerObject.put("providerType", provider.get("providerType"));
-
                     displayProviders.add(providerObject);
                 } else {
                     providerObject.put("displayName", provider.getOrDefault("familyIntendedProviderName", ""));

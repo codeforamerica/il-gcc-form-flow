@@ -812,11 +812,16 @@ flow:
     condition: EnableMultipleProviders
     beforeDisplayAction: SetProvidersData
     nextScreens:
+      - name: error-response-recorded
+        condition: CurrentProviderHasResponded
       - name: confirm-provider
   confirm-provider:
     condition: EnableMultipleProviders
     nextScreens:
       - name: paid-by-ccap
+  error-response-recorded:
+    condition: EnableMultipleProviders
+    nextScreens: null
   paid-by-ccap:
     nextScreens:
       - name: provider-info
