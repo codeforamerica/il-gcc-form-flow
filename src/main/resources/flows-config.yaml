@@ -280,6 +280,8 @@ flow:
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
     beforeSaveAction: SaveCCAPStartDate
     nextScreens:
+      - name: schedules-same
+        condition: DisplaySchedulesSameScreen
       - name: schedules-days
   schedules-days:
     subflow: childcareSchedules
@@ -301,7 +303,7 @@ flow:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
-      - name: unearned-income-intro
+      - name: schedules-review
   activities-parent-intro:
     nextScreens:
       - name: activities-parent-type
