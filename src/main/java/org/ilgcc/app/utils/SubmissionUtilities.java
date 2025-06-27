@@ -295,4 +295,18 @@ public class SubmissionUtilities {
   public static String generateMessageKey(String prefix, String suffix) {
     return String.format("%s.%s", prefix, suffix);
   }
+
+  public static List<Map<String, Object>> getAnyChildcareSchedulesWithTheSameProvider(
+      List<Map<String, Object>> childcareSchedules, String currentProviderUuidOrNoProvider,
+      Map<String, Object> currentChildcareSchedule) {
+    List<Map <String, Object>> remainingChildcareSchedules = childcareSchedules.stream()
+        .filter(childcareSchedule -> !childcareSchedule.equals(currentChildcareSchedule))
+        .toList();
+    return remainingChildcareSchedules.stream().filter(childcareSchedule -> childcareScheduleIncludesThisProvider(childcareSchedule, currentProviderUuidOrNoProvider)).toList();
+  }
+
+  private static boolean childcareScheduleIncludesThisProvider(Map<String, Object> childcareSchedule, String providerUuidOrNoProvider) {
+    List<Map<String, Object>> providerSchedules = (List<Map<String, Object>>) Optional.ofNullable(childcareSchedule.get("providerSchedules")).orElse(emptyList());
+    return providerSchedules.stream().anyMatch(providerSchedule -> providerUuidOrNoProvider.equals(providerSchedule.getOrDefault("repeatForValue", "")));
+  }
 }
