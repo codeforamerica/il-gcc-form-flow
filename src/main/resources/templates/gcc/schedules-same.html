@@ -1,7 +1,9 @@
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
                    provider=${T(org.ilgcc.app.utils.SubmissionUtilities).getCurrentProvider(inputData, repeatForIteration.get('repeatForValue').toString())},
                    noProvider=${repeatForIteration.get('repeatForValue').equals('NO_PROVIDER')},
-                   providerName=${noProvider ? #messages.msg('general.schedules.header.no-provider') : provider.get('familyIntendedProviderName')}">
+                   providerName=${noProvider ? #messages.msg('general.schedules.header.no-provider') : provider.get('familyIntendedProviderName')},
+                   childNameWithSameProvider=${repeatForIteration.get('matchingChild').get('childFirstName')},
+                   localizedProviderSchedule=${repeatForIteration.get('matchingProviderScheduleLocalized')}">
   <th:block th:replace="~{fragments/inputs/subflowScreenWithOneInput ::
     subflowScreenWithOneInput(
       title=#{schedules-same.title},
@@ -13,6 +15,16 @@
     <th:block th:ref="inputContent">
       <th:block th:ref="formContent">
         <div class="form-card__content">
+          <p class="text--left"><strong th:utext="${childNameWithSameProvider}"></strong>
+          </p>
+          <ol class="list--bulleted">
+            <li>
+              <span th:utext="${providerName}"></span>
+              <br />
+              <p th:utext="${localizedProviderSchedule}"></p>
+            </li>
+          </ol>
+
           <th:block th:replace="~{fragments/inputs/radioFieldset ::
                         radioFieldset(inputName='sameSchedule',
                         label=${noProvider ? #messages.msg('schedules-same.header.no-provider') :  #messages.msg('schedules-same.checkbox-header.with-provider', providerName, childName)},

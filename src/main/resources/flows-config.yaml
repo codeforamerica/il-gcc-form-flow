@@ -300,6 +300,7 @@ flow:
     nextScreens:
       - name: unearned-income-intro
   schedules-same:
+    beforeDisplayAction: LocalizeSameScreenProviderSchedules
     subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:

@@ -1,6 +1,7 @@
 package org.ilgcc.app.submission.conditions;
 
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getLocalizedChildCareHours;
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.hoursRequested;
 
 import formflow.library.config.submission.Action;
@@ -40,16 +41,6 @@ public class LocalizeChildcareSchedules implements Action {
     }
 
     private String localizeChildCareHours(Map<String, Object> childSchedule) {
-
-        Map<String, String> childCareHours = hoursRequested(childSchedule);
-
-        List<String> dateString = new ArrayList<>();
-        childCareHours.forEach((key, val) -> {
-            String dayKey = String.format("general.week.%s", key);
-            dateString.add(String.format("%s, %s</br>", messageSource.getMessage(dayKey, null,
-                    LocaleContextHolder.getLocale()), val));
-        });
-
-        return String.join("", dateString);
+        return getLocalizedChildCareHours(childSchedule, messageSource);
     }
 }

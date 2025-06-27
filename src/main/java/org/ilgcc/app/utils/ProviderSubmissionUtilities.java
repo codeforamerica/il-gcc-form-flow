@@ -21,6 +21,8 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -104,7 +106,7 @@ public class ProviderSubmissionUtilities {
 
         return String.format("%s %s", firstName, lastName);
     }
-    
+
     public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
         return getCombinedDataForEmails(providerSubmission, familySubmission, null);
     }
@@ -460,6 +462,20 @@ public class ProviderSubmissionUtilities {
         }
         return (String) providerSubmission.getInputData().getOrDefault("providerResponseFirstName", "");
     }
+
+    public static String getLocalizedChildCareHours(Map<String, Object> childSchedule, MessageSource messageSource) {
+        Map<String, String> childCareHours = hoursRequested(childSchedule);
+
+        List<String> dateString = new ArrayList<>();
+        childCareHours.forEach((key, val) -> {
+            String dayKey = String.format("general.week.%s", key);
+            dateString.add(String.format("%s, %s</br>", messageSource.getMessage(dayKey, null,
+                LocaleContextHolder.getLocale()), val));
+        });
+
+        return String.join("", dateString);
+    }
+}
 
     public static String getInitials(String firstName, String lastName) {
         if (!firstName.isBlank() && !lastName.isBlank()) {
