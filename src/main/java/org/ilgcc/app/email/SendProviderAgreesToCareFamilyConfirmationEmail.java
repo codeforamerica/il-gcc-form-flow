@@ -9,6 +9,7 @@ import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.app.email.templates.ProviderAgreesToCareFamilyConfirmationEmailTemplate;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.jobs.SendEmailJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -36,7 +37,16 @@ public class SendProviderAgreesToCareFamilyConfirmationEmail extends SendEmail {
     protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission, Map<String, Object> subflowData) {
         Optional<Submission> familySubmission = getFamilyApplication(providerSubmission);
         if (familySubmission.isPresent()) {
-            return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
+            String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
+            Map<String, Object> currentProvider = SubmissionUtilities.getCurrentProvider(familySubmission.get().getInputData(),
+                    currentProviderUuid);
+
+            if (!currentProvider.isEmpty()) {
+                return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get(), currentProvider));
+            } else {
+                return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
+            }
+
         } else {
             log.warn(
                     "{}: Skipping email send because there is no family submission associated with the provider submission with ID : {}",

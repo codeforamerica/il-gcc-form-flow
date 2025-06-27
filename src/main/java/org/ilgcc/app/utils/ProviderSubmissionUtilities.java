@@ -104,7 +104,7 @@ public class ProviderSubmissionUtilities {
 
         return String.format("%s %s", firstName, lastName);
     }
-    
+
     public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
         return getCombinedDataForEmails(providerSubmission, familySubmission, null);
     }
@@ -118,6 +118,7 @@ public class ProviderSubmissionUtilities {
         applicationData.put("providerResponseContactEmail",
                 providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
+        applicationData.putAll(setProviderResponseName(providerSubmission));
         applicationData.put("providerSubmissionId", providerSubmission.getId());
         applicationData.put("ccapStartDate",
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
@@ -459,6 +460,29 @@ public class ProviderSubmissionUtilities {
             return providerResponseBusinessName;
         }
         return (String) providerSubmission.getInputData().getOrDefault("providerResponseFirstName", "");
+    }
+
+    public static Map<String, Object> setProviderResponseName(Submission providerSubmission) {
+        Map<String, Object> namesFields = new HashMap<>();
+
+        String providerResponseBusinessName = (String) providerSubmission.getInputData()
+                .getOrDefault("providerResponseBusinessName", "");
+
+        String firstName = providerSubmission.getInputData().getOrDefault("providerResponseFirstName", "").toString();
+        String lastName = providerSubmission.getInputData().getOrDefault("providerResponseLastName", "").toString();
+
+        if (!providerResponseBusinessName.isBlank()) {
+            namesFields.put("childCareProgramName",
+                    providerResponseBusinessName);
+        }
+
+        if (!(firstName + lastName).isBlank()) {
+            namesFields.put("childCareProviderInitials",
+                    getInitials(firstName,
+                            lastName));
+        }
+
+        return namesFields;
     }
 
     public static String getInitials(String firstName, String lastName) {
