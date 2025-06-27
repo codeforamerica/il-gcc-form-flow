@@ -16,8 +16,6 @@ public class CurrentProviderHasResponded implements Condition {
 
     @Override
     public Boolean run(Submission submission) {
-        ProviderSubmissionUtilities.getCurrentProvider(submission);
-
         Map<String, Object> currentProvider = ProviderSubmissionUtilities.getCurrentProvider(submission);
         String providerResponseStatus = currentProvider != null ? (String) currentProvider.get("providerResponseStatus") : null;
         boolean currentProviderHasResponded = SubmissionStatus.RESPONDED.name().equals(providerResponseStatus);
