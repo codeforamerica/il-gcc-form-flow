@@ -91,6 +91,7 @@ public class SubmissionSenderService {
 
                 if (multipleProvidersEnabled) {
                     String currentProviderUuid = providerSubmission.getInputData().get("currentProviderUuid").toString();
+                    String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
 
                     boolean allProvidersResponded = true;
                     List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
@@ -100,6 +101,7 @@ public class SubmissionSenderService {
                         if (currentProviderUuid.equals(provider.get("uuid").toString())) {
                             provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
                             provider.put("providerResponseStatus", SubmissionStatus.RESPONDED.name());
+                            provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
                             providers.set(i, provider);
                         } else if (!provider.containsKey("providerResponseStatus") || !SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus").toString())) {
                             allProvidersResponded = false;
