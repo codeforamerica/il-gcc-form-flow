@@ -104,11 +104,17 @@ public class ProviderSubmissionUtilities {
 
         return String.format("%s %s", firstName, lastName);
     }
-
+    
     public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
+        return getCombinedDataForEmails(providerSubmission, familySubmission, null);
+    }
+
+    public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission,
+            Map<String, Object> subflowData) {
         Map<String, Object> applicationData = new HashMap<>();
 
-        applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission));
+        applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission, subflowData));
+
         applicationData.put("providerResponseContactEmail",
                 providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
@@ -148,6 +154,11 @@ public class ProviderSubmissionUtilities {
         Map<String, Object> data = subflowData == null ? familySubmission.getInputData() : subflowData;
         applicationData.put("familyIntendedProviderName", data.getOrDefault("familyIntendedProviderName", ""));
         applicationData.put("familyIntendedProviderEmail", data.getOrDefault("familyIntendedProviderEmail", ""));
+        applicationData.put("providerType", data.getOrDefault("providerType", ""));
+        applicationData.put("childCareProgramName", data.getOrDefault("childCareProgramName", ""));
+        applicationData.put("childCareProviderInitials",
+                getInitials(data.getOrDefault("providerFirstName", "").toString(),
+                        data.getOrDefault("providerLastName", "").toString()));
 
         return applicationData;
     }
@@ -221,7 +232,7 @@ public class ProviderSubmissionUtilities {
         return children;
     }
 
-    public static Map<String,Object> setChildData(Map<String, Object> child){
+    public static Map<String, Object> setChildData(Map<String, Object> child) {
         Map<String, Object> childObject = new HashMap<>();
         String firstName = (String) child.get("childFirstName");
         String lastName = (String) child.get("childLastName");
@@ -422,7 +433,7 @@ public class ProviderSubmissionUtilities {
         for (var child : children) {
             String firstName = (String) child.get("childFirstName");
             String lastName = (String) child.get("childLastName");
-            childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
+            childrenInitials.add(getInitials(firstName, lastName));
         }
         return childrenInitials;
     }
