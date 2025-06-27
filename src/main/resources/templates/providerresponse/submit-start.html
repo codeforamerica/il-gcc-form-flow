@@ -54,9 +54,12 @@
                             </div>
                         </div>
                     </th:block>
-                    <th:block th:unless="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).ACTIVE)}">
-                        <th:block th:replace="~{fragments/gcc-icons :: ${providerSubmissionStatus.getIcon()}}"></th:block>
-                        <th:block th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})}, subtext=#{${providerSubmissionStatus.getNoticeLabel()}})}"/>
+                    <th:block
+                            th:unless="${providerSubmissionStatus.equals(T(org.ilgcc.app.utils.enums.ProviderSubmissionStatus).ACTIVE)}">
+                        <th:block
+                                th:replace="~{fragments/gcc-icons :: ${providerSubmissionStatus.getIcon()}}"></th:block>
+                        <th:block
+                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{${providerSubmissionStatus.getHeaderLabel()}(${session.selectedProviderName})}, subtext=#{${providerSubmissionStatus.getNoticeLabel()}})}"/>
                         <div class="form-card__footer">
                             <div>
                                 <a th:href="'/'"
