@@ -14,8 +14,7 @@ public class CurrentProviderHasResponded extends EnableMultipleProviders impleme
     public Boolean run(Submission submission) {
         if (super.run(submission)) {
             Map<String, Object> currentProvider = ProviderSubmissionUtilities.getCurrentProvider(submission);
-            String providerResponseStatus = currentProvider != null ? (String) currentProvider.get("providerResponseStatus") : null;
-            return SubmissionStatus.RESPONDED.name().equals(providerResponseStatus);
+            return  currentProvider != null && SubmissionStatus.RESPONDED.name().equals(currentProvider.get("providerResponseStatus"));
         }
         return false;
     }
