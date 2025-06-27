@@ -8,18 +8,15 @@
         <div class="grid">
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
-                <th:block th:with="providerName=${T(org.ilgcc.app.utils.ProviderSubmissionUtilities).getCurrentProvider(submission).get('displayName')}">
-                        <th:block th:replace="~{fragments/gcc-icons :: code}"></th:block>
-                        <th:block
-                                th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-error-response-recorded.header(${providerName})}, subtext=#{provider-response-error-response-recorded.subtext})}"/>
-                        <div class="form-card__footer">
-                            <div>
-                                <a th:href="'/'"
-                                   th:text="#{general.button.return.home}"
-                                   class="button button--primary"
-                                   id="home-link"></a>
-                            </div>
-                        </div>
+                <th:block
+                        th:with="providerName=${T(org.ilgcc.app.utils.ProviderSubmissionUtilities).getCurrentProvider(submission).get('displayName')}">
+                    <th:block th:replace="~{fragments/screens/provider-response-recorded ::
+                          screen(
+                            iconName='code',
+                            headerText=#{provider-response-error-response-recorded.header(${providerName})},
+                            subtext=#{provider-response-error-response-recorded.subtext}
+                          )}">
+                    </th:block>
                 </th:block>
             </main>
         </div>
