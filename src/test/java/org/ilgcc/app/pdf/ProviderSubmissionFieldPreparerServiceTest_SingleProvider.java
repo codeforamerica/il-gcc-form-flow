@@ -413,6 +413,5 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
                 assertThat(result.get("childcareStartDate")).isNull();
             }
         }
-
     }
 }
