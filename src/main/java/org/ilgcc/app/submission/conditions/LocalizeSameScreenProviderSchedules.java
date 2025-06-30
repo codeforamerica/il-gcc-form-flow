@@ -1,7 +1,6 @@
 package org.ilgcc.app.submission.conditions;
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getLocalizedChildCareHours;
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.relatedSubflowIterationData;
 
 import formflow.library.config.submission.Action;
@@ -10,7 +9,6 @@ import formflow.library.data.SubmissionRepositoryService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -48,6 +46,7 @@ public class LocalizeSameScreenProviderSchedules implements Action {
                     currentProviderSchedule.put("matchingChild", submission.getSubflowEntryByUuid("children",
                         (String) childCareScheduleMatch.get("childUuid")));
                     currentProviderSchedule.put("matchingProviderScheduleLocalized", getLocalizedChildCareHours(childProviderScheduleMatch, messageSource));
+                    currentProviderSchedule.put("matchingProviderSchedule", childProviderScheduleMatch);
                 });
         });
         submissionRepositoryService.save(submission);
