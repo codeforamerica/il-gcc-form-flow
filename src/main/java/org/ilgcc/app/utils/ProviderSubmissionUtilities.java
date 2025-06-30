@@ -131,7 +131,7 @@ public class ProviderSubmissionUtilities {
     }
 
     public static Map<String, Object> getFamilySubmissionDataForEmails(Submission familySubmission,
-            Map<String, Object> subflowData) {
+            Map<String, Object> subflowIteration) {
         Map<String, Object> applicationData = new HashMap<>();
 
         applicationData.put("parentContactEmail",
@@ -151,7 +151,7 @@ public class ProviderSubmissionUtilities {
                         Optional.empty()));
 
         // provider specific fields can come from a subflow and not the main data
-        Map<String, Object> data = subflowData == null ? familySubmission.getInputData() : subflowData;
+        Map<String, Object> data = subflowIteration == null ? familySubmission.getInputData() : subflowIteration;
         applicationData.put("familyIntendedProviderName", data.getOrDefault("familyIntendedProviderName", ""));
         applicationData.put("familyIntendedProviderEmail", data.getOrDefault("familyIntendedProviderEmail", ""));
         applicationData.put("providerType", data.getOrDefault("providerType", ""));

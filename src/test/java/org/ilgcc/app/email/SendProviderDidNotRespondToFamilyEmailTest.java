@@ -107,7 +107,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p1", null, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2",
+                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2-program",
                         new Object[]{"Intended Provider"},
                         locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p3",
