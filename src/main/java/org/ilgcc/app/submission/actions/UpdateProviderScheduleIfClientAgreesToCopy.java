@@ -8,7 +8,6 @@ import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -30,7 +29,7 @@ public class UpdateProviderScheduleIfClientAgreesToCopy implements Action {
                 //copy over weekly schedule
                 formData.put("childcareWeeklySchedule[]", matchingChildcareProviderSchedule.get("childcareWeeklySchedule[]"));
                 //copy over sameHoursEveryDay if selected
-                List<String> sameHoursEveryDay = (List<String>) matchingChildcareProviderSchedule.get("childcareHoursSameEveryDay[]");
+                List<String> sameHoursEveryDay = (List<String>) matchingChildcareProviderSchedule.getOrDefault("childcareHoursSameEveryDay[]", emptyList());
                 if (sameHoursEveryDay.equals(List.of("yes"))) {
                     formData.put("childcareHoursSameEveryDay[]", List.of("yes"));
                 }
