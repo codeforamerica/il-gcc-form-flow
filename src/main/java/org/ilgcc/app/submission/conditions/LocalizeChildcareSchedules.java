@@ -2,18 +2,15 @@ package org.ilgcc.app.submission.conditions;
 
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getLocalizedChildCareHours;
-import static org.ilgcc.app.utils.ProviderSubmissionUtilities.hoursRequested;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component

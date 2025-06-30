@@ -767,34 +767,10 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //schedules-days
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
-        assertThat(testPage.getHeader()).containsIgnoringCase("Nope Test");
-        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
-        testPage.clickElementById("childcareWeeklySchedule-Monday");
-        testPage.clickElementById("childcareWeeklySchedule-Tuesday");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-same.title"));
+        testPage.clickElementById("sameSchedule-true");
         testPage.clickContinue();
 
-        //schedules-hours
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
-        assertThat(testPage.getHeader()).containsIgnoringCase("Nope Test");
-        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
-        testPage.selectFromDropdown("childcareStartTimeMondayHour", "4");
-        testPage.enter("childcareStartTimeMondayMinute", "00");
-        testPage.selectFromDropdown("childcareStartTimeMondayAmPm", "AM");
-
-        testPage.selectFromDropdown("childcareEndTimeMondayHour", "12");
-        testPage.enter("childcareEndTimeMondayMinute", "00");
-        testPage.selectFromDropdown("childcareEndTimeMondayAmPm", "PM");
-
-        testPage.selectFromDropdown("childcareStartTimeTuesdayHour", "2");
-        testPage.enter("childcareStartTimeTuesdayMinute", "00");
-        testPage.selectFromDropdown("childcareStartTimeTuesdayAmPm", "PM");
-
-        testPage.selectFromDropdown("childcareEndTimeTuesdayHour", "10");
-        testPage.enter("childcareEndTimeTuesdayMinute", "00");
-        testPage.selectFromDropdown("childcareEndTimeTuesdayAmPm", "PM");
-
-        testPage.clickContinue();
         //ChildSchedule: Second || ProviderSchedule: Third Provider
         //schedules-start-care
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
