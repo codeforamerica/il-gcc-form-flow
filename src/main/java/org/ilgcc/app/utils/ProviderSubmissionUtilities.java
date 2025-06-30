@@ -435,7 +435,7 @@ public class ProviderSubmissionUtilities {
         for (var child : children) {
             String firstName = (String) child.get("childFirstName");
             String lastName = (String) child.get("childLastName");
-            childrenInitials.add(getInitials(firstName, lastName));
+            childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
         }
         return childrenInitials;
     }
@@ -475,7 +475,6 @@ public class ProviderSubmissionUtilities {
 
         return String.join("", dateString);
     }
-}
 
     public static String getInitials(String firstName, String lastName) {
         if (!firstName.isBlank() && !lastName.isBlank()) {
