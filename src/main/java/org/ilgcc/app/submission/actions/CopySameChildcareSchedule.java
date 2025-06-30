@@ -13,7 +13,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UpdateProviderScheduleIfClientAgreesToCopy implements Action {
+public class CopySameChildcareSchedule implements Action {
 
     @Override
     @SuppressWarnings("unchecked")
@@ -50,7 +50,7 @@ public class UpdateProviderScheduleIfClientAgreesToCopy implements Action {
             hoursScheduleKeys.add("childcareEndTimeAllDaysHour");
             hoursScheduleKeys.add("childcareEndTimeAllDaysMinute");
             hoursScheduleKeys.add("childcareEndTimeAllDaysAmPm");
-        }else {
+        } else {
             List<String> childcareWeeklySchedule = (List<String>) childcareProviderSchedule.get("childcareWeeklySchedule[]");
             for (String day : childcareWeeklySchedule) {
                 hoursScheduleKeys.add("childcareStartTime" + day + "Hour");
