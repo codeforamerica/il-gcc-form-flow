@@ -435,7 +435,7 @@ public class ProviderSubmissionUtilities {
         for (var child : children) {
             String firstName = (String) child.get("childFirstName");
             String lastName = (String) child.get("childLastName");
-            childrenInitials.add(String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0)));
+            childrenInitials.add(getInitials(firstName, lastName));
         }
         return childrenInitials;
     }
