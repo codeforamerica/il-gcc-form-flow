@@ -8,6 +8,7 @@ public class BasicCondition implements Condition {
     /**
      * Return true if the value corresponding to the key in submission data is equal to the given value.
      */
+    @Override
     public Boolean run(Submission submission, String key, String value) {
         var inputData = submission.getInputData();
         if (inputData.containsKey(key)) {
