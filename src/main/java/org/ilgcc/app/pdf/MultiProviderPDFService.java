@@ -3,23 +3,36 @@ package org.ilgcc.app.pdf;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForAdditionalProviderPDF;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.pdf.PDFFormFiller;
 import formflow.library.pdf.PdfField;
 import formflow.library.pdf.PdfFieldMapper;
 import formflow.library.pdf.PdfService;
+import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.ilgcc.app.pdf.helpers.FamilyIntendedProviderPreparerHelper;
+import org.ilgcc.app.pdf.helpers.ProviderApplicationPreparerHelper;
+import org.ilgcc.app.pdf.helpers.ProviderHouseholdMemberPreparerHelper;
+import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
+import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
+import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
+import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +42,9 @@ import org.springframework.stereotype.Service;
 public class MultiProviderPDFService {
 
     Submission submission;
+
+    @Autowired
+    SubmissionRepositoryService submissionRepositoryService;
 
     @Autowired
     PdfService pdfService;
@@ -44,6 +60,25 @@ public class MultiProviderPDFService {
 
     @Autowired
     NeedChildcareChildrenPreparer needChildcareChildrenPreparer;
+
+    @Autowired
+    ProviderApplicationPreparerHelper providerApplicationPreparerHelper;
+
+    @Autowired
+    ProviderHouseholdMemberPreparerHelper providerHouseholdMemberPreparer;
+
+    @Autowired
+    ProviderLanguagesPreparerHelper providerLanguagesPreparerHelper;
+
+    @Autowired
+    ProviderSSNPreparerHelper providerSSNPreparerHelper;
+
+    @Autowired
+    ProviderTypePreparerHelper providerTypePreparerHelper;
+
+    @Autowired
+    ProviderRegistrationPreparer providerRegistrationPreparer;
+
 
     private final Boolean enableMutipleProviders;
 
@@ -73,7 +108,7 @@ public class MultiProviderPDFService {
         Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
                 getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
 
-        if(mergedChildrenAndSchedules.isEmpty()){
+        if (mergedChildrenAndSchedules.isEmpty()) {
             return additionalPDFs;
         }
 
@@ -84,8 +119,7 @@ public class MultiProviderPDFService {
                 Map<String, Object> currentProvider = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
                         providerSchedulesByUuid.get(i));
 
-                Map<String, SubmissionField> submissionFields = familyIntendedProviderPreparerHelper.prepareSubmissionFields(
-                        familySubmission, currentProvider);
+                Map<String, SubmissionField> submissionFields = new HashMap<>();
 
                 List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
                         mergedChildrenAndSchedules.get(providerSchedulesByUuid.get(i));
@@ -97,11 +131,34 @@ public class MultiProviderPDFService {
                                     listOfChildcareSchedulesForCurrentProvider.get(j),
                                     j + 1));
                 }
+
+                Optional<Submission> providerSubmissionOptional;
+                try {
+                    UUID providerUUID = UUID.fromString(currentProvider.getOrDefault(
+                            "providerResponseSubmissionId", "").toString());
+                    providerSubmissionOptional =
+                            submissionRepositoryService.findById(providerUUID);
+                } catch (IllegalArgumentException e) {
+                    providerSubmissionOptional = Optional.empty();
+                }
+
+                if (providerSubmissionOptional.isPresent()) {
+                    if ("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
+                        submissionFields.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
+                    }
+                    submissionFields.putAll(
+                            providerApplicationPreparerHelper.prepareSubmissionFields(
+                                    providerSubmissionOptional.get().getInputData()));
+                    submissionFields.put("providerSignatureDate",
+                            new SingleField("providerSignatureDate",
+                                    providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
+                } else {
+                    submissionFields.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
+                            currentProvider));
+                }
                 additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size()),
                         getFilledOutPDF("src/main/resources/pdfs/IL-CCAP-Form-Additional-Provider.pdf",
                                 submissionFields.values().stream().toList()));
-
-
             }
         }
 
@@ -136,6 +193,26 @@ public class MultiProviderPDFService {
         }
 
         return baos.toByteArray();
+    }
+
+    public Map<String, SubmissionField> mapProviderRegistrationData(Map<String, Object> registeringProviderInputData) {
+        Map<String, SubmissionField> providerSubmissionFields = new HashMap<>();
+        providerSubmissionFields.putAll(providerRegistrationPreparer.prepareSubmissionFields(registeringProviderInputData));
+        providerSubmissionFields.putAll(providerHouseholdMemberPreparer.prepareSubmissionFields(registeringProviderInputData));
+        providerSubmissionFields.putAll(providerLanguagesPreparerHelper.prepareSubmissionFields(registeringProviderInputData));
+        providerSubmissionFields.putAll(providerTypePreparerHelper.prepareSubmissionFields(registeringProviderInputData));
+        providerSubmissionFields.putAll(providerSSNPreparerHelper.prepareSubmissionFields(registeringProviderInputData));
+
+        return providerSubmissionFields;
+    }
+
+
+    private String providerSignatureDate(OffsetDateTime submittedAt) {
+        if (submittedAt != null) {
+            Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submittedAt));
+            return formatToStringFromLocalDate(providerSignatureDate);
+        }
+        return "";
     }
 
 }

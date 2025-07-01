@@ -73,45 +73,70 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
         Map<String, SubmissionField> results = new HashMap<>();
 
-        Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
-        if (providerSubmissionOptional.isPresent()) {
-            if ("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
-                results.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
-            }
-            results.putAll(
-                    providerApplicationPreparerHelper.prepareSubmissionFields(providerSubmissionOptional.get().getInputData()));
-            results.put("providerSignatureDate",
-                    new SingleField("providerSignatureDate",
-                            providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
-        } else {
-            if (enableMultipleProviders) {
-                Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                        getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+        if (enableMultipleProviders) {
+            Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
+                    getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
 
-                String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
+            String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
 
-                if (null != providerUuid) {
-                    Map<String, Object> firstProviderObject = new HashMap<>();
-                    if (providerUuid.equals("NO_PROVIDER")) {
-                        firstProviderObject.put("uuid", "NO_PROVIDER");
-                    } else {
-                        firstProviderObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
-                                providerUuid);
+            if (null != providerUuid) {
+                Map<String, Object> firstProviderObject = new HashMap<>();
+                if (providerUuid.equals("NO_PROVIDER")) {
+                    firstProviderObject.put("uuid", "NO_PROVIDER");
+                } else {
+                    firstProviderObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
+                            providerUuid);
+                }
+
+                List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
+                        mergedChildrenAndSchedules.get(providerUuid);
+
+                for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
+                    results.putAll(
+                            needChildcareChildrenPreparer.prepareChildCareSchedule(
+                                    listOfChildcareSchedulesForCurrentProvider.get(j),
+                                    j + 1));
+                }
+
+                Optional<Submission> providerSubmissionOptional;
+                try {
+                    UUID providerUUID = UUID.fromString(firstProviderObject.getOrDefault(
+                            "providerResponseSubmissionId", "").toString());
+                    providerSubmissionOptional =
+                            submissionRepositoryService.findById(providerUUID);
+                } catch (IllegalArgumentException e) {
+                    providerSubmissionOptional = Optional.empty();
+                }
+
+                if (providerSubmissionOptional.isPresent()) {
+                    if ("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
+                        results.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
                     }
-
-                    List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
-                            mergedChildrenAndSchedules.get(providerUuid);
-
-                    for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
-                        results.putAll(
-                                needChildcareChildrenPreparer.prepareChildCareSchedule(
-                                        listOfChildcareSchedulesForCurrentProvider.get(j),
-                                        j + 1));
-                    }
-
+                    results.putAll(
+                            providerApplicationPreparerHelper.prepareSubmissionFields(
+                                    providerSubmissionOptional.get().getInputData()));
+                    results.put("providerSignatureDate",
+                            new SingleField("providerSignatureDate",
+                                    providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
+                } else {
                     results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             firstProviderObject));
                 }
+            }
+
+        } else {
+            Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
+
+            if (providerSubmissionOptional.isPresent()) {
+                if ("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
+                    results.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
+                }
+                results.putAll(
+                        providerApplicationPreparerHelper.prepareSubmissionFields(
+                                providerSubmissionOptional.get().getInputData()));
+                results.put("providerSignatureDate",
+                        new SingleField("providerSignatureDate",
+                                providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
             } else {
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission.getInputData()));
             }
