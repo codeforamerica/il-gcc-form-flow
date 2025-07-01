@@ -165,7 +165,7 @@ public class ProviderSubmissionUtilities {
         applicationData.put("childCareProviderInitials",
                 getInitials(data.getOrDefault("providerFirstName", "").toString(),
                         data.getOrDefault("providerLastName", "").toString()));
-        if (subflowData != null) {
+        if (subflowIteration != null) {
             Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
                     SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
 

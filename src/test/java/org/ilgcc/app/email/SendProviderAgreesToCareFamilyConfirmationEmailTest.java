@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.jobs.SendEmailJob;
 import org.junit.jupiter.api.AfterEach;
@@ -51,14 +52,72 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
     private final Locale locale = Locale.ENGLISH;
 
+    private Submission familySubmission;
+
+    private static Map<String, Object> individualProvider = new HashMap<>();
+
+    private static Map<String, Object> programProvider = new HashMap<>();
+
+    private static Map<String, Object> child1 = new HashMap<>();
+
+    private static Map<String, Object> child2 = new HashMap<>();
+
+    @BeforeAll
+    public static void setUpOnce() {
+        individualProvider.put("uuid", UUID.randomUUID().toString());
+        individualProvider.put("iterationIsComplete", true);
+        individualProvider.put("providerFirstName", "FirstName");
+        individualProvider.put("providerLastName", "LastName");
+        individualProvider.put("familyIntendedProviderEmail", "firstLast@mail.com");
+        individualProvider.put("familyIntendedProviderPhoneNumber", "(999) 123-1234");
+        individualProvider.put("familyIntendedProviderAddress", "123 Main St.");
+        individualProvider.put("familyIntendedProviderCity", "Chicago");
+        individualProvider.put("familyIntendedProviderState", "IL");
+        individualProvider.put("providerType", "Individual");
+
+        programProvider.put("uuid", UUID.randomUUID().toString());
+        programProvider.put("iterationIsComplete", true);
+        programProvider.put("childCareProgramName", "Child Care Program Name");
+        programProvider.put("familyIntendedProviderEmail", "ccpn@mail.com");
+        programProvider.put("familyIntendedProviderPhoneNumber", "(123) 123-1234");
+        programProvider.put("familyIntendedProviderAddress", "456 Main St.");
+        programProvider.put("familyIntendedProviderCity", "Chicago");
+        programProvider.put("familyIntendedProviderState", "IL");
+        programProvider.put("providerType", "Care Program");
+
+        child1.put("uuid", UUID.randomUUID().toString());
+        child1.put("childFirstName", "First");
+        child1.put("childLastName", "Child");
+        child1.put("childInCare", "true");
+        child1.put("childDateOfBirthMonth", "10");
+        child1.put("childDateOfBirthDay", "11");
+        child1.put("childDateOfBirthYear", "2020");
+        child1.put("needFinancialAssistanceForChild", true);
+        child1.put("childIsUsCitizen", "Yes");
+        child1.put("ccapStartDate", "01/10/2025");
+
+        child2.put("uuid", UUID.randomUUID().toString());
+        child2.put("childFirstName", "Second");
+        child2.put("childLastName", "Child");
+        child2.put("childInCare", "true");
+        child2.put("childDateOfBirthMonth", "12");
+        child2.put("childDateOfBirthDay", "11");
+        child2.put("childDateOfBirthYear", "2021");
+        child2.put("needFinancialAssistanceForChild", true);
+        child2.put("childIsUsCitizen", "Yes");
+        child2.put("ccapStartDate", "12/10/2025");
+    }
+
     @Nested
     class whenProviderTypeIsNotSet {
 
         @BeforeEach
         void setUp() {
-            Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
+            familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                     .withFlow("gcc")
-                    .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                    .with("parentFirstName", "FirstName")
+                    .withChild("First", "Child", "true")
+                    .withChild("Second", "Child", "true")
                     .with("parentContactEmail", "familyemail@test.com")
                     .with("languageRead", "English")
                     .withSubmittedAtDate(OffsetDateTime.now())
@@ -70,6 +129,8 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
                     .withFlow("providerresponse")
                     .with("familySubmissionId", familySubmission.getId().toString())
                     .with("providerResponseContactEmail", "provideremail@test.com")
+                    .with("providerResponseFirstName", "ProviderFirst")
+                    .with("providerResponseLastName", "ProviderLast")
                     .with("providerResponseBusinessName", "ProvideredEnteredName")
                     .with("providerCareStartDate", "01/10/2025")
                     .with("providerResponseAgreeToCare", "true")
@@ -113,7 +174,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
             assertThat(emailData.get("providerType")).isEqualTo("");
             assertThat(emailData.get("childCareProgramName")).isEqualTo("ProvideredEnteredName");
-            assertThat(emailData.get("childCareProviderInitials")).isEqualTo("n/a");
+            assertThat(emailData.get("childCareProviderInitials")).isEqualTo("P.P.");
         }
 
         @Test
@@ -175,46 +236,14 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
         @BeforeEach
         void setUp() {
-
-            Map<String, Object> provider = new HashMap<>();
-            provider.put("uuid", "first-provider-uuid");
-            provider.put("iterationIsComplete", true);
-            provider.put("childCareProgramName", "FamilyChildCareName");
-            provider.put("providerType", "Individual");
-            provider.put("familyIntendedProviderEmail", "familyChildCareEmail");
-
-            Map<String, Object> child1 = new HashMap<>();
-            child1.put("uuid", "child-1-uuid");
-            child1.put("childFirstName", "First");
-            child1.put("childLastName", "Child");
-            child1.put("childInCare", "true");
-            child1.put("childDateOfBirthMonth", "10");
-            child1.put("childDateOfBirthDay", "11");
-            child1.put("childDateOfBirthYear", "2002");
-            child1.put("needFinancialAssistanceForChild", true);
-            child1.put("childIsUsCitizen", "Yes");
-            child1.put("ccapStartDate", "01/10/2025");
-
-            Map<String, Object> child2 = new HashMap<>();
-            child2.put("uuid", "child-2-uuid");
-            child2.put("childFirstName", "Second");
-            child2.put("childLastName", "Child");
-            child2.put("childInCare", "true");
-            child2.put("childDateOfBirthMonth", "10");
-            child2.put("childDateOfBirthDay", "11");
-            child2.put("childDateOfBirthYear", "2002");
-            child2.put("needFinancialAssistanceForChild", true);
-            child2.put("childIsUsCitizen", "Yes");
-            child2.put("ccapStartDate", "01/10/2025");
-
-            Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
+            familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                     .withFlow("gcc")
                     .with("parentFirstName", "FirstName")
                     .with("parentContactEmail", "familyemail@test.com")
                     .with("languageRead", "English")
-                    .with("providers", List.of(provider))
+                    .with("providers", List.of(individualProvider, programProvider))
                     .with("children", List.of(child1, child2))
-                    .withChildcareScheduleForProvider("child-uuid", "first-provider-uuid")
+                    .withChildcareScheduleForProvider(child1.get("uuid").toString(), individualProvider.get("uuid").toString())
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withCCRR()
                     .withShortCode("ABC123")
@@ -223,14 +252,15 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
             providerSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                     .withFlow("providerresponse")
                     .with("familySubmissionId", familySubmission.getId().toString())
-                    .with("currentProviderUuid", "first-provider-uuid")
+                    .with("currentProviderUuid", individualProvider.get("uuid").toString())
                     .with("providerResponseContactEmail", "provideremail@test.com")
                     .with("providerResponseFirstName", "ProviderFirst")
                     .with("providerResponseLastName", "ProviderLast")
-                    .with("providerResponseBusinessName", "BusinessName")
-                    .with("providerCareStartDate", "01/10/2025")
+                    .with("providerCareStartDate", "05/10/2025")
                     .with("providerResponseAgreeToCare", "true")
                     .build());
+
+            individualProvider.put("providerResponseSubmissionId", providerSubmission.getId());
 
             sendEmailClass = new SendProviderAgreesToCareFamilyConfirmationEmail(sendEmailJob, messageSource,
                     submissionRepositoryService);
@@ -262,10 +292,9 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
             assertThat(emailData.get("parentFirstName")).isEqualTo("FirstName");
             assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
             assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
-            assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
+            assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C."));
             assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
-            assertThat(emailData.get("providerName")).isEqualTo("BusinessName");
-            assertThat(emailData.get("ccapStartDate")).isEqualTo("January 10, 2025");
+            assertThat(emailData.get("ccapStartDate")).isEqualTo("May 10, 2025");
             assertThat(emailData.get("familyPreferredLanguage")).isEqualTo("English");
             assertThat(emailData.get("providerType")).isEqualTo("Individual");
             assertThat(emailData.get("childCareProviderInitials")).isEqualTo("P.P.");
@@ -290,7 +319,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
                             new Object[]{"P.P."},
                             locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.provider-agrees-to-care.p3",
-                    new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
+                    new Object[]{"F.C.", "May 10, 2025"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.provider-agrees-to-care.p4",
                     new Object[]{"ABC123"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.provider-agrees-to-care.p5",
@@ -329,33 +358,14 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
         @BeforeEach
         void setUp() {
-            Map<String, Object> provider = new HashMap<>();
-            provider.put("uuid", "first-provider-uuid");
-            provider.put("iterationIsComplete", true);
-            provider.put("childCareProgramName", "FamilyChildCareName");
-            provider.put("providerType", "Care Program");
-            provider.put("familyIntendedProviderEmail", "familyChildCareEmail");
-
-            Map<String, Object> child = new HashMap<>();
-            child.put("uuid", "child-uuid");
-            child.put("childFirstName", "First");
-            child.put("childLastName", "Child");
-            child.put("childInCare", "true");
-            child.put("childDateOfBirthMonth", "10");
-            child.put("childDateOfBirthDay", "11");
-            child.put("childDateOfBirthYear", "2002");
-            child.put("needFinancialAssistanceForChild", true);
-            child.put("childIsUsCitizen", "Yes");
-            child.put("ccapStartDate", "01/10/2025");
-
-            Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
+            familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                     .withFlow("gcc")
                     .with("parentFirstName", "FirstName")
                     .with("parentContactEmail", "familyemail@test.com")
                     .with("languageRead", "English")
-                    .with("providers", List.of(provider))
-                    .with("children", List.of(child))
-                    .withChildcareScheduleForProvider("child-uuid", "first-provider-uuid")
+                    .with("providers", List.of(programProvider))
+                    .with("children", List.of(child1))
+                    .withChildcareScheduleForProvider(child1.get("uuid").toString(), programProvider.get("uuid").toString())
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withCCRR()
                     .withShortCode("ABC123")
@@ -363,7 +373,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 
             providerSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                     .withFlow("providerresponse")
-                    .with("currentProviderUuid", "first-provider-uuid")
+                    .with("currentProviderUuid", programProvider.get("uuid").toString())
                     .with("familySubmissionId", familySubmission.getId().toString())
                     .with("providerResponseContactEmail", "provideremail@test.com")
                     .with("providerResponseBusinessName", "BusinessName")

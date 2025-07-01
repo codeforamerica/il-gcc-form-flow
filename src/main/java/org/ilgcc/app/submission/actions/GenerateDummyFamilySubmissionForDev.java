@@ -75,6 +75,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
         inputData.put("parentBirthDay", "25");
         inputData.put("parentBirthYear", "1985");
         inputData.put("parentHomeStreetAddress1", "972 Mission St");
+        inputData.put("parentEmail", "amedrano+test@codeforamerica.org");
         inputData.put("parentHomeStreetAddress2", "5th floor");
         inputData.put("parentHomeCity", "San Francisco");
         inputData.put("parentHomeState", "CA - California");
