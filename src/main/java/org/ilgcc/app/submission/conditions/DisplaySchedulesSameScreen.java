@@ -26,15 +26,16 @@ public class DisplaySchedulesSameScreen extends EnableMultipleProviders implemen
             Map<String, Object> currentProviderSchedule = relatedSubflowIterationData(currentChildcareSchedule, "providerSchedules",
         repeatForIterationUuid);
             String currentProviderUuidOrNoProvider = (String) currentProviderSchedule.get("repeatForValue");
-            return super.run(submission) && (
-               hasOnlyOneProviderScheduleForTheSameProvider(SubmissionUtilities.getAnyChildcareSchedulesWithTheSameProvider(childcareSchedules, currentProviderUuidOrNoProvider, currentChildcareSchedule), currentProviderUuidOrNoProvider));
+            List<Map<String, Object>> childcareSchedulesWithTheSameProvider = SubmissionUtilities.getAnyChildcareSchedulesWithTheSameProvider(childcareSchedules, currentProviderUuidOrNoProvider, currentChildcareSchedule);
+            return super.run(submission) && (!childcareSchedulesWithTheSameProvider.isEmpty() &&
+               hasOnlyOneProviderScheduleForTheSameProvider(childcareSchedulesWithTheSameProvider, currentProviderUuidOrNoProvider));
         }
         return false;
     }
 
     private static boolean hasOnlyOneProviderScheduleForTheSameProvider(List<Map<String, Object>> childcareSchedulesWithSameProvider, String currentProviderUuidOrNoProvider){
-        return childcareSchedulesWithSameProvider.stream().noneMatch(chilcareSchedule -> {
-            Map<String, Object> providerSchedule = SubmissionUtilities.getProviderScheduleByRepeatForValue(chilcareSchedule, currentProviderUuidOrNoProvider);
+        return childcareSchedulesWithSameProvider.stream().noneMatch(childcareSchedule -> {
+            Map<String, Object> providerSchedule = SubmissionUtilities.getProviderScheduleByRepeatForValue(childcareSchedule, currentProviderUuidOrNoProvider);
             if (providerSchedule == null) {
                 return true;
             }else {
