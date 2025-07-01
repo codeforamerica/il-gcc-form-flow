@@ -45,14 +45,22 @@ public class NewProviderAgreesToCareFamilyConfirmationEmailTemplate {
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
-        String p1 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale);
+        String p1 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", 
+                new Object[]{emailData.get("parentFirstName")}, locale);
 
-        String providerName = emailData.get("providerName").toString();
-        String p2 = providerName.isEmpty() ? messageSource.getMessage(
-                "email.response-email-for-family.provider-agrees.p2-no-provider-name", new Object[]{emailData.get("ccrrName")},
-                locale)
-                : messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name",
-                        new Object[]{providerName, emailData.get("ccrrName")}, locale);
+        String providerType = emailData.get("providerType").toString();
+        String p2;
+        if (providerType.isBlank()) {
+           p2 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-individual", 
+                   new Object[]{emailData.get("familyIntendedProviderName").toString()}, locale);
+        } 
+        else {
+            p2 = providerType.equals("Individual")
+                    ? messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-individual",
+                    new Object[]{emailData.get("childCareProviderInitials").toString()}, locale)
+                    : messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-program",
+                    new Object[]{emailData.get("childCareProgramName").toString()}, locale);
+        }
         String p3 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
                 new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
                         messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
