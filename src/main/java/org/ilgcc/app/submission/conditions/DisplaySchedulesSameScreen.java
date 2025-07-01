@@ -38,7 +38,7 @@ public class DisplaySchedulesSameScreen extends EnableMultipleProviders implemen
             Map<String, Object> providerSchedule = SubmissionUtilities.getProviderScheduleByRepeatForValue(childcareSchedule, currentProviderUuidOrNoProvider);
             if (providerSchedule == null) {
                 return true;
-            }else {
+            } else {
                 return providerSchedule.getOrDefault("sameSchedule", "").equals("false");
             }
         });
