@@ -47,9 +47,8 @@ public class ProviderDidNotRespondToFamilyEmailTemplate {
         String p2;
 
         if (providerType.isBlank()) {
-            // This should only happen if someone is jumping around when filling out the application (likely not in prod)
             p2 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2-individual",
-                    new Object[]{"N/A"}, locale);
+                    new Object[]{"familyIntendedProviderName"}, locale);
         } else {
             p2 = providerType.equals("Individual")
                     ? messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2-individual",
