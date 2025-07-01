@@ -98,14 +98,13 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                                     j + 1));
                 }
 
-                Optional<Submission> providerSubmissionOptional;
-                try {
-                    UUID providerUUID = UUID.fromString(firstProviderObject.getOrDefault(
-                            "providerResponseSubmissionId", "").toString());
+                Optional<Submission> providerSubmissionOptional = Optional.empty();
+
+                if (firstProviderObject.containsKey("providerResponseSubmissionId")) {
+                    UUID providerUUID = UUID.fromString(firstProviderObject.get(
+                            "providerResponseSubmissionId").toString());
                     providerSubmissionOptional =
                             submissionRepositoryService.findById(providerUUID);
-                } catch (IllegalArgumentException e) {
-                    providerSubmissionOptional = Optional.empty();
                 }
 
                 if (providerSubmissionOptional.isPresent()) {

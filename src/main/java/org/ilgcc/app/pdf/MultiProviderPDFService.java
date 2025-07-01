@@ -132,14 +132,13 @@ public class MultiProviderPDFService {
                                     j + 1));
                 }
 
-                Optional<Submission> providerSubmissionOptional;
-                try {
-                    UUID providerUUID = UUID.fromString(currentProvider.getOrDefault(
-                            "providerResponseSubmissionId", "").toString());
+                Optional<Submission> providerSubmissionOptional = Optional.empty();
+
+                if (currentProvider.containsKey("providerResponseSubmissionId")) {
+                    UUID providerUUID = UUID.fromString(currentProvider.get(
+                            "providerResponseSubmissionId").toString());
                     providerSubmissionOptional =
                             submissionRepositoryService.findById(providerUUID);
-                } catch (IllegalArgumentException e) {
-                    providerSubmissionOptional = Optional.empty();
                 }
 
                 if (providerSubmissionOptional.isPresent()) {
