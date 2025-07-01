@@ -27,8 +27,19 @@ public class DisplaySchedulesSameScreen extends EnableMultipleProviders implemen
         repeatForIterationUuid);
             String currentProviderUuidOrNoProvider = (String) currentProviderSchedule.get("repeatForValue");
             return super.run(submission) && (
-                SubmissionUtilities.getAnyChildcareSchedulesWithTheSameProvider(childcareSchedules, currentProviderUuidOrNoProvider, currentChildcareSchedule).size() == 1);
+               hasOnlyOneProviderScheduleForTheSameProvider(SubmissionUtilities.getAnyChildcareSchedulesWithTheSameProvider(childcareSchedules, currentProviderUuidOrNoProvider, currentChildcareSchedule), currentProviderUuidOrNoProvider));
         }
         return false;
+    }
+
+    private static boolean hasOnlyOneProviderScheduleForTheSameProvider(List<Map<String, Object>> childcareSchedulesWithSameProvider, String currentProviderUuidOrNoProvider){
+        return childcareSchedulesWithSameProvider.stream().noneMatch(chilcareSchedule -> {
+            Map<String, Object> providerSchedule = SubmissionUtilities.getProviderScheduleByRepeatForValue(chilcareSchedule, currentProviderUuidOrNoProvider);
+            if (providerSchedule == null) {
+                return true;
+            }else {
+                return providerSchedule.getOrDefault("sameSchedule", "").equals("false");
+            }
+        });
     }
 }
