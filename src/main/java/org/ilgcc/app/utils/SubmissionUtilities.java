@@ -309,4 +309,9 @@ public class SubmissionUtilities {
     List<Map<String, Object>> providerSchedules = (List<Map<String, Object>>) Optional.ofNullable(childcareSchedule.get("providerSchedules")).orElse(emptyList());
     return providerSchedules.stream().anyMatch(providerSchedule -> providerUuidOrNoProvider.equals(providerSchedule.getOrDefault("repeatForValue", "")));
   }
+
+  public static Map<String, Object> getProviderScheduleByRepeatForValue(Map<String, Object> childcareSchedule, String repeatForValue) {
+     List<Map<String, Object>> providerSchedules = (List<Map<String, Object>>) childcareSchedule.getOrDefault("providerSchedules", emptyList());
+     return providerSchedules.stream().filter(providerSchedule -> providerSchedule.get("repeatForValue").equals(repeatForValue)).toList().stream().findFirst().orElse(null);
+  }
 }
