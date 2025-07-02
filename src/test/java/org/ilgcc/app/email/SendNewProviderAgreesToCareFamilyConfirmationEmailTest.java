@@ -211,6 +211,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
                     .with("languageRead", "English")
                     .with("providers", List.of(provider))
                     .with("children", List.of(child1, child2))
+                    .withChildcareScheduleForProvider(child1.get("uuid").toString(), provider.get("uuid").toString())
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withCCRR()
                     .withShortCode("ABC123")
@@ -253,7 +254,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
                             new Object[]{emailData.get("childCareProviderInitials")},
                             locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
-                    new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
+                    new Object[]{"F.C.", "January 10, 2025"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p4",
                     new Object[]{"ABC123"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p5",
@@ -310,6 +311,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
                     .with("languageRead", "English")
                     .with("providers", List.of(provider))
                     .with("children", List.of(child1, child2))
+                    .withChildcareScheduleForProvider(child1.get("uuid").toString(), provider.get("uuid").toString())
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withCCRR()
                     .withShortCode("ABC123")
@@ -352,7 +354,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
                             new Object[]{emailData.get("childCareProgramName")},
                             locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
-                    new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
+                    new Object[]{"F.C.", "January 10, 2025"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p4",
                     new Object[]{"ABC123"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p5",
