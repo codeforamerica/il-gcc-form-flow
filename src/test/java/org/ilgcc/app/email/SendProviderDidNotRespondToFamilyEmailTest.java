@@ -108,10 +108,11 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
         String emailCopy = emailTemplate.getBody().getValue();
 
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p1", new Object[]{"FirstName"}, locale));
+                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p1", 
+                        new Object[]{emailDataOptional.get().get("parentFirstName").toString()}, locale));
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2-individual",
-                        new Object[]{"familyIntendedProviderName"},
+                        new Object[]{emailDataOptional.get().get("familyIntendedProviderName").toString()},
                         locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p3",
                 new Object[]{"ABC123"}, locale));
