@@ -102,7 +102,7 @@ public class SubmissionSenderService {
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                             uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }
-                if (ccmsIntegrationEnabled && SubmissionUtilities.isFamilyApplicationFullyRespondedTo(familySubmission)) {
+                if (ccmsIntegrationEnabled && SubmissionUtilities.haveAllProvidersResponded(familySubmission)) {
                     if (sendToCCMSInstantly) {
                         ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadInstantly(familySubmission.getId());
                     } else {

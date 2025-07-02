@@ -341,7 +341,7 @@ public class SubmissionUtilities {
     }
   }
 
-  public static boolean isFamilyApplicationFullyRespondedTo(Submission familySubmission) {
+  public static boolean haveAllProvidersResponded(Submission familySubmission) {
       return SubmissionStatus.RESPONDED.name().equals(familySubmission.getInputData().get("providerApplicationResponseStatus"));
   }
 }
