@@ -31,7 +31,10 @@ public class ProviderApplicationPreparerHelper extends InputDataPreparerHelper {
             results.put(fieldName, new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
         }
 
-        results.put("providerSignature", new SingleField("providerSignature", providerSignature(providerInputData), null));
+        if(providerInputData.getOrDefault("providerResponseAgreeToCare", "false").equals("true")){
+            results.put("providerSignature", new SingleField("providerSignature", providerSignature(providerInputData), null));
+        }
+
         results.put("providerResponse", new SingleField("providerResponse", providerResponse(providerInputData), null));
 
         return results;
