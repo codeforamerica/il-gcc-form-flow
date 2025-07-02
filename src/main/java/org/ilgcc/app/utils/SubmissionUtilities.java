@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -313,5 +314,34 @@ public class SubmissionUtilities {
   public static Map<String, Object> getProviderScheduleByRepeatForValue(Map<String, Object> childcareSchedule, String repeatForValue) {
      List<Map<String, Object>> providerSchedules = (List<Map<String, Object>>) childcareSchedule.getOrDefault("providerSchedules", emptyList());
      return providerSchedules.stream().filter(providerSchedule -> providerSchedule.get("repeatForValue").equals(repeatForValue)).toList().stream().findFirst().orElse(null);
+  }
+
+  public static void setCurrentProviderResponseInFamilyApplication(Submission providerSubmission, Submission familySubmission) {
+    String currentProviderUuid = providerSubmission.getInputData().get("currentProviderUuid").toString();
+    String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
+
+    List<Map<String, Object>> providers = getProviders(familySubmission.getInputData());
+    boolean allProvidersResponded = true;
+
+    for (Map<String, Object> provider : providers) {
+      if (currentProviderUuid.equals(provider.get("uuid").toString())) {
+        provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
+        provider.put("providerResponseStatus", SubmissionStatus.RESPONDED.name());
+        provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
+      } else if (!provider.containsKey("providerResponseStatus") || !SubmissionStatus.RESPONDED.name()
+              .equals(provider.get("providerResponseStatus").toString())) {
+        allProvidersResponded = false;
+      }
+    }
+
+    familySubmission.getInputData().put("providers", providers);
+
+    if (allProvidersResponded) {
+      familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
+    }
+  }
+
+  public static boolean haveAllProvidersResponded(Submission familySubmission) {
+      return SubmissionStatus.RESPONDED.name().equals(familySubmission.getInputData().get("providerApplicationResponseStatus"));
   }
 }
