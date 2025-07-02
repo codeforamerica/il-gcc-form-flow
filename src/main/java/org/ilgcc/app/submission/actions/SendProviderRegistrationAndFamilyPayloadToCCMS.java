@@ -4,8 +4,6 @@ package org.ilgcc.app.submission.actions;
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -46,34 +44,11 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
             if (familySubmissionOptional.isPresent()) {
                 Submission familySubmission = familySubmissionOptional.get();
 
-                boolean allProvidersResponded = multipleProvidersEnabled;
                 if (multipleProvidersEnabled) {
-                    String currentProviderUuid = providerSubmission.getInputData().get("currentProviderUuid").toString();
-                    String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
-
-                    List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
-
-                    for (int i = 0; i < providers.size(); i++) {
-                        Map<String, Object> provider = providers.get(i);
-                        if (currentProviderUuid.equals(provider.get("uuid").toString())) {
-                            provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
-                            provider.put("providerResponseStatus", SubmissionStatus.RESPONDED.name());
-                            provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
-                            providers.set(i, provider);
-                        } else if (!provider.containsKey("providerResponseStatus") || !SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus").toString())) {
-                            allProvidersResponded = false;
-                        }
-                    }
-
-                    familySubmission.getInputData().put("providers", providers);
-
-                    if (allProvidersResponded) {
-                        familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
-                    }
-
+                    SubmissionUtilities.respondForCurrentProvider(providerSubmission, familySubmission);
                     submissionRepositoryService.save(familySubmission);
 
-                    if (allProvidersResponded) {
+                    if (SubmissionUtilities.isFamilyApplicationFullyRespondedTo(familySubmission)) {
                         log.info("New Provider submitted response for family submission {}, enqueuing transfer of documents because all providers responded.",
                                 familySubmissionId);
                         if (ccmsIntegrationEnabled) {

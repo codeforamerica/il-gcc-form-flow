@@ -5,9 +5,6 @@ import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -89,31 +86,8 @@ public class SubmissionSenderService {
                 log.info("Provider submitted response for family submission {}, enqueuing transfer of documents.",
                         familySubmission.getId());
 
-                boolean allProvidersResponded = multipleProvidersEnabled;
                 if (multipleProvidersEnabled) {
-                    String currentProviderUuid = providerSubmission.getInputData().get("currentProviderUuid").toString();
-                    String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
-
-                    List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
-
-                    for (int i = 0; i < providers.size(); i++) {
-                        Map<String, Object> provider = providers.get(i);
-                        if (currentProviderUuid.equals(provider.get("uuid").toString())) {
-                            provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
-                            provider.put("providerResponseStatus", SubmissionStatus.RESPONDED.name());
-                            provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
-                            providers.set(i, provider);
-                        } else if (!provider.containsKey("providerResponseStatus") || !SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus").toString())) {
-                            allProvidersResponded = false;
-                        }
-                    }
-
-                    familySubmission.getInputData().put("providers", providers);
-
-                    if (allProvidersResponded) {
-                        familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
-                    }
-
+                    SubmissionUtilities.respondForCurrentProvider(providerSubmission, familySubmission);
                 } else {
                     familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
                     familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
@@ -128,7 +102,7 @@ public class SubmissionSenderService {
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                             uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }
-                if (ccmsIntegrationEnabled && (!multipleProvidersEnabled || allProvidersResponded)) {
+                if (ccmsIntegrationEnabled && SubmissionUtilities.isFamilyApplicationFullyRespondedTo(familySubmission)) {
                     if (sendToCCMSInstantly) {
                         ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadInstantly(familySubmission.getId());
                     } else {
