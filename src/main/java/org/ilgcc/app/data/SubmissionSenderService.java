@@ -89,11 +89,11 @@ public class SubmissionSenderService {
                 log.info("Provider submitted response for family submission {}, enqueuing transfer of documents.",
                         familySubmission.getId());
 
+                boolean allProvidersResponded = multipleProvidersEnabled;
                 if (multipleProvidersEnabled) {
                     String currentProviderUuid = providerSubmission.getInputData().get("currentProviderUuid").toString();
                     String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
 
-                    boolean allProvidersResponded = true;
                     List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
 
                     for (int i = 0; i < providers.size(); i++) {
@@ -107,6 +107,8 @@ public class SubmissionSenderService {
                             allProvidersResponded = false;
                         }
                     }
+
+                    familySubmission.getInputData().put("providers", providers);
 
                     if (allProvidersResponded) {
                         familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
@@ -126,7 +128,7 @@ public class SubmissionSenderService {
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                             uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }
-                if (ccmsIntegrationEnabled) {
+                if (ccmsIntegrationEnabled && (!multipleProvidersEnabled || allProvidersResponded)) {
                     if (sendToCCMSInstantly) {
                         ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadInstantly(familySubmission.getId());
                     } else {
