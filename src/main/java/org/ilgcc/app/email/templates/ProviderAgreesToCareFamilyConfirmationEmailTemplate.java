@@ -23,40 +23,53 @@ public class ProviderAgreesToCareFamilyConfirmationEmailTemplate {
     private MessageSource messageSource;
     private Locale locale;
 
-   public ProviderAgreesToCareFamilyConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource, Locale locale) {
-       this.emailData = emailData;
-       this.messageSource = messageSource;
-       this.locale = locale;
+    public ProviderAgreesToCareFamilyConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource,
+            Locale locale) {
+        this.emailData = emailData;
+        this.messageSource = messageSource;
+        this.locale = locale;
 
-   }
-   public ILGCCEmailTemplate createTemplate(){
-       return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)), EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL);
-   }
+    }
+
+    public ILGCCEmailTemplate createTemplate() {
+        return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)),
+                EmailType.PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL);
+    }
 
     private Email senderEmail() {
-        return  new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale));
+        return new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale));
     }
 
     private String setSubject() {
-        return messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale);
+        return messageSource.getMessage("email.provider-agrees-to-care.subject", null, locale);
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
-        String p1 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", null, locale);
+        String p1 = messageSource.getMessage("email.provider-agrees-to-care.p1", new Object[]{emailData.get("parentFirstName")},
+                locale);
 
-        String providerName = emailData.get("providerName").toString();
-        String p2 = providerName.isEmpty() ? messageSource.getMessage(
-                "email.response-email-for-family.provider-agrees.p2-no-provider-name", new Object[]{emailData.get("ccrrName")},
-                locale)
-                : messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-has-provider-name",
-                        new Object[]{providerName, emailData.get("ccrrName")}, locale);
-        String p3 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
+        String providerType = emailData.getOrDefault("providerType", "").toString();
+        String programName = emailData.get("childCareProgramName").toString();
+        String childCareProviderInitials = emailData.get("childCareProviderInitials").toString();
+
+        String p2;
+        if (providerType.equals("Care Program") || !programName.isBlank()) {
+            p2 = messageSource.getMessage(
+                    "email.provider-agrees-to-care.p2-program", new Object[]{programName},
+                    locale);
+        } else {
+            p2 = messageSource.getMessage(
+                    "email.provider-agrees-to-care.p2-individual", new Object[]{childCareProviderInitials},
+                    locale);
+        }
+
+        String p3 = messageSource.getMessage("email.provider-agrees-to-care.p3",
                 new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
                         messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
-        String p4 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p4",
+        String p4 = messageSource.getMessage("email.provider-agrees-to-care.p4",
                 new Object[]{emailData.get("confirmationCode")},
                 locale);
-        String p5 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p5",
+        String p5 = messageSource.getMessage("email.provider-agrees-to-care.p5",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
         String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
