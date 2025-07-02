@@ -291,6 +291,7 @@ flow:
   schedules-hours:
     subflow: childcareSchedules
     beforeDisplayAction: SetSubflowWeeklyScheduleGroup
+    crossFieldValidationAction: ValidateChildcareHourlySchedule
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-review
