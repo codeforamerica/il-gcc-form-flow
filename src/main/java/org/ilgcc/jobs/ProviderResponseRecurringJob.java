@@ -1,5 +1,7 @@
 package org.ilgcc.jobs;
 
+import static java.util.Collections.emptyList;
+
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
@@ -10,6 +12,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -196,7 +199,12 @@ public class ProviderResponseRecurringJob {
                                 expiredFamilySubmission.getId());
                     }
                     updateProviderStatus(expiredFamilySubmission);
-                    sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
+                    
+                    List<Map<String, Object>> providersSubflowData = (List<Map<String, Object>>) 
+                            expiredFamilySubmission.getInputData().getOrDefault("providers", emptyList());
+                    providersSubflowData.forEach(provider -> {
+                        sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers", provider.get("uuid").toString());
+                    });
                 } else {
                     log.warn(
                             String.format(

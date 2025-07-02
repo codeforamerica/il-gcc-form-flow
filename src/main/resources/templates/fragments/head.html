@@ -4,36 +4,7 @@
     <meta name="version" th:content="${@environment.getProperty('il-gcc.app-version')}">
     <title th:text="${errorMessages == null ? title : #messages.msg('errors.general-title')}"></title>
     <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
-    <script>
-        (function (h, o, u, n, d) {
-            h = h[d] = h[d] || {
-                q: [], onReady: function (c) {
-                    h.q.push(c)
-                }
-            }
-            d = o.createElement(u);
-            d.async = 1;
-            d.src = n
-            n = o.getElementsByTagName(u)[0];
-            n.parentNode.insertBefore(d, n)
-        })(window, document, 'script',
-            'https://www.datadoghq-browser-agent.com/us1/v5/datadog-rum.js', 'DD_RUM')
-        window.DD_RUM.onReady(function () {
-            window.DD_RUM.init({
-                clientToken: '[[${@environment.getProperty("DATADOG_RUM_CLIENT_TOKEN")}]]',
-                applicationId: '[[${@environment.getProperty("DATADOG_RUM_APPLICATION_ID")}]]',
-                site: 'datadoghq.com',
-                service: 'il-gcc-front-end',
-                env: '[[${@environment.getProperty("DATADOG_ENVIRONMENT")}]]',
-                sessionSampleRate: 100,
-                sessionReplaySampleRate: [[${@environment.getProperty("DATADOG_SESSION_REPLAY_SAMPLE_RATE")}]],
-                trackUserInteractions: true,
-                trackResources: true,
-                trackLongTasks: true,
-                defaultPrivacyLevel: 'mask-user-input',
-            });
-        })
-    </script>
+    <th:block th:replace="~{fragments/datadogRum :: datadogRum}"></th:block>
     <th:block th:replace="~{fragments/mixpanelTracking :: mixpanelTracking}"></th:block>
     <link href="/webjars/form-flow/0.0.1/css/honeycrisp.min.css" rel="stylesheet"/>
     <link href="/webjars/form-flow/0.0.1/css/libraryStyles.css" rel="stylesheet"/>

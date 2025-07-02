@@ -1,18 +1,16 @@
-package org.ilgcc.app.submission.conditions;
+package org.ilgcc.app.submission.actions;
 
 
-import static org.ilgcc.app.utils.ProviderSubmissionUtilities.hoursRequested;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getLocalizedChildCareHours;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -40,16 +38,6 @@ public class LocalizeChildcareSchedules implements Action {
     }
 
     private String localizeChildCareHours(Map<String, Object> childSchedule) {
-
-        Map<String, String> childCareHours = hoursRequested(childSchedule);
-
-        List<String> dateString = new ArrayList<>();
-        childCareHours.forEach((key, val) -> {
-            String dayKey = String.format("general.week.%s", key);
-            dateString.add(String.format("%s, %s</br>", messageSource.getMessage(dayKey, null,
-                    LocaleContextHolder.getLocale()), val));
-        });
-
-        return String.join("", dateString);
+        return getLocalizedChildCareHours(childSchedule, messageSource);
     }
 }

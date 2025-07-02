@@ -22,6 +22,9 @@ public class Providerresponse extends FlowInputs {
 
     private String familySubmissionId;
 
+    @NotBlank(message="{errors.select-provider}")
+    private String currentProviderUuid;
+
     MultipartFile providerUploadDocuments;
 
     @NotNull(message = "{errors.provide-provider-number}")

@@ -354,8 +354,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         List<Map<String,Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickElementById("none__checkbox-childcareProvidersForCurrentChild-label");
         testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
-        testPage.clickElementById("childcareProvidersForCurrentChild-NO_PROVIDER-label");
         testPage.clickContinue();
 
         //schedules-start-care
@@ -399,41 +399,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("childcareEndTimeFridayHour", "12");
         testPage.enter("childcareEndTimeFridayMinute", "00");
         testPage.selectFromDropdown("childcareEndTimeFridayAmPm", "PM");
-
-        testPage.clickContinue();
-
-        // second iteration
-        // skips schedules-start-care
-
-        // skips schedules-start-date
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
-        assertThat(testPage.getHeader()).containsIgnoringCase(getEnMessageWithParams("schedules-start-date.header.no-provider",
-            new Object[]{"Child"}));
-        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
-        testPage.enter("ccapStartMonth", "10");
-        testPage.enter("ccapStartDay", "15");
-        testPage.enter("ccapStartYear", "2025");
-
-        testPage.clickContinue();
-
-        //schedules-days
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
-        assertThat(testPage.getHeader()).containsIgnoringCase(getEnMessageWithParams("schedules-days.header.no-provider",
-            new Object[]{"Child"}));
-        testPage.clickElementById("childcareWeeklySchedule-Monday");
-        testPage.clickContinue();
-
-        //schedules-hours
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
-        assertThat(testPage.getHeader()).containsIgnoringCase(getEnMessageWithParams("schedules-hours.header.no-provider",
-            new Object[]{"Child"}));
-        testPage.selectFromDropdown("childcareStartTimeMondayHour", "10");
-        testPage.enter("childcareStartTimeMondayMinute", "00");
-        testPage.selectFromDropdown("childcareStartTimeMondayAmPm", "AM");
-
-        testPage.selectFromDropdown("childcareEndTimeMondayHour", "10");
-        testPage.enter("childcareEndTimeMondayMinute", "00");
-        testPage.selectFromDropdown("childcareEndTimeMondayAmPm", "PM");
 
         testPage.clickContinue();
 
@@ -496,6 +461,30 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         // after-submit-contact-provider
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("after-submit-contact-provider.multiple-providers.title"));
         testPage.clickContinue();
+
+        // contact-providers iteration #1
+        assertThat(testPage.getHeader()).isEqualTo(getRequiredEnMessageWithParams("contact-providers-start.header",  new Object[]{"ACME Daycare"}));
+        testPage.clickElementById("contactProviderMethod-OTHER-label");
+        testPage.clickContinue();
+
+        assertThat(testPage.getHeader()).contains(getEnMessageWithParams("contact-providers-share-code.header",  new Object[]{"ACME Daycare", ""}).trim());
+        testPage.clickContinue();
+
+        // contact-providers iteration #2
+        assertThat(testPage.getHeader()).isEqualTo(getRequiredEnMessageWithParams("contact-providers-start.header",  new Object[]{"Nope Test"}));
+        testPage.clickElementById("contactProviderMethod-OTHER-label");
+        testPage.clickContinue();
+
+        assertThat(testPage.getHeader()).contains(getEnMessageWithParams("contact-providers-share-code.header",  new Object[]{"Nope Test", ""}).trim());
+        testPage.clickContinue();
+
+        // contact-providers-review
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("contact-providers-review.header"));
+        testPage.clickContinue();
+
+        // doc-upload-recommended-docs
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("doc-upload-recommended-docs.header"));
+
     }
 
     @Test
@@ -665,7 +654,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         
         //provider-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
-        testPage.enter("childCareProgramName", "Nope Test");
+        testPage.enter("childCareProgramName", "Favorite Daycare");
         testPage.clickContinue();
 
         //provider-location
@@ -692,6 +681,188 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         //providers-info-confirm
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info-confirm.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info-confirm.header"));
+        testPage.clickContinue();
+
+        //schedules-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
+        assertThat(testPage.findElementTextById("schedules-intro-multiple-step")).isEqualTo("Step 5 of 7");
+
+        testPage.clickContinue();
+
+        //schedules-start
+        List<Map<String,Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
+        testPage.clickContinue();
+
+        //ChildSchedule Iteration 1
+        //ChildSchedule: Child || ProviderSchedule: Nope Test
+        //schedules-start-care
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Nope Test");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickYes();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "10");
+        testPage.enter("ccapStartDay", "15");
+        testPage.enter("ccapStartYear", "2025");
+
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Nope Test");
+        assertThat(testPage.getHeader()).containsIgnoringCase("First");
+        testPage.clickElementById("childcareWeeklySchedule-Thursday");
+        testPage.clickElementById("childcareWeeklySchedule-Friday");
+        testPage.clickContinue();
+
+        //schedules-hours
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Nope Test");
+        assertThat(testPage.getHeader()).containsIgnoringCase("First");
+        testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
+        testPage.enter("childcareStartTimeThursdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
+        testPage.enter("childcareEndTimeThursdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareStartTimeFridayHour", "9");
+        testPage.enter("childcareStartTimeFridayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeFridayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeFridayHour", "12");
+        testPage.enter("childcareEndTimeFridayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeFridayAmPm", "PM");
+
+        testPage.clickContinue();
+
+        //ChildSchedule Iteration 2
+        //schedules-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(1).get("uuid")));
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(2).get("uuid")));
+        testPage.clickContinue();
+
+        //ChildSchedule: Second || ProviderSchedule: Nope Test
+        //schedules-start-care
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Nope Test");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        testPage.clickYes();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "6");
+        testPage.enter("ccapStartDay", "12");
+        testPage.enter("ccapStartYear", "2025");
+
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-same.title"));
+        testPage.clickElementById("sameSchedule-true");
+        testPage.clickContinue();
+
+        //ChildSchedule: Second || ProviderSchedule: Third Provider
+        //schedules-start-care
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Third Provider");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        testPage.clickYes();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "6");
+        testPage.enter("ccapStartDay", "12");
+        testPage.enter("ccapStartYear", "2025");
+
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Third Provider");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        testPage.clickElementById("childcareWeeklySchedule-Wednesday");
+        testPage.clickElementById("childcareWeeklySchedule-Saturday");
+        testPage.clickContinue();
+
+        //schedules-hours
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Third Provider");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        testPage.selectFromDropdown("childcareStartTimeWednesdayHour", "4");
+        testPage.enter("childcareStartTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeWednesdayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeWednesdayHour", "12");
+        testPage.enter("childcareEndTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeWednesdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareStartTimeSaturdayHour", "2");
+        testPage.enter("childcareStartTimeSaturdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeSaturdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareEndTimeSaturdayHour", "10");
+        testPage.enter("childcareEndTimeSaturdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeSaturdayAmPm", "PM");
+
+        testPage.clickContinue();
+
+        //ChildSchedule: Second || ProviderSchedule: Favorite Daycare
+        //schedules-start-care
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Favorite Daycare");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        testPage.clickYes();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "8");
+        testPage.enter("ccapStartDay", "12");
+        testPage.enter("ccapStartYear", "2025");
+
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Favorite Daycare");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        testPage.clickElementById("childcareWeeklySchedule-Wednesday");
+        testPage.clickElementById("childcareWeeklySchedule-Saturday");
+        testPage.clickContinue();
+
+        //schedules-hours
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Favorite Daycare");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        testPage.selectFromDropdown("childcareStartTimeWednesdayHour", "4");
+        testPage.enter("childcareStartTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeWednesdayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeWednesdayHour", "12");
+        testPage.enter("childcareEndTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeWednesdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareStartTimeSaturdayHour", "2");
+        testPage.enter("childcareStartTimeSaturdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeSaturdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareEndTimeSaturdayHour", "10");
+        testPage.enter("childcareEndTimeSaturdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeSaturdayAmPm", "PM");
+
+        testPage.clickContinue();
+        // schedules-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
+        testPage.clickContinue();
     }
 
     @Test

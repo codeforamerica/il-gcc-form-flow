@@ -5,6 +5,9 @@ import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +15,7 @@ import org.ilgcc.app.email.SendEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
@@ -33,8 +37,9 @@ public class SubmissionSenderService {
     private final UploadedDocumentTransmissionJob uploadedDocumentTransmissionJob;
     private final S3PresignService s3PresignService;
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
-    private final boolean CCMS_INTEGRATION_ENABLED;
-    private final boolean DTS_INTEGRATION_ENABLED;
+    private final boolean ccmsIntegrationEnabled;
+    private final boolean dtsIntegrationEnabled;
+    private final boolean multipleProvidersEnabled;
 
     public SubmissionSenderService(PdfService pdfService,
             CloudFileRepository cloudFileRepository,
@@ -46,7 +51,8 @@ public class SubmissionSenderService {
             S3PresignService s3PresignService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
             @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
-            @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled) {
+            @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled,
+            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
@@ -56,8 +62,9 @@ public class SubmissionSenderService {
         this.uploadedDocumentTransmissionJob = uploadedDocumentTransmissionJob;
         this.s3PresignService = s3PresignService;
         this.ccmsSubmissionPayloadTransactionJob = ccmsSubmissionPayloadTransactionJob;
-        this.CCMS_INTEGRATION_ENABLED = ccmsIntegrationEnabled;
-        this.DTS_INTEGRATION_ENABLED = dtsIntegrationEnabled;
+        this.ccmsIntegrationEnabled = ccmsIntegrationEnabled;
+        this.dtsIntegrationEnabled = dtsIntegrationEnabled;
+        this.multipleProvidersEnabled = multipleProvidersEnabled;
     }
 
     public void sendProviderSubmission(Submission providerSubmission) {
@@ -82,19 +89,44 @@ public class SubmissionSenderService {
                 log.info("Provider submitted response for family submission {}, enqueuing transfer of documents.",
                         familySubmission.getId());
 
-                familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
-                familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
-                submissionRepositoryService.save(familySubmission);
+                if (multipleProvidersEnabled) {
+                    String currentProviderUuid = providerSubmission.getInputData().get("currentProviderUuid").toString();
+                    String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
 
+                    boolean allProvidersResponded = true;
+                    List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
+
+                    for (int i = 0; i < providers.size(); i++) {
+                        Map<String, Object> provider = providers.get(i);
+                        if (currentProviderUuid.equals(provider.get("uuid").toString())) {
+                            provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
+                            provider.put("providerResponseStatus", SubmissionStatus.RESPONDED.name());
+                            provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
+                            providers.set(i, provider);
+                        } else if (!provider.containsKey("providerResponseStatus") || !SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus").toString())) {
+                            allProvidersResponded = false;
+                        }
+                    }
+
+                    if (allProvidersResponded) {
+                        familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
+                    }
+
+                } else {
+                    familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
+                    familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
+                }
+
+                submissionRepositoryService.save(familySubmission);
                 sendFamilyEmail.ifPresent(email -> email.send(familySubmission));
 
-                if (DTS_INTEGRATION_ENABLED) {
+                if (dtsIntegrationEnabled) {
                     enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
                             familySubmission, FileNameUtility.getFileNameForPdf(familySubmission, "Provider-Responded"));
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                             uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }
-                if (CCMS_INTEGRATION_ENABLED) {
+                if (ccmsIntegrationEnabled) {
                     if (sendToCCMSInstantly) {
                         ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadInstantly(familySubmission.getId());
                     } else {
@@ -110,12 +142,12 @@ public class SubmissionSenderService {
     }
 
     public void sendFamilySubmission(Submission familySubmission) {
-        if (DTS_INTEGRATION_ENABLED) {
+        if (dtsIntegrationEnabled) {
             enqueueDocumentTransfer.enqueuePDFDocumentBySubmission(pdfService, cloudFileRepository, pdfTransmissionJob,
                     familySubmission, FileNameUtility.getFileNameForPdf(familySubmission, "Form-Family"));
         }
 
-        if (CCMS_INTEGRATION_ENABLED) {
+        if (ccmsIntegrationEnabled) {
             ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission.getId());
         }
     }

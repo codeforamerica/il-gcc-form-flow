@@ -1,6 +1,7 @@
 package org.ilgcc.app.utils;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
@@ -12,6 +13,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,6 +22,8 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -75,7 +79,17 @@ public class ProviderSubmissionUtilities {
         return Optional.empty();
     }
 
-    public static Map<String, String> getFamilySubmissionForProviderResponse(Optional<Submission> familySubmission) {
+    public static Optional<String> getFamilySubmissionShortCode(Submission providerSubmission) {
+        if (providerSubmission.getInputData().containsKey("providerResponseFamilyShortCode")) {
+            String providerResponseFamilyShortCode = (String) providerSubmission.getInputData().get(
+                    "providerResponseFamilyShortCode");
+            return Optional.of(providerResponseFamilyShortCode);
+        }
+
+        return Optional.empty();
+    }
+
+    public static Map<String, String> getFamilySubmission(Optional<Submission> familySubmission) {
         Map<String, String> applicationData = new HashMap<>();
 
         if (familySubmission.isPresent()) {
@@ -95,16 +109,19 @@ public class ProviderSubmissionUtilities {
     }
 
     public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission) {
+        return getCombinedDataForEmails(providerSubmission, familySubmission, null);
+    }
+
+    public static Map<String, Object> getCombinedDataForEmails(Submission providerSubmission, Submission familySubmission,
+            Map<String, Object> subflowData) {
         Map<String, Object> applicationData = new HashMap<>();
 
-        applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission));
+        applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission, subflowData));
+
         applicationData.put("providerResponseContactEmail",
                 providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
         applicationData.put("providerName", getProviderResponseName(providerSubmission));
-        applicationData.put("childCareProgramName", providerSubmission.getInputData().getOrDefault("providerResponseBusinessName", ""));
-        applicationData.put("childCareProviderInitials", getInitials(providerSubmission.getInputData().getOrDefault(
-                "providerResponseFirstName", "").toString(),
-                providerSubmission.getInputData().getOrDefault("providerResponseLastName", "").toString()));
+        applicationData.putAll(setProviderResponseName(providerSubmission));
         applicationData.put("providerSubmissionId", providerSubmission.getId());
         applicationData.put("ccapStartDate",
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
@@ -118,7 +135,7 @@ public class ProviderSubmissionUtilities {
     }
 
     public static Map<String, Object> getFamilySubmissionDataForEmails(Submission familySubmission,
-            Map<String, Object> subflowData) {
+            Map<String, Object> subflowIteration) {
         Map<String, Object> applicationData = new HashMap<>();
 
         applicationData.put("parentContactEmail",
@@ -126,8 +143,10 @@ public class ProviderSubmissionUtilities {
         applicationData.put("parentFirstName", (String) familySubmission.getInputData().get("parentFirstName"));
         applicationData.put("ccrrName", (String) familySubmission.getInputData().getOrDefault("ccrrName", ""));
         applicationData.put("ccrrPhoneNumber", (String) familySubmission.getInputData().getOrDefault("ccrrPhoneNumber", ""));
+
         applicationData.put("childrenInitialsList",
-                ProviderSubmissionUtilities.getChildrenInitialsListFromApplication(familySubmission));
+                ProviderSubmissionUtilities.getChildrenInitialsList(
+                        SubmissionUtilities.getChildrenNeedingAssistance(familySubmission.getInputData())));
         applicationData.put("confirmationCode", familySubmission.getShortCode());
         applicationData.put("familySubmissionId", familySubmission.getId());
         applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));
@@ -138,34 +157,104 @@ public class ProviderSubmissionUtilities {
                         Optional.empty()));
 
         // provider specific fields can come from a subflow and not the main data
-        Map<String, Object> data = subflowData == null ? familySubmission.getInputData() : subflowData;
+        Map<String, Object> data = subflowIteration == null ? familySubmission.getInputData() : subflowIteration;
         applicationData.put("familyIntendedProviderName", data.getOrDefault("familyIntendedProviderName", ""));
         applicationData.put("familyIntendedProviderEmail", data.getOrDefault("familyIntendedProviderEmail", ""));
         applicationData.put("providerType", data.getOrDefault("providerType", ""));
         applicationData.put("childCareProgramName", data.getOrDefault("childCareProgramName", ""));
         applicationData.put("childCareProviderInitials",
                 getInitials(data.getOrDefault("providerFirstName", "").toString(),
-                data.getOrDefault("providerLastName", "").toString()));
+                        data.getOrDefault("providerLastName", "").toString()));
+        if (subflowIteration != null) {
+            Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
+                    SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+
+            applicationData.put("childrenInitialsList",
+                    ProviderSubmissionUtilities.getChildrenInitialsList(mergedChildrenAndSchedules.get(data.get("uuid"))));
+
+        }
 
         return applicationData;
     }
 
-    public static List<Map<String, Object>> getChildrenDataForProviderResponse(Submission applicantSubmission) {
+    public static List<Map<String, Object>> getFamilyIntendedProviders(Submission familySubmission) {
+        List<Map<String, Object>> displayProviders = new ArrayList<>();
+
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
+                .getOrDefault("providers",
+                        Collections.EMPTY_LIST);
+
+        if (!providers.isEmpty()) {
+            for (var provider : providers) {
+                Map<String, Object> providerObject = new HashMap<>();
+                providerObject.put("uuid", provider.get("uuid"));
+                providerObject.put("providerResponseStatus", provider.get("providerResponseStatus"));
+
+                String providerType = provider.get("providerType").toString();
+                if (providerType.equals("Individual")) {
+                    providerObject.put("displayName", getInitials(provider.getOrDefault("providerFirstName", "").toString(),
+                            provider.getOrDefault(
+                                    "providerLastName", "").toString()));
+                    providerObject.put("location", String.format("%s, %s", provider.getOrDefault("familyIntendedProviderCity",
+                            "").toString(), provider.getOrDefault("familyIntendedProviderState",
+                            "").toString()));
+                    providerObject.put("providerType", provider.get("providerType"));
+                    displayProviders.add(providerObject);
+                } else {
+                    providerObject.put("displayName", provider.getOrDefault("familyIntendedProviderName", ""));
+                    providerObject.put("location", String.format("%s<br/>%s, %s", provider.getOrDefault(
+                            "familyIntendedProviderAddress",
+                            "").toString(), provider.getOrDefault(
+                            "familyIntendedProviderCity",
+                            "").toString(), provider.getOrDefault("familyIntendedProviderState",
+                            "").toString()));
+                    providerObject.put("providerType", provider.get("providerType"));
+                    displayProviders.add(providerObject);
+                }
+            }
+        }
+
+        return displayProviders;
+    }
+
+    public static Map<String, Object> getCurrentProvider(Submission providerSubmission) {
+        String currentProviderUuid = providerSubmission.getInputData().getOrDefault("currentProviderUuid", "").toString();
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) providerSubmission.getInputData()
+                .getOrDefault("providersData",
+                        Collections.EMPTY_LIST);
+
+        Optional<Map<String, Object>> currentProvider = Optional.empty();
+        if (!currentProviderUuid.isBlank() && !providers.isEmpty()) {
+            currentProvider = providers.stream().filter(provider -> provider.get("uuid").equals(currentProviderUuid)).findFirst();
+        }
+
+        if (currentProvider.isPresent()) {
+            return currentProvider.get();
+        } else {
+            return null;
+        }
+    }
+
+    public static List<Map<String, Object>> getChildrenData(Map<String, Object> inputData) {
         List<Map<String, Object>> children = new ArrayList<>();
 
-        if (!SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission.getInputData()).isEmpty()) {
-            for (var child : SubmissionUtilities.getChildrenNeedingAssistance(applicantSubmission.getInputData())) {
-                Map<String, Object> childObject = new HashMap<>();
-                String firstName = (String) child.get("childFirstName");
-                String lastName = (String) child.get("childLastName");
-                childObject.put("childName", String.format("%s %s", firstName, lastName));
-                childObject.put("childAge", childAge(child));
-                childObject.put("childCareHours", hoursRequested(child));
-                childObject.put("childStartDate", child.get("ccapStartDate"));
-                children.add(childObject);
+        if (!SubmissionUtilities.getChildrenNeedingAssistance(inputData).isEmpty()) {
+            for (var child : SubmissionUtilities.getChildrenNeedingAssistance(inputData)) {
+                children.add(setChildData(child));
             }
         }
         return children;
+    }
+
+    public static Map<String, Object> setChildData(Map<String, Object> child) {
+        Map<String, Object> childObject = new HashMap<>();
+        String firstName = (String) child.get("childFirstName");
+        String lastName = (String) child.get("childLastName");
+        childObject.put("childName", String.format("%s %s", firstName, lastName));
+        childObject.put("childAge", childAge(child));
+        childObject.put("childCareHours", hoursRequested(child));
+        childObject.put("childStartDate", child.getOrDefault("ccapStartDate", "n/a"));
+        return childObject;
     }
 
     public static String formatChildNamesAsCommaSeparatedList(Submission applicantSubmission, String joiner) {
@@ -212,7 +301,7 @@ public class ProviderSubmissionUtilities {
     }
 
     public static Map<String, String> hoursRequested(Map<String, Object> child) {
-        List<String> sameHoursEveryday = (List) child.get("childcareHoursSameEveryDay[]");
+        List<String> sameHoursEveryday = (List) child.getOrDefault("childcareHoursSameEveryDay[]", Collections.EMPTY_LIST);
         List<String> daysRequested = (List) child.get("childcareWeeklySchedule[]");
         Map<String, String> dates = new LinkedHashMap<>();
         for (String day : daysRequested) {
@@ -352,15 +441,16 @@ public class ProviderSubmissionUtilities {
 
     }
 
-    public static List<String> getChildrenInitialsListFromApplication(Submission familySubmission) {
-        List<Map<String, Object>> children = SubmissionUtilities.getChildrenNeedingAssistance(familySubmission.getInputData());
+    public static List<String> getChildrenInitialsList(List<Map<String, Object>> children) {
         List<String> childrenInitials = new ArrayList<String>();
+
         for (var child : children) {
             String firstName = (String) child.get("childFirstName");
             String lastName = (String) child.get("childLastName");
             childrenInitials.add(getInitials(firstName, lastName));
         }
         return childrenInitials;
+
     }
 
     public static String getInitials(String firstName, String lastName) {
@@ -392,5 +482,49 @@ public class ProviderSubmissionUtilities {
             return providerResponseBusinessName;
         }
         return (String) providerSubmission.getInputData().getOrDefault("providerResponseFirstName", "");
+    }
+
+    public static Map<String, Object> setProviderResponseName(Submission providerSubmission) {
+        Map<String, Object> namesFields = new HashMap<>();
+
+        String providerResponseBusinessName = (String) providerSubmission.getInputData()
+                .getOrDefault("providerResponseBusinessName", "");
+
+        String firstName = providerSubmission.getInputData().getOrDefault("providerResponseFirstName", "").toString();
+        String lastName = providerSubmission.getInputData().getOrDefault("providerResponseLastName", "").toString();
+
+        if (!providerResponseBusinessName.isBlank()) {
+            namesFields.put("childCareProgramName",
+                    providerResponseBusinessName);
+        }
+
+        if (!(firstName + lastName).isBlank()) {
+            namesFields.put("childCareProviderInitials",
+                    getInitials(firstName,
+                            lastName));
+        }
+
+        return namesFields;
+    }
+
+    public static String getLocalizedChildCareHours(Map<String, Object> childSchedule, MessageSource messageSource) {
+        Map<String, String> childCareHours = hoursRequested(childSchedule);
+
+        List<String> dateString = new ArrayList<>();
+        childCareHours.forEach((key, val) -> {
+            String dayKey = String.format("general.week.%s", key);
+            dateString.add(String.format("%s, %s</br>", messageSource.getMessage(dayKey, null,
+                LocaleContextHolder.getLocale()), val));
+        });
+
+        return String.join("", dateString);
+    }
+
+    public static String getInitials(String firstName, String lastName) {
+        if (!firstName.isBlank() && !lastName.isBlank()) {
+            return String.format("%s.%s.", firstName.toUpperCase().charAt(0), lastName.toUpperCase().charAt(0));
+        }
+
+        return "n/a";
     }
 }

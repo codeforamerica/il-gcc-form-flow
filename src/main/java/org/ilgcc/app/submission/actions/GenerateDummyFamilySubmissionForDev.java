@@ -82,7 +82,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
         inputData.put("parentHasPartner", "false");
         inputData.put("earliestChildcareStartDate", "01/10/2025");
 
-        if(enableMultipleProviders){
+        if (enableMultipleProviders) {
             inputData.putAll(createMultipleProviders());
         } else {
             inputData.putAll(createSingleProvider(1));
@@ -181,13 +181,18 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
         data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "AmPm", amOrPm);
     }
 
-    public Map<String, Object> createMultipleProviders(){
+    public Map<String, Object> createMultipleProviders() {
         Map<String, Object> intendedFamilyData = new HashMap<>();
 
         List<Object> providers = new ArrayList<>();
 
         Map<String, Object> provider1 = createSingleProvider(1);
         provider1.put("iterationIsComplete", true);
+        provider1.put("uuid", "first-provider-id");
+        provider1.put("providerType", "Care Program");
+        provider1.put("providerLastName", "Hanson");
+        provider1.put("providerFirstName", "Philip");
+        provider1.put("childCareProgramName", "Baby Children Day Care Center");
         provider1.put("familyIntendedProviderCity", "Chicago");
         provider1.put("familyIntendedProviderState", "IL");
         provider1.put("familyIntendedProviderAddress", "123 Main Street");
@@ -196,6 +201,12 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
 
         Map<String, Object> provider2 = createSingleProvider(2);
         provider2.put("iterationIsComplete", true);
+        provider2.put("uuid", "second-provider-id");
+        provider2.put("providerType", "Individual");
+        provider2.put("providerLastName", "King");
+        provider2.put("providerFirstName", "Brielle");
+        provider2.put("childCareProgramName", "Baby Children Day Care Center");
+        provider2.put("familyIntendedProviderName", "Baby Children Day Care Center");
         provider2.put("familyIntendedProviderCity", "Chicago");
         provider2.put("familyIntendedProviderState", "IL");
         provider2.put("familyIntendedProviderAddress", "223 Main Street");
@@ -204,6 +215,12 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
 
         Map<String, Object> provider3 = createSingleProvider(3);
         provider3.put("iterationIsComplete", true);
+        provider3.put("uuid", "third-provider-id");
+        provider3.put("providerType", "Care Program");
+        provider3.put("providerLastName", "Holden");
+        provider3.put("providerFirstName", "Callum");
+        provider3.put("childCareProgramName", "");
+        provider3.put("familyIntendedProviderName", "Holden Callum");
         provider3.put("familyIntendedProviderCity", "Chicago");
         provider3.put("familyIntendedProviderState", "IL");
         provider3.put("familyIntendedProviderAddress", "323 Main Street");

@@ -48,14 +48,20 @@ public class ProviderAgreesToCareFamilyConfirmationEmailTemplate {
         String p1 = messageSource.getMessage("email.provider-agrees-to-care.p1", new Object[]{emailData.get("parentFirstName")},
                 locale);
 
-        String providerType = emailData.get("providerType").toString();
+        String providerType = emailData.getOrDefault("providerType", "").toString();
         String programName = emailData.get("childCareProgramName").toString();
         String childCareProviderInitials = emailData.get("childCareProviderInitials").toString();
-        String p2 = providerType.equals("Individual") ? messageSource.getMessage(
-                "email.provider-agrees-to-care.p2-individual", new Object[]{childCareProviderInitials},
-                locale) : messageSource.getMessage(
-                "email.provider-agrees-to-care.p2-program", new Object[]{programName},
-                locale);
+
+        String p2;
+        if (providerType.equals("Care Program") || !programName.isBlank()) {
+            p2 = messageSource.getMessage(
+                    "email.provider-agrees-to-care.p2-program", new Object[]{programName},
+                    locale);
+        } else {
+            p2 = messageSource.getMessage(
+                    "email.provider-agrees-to-care.p2-individual", new Object[]{childCareProviderInitials},
+                    locale);
+        }
 
         String p3 = messageSource.getMessage("email.provider-agrees-to-care.p3",
                 new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
