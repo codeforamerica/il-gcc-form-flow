@@ -40,7 +40,7 @@ public class SendProviderDeclinesCareFamilyConfirmationEmail extends SendEmail {
             String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
             Map<String, Object> currentProvider = SubmissionUtilities.getCurrentProvider(familySubmission.get().getInputData(),
                     currentProviderUuid);
-
+// todo: Remove when productizing ENABLE_MULTIPLE_PROVIDERS. Having no current provider would be an error when ENABLE_MULTIPLE_PROVIDERS feature flag is on.
             if (!currentProvider.isEmpty()) {
                 return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get(), currentProvider));
             } else {
