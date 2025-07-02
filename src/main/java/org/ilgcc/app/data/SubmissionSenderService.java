@@ -87,7 +87,7 @@ public class SubmissionSenderService {
                         familySubmission.getId());
 
                 if (multipleProvidersEnabled) {
-                    SubmissionUtilities.respondForCurrentProvider(providerSubmission, familySubmission);
+                    SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
                 } else {
                     familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
                     familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());

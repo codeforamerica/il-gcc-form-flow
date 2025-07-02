@@ -316,7 +316,7 @@ public class SubmissionUtilities {
      return providerSchedules.stream().filter(providerSchedule -> providerSchedule.get("repeatForValue").equals(repeatForValue)).toList().stream().findFirst().orElse(null);
   }
 
-  public static void respondForCurrentProvider(Submission providerSubmission, Submission familySubmission) {
+  public static void setCurrentProviderResponseInFamilyApplication(Submission providerSubmission, Submission familySubmission) {
     String currentProviderUuid = providerSubmission.getInputData().get("currentProviderUuid").toString();
     String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
 

@@ -45,7 +45,7 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
                 Submission familySubmission = familySubmissionOptional.get();
 
                 if (multipleProvidersEnabled) {
-                    SubmissionUtilities.respondForCurrentProvider(providerSubmission, familySubmission);
+                    SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
                     submissionRepositoryService.save(familySubmission);
 
                     if (SubmissionUtilities.isFamilyApplicationFullyRespondedTo(familySubmission)) {
