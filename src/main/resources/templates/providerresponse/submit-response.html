@@ -22,11 +22,11 @@
                                 <div class="radio-button familyDetails">
                                     <p th:id="parent-name" th:utext="${#messages.msg('provider-response-response.parent-name', applicationData.getOrDefault('clientResponseParentName', 'n/a'))}"></p>
 
-                                    <th:block th:if="${children.size().equals(1)}">
+                                    <th:block th:if="${true}">
                                         <p th:utext="#{'provider-response-response.care-request.1-child'}"></p>
                                     </th:block>
-                                    <th:block th:unless="${children.size().equals(1)}">
-                                        <p th:utext="${#messages.msg('provider-response-response.care-request.multiple-children', children.size())}"></p>
+                                    <th:block th:unless="${true}">
+                                        <p th:utext="${#messages.msg('provider-response-response.care-request.multiple-children', 1)}"></p>
                                     </th:block>
 
                                     <p th:id="confirmation-code" th:utext="${#messages.msg('provider-response-response.confirmation-code', applicationData.getOrDefault('clientResponseConfirmationCode', 'n/a'))}"></p>
@@ -38,7 +38,7 @@
                                             controlId='r1',
                                             linkLabel=~{::ref1},
                                             content=~{::revealContent},
-                                            forceShowContent=${children.size().equals(1)})}">
+                                            forceShowContent=${true})}">
                                             <th:block th:ref="ref1">
                                                 <th:span th:id="${'child-name-'+iter.index}"
                                                         th:utext="${#messages.msg('provider-response-response.child-name', iter.index + 1, child.getOrDefault('childName', 'n/a'))}"></th:span>

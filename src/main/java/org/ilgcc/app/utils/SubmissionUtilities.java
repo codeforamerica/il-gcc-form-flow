@@ -323,13 +323,11 @@ public class SubmissionUtilities {
     List<Map<String, Object>> providers = getProviders(familySubmission.getInputData());
     boolean allProvidersResponded = true;
 
-    for (int i = 0; i < providers.size(); i++) {
-      Map<String, Object> provider = providers.get(i);
+    for (Map<String, Object> provider : providers) {
       if (currentProviderUuid.equals(provider.get("uuid").toString())) {
         provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
         provider.put("providerResponseStatus", SubmissionStatus.RESPONDED.name());
         provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
-        providers.set(i, provider);
       } else if (!provider.containsKey("providerResponseStatus") || !SubmissionStatus.RESPONDED.name()
               .equals(provider.get("providerResponseStatus").toString())) {
         allProvidersResponded = false;
