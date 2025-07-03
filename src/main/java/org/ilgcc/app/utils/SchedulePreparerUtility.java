@@ -4,10 +4,9 @@ import static java.util.stream.Collectors.toMap;
 
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -129,7 +128,7 @@ public class SchedulePreparerUtility {
     public static Map<String, List<Map<String, Object>>> getRelatedChildrenSchedulesForProvider(Map<String, Object> inputData) {
         List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) inputData.getOrDefault("childcareSchedules",
                 Collections.EMPTY_LIST);
-        Set<Map<String, Object>> providerSchedules = new HashSet<>();
+        Set<Map<String, Object>> providerSchedules = new LinkedHashSet<>();
 
         if (childcareSchedules.isEmpty()) {
             return new HashMap<>();

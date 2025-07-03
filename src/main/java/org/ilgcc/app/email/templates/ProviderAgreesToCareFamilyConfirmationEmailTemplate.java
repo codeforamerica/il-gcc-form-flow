@@ -48,12 +48,11 @@ public class ProviderAgreesToCareFamilyConfirmationEmailTemplate {
         String p1 = messageSource.getMessage("email.provider-agrees-to-care.p1", new Object[]{emailData.get("parentFirstName")},
                 locale);
 
-        String providerType = emailData.getOrDefault("providerType", "").toString();
         String programName = emailData.get("childCareProgramName").toString();
         String childCareProviderInitials = emailData.get("childCareProviderInitials").toString();
 
         String p2;
-        if (providerType.equals("Care Program") || !programName.isBlank()) {
+        if (!programName.isBlank()) {
             p2 = messageSource.getMessage(
                     "email.provider-agrees-to-care.p2-program", new Object[]{programName},
                     locale);

@@ -48,7 +48,7 @@ public class ProviderDidNotRespondToFamilyEmailTemplate {
 
         if (providerType.isBlank()) {
             p2 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2-individual",
-                    new Object[]{"familyIntendedProviderName"}, locale);
+                    new Object[]{emailData.get("familyIntendedProviderName"),toString()}, locale);
         } else {
             p2 = providerType.equals("Individual")
                     ? messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2-individual",
