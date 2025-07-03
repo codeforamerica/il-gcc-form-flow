@@ -1,5 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
+import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
 
 import formflow.library.config.submission.Action;
@@ -8,10 +9,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,15 +25,22 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
 
     private final HttpServletRequest httpRequest;
 
+    private boolean enableMultipleProviders;
+
+    private boolean enableFasterApplicationExpiration;
+
     private static final String SUBMISSION_DATA_SHAREABLE_LINK = "shareableLink";
 
     private static final String PROVIDER_APPLICATION_STATUS = "providerApplicationResponseStatus";
 
     private static final String PROVIDER_APPLICATION_EXPIRATION = "providerApplicationResponseExpirationDate";
 
-
-    public GenerateShortLinkAndStoreProviderApplicationStatus(HttpServletRequest httpRequest) {
+    public GenerateShortLinkAndStoreProviderApplicationStatus(HttpServletRequest httpRequest,
+            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders,
+            @Value("${il-gcc.enable-faster-application-expiry}") boolean enableFasterApplicationExpiration) {
         this.httpRequest = httpRequest;
+        this.enableMultipleProviders = enableMultipleProviders;
+        this.enableFasterApplicationExpiration = enableFasterApplicationExpiration;
     }
 
     @Override
@@ -40,16 +51,35 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
 
         submission.getInputData().put(SUBMISSION_DATA_SHAREABLE_LINK, shareableLink);
 
-        submission.getInputData().put(PROVIDER_APPLICATION_STATUS, SubmissionStatus.ACTIVE.name());
+        if (enableMultipleProviders) {
+            List<Map<String, Object>> providers = (List<Map<String, Object>>) submission.getInputData()
+                    .getOrDefault("providers", emptyList());
 
-        submission.getInputData().put(PROVIDER_APPLICATION_EXPIRATION, expirationDate(submission));
+            submission.getInputData().put(PROVIDER_APPLICATION_EXPIRATION, expirationDate(submission,
+                    providers.isEmpty()));
+            submission.getInputData().put(PROVIDER_APPLICATION_STATUS, setStatus(providers.isEmpty()));
+        } else {
+            submission.getInputData().put(PROVIDER_APPLICATION_EXPIRATION, expirationDate(submission,
+                    hasNotChosenProvider(submission)));
+            submission.getInputData().put(PROVIDER_APPLICATION_STATUS, setStatus(hasNotChosenProvider(submission)));
+        }
     }
 
-    private ZonedDateTime expirationDate(Submission submission) {
-        if (hasNotChosenProvider(submission)) {
+    private ZonedDateTime expirationDate(Submission submission, Boolean noProviderApplication) {
+        if (noProviderApplication) {
             return submission.getSubmittedAt().atZoneSameInstant(ZoneId.of("America/Chicago"));
+        } else if (enableFasterApplicationExpiration) {
+            return submission.getSubmittedAt().plusHours(2).atZoneSameInstant(ZoneId.of("America/Chicago"));
         } else {
             return ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt());
+        }
+    }
+
+    private String setStatus(Boolean noProviderApplication) {
+        if (noProviderApplication) {
+            return SubmissionStatus.INACTIVE.name();
+        } else {
+            return SubmissionStatus.ACTIVE.name();
         }
     }
 }
