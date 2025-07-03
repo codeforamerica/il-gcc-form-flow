@@ -519,4 +519,13 @@ public class ProviderSubmissionUtilities {
 
         return "n/a";
     }
+
+    /**
+     * When a provider says they have not been paid by CCAP before, or if they are not sure, the provider is registering
+     *
+     * @return true if the provider is currently registering
+     */
+    public static boolean isProviderRegistering(@NotNull Submission submission) {
+        return submission.getInputData().getOrDefault("providerPaidCcap", "false").toString().equals("false");
+    }
 }
