@@ -20,6 +20,10 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
 
     @Override
     public void run(Submission providerSubmission) {
-        submissionSenderService.sendProviderSubmission(providerSubmission);
+        // If a provider is an existing provider that has done CCAP stuff before, send their submission to CCMS
+        // New Provider Registration will send the application later
+        if (providerSubmission.getInputData().getOrDefault("providerPaidCcap", "false").toString().equals("true")) {
+            submissionSenderService.sendProviderSubmission(providerSubmission);
+        }
     }
 }
