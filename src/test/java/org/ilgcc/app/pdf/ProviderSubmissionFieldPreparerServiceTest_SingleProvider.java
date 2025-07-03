@@ -114,6 +114,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
                     .with("providerMailingCity", "Chicago")
                     .with("providerMailingState", "IL")
                     .with("providerMailingZipCode", "60115")
+                    .with("providerPaidCcap", "true")
                     .withProviderStateLicense()
                     .build();
 

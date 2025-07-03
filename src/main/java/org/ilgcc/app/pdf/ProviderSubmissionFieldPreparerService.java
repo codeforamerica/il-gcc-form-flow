@@ -25,6 +25,7 @@ import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -108,12 +109,13 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                 }
 
                 if (providerSubmissionOptional.isPresent()) {
-                    if ("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
-                        results.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
+                    Submission providerSubmission = providerSubmissionOptional.get();
+                    if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
+                        results.putAll(mapProviderRegistrationData(providerSubmission.getInputData()));
                     }
                     results.putAll(
                             providerApplicationPreparerHelper.prepareSubmissionFields(
-                                    providerSubmissionOptional.get().getInputData()));
+                                    providerSubmission.getInputData()));
 
                     results.putAll(setProviderSignatureAndDate(providerSubmissionOptional.get()));
                 } else {
@@ -126,14 +128,15 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
             Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
 
             if (providerSubmissionOptional.isPresent()) {
-                if ("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
-                    results.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
+                Submission providerSubmission = providerSubmissionOptional.get();
+                if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
+                    results.putAll(mapProviderRegistrationData(providerSubmission.getInputData()));
                 }
                 results.putAll(
                         providerApplicationPreparerHelper.prepareSubmissionFields(
-                                providerSubmissionOptional.get().getInputData()));
+                                providerSubmission.getInputData()));
 
-                results.putAll(setProviderSignatureAndDate(providerSubmissionOptional.get()));
+                results.putAll(setProviderSignatureAndDate(providerSubmission));
             } else {
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission.getInputData()));
             }

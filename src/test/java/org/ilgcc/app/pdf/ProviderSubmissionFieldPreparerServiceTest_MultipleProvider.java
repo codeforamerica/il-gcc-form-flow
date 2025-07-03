@@ -275,6 +275,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
                     .with("providerMailingCity", "Chicago")
                     .with("providerMailingState", "IL")
                     .with("providerMailingZipCode", "60115")
+                    .with("providerPaidCcap", "true")
                     .withProviderStateLicense()
                     .with("currentProviderUuid", individualProvider.get("uuid"))
                     .build();

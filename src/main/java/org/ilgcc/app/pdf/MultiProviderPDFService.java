@@ -35,6 +35,7 @@ import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -145,15 +146,16 @@ public class MultiProviderPDFService {
                 }
 
                 if (providerSubmissionOptional.isPresent()) {
-                    if ("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
-                        submissionFields.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
+                    Submission providerSubmission = providerSubmissionOptional.get();
+                    if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
+                        submissionFields.putAll(mapProviderRegistrationData(providerSubmission.getInputData()));
                     }
                     submissionFields.putAll(
                             providerApplicationPreparerHelper.prepareSubmissionFields(
-                                    providerSubmissionOptional.get().getInputData()));
+                                    providerSubmission.getInputData()));
                     submissionFields.put("providerSignatureDate",
                             new SingleField("providerSignatureDate",
-                                    providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
+                                    providerSignatureDate(providerSubmission.getSubmittedAt()), null));
                 } else {
                     submissionFields.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             currentProvider));
