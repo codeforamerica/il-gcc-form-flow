@@ -48,18 +48,18 @@ public class NewProviderAgreesToCareFamilyConfirmationEmailTemplate {
         String p1 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", 
                 new Object[]{emailData.get("parentFirstName")}, locale);
 
-        String providerType = emailData.get("providerType").toString();
+        String programName = emailData.get("childCareProgramName").toString();
+        String childCareProviderInitials = emailData.get("childCareProviderInitials").toString();
+
         String p2;
-        if (providerType.isBlank()) {
-           p2 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-individual", 
-                   new Object[]{emailData.get("familyIntendedProviderName").toString()}, locale);
-        } 
-        else {
-            p2 = providerType.equals("Individual")
-                    ? messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-individual",
-                    new Object[]{emailData.get("childCareProviderInitials").toString()}, locale)
-                    : messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-program",
-                    new Object[]{emailData.get("childCareProgramName").toString()}, locale);
+        if (!programName.isBlank()) {
+            p2 = messageSource.getMessage(
+                    "email.response-email-for-family.provider-agrees.p2-program", new Object[]{programName},
+                    locale);
+        } else {
+            p2 = messageSource.getMessage(
+                    "email.response-email-for-family.provider-agrees.p2-individual", new Object[]{childCareProviderInitials},
+                    locale);
         }
         String p3 = messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
                 new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),

@@ -2,8 +2,6 @@ package org.ilgcc.app.email;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.verify;
 
 import com.sendgrid.helpers.mail.objects.Email;
 import formflow.library.data.Submission;
@@ -69,7 +67,6 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
                 .with("providerResponseContactEmail", "provideremail@test.com")
                 .with("providerResponseFirstName", "ProviderFirst")
                 .with("providerResponseLastName", "ProviderLast")
-                .with("providerResponseBusinessName", "BusinessName")
                 .with("providerCareStartDate", "01/10/2025")
                 .with("providerResponseAgreeToCare", "true")
                 .build());
@@ -82,93 +79,9 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
     void tearDown() {
         submissionRepository.deleteAll();
     }
-
-    @Test
-    void correctlySetsEmailRecipient() {
-        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
-        Map<String, Object> emailData = emailDataOptional.get();
-
-        assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("familyemail@test.com");
-    }
-
-    @Test
-    void correctlySetsEmailData() {
-        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
-
-        assertThat(emailDataOptional.isPresent()).isTrue();
-
-        Map<String, Object> emailData = emailDataOptional.get();
-
-        assertThat(emailData.get("parentContactEmail")).isEqualTo("familyemail@test.com");
-        assertThat(emailData.get("parentFirstName")).isEqualTo("FirstName");
-        assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
-        assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
-        assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
-        assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
-        assertThat(emailData.get("providerName")).isEqualTo("BusinessName");
-        assertThat(emailData.get("ccapStartDate")).isEqualTo("January 10, 2025");
-        assertThat(emailData.get("familyPreferredLanguage")).isEqualTo("English");
-    }
-
-    @Test
-    void correctlySetsEmailTemplateData() {
-        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
-        assertThat(emailDataOptional.isPresent()).isTrue();
-        Map<String, Object> emailData = emailDataOptional.get();
-        ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
-
-        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
-                new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
-        assertThat(emailTemplate.getSubject()).isEqualTo(
-                messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
-
-        String emailCopy = emailTemplate.getBody().getValue();
-
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.provider-agrees.p1", 
-                        new Object[]{emailData.get("parentFirstName")}, locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.provider-agrees.p2-individual",
-                        new Object[]{emailData.get("familyIntendedProviderName")},
-                        locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
-                new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p4",
-                new Object[]{"ABC123"}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p5",
-                new Object[]{"Sample Test CCRR", "(603) 555-1244"},
-                locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.response-email-for-family.new-provider-agrees.note", null, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
-    }
-
-    @Test
-    void correctlyUpdatesEmailSendStatus() {
-        assertThat(providerSubmission.getInputData().containsKey("newProviderResponseFamilyConfirmationEmailSent")).isFalse();
-        sendEmailClass.send(providerSubmission);
-
-        assertThat(providerSubmission.getInputData().containsKey("newProviderResponseFamilyConfirmationEmailSent")).isTrue();
-        assertThat(providerSubmission.getInputData().get("newProviderResponseFamilyConfirmationEmailSent")).isEqualTo("true");
-    }
-
-    @Test
-    void correctlySkipsEmailSendWhenEmailStatusIsTrue() {
-        assertThat(sendEmailClass.skipEmailSend(providerSubmission.getInputData())).isFalse();
-
-        providerSubmission.getInputData().put("newProviderResponseFamilyConfirmationEmailSent", "true");
-        assertThat(sendEmailClass.skipEmailSend(providerSubmission.getInputData())).isTrue();
-    }
-
-    @Test
-    void correctlyEnqueuesSendEmailJob() {
-        sendEmailClass.send(providerSubmission);
-        verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
-    }
     
     @Nested
-    class whenProviderTypeIsInvidiual {
+    class whenProviderDoesNotEnterBusinessName {
         Map<String, Object> provider;
         
         @BeforeEach
@@ -176,8 +89,6 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
             provider = new HashMap<>();
             provider.put("uuid", "first-provider-uuid");
             provider.put("iterationIsComplete", true);
-            provider.put("childCareProgramName", "FamilyChildCareName");
-            provider.put("providerType", "Individual");
             provider.put("familyIntendedProviderEmail", "familyChildCareEmail");
 
             Map<String, Object> child1 = new HashMap<>();
@@ -223,7 +134,6 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
                     .with("providerResponseContactEmail", "provideremail@test.com")
                     .with("providerResponseFirstName", "ProviderFirst")
                     .with("providerResponseLastName", "ProviderLast")
-                    .with("providerResponseBusinessName", "BusinessName")
                     .with("providerCareStartDate", "01/10/2025")
                     .with("providerResponseAgreeToCare", "true")
                     .with("currentProviderUuid", provider.get("uuid"))
@@ -276,7 +186,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
     }
 
     @Nested
-    class whenProviderTypeIsCareProgram {
+    class whenProviderEntersABusinessName {
         Map<String, Object> provider;
 
         @BeforeEach
@@ -284,8 +194,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
             provider = new HashMap<>();
             provider.put("uuid", "first-provider-uuid");
             provider.put("iterationIsComplete", true);
-            provider.put("childCareProgramName", "FamilyChildCareName");
-            provider.put("providerType", "Care Program");
+//            provider.put("childCareProgramName", "FamilyChildCareName");
             provider.put("familyIntendedProviderEmail", "familyChildCareEmail");
 
             Map<String, Object> child1 = new HashMap<>();
