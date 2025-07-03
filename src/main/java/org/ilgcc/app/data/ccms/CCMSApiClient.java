@@ -15,7 +15,8 @@
     import org.springframework.http.MediaType;
     import org.springframework.stereotype.Service;
     import org.springframework.web.reactive.function.client.WebClient;
-    
+    import reactor.core.publisher.Mono;
+
     @Service
     @Slf4j
     public class CCMSApiClient {
@@ -34,18 +35,23 @@
         }
         
         public JsonNode sendRequest(String endpoint, CCMSTransaction requestBody) throws JsonProcessingException {
-            String response = client.post()
-                    .uri(endpoint)
-                    .headers(headers -> headers.addAll(createRequestHeaders()))
-                    .bodyValue(requestBody)
-                    .retrieve()
-                    .onStatus(status -> !status.is2xxSuccessful(), apiResponse -> {
-                        log.error("Received an error response from CCMS when attempting to send transaction payload for submission with ID: {}. Error: {}",
-                                requestBody.getSubmissionId(), apiResponse);
-                        return apiResponse.createException();
-                    })
-                    .bodyToMono(String.class)
-                    .block();
+            String response =
+                    client.post()
+                            .uri(endpoint)
+                            .headers(h -> h.addAll(createRequestHeaders()))
+                            .bodyValue(requestBody)
+                            .retrieve()
+                            .onStatus(status -> !status.is2xxSuccessful(), resp ->
+                                    resp.createException()
+                                            .doOnNext(ex -> log.error(
+                                                    "Received an error response from CCMS when sending submission  with ID: {}. Status: {}, Body: {}",
+                                                    requestBody.getSubmissionId(),
+                                                    ex.getStatusCode(),
+                                                    ex.getResponseBodyAsString()))
+                                            .flatMap(Mono::error)
+                            )
+                            .bodyToMono(String.class)
+                            .block();
             return objectMapper.readTree(response);
         }
         
