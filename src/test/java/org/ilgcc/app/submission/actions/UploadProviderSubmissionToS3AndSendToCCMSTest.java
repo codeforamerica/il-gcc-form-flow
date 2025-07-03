@@ -73,6 +73,7 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
         providerSubmission = new SubmissionTestBuilder()
                 .withFlow("providerresponse")
                 .with("familySubmissionId", familySubmission.getId().toString())
+                .with("providerPaidCcap", true)
                 .build();
 
         submissionRepositoryService.save(providerSubmission);
