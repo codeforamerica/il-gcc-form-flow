@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,6 +123,7 @@ public class MultiProviderPDFService {
 
                 Map<String, SubmissionField> submissionFields = new HashMap<>();
 
+
                 List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
                         mergedChildrenAndSchedules.get(providerSchedulesByUuid.get(i));
 
@@ -155,6 +158,25 @@ public class MultiProviderPDFService {
                     submissionFields.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             currentProvider));
                 }
+
+                String parentFirstName = (String) familySubmission.getInputData().getOrDefault("parentFirstName", "");
+                String parentLastName = (String) familySubmission.getInputData().getOrDefault("parentLastName", "");
+                submissionFields.put("parentFullName",
+                        new SingleField("parentFullName", String.format("%s, %s", parentLastName, parentFirstName), null));
+
+                submissionFields.put("clientResponseConfirmationCode",
+                        new SingleField("clientResponseConfirmationCode", familySubmission.getShortCode(), null));
+
+                DateTimeFormatter receivedTimestampFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy, h:mm a zzz");
+                ZoneId chicagoTimeZone = ZoneId.of("America/Chicago");
+
+                Optional<OffsetDateTime> submittedAt = Optional.ofNullable(familySubmission.getSubmittedAt());
+                submittedAt.ifPresent(offsetDateTime -> {
+                    offsetDateTime.atZoneSameInstant(chicagoTimeZone);
+                    String formattedSubmittedAtDate = offsetDateTime.atZoneSameInstant(chicagoTimeZone).format(receivedTimestampFormat);
+                    submissionFields.put("receivedTimestamp", new SingleField("receivedTimestamp", formattedSubmittedAtDate, null));
+                });
+
                 additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size()),
                         getFilledOutPDF("src/main/resources/pdfs/IL-CCAP-Form-Additional-Provider.pdf",
                                 submissionFields.values().stream().toList()));

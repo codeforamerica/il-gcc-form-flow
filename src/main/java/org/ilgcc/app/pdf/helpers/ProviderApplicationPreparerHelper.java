@@ -31,28 +31,11 @@ public class ProviderApplicationPreparerHelper extends InputDataPreparerHelper {
             results.put(fieldName, new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
         }
 
-        results.put("providerSignature", new SingleField("providerSignature", providerSignature(providerInputData), null));
         results.put("providerResponse", new SingleField("providerResponse", providerResponse(providerInputData), null));
 
         return results;
     }
 
-
-    private String providerSignature(Map<String, Object> providerInputData) {
-        String providerSignature = (String) providerInputData.getOrDefault("providerSignedName", "");
-        if (!providerSignature.isEmpty()) {
-            return providerSignature;
-        }
-        String firstname = (String) providerInputData.getOrDefault("providerResponseFirstName", "");
-        String lastName = (String) providerInputData.getOrDefault("providerResponseLastName", "");
-        String businessName = (String) providerInputData.getOrDefault("providerResponseBusinessName", "");
-
-        if (businessName.isEmpty()) {
-            return String.format("%s %s", firstname, lastName);
-        } else {
-            return String.format("%s %s, %s", firstname, lastName, businessName);
-        }
-    }
 
     private String providerResponse(Map<String, Object> providerInputData) {
         boolean returningProvider = providerInputData.getOrDefault("providerPaidCcap", "true").toString().equals("true");

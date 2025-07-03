@@ -114,9 +114,8 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                     results.putAll(
                             providerApplicationPreparerHelper.prepareSubmissionFields(
                                     providerSubmissionOptional.get().getInputData()));
-                    results.put("providerSignatureDate",
-                            new SingleField("providerSignatureDate",
-                                    providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
+
+                    results.putAll(setProviderSignatureAndDate(providerSubmissionOptional.get()));
                 } else {
                     results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             firstProviderObject));
@@ -133,9 +132,8 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                 results.putAll(
                         providerApplicationPreparerHelper.prepareSubmissionFields(
                                 providerSubmissionOptional.get().getInputData()));
-                results.put("providerSignatureDate",
-                        new SingleField("providerSignatureDate",
-                                providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
+
+                results.putAll(setProviderSignatureAndDate(providerSubmissionOptional.get()));
             } else {
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission.getInputData()));
             }
@@ -164,11 +162,40 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
     }
 
+    private  Map<String, SubmissionField> setProviderSignatureAndDate(Submission providerSubmission){
+        Map<String, SubmissionField> fields = new HashMap<>();
+
+        if (providerSubmission.getInputData().getOrDefault("providerResponseAgreeToCare", "false").equals("true")) {
+            fields.put("providerSignature", new SingleField("providerSignature", providerSignature(providerSubmission.getInputData()), null));
+            fields.put("providerSignatureDate",
+                    new SingleField("providerSignatureDate",
+                            providerSignatureDate(providerSubmission.getSubmittedAt()), null));
+        }
+
+        return fields;
+    }
+
     private String providerSignatureDate(OffsetDateTime submittedAt) {
         if (submittedAt != null) {
             Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submittedAt));
             return formatToStringFromLocalDate(providerSignatureDate);
         }
         return "";
+    }
+
+    private String providerSignature(Map<String, Object> providerInputData) {
+        String providerSignature = (String) providerInputData.getOrDefault("providerSignedName", "");
+        if (!providerSignature.isEmpty()) {
+            return providerSignature;
+        }
+        String firstname = (String) providerInputData.getOrDefault("providerResponseFirstName", "");
+        String lastName = (String) providerInputData.getOrDefault("providerResponseLastName", "");
+        String businessName = (String) providerInputData.getOrDefault("providerResponseBusinessName", "");
+
+        if (businessName.isEmpty()) {
+            return String.format("%s %s", firstname, lastName);
+        } else {
+            return String.format("%s %s, %s", firstname, lastName, businessName);
+        }
     }
 }
