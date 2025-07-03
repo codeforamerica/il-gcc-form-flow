@@ -203,7 +203,11 @@ public class ProviderResponseRecurringJob {
                     List<Map<String, Object>> providersSubflowData = (List<Map<String, Object>>) 
                             expiredFamilySubmission.getInputData().getOrDefault("providers", emptyList());
                     providersSubflowData.forEach(provider -> {
-                        sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers", provider.get("uuid").toString());
+                        if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus"))) {
+                            log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
+                                    provider.get("uuid"), expiredFamilySubmission.getId());
+                            sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers", provider.get("uuid").toString());
+                        }
                     });
                 } else {
                     log.warn(

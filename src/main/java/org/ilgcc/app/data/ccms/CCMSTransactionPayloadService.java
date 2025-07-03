@@ -21,6 +21,7 @@ import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.FileNameUtility;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,14 +32,18 @@ public class CCMSTransactionPayloadService {
     private final UserFileRepositoryService userFileRepositoryService;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final MultiProviderPDFService pdfService;
+    private final boolean multipleProvidersEnabled;
 
     public CCMSTransactionPayloadService(CloudFileRepository cloudFileRepository,
-            UserFileRepositoryService userFileRepositoryService, MultiProviderPDFService pdfService,
-            SubmissionRepositoryService submissionRepositoryService) {
+            UserFileRepositoryService userFileRepositoryService, 
+            MultiProviderPDFService pdfService,
+            SubmissionRepositoryService submissionRepositoryService,
+            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled) {
         this.cloudFileRepository = cloudFileRepository;
         this.userFileRepositoryService = userFileRepositoryService;
         this.pdfService = pdfService;
         this.submissionRepositoryService = submissionRepositoryService;
+        this.multipleProvidersEnabled = multipleProvidersEnabled;
     }
 
     public Optional<CCMSTransaction> generateSubmissionTransactionPayload(Submission familySubmission) {
@@ -77,11 +82,10 @@ public class CCMSTransactionPayloadService {
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(applicationPdfJSON);
                 } else {
-                    TransactionFile applicationPdfJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                    TransactionFile additionalProviderPagesJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(),
                             Base64.getEncoder().encodeToString(fileContent));
-                    transactionFiles.add(applicationPdfJSON);
+                    transactionFiles.add(additionalProviderPagesJSON);
                 }
-
             }
         } catch (IOException e) {
             log.error(
@@ -90,12 +94,26 @@ public class CCMSTransactionPayloadService {
         }
 
         List<UserFile> allFiles = new ArrayList<>();
-        if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
-            submissionRepositoryService.findById(
-                    UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString())).ifPresent(
-                    providerSubmission -> allFiles.addAll(
-                            userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")));
+        if (multipleProvidersEnabled && familySubmission.getInputData().containsKey("providers")) {
+            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
+            for (Map<String, Object> provider : providers) {
+                if (provider.containsKey("providerResponseSubmissionId")) {
+                    UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
+                    submissionRepositoryService.findById(providerSubmissionId).ifPresent(
+                            providerSubmission -> allFiles.addAll(
+                                    userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")));
+                }
+            }
+        } 
+        else {
+            if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
+                submissionRepositoryService.findById(
+                        UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString())).ifPresent(
+                        providerSubmission -> allFiles.addAll(
+                                userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")));
+            }
         }
+        
         allFiles.addAll(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf"));
         for (int i = 0; i < allFiles.size(); i++) {
             UserFile userFile = allFiles.get(i);
