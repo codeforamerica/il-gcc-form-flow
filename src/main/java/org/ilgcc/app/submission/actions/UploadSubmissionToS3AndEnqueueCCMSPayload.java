@@ -1,7 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
 
-import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.isNoProviderSubmission;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -26,11 +26,8 @@ public class UploadSubmissionToS3AndEnqueueCCMSPayload implements Action {
 
     @Override
     public void run(Submission submission) {
-        if (hasNotChosenProvider(submission)) {
+        if (isNoProviderSubmission(submission)) {
             submissionSenderService.sendFamilySubmission(submission);
-
-            submission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.INACTIVE.name());
-            submissionRepositoryService.save(submission);
         }
     }
 }
