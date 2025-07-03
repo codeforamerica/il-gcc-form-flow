@@ -1,16 +1,12 @@
 package org.ilgcc.app.submission.actions;
 
-import static java.util.Collections.emptyList;
-import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.isNoProviderSubmission;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import jakarta.servlet.http.HttpServletRequest;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
@@ -51,21 +47,13 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
 
         submission.getInputData().put(SUBMISSION_DATA_SHAREABLE_LINK, shareableLink);
 
-        if (enableMultipleProviders) {
-            List<Map<String, Object>> providers = (List<Map<String, Object>>) submission.getInputData()
-                    .getOrDefault("providers", emptyList());
+        submission.getInputData().put(PROVIDER_APPLICATION_EXPIRATION, getExpirationDate(submission,
+                isNoProviderSubmission(submission)));
 
-            submission.getInputData().put(PROVIDER_APPLICATION_EXPIRATION, expirationDate(submission,
-                    providers.isEmpty()));
-            submission.getInputData().put(PROVIDER_APPLICATION_STATUS, setStatus(providers.isEmpty()));
-        } else {
-            submission.getInputData().put(PROVIDER_APPLICATION_EXPIRATION, expirationDate(submission,
-                    hasNotChosenProvider(submission)));
-            submission.getInputData().put(PROVIDER_APPLICATION_STATUS, setStatus(hasNotChosenProvider(submission)));
-        }
+        submission.getInputData().put(PROVIDER_APPLICATION_STATUS, getApplicationStatus(isNoProviderSubmission(submission)));
     }
 
-    private ZonedDateTime expirationDate(Submission submission, Boolean noProviderApplication) {
+    private ZonedDateTime getExpirationDate(Submission submission, Boolean noProviderApplication) {
         if (noProviderApplication) {
             return submission.getSubmittedAt().atZoneSameInstant(ZoneId.of("America/Chicago"));
         } else if (enableFasterApplicationExpiration) {
@@ -75,7 +63,7 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
         }
     }
 
-    private String setStatus(Boolean noProviderApplication) {
+    private String getApplicationStatus(Boolean noProviderApplication) {
         if (noProviderApplication) {
             return SubmissionStatus.INACTIVE.name();
         } else {
