@@ -83,8 +83,8 @@ public class SubmissionSenderService {
             if (familySubmissionOptional.isPresent()) {
                 Submission familySubmission = familySubmissionOptional.get();
 
-                log.info("Provider submitted response for family submission {}, enqueuing transfer of documents.",
-                        familySubmission.getId());
+                log.info("Provider submitted response for family submission {}, enqueuing transfer of documents. Provider submission is {}",
+                        familySubmission.getId(), providerSubmission.getId());
 
                 if (multipleProvidersEnabled) {
                     SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
