@@ -302,7 +302,7 @@ public class ProviderSubmissionUtilities {
 
     public static Map<String, String> hoursRequested(Map<String, Object> child) {
         List<String> sameHoursEveryday = (List) child.getOrDefault("childcareHoursSameEveryDay[]", Collections.EMPTY_LIST);
-        List<String> daysRequested = (List) child.get("childcareWeeklySchedule[]");
+        List<String> daysRequested = (List) child.getOrDefault("childcareWeeklySchedule[]", Collections.EMPTY_LIST);
         Map<String, String> dates = new LinkedHashMap<>();
         for (String day : daysRequested) {
             if (sameHoursEveryday.equals(List.of("yes"))) {
