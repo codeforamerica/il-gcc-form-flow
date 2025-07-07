@@ -216,7 +216,7 @@ public class SubmissionUtilities {
             List<String> providers = (List) familyInputData.get("providers");
             return providers.isEmpty();
         } else {
-            return "false".equals(submission.getInputData().get("hasChosenProvider"));
+            return "false".equals(familyInputData.get("hasChosenProvider"));
         }
     }
 
