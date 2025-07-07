@@ -238,8 +238,9 @@ public class ProviderSubmissionUtilities {
     public static List<Map<String, Object>> getChildrenData(Map<String, Object> inputData) {
         List<Map<String, Object>> children = new ArrayList<>();
 
-        if (!SubmissionUtilities.getChildrenNeedingAssistance(inputData).isEmpty()) {
-            for (var child : SubmissionUtilities.getChildrenNeedingAssistance(inputData)) {
+        List<Map<String, Object>> childrenNeedingAssistance =  SubmissionUtilities.getChildrenNeedingAssistance(inputData);
+        if (!childrenNeedingAssistance.isEmpty()) {
+            for (var child : childrenNeedingAssistance) {
                 children.add(setChildData(child));
             }
         }
