@@ -5,6 +5,7 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.HashMap;
 import java.util.Map;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
     public Map<String, SubmissionField> prepareSubmissionFields(Map<String, Object> familyInputData) {
         Map<String, SubmissionField> results = new HashMap<>();
 
-        if ("false".equals(familyInputData.get("hasChosenProvider"))) {
+        if (SubmissionUtilities.isNoProviderSubmission(familyInputData)) {
             results.putAll(prepareNoProviderData());
         } else {
             // toDo: we can keep the same field name for each provider in providers;

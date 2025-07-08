@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.isNoProviderSubmission;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -40,7 +40,7 @@ public class SendUploadedFileToDocumentTransferService implements Action {
 
     @Override
     public void run(Submission submission) {
-        if (hasNotChosenProvider(submission) && DTS_INTEGRATION_ENABLED) {
+        if (isNoProviderSubmission(submission.getInputData()) && DTS_INTEGRATION_ENABLED) {
             enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                     uploadedDocumentTransmissionJob, s3PresignService, submission);
         }

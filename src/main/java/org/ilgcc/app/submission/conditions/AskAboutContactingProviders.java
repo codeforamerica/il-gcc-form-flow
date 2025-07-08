@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.conditions;
 
-import static org.ilgcc.app.utils.SubmissionUtilities.hasChosenProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.isNoProviderSubmission;
 
 import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
@@ -16,6 +16,6 @@ public class AskAboutContactingProviders implements Condition {
     }
     @Override
     public Boolean run(Submission submission) {
-        return enableMultipleProviders && hasChosenProvider(submission);
+        return enableMultipleProviders && !isNoProviderSubmission(submission.getInputData());
     }
 }

@@ -211,8 +211,13 @@ public class SubmissionUtilities {
 
     }
 
-    public static boolean hasNotChosenProvider(Submission submission) {
-        return "false".equals(submission.getInputData().get("hasChosenProvider"));
+    public static boolean isNoProviderSubmission(Map<String, Object> familyInputData) {
+        if (familyInputData.containsKey("providers")) {
+            List<String> providers = (List) familyInputData.get("providers");
+            return providers.isEmpty();
+        } else {
+            return "false".equals(familyInputData.get("hasChosenProvider"));
+        }
     }
 
     public static boolean hasChosenProvider(Submission submission) {

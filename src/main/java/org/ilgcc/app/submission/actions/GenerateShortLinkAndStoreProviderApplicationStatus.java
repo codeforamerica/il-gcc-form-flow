@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.isNoProviderSubmission;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,7 +28,6 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
 
     private static final String PROVIDER_APPLICATION_EXPIRATION = "providerApplicationResponseExpirationDate";
 
-
     public GenerateShortLinkAndStoreProviderApplicationStatus(HttpServletRequest httpRequest) {
         this.httpRequest = httpRequest;
     }
@@ -40,16 +40,25 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
 
         submission.getInputData().put(SUBMISSION_DATA_SHAREABLE_LINK, shareableLink);
 
-        submission.getInputData().put(PROVIDER_APPLICATION_STATUS, SubmissionStatus.ACTIVE.name());
+        submission.getInputData().put(PROVIDER_APPLICATION_EXPIRATION, getExpirationDate(submission,
+                isNoProviderSubmission(submission.getInputData())));
 
-        submission.getInputData().put(PROVIDER_APPLICATION_EXPIRATION, expirationDate(submission));
+        submission.getInputData().put(PROVIDER_APPLICATION_STATUS, getApplicationStatus(isNoProviderSubmission(submission.getInputData())));
     }
 
-    private ZonedDateTime expirationDate(Submission submission) {
-        if (hasNotChosenProvider(submission)) {
+    private ZonedDateTime getExpirationDate(Submission submission, Boolean noProviderApplication) {
+        if (noProviderApplication) {
             return submission.getSubmittedAt().atZoneSameInstant(ZoneId.of("America/Chicago"));
         } else {
             return ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt());
+        }
+    }
+
+    private String getApplicationStatus(Boolean noProviderApplication) {
+        if (noProviderApplication) {
+            return SubmissionStatus.INACTIVE.name();
+        } else {
+            return SubmissionStatus.ACTIVE.name();
         }
     }
 }
