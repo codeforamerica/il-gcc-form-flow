@@ -46,8 +46,6 @@ public class CCMSSubmissionPayloadTransactionJob {
     private List<OfflineTimeRange> ccmsOfflineTimeRanges;
     private int ccmsTransactionDelayOffset;
 
-    private List<String> requiredFields = List.of("organizationId");
-
     // a primitive int isn't threadsafe, but AtomicInteger is. This will ensure multiple threads
     // creating delayed jobs always have the correct time offset.
     private final AtomicInteger totalCcmsTransactionDelayOffset = new AtomicInteger(0);
@@ -153,8 +151,7 @@ public class CCMSSubmissionPayloadTransactionJob {
                 Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
                 if (submissionOptional.isPresent()) {
                     Submission submission = submissionOptional.get();
-
-
+                    
                     Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
                             submission);
                     if (ccmsTransactionOptional.isPresent()) {
