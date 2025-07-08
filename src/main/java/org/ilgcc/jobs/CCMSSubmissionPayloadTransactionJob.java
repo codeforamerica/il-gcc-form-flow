@@ -151,7 +151,6 @@ public class CCMSSubmissionPayloadTransactionJob {
                 Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
                 if (submissionOptional.isPresent()) {
                     Submission submission = submissionOptional.get();
-                    
                     Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
                             submission);
                     if (ccmsTransactionOptional.isPresent()) {
