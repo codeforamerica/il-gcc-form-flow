@@ -1,5 +1,7 @@
 package org.ilgcc.jobs;
 
+import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
+
 import com.google.common.io.Files;
 import formflow.library.data.Submission;
 import formflow.library.data.UserFile;
@@ -26,15 +28,13 @@ public class EnqueueDocumentTransfer {
     @Value("${form-flow.uploads.file-conversion.convert-to-pdf:false}")
     private boolean convertUploadToPDF;
 
-    private final static String CONTENT_TYPE = "application/pdf";
-
     @Deprecated
     public void enqueuePDFDocumentBySubmission(PdfService pdfService, CloudFileRepository cloudFileRepository,
             PdfTransmissionJob pdfTransmissionJob, Submission submission, String fileNameForPdf) {
         try {
             byte[] pdfFile = pdfService.getFilledOutPDF(submission);
             String pdfFileName = String.format(fileNameForPdf);
-            MultipartFile multipartFile = new ByteArrayMultipartFile(pdfFile, pdfFileName, CONTENT_TYPE);
+            MultipartFile multipartFile = new ByteArrayMultipartFile(pdfFile, pdfFileName, PDF_CONTENT_TYPE);
             String s3ZipPath = SubmissionUtilities.generatePdfPath(submission);
 
             CompletableFuture.runAsync(() -> {
@@ -68,8 +68,8 @@ public class EnqueueDocumentTransfer {
         log.info("Sending uploaded files to document transfer service for submission with ID: {}", submission.getId());
         List<UserFile> userFiles;
         if (convertUploadToPDF) {
-            log.info("Finding all uploaded and converted files of type {}", CONTENT_TYPE);
-            userFiles = userFileRepositoryService.findAllOrderByOriginalName(submission, CONTENT_TYPE);
+            log.info("Finding all uploaded and converted files of type {}", PDF_CONTENT_TYPE);
+            userFiles = userFileRepositoryService.findAllOrderByOriginalName(submission, PDF_CONTENT_TYPE);
         } else {
             userFiles = userFileRepositoryService.findAllOrderByOriginalName(submission);
         }
