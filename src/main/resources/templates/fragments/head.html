@@ -2,10 +2,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="version" th:content="${@environment.getProperty('il-gcc.app-version')}">
+    <meta name="description" content="Get help paying for child care. Apply online for affordable child care assistance in Illinois in under 20 minutes. Easy, secure, and mobile-friendly.">
     <title th:text="${errorMessages == null ? title : #messages.msg('errors.general-title')}"></title>
     <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
     <th:block th:replace="~{fragments/datadogRum :: datadogRum}"></th:block>
     <th:block th:replace="~{fragments/mixpanelTracking :: mixpanelTracking}"></th:block>
+    <th:block th:if="${canonicalUrl != null}"><link rel="canonical" th:href="${canonicalUrl}" /></th:block>
     <link href="/webjars/form-flow/0.0.1/css/honeycrisp.min.css" rel="stylesheet"/>
     <link href="/webjars/form-flow/0.0.1/css/libraryStyles.css" rel="stylesheet"/>
     <link href="/assets/css/custom.css" rel="stylesheet"/>
@@ -22,4 +24,27 @@
     <meta property="og:logo" content="https://www.getchildcareil.org/assets/images/IDHS-logo.png" />
     <meta property="og:url" content="https://www.getchildcareil.org/">
     <meta property="og:type" content="Website" />
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "GovernmentService",
+            "name": "Illinois: Get help paying for child care",
+            "description": "Apply online for affordable child care assistance in Illinois in under 20 minutes. Easy, secure, and mobile-friendly.",
+            "provider": {
+                "@type": "GovernmentOrganization",
+                "name": "Illinois Department of Human Services",
+                "url": "https://www.dhs.state.il.us"
+            },
+            "serviceType": "Child care assistance",
+            "areaServed": {
+                "@type": "State",
+                "name": "Illinois"
+            },
+            "audience": {
+                "@type": "Audience",
+                "name": "Parents and guardians in Illinois seeking child care assistance"
+            }
+        }
+    </script>
 </head>
