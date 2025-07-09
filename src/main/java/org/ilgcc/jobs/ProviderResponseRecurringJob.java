@@ -154,18 +154,18 @@ public class ProviderResponseRecurringJob {
             // sent to DTS in the prior job run. And when we eventually are CCMS only, the same will happen for Submissions that
             // do not have transmissions. The time when this logging will be helpful is when both are turned on, and somehow
             // we have a Submission that was sent to DTS and not to CCMS or vice versa in a prior run!
-            log.info(
+            log.debug(
                     "Submissions without transmissions and transactions do not match. Sending {} submissions. Ignoring {} without transmissions. Ignoring {} without transactions.",
                     unsentSubmissions.size(), submissionIdsWithoutTransmissionsOnly.size(),
                     submissionIdsWithoutTransactionsOnly.size());
 
             if (!submissionIdsWithoutTransmissionsOnly.isEmpty()) {
-                log.info("Ignored {} submissions without transmissions. [{}]", submissionIdsWithoutTransmissionsOnly.size(),
+                log.debug("Ignored {} submissions without transmissions. [{}]", submissionIdsWithoutTransmissionsOnly.size(),
                         submissionIdsWithoutTransmissionsOnly);
             }
 
             if (!submissionIdsWithoutTransactionsOnly.isEmpty()) {
-                log.info("Ignored {} submissions without transactions. [{}]", submissionIdsWithoutTransactionsOnly.size(),
+                log.debug("Ignored {} submissions without transactions. [{}]", submissionIdsWithoutTransactionsOnly.size(),
                         submissionIdsWithoutTransactionsOnly);
             }
         }
