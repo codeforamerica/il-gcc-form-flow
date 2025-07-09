@@ -18,6 +18,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -28,6 +29,7 @@ import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.ccms.CCMSApiClient;
 import org.ilgcc.app.data.ccms.CCMSTransaction;
 import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
+import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
@@ -49,7 +51,7 @@ public class CCMSSubmissionPayloadTransactionJob {
     private final SubmissionRepositoryService submissionRepositoryService;
     private final JobrunrJobRepository jobrunrJobRepository;
 
-    private final PdfService pdfService;
+    private final MultiProviderPDFService multiProviderPDFService;
     CloudFileRepository cloudFileRepository;
 
     private int jobDelayMinutes;
@@ -66,14 +68,14 @@ public class CCMSSubmissionPayloadTransactionJob {
             CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
             TransactionRepositoryService transactionRepositoryService, SubmissionRepositoryService submissionRepositoryService,
             JobrunrJobRepository jobrunrJobRepository,
-            PdfService pdfService, CloudFileRepository cloudFileRepository) {
+            MultiProviderPDFService multiProviderPDFService, CloudFileRepository cloudFileRepository) {
         this.jobScheduler = jobScheduler;
         this.ccmsTransactionPayloadService = ccmsTransactionPayloadService;
         this.ccmsApiClient = ccmsApiClient;
         this.transactionRepositoryService = transactionRepositoryService;
         this.submissionRepositoryService = submissionRepositoryService;
         this.jobrunrJobRepository = jobrunrJobRepository;
-        this.pdfService = pdfService;
+        this.multiProviderPDFService = multiProviderPDFService;
         this.cloudFileRepository = cloudFileRepository;
     }
 
@@ -172,14 +174,15 @@ public class CCMSSubmissionPayloadTransactionJob {
                             // Put the submission pdf asynchronously into S3 as a backup
                             // Do not fail on exceptions, as this is a backup just in case
                             // CCMS / CMS doesn't process the submission properly on the backend
-                            byte[] pdfFile = pdfService.getFilledOutPDF(submission);
-                            String pdfFileName = String.format(FileNameUtility.getFileNameForPdf(submission));
-                            MultipartFile multipartFile = new ByteArrayMultipartFile(pdfFile, pdfFileName, PDF_CONTENT_TYPE);
+                            Map<String, byte[]> pdfs = multiProviderPDFService.generatePDFs(submission);
                             String s3ZipPath = SubmissionUtilities.generatePdfPath(submission);
 
-                            cloudFileRepository.upload(s3ZipPath, multipartFile);
+                            for (String pdfFileName: pdfs.keySet()) {
+                                MultipartFile multipartFile = new ByteArrayMultipartFile(pdfs.get(pdfFileName), pdfFileName, PDF_CONTENT_TYPE);
+                                cloudFileRepository.upload(s3ZipPath, multipartFile);
+                            }
                         } catch (IOException | InterruptedException e) {
-                            log.error("Error uploading submission to S3", e);
+                            log.error("Error uploading submission {} to S3", submissionId, e);
                         }
                     });
 
