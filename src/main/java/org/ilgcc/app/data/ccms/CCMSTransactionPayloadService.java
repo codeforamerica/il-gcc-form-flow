@@ -79,11 +79,11 @@ public class CCMSTransactionPayloadService {
                 byte[] fileContent = entry.getValue();
 
                 if (fileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))) {
-                    TransactionFile applicationPdfJSON = new TransactionFile(fileName, FileTypeId.APPLICATION_PDF.getValue(),
+                    TransactionFile applicationPdfJSON = new TransactionFile(fileName, FileTypeId.APPLICATION_PDF.getValue(), familySubmission.getId().toString(),
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(applicationPdfJSON);
                 } else {
-                    TransactionFile additionalProviderPagesJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                    TransactionFile additionalProviderPagesJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(), "580d1866-3c15-4823-9271-f326e3690921",
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(additionalProviderPagesJSON);
                 }
@@ -135,9 +135,11 @@ public class CCMSTransactionPayloadService {
                 continue;
             }
 
+
+            /// testing with random uuid for now, don't try this at home kids
             transactionFiles.add(new TransactionFile(
                     FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
-                    FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes())));
+                    FileTypeId.UPLOADED_DOCUMENT.getValue(), "1dc3d0f9-df02-4a3d-805e-0ad5c25ead90", Base64.getEncoder().encodeToString(cloudFile.getFileBytes())));
         }
 
         return transactionFiles;
