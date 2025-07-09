@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.email.SendAllProvidersRespondedFamilyConfirmationEmail;
 import org.ilgcc.app.email.SendEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
@@ -39,6 +40,7 @@ public class SubmissionSenderService {
     private final boolean ccmsIntegrationEnabled;
     private final boolean dtsIntegrationEnabled;
     private final boolean multipleProvidersEnabled;
+    private final SendAllProvidersRespondedFamilyConfirmationEmail sendAllProvidersRespondedFamilyConfirmationEmail;
 
     public SubmissionSenderService(PdfService pdfService,
             CloudFileRepository cloudFileRepository,
@@ -51,7 +53,8 @@ public class SubmissionSenderService {
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
             @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
             @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled,
-            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled) {
+            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled,
+            SendAllProvidersRespondedFamilyConfirmationEmail sendAllProvidersRespondedFamilyConfirmationEmail) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
@@ -64,6 +67,7 @@ public class SubmissionSenderService {
         this.ccmsIntegrationEnabled = ccmsIntegrationEnabled;
         this.dtsIntegrationEnabled = dtsIntegrationEnabled;
         this.multipleProvidersEnabled = multipleProvidersEnabled;
+        this.sendAllProvidersRespondedFamilyConfirmationEmail = sendAllProvidersRespondedFamilyConfirmationEmail;
     }
 
     public void sendProviderSubmission(Submission providerSubmission) {
@@ -110,7 +114,10 @@ public class SubmissionSenderService {
                     } else {
                         ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission.getId());
                     }
+                    sendAllProvidersRespondedFamilyConfirmationEmail.send(familySubmission);
                 }
+
+
             } else {
                 log.error("Could not find a family submission for id: {}", familySubmissionId.get());
             }
