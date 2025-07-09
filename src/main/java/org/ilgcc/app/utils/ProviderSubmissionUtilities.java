@@ -155,6 +155,7 @@ public class ProviderSubmissionUtilities {
         applicationData.put("ccapStartDate",
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
                         Optional.empty()));
+        applicationData.put("hasMutipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
 
         // provider specific fields can come from a subflow and not the main data
         Map<String, Object> data = subflowIteration == null ? familySubmission.getInputData() : subflowIteration;
@@ -168,13 +169,21 @@ public class ProviderSubmissionUtilities {
         if (subflowIteration != null) {
             Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
                     SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
-
             applicationData.put("childrenInitialsList",
                     ProviderSubmissionUtilities.getChildrenInitialsList(mergedChildrenAndSchedules.get(data.get("uuid"))));
 
         }
 
         return applicationData;
+    }
+
+    private static boolean hasMoreThan1Provider(Map<String, Object> familyInputData) {
+        if (familyInputData.containsKey("providers")) {
+            List<Map<String, Object>> familyProviders = (List<Map<String, Object>>) familyInputData.get("providers");
+            return familyProviders.size() > 1;
+        } else {
+            return false;
+        }
     }
 
     public static List<Map<String, Object>> getFamilyIntendedProviders(Submission familySubmission) {
@@ -238,7 +247,7 @@ public class ProviderSubmissionUtilities {
     public static List<Map<String, Object>> getChildrenData(Map<String, Object> inputData) {
         List<Map<String, Object>> children = new ArrayList<>();
 
-        List<Map<String, Object>> childrenNeedingAssistance =  SubmissionUtilities.getChildrenNeedingAssistance(inputData);
+        List<Map<String, Object>> childrenNeedingAssistance = SubmissionUtilities.getChildrenNeedingAssistance(inputData);
         if (!childrenNeedingAssistance.isEmpty()) {
             for (var child : childrenNeedingAssistance) {
                 children.add(setChildData(child));
@@ -507,7 +516,7 @@ public class ProviderSubmissionUtilities {
         childCareHours.forEach((key, val) -> {
             String dayKey = String.format("general.week.%s", key);
             dateString.add(String.format("%s, %s</br>", messageSource.getMessage(dayKey, null,
-                LocaleContextHolder.getLocale()), val));
+                    LocaleContextHolder.getLocale()), val));
         });
 
         return String.join("", dateString);
