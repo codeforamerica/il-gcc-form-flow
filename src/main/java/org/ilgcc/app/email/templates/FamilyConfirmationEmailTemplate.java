@@ -1,6 +1,7 @@
 package org.ilgcc.app.email.templates;
 
 import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
+import static org.ilgcc.app.utils.SubmissionUtilities.hasSelectedAProviderAndNoProvider;
 
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -11,6 +12,7 @@ import lombok.Setter;
 import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.email.ILGCCEmail.EmailType;
 import org.ilgcc.app.email.ILGCCEmailTemplate;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.context.MessageSource;
 
 @Getter
@@ -59,6 +61,11 @@ public class FamilyConfirmationEmailTemplate {
             p3 = messageSource.getMessage("email.family-confirmation.p3.single-provider", null, locale);
             p4 = messageSource.getMessage("email.family-confirmation.p4.single-provider",
                     new Object[]{emailData.get("shareableLink")}, locale);
+        }
+
+        if((boolean) emailData.get("hasProviderAndNoProvider")){
+            p4 = p4 + messageSource.getMessage("email.family-confirmation.some-providers.did-not-choose",
+                    new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
         }
 
         String p5 = messageSource.getMessage("email.family-confirmation.p5", null, locale);

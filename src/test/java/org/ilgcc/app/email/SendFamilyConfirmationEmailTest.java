@@ -53,6 +53,9 @@ public class SendFamilyConfirmationEmailTest {
     Map<String, Object> programProvider = new HashMap<>();
     Map<String, Object> individualProvider = new HashMap<>();
 
+    Map<String, Object> child1 = new HashMap<>();
+    Map<String, Object> child2 = new HashMap<>();
+
     Map<String, Object> emailData;
 
     private final Locale locale = Locale.ENGLISH;
@@ -344,7 +347,117 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
         }
 
-    }
+        @Nested
+        class whenThereIsAProviderAndNoProviderInMultipleProviders {
 
+            @BeforeEach
+            void setUp() {
+
+                child1.put("uuid", UUID.randomUUID().toString());
+                child1.put("childFirstName", "First");
+                child1.put("childLastName", "Child");
+                child1.put("childInCare", "true");
+                child1.put("childDateOfBirthMonth", "10");
+                child1.put("childDateOfBirthDay", "11");
+                child1.put("childDateOfBirthYear", "2020");
+                child1.put("needFinancialAssistanceForChild", true);
+                child1.put("childIsUsCitizen", "Yes");
+                child1.put("ccapStartDate", "01/10/2025");
+
+                child2.put("uuid", UUID.randomUUID().toString());
+                child2.put("childFirstName", "Second");
+                child2.put("childLastName", "Child");
+                child2.put("childInCare", "true");
+                child2.put("childDateOfBirthMonth", "12");
+                child2.put("childDateOfBirthDay", "11");
+                child2.put("childDateOfBirthYear", "2021");
+                child2.put("needFinancialAssistanceForChild", true);
+                child2.put("childIsUsCitizen", "Yes");
+                child2.put("ccapStartDate", "12/10/2025");
+
+                programProvider.put("uuid", UUID.randomUUID().toString());
+                programProvider.put("iterationIsComplete", true);
+                programProvider.put("childCareProgramName", "Child Care Program Name");
+                programProvider.put("familyIntendedProviderEmail", "ccpn@mail.com");
+                programProvider.put("familyIntendedProviderPhoneNumber", "(123) 123-1234");
+                programProvider.put("familyIntendedProviderAddress", "456 Main St.");
+                programProvider.put("familyIntendedProviderCity", "Chicago");
+                programProvider.put("familyIntendedProviderState", "IL");
+
+                familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
+                        .withFlow("gcc")
+                        .with("parentFirstName", "FirstName")
+                        .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 0, 0, 0, 0, ZoneOffset.ofTotalSeconds(0)))
+                        .withCCRR()
+                        .with("providers", List.of(individualProvider, programProvider))
+                        .with("children", List.of(child1, child2))
+                        .withMultipleChildcareSchedules(
+                                List.of(child1.get("uuid").toString(), child2.get("uuid").toString(),
+                                        child1.get("uuid").toString()),
+                                List.of(programProvider.get("uuid").toString(), "NO_PROVIDER", individualProvider.get("uuid").toString()))
+                        .with("parentContactEmail", "familyemail@test.com")
+                        .with("shareableLink", "tempEmailLink")
+                        .withShortCode("ABC123")
+                        .build());
+
+                Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
+                emailData = emailDataOptional.get();
+            }
+
+
+            @Test
+            void correctlySetsEmailData() {
+                assertThat(emailData.get("parentFirstName")).isEqualTo("FirstName");
+                assertThat(emailData.get("parentContactEmail")).isEqualTo("familyemail@test.com");
+                assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
+                assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
+                assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+                assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
+                assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
+                assertThat(emailData.get("hasMutipleProviders")).isEqualTo(true);
+                assertThat(emailData.get("hasProviderAndNoProvider")).isEqualTo(true);
+            }
+
+            @Test
+            void correctlySetsEmailTemplateData() {
+                ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
+
+                assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+                        new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+                assertThat(emailTemplate.getSubject()).isEqualTo(
+                        messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{"ABC123"}, locale));
+
+                String emailCopy = emailTemplate.getBody().getValue();
+
+                assertThat(emailCopy).contains(
+                        messageSource.getMessage("email.family-confirmation.p1", new Object[]{"FirstName"}, locale));
+                assertThat(emailCopy).contains(
+                        messageSource.getMessage("email.family-confirmation.p2", null, locale));
+                assertThat(emailCopy).contains(
+                        messageSource.getMessage("email.family-confirmation.p3.multiple-providers", null, locale));
+                assertThat(emailCopy).contains(
+                        messageSource.getMessage("email.family-confirmation.p4.multiple-providers", new Object[]{"tempEmailLink"},
+                                locale));
+                assertThat(emailCopy).contains(
+                        messageSource.getMessage("email.family-confirmation.some-providers.did-not-choose",
+                                new Object[]{"Sample Test CCRR", "(603) 555-1244"},
+                                locale));
+                assertThat(emailCopy).contains(
+                        messageSource.getMessage("email.family-confirmation.p5", null, locale));
+                assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p6",
+                        new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
+                assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p7",
+                        new Object[]{"ABC123", "October 10, 2022"}, locale));
+                assertThat(emailCopy).contains(
+                        messageSource.getMessage("email.family-confirmation.p8", null, locale));
+                assertThat(emailCopy).contains(
+                        messageSource.getMessage("email.family-confirmation.p9", null, locale));
+                assertThat(emailCopy).contains(
+                        messageSource.getMessage("email.family-confirmation.p10", null, locale));
+                assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+                assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
+            }
+        }
+    }
 
 }

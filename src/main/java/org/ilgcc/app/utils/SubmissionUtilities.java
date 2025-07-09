@@ -2,6 +2,7 @@ package org.ilgcc.app.utils;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 
 import formflow.library.data.Submission;
 import jakarta.validation.constraints.NotBlank;
@@ -9,10 +10,12 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
@@ -218,6 +221,12 @@ public class SubmissionUtilities {
         } else {
             return "false".equals(familyInputData.get("hasChosenProvider"));
         }
+    }
+
+    public static boolean hasSelectedAProviderAndNoProvider(Map<String, Object> familyInputData) {
+        Set<String> providersWithSchedules = getRelatedChildrenSchedulesForProvider(familyInputData).keySet();
+        return providersWithSchedules.size() > 1 && providersWithSchedules.contains("NO_PROVIDER");
+
     }
 
     public static boolean hasChosenProvider(Submission submission) {
