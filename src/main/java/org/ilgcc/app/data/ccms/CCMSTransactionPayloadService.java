@@ -1,6 +1,7 @@
 package org.ilgcc.app.data.ccms;
 
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
+import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -101,7 +102,7 @@ public class CCMSTransactionPayloadService {
                     UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
                     submissionRepositoryService.findById(providerSubmissionId).ifPresent(
                             providerSubmission -> allFiles.addAll(
-                                    userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")));
+                                    userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)));
                 }
             }
         } 
@@ -110,11 +111,11 @@ public class CCMSTransactionPayloadService {
                 submissionRepositoryService.findById(
                         UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString())).ifPresent(
                         providerSubmission -> allFiles.addAll(
-                                userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")));
+                                userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)));
             }
         }
         
-        allFiles.addAll(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf"));
+        allFiles.addAll(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE));
         for (int i = 0; i < allFiles.size(); i++) {
             UserFile userFile = allFiles.get(i);
             CloudFile cloudFile;

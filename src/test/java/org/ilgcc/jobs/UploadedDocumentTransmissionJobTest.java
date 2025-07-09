@@ -1,6 +1,7 @@
 package org.ilgcc.jobs;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 import static org.ilgcc.app.utils.enums.TransmissionStatus.Queued;
 import static org.ilgcc.app.utils.enums.TransmissionType.UPLOADED_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -93,7 +94,7 @@ class UploadedDocumentTransmissionJobTest {
                 .build();
         submissionRepositoryService.save(submission);
 
-        testUserFile = new UserFile(UUID.randomUUID(), submission, OffsetDateTime.now(), "testFile.pdf", "testFile.pdf", "Application/pdf", 10F, false, null, null);
+        testUserFile = new UserFile(UUID.randomUUID(), submission, OffsetDateTime.now(), "testFile.pdf", "testFile.pdf", PDF_CONTENT_TYPE, 10F, false, null, null);
         userFileRepositoryService.save(testUserFile);
 
         Date now = Date.from(ZonedDateTime.now(ZoneId.of("America/Chicago")).toInstant());
