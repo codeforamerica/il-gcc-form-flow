@@ -679,4 +679,6 @@ public class Gcc extends FlowInputs {
     private String childCareProgramName;
     private String providerFirstName;
     private String providerLastName;
+
+    private String providersRespondedOrLinkExpiredFamilyConfirmationEmailSent;
 }
