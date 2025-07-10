@@ -50,6 +50,15 @@ public class ProviderConfirmationEmailTemplate {
                         messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
         String p4 = messageSource.getMessage("email.provider-confirmation.p4", new Object[]{emailData.get("confirmationCode")},
                 locale);
+
+        if((boolean) emailData.get("hasMutipleProviders")){
+
+        }
+
+        if((boolean) emailData.get("currentProviderIsRegistering")){
+
+        }
+
         String p5 = messageSource.getMessage("email.provider-confirmation.p5",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
         String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
