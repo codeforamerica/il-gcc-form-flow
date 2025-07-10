@@ -79,7 +79,7 @@ class GenerateShortLinkAndStoreProviderApplicationStatusTest {
             submissionRepositoryService.save(familySubmission);
 
             generateShortLinkAndStoreProviderApplicationStatus = new GenerateShortLinkAndStoreProviderApplicationStatus(
-                    httpRequest);
+                    httpRequest, false);
             generateShortLinkAndStoreProviderApplicationStatus.run(familySubmission);
 
             assertThat(familySubmission.getInputData().get("providerApplicationResponseStatus")).isEqualTo(
@@ -94,7 +94,7 @@ class GenerateShortLinkAndStoreProviderApplicationStatusTest {
             submissionRepositoryService.save(familySubmission);
 
             generateShortLinkAndStoreProviderApplicationStatus = new GenerateShortLinkAndStoreProviderApplicationStatus(
-                    httpRequest);
+                    httpRequest, false);
             generateShortLinkAndStoreProviderApplicationStatus.run(familySubmission);
 
             assertThat(familySubmission.getInputData().get("providerApplicationResponseStatus")).isEqualTo(
@@ -116,7 +116,7 @@ class GenerateShortLinkAndStoreProviderApplicationStatusTest {
                     .build());
 
             generateShortLinkAndStoreProviderApplicationStatus = new GenerateShortLinkAndStoreProviderApplicationStatus(
-                    httpRequest);
+                    httpRequest, false);
         }
 
         @Test
@@ -130,6 +130,48 @@ class GenerateShortLinkAndStoreProviderApplicationStatusTest {
                     "ACTIVE");
             assertThat(familySubmission.getInputData().get("providerApplicationResponseExpirationDate")).isEqualTo(
                     threeDaysAfterSubmittedAtDate.atZoneSameInstant(ZoneId.of("America/Chicago")));
+        }
+
+        @Test
+        void setsExpirationDateToNowWhenNoProviderIsChosen() {
+            familySubmission.getInputData().put("hasChosenProvider", "false");
+            submissionRepositoryService.save(familySubmission);
+
+            generateShortLinkAndStoreProviderApplicationStatus.run(familySubmission);
+
+            assertThat(familySubmission.getInputData().get("providerApplicationResponseStatus")).isEqualTo(
+                    "INACTIVE");
+            assertThat(familySubmission.getInputData().get("providerApplicationResponseExpirationDate")).isEqualTo(
+                    submittedAtDate.atZoneSameInstant(
+                            ZoneId.of("America/Chicago")));
+        }
+    }
+
+    @Nested
+    class whenEnableFasterExpirationIsTrue {
+
+        @BeforeEach
+        void setUp() {
+            familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
+                    .withFlow("gcc")
+                    .withSubmittedAtDate(submittedAtDate)
+                    .build());
+
+            generateShortLinkAndStoreProviderApplicationStatus = new GenerateShortLinkAndStoreProviderApplicationStatus(
+                    httpRequest, true);
+        }
+
+        @Test
+        void setsExpirationDate2HoursIntoFutureWhenProviderIsChosen() {
+            familySubmission.getInputData().put("hasChosenProvider", "true");
+            submissionRepositoryService.save(familySubmission);
+
+            generateShortLinkAndStoreProviderApplicationStatus.run(familySubmission);
+
+            assertThat(familySubmission.getInputData().get("providerApplicationResponseStatus")).isEqualTo(
+                    "ACTIVE");
+            assertThat(familySubmission.getInputData().get("providerApplicationResponseExpirationDate")).isEqualTo(
+                    familySubmission.getSubmittedAt().plusHours(2).atZoneSameInstant(ZoneId.of("America/Chicago")));
         }
 
         @Test
