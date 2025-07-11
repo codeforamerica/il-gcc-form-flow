@@ -12,6 +12,7 @@ import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.time.OffsetDateTime;
 import org.ilgcc.app.data.SubmissionSenderService;
+import org.ilgcc.app.email.SendAllProvidersRespondedFamilyConfirmationEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
@@ -59,6 +60,8 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
     @MockitoBean
     private S3PresignService s3PresignService;
 
+    @MockitoBean
+    private SendAllProvidersRespondedFamilyConfirmationEmail sendAllProvidersRespondedFamilyConfirmationEmail;
     @BeforeEach
     void setUp() {
         familySubmission = new SubmissionTestBuilder()
@@ -93,7 +96,8 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
                 ccmsSubmissionPayloadTransactionJob,
                 true,
                 true,
-                false);
+                false,
+                sendAllProvidersRespondedFamilyConfirmationEmail);
 
         uploadProviderSubmissionToS3AndSendToCCMS = new UploadProviderSubmissionToS3AndSendToCCMS(submissionSenderService);
         uploadProviderSubmissionToS3AndSendToCCMS.run(providerSubmission);
