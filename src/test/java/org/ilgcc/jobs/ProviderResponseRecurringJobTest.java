@@ -277,7 +277,7 @@ public class ProviderResponseRecurringJobTest {
     }
 
     @Test
-    void doesNotCallTransmissionsServiceOnUnexpiredOrUnsubmittedApplications(){
+    void doesNotCallTransmissionsServiceOnUnexpiredOrUnsubmittedApplications() {
         activeWithFutureExpirationDate = new SubmissionTestBuilder()
                 .withParentDetails()
                 .with("parentContactEmail", "test-unexpired@mail.com")
@@ -337,7 +337,7 @@ public class ProviderResponseRecurringJobTest {
             providerResponseRecurringJob.runNoProviderResponseJob();
 
             verify(ccmsSubmissionPayloadTransactionJob,
-                    never()).enqueueCCMSTransactionPayloadInstantly(eq(unsubmittedSubmission.getId()));
+                    never()).enqueueCCMSTransactionPayloadInstantly(eq(activeWithPastExpirationDate.getId()));
             verify(sendEmailJob, never()).enqueueSendEmailJob(any(ILGCCEmail.class));
 
         }
@@ -438,7 +438,7 @@ public class ProviderResponseRecurringJobTest {
             providerResponseRecurringJob.runNoProviderResponseJob();
 
             verify(ccmsSubmissionPayloadTransactionJob,
-                    never()).enqueueCCMSTransactionPayloadInstantly(eq(unsubmittedSubmission.getId()));
+                    never()).enqueueCCMSTransactionPayloadInstantly(eq(activeWithPastExpirationDate.getId()));
             verify(sendEmailJob, never()).enqueueSendEmailJob(any(ILGCCEmail.class));
 
         }
@@ -447,6 +447,7 @@ public class ProviderResponseRecurringJobTest {
             return Stream.of(SubmissionStatus.values()).filter(s -> !s.name().equals(SubmissionStatus.ACTIVE.name()))
                     .map(status -> Arguments.of(status));
         }
+
         @Test
         void enqueueDocumentTransferIsOnlyCalledOnSubmissionsWithPassedExpirationDate() {
             providerResponseRecurringJob.runNoProviderResponseJob();
