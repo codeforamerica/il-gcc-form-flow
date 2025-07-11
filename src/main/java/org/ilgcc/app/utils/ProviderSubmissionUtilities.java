@@ -156,6 +156,8 @@ public class ProviderSubmissionUtilities {
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
                         Optional.empty()));
         applicationData.put("hasMutipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
+        applicationData.put("hasProviderAndNoProvider",
+                SubmissionUtilities.hasSelectedAProviderAndNoProvider(familySubmission.getInputData()));
 
         // provider specific fields can come from a subflow and not the main data
         Map<String, Object> data = subflowIteration == null ? familySubmission.getInputData() : subflowIteration;
@@ -178,12 +180,8 @@ public class ProviderSubmissionUtilities {
     }
 
     private static boolean hasMoreThan1Provider(Map<String, Object> familyInputData) {
-        if (familyInputData.containsKey("providers")) {
-            List<Map<String, Object>> familyProviders = (List<Map<String, Object>>) familyInputData.get("providers");
-            return familyProviders.size() > 1;
-        } else {
-            return false;
-        }
+        List<Map<String, Object>> familyProviders = (List<Map<String, Object>>) familyInputData.get("providers");
+        return familyProviders != null && familyProviders.size() > 1;
     }
 
     public static List<Map<String, Object>> getFamilyIntendedProviders(Submission familySubmission) {
