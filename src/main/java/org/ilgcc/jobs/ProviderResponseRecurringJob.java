@@ -182,16 +182,21 @@ public class ProviderResponseRecurringJob {
                                 expiredFamilySubmission.getId());
                     }
                     updateProviderStatus(expiredFamilySubmission);
+                    if(expiredFamilySubmission.getInputData().containsKey("providers")){
+                        List<Map<String, Object>> providersSubflowData = (List<Map<String, Object>>)
+                                expiredFamilySubmission.getInputData().getOrDefault("providers", emptyList());
+                        providersSubflowData.forEach(provider -> {
+                            if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus"))) {
+                                log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
+                                        provider.get("uuid"), expiredFamilySubmission.getId());
+                                sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers", provider.get("uuid").toString());
+                            }
+                        });
+                    } else {
+                        sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
+                    }
                     
-                    List<Map<String, Object>> providersSubflowData = (List<Map<String, Object>>) 
-                            expiredFamilySubmission.getInputData().getOrDefault("providers", emptyList());
-                    providersSubflowData.forEach(provider -> {
-                        if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus"))) {
-                            log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
-                                    provider.get("uuid"), expiredFamilySubmission.getId());
-                            sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers", provider.get("uuid").toString());
-                        }
-                    });
+
                 } else {
                     log.warn(
                             String.format(
