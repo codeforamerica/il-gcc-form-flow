@@ -173,10 +173,11 @@ public class CCMSSubmissionPayloadTransactionJob {
                             // Do not fail on exceptions, as this is a backup just in case
                             // CCMS / CMS doesn't process the submission properly on the backend
                             Map<String, byte[]> pdfs = multiProviderPDFService.generatePDFs(submission);
-                            String s3ZipPath = SubmissionUtilities.generatePdfPath(submission);
 
                             for (String pdfFileName: pdfs.keySet()) {
                                 MultipartFile multipartFile = new ByteArrayMultipartFile(pdfs.get(pdfFileName), pdfFileName, PDF_CONTENT_TYPE);
+                                String s3ZipPath = SubmissionUtilities.generatePdfPath(pdfFileName, submission.getId());
+
                                 cloudFileRepository.upload(s3ZipPath, multipartFile);
                             }
                         } catch (IOException | InterruptedException e) {
