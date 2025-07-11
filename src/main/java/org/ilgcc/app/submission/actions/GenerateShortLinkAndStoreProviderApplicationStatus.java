@@ -5,6 +5,7 @@ import static org.ilgcc.app.utils.SubmissionUtilities.isNoProviderSubmission;
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -22,14 +23,18 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
 
     private final HttpServletRequest httpRequest;
 
+    private boolean enableFasterApplicationExpiry;
+
     private static final String SUBMISSION_DATA_SHAREABLE_LINK = "shareableLink";
 
     private static final String PROVIDER_APPLICATION_STATUS = "providerApplicationResponseStatus";
 
     private static final String PROVIDER_APPLICATION_EXPIRATION = "providerApplicationResponseExpirationDate";
 
-    public GenerateShortLinkAndStoreProviderApplicationStatus(HttpServletRequest httpRequest) {
+    public GenerateShortLinkAndStoreProviderApplicationStatus(HttpServletRequest httpRequest, @Value("${il-gcc.enable-faster"
+            + "-application-expiry}") boolean enableFasterApplicationExpiry) {
         this.httpRequest = httpRequest;
+        this.enableFasterApplicationExpiry = enableFasterApplicationExpiry;
     }
 
     @Override
@@ -43,12 +48,15 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
         submission.getInputData().put(PROVIDER_APPLICATION_EXPIRATION, getExpirationDate(submission,
                 isNoProviderSubmission(submission.getInputData())));
 
-        submission.getInputData().put(PROVIDER_APPLICATION_STATUS, getApplicationStatus(isNoProviderSubmission(submission.getInputData())));
+        submission.getInputData()
+                .put(PROVIDER_APPLICATION_STATUS, getApplicationStatus(isNoProviderSubmission(submission.getInputData())));
     }
 
     private ZonedDateTime getExpirationDate(Submission submission, Boolean noProviderApplication) {
         if (noProviderApplication) {
             return submission.getSubmittedAt().atZoneSameInstant(ZoneId.of("America/Chicago"));
+        } else if (enableFasterApplicationExpiry) {
+            return submission.getSubmittedAt().plusHours(2).atZoneSameInstant(ZoneId.of("America/Chicago"));
         } else {
             return ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt());
         }
