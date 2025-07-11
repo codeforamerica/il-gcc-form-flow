@@ -192,6 +192,10 @@ public class SubmissionUtilities {
         return String.format("%s/%s.pdf", submission.getId(), submission.getId());
     }
 
+    public static String generatePdfPath(String fileName, UUID submissionId) {
+        return String.format("%s/%s", submissionId, fileName);
+    }
+
     public static String getDashFormattedSubmittedAtDate(Submission submission) {
         return YYYY_MM_DD_DASHES.format(submission.getSubmittedAt());
     }
