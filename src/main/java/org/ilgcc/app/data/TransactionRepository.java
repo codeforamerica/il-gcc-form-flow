@@ -12,19 +12,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
-
-    @Query(value =
-            "SELECT s.* FROM submissions s " +
-                    "LEFT JOIN transactions t ON t.submission_id = s.id " +
-                    "WHERE s.submitted_at IS NOT NULL " +
-                    "AND s.submitted_at >= :sinceDate " +
-                    "AND s.flow = 'gcc' " +
-                    "AND t.transaction_id IS NULL " +
-                    "ORDER BY s.updated_at ASC",
-            nativeQuery = true)
-    Set<Submission> findSubmissionsWithoutTransactions(@Param("sinceDate") OffsetDateTime sinceDate);
-
-
     @Query(value =
             "SELECT s.* FROM submissions s " +
                     "LEFT JOIN transactions t ON t.submission_id = s.id " +
@@ -37,7 +24,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
                     "AND t.transaction_id IS NULL " +
                     "ORDER BY s.updated_at ASC",
             nativeQuery = true)
-    Set<Submission> findExpiredSubmissionsWithoutTransactions();
+    Set<Submission> findExpiringSubmissionsWithoutTransactions();
 
     @Query(value = """
             SELECT 

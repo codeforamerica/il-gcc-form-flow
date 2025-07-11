@@ -99,14 +99,16 @@ public class ProviderResponseRecurringJob {
                 isDTSIntegrationEnabled,
                 isCCMSIntegrationEnabled);
 
-        Set<Submission> unsentSubmissions;
-        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findExpiredSubmissionsWithoutTransmission();
-        Set<Submission> submissionsWithoutTransactions = transactionRepositoryService.findExpiredSubmissionsWithoutTransactions();
+        Set<Submission> expiringSubmissionsToSend;
+        Set<Submission> submissionsWithoutTransmissions =
+                transmissionRepositoryService.findExpiringSubmissionsWithoutTransmission();
+        Set<Submission> submissionsWithoutTransactions =
+                transactionRepositoryService.findExpiringSubmissionsWithoutTransactions();
 
         if (submissionsWithoutTransmissions.equals(submissionsWithoutTransactions)) {
             // Happy case, all the submissions are missing both a transmission and a transaction, so just send one entire
             // Set to both DTS and CCMS
-            unsentSubmissions = submissionsWithoutTransmissions;
+            expiringSubmissionsToSend = submissionsWithoutTransmissions;
         } else {
             // It's possible to have Submissions that have be transmitted (DTS) but not transacted (CCMS) or vice versa depending
             // on how/when the Submissions were created and which integration was turned on at the time
@@ -115,8 +117,8 @@ public class ProviderResponseRecurringJob {
 
             // First, get the intersection of Submissions that have both a transmission and a transaction. These are the
             // Submissions we want to send to DTS and CCMS!
-            unsentSubmissions = new HashSet<>(submissionsWithoutTransmissions);
-            unsentSubmissions.retainAll(submissionsWithoutTransactions);
+            expiringSubmissionsToSend = new HashSet<>(submissionsWithoutTransmissions);
+            expiringSubmissionsToSend.retainAll(submissionsWithoutTransactions);
 
             // Next, we want to log the UUIDs for whichever Submissions aren't getting sent from the two Sets
             Set<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId)
@@ -139,7 +141,7 @@ public class ProviderResponseRecurringJob {
             // we have a Submission that was sent to DTS and not to CCMS or vice versa in a prior run!
             log.debug(
                     "Submissions without transmissions and transactions do not match. Sending {} submissions. Ignoring {} without transmissions. Ignoring {} without transactions.",
-                    unsentSubmissions.size(), submissionIdsWithoutTransmissionsOnly.size(),
+                    expiringSubmissionsToSend.size(), submissionIdsWithoutTransmissionsOnly.size(),
                     submissionIdsWithoutTransactionsOnly.size());
 
             if (!submissionIdsWithoutTransmissionsOnly.isEmpty()) {
@@ -153,16 +155,13 @@ public class ProviderResponseRecurringJob {
             }
         }
 
-        List<Submission> expiredUnsentSubmissions = unsentSubmissions.stream()
-                .filter(ProviderSubmissionUtilities::providerApplicationHasExpired).toList();
-
         log.info(String.format("Running the 'No provider response job' for %s expired submissions",
-                expiredUnsentSubmissions.size()));
+                expiringSubmissionsToSend.size()));
 
-        if (expiredUnsentSubmissions.isEmpty()) {
+        if (expiringSubmissionsToSend.isEmpty()) {
             return;
         } else {
-            for (Submission expiredFamilySubmission : expiredUnsentSubmissions) {
+            for (Submission expiredFamilySubmission : expiringSubmissionsToSend) {
                 if (!hasProviderResponse(expiredFamilySubmission)) {
                     log.info("No provider response found for family submission {}. DTS: {} CCMS: {}",
                             expiredFamilySubmission.getId(),
