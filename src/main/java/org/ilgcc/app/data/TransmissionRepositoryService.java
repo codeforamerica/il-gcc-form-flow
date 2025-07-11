@@ -37,6 +37,10 @@ public class TransmissionRepositoryService {
         return this.transmissionRepository.findSubmissionsWithoutTransmissions(sinceDate);
     }
 
+    public Set<Submission> findExpiredSubmissionsWithoutTransmission(){
+        return this.transmissionRepository.findExpiredSubmissionsWithoutTransmission();
+    }
+
     public void updateStatus(Transmission transmission, TransmissionStatus status) {
         transmission.setStatus(status);
         this.transmissionRepository.save(transmission);

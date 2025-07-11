@@ -95,30 +95,13 @@ public class ProviderResponseRecurringJob {
             return;
         }
 
-        Optional<Instant> lastRunOptional = jobrunrJobRepository.findLatestSuccessfulNoProviderResponseJobRunTime();
-        OffsetDateTime lastRun;
-        if (lastRunOptional.isPresent()) {
-            lastRun = lastRunOptional.get().atOffset(ZoneOffset.UTC);
-        } else {
-            lastRun = Instant.now().atOffset(ZoneOffset.UTC);
-            log.warn("No prior No Provider Response Job found. Using {} as the last run.", lastRun);
-        }
-
-        // We want to only ever process Submissions that have been sitting unanswered for 3+ business days, but because a large
-        // portion of those Submissions will have been submitted increasingly in the past and will have already been processed,
-        // we can aim to only load the Submissions that might fit the criteria of being 3+ business days past their submission
-        // timestamp and also not responded to by the provider.
-        // We can get the last time we tried to process any expired Submissions by grabbing the last time this job
-        // successfully ran (lastRun), roll it back 3 business days, and then to provide a little buffer roll it back an additional
-        // 15 minutes.
-        lastRun = ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(lastRun).minusMinutes(15);
-        log.info("Running No Provider Response Job for submissions since {}. DTS integration: {} CCMS integration: {}", lastRun,
+        log.info("Running No Provider Response Job for expired submissions since now. DTS integration: {} CCMS integration: {}",
                 isDTSIntegrationEnabled,
                 isCCMSIntegrationEnabled);
 
         Set<Submission> unsentSubmissions;
-        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmissions(lastRun);
-        Set<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransactions(lastRun);
+        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findExpiredSubmissionsWithoutTransmission();
+        Set<Submission> submissionsWithoutTransactions = transactionRepositoryService.findExpiredSubmissionsWithoutTransactions();
 
         if (submissionsWithoutTransmissions.equals(submissionsWithoutTransactions)) {
             // Happy case, all the submissions are missing both a transmission and a transaction, so just send one entire

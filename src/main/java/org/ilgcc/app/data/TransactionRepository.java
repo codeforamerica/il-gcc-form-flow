@@ -24,6 +24,21 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
             nativeQuery = true)
     Set<Submission> findSubmissionsWithoutTransactions(@Param("sinceDate") OffsetDateTime sinceDate);
 
+
+    @Query(value =
+            "SELECT s.* FROM submissions s " +
+                    "LEFT JOIN transactions t ON t.submission_id = s.id " +
+                    "WHERE s.submitted_at IS NOT NULL " +
+                    "AND s.input_data->>'providerResponseStatus' = 'ACTIVE' " +
+                    "AND s.input_data->>'providerApplicationResponseExpirationDate' IS NOT NULL " +
+                    "AND CAST(s.input_data->>'providerApplicationResponseExpirationDate' AS TIMESTAMPTZ) <= (now() AT TIME ZONE"
+                    + " 'UTC' AT TIME ZONE 'America/Chicago')" +
+                    "AND s.flow = 'gcc' " +
+                    "AND t.transaction_id IS NULL " +
+                    "ORDER BY s.updated_at ASC",
+            nativeQuery = true)
+    Set<Submission> findExpiredSubmissionsWithoutTransactions();
+
     @Query(value = """
             SELECT 
                 s.input_data->>'organizationId' AS organization_id, 

@@ -24,5 +24,19 @@ public interface TransmissionRepository extends JpaRepository<Transmission, UUID
             nativeQuery = true)
     Set<Submission> findSubmissionsWithoutTransmissions(@Param("sinceDate") OffsetDateTime sinceDate);
 
+    @Query(value =
+            "SELECT s.* FROM submissions s " +
+                    "LEFT JOIN transmissions t ON t.submission_id = s.id " +
+                    "WHERE s.submitted_at IS NOT NULL " +
+                    "AND s.input_data->>'providerResponseStatus' = 'ACTIVE' " +
+                    "AND s.input_data->>'providerApplicationResponseExpirationDate' IS NOT NULL " +
+                    "AND CAST(s.input_data->>'providerApplicationResponseExpirationDate' AS TIMESTAMPTZ) <= (now() AT TIME ZONE"
+                    + " 'UTC' AT TIME ZONE 'America/Chicago')" +
+                    "AND s.flow = 'gcc' " +
+                    "AND t.transmission_id IS NULL " +
+                    "ORDER BY s.created_at ASC",
+            nativeQuery = true)
+    Set<Submission> findExpiredSubmissionsWithoutTransmission();
+
     List<Transmission> findAllBySubmissionId(Submission submission);
 }

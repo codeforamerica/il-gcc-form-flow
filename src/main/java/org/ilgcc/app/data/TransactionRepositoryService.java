@@ -46,6 +46,10 @@ public class TransactionRepositoryService {
         return transactionRepository.findSubmissionsWithoutTransactions(sinceDate);
     }
 
+    public Set<Submission> findExpiredSubmissionsWithoutTransactions() {
+        return transactionRepository.findExpiredSubmissionsWithoutTransactions();
+    }
+
     public List<ResourceOrganizationTransaction> findTransactionsOnDate(OffsetDateTime date) {
 
         List<Object[]> rows = transactionRepository.findTransactionsOnDate(date);
