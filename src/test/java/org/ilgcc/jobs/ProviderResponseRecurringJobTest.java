@@ -103,7 +103,7 @@ public class ProviderResponseRecurringJobTest {
     }
 
     @Test
-    void enqueueDocumentTransferIsNotCalledOnExpiredUntransmittedSubmission() {
+    void doesNotSendExpiredUntransmittedSubmissionWithProviderResponseToCCMS() {
 
         providerSubmission = new SubmissionTestBuilder().withProviderSubmissionData()
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(2)).build();
@@ -123,7 +123,7 @@ public class ProviderResponseRecurringJobTest {
     }
 
     @Test
-    void doesNotCallTransmissionsServiceOnUnexpiredOrUnsubmittedApplications() {
+    void doesNotSendUnexpiredOrUnsubmittedApplicationsToCCMS() {
         activeWithFutureExpirationDate = new SubmissionTestBuilder()
                 .withParentDetails()
                 .with("parentContactEmail", "test-unexpired@mail.com")
@@ -194,7 +194,7 @@ public class ProviderResponseRecurringJobTest {
         }
 
         @Test
-        void enqueueDocumentTransferIsOnlyCalledOnSubmissionsWithPassedExpirationDate() {
+        void sendToCCMSIsOnlyCalledOnSubmissionsWithPassedExpirationDate() {
             providerResponseRecurringJob.runNoProviderResponseJob();
 
             //Confirms that the method was called on the expired submission
@@ -295,7 +295,7 @@ public class ProviderResponseRecurringJobTest {
         }
 
         @Test
-        void enqueueDocumentTransferIsOnlyCalledOnSubmissionsWithPassedExpirationDate() {
+        void sendToCCMSIsOnlyCalledOnSubmissionsWithPassedExpirationDate() {
             providerResponseRecurringJob.runNoProviderResponseJob();
 
             //Confirms that the method was called on the expired submission
