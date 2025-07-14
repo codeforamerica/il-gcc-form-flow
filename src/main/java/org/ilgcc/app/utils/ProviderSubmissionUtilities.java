@@ -1,7 +1,6 @@
 package org.ilgcc.app.utils;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;

@@ -5,6 +5,7 @@ import formflow.library.data.Submission;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.SubmissionSenderService;
+import org.ilgcc.app.email.SendAllProvidersRespondedFamilyConfirmationEmail;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.email.SendUnidentifiedProviderConfirmationEmail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmiss
 
     @Autowired
     SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
+
+    @Autowired
+    SendAllProvidersRespondedFamilyConfirmationEmail sendAllProvidersRespondedFamilyConfirmationEmail;
 
     @Autowired
     SendUnidentifiedProviderConfirmationEmail sendUnidentifiedProviderConfirmationEmail;
