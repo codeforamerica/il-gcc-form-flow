@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-import org.ilgcc.app.data.TransmissionRepository;
 import org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,9 +59,6 @@ public abstract class AbstractBasePageTest {
 
     @Autowired
     protected UserFileRepository userFileRepository;
-    
-    @Autowired
-    TransmissionRepository transmissionRepository;
 
     @Autowired
     protected Path path;
@@ -105,7 +101,6 @@ public abstract class AbstractBasePageTest {
     @AfterEach
     protected void clearSubmissions() {
         userFileRepository.deleteAll();
-        transmissionRepository.deleteAll();
         repo.deleteAll();
     }
 

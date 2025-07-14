@@ -560,7 +560,6 @@ flow:
     nextScreens:
       - name: doc-upload-submit-confirmation
   doc-upload-submit-confirmation:
-    afterSaveAction: SendUploadedFileToDocumentTransferService
     nextScreens:
       - name: submit-next-steps
   submit-next-steps:

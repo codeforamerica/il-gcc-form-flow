@@ -143,12 +143,6 @@ il-gcc:
   enable-new-sda-caseload-codes: ${ENABLE_NEW_SDA_CASELOAD_CODES:false}
   enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:false}
   ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
-  dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:false}
-  dts:
-    url: ${DOCUMENT_TRANSFER_SERVICE_URL}
-    consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
-    auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
-    presigned-url-Duration: 5 # Minutes
   ccms-api:
     api-subscription-key: ${OCP_APIM_SUBSCRIPTION_KEY}
     base-url: ${CCMS_API_BASE_URL}

@@ -51,11 +51,6 @@ jobrunr:
 il-gcc:
   enable-emails: false
   ccms-integration-enabled: true
-  dts-integration-enabled: true
-  dts:
-    url: ${DOCUMENT_TRANSFER_SERVICE_URL}
-    consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
-    auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
   base-url: https://localhost:8080
   ccms-api:
     offline-time-ranges: '[]'
