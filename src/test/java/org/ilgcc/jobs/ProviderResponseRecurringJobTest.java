@@ -102,55 +102,6 @@ public class ProviderResponseRecurringJobTest {
         submissionRepository.deleteAll();
     }
 
-    @Deprecated
-    @Test
-    public void providerResponseRecurringJobEnabledWhenFlagIsOn() {
-        assertTrue(context.containsBean("providerResponseRecurringJob"));
-    }
-
-    @Deprecated
-    @Test
-    void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmissionAndTransaction() {
-        transmittedSubmission = new SubmissionTestBuilder()
-                .withParentDetails()
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
-                .with("providerResponseSubmissionId", "4e477c74-8529-4cd0-a02b-2d67e5b5b171")
-                .withFlow("gcc")
-                .build();
-        transmittedSubmission = submissionRepository.save(transmittedSubmission);
-
-        transactionRepositoryService.createTransaction(UUID.randomUUID(), transmittedSubmission.getId(), null);
-
-        providerResponseRecurringJob.runNoProviderResponseJob();
-
-        verifyNoInteractions(sendEmailJob);
-    }
-
-    @Deprecated
-    @Test
-    void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmissionOnly_CCMS_Off() {
-        providerResponseRecurringJob = new ProviderResponseRecurringJob(
-                transactionRepositoryService,
-                submissionRepositoryService,
-                ccmsSubmissionPayloadTransactionJob,
-                false,
-                sendProviderDidNotRespondToFamilyEmail
-        );
-
-        transmittedSubmission = new SubmissionTestBuilder()
-                .withParentDetails()
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(7))
-                .with("providerResponseSubmissionId", "4e477c74-8529-4cd0-a02b-2d67e5b5b171")
-                .withFlow("gcc")
-                .build();
-        transmittedSubmission = submissionRepository.save(transmittedSubmission);
-
-
-        providerResponseRecurringJob.runNoProviderResponseJob();
-
-        verifyNoInteractions(sendEmailJob);
-    }
-
     @Test
     void enqueueDocumentTransferIsNotCalledOnExpiredUntransmittedSubmission() {
 
