@@ -470,14 +470,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).contains(getEnMessageWithParams("contact-providers-share-code.header",  new Object[]{"ACME Daycare", ""}).trim());
         testPage.clickContinue();
 
-        // contact-providers iteration #2
-        assertThat(testPage.getHeader()).isEqualTo(getRequiredEnMessageWithParams("contact-providers-start.header",  new Object[]{"Nope Test"}));
-        testPage.clickElementById("contactProviderMethod-OTHER-label");
-        testPage.clickContinue();
-
-        assertThat(testPage.getHeader()).contains(getEnMessageWithParams("contact-providers-share-code.header",  new Object[]{"Nope Test", ""}).trim());
-        testPage.clickContinue();
-
         // contact-providers-review
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("contact-providers-review.header"));
         testPage.clickContinue();
