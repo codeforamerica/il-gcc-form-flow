@@ -139,7 +139,7 @@ public class CCMSTransactionPayloadService {
             /// testing with random uuid for now, don't try this at home kids
             transactionFiles.add(new TransactionFile(
                     FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
-                    FileTypeId.UPLOADED_DOCUMENT.getValue(), "1dc3d0f9-df02-4a3d-805e-0ad5c25ead90", Base64.getEncoder().encodeToString(cloudFile.getFileBytes())));
+                    FileTypeId.UPLOADED_DOCUMENT.getValue(), UUID.randomUUID().toString(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes())));
         }
 
         return transactionFiles;
