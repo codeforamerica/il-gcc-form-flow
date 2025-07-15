@@ -42,33 +42,29 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
         Map<String, Object> emailData = new HashMap<>();
         emailData.putAll(getFamilySubmissionDataForEmails(familySubmission, subflowData));
 
-        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().getOrDefault(
-                "providers",
-                Collections.EMPTY_LIST);
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
+                .getOrDefault("providers", Collections.EMPTY_LIST);
 
         List<Map<String, Object>> providerData = new ArrayList<>();
 
-        Map<String, List<Map<String, Object>>> providerSchedules = (Map<String, List<Map<String, Object>>>)
-                SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+        Map<String, List<Map<String, Object>>> providerSchedules = (Map<String, List<Map<String, Object>>>) SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(
+                familySubmission.getInputData());
 
         if (!providerSchedules.isEmpty()) {
             for (String providerId : providerSchedules.keySet()) {
-                if (providerId != "NO_PROVIDER") {
+                if (!"NO_PROVIDER".equals(providerId)) {
                     Map<String, Object> currentProviderData = new HashMap<>();
-                    Optional<Map<String, Object>> currentProvider =
-                            providers.stream().filter(provider -> provider.get("uuid").equals(providerId)).findFirst();
+                    Optional<Map<String, Object>> currentProvider = providers.stream()
+                            .filter(provider -> provider.get("uuid").equals(providerId)).findFirst();
                     if (currentProvider.isPresent()) {
                         String earliestDate = (String) providerSchedules.get(providerId).get(0).get("ccapStartDate");
 
                         if (currentProvider.get().containsKey("providerResponseSubmissionId")) {
-                            Optional<Submission> currentProviderSubmission =
-                                    submissionRepositoryService.findById(
-                                            UUID.fromString(
-                                                    currentProvider.get().get("providerResponseSubmissionId").toString()));
+                            Optional<Submission> currentProviderSubmission = submissionRepositoryService.findById(
+                                    UUID.fromString(currentProvider.get().get("providerResponseSubmissionId").toString()));
                             currentProviderData.put("ccapStartDate",
                                     ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(
-                                            earliestDate,
-                                            currentProviderSubmission));
+                                            earliestDate, currentProviderSubmission));
                             if (currentProviderSubmission.isPresent()) {
                                 currentProviderData.putAll(getProviderSubmissionDataForEmails(currentProviderSubmission.get()));
 
@@ -76,8 +72,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
                         } else {
                             currentProviderData.put("ccapStartDate",
                                     ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(
-                                            earliestDate,
-                                            Optional.empty()));
+                                            earliestDate, Optional.empty()));
                         }
 
                         currentProviderData.putAll(currentProvider.get());
