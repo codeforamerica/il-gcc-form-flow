@@ -116,17 +116,29 @@ public class ProviderSubmissionUtilities {
         Map<String, Object> applicationData = new HashMap<>();
 
         applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission, subflowData));
+        applicationData.putAll(getProviderSubmissionDataForEmails(providerSubmission));
 
-        applicationData.put("providerResponseContactEmail",
-                providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
-        applicationData.put("providerName", getProviderResponseName(providerSubmission));
-        applicationData.putAll(setProviderResponseName(providerSubmission));
-        applicationData.put("providerSubmissionId", providerSubmission.getId());
+        String earliestDate = (String) familySubmission.getInputData()
+                .getOrDefault("earliestChildcareStartDate", "");
         applicationData.put("ccapStartDate",
-                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
+                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(earliestDate,
                         Optional.of(providerSubmission)));
 
         return applicationData;
+    }
+
+    public static Map<String, Object> getProviderSubmissionDataForEmails(Submission providerSubmission) {
+        Map<String, Object> providerApplicationData = new HashMap<>();
+
+        providerApplicationData.put("providerResponseContactEmail",
+                providerSubmission.getInputData().getOrDefault("providerResponseContactEmail", ""));
+        providerApplicationData.put("providerName", getProviderResponseName(providerSubmission));
+        providerApplicationData.putAll(setProviderResponseName(providerSubmission));
+        providerApplicationData.put("providerSubmissionId", providerSubmission.getId());
+        providerApplicationData.put("providerResponseAgreeToCare", providerSubmission.getInputData().getOrDefault(
+                "providerResponseAgreeToCare", ""));
+
+        return providerApplicationData;
     }
 
     public static Map<String, Object> getFamilySubmissionDataForEmails(Submission familySubmission) {
@@ -151,8 +163,10 @@ public class ProviderSubmissionUtilities {
         applicationData.put("familyPreferredLanguage", familySubmission.getInputData().getOrDefault("languageRead", "English"));
         applicationData.put("shareableLink", familySubmission.getInputData().getOrDefault("shareableLink", ""));
         applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
+        String earliestDate = (String) familySubmission.getInputData()
+                .getOrDefault("earliestChildcareStartDate", "");
         applicationData.put("ccapStartDate",
-                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(familySubmission,
+                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(earliestDate,
                         Optional.empty()));
         applicationData.put("hasMutipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
         applicationData.put("hasProviderAndNoProvider",
@@ -430,10 +444,8 @@ public class ProviderSubmissionUtilities {
         }
     }
 
-    public static String getCCAPStartDateFromProviderOrFamilyChildcareStartDate(Submission familySubmission,
+    public static String getCCAPStartDateFromProviderOrFamilyChildcareStartDate(String earliestDate,
             Optional<Submission> providerSubmission) {
-        String earliestDate = (String) familySubmission.getInputData()
-                .getOrDefault("earliestChildcareStartDate", "");
 
         if (providerSubmission.isPresent()) {
             String providerCareStartDate = (String) providerSubmission.get().getInputData()

@@ -5,6 +5,7 @@ import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import lombok.Getter;
@@ -50,7 +51,14 @@ public class AllProvidersRespondedFamilyConfirmationEmailTemplate {
                 locale);
         String p2 = messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p2",
                 new Object[]{emailData.get("ccrrName")}, locale);
-//        String allProviderResponses = getAllProviderResponses(emailData, messageSource, locale);
+
+        List<Map<String, Object>> providers = (List) emailData.getOrDefault("providersData", List.of());
+
+        for (Map<String, Object> provider : providers) {
+            p2 += getProviderResponseString(provider, messageSource, locale);
+
+        }
+
         String p3 = messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p3",
                 new Object[]{emailData.get("confirmationCode")},
                 locale);
@@ -61,34 +69,32 @@ public class AllProvidersRespondedFamilyConfirmationEmailTemplate {
         return p1 + p2 + p3 + p4 + p5 + p6;
     }
 
-    private String getAllProviderResponses(Map<String, Object> emailData, MessageSource messageSource, Locale locale) {
+    private String getProviderResponseString(Map<String, Object> provider, MessageSource messageSource, Locale locale) {
 
-//      ML -> P1  -> P1 -> ML, TT getRelatedChildrenSchedulesForProvider
-//          TT - >p1
         String providerResponses = "";
-        LinkedHashSet<Map<String, Object>> providerData = (LinkedHashSet<Map<String, Object>>) emailData.getOrDefault(
-                "providersData", new LinkedHashSet<Map<String, Object>>());
-        if (!providerData.isEmpty()) {
-            for (Map<String, Object> provider : providerData) {
-                //create list elements based on whether provider agrees to care.  The fallback else statement will be that the provider did not respond in three days because of where this code will be located.
-                if (provider.getOrDefault("providerResponseAgreeToCare", "").equals("true")) {
-                    providerResponses = String.format("%s%s", providerResponses,
-                            messageSource.getMessage("email.all-providers-responded-family-confirmation-email.li-agreed-to-care",
-                                    new Object[]{provider.get("providerResponseName"), provider.get("childInitials"),
-                                            provider.get("ccapStartDate")}, locale));
-                } else if (provider.getOrDefault("providerResponseAgreeToCare", "").equals("false")) {
-                    providerResponses = String.format("%s%s", providerResponses,
-                            messageSource.getMessage(
-                                    "email.all-providers-responded-family-confirmation-email.li-did-not-agree-to-care",
-                                    new Object[]{provider.get("providerResponseName"), provider.get("childInitials")}, locale));
-                } else {
-                    providerResponses = String.format("%s%s", providerResponses,
-                            messageSource.getMessage(
-                                    "email.all-providers-responded-family-confirmation-email.li-did-not-complete-application-in-three-days",
-                                    new Object[]{provider.get("providerResponseName")}, locale));
-                }
+        String providerName = provider.get("providerType").equals("Individual") ? provider.get("childCareProviderInitials").toString() :
+                provider.get("providerName").toString();
+
+        if (provider.containsKey("providerResponseAgreeToCare")) {
+            if (provider.get("providerResponseAgreeToCare").equals("true")) {
+                providerResponses = String.format("%s%s", providerResponses,
+                        messageSource.getMessage("email.all-providers-responded-family-confirmation-email.li-agreed-to-care",
+                                new Object[]{providerName, provider.get("childrenInitialsList"),
+                                        provider.get("ccapStartDate")}, locale));
+            } else {
+                providerResponses = String.format("%s%s", providerResponses,
+                        messageSource.getMessage(
+                                "email.all-providers-responded-family-confirmation-email.li-did-not-agree-to-care",
+                                new Object[]{providerName, provider.get("childrenInitialsList")},
+                                locale));
             }
+        } else {
+            providerResponses = String.format("%s%s", providerResponses,
+                    messageSource.getMessage(
+                            "email.all-providers-responded-family-confirmation-email.li-did-not-complete-application-in-three-days",
+                            new Object[]{providerName}, locale));
         }
+
         return String.format("<ul>%s</ul>", providerResponses);
     }
 }

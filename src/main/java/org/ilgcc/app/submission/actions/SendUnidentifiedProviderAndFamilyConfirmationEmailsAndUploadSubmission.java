@@ -19,9 +19,6 @@ public class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmiss
     SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
 
     @Autowired
-    SendAllProvidersRespondedFamilyConfirmationEmail sendAllProvidersRespondedFamilyConfirmationEmail;
-
-    @Autowired
     SendUnidentifiedProviderConfirmationEmail sendUnidentifiedProviderConfirmationEmail;
 
     private final SubmissionSenderService submissionSenderService;
