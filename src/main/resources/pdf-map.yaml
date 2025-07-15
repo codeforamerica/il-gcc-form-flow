@@ -158,7 +158,6 @@ inputFields:
   providerResponseContactPhoneNumber: PROVIDER_PHONE_NUMBER
   providerResponseContactEmail: PROVIDER_EMAIL
   providerLicenseNumber: PROVIDER_LICENSE_NUMBER
-  providerType: PROVIDER_TYPE
   careByNonRelativeType: CARE_BY_NON_RELATIVE_TYPE
   careByRelativeType: CARE_BY_RELATIVE_TYPE
   centersAndLicensedProvidersType: CENTERS_AND_LICENSED_PROVIDERS_TYPE
