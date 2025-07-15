@@ -15,3 +15,4 @@ form-flow:
         creation-point: creation
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:false}
+  base-url: https://localhost:8080
