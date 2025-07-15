@@ -271,36 +271,36 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                 new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
         assertThat(emailTemplate.getSubject()).isEqualTo(
-                messageSource.getMessage("email.all-providers-responded-family-confirmation-email.subject", null, locale));
+                messageSource.getMessage("email.family-application-transmitted-confirmation-email.subject", null, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p1", new Object[]{"FirstName"},
+                messageSource.getMessage("email.family-application-transmitted-confirmation-email.p1", new Object[]{"FirstName"},
                         locale));
 
-        assertThat(emailCopy).contains(messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p2",
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-application-transmitted-confirmation-email.p2",
                 new Object[]{"Sample Test CCRR"}, locale));
 
-        assertThat(emailCopy).contains(messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p3",
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-application-transmitted-confirmation-email.p3",
                 new Object[]{"ABC123"}, locale));
 
-        assertThat(emailCopy).contains(messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p4",
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-application-transmitted-confirmation-email.p4",
                 new Object[]{"Sample Test CCRR", "(603) 555-1244"},
                 locale));
 
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.all-providers-responded-family-confirmation-email.li-agreed-to-care",
+                messageSource.getMessage("email.family-application-transmitted-confirmation-email.li-agreed-to-care",
                         new Object[]{"BusinessName", "F.C.",
                                 "May 15, 2025"}, locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage(
-                "email.all-providers-responded-family-confirmation-email.li-did-not-agree-to-care",
+                "email.family-application-transmitted-confirmation-email.li-did-not-agree-to-care",
                 new Object[]{"P.P.", "F.C. and S.C."},
                 locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage(
-                "email.all-providers-responded-family-confirmation-email.li-did-not-complete-application-in-three-days",
+                "email.family-application-transmitted-confirmation-email.li-did-not-complete-application-in-three-days",
                 new Object[]{"Great Care Child Care"}, locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));

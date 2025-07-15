@@ -41,15 +41,15 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
     }
 
     private String setSubject() {
-        return messageSource.getMessage("email.all-providers-responded-family-confirmation-email.subject", null,
+        return messageSource.getMessage("email.family-application-transmitted-confirmation-email.subject", null,
                 locale);
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
-        String p1 = messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p1",
+        String p1 = messageSource.getMessage("email.family-application-transmitted-confirmation-email.p1",
                 new Object[]{emailData.get("parentFirstName")},
                 locale);
-        String p2 = messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p2",
+        String p2 = messageSource.getMessage("email.family-application-transmitted-confirmation-email.p2",
                 new Object[]{emailData.get("ccrrName")}, locale);
 
         List<Map<String, Object>> providers = (List) emailData.getOrDefault("providersData", List.of());
@@ -59,10 +59,10 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
 
         }
 
-        String p3 = messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p3",
+        String p3 = messageSource.getMessage("email.family-application-transmitted-confirmation-email.p3",
                 new Object[]{emailData.get("confirmationCode")},
                 locale);
-        String p4 = messageSource.getMessage("email.all-providers-responded-family-confirmation-email.p4",
+        String p4 = messageSource.getMessage("email.family-application-transmitted-confirmation-email.p4",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
         String p5 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p6 = messageSource.getMessage("email.general.footer.cfa", null, locale);
@@ -79,7 +79,7 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
         if (provider.containsKey("providerResponseAgreeToCare")) {
             if (provider.get("providerResponseAgreeToCare").equals("true")) {
                 providerResponses = String.format("%s%s", providerResponses,
-                        messageSource.getMessage("email.all-providers-responded-family-confirmation-email.li-agreed-to-care",
+                        messageSource.getMessage("email.family-application-transmitted-confirmation-email.li-agreed-to-care",
                                 new Object[]{providerName,
                                         formatListIntoReadableString((List<String>) provider.get("childrenInitialsList"),
                                                 messageSource.getMessage("general.and", null, locale)),
@@ -87,7 +87,7 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
             } else {
                 providerResponses = String.format("%s%s", providerResponses,
                         messageSource.getMessage(
-                                "email.all-providers-responded-family-confirmation-email.li-did-not-agree-to-care",
+                                "email.family-application-transmitted-confirmation-email.li-did-not-agree-to-care",
                                 new Object[]{providerName,
                                         formatListIntoReadableString((List<String>) provider.get("childrenInitialsList"),
                                                 messageSource.getMessage("general.and", null, locale))},
@@ -96,7 +96,7 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
         } else {
             providerResponses = String.format("%s%s", providerResponses,
                     messageSource.getMessage(
-                            "email.all-providers-responded-family-confirmation-email.li-did-not-complete-application-in-three-days",
+                            "email.family-application-transmitted-confirmation-email.li-did-not-complete-application-in-three-days",
                             new Object[]{providerName}, locale));
         }
 
