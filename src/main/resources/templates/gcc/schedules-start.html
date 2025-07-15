@@ -14,7 +14,7 @@
     iconFragment=~{fragments/gcc-icons :: care},
     inputContent=~{::inputContent})}">
         <th:block th:ref="inputContent">
-            <!-- Copy the below input if you want to add more -->
+<!--            TODO: CHANGE hasMoreThanOneProvider CONDITION TO BE HAS AT LEAST ONE PROVIDER AND A CHILD WITH NO PROVIDER -->
             <th:block th:if="${hasMoreThanOneProvider}">
                 <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
         checkboxFieldset(inputName='childcareProvidersForCurrentChild',
