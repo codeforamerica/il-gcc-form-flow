@@ -430,8 +430,8 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
 
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
 
-                assertThat(result.get("providerType")).isEqualTo(
-                        new SingleField("providerType", providerType.getPdfFieldName(), null));
+                assertThat(result.get(providerType.getPdfMapKey())).isEqualTo(
+                        new SingleField(providerType.getPdfMapKey(), providerType.getPdfFieldName(), null));
             }
 
 
