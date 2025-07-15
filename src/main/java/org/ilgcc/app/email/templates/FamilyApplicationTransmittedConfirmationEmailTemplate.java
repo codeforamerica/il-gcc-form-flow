@@ -1,10 +1,10 @@
 package org.ilgcc.app.email.templates;
 
 import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.formatListIntoReadableString;
 
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -17,13 +17,13 @@ import org.springframework.context.MessageSource;
 
 @Getter
 @Setter
-public class AllProvidersRespondedFamilyConfirmationEmailTemplate {
+public class FamilyApplicationTransmittedConfirmationEmailTemplate {
 
     private Map<String, Object> emailData;
     private MessageSource messageSource;
     private Locale locale;
 
-    public AllProvidersRespondedFamilyConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource,
+    public FamilyApplicationTransmittedConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource,
             Locale locale) {
         this.emailData = emailData;
         this.messageSource = messageSource;
@@ -72,20 +72,25 @@ public class AllProvidersRespondedFamilyConfirmationEmailTemplate {
     private String getProviderResponseString(Map<String, Object> provider, MessageSource messageSource, Locale locale) {
 
         String providerResponses = "";
-        String providerName = provider.get("providerType").equals("Individual") ? provider.get("childCareProviderInitials").toString() :
-                provider.get("providerName").toString();
+        String providerName =
+                provider.get("providerType").equals("Individual") ? provider.get("childCareProviderInitials").toString() :
+                        provider.getOrDefault("providerName", provider.get("childCareProgramName")).toString();
 
         if (provider.containsKey("providerResponseAgreeToCare")) {
             if (provider.get("providerResponseAgreeToCare").equals("true")) {
                 providerResponses = String.format("%s%s", providerResponses,
                         messageSource.getMessage("email.all-providers-responded-family-confirmation-email.li-agreed-to-care",
-                                new Object[]{providerName, provider.get("childrenInitialsList"),
+                                new Object[]{providerName,
+                                        formatListIntoReadableString((List<String>) provider.get("childrenInitialsList"),
+                                                messageSource.getMessage("general.and", null, locale)),
                                         provider.get("ccapStartDate")}, locale));
             } else {
                 providerResponses = String.format("%s%s", providerResponses,
                         messageSource.getMessage(
                                 "email.all-providers-responded-family-confirmation-email.li-did-not-agree-to-care",
-                                new Object[]{providerName, provider.get("childrenInitialsList")},
+                                new Object[]{providerName,
+                                        formatListIntoReadableString((List<String>) provider.get("childrenInitialsList"),
+                                                messageSource.getMessage("general.and", null, locale))},
                                 locale));
             }
         } else {

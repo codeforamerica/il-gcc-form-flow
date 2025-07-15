@@ -21,7 +21,6 @@ import org.ilgcc.jobs.SendEmailJob;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +31,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class SendAllProvidersRespondedFamilyConfirmationEmailTest {
+public class SendFamilyApplicationTransmittedConfirmationEmailTest {
 
     @MockitoSpyBean
     SendEmailJob sendEmailJob;
@@ -47,7 +46,7 @@ public class SendAllProvidersRespondedFamilyConfirmationEmailTest {
     MessageSource messageSource;
 
 
-    private SendAllProvidersRespondedFamilyConfirmationEmail sendEmailClass;
+    private SendFamilyApplicationTransmittedConfirmationEmail sendEmailClass;
 
     private final Locale locale = Locale.ENGLISH;
 
@@ -56,6 +55,8 @@ public class SendAllProvidersRespondedFamilyConfirmationEmailTest {
     private static Map<String, Object> individualProvider = new HashMap<>();
 
     private static Map<String, Object> programProvider = new HashMap<>();
+
+    private static Map<String, Object> noResponseProvider = new HashMap<>();
 
     private Submission programProviderSubmission;
 
@@ -89,6 +90,16 @@ public class SendAllProvidersRespondedFamilyConfirmationEmailTest {
         programProvider.put("familyIntendedProviderState", "IL");
         programProvider.put("providerType", "Care Program");
 
+        noResponseProvider.put("uuid", UUID.randomUUID().toString());
+        noResponseProvider.put("iterationIsComplete", true);
+        noResponseProvider.put("childCareProgramName", "Great Care Child Care");
+        noResponseProvider.put("familyIntendedProviderEmail", "ccpn@mail.com");
+        noResponseProvider.put("familyIntendedProviderPhoneNumber", "(123) 123-1234");
+        noResponseProvider.put("familyIntendedProviderAddress", "456 Main St.");
+        noResponseProvider.put("familyIntendedProviderCity", "Chicago");
+        noResponseProvider.put("familyIntendedProviderState", "IL");
+        noResponseProvider.put("providerType", "Care Program");
+
         child1.put("uuid", UUID.randomUUID().toString());
         child1.put("childFirstName", "First");
         child1.put("childLastName", "Child");
@@ -119,11 +130,13 @@ public class SendAllProvidersRespondedFamilyConfirmationEmailTest {
                 .with("parentFirstName", "FirstName")
                 .with("parentContactEmail", "familyemail@test.com")
                 .with("languageRead", "English")
-                .with("providers", List.of(individualProvider, programProvider))
+                .with("providers", List.of(individualProvider, programProvider, noResponseProvider))
                 .with("children", List.of(child1, child2))
                 .withMultipleChildcareSchedules(List.of(child1.get("uuid").toString(), child2.get("uuid").toString(),
-                        child1.get("uuid").toString()), List.of(individualProvider.get("uuid").toString(),
-                        programProvider.get("uuid").toString(), individualProvider.get("uuid").toString()))
+                                child1.get("uuid").toString(), child2.get("uuid").toString()),
+                        List.of(individualProvider.get("uuid").toString(),
+                                individualProvider.get("uuid").toString(), programProvider.get("uuid").toString(),
+                                noResponseProvider.get("uuid").toString()))
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withCCRR()
                 .withShortCode("ABC123")
@@ -137,7 +150,7 @@ public class SendAllProvidersRespondedFamilyConfirmationEmailTest {
                 .with("providerResponseFirstName", "ProviderFirst")
                 .with("providerResponseLastName", "ProviderLast")
                 .with("providerCareStartDate", "05/10/2025")
-                .with("providerResponseAgreeToCare", "true")
+                .with("providerResponseAgreeToCare", "false")
                 .build());
 
         individualProvider.put("providerResponseSubmissionId", individualProviderSubmission.getId());
@@ -154,7 +167,7 @@ public class SendAllProvidersRespondedFamilyConfirmationEmailTest {
 
         programProvider.put("providerResponseSubmissionId", programProviderSubmission.getId());
 
-        sendEmailClass = new SendAllProvidersRespondedFamilyConfirmationEmail(sendEmailJob, messageSource,
+        sendEmailClass = new SendFamilyApplicationTransmittedConfirmationEmail(sendEmailJob, messageSource,
                 submissionRepositoryService);
 
         Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
@@ -178,12 +191,77 @@ public class SendAllProvidersRespondedFamilyConfirmationEmailTest {
         assertThat(emailData.get("parentFirstName")).isEqualTo("FirstName");
         assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
         assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
-        assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C."));
         assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
-        assertThat(emailData.get("ccapStartDate")).isEqualTo("May 10, 2025");
         assertThat(emailData.get("familyPreferredLanguage")).isEqualTo("English");
-        assertThat(emailData.get("providerType")).isEqualTo("Individual");
-        assertThat(emailData.get("childCareProviderInitials")).isEqualTo("P.P.");
+        assertThat(emailData.get("providersData")).isNotNull();
+
+        // In this case, the providers data will be nested, so we need to check inside the next that it has been set correctly.
+        List<Map<String, Object>> providersData = (List<Map<String, Object>>) emailData.get("providersData");
+    }
+
+    @Test
+    void correctlySetsEmailDataForProviderWhoAcceptedCare() {
+        assertThat(emailData.get("providersData")).isNotNull();
+
+        List<Map<String, Object>> providersData = (List<Map<String, Object>>) emailData.get("providersData");
+        // In this case, the providers data will be nested, so we need to check inside the next that it has been set correctly.
+
+        Optional<Map<String, Object>> currentProviderDataOptional = providersData.stream()
+                .filter(provider -> programProvider.get("uuid").equals(provider.get("uuid")))
+                .findFirst();
+
+        assertThat(currentProviderDataOptional.isPresent()).isTrue();
+        Map<String, Object> currentProviderData = currentProviderDataOptional.get();
+
+        assertThat(currentProviderData.get("ccapStartDate")).isEqualTo("May 15, 2025");
+        assertThat(currentProviderData.get("childrenInitialsList")).isEqualTo(List.of("F.C."));
+        assertThat(currentProviderData.get("providerName")).isEqualTo("BusinessName");
+        assertThat(currentProviderData.get("providerResponseAgreeToCare")).isEqualTo("true");
+        assertThat(currentProviderData.get("providerResponseContactEmail")).isEqualTo("programProviderEmail@test.com");
+        assertThat(currentProviderData.get("providerType")).isEqualTo("Care Program");
+    }
+
+    @Test
+    void correctlySetsEmailDataForProviderWhoDeclinedCare() {
+        assertThat(emailData.get("providersData")).isNotNull();
+
+        List<Map<String, Object>> providersData = (List<Map<String, Object>>) emailData.get("providersData");
+        // In this case, the providers data will be nested, so we need to check inside the next that it has been set correctly.
+
+        Optional<Map<String, Object>> currentProviderDataOptional = providersData.stream()
+                .filter(provider -> individualProvider.get("uuid").equals(provider.get("uuid")))
+                .findFirst();
+
+        assertThat(currentProviderDataOptional.isPresent()).isTrue();
+        Map<String, Object> currentProviderData = currentProviderDataOptional.get();
+
+        assertThat(currentProviderData.get("ccapStartDate")).isEqualTo("May 10, 2025");
+        assertThat(currentProviderData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
+        assertThat(currentProviderData.get("providerType")).isEqualTo("Individual");
+        assertThat(currentProviderData.get("childCareProviderInitials")).isEqualTo("P.P.");
+        assertThat(currentProviderData.get("providerResponseAgreeToCare")).isEqualTo("false");
+        assertThat(currentProviderData.get("providerResponseContactEmail")).isEqualTo("provideremail@test.com");
+    }
+
+    @Test
+    void correctlySetsEmailDataForProviderWhoDoesNotRespond() {
+        assertThat(emailData.get("providersData")).isNotNull();
+
+        List<Map<String, Object>> providersData = (List<Map<String, Object>>) emailData.get("providersData");
+        // In this case, the providers data will be nested, so we need to check inside the next that it has been set correctly.
+
+        Optional<Map<String, Object>> currentProviderDataOptional = providersData.stream()
+                .filter(provider -> noResponseProvider.get("uuid").equals(provider.get("uuid")))
+                .findFirst();
+
+        assertThat(currentProviderDataOptional.isPresent()).isTrue();
+        Map<String, Object> currentProviderData = currentProviderDataOptional.get();
+
+        assertThat(currentProviderData.get("ccapStartDate")).isEqualTo("December 10, 2025");
+        assertThat(currentProviderData.get("childrenInitialsList")).isEqualTo(List.of("S.C."));
+        assertThat(currentProviderData.get("providerType")).isEqualTo("Care Program");
+        assertThat(currentProviderData.get("childCareProgramName")).isEqualTo("Great Care Child Care");
+        assertThat(currentProviderData.get("providerResponseAgreeToCare")).isNull();
     }
 
     @Test
@@ -211,12 +289,19 @@ public class SendAllProvidersRespondedFamilyConfirmationEmailTest {
                 new Object[]{"Sample Test CCRR", "(603) 555-1244"},
                 locale));
 
-//        assertThat(emailCopy).contains(
-//                messageSource.getMessage("email.provider-agrees-to-care.p2-individual",
-//                        new Object[]{"P.P."},
-//                        locale));
-//        assertThat(emailCopy).contains(messageSource.getMessage("email.provider-agrees-to-care.p3",
-//                new Object[]{"F.C.", "May 10, 2025"}, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.all-providers-responded-family-confirmation-email.li-agreed-to-care",
+                        new Object[]{"BusinessName", "F.C.",
+                                "May 15, 2025"}, locale));
+
+        assertThat(emailCopy).contains(messageSource.getMessage(
+                "email.all-providers-responded-family-confirmation-email.li-did-not-agree-to-care",
+                new Object[]{"P.P.", "F.C. and S.C."},
+                locale));
+
+        assertThat(emailCopy).contains(messageSource.getMessage(
+                "email.all-providers-responded-family-confirmation-email.li-did-not-complete-application-in-three-days",
+                new Object[]{"Great Care Child Care"}, locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));

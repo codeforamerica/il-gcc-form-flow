@@ -29,7 +29,7 @@ import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.ccms.CCMSApiClient;
 import org.ilgcc.app.data.ccms.CCMSTransaction;
 import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
-import org.ilgcc.app.email.SendAllProvidersRespondedFamilyConfirmationEmail;
+import org.ilgcc.app.email.SendFamilyApplicationTransmittedConfirmationEmail;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.SubmissionUtilities;
@@ -65,7 +65,7 @@ public class CCMSSubmissionPayloadTransactionJob {
     private final AtomicInteger totalCcmsTransactionDelayOffset = new AtomicInteger(0);
 
     @Autowired
-    SendAllProvidersRespondedFamilyConfirmationEmail sendAllProvidersRespondedFamilyConfirmationEmail;
+    SendFamilyApplicationTransmittedConfirmationEmail sendFamilyApplicationTransmittedConfirmationEmail;
 
     public CCMSSubmissionPayloadTransactionJob(JobScheduler jobScheduler,
             CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
@@ -209,7 +209,7 @@ public class CCMSSubmissionPayloadTransactionJob {
 
                         if (SubmissionUtilities.haveAllProvidersResponded(submission)) {
                             log.info("All providers responded to CCMS transaction : {}", submission.getId());
-                            sendAllProvidersRespondedFamilyConfirmationEmail.send(submission);
+                            sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
                         }
 
                     } else {

@@ -8,13 +8,12 @@ import formflow.library.data.SubmissionRepositoryService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.email.templates.AllProvidersRespondedFamilyConfirmationEmailTemplate;
+import org.ilgcc.app.email.templates.FamilyApplicationTransmittedConfirmationEmailTemplate;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.jobs.SendEmailJob;
@@ -24,10 +23,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class SendAllProvidersRespondedFamilyConfirmationEmail extends SendEmail {
+public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail {
 
     @Autowired
-    public SendAllProvidersRespondedFamilyConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
+    public SendFamilyApplicationTransmittedConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
         super(sendEmailJob, messageSource, submissionRepositoryService, "familyApplicationTransmittedEmailSent",
                 "parentContactEmail");
@@ -35,16 +34,13 @@ public class SendAllProvidersRespondedFamilyConfirmationEmail extends SendEmail 
 
     @Override
     protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
-        return new AllProvidersRespondedFamilyConfirmationEmailTemplate(emailData, messageSource, locale).createTemplate();
+        return new FamilyApplicationTransmittedConfirmationEmailTemplate(emailData, messageSource, locale).createTemplate();
     }
 
     @Override
     protected Optional<Map<String, Object>> getEmailData(Submission familySubmission, Map<String, Object> subflowData) {
         Map<String, Object> emailData = new HashMap<>();
         emailData.putAll(getFamilySubmissionDataForEmails(familySubmission, subflowData));
-
-        String earliestDate = (String) familySubmission.getInputData()
-                .getOrDefault("earliestChildcareStartDate", "");
 
         List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().getOrDefault(
                 "providers",
@@ -62,16 +58,28 @@ public class SendAllProvidersRespondedFamilyConfirmationEmail extends SendEmail 
                     Optional<Map<String, Object>> currentProvider =
                             providers.stream().filter(provider -> provider.get("uuid").equals(providerId)).findFirst();
                     if (currentProvider.isPresent()) {
-                        Optional<Submission> currentProviderSubmission =
-                                submissionRepositoryService.findById(
-                                        UUID.fromString(currentProvider.get().get("providerResponseSubmissionId").toString()));
-                        currentProviderData.put("ccapStartDate",
-                                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(earliestDate,
-                                        currentProviderSubmission));
-                        if (currentProviderSubmission.isPresent()) {
-                            currentProviderData.putAll(getProviderSubmissionDataForEmails(currentProviderSubmission.get()));
+                        String earliestDate = (String) providerSchedules.get(providerId).get(0).get("ccapStartDate");
 
+                        if (currentProvider.get().containsKey("providerResponseSubmissionId")) {
+                            Optional<Submission> currentProviderSubmission =
+                                    submissionRepositoryService.findById(
+                                            UUID.fromString(
+                                                    currentProvider.get().get("providerResponseSubmissionId").toString()));
+                            currentProviderData.put("ccapStartDate",
+                                    ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(
+                                            earliestDate,
+                                            currentProviderSubmission));
+                            if (currentProviderSubmission.isPresent()) {
+                                currentProviderData.putAll(getProviderSubmissionDataForEmails(currentProviderSubmission.get()));
+
+                            }
+                        } else {
+                            currentProviderData.put("ccapStartDate",
+                                    ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(
+                                            earliestDate,
+                                            Optional.empty()));
                         }
+
                         currentProviderData.putAll(currentProvider.get());
                         currentProviderData.put("childrenInitialsList",
                                 ProviderSubmissionUtilities.getChildrenInitialsList(providerSchedules.get(providerId)));
