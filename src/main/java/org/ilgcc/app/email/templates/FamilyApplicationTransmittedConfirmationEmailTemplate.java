@@ -33,7 +33,7 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
 
     public ILGCCEmailTemplate createTemplate() {
         return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)),
-                EmailType.ALL_PROVIDERS_RESPONDED_FAMILY_CONFIRMATION_EMAIL);
+                EmailType.FAMILY_APPLICATION_TRANSMITTED_CONFIRMATION_EMAIL);
     }
 
     private Email senderEmail() {
