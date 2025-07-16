@@ -17,6 +17,7 @@ import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -282,7 +283,7 @@ public class ProviderResponseRecurringJobTest {
                 .withParentDetails()
                 .with("parentContactEmail", "test-unexpired@mail.com")
                 .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
-                .with("providerApplicationResponseExpirationDate", OffsetDateTime.now().plusDays(3))
+                .with("providerApplicationResponseExpirationDate", OffsetDateTime.now().plusDays(3).atZoneSameInstant(ZoneId.of("America/Chicago")))
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withFlow("gcc")
                 .build();
@@ -316,7 +317,7 @@ public class ProviderResponseRecurringJobTest {
                     .withParentDetails()
                     .with("parentContactEmail", "test-expired@mail.com")
                     .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
-                    .with("providerApplicationResponseExpirationDate", expiredSubmissionDate)
+                    .with("providerApplicationResponseExpirationDate", expiredSubmissionDate.atZoneSameInstant(ZoneId.of("America/Chicago")))
                     .withSubmittedAtDate(expiredSubmissionDate)
                     .withFlow("gcc")
                     .build();
@@ -395,7 +396,7 @@ public class ProviderResponseRecurringJobTest {
                     .with("providers", List.of(provider))
                     .with("children", List.of(child))
                     .withChildcareScheduleForProvider(child.get("uuid").toString(), provider.get("uuid").toString())
-                    .with("providerApplicationResponseExpirationDate", OffsetDateTime.now().plusDays(3))
+                    .with("providerApplicationResponseExpirationDate", OffsetDateTime.now().plusDays(3).atZoneSameInstant(ZoneId.of("America/Chicago")))
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withFlow("gcc")
                     .build();
@@ -410,7 +411,7 @@ public class ProviderResponseRecurringJobTest {
                     .withChildcareScheduleForProvider(child.get("uuid").toString(), provider.get("uuid").toString())
                     .with("parentContactEmail", "test-expired@mail.com")
                     .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
-                    .with("providerApplicationResponseExpirationDate", expiredSubmissionDate)
+                    .with("providerApplicationResponseExpirationDate", expiredSubmissionDate.atZoneSameInstant(ZoneId.of("America/Chicago")))
                     .withSubmittedAtDate(expiredSubmissionDate)
                     .withFlow("gcc")
                     .build();
