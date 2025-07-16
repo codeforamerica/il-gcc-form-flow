@@ -8,6 +8,7 @@ import formflow.library.data.Submission;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,16 +17,27 @@ public class UpdateCurrentChildcareProviderIfOneOrNoProviders implements Action 
     @Override
     @SuppressWarnings("unchecked")
     public void run(FormSubmission formSubmission, Submission submission, String id) {
-        List<Map<String, Object>> providers = (List<Map<String, Object>>) submission.getInputData()
-            .getOrDefault("providers", emptyList());
-        List<String> childcareProvidersForCurrentChild = new ArrayList<>();
-        if (providers.size() <= 1) {
-            if (providers.isEmpty()) {
+        Map<String, Object> inputData = submission.getInputData();
+
+        List<String> childcareProvidersForCurrentChild = (List<String>) formSubmission.getFormData().getOrDefault("childcareProvidersForCurrentChild[]", new ArrayList<>());
+
+        if(childcareProvidersForCurrentChild.isEmpty()) {
+            List<Map<String, Object>> providers = (List<Map<String, Object>>) inputData.getOrDefault("providers", emptyList());
+            if (hasNoProviders(inputData)) {
                 childcareProvidersForCurrentChild.add("NO_PROVIDER");
-            } else {
+            }
+            if (providers.size() == 1 && allChildrenHaveProviders(inputData)) {
                 childcareProvidersForCurrentChild.add(providers.getFirst().getOrDefault("uuid", "").toString());
             }
             formSubmission.getFormData().put("childcareProvidersForCurrentChild[]", childcareProvidersForCurrentChild);
         }
+    }
+
+    private boolean hasNoProviders(Map<String, Object> inputData)  {
+        return inputData.getOrDefault("hasChosenProvider", "false").equals("false");
+    }
+
+    private boolean allChildrenHaveProviders(Map<String, Object> inputData) {
+        return inputData.getOrDefault("choseProviderForEveryChildInNeedOfCare", "false").equals("true");
     }
 }
