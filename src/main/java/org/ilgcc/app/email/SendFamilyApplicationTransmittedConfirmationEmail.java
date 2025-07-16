@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.templates.FamilyApplicationTransmittedConfirmationEmailTemplate;
+import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.jobs.SendEmailJob;
@@ -57,14 +58,16 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
                     Optional<Map<String, Object>> currentProvider = providers.stream()
                             .filter(provider -> provider.get("uuid").equals(providerId)).findFirst();
                     if (currentProvider.isPresent()) {
-                        String earliestDate = (String) providerSchedules.get(providerId).get(0).get("ccapStartDate");
+                        String earliestCCAPDateForCurrentProvider =
+                                (String) DateUtilities.getEarliestDate(providerSchedules.get(providerId).stream().map(s -> s.get("ccapStartDate").toString()).toList());
 
                         if (currentProvider.get().containsKey("providerResponseSubmissionId")) {
                             Optional<Submission> currentProviderSubmission = submissionRepositoryService.findById(
                                     UUID.fromString(currentProvider.get().get("providerResponseSubmissionId").toString()));
                             currentProviderData.put("ccapStartDate",
                                     ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(
-                                            earliestDate, currentProviderSubmission));
+                                            earliestCCAPDateForCurrentProvider,
+                                            currentProviderSubmission));
                             if (currentProviderSubmission.isPresent()) {
                                 currentProviderData.putAll(getProviderSubmissionDataForEmails(currentProviderSubmission.get()));
 
@@ -72,7 +75,8 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
                         } else {
                             currentProviderData.put("ccapStartDate",
                                     ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(
-                                            earliestDate, Optional.empty()));
+                                            earliestCCAPDateForCurrentProvider,
+                                            Optional.empty()));
                         }
 
                         currentProviderData.putAll(currentProvider.get());

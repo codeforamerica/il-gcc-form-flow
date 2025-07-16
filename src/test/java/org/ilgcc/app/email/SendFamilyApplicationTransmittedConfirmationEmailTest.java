@@ -149,7 +149,6 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
                 .with("providerResponseContactEmail", "provideremail@test.com")
                 .with("providerResponseFirstName", "ProviderFirst")
                 .with("providerResponseLastName", "ProviderLast")
-                .with("providerCareStartDate", "05/10/2025")
                 .with("providerResponseAgreeToCare", "false")
                 .build());
 
@@ -235,7 +234,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         assertThat(currentProviderDataOptional.isPresent()).isTrue();
         Map<String, Object> currentProviderData = currentProviderDataOptional.get();
 
-        assertThat(currentProviderData.get("ccapStartDate")).isEqualTo("May 10, 2025");
+        assertThat(currentProviderData.get("ccapStartDate")).isEqualTo("January 10, 2025");
         assertThat(currentProviderData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
         assertThat(currentProviderData.get("providerType")).isEqualTo("Individual");
         assertThat(currentProviderData.get("childCareProviderInitials")).isEqualTo("P.P.");
