@@ -1,21 +1,27 @@
 package org.ilgcc.jobs;
 
+import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_ENDPOINT;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
+import formflow.library.file.CloudFileRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.NotNull;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.JobrunrJobRepository;
 import org.ilgcc.app.data.Transaction;
@@ -23,11 +29,14 @@ import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.ccms.CCMSApiClient;
 import org.ilgcc.app.data.ccms.CCMSTransaction;
 import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
+import org.ilgcc.app.pdf.MultiProviderPDFService;
+import org.ilgcc.app.utils.ByteArrayMultipartFile;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.stereotype.Service;
-import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -39,6 +48,9 @@ public class CCMSSubmissionPayloadTransactionJob {
     private final TransactionRepositoryService transactionRepositoryService;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final JobrunrJobRepository jobrunrJobRepository;
+
+    private final MultiProviderPDFService multiProviderPDFService;
+    CloudFileRepository cloudFileRepository;
 
     private int jobDelayMinutes;
 
@@ -53,13 +65,16 @@ public class CCMSSubmissionPayloadTransactionJob {
     public CCMSSubmissionPayloadTransactionJob(JobScheduler jobScheduler,
             CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
             TransactionRepositoryService transactionRepositoryService, SubmissionRepositoryService submissionRepositoryService,
-            JobrunrJobRepository jobrunrJobRepository) {
+            JobrunrJobRepository jobrunrJobRepository,
+            MultiProviderPDFService multiProviderPDFService, CloudFileRepository cloudFileRepository) {
         this.jobScheduler = jobScheduler;
         this.ccmsTransactionPayloadService = ccmsTransactionPayloadService;
         this.ccmsApiClient = ccmsApiClient;
         this.transactionRepositoryService = transactionRepositoryService;
         this.submissionRepositoryService = submissionRepositoryService;
         this.jobrunrJobRepository = jobrunrJobRepository;
+        this.multiProviderPDFService = multiProviderPDFService;
+        this.cloudFileRepository = cloudFileRepository;
     }
 
     @PostConstruct
@@ -151,6 +166,26 @@ public class CCMSSubmissionPayloadTransactionJob {
                 Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
                 if (submissionOptional.isPresent()) {
                     Submission submission = submissionOptional.get();
+
+                    CompletableFuture.runAsync(() -> {
+                        try {
+                            // Put the submission pdf asynchronously into S3 as a backup
+                            // Do not fail on exceptions, as this is a backup just in case
+                            // CCMS / CMS doesn't process the submission properly on the backend
+                            Map<String, byte[]> pdfs = multiProviderPDFService.generatePDFs(submission);
+
+                            for (String pdfFileName: pdfs.keySet()) {
+                                MultipartFile multipartFile = new ByteArrayMultipartFile(pdfs.get(pdfFileName), pdfFileName, PDF_CONTENT_TYPE);
+                                String s3ZipPath = SubmissionUtilities.generatePdfPath(pdfFileName, submission.getId());
+
+                                cloudFileRepository.upload(s3ZipPath, multipartFile);
+                            }
+                        } catch (IOException | InterruptedException e) {
+                            log.error("Error uploading submission {} to S3", submissionId, e);
+                        }
+                    });
+
+
                     Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
                             submission);
                     if (ccmsTransactionOptional.isPresent()) {

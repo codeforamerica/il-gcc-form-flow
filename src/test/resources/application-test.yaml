@@ -41,14 +41,13 @@ spring:
       ddl-auto: create-drop
   main:
     allow-circular-references: true
-org:
-  jobrunr:
-    job-scheduler:
-      enabled: true
-    background-job-server:
-      enabled: false
-    dashboard:
-      enabled: false
+jobrunr:
+  job-scheduler:
+    enabled: true
+  background-job-server:
+    enabled: false
+  dashboard:
+    enabled: false
 il-gcc:
   enable-emails: false
   ccms-integration-enabled: true
@@ -57,5 +56,6 @@ il-gcc:
     url: ${DOCUMENT_TRANSFER_SERVICE_URL}
     consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
     auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
+  base-url: https://localhost:8080
   ccms-api:
     offline-time-ranges: '[]'

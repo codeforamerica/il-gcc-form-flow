@@ -280,6 +280,8 @@ flow:
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
     beforeSaveAction: SaveCCAPStartDate
     nextScreens:
+      - name: schedules-same
+        condition: DisplaySchedulesSameScreen
       - name: schedules-days
   schedules-days:
     subflow: childcareSchedules
@@ -289,6 +291,7 @@ flow:
   schedules-hours:
     subflow: childcareSchedules
     beforeDisplayAction: SetSubflowWeeklyScheduleGroup
+    crossFieldValidationAction: ValidateChildcareHourlySchedule
     condition: EnableMultipleProviders
     nextScreens:
       - name: schedules-review
@@ -298,10 +301,14 @@ flow:
     nextScreens:
       - name: unearned-income-intro
   schedules-same:
+    beforeDisplayAction: LocalizeSameScreenProviderSchedules
+    onPostAction: CopySameChildcareSchedule
     subflow: childcareSchedules
     condition: EnableMultipleProviders
     nextScreens:
-      - name: unearned-income-intro
+      - name: schedules-review
+        condition: AgreesToCopySchedule
+      - name: schedules-days
   activities-parent-intro:
     nextScreens:
       - name: activities-parent-type
@@ -742,6 +749,7 @@ subflows:
     relationship:
       relatesTo: providers
       relationAlias: providerUuid
+      filter: ProvidersWithChildcareSchedules
     entryScreen: after-submit-contact-provider
     iterationStartScreen: contact-providers-start
     reviewScreen: contact-providers-review
@@ -812,11 +820,16 @@ flow:
     condition: EnableMultipleProviders
     beforeDisplayAction: SetProvidersData
     nextScreens:
+      - name: error-response-recorded
+        condition: CurrentProviderHasResponded
       - name: confirm-provider
   confirm-provider:
     condition: EnableMultipleProviders
     nextScreens:
       - name: paid-by-ccap
+  error-response-recorded:
+    condition: EnableMultipleProviders
+    nextScreens: null
   paid-by-ccap:
     nextScreens:
       - name: provider-info

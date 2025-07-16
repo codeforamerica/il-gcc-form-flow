@@ -311,7 +311,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         // submit-start
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         assertThat(testPage.getHeader()).isEqualTo(
-                getEnMessageWithParams("provider-response-submit-start.responded.header", new Object[]{"Dev Provider"}));
+                getEnMessageWithParams("provider-response-error-response-recorded.header", new Object[]{"Dev Provider"}));
     }
 
     @Test

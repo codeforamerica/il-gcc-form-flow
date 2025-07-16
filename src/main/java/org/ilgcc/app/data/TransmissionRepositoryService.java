@@ -33,8 +33,8 @@ public class TransmissionRepositoryService {
         return this.transmissionRepository.findAllBySubmissionId(submission);
     }
 
-    public Set<Submission> findSubmissionsWithoutTransmissions(OffsetDateTime sinceDate){
-        return this.transmissionRepository.findSubmissionsWithoutTransmissions(sinceDate);
+    public Set<Submission> findExpiringSubmissionsWithoutTransmission(){
+        return this.transmissionRepository.findExpiringSubmissionsWithoutTransmission();
     }
 
     public void updateStatus(Transmission transmission, TransmissionStatus status) {

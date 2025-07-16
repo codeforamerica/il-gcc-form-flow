@@ -46,11 +46,13 @@
                                             <th:block th:ref="revealContent">
                                                 <p th:id="${'child-age-'+iter.index}" th:utext="${#messages.msg('provider-response-response.child-age', child.getOrDefault('childAge', 'n/a'))}"></p>
 
-                                                <p class="response-header"
-                                                   th:utext="#{provider-response-response.hours}"></p>
-                                                <ul class="list--bulleted"
-                                                    th:id="${'child-schedule-'+iter.index}"
-                                                    th:utext="${child.get('childCareHours')}"></ul>
+                                                <th:block th:if="${!child.get('childCareHours').isEmpty()}">
+                                                    <p class="response-header"
+                                                        th:utext="#{provider-response-response.hours}"></p>
+                                                    <ul class="list--bulleted"
+                                                        th:id="${'child-schedule-'+iter.index}"
+                                                        th:utext="${child.get('childCareHours')}"></ul>
+                                                </th:block>
 
                                                 <p class="response-header"
                                                    th:utext="#{provider-response-response.start-date}"></p>
