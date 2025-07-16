@@ -119,7 +119,7 @@ public class CCMSTransactionPayloadService {
         }
 
         List<UserFile> userFiles = allowPdfModification ? userFileRepositoryService.findAllConvertedOrderByOriginalName(
-                familySubmission, PDF_CONTENT_TYPE) : userFileRepositoryService.findAllOrderByOriginalName(familySubmission);
+                familySubmission, PDF_CONTENT_TYPE) : userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE);
 
         allFiles.addAll(userFiles);
 
