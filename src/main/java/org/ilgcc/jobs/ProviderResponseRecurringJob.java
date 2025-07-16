@@ -185,15 +185,23 @@ public class ProviderResponseRecurringJob {
                         List<Map<String, Object>> providersSubflowData = (List<Map<String, Object>>)
                                 expiredFamilySubmission.getInputData().getOrDefault("providers", emptyList());
                         providersSubflowData.forEach(provider -> {
-                            if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus"))) {
-                                log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
-                                        provider.get("uuid"), expiredFamilySubmission.getId());
-                                sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers",
-                                        provider.get("uuid").toString());
+                            try {
+                                if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus"))) {
+                                    log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
+                                            provider.get("uuid"), expiredFamilySubmission.getId());
+                                    sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers",
+                                            provider.get("uuid").toString());
+                                }
+                            } catch (Exception e) {
+                                log.warn("Unable to send ProviderDidNotRespondToFamilyEmail for family {} and provider {}", expiredFamilySubmission.getId(), provider.get("uuid"), e);
                             }
                         });
                     } else {
-                        sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
+                        try {
+                            sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
+                        } catch (Exception e) {
+                            log.warn("Unable to send ProviderDidNotRespondToFamilyEmail for family {}", expiredFamilySubmission.getId(), e);
+                        }
                     }
 
 

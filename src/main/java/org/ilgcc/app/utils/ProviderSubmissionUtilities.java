@@ -452,10 +452,12 @@ public class ProviderSubmissionUtilities {
     public static List<String> getChildrenInitialsList(List<Map<String, Object>> children) {
         List<String> childrenInitials = new ArrayList<String>();
 
-        for (var child : children) {
-            String firstName = (String) child.get("childFirstName");
-            String lastName = (String) child.get("childLastName");
-            childrenInitials.add(getInitials(firstName, lastName));
+        if (children != null) {
+            for (var child : children) {
+                String firstName = (String) child.get("childFirstName");
+                String lastName = (String) child.get("childLastName");
+                childrenInitials.add(getInitials(firstName, lastName));
+            }
         }
         return childrenInitials;
 
