@@ -35,6 +35,7 @@ form-flow:
       convert-to-pdf: ${CONVERT_UPLOADS_TO_PDF:false}
       prefix: ${CONVERTED_FILE_PREFIX:}
       suffix: ${CONVERTED_FILE_SUFFIX:}
+      allow-pdf-modification: ${ALLOW_PDF_MODIFICATION:false}
   aws:
     region: ${AWS_REGION}
     s3_bucket_name: ${AWS_BUCKET}
