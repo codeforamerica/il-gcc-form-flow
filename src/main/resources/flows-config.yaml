@@ -269,7 +269,6 @@ flow:
     onPostAction: UpdateCurrentChildcareProviderIfOneOrNoProviders
     nextScreens:
       - name: schedules-start-care
-
   schedules-start-care:
     subflow: childcareSchedules
     condition: DisplaySchedulesStartCareScreen
