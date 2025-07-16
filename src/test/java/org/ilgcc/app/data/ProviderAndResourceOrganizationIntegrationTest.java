@@ -17,9 +17,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
 @AutoConfigureEmbeddedDatabase(type = DatabaseType.POSTGRES, provider = DatabaseProvider.ZONKY)
-@EnableJpaRepositories(basePackageClasses = {TransmissionRepository.class, ProviderRepository.class, County.class,
+@EnableJpaRepositories(basePackageClasses = {ProviderRepository.class, County.class,
         ResourceOrganization.class})
-@EntityScan(basePackageClasses = {Transmission.class, Submission.class, Provider.class, County.class, ResourceOrganization.class})
+@EntityScan(basePackageClasses = {Submission.class, Provider.class, County.class, ResourceOrganization.class})
 @ActiveProfiles("test")
 public class ProviderAndResourceOrganizationIntegrationTest {
 
