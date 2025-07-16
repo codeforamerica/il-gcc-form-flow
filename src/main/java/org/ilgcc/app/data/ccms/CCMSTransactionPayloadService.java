@@ -34,17 +34,20 @@ public class CCMSTransactionPayloadService {
     private final SubmissionRepositoryService submissionRepositoryService;
     private final MultiProviderPDFService pdfService;
     private final boolean multipleProvidersEnabled;
+    private boolean allowPdfModification;
 
     public CCMSTransactionPayloadService(CloudFileRepository cloudFileRepository,
             UserFileRepositoryService userFileRepositoryService, 
             MultiProviderPDFService pdfService,
             SubmissionRepositoryService submissionRepositoryService,
-            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled) {
+            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled,
+            @Value("${form-flow.uploads.file-conversion.allow-pdf-modification}") boolean allowPdfModification) {
         this.cloudFileRepository = cloudFileRepository;
         this.userFileRepositoryService = userFileRepositoryService;
         this.pdfService = pdfService;
         this.submissionRepositoryService = submissionRepositoryService;
         this.multipleProvidersEnabled = multipleProvidersEnabled;
+        this.allowPdfModification = allowPdfModification;
     }
 
     public Optional<CCMSTransaction> generateSubmissionTransactionPayload(Submission familySubmission) {
@@ -114,8 +117,12 @@ public class CCMSTransactionPayloadService {
                                 userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)));
             }
         }
-        
-        allFiles.addAll(userFileRepositoryService.findAllConvertedOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE));
+
+        List<UserFile> userFiles = allowPdfModification ? userFileRepositoryService.findAllConvertedOrderByOriginalName(
+                familySubmission, PDF_CONTENT_TYPE) : userFileRepositoryService.findAllOrderByOriginalName(familySubmission);
+
+        allFiles.addAll(userFiles);
+
         for (int i = 0; i < allFiles.size(); i++) {
             UserFile userFile = allFiles.get(i);
             CloudFile cloudFile;
