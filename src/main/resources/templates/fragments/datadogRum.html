@@ -1,0 +1,36 @@
+<th:block th:fragment="datadogRum"
+          th:with="ddRumClientToken=${@environment.getProperty('DATADOG_RUM_CLIENT_TOKEN')},
+                     ddRumApplicationId=${@environment.getProperty('DATADOG_RUM_APPLICATION_ID')},
+                     ddRumSessionReplaySampleRate=${@environment.getProperty('DATADOG_SESSION_REPLAY_SAMPLE_RATE')},
+                     ddEnv=${@environment.getProperty('DATADOG_ENVIRONMENT')}">
+    <script th:if="${ddRumClientToken != null && ddRumApplicationId != null && ddRumSessionReplaySampleRate != null && ddEnv != null}" type="text/javascript">
+      (function (h, o, u, n, d) {
+        h = h[d] = h[d] || {
+          q: [], onReady: function (c) {
+            h.q.push(c)
+          }
+        }
+        d = o.createElement(u);
+        d.async = 1;
+        d.src = n
+        n = o.getElementsByTagName(u)[0];
+        n.parentNode.insertBefore(d, n)
+      })(window, document, 'script',
+          'https://www.datadoghq-browser-agent.com/us1/v5/datadog-rum.js', 'DD_RUM')
+      window.DD_RUM.onReady(function () {
+        window.DD_RUM.init({
+          clientToken: '[[${ddRumClientToken}]]',
+          applicationId: '[[${ddRumApplicationId}]]',
+          site: 'datadoghq.com',
+          service: 'il-gcc-front-end',
+          env: '[[${ddEnv}]]',
+          sessionSampleRate: 100,
+          sessionReplaySampleRate: [[${ddRumSessionReplaySampleRate}]],
+          trackUserInteractions: true,
+          trackResources: true,
+          trackLongTasks: true,
+          defaultPrivacyLevel: 'mask-user-input',
+        });
+      })
+    </script>
+</th:block>

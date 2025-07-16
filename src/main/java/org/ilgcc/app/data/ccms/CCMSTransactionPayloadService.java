@@ -1,6 +1,7 @@
 package org.ilgcc.app.data.ccms;
 
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
+import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -21,6 +22,7 @@ import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.FileNameUtility;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,14 +33,21 @@ public class CCMSTransactionPayloadService {
     private final UserFileRepositoryService userFileRepositoryService;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final MultiProviderPDFService pdfService;
+    private final boolean multipleProvidersEnabled;
+    private boolean allowPdfModification;
 
     public CCMSTransactionPayloadService(CloudFileRepository cloudFileRepository,
-            UserFileRepositoryService userFileRepositoryService, MultiProviderPDFService pdfService,
-            SubmissionRepositoryService submissionRepositoryService) {
+            UserFileRepositoryService userFileRepositoryService, 
+            MultiProviderPDFService pdfService,
+            SubmissionRepositoryService submissionRepositoryService,
+            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled,
+            @Value("${form-flow.uploads.file-conversion.allow-pdf-modification}") boolean allowPdfModification) {
         this.cloudFileRepository = cloudFileRepository;
         this.userFileRepositoryService = userFileRepositoryService;
         this.pdfService = pdfService;
         this.submissionRepositoryService = submissionRepositoryService;
+        this.multipleProvidersEnabled = multipleProvidersEnabled;
+        this.allowPdfModification = allowPdfModification;
     }
 
     public Optional<CCMSTransaction> generateSubmissionTransactionPayload(Submission familySubmission) {
@@ -77,11 +86,10 @@ public class CCMSTransactionPayloadService {
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(applicationPdfJSON);
                 } else {
-                    TransactionFile applicationPdfJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                    TransactionFile additionalProviderPagesJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(),
                             Base64.getEncoder().encodeToString(fileContent));
-                    transactionFiles.add(applicationPdfJSON);
+                    transactionFiles.add(additionalProviderPagesJSON);
                 }
-
             }
         } catch (IOException e) {
             log.error(
@@ -90,13 +98,31 @@ public class CCMSTransactionPayloadService {
         }
 
         List<UserFile> allFiles = new ArrayList<>();
-        if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
-            submissionRepositoryService.findById(
-                    UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString())).ifPresent(
-                    providerSubmission -> allFiles.addAll(
-                            userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")));
+        if (multipleProvidersEnabled && familySubmission.getInputData().containsKey("providers")) {
+            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
+            for (Map<String, Object> provider : providers) {
+                if (provider.containsKey("providerResponseSubmissionId")) {
+                    UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
+                    submissionRepositoryService.findById(providerSubmissionId).ifPresent(
+                            providerSubmission -> allFiles.addAll(
+                                    userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)));
+                }
+            }
+        } 
+        else {
+            if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
+                submissionRepositoryService.findById(
+                        UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString())).ifPresent(
+                        providerSubmission -> allFiles.addAll(
+                                userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)));
+            }
         }
-        allFiles.addAll(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf"));
+
+        List<UserFile> userFiles = allowPdfModification ? userFileRepositoryService.findAllConvertedOrderByOriginalName(
+                familySubmission, PDF_CONTENT_TYPE) : userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE);
+
+        allFiles.addAll(userFiles);
+
         for (int i = 0; i < allFiles.size(); i++) {
             UserFile userFile = allFiles.get(i);
             CloudFile cloudFile;

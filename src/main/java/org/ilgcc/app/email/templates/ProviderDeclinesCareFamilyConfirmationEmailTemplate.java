@@ -41,23 +41,38 @@ public class ProviderDeclinesCareFamilyConfirmationEmailTemplate {
     }
 
     private String setSubject(Map<String, Object> emailData) {
-        return messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale);
+        return messageSource.getMessage("email.response-email-for-family.provider-declines.subject", null, locale);
     }
 
-    private String setBodyCopy(Map<String, Object> emailData) {
-        String p1 = messageSource.getMessage("email.response-email-for-family.provider-declines.p1", null, locale);
 
-        String p2 = messageSource.getMessage("email.response-email-for-family.provider-declines.p2",
-                new Object[]{emailData.get("familyIntendedProviderName").toString()}, locale);
-        String p3 = messageSource.getMessage("email.response-email-for-family.provider-declines.p3", null, locale);
-        String p4 = messageSource.getMessage("email.response-email-for-family.provider-declines.p4",
+    private String setBodyCopy(Map<String, Object> emailData) {
+        String p1 = messageSource.getMessage("email.response-email-for-family.provider-declines.p1",
+                new Object[]{emailData.get("parentFirstName")}, locale);
+
+        String providerType = emailData.getOrDefault("providerType", "").toString();
+        String programName = emailData.get("childCareProgramName").toString();
+        String childCareProviderInitials = emailData.get("childCareProviderInitials").toString();
+
+        String p2;
+        if (providerType.equals("Care Program") || !programName.isBlank()) {
+            p2 = messageSource.getMessage(
+                    "email.response-email-for-family.provider-declines.p2-program", new Object[]{programName},
+                    locale);
+        } else {
+            p2 = messageSource.getMessage(
+                    "email.response-email-for-family.provider-declines.p2-individual", new Object[]{childCareProviderInitials},
+                    locale);
+        }
+        String p3 = messageSource.getMessage("email.response-email-for-family.provider-declines.p3",
                 new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
                         messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
-        String p5 = messageSource.getMessage("email.response-email-for-family.provider-declines.p5",
+        String p4 = messageSource.getMessage("email.response-email-for-family.provider-declines.p4",
                 new Object[]{emailData.get("confirmationCode")},
                 locale);
-        String p6 = messageSource.getMessage("email.response-email-for-family.provider-declines.p6",
+        String p5 = messageSource.getMessage("email.response-email-for-family.provider-declines.p5",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
+        String p6 = messageSource.getMessage("email.response-email-for-family.provider-declines.p6",
+                null, locale);
         String p7 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p8 = messageSource.getMessage("email.general.footer.cfa", null, locale);
         return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;

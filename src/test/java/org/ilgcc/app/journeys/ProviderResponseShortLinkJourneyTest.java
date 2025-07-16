@@ -66,7 +66,7 @@ public class ProviderResponseShortLinkJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo(
                 getEnMessageWithParams("provider-response-submit-start.expired.header", new Object[]{"Brown Bear Daycare"}));
 
-        testPage.clickButton(getEnMessage("provider-response-submit-start.expired.button"));
+        testPage.clickButton(getEnMessage("general.button.return.home"));
     }
 
 //    TODO: Add already submitted logic once provider response can be submitted

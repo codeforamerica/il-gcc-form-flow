@@ -36,22 +36,36 @@ public class ProviderDidNotRespondToFamilyEmailTemplate {
     }
 
     private String setSubject(Map<String, Object> emailData) {
-        return messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale);
+        return messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.subject", null, locale);
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
-        String p1 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p1", null, locale);
+        String p1 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p1",  
+                new Object[]{emailData.get("parentFirstName").toString()}, locale);
 
-        String p2 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2",
-                new Object[]{emailData.get("familyIntendedProviderName").toString()}, locale);
+        String providerType = emailData.get("providerType").toString();
+        String p2;
+
+        if (providerType.isBlank()) {
+            p2 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2-individual",
+                    new Object[]{emailData.get("familyIntendedProviderName"),toString()}, locale);
+        } else {
+            p2 = providerType.equals("Individual")
+                    ? messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2-individual",
+                    new Object[]{emailData.get("childCareProviderInitials").toString()}, locale)
+                    : messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p2-program",
+                            new Object[]{emailData.get("childCareProgramName").toString()}, locale);
+        }
+        
         String p3 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p3",
                 new Object[]{emailData.get("confirmationCode")},
                 locale);
         String p4 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p4",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
-        String p5 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
-        String p6 = messageSource.getMessage("email.general.footer.cfa", null, locale);
-        return p1 + p2 + p3 + p4 + p5 + p6;
+        String p5 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p5", null, locale);
+        String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
+        String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
+        return p1 + p2 + p3 + p4 + p5 + p6+ p7;
     }
 
 }

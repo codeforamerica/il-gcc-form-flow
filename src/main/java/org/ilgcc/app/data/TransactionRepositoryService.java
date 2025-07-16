@@ -42,8 +42,8 @@ public class TransactionRepositoryService {
         return transactionRepository.findByWorkItemIdIsNull();
     }
 
-    public Set<Submission> findSubmissionsWithoutTransactions(OffsetDateTime sinceDate) {
-        return transactionRepository.findSubmissionsWithoutTransactions(sinceDate);
+    public Set<Submission> findExpiringSubmissionsWithoutTransactions() {
+        return transactionRepository.findExpiringSubmissionsWithoutTransactions();
     }
 
     public List<ResourceOrganizationTransaction> findTransactionsOnDate(OffsetDateTime date) {

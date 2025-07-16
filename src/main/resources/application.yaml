@@ -35,6 +35,7 @@ form-flow:
       convert-to-pdf: ${CONVERT_UPLOADS_TO_PDF:false}
       prefix: ${CONVERTED_FILE_PREFIX:}
       suffix: ${CONVERTED_FILE_SUFFIX:}
+      allow-pdf-modification: ${ALLOW_PDF_MODIFICATION:false}
   aws:
     region: ${AWS_REGION}
     s3_bucket_name: ${AWS_BUCKET}
@@ -121,22 +122,22 @@ management:
         application-key: ${DATADOG_APPLICATION_KEY}
   endpoints:
     enabled-by-default: false
-org:
-  jobrunr:
-    jobs:
-      retry-back-off-time-seed: 10
-    job-scheduler:
-      enabled: true
-    background-job-server:
-      enabled: ${JOBRUNR_SERVER_ENABLED:true}
-    dashboard:
-      enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
+jobrunr:
+  jobs:
+    retry-back-off-time-seed: 10
+  job-scheduler:
+    enabled: true
+  background-job-server:
+    enabled: ${JOBRUNR_SERVER_ENABLED:true}
+  dashboard:
+    enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
   caseload_codes:
       active: ${ACTIVE_CASELOAD_CODES:[]}
       pending: ${PENDING_CASELOAD_CODES:[]}
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
+  enable-faster-application-expiry: ${ENABLE_FASTER_APPLICATION_EXPIRY:false}
   enable-resource-org-emails: ${ENABLE_RESOURCE_ORG_EMAIL:false}
   resource-org-emails: ${RESOURCE_ORG_EMAILS:null}
   resource-org-emails-delay-seconds: ${RESOURCE_ORG_EMAILS_DELAY:15}

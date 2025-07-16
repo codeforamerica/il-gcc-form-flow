@@ -17,8 +17,13 @@ import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.JobrunrJobRepository;
 import org.ilgcc.app.data.TransactionRepository;
@@ -31,9 +36,14 @@ import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,7 +53,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-@Deprecated
 @SpringBootTest(
         classes = IlGCCApplication.class
 )
@@ -96,14 +105,17 @@ public class ProviderResponseRecurringJobTest {
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
-    
+
     @MockitoBean
     private CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
 
-    private Submission expiredSubmission;
+    private Submission activeWithPastExpirationDate;
+
     private Submission transmittedSubmission;
     private Submission unsubmittedSubmission;
-    private Submission unexpiredSubmission;
+    private Submission activeWithFutureExpirationDate;
+
+    private Submission submissionWithPastExpirationDate;
     private Submission expiredUntransmittedSubmissionWithProviderResponse;
     private Submission providerSubmission;
 
@@ -117,7 +129,8 @@ public class ProviderResponseRecurringJobTest {
 
     @BeforeEach
     void setUp() {
-        sendProviderDidNotRespondToFamilyEmail = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
+        sendProviderDidNotRespondToFamilyEmail = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource,
+                submissionRepositoryService);
         providerResponseRecurringJob = new ProviderResponseRecurringJob(
                 s3PresignService,
                 transmissionRepositoryService,
@@ -144,57 +157,13 @@ public class ProviderResponseRecurringJobTest {
         submissionRepository.deleteAll();
     }
 
+    @Deprecated
     @Test
     public void providerResponseRecurringJobEnabledWhenFlagIsOn() {
         assertTrue(context.containsBean("providerResponseRecurringJob"));
     }
 
-//    @Test
-    void enqueueDocumentTransferIsOnlyCalledOnExpiredSubmissions() {
-        unexpiredSubmission = new SubmissionTestBuilder()
-                .withParentDetails()
-                .with("parentContactEmail", "test-unexpired@mail.com")
-                .withSubmittedAtDate(OffsetDateTime.now())
-                .withFlow("gcc")
-                .build();
-        submissionRepository.save(unexpiredSubmission);
-
-        OffsetDateTime expiredSubmissionDate = ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(OffsetDateTime.now()).minusMinutes(5);
-        expiredSubmission = new SubmissionTestBuilder()
-                .withParentDetails()
-                .with("parentContactEmail", "test-expired@mail.com")
-                .withSubmittedAtDate(expiredSubmissionDate)
-                .withFlow("gcc")
-                .build();
-        submissionRepository.save(expiredSubmission);
-
-        unsubmittedSubmission = new SubmissionTestBuilder()
-                .withParentDetails()
-                .with("parentContactEmail", "test-unsubmitted@mail.com")
-                .withFlow("gcc")
-                .build();
-        submissionRepository.save(unsubmittedSubmission);
-
-        providerResponseRecurringJob.runNoProviderResponseJob();
-
-        //Confirms that the method was called on the expired submission
-        verify(enqueueDocumentTransfer, times(1)).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
-                eq(pdfTransmissionJob), eq(expiredSubmission), any());
-        verify(enqueueDocumentTransfer, times(1)).enqueueUploadedDocumentBySubmission(eq(userFileRepositoryService),
-                eq(uploadedDocumentTransmissionJob), eq(s3PresignService), eq(expiredSubmission));
-
-        verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
-                eq(pdfTransmissionJob), eq(unexpiredSubmission), any());
-        verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(eq(userFileRepositoryService),
-                eq(uploadedDocumentTransmissionJob), eq(s3PresignService), eq(unexpiredSubmission));
-
-        verify(enqueueDocumentTransfer, never()).enqueuePDFDocumentBySubmission(eq(pdfService), eq(cloudFileRepository),
-                eq(pdfTransmissionJob), eq(unsubmittedSubmission), any());
-        verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(eq(userFileRepositoryService),
-                eq(uploadedDocumentTransmissionJob), eq(s3PresignService), eq(unsubmittedSubmission));
-        verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
-    }
-
+    @Deprecated
     @Test
     void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmissionAndTransaction() {
         transmittedSubmission = new SubmissionTestBuilder()
@@ -214,6 +183,7 @@ public class ProviderResponseRecurringJobTest {
         verifyNoInteractions(enqueueDocumentTransfer, pdfService, userFileRepositoryService, sendEmailJob);
     }
 
+    @Deprecated
     @Test
     void enqueueDocumentTransferWillNotBeCalledIfSubmissionHasTransmissionOnly_CCMS_Off() {
         providerResponseRecurringJob = new ProviderResponseRecurringJob(
@@ -288,7 +258,8 @@ public class ProviderResponseRecurringJobTest {
     @Test
     void enqueueDocumentTransferIsNotCalledOnExpiredUntransmittedSubmission() {
 
-        providerSubmission = new SubmissionTestBuilder().withProviderSubmissionData().withSubmittedAtDate(OffsetDateTime.now().minusDays(2)).build();
+        providerSubmission = new SubmissionTestBuilder().withProviderSubmissionData()
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2)).build();
         submissionRepository.save(providerSubmission);
 
         expiredUntransmittedSubmissionWithProviderResponse = new SubmissionTestBuilder()
@@ -305,4 +276,189 @@ public class ProviderResponseRecurringJobTest {
         verify(enqueueDocumentTransfer, never()).enqueueUploadedDocumentBySubmission(any(), any(), any(), any());
         verifyNoInteractions(sendEmailJob);
     }
+
+    @Test
+    void doesNotCallTransmissionsServiceOnUnexpiredOrUnsubmittedApplications() {
+        activeWithFutureExpirationDate = new SubmissionTestBuilder()
+                .withParentDetails()
+                .with("parentContactEmail", "test-unexpired@mail.com")
+                .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
+                .with("providerApplicationResponseExpirationDate", OffsetDateTime.now().plusDays(3).atZoneSameInstant(ZoneId.of("America/Chicago")))
+                .withSubmittedAtDate(OffsetDateTime.now())
+                .withFlow("gcc")
+                .build();
+        submissionRepository.save(activeWithFutureExpirationDate);
+
+        unsubmittedSubmission = new SubmissionTestBuilder()
+                .withParentDetails()
+                .with("parentContactEmail", "test-unsubmitted@mail.com")
+                .withFlow("gcc")
+                .build();
+        submissionRepository.save(unsubmittedSubmission);
+
+        providerResponseRecurringJob.runNoProviderResponseJob();
+
+        verify(ccmsSubmissionPayloadTransactionJob,
+                never()).enqueueCCMSTransactionPayloadInstantly(eq(activeWithFutureExpirationDate.getId()));
+        verify(ccmsSubmissionPayloadTransactionJob,
+                never()).enqueueCCMSTransactionPayloadInstantly(eq(unsubmittedSubmission.getId()));
+
+
+    }
+
+    @Nested
+    class whenNoMultipleProviders {
+
+        @BeforeEach
+        void setUp() {
+            OffsetDateTime expiredSubmissionDate = ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(OffsetDateTime.now())
+                    .minusMinutes(5);
+            activeWithPastExpirationDate = new SubmissionTestBuilder()
+                    .withParentDetails()
+                    .with("parentContactEmail", "test-expired@mail.com")
+                    .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
+                    .with("providerApplicationResponseExpirationDate", expiredSubmissionDate.atZoneSameInstant(ZoneId.of("America/Chicago")))
+                    .withSubmittedAtDate(expiredSubmissionDate)
+                    .withFlow("gcc")
+                    .build();
+            submissionRepository.save(activeWithPastExpirationDate);
+        }
+
+        @AfterEach
+        protected void clearSubmissions() {
+            submissionRepository.deleteAll();
+        }
+
+        @ParameterizedTest
+        @MethodSource("inactiveSubmissionStatuses")
+        public void whenSubmissionHasExpirationDateInPast(SubmissionStatus status) {
+            activeWithPastExpirationDate.getInputData().put("providerResponseStatus", status.name());
+            submissionRepositoryService.save(activeWithPastExpirationDate);
+
+            providerResponseRecurringJob.runNoProviderResponseJob();
+
+            verify(ccmsSubmissionPayloadTransactionJob,
+                    never()).enqueueCCMSTransactionPayloadInstantly(eq(activeWithPastExpirationDate.getId()));
+            verify(sendEmailJob, never()).enqueueSendEmailJob(any(ILGCCEmail.class));
+
+        }
+
+        static Stream<Arguments> inactiveSubmissionStatuses() {
+            return Stream.of(SubmissionStatus.values()).filter(s -> !s.name().equals(SubmissionStatus.ACTIVE.name()))
+                    .map(status -> Arguments.of(status));
+        }
+
+        @Test
+        void enqueueDocumentTransferIsOnlyCalledOnSubmissionsWithPassedExpirationDate() {
+            providerResponseRecurringJob.runNoProviderResponseJob();
+
+            //Confirms that the method was called on the expired submission
+            verify(ccmsSubmissionPayloadTransactionJob, times(1)).enqueueCCMSTransactionPayloadInstantly(
+                    eq(activeWithPastExpirationDate.getId()));
+
+            verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
+        }
+    }
+
+    @Nested
+    class whenThereAreMultipleProviders {
+
+        @BeforeEach
+        void setUp() {
+            Map<String, Object> provider = new HashMap<>();
+            provider.put("uuid", UUID.randomUUID().toString());
+            provider.put("iterationIsComplete", true);
+            provider.put("providerFirstName", "FirstName");
+            provider.put("providerLastName", "LastName");
+            provider.put("familyIntendedProviderEmail", "firstLast@mail.com");
+            provider.put("familyIntendedProviderPhoneNumber", "(999) 123-1234");
+            provider.put("familyIntendedProviderAddress", "123 Main St.");
+            provider.put("familyIntendedProviderCity", "Chicago");
+            provider.put("familyIntendedProviderState", "IL");
+            provider.put("providerType", "Individual");
+
+            Map<String, Object> child = new HashMap<>();
+            child.put("uuid", UUID.randomUUID().toString());
+            child.put("childFirstName", "First");
+            child.put("childLastName", "Child");
+            child.put("childInCare", "true");
+            child.put("childDateOfBirthMonth", "10");
+            child.put("childDateOfBirthDay", "11");
+            child.put("childDateOfBirthYear", "2020");
+            child.put("needFinancialAssistanceForChild", true);
+            child.put("childIsUsCitizen", "Yes");
+            child.put("ccapStartDate", "01/10/2025");
+
+            activeWithFutureExpirationDate = new SubmissionTestBuilder()
+                    .withParentDetails()
+                    .with("parentContactEmail", "test-unexpired@mail.com")
+                    .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
+                    .with("providers", List.of(provider))
+                    .with("children", List.of(child))
+                    .withChildcareScheduleForProvider(child.get("uuid").toString(), provider.get("uuid").toString())
+                    .with("providerApplicationResponseExpirationDate", OffsetDateTime.now().plusDays(3).atZoneSameInstant(ZoneId.of("America/Chicago")))
+                    .withSubmittedAtDate(OffsetDateTime.now())
+                    .withFlow("gcc")
+                    .build();
+            submissionRepository.save(activeWithFutureExpirationDate);
+
+            OffsetDateTime expiredSubmissionDate = ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(OffsetDateTime.now())
+                    .minusMinutes(5);
+            activeWithPastExpirationDate = new SubmissionTestBuilder()
+                    .withParentDetails()
+                    .with("providers", List.of(provider))
+                    .with("children", List.of(child))
+                    .withChildcareScheduleForProvider(child.get("uuid").toString(), provider.get("uuid").toString())
+                    .with("parentContactEmail", "test-expired@mail.com")
+                    .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
+                    .with("providerApplicationResponseExpirationDate", expiredSubmissionDate.atZoneSameInstant(ZoneId.of("America/Chicago")))
+                    .withSubmittedAtDate(expiredSubmissionDate)
+                    .withFlow("gcc")
+                    .build();
+            submissionRepository.save(activeWithPastExpirationDate);
+
+            unsubmittedSubmission = new SubmissionTestBuilder()
+                    .withParentDetails()
+                    .with("parentContactEmail", "test-unsubmitted@mail.com")
+                    .withFlow("gcc")
+                    .build();
+            submissionRepository.save(unsubmittedSubmission);
+        }
+
+        @AfterEach
+        protected void clearSubmissions() {
+            submissionRepository.deleteAll();
+        }
+
+        @ParameterizedTest
+        @MethodSource("inactiveSubmissionStatuses")
+        public void whenSubmissionHasExpirationDateInPast(SubmissionStatus status) {
+            activeWithPastExpirationDate.getInputData().put("providerResponseStatus", status.name());
+            submissionRepositoryService.save(activeWithPastExpirationDate);
+
+            providerResponseRecurringJob.runNoProviderResponseJob();
+
+            verify(ccmsSubmissionPayloadTransactionJob,
+                    never()).enqueueCCMSTransactionPayloadInstantly(eq(activeWithPastExpirationDate.getId()));
+            verify(sendEmailJob, never()).enqueueSendEmailJob(any(ILGCCEmail.class));
+
+        }
+
+        static Stream<Arguments> inactiveSubmissionStatuses() {
+            return Stream.of(SubmissionStatus.values()).filter(s -> !s.name().equals(SubmissionStatus.ACTIVE.name()))
+                    .map(status -> Arguments.of(status));
+        }
+
+        @Test
+        void enqueueDocumentTransferIsOnlyCalledOnSubmissionsWithPassedExpirationDate() {
+            providerResponseRecurringJob.runNoProviderResponseJob();
+
+            //Confirms that the method was called on the expired submission
+            verify(ccmsSubmissionPayloadTransactionJob, times(1)).enqueueCCMSTransactionPayloadInstantly(
+                    eq(activeWithPastExpirationDate.getId()));
+
+            verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
+        }
+    }
+
 }
