@@ -371,4 +371,42 @@ public class SubmissionUtilities {
     public static boolean haveAllProvidersResponded(Submission familySubmission) {
         return SubmissionStatus.RESPONDED.name().equals(familySubmission.getInputData().get("providerApplicationResponseStatus"));
     }
+
+    public static boolean allChildcareSchedulesAreForTheSameProvider(List<Map<String, Object>> childcareSchedules) {
+        if (childcareSchedules.isEmpty()) return false;
+        
+        String expectedProvider = null;
+
+        for (Map<String, Object> schedule : childcareSchedules) {
+            List<String> providerIDs = (List<String>) schedule.getOrDefault("childcareProvidersForCurrentChild[]", emptyList());
+
+            // Must have exactly one value
+            if (providerIDs.size() != 1) return false;
+
+            String provider = providerIDs.getFirst();
+            
+            // If the provider is "NO_PROVIDER", we skip it
+            if (!"NO_PROVIDER".equals(provider)) {
+                // If this is the first provider we're checking, set it as the expected provider
+                if (expectedProvider == null) {
+                    expectedProvider = provider;
+                } else if (!expectedProvider.equals(provider)) {
+                    return false; // We found two different providers
+                }
+            }
+        }
+
+        return true; // All are same (or NO_PROVIDER)
+    }
+    
+    public static boolean isPreMultiProviderApplicationWithSingleProvider(Submission familySubmission) {
+        HashMap<String, Object> inputData = (HashMap<String, Object>) familySubmission.getInputData();
+        return inputData.containsKey("familyIntendedProviderName") && !inputData.containsKey("providers");
+    }
+    
+    public static boolean isNotASingleProviderApplication(Submission familySubmission) {
+        return !isPreMultiProviderApplicationWithSingleProvider(familySubmission) && 
+                !allChildcareSchedulesAreForTheSameProvider(
+                        (List<Map<String, Object>>) familySubmission.getInputData().getOrDefault("childcareSchedules", emptyList()));
+    }
 }

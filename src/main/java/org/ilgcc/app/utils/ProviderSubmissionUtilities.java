@@ -1,7 +1,6 @@
 package org.ilgcc.app.utils;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
@@ -89,7 +88,7 @@ public class ProviderSubmissionUtilities {
         return Optional.empty();
     }
 
-    public static Map<String, String> getFamilySubmission(Optional<Submission> familySubmission) {
+    public static Map<String, String> getFamilyConfirmationCodeAndParentName(Optional<Submission> familySubmission) {
         Map<String, String> applicationData = new HashMap<>();
 
         if (familySubmission.isPresent()) {
