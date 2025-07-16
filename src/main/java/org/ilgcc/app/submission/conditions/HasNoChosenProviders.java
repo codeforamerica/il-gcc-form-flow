@@ -1,6 +1,7 @@
 package org.ilgcc.app.submission.conditions;
 
-import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.isNoProviderSubmission;
+
 import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,6 @@ public class HasNoChosenProviders implements Condition {
     }
     @Override
     public Boolean run(Submission submission) {
-        return enableMultipleProviders && hasNotChosenProvider(submission);
+        return enableMultipleProviders && isNoProviderSubmission(submission.getInputData());
     }
 }

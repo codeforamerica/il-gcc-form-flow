@@ -12,11 +12,13 @@
                 <th:block
                         th:with="selectedProviderIsIndividual=${true},
                         currentProvider=${T(org.ilgcc.app.utils.ProviderSubmissionUtilities).getCurrentProvider(submission)}">
-                    <th:block th:if="${currentProvider.getOrDefault('providerType', '').equals('Individual')}">
+                    <th:block
+                            th:if="${currentProvider.getOrDefault('providerType', '').equals('Individual')}">
                         <th:block
                                 th:replace="~{fragments/cardHeader :: cardHeader(header=${#messages.msg('provider-response-confirm-provider.individual.header', currentProvider.get('displayName'))}, subtext=#{provider-response-confirm-provider.individual.subtext})}"/>
                     </th:block>
-                    <th:block th:if="${currentProvider.getOrDefault('providerType', '').equals('Care Program')}">
+                    <th:block
+                            th:if="${currentProvider.getOrDefault('providerType', '').equals('Care Program')}">
                         <th:block
                                 th:replace="~{fragments/cardHeader :: cardHeader(header=${#messages.msg('provider-response-confirm-provider.program.header', currentProvider.get('displayName'))})}"/>
                     </th:block>
@@ -30,10 +32,9 @@
                                 <div class="form-card__footer">
                                     <th:block
                                             th:replace="~{fragments/inputs/submitButton :: submitButton(text=#{general.inputs.continue})}"/>
-                                    <div>
-                                        <a id="selected-wrong-provider-individual"
-                                           th:href="'/flow/' + ${flow} + '/multiple-providers'"
-                                           class="spacing-above-15">
+                                    <div class="spacing-above-15">
+                                        <a id="selected-wrong-provider"
+                                           th:href="'/flow/' + ${flow} + '/multiple-providers'">
                                             <span th:text="${#messages.msg('provider-response-confirm-provider.program.cta', currentProvider.get('displayName'))}"></span>
                                         </a>
                                     </div>

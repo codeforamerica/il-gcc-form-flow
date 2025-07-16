@@ -1,5 +1,7 @@
 package org.ilgcc.jobs;
 
+import static java.util.Collections.emptyList;
+
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
@@ -10,6 +12,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -92,35 +95,20 @@ public class ProviderResponseRecurringJob {
             return;
         }
 
-        Optional<Instant> lastRunOptional = jobrunrJobRepository.findLatestSuccessfulNoProviderResponseJobRunTime();
-        OffsetDateTime lastRun;
-        if (lastRunOptional.isPresent()) {
-            lastRun = lastRunOptional.get().atOffset(ZoneOffset.UTC);
-        } else {
-            lastRun = Instant.now().atOffset(ZoneOffset.UTC);
-            log.warn("No prior No Provider Response Job found. Using {} as the last run.", lastRun);
-        }
-
-        // We want to only ever process Submissions that have been sitting unanswered for 3+ business days, but because a large
-        // portion of those Submissions will have been submitted increasingly in the past and will have already been processed,
-        // we can aim to only load the Submissions that might fit the criteria of being 3+ business days past their submission
-        // timestamp and also not responded to by the provider.
-        // We can get the last time we tried to process any expired Submissions by grabbing the last time this job
-        // successfully ran (lastRun), roll it back 3 business days, and then to provide a little buffer roll it back an additional
-        // 15 minutes.
-        lastRun = ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(lastRun).minusMinutes(15);
-        log.info("Running No Provider Response Job for submissions since {}. DTS integration: {} CCMS integration: {}", lastRun,
+        log.info("Running No Provider Response Job for expired submissions since now. DTS integration: {} CCMS integration: {}",
                 isDTSIntegrationEnabled,
                 isCCMSIntegrationEnabled);
 
-        Set<Submission> unsentSubmissions;
-        Set<Submission> submissionsWithoutTransmissions = transmissionRepositoryService.findSubmissionsWithoutTransmissions(lastRun);
-        Set<Submission> submissionsWithoutTransactions = transactionRepositoryService.findSubmissionsWithoutTransactions(lastRun);
+        Set<Submission> expiringSubmissionsToSend;
+        Set<Submission> submissionsWithoutTransmissions =
+                transmissionRepositoryService.findExpiringSubmissionsWithoutTransmission();
+        Set<Submission> submissionsWithoutTransactions =
+                transactionRepositoryService.findExpiringSubmissionsWithoutTransactions();
 
         if (submissionsWithoutTransmissions.equals(submissionsWithoutTransactions)) {
             // Happy case, all the submissions are missing both a transmission and a transaction, so just send one entire
             // Set to both DTS and CCMS
-            unsentSubmissions = submissionsWithoutTransmissions;
+            expiringSubmissionsToSend = submissionsWithoutTransmissions;
         } else {
             // It's possible to have Submissions that have be transmitted (DTS) but not transacted (CCMS) or vice versa depending
             // on how/when the Submissions were created and which integration was turned on at the time
@@ -129,8 +117,8 @@ public class ProviderResponseRecurringJob {
 
             // First, get the intersection of Submissions that have both a transmission and a transaction. These are the
             // Submissions we want to send to DTS and CCMS!
-            unsentSubmissions = new HashSet<>(submissionsWithoutTransmissions);
-            unsentSubmissions.retainAll(submissionsWithoutTransactions);
+            expiringSubmissionsToSend = new HashSet<>(submissionsWithoutTransmissions);
+            expiringSubmissionsToSend.retainAll(submissionsWithoutTransactions);
 
             // Next, we want to log the UUIDs for whichever Submissions aren't getting sent from the two Sets
             Set<UUID> submissionIdsWithoutTransmissions = submissionsWithoutTransmissions.stream().map(Submission::getId)
@@ -151,32 +139,29 @@ public class ProviderResponseRecurringJob {
             // sent to DTS in the prior job run. And when we eventually are CCMS only, the same will happen for Submissions that
             // do not have transmissions. The time when this logging will be helpful is when both are turned on, and somehow
             // we have a Submission that was sent to DTS and not to CCMS or vice versa in a prior run!
-            log.info(
+            log.debug(
                     "Submissions without transmissions and transactions do not match. Sending {} submissions. Ignoring {} without transmissions. Ignoring {} without transactions.",
-                    unsentSubmissions.size(), submissionIdsWithoutTransmissionsOnly.size(),
+                    expiringSubmissionsToSend.size(), submissionIdsWithoutTransmissionsOnly.size(),
                     submissionIdsWithoutTransactionsOnly.size());
 
             if (!submissionIdsWithoutTransmissionsOnly.isEmpty()) {
-                log.info("Ignored {} submissions without transmissions. [{}]", submissionIdsWithoutTransmissionsOnly.size(),
+                log.debug("Ignored {} submissions without transmissions. [{}]", submissionIdsWithoutTransmissionsOnly.size(),
                         submissionIdsWithoutTransmissionsOnly);
             }
 
             if (!submissionIdsWithoutTransactionsOnly.isEmpty()) {
-                log.info("Ignored {} submissions without transactions. [{}]", submissionIdsWithoutTransactionsOnly.size(),
+                log.debug("Ignored {} submissions without transactions. [{}]", submissionIdsWithoutTransactionsOnly.size(),
                         submissionIdsWithoutTransactionsOnly);
             }
         }
 
-        List<Submission> expiredUnsentSubmissions = unsentSubmissions.stream()
-                .filter(ProviderSubmissionUtilities::providerApplicationHasExpired).toList();
-
         log.info(String.format("Running the 'No provider response job' for %s expired submissions",
-                expiredUnsentSubmissions.size()));
+                expiringSubmissionsToSend.size()));
 
-        if (expiredUnsentSubmissions.isEmpty()) {
+        if (expiringSubmissionsToSend.isEmpty()) {
             return;
         } else {
-            for (Submission expiredFamilySubmission : expiredUnsentSubmissions) {
+            for (Submission expiredFamilySubmission : expiringSubmissionsToSend) {
                 if (!hasProviderResponse(expiredFamilySubmission)) {
                     log.info("No provider response found for family submission {}. DTS: {} CCMS: {}",
                             expiredFamilySubmission.getId(),
@@ -196,7 +181,22 @@ public class ProviderResponseRecurringJob {
                                 expiredFamilySubmission.getId());
                     }
                     updateProviderStatus(expiredFamilySubmission);
-                    sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
+                    if (expiredFamilySubmission.getInputData().containsKey("providers")) {
+                        List<Map<String, Object>> providersSubflowData = (List<Map<String, Object>>)
+                                expiredFamilySubmission.getInputData().getOrDefault("providers", emptyList());
+                        providersSubflowData.forEach(provider -> {
+                            if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus"))) {
+                                log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
+                                        provider.get("uuid"), expiredFamilySubmission.getId());
+                                sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers",
+                                        provider.get("uuid").toString());
+                            }
+                        });
+                    } else {
+                        sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
+                    }
+
+
                 } else {
                     log.warn(
                             String.format(

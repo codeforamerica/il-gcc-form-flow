@@ -1,6 +1,7 @@
 package org.ilgcc.app.data.ccms;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 import static org.mockito.Mockito.when;
 
 import formflow.library.data.Submission;
@@ -90,22 +91,22 @@ public class CCMSTransactionPayloadServiceTest {
                 .inputData(familyInputData)
                 .build();
         
-        testConvertedJpegPdf.setMimeType("application/pdf");
+        testConvertedJpegPdf.setMimeType(PDF_CONTENT_TYPE);
         testConvertedJpegPdf.setFileId(UUID.randomUUID());
         testConvertedJpegPdf.setRepositoryPath("testConvertedJpegPath");
         testConvertedJpegPdf.setSubmission(familySubmission);
         
-        testConvertedPngPdf.setMimeType("application/pdf");
+        testConvertedPngPdf.setMimeType(PDF_CONTENT_TYPE);
         testConvertedPngPdf.setFileId(UUID.randomUUID());
         testConvertedPngPdf.setRepositoryPath("testConvertedPngPath");
         testConvertedPngPdf.setSubmission(familySubmission);
         
-        testProviderUploadedPdf1.setMimeType("application/pdf");
+        testProviderUploadedPdf1.setMimeType(PDF_CONTENT_TYPE);
         testProviderUploadedPdf1.setFileId(UUID.randomUUID());
         testProviderUploadedPdf1.setRepositoryPath("testProviderUploadedPdf1Path");
         testProviderUploadedPdf1.setSubmission(providerSubmission);
         
-        testProviderUploadedPdf2.setMimeType("application/pdf");
+        testProviderUploadedPdf2.setMimeType(PDF_CONTENT_TYPE);
         testProviderUploadedPdf2.setFileId(UUID.randomUUID());
         testProviderUploadedPdf2.setRepositoryPath("testProviderUploadedPdf2Path");
         testProviderUploadedPdf2.setSubmission(providerSubmission);
@@ -118,10 +119,10 @@ public class CCMSTransactionPayloadServiceTest {
         CloudFile providerPdfCloudFile2 = new CloudFile(100L, "testBase64String2".getBytes(), Map.of());
 
         when(pdfService.generatePDFs(familySubmission)).thenReturn(Map.of(FileNameUtility.getCCMSFileNameForApplicationPDF(familySubmission), Files.readAllBytes(testFilledCcapPdfPath)));
-        when(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, "application/pdf")).thenReturn(
+        when(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE)).thenReturn(
                 List.of(testConvertedPngPdf, testConvertedJpegPdf));
         when(submissionRepositoryService.findById(providerSubmission.getId())).thenReturn(Optional.ofNullable(providerSubmission));
-        when(userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, "application/pdf")).thenReturn(
+        when(userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)).thenReturn(
                 List.of(testProviderUploadedPdf1, testProviderUploadedPdf2));
         when(cloudFileRepository.get(testConvertedJpegPdf.getRepositoryPath())).thenReturn(testConvertedJpegCloudFile);
         when(cloudFileRepository.get(testConvertedPngPdf.getRepositoryPath())).thenReturn(testConvertedPngCloudFile);

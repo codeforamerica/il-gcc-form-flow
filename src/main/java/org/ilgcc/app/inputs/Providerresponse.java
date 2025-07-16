@@ -107,7 +107,8 @@ public class Providerresponse extends FlowInputs {
     // registration-unlicensed-relationship
     @NotBlank
     private String providerLicenseExemptRelationship;
-
+    
+    @Encrypted
     private String providerIdentityCheckSSN;
     
     private String providerType;

@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.conditions;
 
-import static org.ilgcc.app.utils.SubmissionUtilities.hasNotChosenProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.isNoProviderSubmission;
 
 import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
@@ -11,10 +11,10 @@ public class NoProviderChosen implements Condition {
 
     @Override
     public Boolean run(Submission submission) {
-        return hasNotChosenProvider(submission);
+        return isNoProviderSubmission(submission.getInputData());
     }
     @Override
     public Boolean run(Submission submission, String UUID) {
-        return hasNotChosenProvider(submission);
+        return isNoProviderSubmission(submission.getInputData());
     }
 }

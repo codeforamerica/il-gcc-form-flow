@@ -25,6 +25,7 @@ import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,45 +74,69 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
         Map<String, SubmissionField> results = new HashMap<>();
 
-        Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
-        if (providerSubmissionOptional.isPresent()) {
-            if ("false".equals(providerSubmissionOptional.get().getInputData().get("providerPaidCcap"))) {
-                results.putAll(mapProviderRegistrationData(providerSubmissionOptional.get().getInputData()));
-            }
-            results.putAll(
-                    providerApplicationPreparerHelper.prepareSubmissionFields(providerSubmissionOptional.get().getInputData()));
-            results.put("providerSignatureDate",
-                    new SingleField("providerSignatureDate",
-                            providerSignatureDate(providerSubmissionOptional.get().getSubmittedAt()), null));
-        } else {
-            if (enableMultipleProviders) {
-                Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                        getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+        if (enableMultipleProviders) {
+            Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
+                    getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
 
-                String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
+            String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
 
-                if (null != providerUuid) {
-                    Map<String, Object> firstProviderObject = new HashMap<>();
-                    if (providerUuid.equals("NO_PROVIDER")) {
-                        firstProviderObject.put("uuid", "NO_PROVIDER");
-                    } else {
-                        firstProviderObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
-                                providerUuid);
+            if (null != providerUuid) {
+                Map<String, Object> firstProviderObject = new HashMap<>();
+                if (providerUuid.equals("NO_PROVIDER")) {
+                    firstProviderObject.put("uuid", "NO_PROVIDER");
+                } else {
+                    firstProviderObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
+                            providerUuid);
+                }
+
+                List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
+                        mergedChildrenAndSchedules.get(providerUuid);
+
+                for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
+                    results.putAll(
+                            needChildcareChildrenPreparer.prepareChildCareSchedule(
+                                    listOfChildcareSchedulesForCurrentProvider.get(j),
+                                    j + 1));
+                }
+
+                Optional<Submission> providerSubmissionOptional = Optional.empty();
+
+                if (firstProviderObject.containsKey("providerResponseSubmissionId")) {
+                    UUID providerUUID = UUID.fromString(firstProviderObject.get(
+                            "providerResponseSubmissionId").toString());
+                    providerSubmissionOptional =
+                            submissionRepositoryService.findById(providerUUID);
+                }
+
+                if (providerSubmissionOptional.isPresent()) {
+                    Submission providerSubmission = providerSubmissionOptional.get();
+                    if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
+                        results.putAll(mapProviderRegistrationData(providerSubmission.getInputData()));
                     }
+                    results.putAll(
+                            providerApplicationPreparerHelper.prepareSubmissionFields(
+                                    providerSubmission.getInputData()));
 
-                    List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
-                            mergedChildrenAndSchedules.get(providerUuid);
-
-                    for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
-                        results.putAll(
-                                needChildcareChildrenPreparer.prepareChildCareSchedule(
-                                        listOfChildcareSchedulesForCurrentProvider.get(j),
-                                        j + 1));
-                    }
-
+                    results.putAll(setProviderSignatureAndDate(providerSubmissionOptional.get()));
+                } else {
                     results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             firstProviderObject));
                 }
+            }
+
+        } else {
+            Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
+
+            if (providerSubmissionOptional.isPresent()) {
+                Submission providerSubmission = providerSubmissionOptional.get();
+                if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
+                    results.putAll(mapProviderRegistrationData(providerSubmission.getInputData()));
+                }
+                results.putAll(
+                        providerApplicationPreparerHelper.prepareSubmissionFields(
+                                providerSubmission.getInputData()));
+
+                results.putAll(setProviderSignatureAndDate(providerSubmission));
             } else {
                 results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission.getInputData()));
             }
@@ -140,11 +165,40 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
     }
 
+    private  Map<String, SubmissionField> setProviderSignatureAndDate(Submission providerSubmission){
+        Map<String, SubmissionField> fields = new HashMap<>();
+
+        if (providerSubmission.getInputData().getOrDefault("providerResponseAgreeToCare", "false").equals("true")) {
+            fields.put("providerSignature", new SingleField("providerSignature", providerSignature(providerSubmission.getInputData()), null));
+            fields.put("providerSignatureDate",
+                    new SingleField("providerSignatureDate",
+                            providerSignatureDate(providerSubmission.getSubmittedAt()), null));
+        }
+
+        return fields;
+    }
+
     private String providerSignatureDate(OffsetDateTime submittedAt) {
         if (submittedAt != null) {
             Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submittedAt));
             return formatToStringFromLocalDate(providerSignatureDate);
         }
         return "";
+    }
+
+    private String providerSignature(Map<String, Object> providerInputData) {
+        String providerSignature = (String) providerInputData.getOrDefault("providerSignedName", "");
+        if (!providerSignature.isEmpty()) {
+            return providerSignature;
+        }
+        String firstname = (String) providerInputData.getOrDefault("providerResponseFirstName", "");
+        String lastName = (String) providerInputData.getOrDefault("providerResponseLastName", "");
+        String businessName = (String) providerInputData.getOrDefault("providerResponseBusinessName", "");
+
+        if (businessName.isEmpty()) {
+            return String.format("%s %s", firstname, lastName);
+        } else {
+            return String.format("%s %s, %s", firstname, lastName, businessName);
+        }
     }
 }

@@ -41,15 +41,16 @@ public class FamilyConfirmationEmailNoProviderTemplate {
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
-        String p1 = messageSource.getMessage("email.family-confirmation.hi", new Object[]{emailData.get("parentFirstName")},
+        String p1 = messageSource.getMessage("email.family-confirmation.p1", new Object[]{emailData.get("parentFirstName")},
                 locale);
-        String p2 = messageSource.getMessage("email.family-confirmation.you-completed-the-online-application", null, locale);
-        String p3 = messageSource.getMessage("email.family-confirmation.sent-for-review",
+        String p2 = messageSource.getMessage("email.family-confirmation.p2", null, locale);
+        String p3 = messageSource.getMessage("email.family-confirmation.no-provider.p3",
                 new Object[]{emailData.get("confirmationCode"), emailData.get("submittedDate")},
                 locale);
-        String p4 = messageSource.getMessage("email.family-confirmation.review-without-a-child-care-provider", null, locale);
-        String p5 = messageSource.getMessage("email.family-confirmation.a-staff-member", new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
-        String p6 = messageSource.getMessage("email.family-confirmation.you-will-receive", null, locale);
+        String p4 = messageSource.getMessage("email.family-confirmation.no-provider.p4", null, locale);
+        String p5 = messageSource.getMessage("email.family-confirmation.no-provider.p5", new Object[]{emailData.get("ccrrName"),
+                emailData.get("ccrrPhoneNumber")}, locale);
+        String p6 = messageSource.getMessage("email.family-confirmation.no-provider.p6", null, locale);
         String p7 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p8 = messageSource.getMessage("email.general.footer.cfa", null, locale);
         return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
