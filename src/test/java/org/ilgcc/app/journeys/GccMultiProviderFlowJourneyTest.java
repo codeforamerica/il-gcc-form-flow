@@ -942,12 +942,12 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         testPage.selectRadio("providerType", "Care Program");
         testPage.clickContinue();
-        
+
         //provider-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         testPage.enter("childCareProgramName", "No Provider");
         testPage.clickContinue();
-        
+
         //provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         testPage.enter("familyIntendedProviderAddress", "323 Second St");
@@ -994,7 +994,33 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
         testPage.clickButton(getEnMessage("providers-add.button.that-is-all"));
     }
+    @Test
+    void TwoChildrenWithOneProviderAndOneChildWithNoProviderRendersCorrectly() {
+        testPage.navigateToFlowScreen("gcc/providers-intro");
+        saveSubmission(getSessionSubmissionTestBuilder()
+            .withParentBasicInfo()
+            .withChild("First", "Child", "true")
+            .withChild("Second", "Child", "true")
+            .withProvider("Fake_Provider", "1")
+            .with("choseProviderForEveryChildInNeedOfCare", "false").build());
+        testPage.navigateToFlowScreen("gcc/schedules-intro");
 
+        //schedules-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
+        assertThat(testPage.findElementTextById("schedules-intro-single-step")).isEqualTo("Step 5 of 7");
+
+        testPage.clickContinue();
+
+        //schedules-start
+        List<Map<String,Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("First");
+        assertThat(testPage.getElementText("none__checkbox-childcareProvidersForCurrentChild-label")).isEqualTo(getEnMessage("schedules-start.no-provider"));
+        assertThat(testPage.getElementText("childcareProvidersForCurrentChild-fake_provider-1-label")).isEqualTo("Fake_Provider");
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
+
+        testPage.clickContinue();
+    }
     @Test
     void MultiProviderNavigationWhenNoProviderJourneyTest() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
