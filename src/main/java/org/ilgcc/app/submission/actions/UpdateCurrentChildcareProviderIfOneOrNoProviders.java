@@ -23,21 +23,13 @@ public class UpdateCurrentChildcareProviderIfOneOrNoProviders implements Action 
 
         if(childcareProvidersForCurrentChild.isEmpty()) {
             List<Map<String, Object>> providers = (List<Map<String, Object>>) inputData.getOrDefault("providers", emptyList());
-            if (hasNoProviders(inputData)) {
+            if (SubmissionUtilities.isNoProviderSubmission(inputData)) {
                 childcareProvidersForCurrentChild.add("NO_PROVIDER");
             }
-            if (providers.size() == 1 && allChildrenHaveProviders(inputData)) {
+            if (providers.size() == 1) {
                 childcareProvidersForCurrentChild.add(providers.getFirst().getOrDefault("uuid", "").toString());
             }
             formSubmission.getFormData().put("childcareProvidersForCurrentChild[]", childcareProvidersForCurrentChild);
         }
-    }
-
-    private boolean hasNoProviders(Map<String, Object> inputData)  {
-        return inputData.getOrDefault("hasChosenProvider", "false").equals("false");
-    }
-
-    private boolean allChildrenHaveProviders(Map<String, Object> inputData) {
-        return inputData.getOrDefault("choseProviderForEveryChildInNeedOfCare", "false").equals("true");
     }
 }
