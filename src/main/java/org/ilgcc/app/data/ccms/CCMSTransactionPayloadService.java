@@ -115,7 +115,7 @@ public class CCMSTransactionPayloadService {
             }
         }
         
-        allFiles.addAll(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE));
+        allFiles.addAll(userFileRepositoryService.findAllConvertedOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE));
         for (int i = 0; i < allFiles.size(); i++) {
             UserFile userFile = allFiles.get(i);
             CloudFile cloudFile;
