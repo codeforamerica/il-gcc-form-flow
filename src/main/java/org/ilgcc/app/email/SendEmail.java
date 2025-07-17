@@ -41,6 +41,10 @@ public abstract class SendEmail {
         send(submission, null, null);
     }
 
+    public void send(Submission submission, int offsetDelaySeconds) {
+        send(submission, null, null, offsetDelaySeconds);
+    }
+
     public void send(Submission submission, String subflowName, String subflowUuid) {
         send(submission, subflowName, subflowUuid, 0);
     }

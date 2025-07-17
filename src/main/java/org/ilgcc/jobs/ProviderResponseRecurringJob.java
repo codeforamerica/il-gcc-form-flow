@@ -161,8 +161,9 @@ public class ProviderResponseRecurringJob {
         if (expiringSubmissionsToSend.isEmpty()) {
             return;
         } else {
+            // Every time the job runs, we can reset this back to the starting point of however long we'd
+            // like to stagger everything. ie, if the stagger is 10 seconds, the first time is just 10
             AtomicInteger totalOffsetDelaySeconds = new AtomicInteger(this.offsetDelaySeconds);
-            int offsetDelaySecondsIncrement = this.offsetDelaySeconds;
 
             for (Submission expiredFamilySubmission : expiringSubmissionsToSend) {
                 if (!hasProviderResponse(expiredFamilySubmission)) {
@@ -184,7 +185,8 @@ public class ProviderResponseRecurringJob {
                                 expiredFamilySubmission.getId(), totalOffsetDelaySeconds.get());
                     }
 
-                    totalOffsetDelaySeconds.addAndGet(offsetDelaySecondsIncrement);
+                    // After we send a submission, stagger the next job by the offset
+                    totalOffsetDelaySeconds.addAndGet(this.offsetDelaySeconds);
                     
                     updateProviderStatus(expiredFamilySubmission);
                     if (expiredFamilySubmission.getInputData().containsKey("providers")) {
@@ -196,9 +198,10 @@ public class ProviderResponseRecurringJob {
                                     log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
                                             provider.get("uuid"), expiredFamilySubmission.getId());
                                     sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers",
-                                            provider.get("uuid").toString());
+                                            provider.get("uuid").toString(), totalOffsetDelaySeconds.get());
 
-                                    totalOffsetDelaySeconds.addAndGet(offsetDelaySecondsIncrement);
+                                    // After we send an email, stagger the next job by the offset
+                                    totalOffsetDelaySeconds.addAndGet(this.offsetDelaySeconds);
                                 }
                             } catch (Exception e) {
                                 log.warn("Unable to send ProviderDidNotRespondToFamilyEmail for family {} and provider {}", expiredFamilySubmission.getId(), provider.get("uuid"), e);
@@ -206,7 +209,7 @@ public class ProviderResponseRecurringJob {
                         });
                     } else {
                         try {
-                            sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
+                            sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, totalOffsetDelaySeconds.get());
                         } catch (Exception e) {
                             log.warn("Unable to send ProviderDidNotRespondToFamilyEmail for family {}", expiredFamilySubmission.getId(), e);
                         }
