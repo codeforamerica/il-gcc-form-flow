@@ -2,7 +2,7 @@ package org.ilgcc.app.utils;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
 
 import formflow.library.data.Submission;
 import jakarta.validation.constraints.NotBlank;
@@ -227,7 +227,7 @@ public class SubmissionUtilities {
     }
 
     public static boolean hasSelectedAProviderAndNoProvider(Map<String, Object> familyInputData) {
-        Set<String> providersWithSchedules = getRelatedChildrenSchedulesForProvider(familyInputData).keySet();
+        Set<String> providersWithSchedules = getRelatedChildrenSchedulesForEachProvider(familyInputData).keySet();
         return providersWithSchedules.size() > 1 && providersWithSchedules.contains("NO_PROVIDER");
 
     }
@@ -372,31 +372,15 @@ public class SubmissionUtilities {
         return SubmissionStatus.RESPONDED.name().equals(familySubmission.getInputData().get("providerApplicationResponseStatus"));
     }
 
-    public static boolean allChildcareSchedulesAreForTheSameProvider(List<Map<String, Object>> childcareSchedules) {
-        if (childcareSchedules.isEmpty()) return false;
-        
-        String expectedProvider = null;
+    public static boolean allChildcareSchedulesAreForTheSameProvider(Map<String, Object> inputData) {
 
-        for (Map<String, Object> schedule : childcareSchedules) {
-            List<String> providerIDs = (List<String>) schedule.getOrDefault("childcareProvidersForCurrentChild[]", emptyList());
+        Map<String, List<Map<String, Object>>> relatedChildrenSchedulesByProvider = getRelatedChildrenSchedulesForEachProvider(
+                inputData);
 
-            // Must have exactly one value
-            if (providerIDs.size() != 1) return false;
+        List<String> providerUUIDs = relatedChildrenSchedulesByProvider.keySet().stream()
+                .filter(providerUuid -> !providerUuid.equals("NO_PROVIDER")).toList();
 
-            String provider = providerIDs.getFirst();
-            
-            // If the provider is "NO_PROVIDER", we skip it
-            if (!"NO_PROVIDER".equals(provider)) {
-                // If this is the first provider we're checking, set it as the expected provider
-                if (expectedProvider == null) {
-                    expectedProvider = provider;
-                } else if (!expectedProvider.equals(provider)) {
-                    return false; // We found two different providers
-                }
-            }
-        }
-
-        return true; // All are same (or NO_PROVIDER)
+        return providerUUIDs.size() == 1;
     }
     
     public static boolean isPreMultiProviderApplicationWithSingleProvider(Submission familySubmission) {
@@ -404,9 +388,8 @@ public class SubmissionUtilities {
         return inputData.containsKey("familyIntendedProviderName") && !inputData.containsKey("providers");
     }
     
-    public static boolean isNotASingleProviderApplication(Submission familySubmission) {
+    public static boolean isMultiProviderApplication(Submission familySubmission) {
         return !isPreMultiProviderApplicationWithSingleProvider(familySubmission) && 
-                !allChildcareSchedulesAreForTheSameProvider(
-                        (List<Map<String, Object>>) familySubmission.getInputData().getOrDefault("childcareSchedules", emptyList()));
+                !allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData());
     }
 }

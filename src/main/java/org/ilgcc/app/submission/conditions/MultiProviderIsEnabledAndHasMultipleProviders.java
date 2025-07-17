@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.conditions;
 
-import static org.ilgcc.app.utils.SubmissionUtilities.isNotASingleProviderApplication;
+import static org.ilgcc.app.utils.SubmissionUtilities.isMultiProviderApplication;
 
 import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class MultiProviderIsEnabledAndIsNotSingleProviderApplication implements Condition {
+public class MultiProviderIsEnabledAndHasMultipleProviders implements Condition {
 
     @Value("${il-gcc.enable-multiple-providers}")
     private boolean enableMultipleProviders;
@@ -55,6 +55,6 @@ public class MultiProviderIsEnabledAndIsNotSingleProviderApplication implements 
 
         Submission familySubmission = familySubmissionOptional.get();
 
-        return enableMultipleProviders && isNotASingleProviderApplication(familySubmission);
+        return enableMultipleProviders && isMultiProviderApplication(familySubmission);
     }
 }

@@ -169,7 +169,7 @@ public class ProviderSubmissionUtilities {
                         data.getOrDefault("providerLastName", "").toString()));
         if (subflowIteration != null) {
             Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                    SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+                    SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
             applicationData.put("childrenInitialsList",
                     ProviderSubmissionUtilities.getChildrenInitialsList(mergedChildrenAndSchedules.get(data.get("uuid"))));
 

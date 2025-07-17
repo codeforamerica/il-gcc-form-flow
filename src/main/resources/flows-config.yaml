@@ -814,17 +814,17 @@ flow:
       - name: submit-start
         condition: IsConfirmationCodeInactive
       - name: multiple-providers
-        condition: MultiProviderIsEnabledAndIsNotSingleProviderApplication
+        condition: MultiProviderIsEnabledAndHasMultipleProviders
       - name: paid-by-ccap
   multiple-providers:
-    condition: MultiProviderIsEnabledAndIsNotSingleProviderApplication
+    condition: MultiProviderIsEnabledAndHasMultipleProviders
     beforeDisplayAction: SetProvidersData
     nextScreens:
       - name: error-response-recorded
         condition: CurrentProviderHasResponded
       - name: confirm-provider
   confirm-provider:
-    condition: MultiProviderIsEnabledAndIsNotSingleProviderApplication
+    condition: MultiProviderIsEnabledAndHasMultipleProviders
     nextScreens:
       - name: paid-by-ccap
   error-response-recorded:
