@@ -19,8 +19,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
                     "LEFT JOIN transactions t ON t.submission_id = s.id " +
                     "WHERE s.submitted_at IS NOT NULL " +
                     "AND ( " +
-                    "s.input_data->>'providerResponseStatus' = 'ACTIVE' " +
-                    "OR s.input_data->>'providerResponseStatus' IS NULL " +
+                    "s.input_data->>'providerApplicationResponseStatus' = 'ACTIVE' " +
+                    "OR s.input_data->>'providerApplicationResponseStatus' IS NULL " +
                     ") " +
                     "AND s.input_data->>'providerApplicationResponseExpirationDate' IS NOT NULL " +
                     "AND TO_TIMESTAMP((s.input_data->>'providerApplicationResponseExpirationDate')::double precision)::timestamptz <= (now() AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago') " +
