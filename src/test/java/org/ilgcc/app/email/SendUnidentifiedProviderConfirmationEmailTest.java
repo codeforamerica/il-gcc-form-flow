@@ -140,7 +140,7 @@ public class SendUnidentifiedProviderConfirmationEmailTest {
     @Test
     void correctlyEnqueuesSendEmailJob() {
         sendEmailClass.send(providerSubmission);
-        verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
+        verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class), any(Integer.class));
     }
 
 }
