@@ -42,6 +42,10 @@ public abstract class SendEmail {
     }
 
     public void send(Submission submission, String subflowName, String subflowUuid) {
+        send(submission, subflowName, subflowUuid, 0);
+    }
+
+    public void send(Submission submission, String subflowName, String subflowUuid, int offsetDelaySeconds) {
 
         Map<String, Object> subflowData = null;
         if (subflowName != null && subflowUuid != null) {
@@ -68,7 +72,7 @@ public abstract class SendEmail {
             if(!getRecipientEmail(emailData.get()).isBlank()){
                 ILGCCEmail email = new ILGCCEmail(getRecipientEmail(emailData.get()), emailTemplate(emailData.get()),
                         submission.getId());
-                sendEmail(email, submission, subflowName, subflowData);
+                sendEmail(email, submission, subflowName, subflowData, offsetDelaySeconds);
             } else {
                 log.debug(
                         "{}: Skipping email send because because there is no {} associated with the submission: {}",
@@ -97,10 +101,10 @@ public abstract class SendEmail {
         return emailData.getOrDefault(recipientEmailInputName, "").toString();
     }
 
-    protected void sendEmail(ILGCCEmail email, Submission submission, String subflowName, Map<String, Object> subflowData) {
+    protected void sendEmail(ILGCCEmail email, Submission submission, String subflowName, Map<String, Object> subflowData, int offsetDelaySeconds) {
         log.info("{}: About to enqueue the Send Email Job for submissionId: {}",
                 email.getEmailType().getDescription(), submission.getId());
-        sendEmailJob.enqueueSendEmailJob(email);
+        sendEmailJob.enqueueSendEmailJob(email, offsetDelaySeconds);
         updateEmailStatus(submission, subflowName, subflowData);
     }
 

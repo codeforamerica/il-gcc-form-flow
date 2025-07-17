@@ -7,15 +7,13 @@ import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import formflow.library.pdf.PdfService;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.JobrunrJobRepository;
@@ -24,7 +22,6 @@ import org.ilgcc.app.data.TransmissionRepositoryService;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
-import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
@@ -53,6 +50,9 @@ public class ProviderResponseRecurringJob {
 
     private final SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
 
+    @Value("${il-gcc.no-provider-response-delay-seconds}")
+    private int offsetDelaySeconds;
+    
     public ProviderResponseRecurringJob(S3PresignService s3PresignService,
             TransmissionRepositoryService transmissionRepositoryService,
             TransactionRepositoryService transactionRepositoryService,
@@ -161,6 +161,9 @@ public class ProviderResponseRecurringJob {
         if (expiringSubmissionsToSend.isEmpty()) {
             return;
         } else {
+            AtomicInteger totalOffsetDelaySeconds = new AtomicInteger(this.offsetDelaySeconds);
+            int offsetDelaySecondsIncrement = this.offsetDelaySeconds;
+
             for (Submission expiredFamilySubmission : expiringSubmissionsToSend) {
                 if (!hasProviderResponse(expiredFamilySubmission)) {
                     log.info("No provider response found for family submission {}. DTS: {} CCMS: {}",
@@ -177,9 +180,12 @@ public class ProviderResponseRecurringJob {
                                 uploadedDocumentTransmissionJob, s3PresignService, expiredFamilySubmission);
                     }
                     if (isCCMSIntegrationEnabled) {
-                        ccmsSubmissionPayloadTransaction.enqueueCCMSTransactionPayloadInstantly(
-                                expiredFamilySubmission.getId());
+                        ccmsSubmissionPayloadTransaction.enqueueCCMSTransactionPayloadWithSecondsOffset(
+                                expiredFamilySubmission.getId(), totalOffsetDelaySeconds.get());
                     }
+
+                    totalOffsetDelaySeconds.addAndGet(offsetDelaySecondsIncrement);
+                    
                     updateProviderStatus(expiredFamilySubmission);
                     if (expiredFamilySubmission.getInputData().containsKey("providers")) {
                         List<Map<String, Object>> providersSubflowData = (List<Map<String, Object>>)
@@ -191,6 +197,8 @@ public class ProviderResponseRecurringJob {
                                             provider.get("uuid"), expiredFamilySubmission.getId());
                                     sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers",
                                             provider.get("uuid").toString());
+
+                                    totalOffsetDelaySeconds.addAndGet(offsetDelaySecondsIncrement);
                                 }
                             } catch (Exception e) {
                                 log.warn("Unable to send ProviderDidNotRespondToFamilyEmail for family {} and provider {}", expiredFamilySubmission.getId(), provider.get("uuid"), e);
