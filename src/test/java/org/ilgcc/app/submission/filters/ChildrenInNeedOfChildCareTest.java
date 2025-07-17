@@ -26,7 +26,7 @@ class ChildrenInNeedOfChildCareTest {
     List<HashMap<String, Object>> children = (List<HashMap<String, Object>>) submission.getInputData().get("children");
 
     assertEquals(5, children.size());
-    assertEquals(3, (childrenInNeedOfChildCare.filter(children).size()));
+    assertEquals(3, (childrenInNeedOfChildCare.filter(children, submission).size()));
 
   }
 }
