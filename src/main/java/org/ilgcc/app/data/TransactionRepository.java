@@ -23,7 +23,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
                     "OR s.input_data->>'providerResponseStatus' IS NULL " +
                     ") " +
                     "AND s.input_data->>'providerApplicationResponseExpirationDate' IS NOT NULL " +
-                    "AND TO_TIMESTAMP((s.input_data->>'providerApplicationResponseExpirationDate')::double precision)::timestamptz <= (now() AT TIME ZONE 'UTC' AT TIME ZONE 'America/Chicago') " +
+                    "AND TO_TIMESTAMP((s.input_data->>'providerApplicationResponseExpirationDate')::double precision)::timestamptz <= (now() AT TIME ZONE 'UTC') " +
                     "AND s.flow = 'gcc' " +
                     "AND t.transaction_id IS NULL " +
                     "ORDER BY s.created_at ASC",
