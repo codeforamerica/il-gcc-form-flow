@@ -356,7 +356,7 @@ public class ProviderResponseRecurringJobTest {
             verify(ccmsSubmissionPayloadTransactionJob, times(1)).enqueueCCMSTransactionPayloadInstantly(
                     eq(activeWithPastExpirationDate.getId()));
 
-            verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
+            verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class), any(Integer.class));
         }
     }
 
@@ -457,7 +457,7 @@ public class ProviderResponseRecurringJobTest {
             verify(ccmsSubmissionPayloadTransactionJob, times(1)).enqueueCCMSTransactionPayloadInstantly(
                     eq(activeWithPastExpirationDate.getId()));
 
-            verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
+            verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class), any(Integer.class));
         }
     }
 
