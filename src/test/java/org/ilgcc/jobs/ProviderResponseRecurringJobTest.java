@@ -282,7 +282,7 @@ public class ProviderResponseRecurringJobTest {
         activeWithFutureExpirationDate = new SubmissionTestBuilder()
                 .withParentDetails()
                 .with("parentContactEmail", "test-unexpired@mail.com")
-                .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
+                .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name())
                 .with("providerApplicationResponseExpirationDate", OffsetDateTime.now().plusDays(3).atZoneSameInstant(ZoneId.of("America/Chicago")))
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withFlow("gcc")
@@ -316,7 +316,7 @@ public class ProviderResponseRecurringJobTest {
             activeWithPastExpirationDate = new SubmissionTestBuilder()
                     .withParentDetails()
                     .with("parentContactEmail", "test-expired@mail.com")
-                    .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
+                    .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name())
                     .with("providerApplicationResponseExpirationDate", expiredSubmissionDate.atZoneSameInstant(ZoneId.of("America/Chicago")))
                     .withSubmittedAtDate(expiredSubmissionDate)
                     .withFlow("gcc")
@@ -332,7 +332,7 @@ public class ProviderResponseRecurringJobTest {
         @ParameterizedTest
         @MethodSource("inactiveSubmissionStatuses")
         public void whenSubmissionHasExpirationDateInPast(SubmissionStatus status) {
-            activeWithPastExpirationDate.getInputData().put("providerResponseStatus", status.name());
+            activeWithPastExpirationDate.getInputData().put("providerApplicationResponseStatus", status.name());
             submissionRepositoryService.save(activeWithPastExpirationDate);
 
             providerResponseRecurringJob.runNoProviderResponseJob();
@@ -392,7 +392,7 @@ public class ProviderResponseRecurringJobTest {
             activeWithFutureExpirationDate = new SubmissionTestBuilder()
                     .withParentDetails()
                     .with("parentContactEmail", "test-unexpired@mail.com")
-                    .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
+                    .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name())
                     .with("providers", List.of(provider))
                     .with("children", List.of(child))
                     .withChildcareScheduleForProvider(child.get("uuid").toString(), provider.get("uuid").toString())
@@ -410,7 +410,7 @@ public class ProviderResponseRecurringJobTest {
                     .with("children", List.of(child))
                     .withChildcareScheduleForProvider(child.get("uuid").toString(), provider.get("uuid").toString())
                     .with("parentContactEmail", "test-expired@mail.com")
-                    .with("providerResponseStatus", SubmissionStatus.ACTIVE.name())
+                    .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name())
                     .with("providerApplicationResponseExpirationDate", expiredSubmissionDate.atZoneSameInstant(ZoneId.of("America/Chicago")))
                     .withSubmittedAtDate(expiredSubmissionDate)
                     .withFlow("gcc")
@@ -433,7 +433,7 @@ public class ProviderResponseRecurringJobTest {
         @ParameterizedTest
         @MethodSource("inactiveSubmissionStatuses")
         public void whenSubmissionHasExpirationDateInPast(SubmissionStatus status) {
-            activeWithPastExpirationDate.getInputData().put("providerResponseStatus", status.name());
+            activeWithPastExpirationDate.getInputData().put("providerApplicationResponseStatus", status.name());
             submissionRepositoryService.save(activeWithPastExpirationDate);
 
             providerResponseRecurringJob.runNoProviderResponseJob();
