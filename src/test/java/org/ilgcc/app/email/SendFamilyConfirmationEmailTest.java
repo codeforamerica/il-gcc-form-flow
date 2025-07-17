@@ -109,7 +109,7 @@ public class SendFamilyConfirmationEmailTest {
     @Test
     void correctlyEnqueuesSendEmailJob() {
         sendEmailClass.send(familySubmission);
-        verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class));
+        verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class), any(Integer.class));
     }
 
     @Nested

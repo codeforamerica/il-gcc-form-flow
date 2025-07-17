@@ -2,6 +2,8 @@ package org.ilgcc.jobs;
 
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.email.SendGridEmailService;
@@ -27,9 +29,15 @@ public class SendEmailJob {
     }
 
     public void enqueueSendEmailJob(ILGCCEmail email) {
+        enqueueSendEmailJob(email, 0);
+    }
+
+    public void enqueueSendEmailJob(ILGCCEmail email, int offsetDelaySeconds) {
         if (emailsEnabled) {
-            JobId jobId = jobScheduler.enqueue(() -> sendEmailRequest(email));
-            log.info("Enqueued {} email job with ID: {} for submission with ID: {}", email.getEmailType(), jobId, email.getSubmissionId());
+            JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofSeconds(offsetDelaySeconds)),
+                    () -> sendEmailRequest(email));
+
+            log.info("Enqueued {} email job with ID: {} for submission with ID: {} in {} seconds", email.getEmailType(), jobId, email.getSubmissionId(), offsetDelaySeconds);
         } else {
             log.info("Emails disabled. Skipping enqueue {} email job for submission with ID: {}", email.getEmailType(),email.getSubmissionId());
             log.info("Would have sent: {} with a subject of: {} from: {}", email.getBody().getValue(), email.getSubject(), email.getSenderEmail().toString()); // Don't log recipient email for security reasons
@@ -42,8 +50,7 @@ public class SendEmailJob {
             sendGridEmailService.sendEmail(email);
             log.info("Successfully sent the {} for submission with ID {} to Sendgrid.", email.getEmailType(), email.getSubmissionId());
         } catch (IOException e) {
-            log.error("There was an error when attempting to send the {} for submission with ID {}: {}", email.getEmailType(), email.getSubmissionId(), e.getMessage());
-            throw e;
+            log.error("There was an error when attempting to send the {} for submission with ID {}", email.getEmailType(), email.getSubmissionId(), e);
         }
     }
 }

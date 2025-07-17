@@ -116,6 +116,25 @@ public class CCMSSubmissionPayloadTransactionJob {
         }
     }
 
+    public void enqueueCCMSTransactionPayloadWithSecondsOffset(@NotNull UUID submissionId, int offsetDelaySeconds) {
+        ZonedDateTime now = ZonedDateTime.now(CENTRAL_ZONE);
+        if (isOnlineAt(now.plusSeconds(offsetDelaySeconds))) {
+            // If CCMS is (back) online *in the future*, make sure that we're resetting the initial total offset for the next time
+            // CCMS is offline... but only if a job that might get enqueued *instantly* won't actually be sent during the current
+            // offline time range
+            if (isOnlineNow()) {
+                totalCcmsTransactionDelayOffset.set(ccmsTransactionDelayOffset);
+            }
+
+            JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofSeconds(offsetDelaySeconds)),
+                    () -> sendCCMSTransaction(submissionId));
+            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in {} seconds",
+                    jobId, submissionId, offsetDelaySeconds);
+        } else {
+            enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
+        }
+    }
+
     public void enqueueCCMSTransactionPayloadInstantly(@NotNull UUID submissionId) {
         if (isOnlineNow()) {
             // If CCMS is (back) online, make sure that we're resetting the initial total offset for the next time

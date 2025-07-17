@@ -24,6 +24,7 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
     private final HttpServletRequest httpRequest;
 
     private boolean enableFasterApplicationExpiry;
+    private int fasterApplicationExpiryMinutes;
 
     private static final String SUBMISSION_DATA_SHAREABLE_LINK = "shareableLink";
 
@@ -31,10 +32,12 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
 
     private static final String PROVIDER_APPLICATION_EXPIRATION = "providerApplicationResponseExpirationDate";
 
-    public GenerateShortLinkAndStoreProviderApplicationStatus(HttpServletRequest httpRequest, @Value("${il-gcc.enable-faster"
-            + "-application-expiry}") boolean enableFasterApplicationExpiry) {
+    public GenerateShortLinkAndStoreProviderApplicationStatus(HttpServletRequest httpRequest,
+            @Value("${il-gcc.enable-faster-application-expiry}") boolean enableFasterApplicationExpiry,
+            @Value("${il-gcc.enable-faster-application-expiry-minutes}") int fasterApplicationExpiryMinutes) {
         this.httpRequest = httpRequest;
         this.enableFasterApplicationExpiry = enableFasterApplicationExpiry;
+        this.fasterApplicationExpiryMinutes = fasterApplicationExpiryMinutes;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
         if (noProviderApplication) {
             return submission.getSubmittedAt().atZoneSameInstant(ZoneId.of("America/Chicago"));
         } else if (enableFasterApplicationExpiry) {
-            return submission.getSubmittedAt().plusHours(2).atZoneSameInstant(ZoneId.of("America/Chicago"));
+            return submission.getSubmittedAt().plusMinutes(this.fasterApplicationExpiryMinutes).atZoneSameInstant(ZoneId.of("America/Chicago"));
         } else {
             return ProviderSubmissionUtilities.threeBusinessDaysFromSubmittedAtDate(submission.getSubmittedAt());
         }

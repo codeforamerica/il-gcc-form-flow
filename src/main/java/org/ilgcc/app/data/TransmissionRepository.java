@@ -12,14 +12,18 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransmissionRepository extends JpaRepository<Transmission, UUID> {
+
     @Query(value =
-            "SELECT s.* FROM submissions s " +
+            "SELECT s.* " +
+                    "FROM submissions s " +
                     "LEFT JOIN transmissions t ON t.submission_id = s.id " +
                     "WHERE s.submitted_at IS NOT NULL " +
-                    "AND s.input_data->>'providerResponseStatus' = 'ACTIVE' " +
+                    "AND ( " +
+                    "s.input_data->>'providerApplicationResponseStatus' = 'ACTIVE' " +
+                    "OR s.input_data->>'providerApplicationResponseStatus' IS NULL " +
+                    ") " +
                     "AND s.input_data->>'providerApplicationResponseExpirationDate' IS NOT NULL " +
-                    "AND CAST(s.input_data->>'providerApplicationResponseExpirationDate' AS TIMESTAMPTZ) <= (now() AT TIME ZONE"
-                    + " 'UTC' AT TIME ZONE 'America/Chicago')" +
+                    "AND TO_TIMESTAMP((s.input_data->>'providerApplicationResponseExpirationDate')::double precision)::timestamptz <= (now() AT TIME ZONE 'UTC') " +
                     "AND s.flow = 'gcc' " +
                     "AND t.transmission_id IS NULL " +
                     "ORDER BY s.created_at ASC",
