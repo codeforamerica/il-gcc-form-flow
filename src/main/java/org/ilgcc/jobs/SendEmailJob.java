@@ -42,7 +42,7 @@ public class SendEmailJob {
             sendGridEmailService.sendEmail(email);
             log.info("Successfully sent the {} for submission with ID {} to Sendgrid.", email.getEmailType(), email.getSubmissionId());
         } catch (IOException e) {
-            log.error("There was an error when attempting to send the {} for submission with ID {}: {}", email.getEmailType(), email.getSubmissionId(), e.getMessage());
+            log.error("There was an error when attempting to send the {} for submission with ID {}", email.getEmailType(), email.getSubmissionId(), e);
             throw e;
         }
     }
