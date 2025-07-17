@@ -299,9 +299,9 @@ public class ProviderResponseRecurringJobTest {
         providerResponseRecurringJob.runNoProviderResponseJob();
 
         verify(ccmsSubmissionPayloadTransactionJob,
-                never()).enqueueCCMSTransactionPayloadInstantly(eq(activeWithFutureExpirationDate.getId()));
+                never()).enqueueCCMSTransactionPayloadWithSecondsOffset(eq(activeWithFutureExpirationDate.getId()), any(Integer.class));
         verify(ccmsSubmissionPayloadTransactionJob,
-                never()).enqueueCCMSTransactionPayloadInstantly(eq(unsubmittedSubmission.getId()));
+                never()).enqueueCCMSTransactionPayloadWithSecondsOffset(eq(unsubmittedSubmission.getId()), any(Integer.class));
 
 
     }
@@ -338,7 +338,7 @@ public class ProviderResponseRecurringJobTest {
             providerResponseRecurringJob.runNoProviderResponseJob();
 
             verify(ccmsSubmissionPayloadTransactionJob,
-                    never()).enqueueCCMSTransactionPayloadInstantly(eq(activeWithPastExpirationDate.getId()));
+                    never()).enqueueCCMSTransactionPayloadWithSecondsOffset(eq(activeWithPastExpirationDate.getId()), any(Integer.class));
             verify(sendEmailJob, never()).enqueueSendEmailJob(any(ILGCCEmail.class));
 
         }
@@ -353,8 +353,8 @@ public class ProviderResponseRecurringJobTest {
             providerResponseRecurringJob.runNoProviderResponseJob();
 
             //Confirms that the method was called on the expired submission
-            verify(ccmsSubmissionPayloadTransactionJob, times(1)).enqueueCCMSTransactionPayloadInstantly(
-                    eq(activeWithPastExpirationDate.getId()));
+            verify(ccmsSubmissionPayloadTransactionJob, times(1)).enqueueCCMSTransactionPayloadWithSecondsOffset(
+                    eq(activeWithPastExpirationDate.getId()), any(Integer.class));
 
             verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class), any(Integer.class));
         }
@@ -439,7 +439,7 @@ public class ProviderResponseRecurringJobTest {
             providerResponseRecurringJob.runNoProviderResponseJob();
 
             verify(ccmsSubmissionPayloadTransactionJob,
-                    never()).enqueueCCMSTransactionPayloadInstantly(eq(activeWithPastExpirationDate.getId()));
+                    never()).enqueueCCMSTransactionPayloadWithSecondsOffset(eq(activeWithPastExpirationDate.getId()), any(Integer.class));
             verify(sendEmailJob, never()).enqueueSendEmailJob(any(ILGCCEmail.class));
 
         }
@@ -454,8 +454,8 @@ public class ProviderResponseRecurringJobTest {
             providerResponseRecurringJob.runNoProviderResponseJob();
 
             //Confirms that the method was called on the expired submission
-            verify(ccmsSubmissionPayloadTransactionJob, times(1)).enqueueCCMSTransactionPayloadInstantly(
-                    eq(activeWithPastExpirationDate.getId()));
+            verify(ccmsSubmissionPayloadTransactionJob, times(1)).enqueueCCMSTransactionPayloadWithSecondsOffset(
+                    eq(activeWithPastExpirationDate.getId()), any(Integer.class));
 
             verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class), any(Integer.class));
         }
