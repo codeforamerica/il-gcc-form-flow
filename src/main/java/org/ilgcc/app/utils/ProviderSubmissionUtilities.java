@@ -208,7 +208,7 @@ public class ProviderSubmissionUtilities {
             for (var provider : providers) {
                 Map<String, Object> providerObject = new HashMap<>();
                 providerObject.put("uuid", provider.get("uuid"));
-                providerObject.put("providerResponseStatus", provider.get("providerResponseStatus"));
+                providerObject.put("providerApplicationResponseStatus", provider.get("providerApplicationResponseStatus"));
 
                 String providerType = provider.get("providerType").toString();
                 if (providerType.equals("Individual")) {
