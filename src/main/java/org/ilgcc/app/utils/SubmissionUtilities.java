@@ -10,12 +10,14 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -218,12 +220,33 @@ public class SubmissionUtilities {
     }
 
     public static boolean isNoProviderSubmission(Map<String, Object> familyInputData) {
-        if (familyInputData.containsKey("providers")) {
-            List<String> providers = (List) familyInputData.get("providers");
-            return providers.isEmpty();
-        } else {
-            return "false".equals(familyInputData.get("hasChosenProvider"));
+        String hasChosenProvider = familyInputData.getOrDefault("hasChosenProvider", "").toString();
+
+        if("false".equals(hasChosenProvider)) {
+            return true;
         }
+
+        List<Map<String, Object>> providers = new ArrayList<>();
+        if(familyInputData.containsKey("providers")) {
+            providers = (List<Map<String, Object>>) familyInputData.getOrDefault("providers", emptyList());
+            if (providers.isEmpty()) {
+                return true;
+            }
+        }
+
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) familyInputData.getOrDefault("childcareSchedules", emptyList());
+        if (!childcareSchedules.isEmpty()) {
+            AtomicBoolean hasNotChosenAProviderOrHasNoProvidersScheduled = new AtomicBoolean(true);
+            providers.forEach(provider -> {
+                childcareSchedules.forEach(childcareSchedule -> {
+                    if(childcareScheduleIncludesThisProvider(childcareSchedule, provider.get("uuid").toString())) {
+                        hasNotChosenAProviderOrHasNoProvidersScheduled.set(false);
+                    }
+                });
+            });
+            return hasNotChosenAProviderOrHasNoProvidersScheduled.get();
+        }
+        return false;
     }
 
     public static boolean hasSelectedAProviderAndNoProvider(Map<String, Object> familyInputData) {
