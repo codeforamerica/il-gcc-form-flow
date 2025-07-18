@@ -29,12 +29,14 @@ import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.data.ccms.CCMSApiClient;
 import org.ilgcc.app.data.ccms.CCMSTransaction;
 import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
+import org.ilgcc.app.email.SendFamilyApplicationTransmittedConfirmationEmail;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,6 +63,9 @@ public class CCMSSubmissionPayloadTransactionJob {
     // a primitive int isn't threadsafe, but AtomicInteger is. This will ensure multiple threads
     // creating delayed jobs always have the correct time offset.
     private final AtomicInteger totalCcmsTransactionDelayOffset = new AtomicInteger(0);
+
+    @Autowired
+    SendFamilyApplicationTransmittedConfirmationEmail sendFamilyApplicationTransmittedConfirmationEmail;
 
     public CCMSSubmissionPayloadTransactionJob(JobScheduler jobScheduler,
             CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
@@ -220,6 +225,12 @@ public class CCMSSubmissionPayloadTransactionJob {
 
                         transactionRepositoryService.createTransaction(UUID.fromString(response.get("transactionId").asText()),
                                 submission.getId(), workItemId);
+
+                        if (SubmissionUtilities.haveAllProvidersResponded(submission)) {
+                            log.info("All providers responded to CCMS transaction : {}", submission.getId());
+                            sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
+                        }
+
                     } else {
                         log.warn("Could not create CCMS payload for submission : {}", submission.getId());
                     }

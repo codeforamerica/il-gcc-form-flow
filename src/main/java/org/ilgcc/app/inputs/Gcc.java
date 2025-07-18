@@ -647,6 +647,8 @@ public class Gcc extends FlowInputs {
 
     private String familyConfirmationEmailSent;
 
+    private String familyApplicationTransmittedEmailSent;
+
     private String providerOutreachEmailSent;
 
     // Stores the Response status (Active, Expired, Responded) of the provider application
