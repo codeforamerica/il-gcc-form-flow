@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
@@ -53,6 +55,11 @@ public class GenerateShortLinkAndStoreProviderApplicationStatus implements Actio
 
         submission.getInputData()
                 .put(PROVIDER_APPLICATION_STATUS, getApplicationStatus(isNoProviderSubmission(submission.getInputData())));
+    }
+
+    private void setProvidersStatuses(Map<String, Object> familyInputData){
+        
+
     }
 
     private ZonedDateTime getExpirationDate(Submission submission, Boolean noProviderApplication) {
