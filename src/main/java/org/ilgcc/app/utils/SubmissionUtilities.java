@@ -221,12 +221,11 @@ public class SubmissionUtilities {
 
     public static boolean isNoProviderSubmission(Map<String, Object> familyInputData) {
         String hasChosenProvider = familyInputData.getOrDefault("hasChosenProvider", "").toString();
-        //Single and multi provider flows ask if a client has chosen a provider
+
         if("false".equals(hasChosenProvider)) {
             return true;
         }
 
-        //Multi provider starts with generating a list of providers.  If that list is empty then we this is a no provider submission
         List<Map<String, Object>> providers = new ArrayList<>();
         if(familyInputData.containsKey("providers")) {
             providers = (List<Map<String, Object>>) familyInputData.getOrDefault("providers", emptyList());
@@ -235,9 +234,6 @@ public class SubmissionUtilities {
             }
         }
 
-        //Checks whether childSchedules is present, meaning that they are in the multi-provider flow
-        //If they are in the multiprovider flow then we need to check each childcareSchedule against the list of providers we created.  If there are no
-        //providers associated with childcare schedules then we return true.  If we find a provider then we return false.
         List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) familyInputData.getOrDefault("childcareSchedules", emptyList());
         if (!childcareSchedules.isEmpty()) {
             AtomicBoolean hasNotChosenAProviderOrHasNoProvidersScheduled = new AtomicBoolean(true);
