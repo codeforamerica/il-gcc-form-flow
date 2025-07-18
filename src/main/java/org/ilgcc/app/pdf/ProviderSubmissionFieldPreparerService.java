@@ -28,15 +28,12 @@ import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPreparer {
-
-    private boolean enableMultipleProviders;
-
+    
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
 
@@ -64,17 +61,14 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
     @Autowired
     NeedChildcareChildrenPreparer needChildcareChildrenPreparer;
 
-    public ProviderSubmissionFieldPreparerService(
-            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
-        this.enableMultipleProviders = enableMultipleProviders;
-    }
-
     //Because we are printing the PDF from the GCC flow we need to get the provider submission then pull the responses values from the provider submission
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
         Map<String, SubmissionField> results = new HashMap<>();
-
-        if (enableMultipleProviders) {
+        
+        // TODO: We were using enableMultipleProviders but we can just use the key from the multiprovider data structure
+        // When enable multi provider in prod, the else of this code can be removed
+        if (familySubmission.getInputData().containsKey("providers")) {
             Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
                     getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
 

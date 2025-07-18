@@ -19,10 +19,10 @@ import org.springframework.test.context.ActiveProfiles;
         classes = IlGCCApplication.class
 )
 @ActiveProfiles("test")
-public class ProviderProviderSubmissionFieldPreparerServiceTest_NoProvider {
+public class ProviderSubmissionFieldPreparerServiceTest_NoProvider {
 
     @Autowired
-    ProviderSubmissionFieldPreparerService preparer = new ProviderSubmissionFieldPreparerService(false);
+    ProviderSubmissionFieldPreparerService preparer = new ProviderSubmissionFieldPreparerService();
     private Submission familySubmission;
 
     @BeforeEach
