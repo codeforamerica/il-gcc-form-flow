@@ -395,31 +395,4 @@ public class SubmissionUtilities {
     public static boolean haveAllProvidersResponded(Submission familySubmission) {
         return SubmissionStatus.RESPONDED.name().equals(familySubmission.getInputData().get("providerApplicationResponseStatus"));
     }
-
-    public static boolean hasNotChosenAProviderOrHasNoProvidersScheduled(Submission familySubmission) {
-        String hasChosenProvider = familySubmission.getInputData().get("hasChosenProvider").toString();
-        if(hasChosenProvider.equals("false")) {
-            return true;
-        }
-
-        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().getOrDefault("providers", emptyList());
-        if (providers.isEmpty()) {
-            return true;
-        }
-
-        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) familySubmission.getInputData().getOrDefault("childcareSchedules", emptyList());
-        if (childcareSchedules.isEmpty()) {
-            return true;
-        }
-
-        AtomicBoolean hasNotChosenAProviderOrHasNoProvidersScheduled = new AtomicBoolean(true);
-        providers.forEach(provider -> {
-            childcareSchedules.forEach(childcareSchedule -> {
-                if(childcareScheduleIncludesThisProvider(childcareSchedule, provider.get("uuid").toString())) {
-                    hasNotChosenAProviderOrHasNoProvidersScheduled.set(false);
-                }
-            });
-        });
-        return hasNotChosenAProviderOrHasNoProvidersScheduled.get();
-    }
 }
