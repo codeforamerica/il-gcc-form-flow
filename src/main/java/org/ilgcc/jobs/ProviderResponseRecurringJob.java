@@ -194,7 +194,7 @@ public class ProviderResponseRecurringJob {
                                 expiredFamilySubmission.getInputData().getOrDefault("providers", emptyList());
                         providersSubflowData.forEach(provider -> {
                             try {
-                                if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus"))) {
+                                if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerApplicationResponseStatus"))) {
                                     log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
                                             provider.get("uuid"), expiredFamilySubmission.getId());
                                     sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers",
