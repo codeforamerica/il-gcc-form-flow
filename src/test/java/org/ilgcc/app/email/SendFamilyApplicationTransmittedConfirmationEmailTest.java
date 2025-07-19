@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.ilgcc.jobs.SendEmailJob;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,7 +28,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
-
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -79,6 +79,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         individualProvider.put("familyIntendedProviderCity", "Chicago");
         individualProvider.put("familyIntendedProviderState", "IL");
         individualProvider.put("providerType", "Individual");
+        individualProvider.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
 
         programProvider.put("uuid", UUID.randomUUID().toString());
         programProvider.put("iterationIsComplete", true);
@@ -89,6 +90,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         programProvider.put("familyIntendedProviderCity", "Chicago");
         programProvider.put("familyIntendedProviderState", "IL");
         programProvider.put("providerType", "Care Program");
+        programProvider.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
 
         noResponseProvider.put("uuid", UUID.randomUUID().toString());
         noResponseProvider.put("iterationIsComplete", true);
@@ -99,6 +101,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         noResponseProvider.put("familyIntendedProviderCity", "Chicago");
         noResponseProvider.put("familyIntendedProviderState", "IL");
         noResponseProvider.put("providerType", "Care Program");
+        noResponseProvider.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
 
         child1.put("uuid", UUID.randomUUID().toString());
         child1.put("childFirstName", "First");
@@ -153,6 +156,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
                 .build());
 
         individualProvider.put("providerResponseSubmissionId", individualProviderSubmission.getId());
+        individualProvider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
 
         programProviderSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                 .withFlow("providerresponse")
@@ -165,6 +169,8 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
                 .build());
 
         programProvider.put("providerResponseSubmissionId", programProviderSubmission.getId());
+        programProvider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
+
 
         sendEmailClass = new SendFamilyApplicationTransmittedConfirmationEmail(sendEmailJob, messageSource,
                 submissionRepositoryService);

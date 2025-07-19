@@ -165,7 +165,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
     }
 
-    private  Map<String, SubmissionField> setProviderSignatureAndDate(Submission providerSubmission){
+    public static Map<String, SubmissionField> setProviderSignatureAndDate(Submission providerSubmission){
         Map<String, SubmissionField> fields = new HashMap<>();
 
         if (providerSubmission.getInputData().getOrDefault("providerResponseAgreeToCare", "false").equals("true")) {
@@ -178,7 +178,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
         return fields;
     }
 
-    private String providerSignatureDate(OffsetDateTime submittedAt) {
+    private static String providerSignatureDate(OffsetDateTime submittedAt) {
         if (submittedAt != null) {
             Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submittedAt));
             return formatToStringFromLocalDate(providerSignatureDate);
@@ -186,7 +186,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
         return "";
     }
 
-    private String providerSignature(Map<String, Object> providerInputData) {
+    private static String providerSignature(Map<String, Object> providerInputData) {
         String providerSignature = (String) providerInputData.getOrDefault("providerSignedName", "");
         if (!providerSignature.isEmpty()) {
             return providerSignature;

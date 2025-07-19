@@ -70,6 +70,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
         individualProvider.put("familyIntendedProviderCity", "Chicago");
         individualProvider.put("familyIntendedProviderState", "IL");
         individualProvider.put("providerType", "Individual");
+        individualProvider.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
 
         programProvider.put("uuid", UUID.randomUUID().toString());
         programProvider.put("iterationIsComplete", true);
@@ -80,6 +81,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
         programProvider.put("familyIntendedProviderCity", "Chicago");
         programProvider.put("familyIntendedProviderState", "IL");
         programProvider.put("providerType", "Care Program");
+        programProvider.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
 
         childWithCCAP.put("uuid", UUID.randomUUID().toString());
         childWithCCAP.put("childFirstName", "First");
@@ -107,7 +109,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
                             individualProvider.get("uuid").toString())
                     .build();
 
-            familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name());
+            individualProvider.put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name());
 
             Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
 
@@ -144,7 +146,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
                             individualProvider.get("uuid").toString())
                     .build();
 
-            familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
+            individualProvider.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
 
             Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
 
@@ -181,7 +183,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
                             programProvider.get("uuid").toString())
                     .build();
 
-            familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name());
+            programProvider.put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name());
 
             Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
 
@@ -216,9 +218,9 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
                             programProvider.get("uuid").toString())
                     .build();
 
-            familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
-
             Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
+
+            programProvider.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
 
             // Details about the provider
             assertThat(result.get("providerResponseBusinessName"))
@@ -249,7 +251,6 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
             familySubmission = new SubmissionTestBuilder()
                     .withFlow("gcc")
                     .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
-                    .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name())
                     .with("providers", List.of(individualProvider, programProvider))
                     .with("children", List.of(childWithCCAP))
                     .withChildcareScheduleForProvider(childWithCCAP.get("uuid").toString(),
@@ -333,7 +334,6 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
             familySubmission = new SubmissionTestBuilder()
                     .withFlow("gcc")
                     .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
-                    .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name())
                     .with("providers", List.of(programProvider))
                     .with("children", List.of(childWithCCAP))
                     .withChildcareScheduleForProvider(childWithCCAP.get("uuid").toString(),
