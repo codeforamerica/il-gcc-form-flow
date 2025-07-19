@@ -124,7 +124,6 @@ public class MultiProviderPDFService {
 
                 Map<String, SubmissionField> submissionFields = new HashMap<>();
 
-
                 List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
                         mergedChildrenAndSchedules.get(providerSchedulesByUuid.get(i));
 
@@ -153,9 +152,8 @@ public class MultiProviderPDFService {
                     submissionFields.putAll(
                             providerApplicationPreparerHelper.prepareSubmissionFields(
                                     providerSubmission.getInputData()));
-                    submissionFields.put("providerSignatureDate",
-                            new SingleField("providerSignatureDate",
-                                    providerSignatureDate(providerSubmission.getSubmittedAt()), null));
+                    submissionFields.putAll(
+                            ProviderSubmissionFieldPreparerService.setProviderSignatureAndDate(providerSubmissionOptional.get()));
                 } else {
                     submissionFields.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             currentProvider));
@@ -175,8 +173,10 @@ public class MultiProviderPDFService {
                 Optional<OffsetDateTime> submittedAt = Optional.ofNullable(familySubmission.getSubmittedAt());
                 submittedAt.ifPresent(offsetDateTime -> {
                     offsetDateTime.atZoneSameInstant(chicagoTimeZone);
-                    String formattedSubmittedAtDate = offsetDateTime.atZoneSameInstant(chicagoTimeZone).format(receivedTimestampFormat);
-                    submissionFields.put("receivedTimestamp", new SingleField("receivedTimestamp", formattedSubmittedAtDate, null));
+                    String formattedSubmittedAtDate = offsetDateTime.atZoneSameInstant(chicagoTimeZone)
+                            .format(receivedTimestampFormat);
+                    submissionFields.put("receivedTimestamp",
+                            new SingleField("receivedTimestamp", formattedSubmittedAtDate, null));
                 });
 
                 additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size()),

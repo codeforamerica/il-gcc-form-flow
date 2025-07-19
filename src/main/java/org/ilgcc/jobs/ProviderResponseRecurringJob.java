@@ -187,8 +187,7 @@ public class ProviderResponseRecurringJob {
 
                     // After we send a submission, stagger the next job by the offset
                     totalOffsetDelaySeconds.addAndGet(this.offsetDelaySeconds);
-                    
-                    updateProviderStatus(expiredFamilySubmission);
+
                     if (expiredFamilySubmission.getInputData().containsKey("providers")) {
                         List<Map<String, Object>> providersSubflowData = (List<Map<String, Object>>)
                                 expiredFamilySubmission.getInputData().getOrDefault("providers", emptyList());
@@ -197,6 +196,7 @@ public class ProviderResponseRecurringJob {
                                 if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerApplicationResponseStatus"))) {
                                     log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
                                             provider.get("uuid"), expiredFamilySubmission.getId());
+                                    provider.put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name());
                                     sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers",
                                             provider.get("uuid").toString(), totalOffsetDelaySeconds.get());
 
@@ -215,7 +215,7 @@ public class ProviderResponseRecurringJob {
                         }
                     }
 
-
+                    updateProviderStatus(expiredFamilySubmission);
                 } else {
                     log.warn(
                             String.format(
