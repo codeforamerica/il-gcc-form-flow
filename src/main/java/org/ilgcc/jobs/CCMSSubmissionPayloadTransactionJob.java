@@ -3,7 +3,6 @@ package org.ilgcc.jobs;
 import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_ENDPOINT;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -21,6 +20,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.JobrunrJobRepository;
@@ -66,6 +67,9 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     @Autowired
     SendFamilyApplicationTransmittedConfirmationEmail sendFamilyApplicationTransmittedConfirmationEmail;
+
+    // Limit to 10 concurrent jobs at once
+    private static final Semaphore concurrencyLimiter = new Semaphore(10);
 
     public CCMSSubmissionPayloadTransactionJob(JobScheduler jobScheduler,
             CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
@@ -183,7 +187,7 @@ public class CCMSSubmissionPayloadTransactionJob {
     }
 
     @Job(name = "Send CCMS Submission Payload", retries = 3)
-    public void sendCCMSTransaction(@NotNull UUID submissionId) throws JsonProcessingException {
+    public void sendCCMSTransaction(@NotNull UUID submissionId) throws IOException {
         Transaction existingTransaction = transactionRepositoryService.getBySubmissionId(submissionId);
         if (existingTransaction == null) {
             if (isOnlineNow()) {
@@ -213,22 +217,48 @@ public class CCMSSubmissionPayloadTransactionJob {
                     Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
                             submission);
                     if (ccmsTransactionOptional.isPresent()) {
-                        CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
-                        JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
-                        log.info("Received response from CCMS when sending transaction payload: {}", response);
+                        boolean acquired = false;
+                        try {
+                            // Try to acquire a permit with a timeout
+                            acquired = concurrencyLimiter.tryAcquire(30, TimeUnit.SECONDS);
+                            if (!acquired) {
+                                log.error("Could not acquire concurrency slot within timeout for submission {}. Job will be retried.",
+                                        submissionId);
+                                // Throw an exception to trigger JobRunr retry
+                                throw new IOException("Timeout waiting to acquire semaphore permit for transmitting to CCMS.");
+                            }
 
-                        String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
+                            CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
+                            JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
+                            log.info("Received response from CCMS when sending transaction payload: {}", response);
 
-                        if (workItemId == null) {
-                            log.warn("Received null work item ID from CCMS transaction for submission : {}", submission.getId());
-                        }
+                            String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
 
-                        transactionRepositoryService.createTransaction(UUID.fromString(response.get("transactionId").asText()),
-                                submission.getId(), workItemId);
+                            if (workItemId == null) {
+                                log.warn("Received null work item ID from CCMS transaction for submission : {}",
+                                        submission.getId());
+                            }
 
-                        if (SubmissionUtilities.haveAllProvidersResponded(submission)) {
-                            log.info("All providers responded to CCMS transaction : {}", submission.getId());
-                            sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
+                            transactionRepositoryService.createTransaction(
+                                    UUID.fromString(response.get("transactionId").asText()),
+                                    submission.getId(), workItemId);
+
+                            if (SubmissionUtilities.haveAllProvidersResponded(submission)) {
+                                log.info("All providers responded to CCMS transaction : {}", submission.getId());
+                                sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
+                            }
+                        } catch (IOException e) {
+                            log.error("There was an error when attempting to send submission {} to CCMS",
+                                   submissionId, e);
+                            throw e;
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt(); // restore interrupt flag
+                            log.error("Interrupted while waiting to acquire concurrency slot", e);
+                            throw new IOException("Interrupted while waiting to acquire semaphore permit", e);
+                        } finally {
+                            if (acquired) {
+                                concurrencyLimiter.release();
+                            }
                         }
 
                     } else {

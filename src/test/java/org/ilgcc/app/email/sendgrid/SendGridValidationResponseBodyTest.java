@@ -1,4 +1,4 @@
-package org.ilgcc.app.email;
+package org.ilgcc.app.email.sendgrid;
 
 import org.ilgcc.app.utils.SendGridValidationResponseBodyBuilder;
 import org.junit.jupiter.api.BeforeEach;

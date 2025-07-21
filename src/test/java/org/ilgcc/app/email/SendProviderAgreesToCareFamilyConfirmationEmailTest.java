@@ -226,7 +226,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
         @Test
         void correctlyEnqueuesSendEmailJob() {
             sendEmailClass.send(providerSubmission);
-            verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class), any(Integer.class));
+            verify(sendEmailJob).enqueueSendSubmissionEmailJob(any(ILGCCEmail.class), any(Integer.class));
         }
     }
 
@@ -347,7 +347,7 @@ public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
         @Test
         void correctlyEnqueuesSendEmailJob() {
             sendEmailClass.send(providerSubmission);
-            verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class), any(Integer.class));
+            verify(sendEmailJob).enqueueSendSubmissionEmailJob(any(ILGCCEmail.class), any(Integer.class));
         }
     }
 }
