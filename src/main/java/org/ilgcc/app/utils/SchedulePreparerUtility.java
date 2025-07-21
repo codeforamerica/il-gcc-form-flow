@@ -125,7 +125,7 @@ public class SchedulePreparerUtility {
         return currentIteration.orElse(null);
     }
 
-    public static Map<String, List<Map<String, Object>>> getRelatedChildrenSchedulesForEachProvider(Map<String, Object> inputData) {
+    public static Map<String, List<Map<String, Object>>> getRelatedChildrenSchedulesForProvider(Map<String, Object> inputData) {
         List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) inputData.getOrDefault("childcareSchedules",
                 Collections.EMPTY_LIST);
         Set<Map<String, Object>> providerSchedules = new LinkedHashSet<>();

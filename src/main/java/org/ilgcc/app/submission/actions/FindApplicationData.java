@@ -1,7 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.setChildData;
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -40,14 +40,14 @@ public class FindApplicationData implements Action {
         if (familySubmissionId.isPresent()) {
             Optional<Submission> familySubmission = submissionRepositoryService.findById(familySubmissionId.get());
             providerSubmission.getInputData()
-                    .put("clientResponse", ProviderSubmissionUtilities.getFamilyConfirmationCodeAndParentName(familySubmission));
+                    .put("clientResponse", ProviderSubmissionUtilities.getFamilySubmission(familySubmission));
 
             List<Map<String, Object>> childData;
 
             if (enableMultipleProviders) {
                 childData = new ArrayList<>();
                 Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                        getRelatedChildrenSchedulesForEachProvider(familySubmission.get().getInputData());
+                        getRelatedChildrenSchedulesForProvider(familySubmission.get().getInputData());
 
                 String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid",
                         "");

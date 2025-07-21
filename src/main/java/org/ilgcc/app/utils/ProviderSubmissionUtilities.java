@@ -88,7 +88,7 @@ public class ProviderSubmissionUtilities {
         return Optional.empty();
     }
 
-    public static Map<String, String> getFamilyConfirmationCodeAndParentName(Optional<Submission> familySubmission) {
+    public static Map<String, String> getFamilySubmission(Optional<Submission> familySubmission) {
         Map<String, String> applicationData = new HashMap<>();
 
         if (familySubmission.isPresent()) {
@@ -183,7 +183,7 @@ public class ProviderSubmissionUtilities {
                         data.getOrDefault("providerLastName", "").toString()));
         if (subflowIteration != null) {
             Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                    SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
+                    SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
             applicationData.put("childrenInitialsList",
                     ProviderSubmissionUtilities.getChildrenInitialsList(mergedChildrenAndSchedules.get(data.get("uuid"))));
 

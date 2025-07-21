@@ -2,7 +2,7 @@ package org.ilgcc.app.pdf;
 
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForAdditionalProviderPDF;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
@@ -109,7 +109,7 @@ public class MultiProviderPDFService {
         List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
 
         Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
+                getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
 
         if (mergedChildrenAndSchedules.isEmpty()) {
             return additionalPDFs;
