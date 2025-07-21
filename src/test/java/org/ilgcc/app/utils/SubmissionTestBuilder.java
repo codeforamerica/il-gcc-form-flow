@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class SubmissionTestBuilder {
 
@@ -413,16 +414,31 @@ public class SubmissionTestBuilder {
         List<Map<String, Object>> childcareSchedules = new ArrayList<>();
 
         for (int i = 0; i < childIDs.size(); i++) {
-            Map<String, Object> childcareSchedule = new HashMap<>();
-            childcareSchedule.put("childUuid", childIDs.get(i));
+            String childId = childIDs.get(i);
+            String providerUUID = providerUUIDs.get(i);
 
-            List<Map<String, Object>> providerSchedules = new ArrayList<>();
+            // Try to find an existing childcareSchedule for this child
+            Optional<Map<String, Object>> scheduleExistsOptional = childcareSchedules.stream()
+                    .filter(s -> childId.equals(s.get("childUuid")))
+                    .findFirst();
+
+            Map<String, Object> childcareSchedule;
+
+            if (scheduleExistsOptional.isPresent()) {
+                childcareSchedule = scheduleExistsOptional.get();
+            } else {
+                childcareSchedule = new HashMap<>();
+                childcareSchedule.put("childUuid", childId);
+                childcareSchedule.put("providerSchedules", new ArrayList<Map<String, Object>>());
+                childcareSchedules.add(childcareSchedule);
+            }
+
+            // Build a providerSchedule for this child+provider
             Map<String, Object> providerSchedule = new HashMap<>();
-
             providerSchedule.put("uuid", "provider-child-schedule");
             providerSchedule.put("childInCare", true);
             providerSchedule.put("ccapStartDate", "11/17/2025");
-            providerSchedule.put("repeatForValue", providerUUIDs.get(i));
+            providerSchedule.put("repeatForValue", providerUUID);
             providerSchedule.put("iterationIsComplete", true);
             providerSchedule.put("childcareWeeklySchedule[]", List.of("Monday", "Tuesday"));
             providerSchedule.put("childcareEndTimeAllDaysAmPm", "PM");
@@ -433,16 +449,15 @@ public class SubmissionTestBuilder {
             providerSchedule.put("childcareStartTimeAllDaysHour", "10");
             providerSchedule.put("childcareStartTimeAllDaysMinute", "24");
 
+            // Add providerSchedule to the correct childcareSchedule
+            List<Map<String, Object>> providerSchedules =
+                    (List<Map<String, Object>>) childcareSchedule.get("providerSchedules");
             providerSchedules.add(providerSchedule);
-            childcareSchedule.put("providerSchedules", providerSchedules);
-
-            childcareSchedules.add(childcareSchedule);
         }
 
         submission.getInputData().put("childcareSchedules", childcareSchedules);
 
         return this;
-
     }
 
     public SubmissionTestBuilder withConstantChildcareSchedule(int childPosition) {

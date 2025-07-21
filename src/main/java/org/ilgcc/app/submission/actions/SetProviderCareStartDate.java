@@ -40,6 +40,8 @@ public class SetProviderCareStartDate implements Action {
     }
 
     private Optional<LocalDate> getEarliestChildCCAPDate(Submission submission) {
+        //todo: Update this method to take into account multiple providers. See
+        // SendFamilyApplicationTransmittedConfirmationEmailForExample
         String earliestChildCareDate = (String) submission.getInputData().getOrDefault("earliestChildcareStartDate", "");
         if (!earliestChildCareDate.isEmpty()) {
             return DateUtilities.parseStringDate(earliestChildCareDate);

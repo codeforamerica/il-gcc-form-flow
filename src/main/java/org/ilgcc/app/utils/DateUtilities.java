@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -83,6 +84,18 @@ public class DateUtilities {
         Optional<LocalDate> earliestDate = DateUtilities.parseStringDate(dateString1);
         Optional<LocalDate> childcareStartDate = DateUtilities.parseStringDate(dateString2);
         return earliestDate.get().isBefore(childcareStartDate.get()) ? dateString1 : dateString2;
+    }
+
+    public static String getEarliestDate(List<String> dates){
+        String earliestDate = "";
+        for(String date : dates){
+            Optional<LocalDate> parsedDate = DateUtilities.parseStringDate(date);
+            if(parsedDate.isPresent()){
+                earliestDate = getEarliestDate(earliestDate, date);
+            }
+        }
+        return earliestDate;
+
     }
 
     public static String convertDateToFullWordMonthPattern(String dateStr){

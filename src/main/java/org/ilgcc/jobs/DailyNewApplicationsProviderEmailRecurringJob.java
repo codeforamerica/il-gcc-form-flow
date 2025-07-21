@@ -33,8 +33,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
     MessageSource messageSource;
     private final TransactionRepositoryService transactionRepositoryService;
     private final CCMSDataService ccmsDataService;
-    private final SendRecurringEmailJob sendRecurringEmailJob;
-    boolean emailsEnabled;
+    private final SendEmailJob sendEmailJob;
     boolean enableResourceOrganizationEmails;
 
 
@@ -64,14 +63,12 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
     }
 
     public DailyNewApplicationsProviderEmailRecurringJob(TransactionRepositoryService transactionRepositoryService,
-            CCMSDataService ccmsDataService, SendRecurringEmailJob sendRecurringEmailJob,
-            @Value("${il-gcc.enable-emails}") boolean emailsEnabled,
+            CCMSDataService ccmsDataService, SendEmailJob sendEmailJob,
             @Value("${il-gcc.enable-resource-org-emails:false}") boolean enableResourceOrganizationEmails,
             @Value("${il-gcc.resource-org-emails}") String orgEmailsRaw) {
         this.transactionRepositoryService = transactionRepositoryService;
         this.ccmsDataService = ccmsDataService;
-        this.sendRecurringEmailJob = sendRecurringEmailJob;
-        this.emailsEnabled = emailsEnabled;
+        this.sendEmailJob = sendEmailJob;
         this.enableResourceOrganizationEmails = enableResourceOrganizationEmails;
         this.orgEmailsRaw = orgEmailsRaw;
     }
@@ -80,7 +77,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
     @Recurring(id = "daily-provider-email-job", cron = "0 0 4 * * *", zoneId = "America/Chicago")
     @Job(name = "Daily New Applications Email to Providers")
     public void dailyProviderEmailJob() {
-        if (!emailsEnabled || !enableResourceOrganizationEmails) {
+        if (!enableResourceOrganizationEmails) {
             log.info("daily-provider-email-job is off");
             return;
         }
@@ -148,7 +145,7 @@ public class DailyNewApplicationsProviderEmailRecurringJob {
                 new DailyNewApplicationsProviderEmailTemplate(emailData, messageSource).createTemplate(),
                 emailData.get("processingOrgId").toString());
         log.info("secondsOffset: {}", secondsOffset);
-        sendRecurringEmailJob.enqueueSendEmailJob(email, Integer.toUnsignedLong(secondsOffset));
+        sendEmailJob.enqueueSendOrganizationEmailJob(email, Integer.toUnsignedLong(secondsOffset));
         secondsOffset = secondsOffset + secondsOffsetIncrement;
     }
 }

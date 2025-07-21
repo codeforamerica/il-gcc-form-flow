@@ -1,4 +1,4 @@
-package org.ilgcc.app.email;
+package org.ilgcc.app.email.sendgrid;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
