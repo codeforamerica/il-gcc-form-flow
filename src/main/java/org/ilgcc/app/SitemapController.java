@@ -29,7 +29,7 @@ public class SitemapController {
                 <priority>0.8</priority>
               </url>
               <url>
-                <loc>%s/privacy-policy</loc>
+                <loc>%s/privacy</loc>
                 <changefreq>monthly</changefreq>
                 <priority>0.5</priority>
               </url>
