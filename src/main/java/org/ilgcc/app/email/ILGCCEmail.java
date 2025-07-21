@@ -1,5 +1,8 @@
 package org.ilgcc.app.email;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import jakarta.validation.constraints.NotNull;
@@ -23,24 +26,50 @@ public class ILGCCEmail implements Serializable {
     private final List<Email> recipientEmails;
     private final String orgId;
 
+    @JsonIgnore
     public ILGCCEmail(@NotNull List<String> recipientAddresses, ILGCCEmailTemplate emailTemplate, String orgId) {
-        this.senderEmail = new Email(emailTemplate.getSenderEmail().getEmail(), emailTemplate.getSenderEmail().getName());
-        this.subject = emailTemplate.getSubject();
-        this.body = new Content(emailTemplate.getBody().getType(), emailTemplate.getBody().getValue());
-        this.emailType = emailTemplate.getEmailType();
-        this.submissionId = null;
-        this.orgId = orgId;
-        this.recipientEmails = recipientAddresses.stream().map(Email::new).toList();
+        this(
+                new Email(emailTemplate.getSenderEmail().getEmail(), emailTemplate.getSenderEmail().getName()),
+                emailTemplate.getSubject(),
+                new Content(emailTemplate.getBody().getType(), emailTemplate.getBody().getValue()),
+                emailTemplate.getEmailType(),
+                null,
+                recipientAddresses.stream().map(Email::new).toList(),
+                orgId
+        );
     }
 
+    @JsonIgnore
     public ILGCCEmail(@NotNull String recipientAddress, ILGCCEmailTemplate emailTemplate, UUID submissionId) {
-        this.senderEmail = emailTemplate.getSenderEmail();
-        this.subject = emailTemplate.getSubject();
-        this.body = emailTemplate.getBody();
-        this.emailType = emailTemplate.getEmailType();
+        this(
+                emailTemplate.getSenderEmail(),
+                emailTemplate.getSubject(),
+                emailTemplate.getBody(),
+                emailTemplate.getEmailType(),
+                submissionId,
+                List.of(new Email(recipientAddress)),
+                null
+        );
+    }
+
+    @JsonCreator
+    public ILGCCEmail(
+            @JsonProperty("senderEmail") Email senderEmail,
+            @JsonProperty("subject") String subject,
+            @JsonProperty("body") Content body,
+            @JsonProperty("emailType") EmailType emailType,
+            @JsonProperty("submissionId") UUID submissionId,
+            @JsonProperty("recipientEmails") List<Email> recipientEmails,
+            @JsonProperty("orgId") String orgId
+    ) {
+        this.senderEmail = senderEmail;
+        this.subject = subject;
+        this.body = body;
+        this.emailType = emailType;
         this.submissionId = submissionId;
-        this.orgId = null;
-        this.recipientEmails = List.of(new Email(recipientAddress));
+        // Defensive copy for immutability:
+        this.recipientEmails = recipientEmails == null ? List.of() : List.copyOf(recipientEmails);
+        this.orgId = orgId;
     }
 
     public Email getSenderEmail() {
