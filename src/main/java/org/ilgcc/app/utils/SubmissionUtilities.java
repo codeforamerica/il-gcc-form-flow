@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -356,6 +355,7 @@ public class SubmissionUtilities {
                 provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
                 provider.put("providerResponseStatus", SubmissionStatus.RESPONDED.name());
                 provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
+                provider.put("providerResponseName", ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
             } else if (!provider.containsKey("providerResponseStatus") || !SubmissionStatus.RESPONDED.name()
                     .equals(provider.get("providerResponseStatus").toString())) {
                 allProvidersResponded = false;

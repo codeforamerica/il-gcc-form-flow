@@ -1,4 +1,4 @@
-package org.ilgcc.app.email;
+package org.ilgcc.app.email.sendgrid;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sendgrid.Method;

@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
@@ -28,6 +29,9 @@ public class ProviderResponseRecurringJob {
     private final boolean isCCMSIntegrationEnabled;
 
     private final SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
+
+    @Value("${il-gcc.no-provider-response-delay-seconds}")
+    private int offsetDelaySeconds;
 
     public ProviderResponseRecurringJob(
             TransactionRepositoryService transactionRepositoryService,
@@ -62,6 +66,10 @@ public class ProviderResponseRecurringJob {
         if (expiringSubmissionsToSend.isEmpty()) {
             return;
         } else {
+            // Every time the job runs, we can reset this back to the starting point of however long we'd
+            // like to stagger everything. ie, if the stagger is 10 seconds, the first time is just 10
+            AtomicInteger totalOffsetDelaySeconds = new AtomicInteger(this.offsetDelaySeconds);
+
             for (Submission expiredFamilySubmission : expiringSubmissionsToSend) {
                 if (!hasProviderResponse(expiredFamilySubmission)) {
                     log.info("No provider response found for family submission {}.", expiredFamilySubmission.getId());
@@ -69,20 +77,41 @@ public class ProviderResponseRecurringJob {
                     ccmsSubmissionPayloadTransaction.enqueueCCMSTransactionPayloadInstantly(
                             expiredFamilySubmission.getId());
 
+                    if (isCCMSIntegrationEnabled) {
+                        ccmsSubmissionPayloadTransaction.enqueueCCMSTransactionPayloadWithSecondsOffset(
+                                expiredFamilySubmission.getId(), totalOffsetDelaySeconds.get());
+                    }
+
+                    // After we send a submission, stagger the next job by the offset
+                    totalOffsetDelaySeconds.addAndGet(this.offsetDelaySeconds);
+
                     updateProviderStatus(expiredFamilySubmission);
                     if (expiredFamilySubmission.getInputData().containsKey("providers")) {
                         List<Map<String, Object>> providersSubflowData = (List<Map<String, Object>>)
                                 expiredFamilySubmission.getInputData().getOrDefault("providers", emptyList());
                         providersSubflowData.forEach(provider -> {
-                            if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus"))) {
-                                log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
-                                        provider.get("uuid"), expiredFamilySubmission.getId());
-                                sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers",
-                                        provider.get("uuid").toString());
+                            try {
+                                if (!SubmissionStatus.RESPONDED.name().equals(provider.get("providerResponseStatus"))) {
+                                    log.info("Sending did not respond email for provider ID: {} for family submission ID: {}",
+                                            provider.get("uuid"), expiredFamilySubmission.getId());
+                                    sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, "providers",
+                                            provider.get("uuid").toString(), totalOffsetDelaySeconds.get());
+
+                                    // After we send an email, stagger the next job by the offset
+                                    totalOffsetDelaySeconds.addAndGet(this.offsetDelaySeconds);
+                                }
+                            } catch (Exception e) {
+                                log.warn("Unable to send ProviderDidNotRespondToFamilyEmail for family {} and provider {}",
+                                        expiredFamilySubmission.getId(), provider.get("uuid"), e);
                             }
                         });
                     } else {
-                        sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission);
+                        try {
+                            sendProviderDidNotRespondToFamilyEmail.send(expiredFamilySubmission, totalOffsetDelaySeconds.get());
+                        } catch (Exception e) {
+                            log.warn("Unable to send ProviderDidNotRespondToFamilyEmail for family {}",
+                                    expiredFamilySubmission.getId(), e);
+                        }
                     }
 
 

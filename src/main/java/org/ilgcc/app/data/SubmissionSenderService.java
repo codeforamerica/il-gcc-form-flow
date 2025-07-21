@@ -34,7 +34,7 @@ public class SubmissionSenderService {
     }
 
     public void sendProviderSubmission(Submission providerSubmission) {
-       sendProviderSubmission(providerSubmission, false, Optional.empty());
+        sendProviderSubmission(providerSubmission, false, Optional.empty());
     }
 
     public void sendProviderSubmissionInstantly(Submission providerSubmission) {

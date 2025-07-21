@@ -748,6 +748,7 @@ subflows:
     relationship:
       relatesTo: providers
       relationAlias: providerUuid
+      filter: ProvidersWithChildcareSchedules
     entryScreen: after-submit-contact-provider
     iterationStartScreen: contact-providers-start
     reviewScreen: contact-providers-review
