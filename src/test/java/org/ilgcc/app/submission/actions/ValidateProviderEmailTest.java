@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import org.ilgcc.app.IlGCCApplication;
-import org.ilgcc.app.email.SendGridEmailValidationService;
+import org.ilgcc.app.email.sendgrid.SendGridEmailValidationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

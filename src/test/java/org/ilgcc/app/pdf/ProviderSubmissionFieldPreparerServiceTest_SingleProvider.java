@@ -64,7 +64,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
 
         @Test
         public void whenApplicationExpired() {
-            familySubmission.getInputData().put("providerSubmissionStatus", SubmissionStatus.EXPIRED.name());
+            familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name());
 
             Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
             assertThat(result.get("providerResponseBusinessName")).isEqualTo(
