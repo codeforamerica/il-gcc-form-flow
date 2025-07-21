@@ -85,9 +85,7 @@ public abstract class SendEmail {
         }
     }
 
-    protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
-        return new ILGCCEmailTemplate();
-    }
+    protected abstract ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData);
 
     protected Optional<Map<String, Object>> getEmailData(Submission familySubmission) {
         return getEmailData(familySubmission, null);
