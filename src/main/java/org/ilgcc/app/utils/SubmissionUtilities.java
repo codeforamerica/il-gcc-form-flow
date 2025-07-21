@@ -378,6 +378,7 @@ public class SubmissionUtilities {
                 provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
                 provider.put("providerResponseStatus", SubmissionStatus.RESPONDED.name());
                 provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
+                provider.put("providerResponseName", ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
             } else if (!provider.containsKey("providerResponseStatus") || !SubmissionStatus.RESPONDED.name()
                     .equals(provider.get("providerResponseStatus").toString())) {
                 allProvidersResponded = false;

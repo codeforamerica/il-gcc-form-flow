@@ -143,7 +143,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
     @Test
     void correctlyEnqueuesSendEmailJob() {
         sendEmailClass.send(familySubmission);
-        verify(sendEmailJob).enqueueSendEmailJob(any(ILGCCEmail.class), any(Integer.class));
+        verify(sendEmailJob).enqueueSendSubmissionEmailJob(any(ILGCCEmail.class), any(Integer.class));
     }
 
     @Nested

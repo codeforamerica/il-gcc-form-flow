@@ -85,9 +85,7 @@ public abstract class SendEmail {
         }
     }
 
-    protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
-        return new ILGCCEmailTemplate();
-    }
+    protected abstract ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData);
 
     protected Optional<Map<String, Object>> getEmailData(Submission familySubmission) {
         return getEmailData(familySubmission, null);
@@ -108,7 +106,7 @@ public abstract class SendEmail {
     protected void sendEmail(ILGCCEmail email, Submission submission, String subflowName, Map<String, Object> subflowData, int offsetDelaySeconds) {
         log.info("{}: About to enqueue the Send Email Job for submissionId: {}",
                 email.getEmailType().getDescription(), submission.getId());
-        sendEmailJob.enqueueSendEmailJob(email, offsetDelaySeconds);
+        sendEmailJob.enqueueSendSubmissionEmailJob(email, offsetDelaySeconds);
         updateEmailStatus(submission, subflowName, subflowData);
     }
 
