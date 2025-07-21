@@ -1,6 +1,6 @@
 package org.ilgcc.app.pdf;
 
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.getProviderSubmissionId;
 
@@ -76,7 +76,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
         if (enableMultipleProviders) {
             Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                    getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
+                    getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
 
             String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
 

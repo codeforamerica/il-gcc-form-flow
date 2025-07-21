@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.filters;
 
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
 
 import formflow.library.config.submission.SubflowRelationshipFilter;
 import formflow.library.data.Submission;
@@ -15,7 +15,7 @@ public class ProvidersWithChildcareSchedules implements SubflowRelationshipFilte
 
     @Override
     public List<HashMap<String, Object>> filter(List<HashMap<String, Object>> providers, Submission submission) {
-        Set<String> providerIdsWithSchedules = getRelatedChildrenSchedulesForEachProvider(submission.getInputData()).keySet();
+        Set<String> providerIdsWithSchedules = getRelatedChildrenSchedulesForProvider(submission.getInputData()).keySet();
 
         return providers.stream().filter(provider -> providerIdsWithSchedules.contains(provider.get("uuid").toString()))
                 .collect(Collectors.toList());
