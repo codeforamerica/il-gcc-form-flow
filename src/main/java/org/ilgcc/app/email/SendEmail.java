@@ -106,7 +106,7 @@ public abstract class SendEmail {
     protected void sendEmail(ILGCCEmail email, Submission submission, String subflowName, Map<String, Object> subflowData, int offsetDelaySeconds) {
         log.info("{}: About to enqueue the Send Email Job for submissionId: {}",
                 email.getEmailType().getDescription(), submission.getId());
-        sendEmailJob.enqueueSendEmailJob(email, offsetDelaySeconds);
+        sendEmailJob.enqueueSendSubmissionEmailJob(email, offsetDelaySeconds);
         updateEmailStatus(submission, subflowName, subflowData);
     }
 
