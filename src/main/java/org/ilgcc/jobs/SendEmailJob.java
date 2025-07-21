@@ -74,7 +74,7 @@ public class SendEmailJob {
                 if (!acquired) {
                     log.error("Could not acquire concurrency slot within timeout for email type {} and {} {}. Job will be retried.",
                             email.getEmailType(), logIdType, logId);
-                    // Optionally throw an exception to trigger JobRunr retry
+                    // Throw an exception to trigger JobRunr retry
                     throw new IOException("Timeout waiting to acquire semaphore permit for sending email.");
                 }
 
