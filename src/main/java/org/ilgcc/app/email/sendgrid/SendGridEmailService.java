@@ -1,4 +1,4 @@
-package org.ilgcc.app.email;
+package org.ilgcc.app.email.sendgrid;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -10,15 +10,18 @@ import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
+import org.ilgcc.app.email.ILGCCEmail;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class SendGridEmailService {
 
-    private final SendGrid sendGrid = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+    private final SendGrid sendGrid;
+
+    public SendGridEmailService() {
+        this.sendGrid = SendGridClientFactory.getSendGridClient();
+    }
 
     public Response sendEmail(ILGCCEmail ilgccEmail) throws IOException {
         // Defensive copies

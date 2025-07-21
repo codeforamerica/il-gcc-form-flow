@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.ILGCCEmail;
-import org.ilgcc.app.email.SendGridEmailService;
+import org.ilgcc.app.email.sendgrid.SendGridEmailService;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
