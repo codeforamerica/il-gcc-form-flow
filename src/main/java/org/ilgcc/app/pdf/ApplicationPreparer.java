@@ -105,7 +105,8 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         results.put("childcareStartDate",
                 new SingleField("childcareStartDate",
                         inputData.getOrDefault("earliestChildcareStartDate", "").toString(), null));
-
+        results.put("applicantFamilySize",
+            new SingleField("applicantFamilySize", PreparerUtilities.getApplicantFamilySize(inputData).toString(), null));
         return results;
     }
 
