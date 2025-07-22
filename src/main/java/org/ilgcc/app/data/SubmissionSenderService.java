@@ -54,8 +54,10 @@ public class SubmissionSenderService {
 
                 log.info("Provider submitted response for family submission {}, enqueuing transfer of documents. Provider submission is {}",
                         familySubmission.getId(), providerSubmission.getId());
-
-                if (multipleProvidersEnabled) {
+                // TODO: multipleProvidersEnabled was here previously, we can instead check if the family submission contains
+                // the providers key to see if it has multiple providers -- if it does not, we can assume the application is from
+                // before multiple providers were enabled -- remove the else when multi provider is turned on in prod
+                if (familySubmission.getInputData().containsKey("providers")) {
                     SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
                 } else {
                     familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());

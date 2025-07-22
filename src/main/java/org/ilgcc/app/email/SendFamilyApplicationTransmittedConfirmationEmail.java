@@ -48,7 +48,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
 
         List<Map<String, Object>> providerData = new ArrayList<>();
 
-        Map<String, List<Map<String, Object>>> providerSchedules = (Map<String, List<Map<String, Object>>>) SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(
+        Map<String, List<Map<String, Object>>> providerSchedules = (Map<String, List<Map<String, Object>>>) SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(
                 familySubmission.getInputData());
 
         if (!providerSchedules.isEmpty()) {
