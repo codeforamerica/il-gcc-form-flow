@@ -295,7 +295,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
 
         assertThat(emailCopy).contains(messageSource.getMessage(
                 "email.family-application-transmitted-confirmation-email.li-did-not-agree-to-care",
-                new Object[]{"P.P.", "F.C. and S.C."},
+                new Object[]{"F.L.", "F.C. and S.C."},
                 locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage(
