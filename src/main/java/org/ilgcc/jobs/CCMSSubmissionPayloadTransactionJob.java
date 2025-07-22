@@ -236,17 +236,16 @@ public class CCMSSubmissionPayloadTransactionJob {
 
                             if (workItemId == null) {
                                 log.warn("Received null work item ID from CCMS transaction for submission : {}",
-                                        submission.getId());
+                                        submissionId);
                             }
 
-                            transactionRepositoryService.createTransaction(
-                                    UUID.fromString(response.get("transactionId").asText()),
-                                    submission.getId(), workItemId);
+                            UUID transactionId =  UUID.fromString(response.get("transactionId").asText());
+                            transactionRepositoryService.createTransaction(transactionId, submissionId, workItemId);
 
-                            if (SubmissionUtilities.haveAllProvidersResponded(submission)) {
-                                log.info("All providers responded to CCMS transaction : {}", submission.getId());
-                                sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
-                            }
+                            log.info("All providers responded {}. {} sent to CCMS with transaction {}",
+                                    SubmissionUtilities.haveAllProvidersResponded(submission), submissionId, transactionId);
+                            sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
+
                         } catch (IOException e) {
                             log.error("There was an error when attempting to send submission {} to CCMS",
                                    submissionId, e);
