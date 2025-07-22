@@ -60,7 +60,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
                             .filter(provider -> provider.get("uuid").equals(providerId)).findFirst();
                     if (currentProvider.isPresent()) {
                         String earliestCCAPDateForCurrentProvider =
-                                (String) DateUtilities.getEarliestDate(providerSchedules.get(providerId).stream().map(s -> s.get("ccapStartDate").toString()).toList());
+                                (String) DateUtilities.getEarliestDate(providerSchedules.get(providerId).stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
 
                         if (currentProvider.get().containsKey("providerResponseSubmissionId")) {
                             Optional<Submission> currentProviderSubmission = submissionRepositoryService.findById(
