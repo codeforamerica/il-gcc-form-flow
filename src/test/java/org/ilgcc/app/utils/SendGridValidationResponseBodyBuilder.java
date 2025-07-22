@@ -1,7 +1,7 @@
 package org.ilgcc.app.utils;
 
-import org.ilgcc.app.email.SendGridValidationResponseBody;
-import org.ilgcc.app.email.SendGridValidationResponseBody.*;
+import org.ilgcc.app.email.sendgrid.SendGridValidationResponseBody;
+import org.ilgcc.app.email.sendgrid.SendGridValidationResponseBody.*;
 
 public class SendGridValidationResponseBodyBuilder {
 
