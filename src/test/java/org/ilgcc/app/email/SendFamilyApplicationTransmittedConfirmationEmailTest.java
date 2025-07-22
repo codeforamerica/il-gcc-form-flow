@@ -237,7 +237,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         assertThat(currentProviderData.get("ccapStartDate")).isEqualTo("January 10, 2025");
         assertThat(currentProviderData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
         assertThat(currentProviderData.get("providerType")).isEqualTo("Individual");
-        assertThat(currentProviderData.get("childCareProviderInitials")).isEqualTo("P.P.");
+        assertThat(currentProviderData.get("childCareProviderInitials")).isEqualTo("F.L.");
         assertThat(currentProviderData.get("providerResponseAgreeToCare")).isEqualTo("false");
         assertThat(currentProviderData.get("providerResponseContactEmail")).isEqualTo("provideremail@test.com");
     }
