@@ -33,7 +33,6 @@ public class UpdateCurrentChildcareProviderIfOneOrNoProviders implements Action 
         }
     }
 
-
     private boolean hasNoProviders(Map<String, Object> inputData)  {
         return inputData.getOrDefault("hasChosenProvider", "false").equals("false");
     }
