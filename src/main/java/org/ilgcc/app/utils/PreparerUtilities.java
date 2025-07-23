@@ -73,8 +73,9 @@ public class PreparerUtilities {
 
     int totalFamilyMembers = 1;
     if (inputData.containsKey("parentHasPartner")) {
-      inputData.get("parentHasPartner").toString().equals("true");
-      totalFamilyMembers++ ;
+      if("true".equals(inputData.get("parentHasPartner"))){
+        totalFamilyMembers++;
+      }
     }
     List<Map<String, Object>> adultDependents = (List<Map<String, Object>>)inputData.getOrDefault("adultDependents", emptyList());
     totalFamilyMembers += adultDependents.size();
