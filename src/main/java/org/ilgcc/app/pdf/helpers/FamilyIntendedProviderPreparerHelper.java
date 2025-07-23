@@ -30,7 +30,7 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, Map<String, Object> providerData) {
         Map<String, SubmissionField> results = new HashMap<>();
 
-        if (SubmissionUtilities.isNoProviderSubmission(submission.getInputData())) {
+        if (SubmissionUtilities.isNoProviderSubmission(submission.getInputData()) || providerData.isEmpty()) {
             results.putAll(prepareNoProviderData());
         } else {
             String submissionStatus = (String) providerData.getOrDefault("providerApplicationResponseStatus", "");
