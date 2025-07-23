@@ -23,10 +23,10 @@
                                     <p th:id="parent-name"
                                        th:utext="${#messages.msg('provider-response-response.parent-name', applicationData.getOrDefault('clientResponseParentName', 'n/a'))}"></p>
 
-                                    <th:block th:if="${children.size().equals(1)}">
+                                    <th:block th:if="${true}">
                                         <p th:utext="#{'provider-response-response.care-request.1-child'}"></p>
                                     </th:block>
-                                    <th:block th:unless="${children.size().equals(1)}">
+                                    <th:block th:unless="${true}">
                                         <p th:utext="${#messages.msg('provider-response-response.care-request.multiple-children', children.size())}"></p>
                                     </th:block>
 

@@ -1090,7 +1090,6 @@ subflows:
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
-    - submit-complete-final
     - registration-submit-complete
     - submit-confirmation
     - registration-submit-next-steps

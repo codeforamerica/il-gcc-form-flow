@@ -109,10 +109,10 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickButton("Submit");
 
-        //submit-confirmation displays submit-complete-final screen
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        //submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
         // Existing provider who agreed to care should see this header
-        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("provider-response-submit-complete-final.header"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.header"));
         // If they are an existing provider they should see the survey legend that says how was the response experience
         WebElement surveyLegend = driver.findElement(By.xpath("//legend[@id='providerSurveyProviderDifficulty-legend']/span"));
         assertThat(surveyLegend.getText()).isEqualTo(getEnMessage("submit-confirmation.existing-provider.experience-question"));
@@ -120,7 +120,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         List<WebElement> notices = driver.findElements(By.cssSelector(".notice.notice--gray"));
         assertThat(notices).isNotEmpty();
         testPage.goBack();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
     }
 
     @Test
@@ -204,9 +204,9 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickButton("Submit");
 
         //submit-confirmation displays submit-complete-final screen
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
         testPage.goBack();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
     }
 
     @Test
