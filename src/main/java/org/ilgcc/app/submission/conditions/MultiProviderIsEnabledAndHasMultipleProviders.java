@@ -6,7 +6,6 @@ import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.util.Optional;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.jetbrains.annotations.NotNull;
@@ -41,15 +40,15 @@ public class MultiProviderIsEnabledAndHasMultipleProviders implements Condition 
 
     @NotNull
     private Boolean multiproviderIsEnabledAndIsNotSingleProviderApplication(Submission submission) {
-        Optional<UUID> familySubmissionIdOptional = ProviderSubmissionUtilities.getFamilySubmissionId(submission);
-        if (familySubmissionIdOptional.isEmpty()) {
-            log.warn("No family submission found ID was found for provider submission: {}.", submission.getId());
-            return false; // If we have no family submission, we can't do anything
+        Optional<String> familySubmissionShortCode = ProviderSubmissionUtilities.getFamilySubmissionShortCode(submission);
+        
+        if (familySubmissionShortCode.isEmpty()) {
+            log.warn("No family submission short code was found for provider submission: {}.", submission.getId());
+            return false; // If we have no shortcode, we can't do anything
         }
-
-        Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(familySubmissionIdOptional.get());
+        Optional<Submission> familySubmissionOptional = submissionRepositoryService.findByShortCode(familySubmissionShortCode.get());
         if (familySubmissionOptional.isEmpty()) {
-            log.warn("No family submission with ID {} found for the provider submission: {}.", familySubmissionIdOptional.get(), submission.getId());
+            log.warn("No family submission found for the provider submission: {}.", submission.getId());
             return false; // If we have no family submission, we can't do anything
         }
 
