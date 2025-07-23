@@ -222,24 +222,25 @@ public class SubmissionUtilities {
     public static boolean isNoProviderSubmission(Map<String, Object> familyInputData) {
         String hasChosenProvider = familyInputData.getOrDefault("hasChosenProvider", "").toString();
 
-        if("false".equals(hasChosenProvider)) {
+        if ("false".equals(hasChosenProvider)) {
             return true;
         }
 
         List<Map<String, Object>> providers = new ArrayList<>();
-        if(familyInputData.containsKey("providers")) {
+        if (familyInputData.containsKey("providers")) {
             providers = (List<Map<String, Object>>) familyInputData.getOrDefault("providers", emptyList());
             if (providers.isEmpty()) {
                 return true;
             }
         }
 
-        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) familyInputData.getOrDefault("childcareSchedules", emptyList());
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) familyInputData.getOrDefault(
+                "childcareSchedules", emptyList());
         if (!childcareSchedules.isEmpty()) {
             AtomicBoolean hasNotChosenAProviderOrHasNoProvidersScheduled = new AtomicBoolean(true);
             providers.forEach(provider -> {
                 childcareSchedules.forEach(childcareSchedule -> {
-                    if(childcareScheduleIncludesThisProvider(childcareSchedule, provider.get("uuid").toString())) {
+                    if (childcareScheduleIncludesThisProvider(childcareSchedule, provider.get("uuid").toString())) {
                         hasNotChosenAProviderOrHasNoProvidersScheduled.set(false);
                     }
                 });
@@ -370,18 +371,24 @@ public class SubmissionUtilities {
         String currentProviderUuid = providerSubmission.getInputData().get("currentProviderUuid").toString();
         String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
 
-        List<Map<String, Object>> providers = getProviders(familySubmission.getInputData());
+        List<Map<String, Object>> providers = new ArrayList<>();
+        List<String> providersWithSchedules = SchedulePreparerUtility.providersWithSchedules(familySubmission.getInputData());
         boolean allProvidersResponded = true;
 
-        for (Map<String, Object> provider : providers) {
-            if (currentProviderUuid.equals(provider.get("uuid").toString())) {
-                provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
-                provider.put("providerResponseStatus", SubmissionStatus.RESPONDED.name());
-                provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
-                provider.put("providerResponseName", ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
-            } else if (!provider.containsKey("providerResponseStatus") || !SubmissionStatus.RESPONDED.name()
-                    .equals(provider.get("providerResponseStatus").toString())) {
-                allProvidersResponded = false;
+        for (String providerId : providersWithSchedules) {
+            if (!providerId.equals("NO_PROVIDER")) {
+                Map<String, Object> currentProvider = getCurrentProvider(familySubmission.getInputData(), providerId);
+                if (currentProviderUuid.equals(providerId)) {
+                    currentProvider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
+                    currentProvider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
+                    currentProvider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
+                    currentProvider.put("providerResponseName",
+                            ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
+                } else if (!currentProvider.containsKey("providerApplicationResponseStatus") || !SubmissionStatus.RESPONDED.name()
+                        .equals(currentProvider.get("providerApplicationResponseStatus").toString())) {
+                    allProvidersResponded = false;
+                }
+                providers.add(currentProvider);
             }
         }
 
@@ -406,14 +413,14 @@ public class SubmissionUtilities {
 
         return providerUUIDs.size() == 1;
     }
-    
+
     public static boolean isPreMultiProviderApplicationWithSingleProvider(Submission familySubmission) {
         HashMap<String, Object> inputData = (HashMap<String, Object>) familySubmission.getInputData();
         return inputData.containsKey("familyIntendedProviderName") && !inputData.containsKey("providers");
     }
-    
+
     public static boolean isMultiProviderApplication(Submission familySubmission) {
-        return !isPreMultiProviderApplicationWithSingleProvider(familySubmission) && 
+        return !isPreMultiProviderApplicationWithSingleProvider(familySubmission) &&
                 !allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData());
     }
 }
