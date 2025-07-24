@@ -85,6 +85,15 @@ public abstract class AbstractBasePageTest {
 
     protected Page testPage;
 
+    // These fields are dynamic and untestable with the current PDF approach
+    protected List<String> UNTESTABLE_FIELDS = List.of(
+            "PARTNER_SIGNATURE_DATE",
+            "APPLICANT_SIGNATURE_DATE",
+            "APPLICANT_NAME_FULL",
+            "RECEIVED_TIMESTAMP",
+            "APPLICATION_CONFIRMATION_CODE",
+            "PROVIDER_SIGNATURE_DATE");
+
     public Submission getSessionSubmission() {
         // We're hoping that there's only one submission per session
         // If 0 or >1, an error will be thrown
@@ -397,7 +406,7 @@ public abstract class AbstractBasePageTest {
     protected File getDownloadedPDF(String flow) throws IOException {
         // There should only be one
         String downloadUrl = repo.findAll().stream().findFirst()
-                .map(submission -> "%s/download/%s/%s".formatted(baseUrl, flow, submission.getId()))
+                .map(submission -> "%s/%s/%s".formatted(baseUrl, flow, submission.getId()))
                 .orElseThrow(() -> new RuntimeException("Couldn't get url for pdf download"));
         driver.get(downloadUrl);
         await().until(pdfDownloadCompletes());

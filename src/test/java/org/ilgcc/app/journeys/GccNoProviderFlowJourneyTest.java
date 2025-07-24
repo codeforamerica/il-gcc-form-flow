@@ -5,14 +5,20 @@ import static org.awaitility.Awaitility.await;
 import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_PROJECT_CHILD_COUNTY;
 import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.PROJECT_CHILD_TEST_DATA;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 
 public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
+    String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap_NO_PROVIDER.pdf";
+
+    String FLOW = "download/gcc";
+
     @Test
-    void fullGccFlow() {
+    void fullGccFlow() throws IOException {
         // Home page
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
         testPage.clickButton(getEnMessage("index.apply-now"));
@@ -367,5 +373,8 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
         // complete-submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("complete-submit-confirmation.title"));
+
+        // Download PDF and verify fields
+        verifyPDF(TEST_FILLED_PDF_PATH, UNTESTABLE_FIELDS, FLOW);
     }
 }

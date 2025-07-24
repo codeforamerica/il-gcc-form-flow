@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_FOUR_C_COUNTY;
 
-import formflow.library.data.SubmissionRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -12,25 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
-
-    @Autowired
-    SubmissionRepository repository;
-
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap.pdf";
 
-    String FLOW = "gcc";
-
-    // These fields are dynamic and untestable with the current PDF approach
-    List<String> UNTESTABLE_FIELDS_FAMILY_APPLICATION = List.of(
-            "PARTNER_SIGNATURE_DATE",
-            "APPLICANT_SIGNATURE_DATE",
-            "APPLICANT_NAME_FULL",
-            "RECEIVED_TIMESTAMP",
-            "APPLICATION_CONFIRMATION_CODE");
+    String FLOW = "download/gcc";
 
     @AfterEach
     protected void clearSubmissions() {
@@ -768,6 +754,6 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
                 getEnMessage("submit-confirmation.general.survey.complete"));
 
         // Download PDF and verify fields
-        verifyPDF(TEST_FILLED_PDF_PATH, UNTESTABLE_FIELDS_FAMILY_APPLICATION, FLOW);
+        verifyPDF(TEST_FILLED_PDF_PATH, UNTESTABLE_FIELDS, FLOW);
     }
 }
