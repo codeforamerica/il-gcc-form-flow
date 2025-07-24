@@ -1,5 +1,9 @@
 package org.ilgcc.app.data;
 
+import static org.ilgcc.app.utils.SubmissionUtilities.haveAllProvidersResponded;
+import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.setCurrentProviderResponseInFamilyApplication;
+
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
@@ -12,7 +16,6 @@ import org.ilgcc.app.email.SendEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
-import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
@@ -85,8 +88,8 @@ public class SubmissionSenderService {
                 // TODO: multipleProvidersEnabled was here previously, we can instead check if the family submission contains
                 // the providers key to see if it has multiple providers -- if it does not, we can assume the application is from
                 // before multiple providers were enabled -- remove the else when multi provider is turned on in prod
-                if (familySubmission.getInputData().containsKey("providers")) {
-                    SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
+                if (familySubmission.getInputData().containsKey("providers")  && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
+                    setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
                 } else {
                     familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
                     familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
@@ -101,7 +104,7 @@ public class SubmissionSenderService {
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                             uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }
-                if (ccmsIntegrationEnabled && SubmissionUtilities.haveAllProvidersResponded(familySubmission)) {
+                if (ccmsIntegrationEnabled && haveAllProvidersResponded(familySubmission)) {
                     if (sendToCCMSInstantly) {
                         ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadInstantly(familySubmission.getId());
                     } else {
