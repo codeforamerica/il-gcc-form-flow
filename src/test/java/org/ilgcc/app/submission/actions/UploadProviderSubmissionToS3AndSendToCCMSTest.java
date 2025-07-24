@@ -92,8 +92,8 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
                 s3PresignService,
                 ccmsSubmissionPayloadTransactionJob,
                 true,
-                true,
-                false);
+                true
+        );
 
         uploadProviderSubmissionToS3AndSendToCCMS = new UploadProviderSubmissionToS3AndSendToCCMS(submissionSenderService);
         uploadProviderSubmissionToS3AndSendToCCMS.run(providerSubmission);

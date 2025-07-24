@@ -36,7 +36,6 @@ public class SubmissionSenderService {
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
     private final boolean ccmsIntegrationEnabled;
     private final boolean dtsIntegrationEnabled;
-    private final boolean multipleProvidersEnabled;
 
     public SubmissionSenderService(PdfService pdfService,
             CloudFileRepository cloudFileRepository,
@@ -48,8 +47,7 @@ public class SubmissionSenderService {
             S3PresignService s3PresignService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
             @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
-            @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled,
-            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled) {
+            @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
@@ -61,7 +59,6 @@ public class SubmissionSenderService {
         this.ccmsSubmissionPayloadTransactionJob = ccmsSubmissionPayloadTransactionJob;
         this.ccmsIntegrationEnabled = ccmsIntegrationEnabled;
         this.dtsIntegrationEnabled = dtsIntegrationEnabled;
-        this.multipleProvidersEnabled = multipleProvidersEnabled;
     }
 
     public void sendProviderSubmission(Submission providerSubmission) {
