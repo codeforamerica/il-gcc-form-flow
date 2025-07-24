@@ -1,5 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
+import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_CONFIRMATION_CODE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 
@@ -82,7 +83,7 @@ public class GenerateDummyFamilySubmissionForDev implements Action {
         inputData.put("parentHasPartner", "false");
         inputData.put("earliestChildcareStartDate", "01/10/2025");
 
-        if (enableMultipleProviders) {
+        if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(providerSubmission)) {
             inputData.putAll(createMultipleProviders());
         } else {
             inputData.putAll(createSingleProvider(1));
