@@ -132,17 +132,15 @@ public class ProviderresponseMultiProviderFlowJourneyTest extends AbstractBasePa
             assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
             testPage.enter("providerResponseFamilyShortCode", familySubmission.getShortCode());
             testPage.clickContinue();
-
-            //TODO: Uncomment once this has been resolved
-            // multiple-providers
-            /*assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-multiple-providers.title"));
+            
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-multiple-providers.title"));
             testPage.clickElementById(String.format("currentProviderUuid-%s", individualProvider.get("uuid")));
             testPage.clickContinue();
 
             // confirm-provider
             assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirm-provider.title"));
             assertThat(testPage.getHeader()).contains("F.L.");
-            testPage.clickContinue();*/
+            testPage.clickContinue();
 
             // paid-by-ccap
             assertThat(testPage.getTitle()).isEqualTo(getEnMessage("paid-by-ccap.title"));
@@ -189,14 +187,13 @@ public class ProviderresponseMultiProviderFlowJourneyTest extends AbstractBasePa
             testPage.enter("providerResponseProviderNumber", CURRENT_APPROVED_PROVIDER.getProviderId().toString());
             testPage.clickContinue();
 
-            // TODO: remove once it's fixed
             // response
-//            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-//            assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
-//            assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
-//            assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-//            assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
-//            assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
+            assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
+            assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
+            assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
+            assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
+            assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
 
             testPage.clickElementById("providerResponseAgreeToCare-true-label");
             testPage.clickButton("Submit");
@@ -377,13 +374,12 @@ public class ProviderresponseMultiProviderFlowJourneyTest extends AbstractBasePa
             testPage.clickContinue();
 
             // response
-            // TODO: uncomment once single provider is fixed
             assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-//            assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
-//            assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
-//            assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-//            assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
-//            assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
+            assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
+            assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
+            assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
+            assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
+            assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
 
             testPage.clickElementById("providerResponseAgreeToCare-true-label");
             testPage.clickButton("Submit");
@@ -454,13 +450,12 @@ public class ProviderresponseMultiProviderFlowJourneyTest extends AbstractBasePa
             testPage.enter("providerResponseProviderNumber", CURRENT_APPROVED_PROVIDER.getProviderId().toString());
             testPage.clickContinue();
 
-            // TODO: uncomment once single provider is fixed
             assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
-//            assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
-//            assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
-//            assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-//            assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
-//            assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
+            assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
+            assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
+            assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
+            assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
+            assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
 
             testPage.clickElementById("providerResponseAgreeToCare-true-label");
             testPage.clickButton("Submit");
