@@ -36,7 +36,7 @@
                       <span class="job-name" th:text="${job.partnerCompanyName}"/>
                       <span class="text--small spacing-below-0 spacing-right-25">
                         <a th:href="'/flow/' + ${flow} + '/partnerJobs/' + ${job.uuid} + '/deleteConfirmation'"
-                           th:text="#{general.delete}"
+                           th:text="#{general.remove}"
                            class="subflow-delete"
                            th:id="'delete-iteration-' + ${job.uuid}"></a>
                       </span>
