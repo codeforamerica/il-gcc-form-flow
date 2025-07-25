@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -348,7 +349,7 @@ public abstract class AbstractBasePageTest {
     protected void verifyPDF(String pdfPath, List<String> untestableFields, String flow) throws IOException {
         File pdfFile = getDownloadedPDF(flow);
 
-//         regenerateExpectedPDF(pdfFile, pdfPath); // uncomment and run test to regenerate the test pdf
+//        regenerateExpectedPDF(pdfFile, pdfPath); // uncomment and run test to regenerate the test pdf
 
         try (FileInputStream actualIn = new FileInputStream(pdfFile); PdfReader actualReader = new PdfReader(
                 actualIn); FileInputStream expectedIn = new FileInputStream(
@@ -404,10 +405,18 @@ public abstract class AbstractBasePageTest {
     }
 
     protected File getDownloadedPDF(String flow) throws IOException {
-        // There should only be one
-        String downloadUrl = repo.findAll().stream().findFirst()
-                .map(submission -> "%s/%s/%s".formatted(baseUrl, flow, submission.getId()))
-                .orElseThrow(() -> new RuntimeException("Couldn't get url for pdf download"));
+        Optional<Submission> submissionOptional =
+                repo.findAll().stream().filter(submission -> submission.getFlow().equals(flow)).findFirst();
+
+        String downloadUrl = "";
+        if (submissionOptional.isPresent()) {
+
+            String baseString = flow.equals("gcc") ? "%s/download/%s/%s" : "%s/provider-response-download/%s/%s";
+
+            downloadUrl = baseString.formatted(baseUrl, flow, submissionOptional.get().getId());
+
+        }
+
         driver.get(downloadUrl);
         await().until(pdfDownloadCompletes());
         return getLatestDownloadedFile(path);

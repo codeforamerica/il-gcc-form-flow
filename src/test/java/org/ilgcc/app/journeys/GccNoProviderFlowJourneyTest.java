@@ -15,7 +15,7 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap_NO_PROVIDER.pdf";
 
-    String FLOW = "download/gcc";
+    String FLOW = "gcc";
 
     @Test
     void fullGccFlow() throws IOException {

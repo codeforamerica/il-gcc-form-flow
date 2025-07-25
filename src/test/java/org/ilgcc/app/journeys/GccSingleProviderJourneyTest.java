@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap.pdf";
 
-    String FLOW = "download/gcc";
+    String FLOW = "gcc";
 
     @AfterEach
     protected void clearSubmissions() {

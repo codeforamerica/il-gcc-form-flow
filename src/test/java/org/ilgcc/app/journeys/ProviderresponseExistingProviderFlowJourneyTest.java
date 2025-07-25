@@ -18,7 +18,7 @@ public class ProviderresponseExistingProviderFlowJourneyTest extends AbstractBas
 
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap_EXISTING_PROVIDER_RESPONSE.pdf";
 
-    String FLOW = "provider-response-download/providerresponse";
+    String FLOW = "providerresponse";
     @AfterEach
     protected void clearSubmissions() {
         super.clearSubmissions();
