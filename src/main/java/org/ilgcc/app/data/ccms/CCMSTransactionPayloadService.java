@@ -1,6 +1,7 @@
 package org.ilgcc.app.data.ccms;
 
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
+import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
 import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 
 import formflow.library.data.Submission;
@@ -33,20 +34,20 @@ public class CCMSTransactionPayloadService {
     private final UserFileRepositoryService userFileRepositoryService;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final MultiProviderPDFService pdfService;
-    private final boolean multipleProvidersEnabled;
+    private final boolean enableMultipleProviders;
     private boolean allowPdfModification;
 
     public CCMSTransactionPayloadService(CloudFileRepository cloudFileRepository,
             UserFileRepositoryService userFileRepositoryService, 
             MultiProviderPDFService pdfService,
             SubmissionRepositoryService submissionRepositoryService,
-            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled,
+            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders,
             @Value("${form-flow.uploads.file-conversion.allow-pdf-modification}") boolean allowPdfModification) {
         this.cloudFileRepository = cloudFileRepository;
         this.userFileRepositoryService = userFileRepositoryService;
         this.pdfService = pdfService;
         this.submissionRepositoryService = submissionRepositoryService;
-        this.multipleProvidersEnabled = multipleProvidersEnabled;
+        this.enableMultipleProviders = enableMultipleProviders;
         this.allowPdfModification = allowPdfModification;
     }
 
@@ -98,7 +99,7 @@ public class CCMSTransactionPayloadService {
         }
 
         List<UserFile> allFiles = new ArrayList<>();
-        if (multipleProvidersEnabled && familySubmission.getInputData().containsKey("providers")) {
+        if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
             List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
             for (Map<String, Object> provider : providers) {
                 if (provider.containsKey("providerResponseSubmissionId")) {

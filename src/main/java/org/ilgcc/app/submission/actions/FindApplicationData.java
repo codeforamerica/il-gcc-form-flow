@@ -1,7 +1,8 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.setChildData;
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -12,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -40,14 +41,14 @@ public class FindApplicationData implements Action {
         if (familySubmissionId.isPresent()) {
             Optional<Submission> familySubmission = submissionRepositoryService.findById(familySubmissionId.get());
             providerSubmission.getInputData()
-                    .put("clientResponse", ProviderSubmissionUtilities.getFamilySubmission(familySubmission));
+                    .put("clientResponse", ProviderSubmissionUtilities.getFamilyConfirmationCodeAndParentName(familySubmission));
 
             List<Map<String, Object>> childData;
 
-            if (enableMultipleProviders) {
+            if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission.get())) {
                 childData = new ArrayList<>();
                 Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                        getRelatedChildrenSchedulesForProvider(familySubmission.get().getInputData());
+                        getRelatedChildrenSchedulesForEachProvider(familySubmission.get().getInputData());
 
                 String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid",
                         "");
