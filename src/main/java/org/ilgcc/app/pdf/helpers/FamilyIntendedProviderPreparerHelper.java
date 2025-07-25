@@ -19,7 +19,6 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
         if (SubmissionUtilities.isNoProviderSubmission(familyInputData)) {
             results.putAll(prepareNoProviderData());
         } else {
-            // toDo: we can keep the same field name for each provider in providers;
             String submissionStatus = (String) familyInputData.getOrDefault("providerApplicationResponseStatus", "");
             Boolean hasExpired = SubmissionStatus.EXPIRED.name().equals(submissionStatus);
             results.putAll(prepareFamilyIntendedProviderData(familyInputData, hasExpired));
@@ -31,10 +30,10 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, Map<String, Object> providerData) {
         Map<String, SubmissionField> results = new HashMap<>();
 
-        if (SubmissionUtilities.isNoProviderSubmission(submission.getInputData())) {
+        if (SubmissionUtilities.isNoProviderSubmission(submission.getInputData()) || providerData.isEmpty()) {
             results.putAll(prepareNoProviderData());
         } else {
-            String submissionStatus = (String) submission.getInputData().getOrDefault("providerApplicationResponseStatus", "");
+            String submissionStatus = (String) providerData.getOrDefault("providerApplicationResponseStatus", "");
             Boolean hasExpired = SubmissionStatus.EXPIRED.name().equals(submissionStatus);
             results.putAll(prepareFamilyIntendedProviderData(providerData, hasExpired));
         }
