@@ -30,10 +30,6 @@ public class SubmissionSenderService {
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
             @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
             @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
-        this.pdfService = pdfService;
-        this.cloudFileRepository = cloudFileRepository;
-        this.pdfTransmissionJob = pdfTransmissionJob;
-        this.enqueueDocumentTransfer = enqueueDocumentTransfer;
         this.submissionRepositoryService = submissionRepositoryService;
         this.ccmsSubmissionPayloadTransactionJob = ccmsSubmissionPayloadTransactionJob;
         this.ccmsIntegrationEnabled = ccmsIntegrationEnabled;
