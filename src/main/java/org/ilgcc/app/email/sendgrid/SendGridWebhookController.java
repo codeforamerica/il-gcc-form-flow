@@ -1,4 +1,4 @@
-package org.ilgcc.app.email;
+package org.ilgcc.app.email.sendgrid;
 
 import com.sendgrid.helpers.eventwebhook.EventWebhook;
 import com.sendgrid.helpers.eventwebhook.EventWebhookHeader;

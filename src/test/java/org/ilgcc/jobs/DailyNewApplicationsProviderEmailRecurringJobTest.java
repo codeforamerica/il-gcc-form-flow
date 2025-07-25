@@ -57,7 +57,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
 
     @Mock
-    private SendRecurringEmailJob sendRecurringEmailJob;
+    private SendEmailJob sendEmailJob;
 
     private DailyNewApplicationsProviderEmailRecurringJob dailyNewApplicationsProviderEmailRecurringJob;
 
@@ -106,61 +106,50 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     @Test
     void jobSkipsWhenEnableResourceOrgEmailIsFalse() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
-                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, false, TWO_RESOURCE_ORG_EMAILS);
+                transactionRepositoryService, ccmsDataService, sendEmailJob, false, TWO_RESOURCE_ORG_EMAILS);
         dailyNewApplicationsProviderEmailRecurringJob.parseMap();
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
-        verifyNoInteractions(sendRecurringEmailJob);
+        verifyNoInteractions(sendEmailJob);
 
-    }
-
-    @Test
-    void jobSkipsWhenEnableEmailIsFalse() {
-        dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
-                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, false, true, TWO_RESOURCE_ORG_EMAILS);
-        dailyNewApplicationsProviderEmailRecurringJob.parseMap();
-
-        dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
-
-        verifyNoInteractions(sendRecurringEmailJob);
     }
 
     @Test
     void jobSkipsWhenResourceEmailsAreNull() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
-                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, null);
+                transactionRepositoryService, ccmsDataService, sendEmailJob, true, null);
 
         dailyNewApplicationsProviderEmailRecurringJob.parseMap();
         dailyNewApplicationsProviderEmailRecurringJob.messageSource = messageSource;
 
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
-        verifyNoInteractions(sendRecurringEmailJob);
+        verifyNoInteractions(sendEmailJob);
     }
 
     @Test
     void sendsSingleEmailPerOrgWhenSingleEmailExists() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
-                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, TWO_RESOURCE_ORG_EMAILS);
+                transactionRepositoryService, ccmsDataService, sendEmailJob, true, TWO_RESOURCE_ORG_EMAILS);
 
         dailyNewApplicationsProviderEmailRecurringJob.parseMap();
         dailyNewApplicationsProviderEmailRecurringJob.messageSource = messageSource;
 
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
-        verify(sendRecurringEmailJob, times(2)).enqueueSendEmailJob(any(ILGCCEmail.class), anyLong());
+        verify(sendEmailJob, times(2)).enqueueSendOrganizationEmailJob(any(ILGCCEmail.class), anyLong());
     }
 
     @Test
     void sendSingleEmailPerOrgWhenMultipleEmailsExist() {
         dailyNewApplicationsProviderEmailRecurringJob = new DailyNewApplicationsProviderEmailRecurringJob(
-                transactionRepositoryService, ccmsDataService, sendRecurringEmailJob, true, true, FOUR_RESOURCE_ORG_EMAILS);
+                transactionRepositoryService, ccmsDataService, sendEmailJob,  true, FOUR_RESOURCE_ORG_EMAILS);
 
         dailyNewApplicationsProviderEmailRecurringJob.parseMap();
         dailyNewApplicationsProviderEmailRecurringJob.messageSource = messageSource;
 
         dailyNewApplicationsProviderEmailRecurringJob.dailyProviderEmailJob();
 
-        verify(sendRecurringEmailJob, times(2)).enqueueSendEmailJob(any(ILGCCEmail.class), anyLong());
+        verify(sendEmailJob, times(2)).enqueueSendOrganizationEmailJob(any(ILGCCEmail.class), anyLong());
     }
 }

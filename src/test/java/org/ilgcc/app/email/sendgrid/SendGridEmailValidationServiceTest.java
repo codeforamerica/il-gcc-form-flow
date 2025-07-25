@@ -1,4 +1,4 @@
-package org.ilgcc.app.email;
+package org.ilgcc.app.email.sendgrid;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

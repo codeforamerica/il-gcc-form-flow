@@ -1,41 +1,40 @@
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
                    hasProviders=${submission.getInputData().containsKey('providers')},
-                   hasMoreThanOneProvider=${hasProviders && submission.getInputData().get('providers').size() > 1},
-                   providersList=${submission.getInputData().get('providers')},
-                   showNoProviderOption=${submission.getInputData().getOrDefault('choseProviderForEveryChildInNeedOfCare', 'false').equals('false')}">
-    <th:block
-            th:replace="~{fragments/screens/screenWithOneInput ::
+                   showNoProviderOption=${submission.getInputData().getOrDefault('choseProviderForEveryChildInNeedOfCare', 'false').equals('false')},
+                   hasMoreThanOneChildcareOption=${hasProviders && (submission.getInputData().get('providers').size() > 1 || showNoProviderOption)},
+                   providersList=${submission.getInputData().get('providers')}">
+  <th:block
+      th:replace="~{fragments/screens/screenWithOneInput ::
   screenWithOneInput(
     title=#{schedules-start.title},
     header=#{schedules-start.header(${childName})},
-    subtext=${hasMoreThanOneProvider ? null : #messages.msg('schedules-start.single-provider.subtext', childName)},
+    subtext=${hasMoreThanOneChildcareOption ? null : #messages.msg('schedules-start.single-provider.subtext', childName)},
     formAction=${formAction},
     buttonLabel=#{'general.inputs.continue'},
     iconFragment=~{fragments/gcc-icons :: care},
     inputContent=~{::inputContent})}">
-        <th:block th:ref="inputContent">
-            <!-- Copy the below input if you want to add more -->
-            <th:block th:if="${hasMoreThanOneProvider}">
-                <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
+    <th:block th:ref="inputContent">
+      <th:block th:if="${hasMoreThanOneChildcareOption}">
+        <th:block th:replace="~{fragments/inputs/checkboxFieldset ::
         checkboxFieldset(inputName='childcareProvidersForCurrentChild',
         label=#{schedules-start.select-provider(${childName})},
         fieldsetHelpText=${#messages.msg('general.select-all-that-apply')},
         content=~{::providers})}">
-                    <th:block th:ref="providers">
-                        <th:block
-                                th:each="provider : ${submission.getInputData().get('providers')}">
-                            <th:block
-                                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareProvidersForCurrentChild',value=${provider.get('uuid')}, label=${provider.get('familyIntendedProviderName')})}"/>
-                        </th:block>
-
-                        <th:block th:if="${showNoProviderOption}">
-                            <th:block
-                                    th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareProvidersForCurrentChild',value='NO_PROVIDER', label=#{schedules-start.no-provider}, noneOfTheAbove=true)}"/>
-                        </th:block>
-                    </th:block>
-                </th:block>
+          <th:block th:ref="providers">
+            <th:block
+                th:each="provider : ${submission.getInputData().get('providers')}">
+              <th:block
+                  th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareProvidersForCurrentChild',value=${provider.get('uuid')}, label=${provider.get('familyIntendedProviderName')})}"/>
             </th:block>
+
+            <th:block th:if="${showNoProviderOption}">
+              <th:block
+                  th:replace="~{fragments/inputs/checkboxInSet :: checkboxInSet(inputName='childcareProvidersForCurrentChild',value='NO_PROVIDER', label=#{schedules-start.no-provider}, noneOfTheAbove=true)}"/>
+            </th:block>
+          </th:block>
         </th:block>
+      </th:block>
     </th:block>
+  </th:block>
 </th:block>
 </th:block>
