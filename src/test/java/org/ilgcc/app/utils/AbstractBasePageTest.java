@@ -30,7 +30,6 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.data.TransmissionRepository;
 import org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
