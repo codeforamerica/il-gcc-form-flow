@@ -207,7 +207,7 @@ public class ProviderSubmissionUtilities {
 
         if (!providers.isEmpty()) {
             for (var provider : providers) {
-                if (provider.get("providerApplicationResponseStatus").equals(SubmissionStatus.INACTIVE.name())) {
+                if (SubmissionStatus.INACTIVE.name().equals(provider.get("providerApplicationResponseStatus"))) {
                     continue;
                 }
                 Map<String, Object> providerObject = new HashMap<>();
