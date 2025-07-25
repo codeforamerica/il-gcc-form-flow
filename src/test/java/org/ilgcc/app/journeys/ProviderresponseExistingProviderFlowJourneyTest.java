@@ -28,17 +28,7 @@ public class ProviderresponseExistingProviderFlowJourneyTest extends AbstractBas
     @Test
     void fullExistingProviderResponseFlow() throws IOException {
         Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                .withFlow("gcc")
-                .withParentDetails()
-                .with("parentPreferredName", "FirstName")
-                .with("familyIntendedProviderName", "Dev Provider")
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
-                .withChild("NoAssistance", "Child", "No")
-                .withConstantChildcareSchedule(0)
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
-                .withShortCode("123ABC")
-                .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name())
+                .withSubmittedApplicationAndSingleProvider()
                 .build());
 
         driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
@@ -100,10 +90,11 @@ public class ProviderresponseExistingProviderFlowJourneyTest extends AbstractBas
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
-        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
+        assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
         assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
         assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
-        assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
+        assertThat(testPage.findElementTextById("child-name-2")).contains("Third Child");
+        assertThat(testPage.elementDoesNotExistById("child-name-3")).isTrue();
 
         testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickButton("Submit");
