@@ -1,32 +1,22 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Fail.fail;
 import static org.awaitility.Awaitility.await;
 import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_FOUR_C_COUNTY;
 
-import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.PdfReader;
-import formflow.library.data.SubmissionRepository;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
+    String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap.pdf";
 
-    @Autowired
-    SubmissionRepository repository;
+    String FLOW = "gcc";
 
     @AfterEach
     protected void clearSubmissions() {
@@ -187,7 +177,7 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
         // delete-person
-        testPage.clickLink("delete");
+        testPage.clickLink(getEnMessage("general.remove"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("delete-confirmation.title"));
         testPage.clickButton(getEnMessage("delete-confirmation.yes"));
 
@@ -764,84 +754,6 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
                 getEnMessage("submit-confirmation.general.survey.complete"));
 
         // Download PDF and verify fields
-        verifyPDF();
-    }
-
-    /**
-     * This compares the pdf fields in the generated pdf and our expected test pdf, "test_filled_ccap.pdf". If there are updates
-     * to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and
-     * values.
-     */
-    private void verifyPDF() throws IOException {
-        File pdfFile = getDownloadedPDF();
-
-//         regenerateExpectedPDF(pdfFile); // uncomment and run test to regenerate the test pdf
-
-        try (FileInputStream actualIn = new FileInputStream(pdfFile); PdfReader actualReader = new PdfReader(
-                actualIn); FileInputStream expectedIn = new FileInputStream(
-                "src/test/resources/output/test_filled_ccap.pdf"); PdfReader expectedReader = new PdfReader(expectedIn)) {
-            AcroFields actualAcroFields = actualReader.getAcroFields();
-            AcroFields expectedAcroFields = expectedReader.getAcroFields();
-
-            // Get all failures at once and log them
-            List<String> missMatches = getMissMatches(expectedAcroFields, actualAcroFields);
-
-            // Do actual assertions
-            for (String expectedField : missMatches) {
-                var actual = actualAcroFields.getField(expectedField);
-                var expected = expectedAcroFields.getField(expectedField);
-                assertThat(actual).withFailMessage("Expected %s to be %s but was %s".formatted(expectedField, expected, actual))
-                        .isEqualTo(expected);
-            }
-            assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
-        } catch (IOException e) {
-            fail("Failed to generate PDF: %s", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * If there are changes to the expected PDF, it can be regenerated with this method.
-     */
-    private static void regenerateExpectedPDF(File pdfFile) {
-        try (FileInputStream regeneratedPDF = new FileInputStream(pdfFile); FileOutputStream testPDF = new FileOutputStream(
-                "src/test/resources/output/test_filled_ccap.pdf")) {
-            testPDF.write(regeneratedPDF.readAllBytes());
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    @NotNull
-    private static List<String> getMissMatches(AcroFields expectedAcroFields, AcroFields actualAcroFields) {
-        List<String> missMatches = new ArrayList<>();
-//        These fields are dynamic and untestable with the current PDF approach
-        List<String> UNTESTABLE_FIELDS = List.of(
-                "PARTNER_SIGNATURE_DATE",
-                "APPLICANT_SIGNATURE_DATE",
-                "APPLICANT_NAME_FULL",
-                "RECEIVED_TIMESTAMP",
-                "APPLICATION_CONFIRMATION_CODE");
-        for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
-            if (!UNTESTABLE_FIELDS.contains(expectedField)) {
-                var actual = actualAcroFields.getField(expectedField);
-                var expected = expectedAcroFields.getField(expectedField);
-                if (!expected.equals(actual)) {
-                    missMatches.add(expectedField);
-                    log.info("Expected %s to be %s but was %s".formatted(expectedField, expected, actual));
-                }
-            }
-        }
-        return missMatches;
-    }
-
-    private File getDownloadedPDF() throws IOException {
-        // There should only be one
-        String downloadUrl = repository.findAll().stream().findFirst()
-                .map(submission -> "%s/download/gcc/%s".formatted(baseUrl, submission.getId()))
-                .orElseThrow(() -> new RuntimeException("Couldn't get url for pdf download"));
-        driver.get(downloadUrl);
-        await().until(pdfDownloadCompletes());
-        return getLatestDownloadedFile(path);
+        verifyPDF(TEST_FILLED_PDF_PATH, UNTESTABLE_FIELDS, FLOW);
     }
 }
