@@ -1,5 +1,9 @@
 package org.ilgcc.app.data;
 
+import static org.ilgcc.app.utils.SubmissionUtilities.haveAllProvidersResponded;
+import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.setCurrentProviderResponseInFamilyApplication;
+
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepositoryService;
@@ -12,7 +16,6 @@ import org.ilgcc.app.email.SendEmail;
 import org.ilgcc.app.file_transfer.S3PresignService;
 import org.ilgcc.app.utils.FileNameUtility;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
-import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
 import org.ilgcc.jobs.EnqueueDocumentTransfer;
@@ -36,7 +39,7 @@ public class SubmissionSenderService {
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
     private final boolean ccmsIntegrationEnabled;
     private final boolean dtsIntegrationEnabled;
-    private final boolean multipleProvidersEnabled;
+    private final boolean enableMultipleProviders;
 
     public SubmissionSenderService(PdfService pdfService,
             CloudFileRepository cloudFileRepository,
@@ -49,7 +52,7 @@ public class SubmissionSenderService {
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
             @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
             @Value("${il-gcc.dts-integration-enabled}") boolean dtsIntegrationEnabled,
-            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled) {
+            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.pdfService = pdfService;
         this.cloudFileRepository = cloudFileRepository;
         this.pdfTransmissionJob = pdfTransmissionJob;
@@ -61,7 +64,7 @@ public class SubmissionSenderService {
         this.ccmsSubmissionPayloadTransactionJob = ccmsSubmissionPayloadTransactionJob;
         this.ccmsIntegrationEnabled = ccmsIntegrationEnabled;
         this.dtsIntegrationEnabled = dtsIntegrationEnabled;
-        this.multipleProvidersEnabled = multipleProvidersEnabled;
+        this.enableMultipleProviders = enableMultipleProviders;
     }
 
     public void sendProviderSubmission(Submission providerSubmission) {
@@ -86,8 +89,8 @@ public class SubmissionSenderService {
                 log.info("Provider submitted response for family submission {}, enqueuing transfer of documents. Provider submission is {}",
                         familySubmission.getId(), providerSubmission.getId());
 
-                if (multipleProvidersEnabled) {
-                    SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
+                if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
+                    setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
                 } else {
                     familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
                     familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
@@ -102,7 +105,7 @@ public class SubmissionSenderService {
                     enqueueDocumentTransfer.enqueueUploadedDocumentBySubmission(userFileRepositoryService,
                             uploadedDocumentTransmissionJob, s3PresignService, familySubmission);
                 }
-                if (ccmsIntegrationEnabled && SubmissionUtilities.haveAllProvidersResponded(familySubmission)) {
+                if (ccmsIntegrationEnabled && haveAllProvidersResponded(familySubmission)) {
                     if (sendToCCMSInstantly) {
                         ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadInstantly(familySubmission.getId());
                     } else {
