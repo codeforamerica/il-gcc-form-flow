@@ -830,6 +830,7 @@ flow:
     condition: EnableMultipleProviders
     nextScreens: null
   paid-by-ccap:
+    beforeDisplayAction: SetCurrentProviderForSingleProviderSubmission
     nextScreens:
       - name: provider-info
         condition: IsPaidByCCAP
