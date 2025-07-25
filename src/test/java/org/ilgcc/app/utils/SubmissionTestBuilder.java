@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 
 public class SubmissionTestBuilder {
 
@@ -29,6 +30,35 @@ public class SubmissionTestBuilder {
 
     public SubmissionTestBuilder with(String key, Object value) {
         submission.getInputData().put(key, value);
+        return this;
+    }
+
+    public SubmissionTestBuilder withSubmittedApplicationAndSingleProvider() {
+        withSubmittedAtDate(OffsetDateTime.now());
+        withFlow("gcc");
+        withShortCode("ABC123");
+        withCCRR();
+        withParentDetails();
+        withParentPartnerDetails();
+        withFamilyIntendedProviderName("Family Intended Provider Name");
+        with("parentGender[]", List.of("MALE"));
+        withHomeAddress("123 FamilyMainSt St.", "Apt #10", "Chicago", "IL", "60601");
+        withMailingAddress("123 FamilyMainSt St.", "Apt #10", "Chicago", "IL", "60601");
+        withAdultDependent("FirstAdult", "Dependent");
+        withAdultDependent("SecondAdult", "Dependent");
+        withChild("First", "Child", "true");
+        withChild("Second", "Child", "true");
+        withChild("Third", "Child", "true");
+        withChild("NoCare", "Child", "false");
+        withRegularWorkSchedule(List.of("Monday", "Wednesday"));
+        withPartnerRegularWorkSchedule(List.of("Tuesday", "Thursday"));
+        withConstantChildcareSchedule(0);
+        withVaryingChildcareSchedule(1);
+        withConstantChildcareSchedule(2);
+        with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
+        with("signedName", "parent first parent last");
+        with("partnerSignedName", "Parent Parent Signature");
+
         return this;
     }
 
@@ -86,15 +116,17 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withParentBasicInfo(){
+    public SubmissionTestBuilder withParentBasicInfo() {
         submission.getInputData().put("parentFirstName", "parent first");
         submission.getInputData().put("parentLastName", "parent last");
         submission.getInputData().put("parentBirthMonth", "12");
         submission.getInputData().put("parentBirthDay", "25");
         submission.getInputData().put("parentBirthYear", "1985");
+        submission.getInputData().put("parentBirthDate", "12/25/1985");
 
         return this;
     }
+
     public SubmissionTestBuilder withParentDetails() {
         withParentBasicInfo();
 
@@ -113,6 +145,8 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("parentBirthMonth", "10");
         submission.getInputData().put("parentBirthDay", "20");
         submission.getInputData().put("parentBirthYear", "1922");
+        submission.getInputData().put("parentBirthDate", "10/20/1922");
+
         return this;
     }
 
@@ -635,7 +669,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withRegularWorkSchedule(List days) {
-        withJob("jobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withJob("jobs", "Regular Schedule Job", "123 RegularJob Street", "DeKalb", "IL", "60123", "", "false");
 
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
@@ -654,7 +688,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withRegularWorkScheduleAddHour(List days, TimeOption startTime, TimeOption endTime) {
-        withJob("jobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withJob("jobs", "Regular Schedule Job", "123 RegularJob Street", "DeKalb", "IL", "60123", "", "false");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
             return this;
@@ -672,7 +706,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withWorkScheduleByDay(String day, TimeOption startTime, TimeOption endTime) {
-        withJob("jobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withJob("jobs", "Regular Schedule Job", "123 RegularJob Street", "DeKalb", "IL", "60123", "", "false");
 
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
@@ -698,7 +732,8 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withPartnerRegularWorkSchedule(List days) {
-        withJob("partnerJobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133", "",
+                "false");
 
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (jobs == null) {
@@ -717,7 +752,8 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withPartnerRegularWorkScheduleAddHour(List days, TimeOption startTime, TimeOption endTime) {
-        withJob("partnerJobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133", "",
+                "false");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (jobs == null) {
             return this;
@@ -736,7 +772,8 @@ public class SubmissionTestBuilder {
 
     public SubmissionTestBuilder withPartnerWorkScheduleByDay(String day, TimeOption startTime, TimeOption endTime) {
         withParentPartnerDetails();
-        withJob("partnerJobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133", "",
+                "false");
         List<Map<String, Object>> partnerJobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (partnerJobs == null) {
             return this;

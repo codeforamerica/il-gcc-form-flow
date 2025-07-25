@@ -203,7 +203,7 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickButton("Submit");
 
-        //submit-confirmation displays submit-complete-final screen
+        //submit-confirmation
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
