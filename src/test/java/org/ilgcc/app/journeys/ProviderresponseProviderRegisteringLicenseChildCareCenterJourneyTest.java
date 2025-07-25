@@ -4,11 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import formflow.library.data.Submission;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
-import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,18 +25,7 @@ public class ProviderresponseProviderRegisteringLicenseChildCareCenterJourneyTes
     @Test
     void fullFlow() throws IOException {
         Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                .withFlow("gcc")
-                .withParentDetails()
-                .with("parentPreferredName", "FirstName")
-                .with("familyIntendedProviderName", "Dev Provider")
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
-                .withChild("Third", "Child", "true")
-                .with("earliestChildcareStartDate", "10/10/2011")
-                .withConstantChildcareSchedule(0)
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
-                .withShortCode("123ABC")
-                .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name())
+                .withSubmittedApplicationAndSingleProvider()
                 .build());
 
         driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
@@ -168,6 +155,9 @@ public class ProviderresponseProviderRegisteringLicenseChildCareCenterJourneyTes
 
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.enter("providerCareStartDay", "11");
+        testPage.enter("providerCareStartMonth", "12");
+        testPage.enter("providerCareStartYear", "2025");
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
@@ -185,7 +175,7 @@ public class ProviderresponseProviderRegisteringLicenseChildCareCenterJourneyTes
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
-        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
+        assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
         assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
         assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
         assertThat(testPage.findElementTextById("child-name-2")).contains("Third Child");
