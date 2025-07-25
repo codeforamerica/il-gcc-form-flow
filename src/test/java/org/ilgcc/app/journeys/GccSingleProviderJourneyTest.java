@@ -187,7 +187,7 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
         // delete-person
-        testPage.clickLink("remove");
+        testPage.clickLink(getEnMessage("general.remove"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("delete-confirmation.title"));
         testPage.clickButton(getEnMessage("delete-confirmation.yes"));
 
