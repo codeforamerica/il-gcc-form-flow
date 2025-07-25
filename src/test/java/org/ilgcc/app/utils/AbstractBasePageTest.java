@@ -1,28 +1,38 @@
 package org.ilgcc.app.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 import static org.awaitility.Awaitility.await;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.google.common.collect.Iterables;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.PdfReader;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFileRepository;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
+import org.ilgcc.app.data.TransmissionRepository;
 import org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
@@ -39,6 +49,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
+@Slf4j
 @Import({WebDriverConfiguration.class, FakeResourceOrganizationAndCountyData.class})
 @TestPropertySource(properties = {
         "ACTIVE_CASELOAD_CODES=BB,QQ"
@@ -71,6 +82,15 @@ public abstract class AbstractBasePageTest {
     protected String localServerPort;
 
     protected Page testPage;
+
+    // These fields are dynamic and untestable with the current PDF approach
+    protected List<String> UNTESTABLE_FIELDS = List.of(
+            "PARTNER_SIGNATURE_DATE",
+            "APPLICANT_SIGNATURE_DATE",
+            "APPLICANT_NAME_FULL",
+            "RECEIVED_TIMESTAMP",
+            "APPLICATION_CONFIRMATION_CODE",
+            "PROVIDER_SIGNATURE_DATE");
 
     public Submission getSessionSubmission() {
         // We're hoping that there's only one submission per session
@@ -315,5 +335,86 @@ public abstract class AbstractBasePageTest {
 
         // registration-provide-care-intro
         testPage.clickContinue();
+    }
+
+    /**
+     * This compares the pdf fields in the generated pdf and our expected test pdf, "test_filled_ccap.pdf". If there are updates
+     * to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and
+     * values.
+     */
+    protected void verifyPDF(String pdfPath, List<String> untestableFields, String flow) throws IOException {
+        File pdfFile = getDownloadedPDF(flow);
+
+//        regenerateExpectedPDF(pdfFile, pdfPath); // uncomment and run test to regenerate the test pdf
+
+        try (FileInputStream actualIn = new FileInputStream(pdfFile); PdfReader actualReader = new PdfReader(
+                actualIn); FileInputStream expectedIn = new FileInputStream(
+                pdfPath); PdfReader expectedReader = new PdfReader(expectedIn)) {
+            AcroFields actualAcroFields = actualReader.getAcroFields();
+            AcroFields expectedAcroFields = expectedReader.getAcroFields();
+
+            // Get all failures at once and log them
+            List<String> missMatches = getMissMatches(expectedAcroFields, actualAcroFields, untestableFields);
+
+            // Do actual assertions
+            for (String expectedField : missMatches) {
+                var actual = actualAcroFields.getField(expectedField);
+                var expected = expectedAcroFields.getField(expectedField);
+                assertThat(actual).withFailMessage("Expected %s to be %s but was %s".formatted(expectedField, expected, actual))
+                        .isEqualTo(expected);
+            }
+            assertThat(actualAcroFields.getAllFields().size()).isEqualTo(expectedAcroFields.getAllFields().size());
+        } catch (IOException e) {
+            fail("Failed to generate PDF: %s", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * If there are changes to the expected PDF, it can be regenerated with this method.
+     */
+    protected static void regenerateExpectedPDF(File pdfFile, String pdfPath) {
+        try (FileInputStream regeneratedPDF = new FileInputStream(pdfFile); FileOutputStream testPDF = new FileOutputStream(
+                pdfPath)) {
+            testPDF.write(regeneratedPDF.readAllBytes());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @NotNull
+    protected static List<String> getMissMatches(AcroFields expectedAcroFields, AcroFields actualAcroFields,
+            List<String> untestableFields) {
+        List<String> missMatches = new ArrayList<>();
+//
+        for (String expectedField : expectedAcroFields.getAllFields().keySet()) {
+            if (!untestableFields.contains(expectedField)) {
+                var actual = actualAcroFields.getField(expectedField);
+                var expected = expectedAcroFields.getField(expectedField);
+                if (!expected.equals(actual)) {
+                    missMatches.add(expectedField);
+                    log.info("Expected %s to be %s but was %s".formatted(expectedField, expected, actual));
+                }
+            }
+        }
+        return missMatches;
+    }
+
+    protected File getDownloadedPDF(String flow) throws IOException {
+        Optional<Submission> submissionOptional =
+                repo.findAll().stream().filter(submission -> submission.getFlow().equals(flow)).findFirst();
+
+        String downloadUrl = "";
+        if (submissionOptional.isPresent()) {
+
+            String baseString = flow.equals("gcc") ? "%s/download/%s/%s" : "%s/provider-response-download/%s/%s";
+
+            downloadUrl = baseString.formatted(baseUrl, flow, submissionOptional.get().getId());
+
+        }
+
+        driver.get(downloadUrl);
+        await().until(pdfDownloadCompletes());
+        return getLatestDownloadedFile(path);
     }
 }

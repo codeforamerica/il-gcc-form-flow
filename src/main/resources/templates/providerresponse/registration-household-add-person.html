@@ -23,7 +23,7 @@
                       <span class="m" th:text="|${providerHouseholdMember.providerHouseholdMemberFirstName} ${providerHouseholdMember.providerHouseholdMemberLastName}|"/>
                       <span class="text--small spacing-below-0 spacing-right-25">
                         <a th:href="'/flow/' + ${flow} + '/providerHouseholdMembers/' + ${providerHouseholdMember.uuid} + '/deleteConfirmation'"
-                           th:text="#{general.delete}"
+                           th:text="#{general.remove}"
                            class="subflow-delete"
                            th:id="'delete-iteration-' + ${providerHouseholdMember.uuid}"></a>
                       </span>
