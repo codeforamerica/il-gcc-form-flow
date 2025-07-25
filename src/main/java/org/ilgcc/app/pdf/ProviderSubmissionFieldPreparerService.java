@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPreparer {
-    
+
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
 
@@ -65,7 +65,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
         Map<String, SubmissionField> results = new HashMap<>();
-        
+
         // TODO: We were using enableMultipleProviders but we can just use the key from the multiprovider data structure
         // When enable multi provider in prod, the else of this code can be removed
         if (familySubmission.getInputData().containsKey("providers")) {
@@ -159,11 +159,12 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
     }
 
-    private  Map<String, SubmissionField> setProviderSignatureAndDate(Submission providerSubmission){
+    public static Map<String, SubmissionField> setProviderSignatureAndDate(Submission providerSubmission) {
         Map<String, SubmissionField> fields = new HashMap<>();
 
         if (providerSubmission.getInputData().getOrDefault("providerResponseAgreeToCare", "false").equals("true")) {
-            fields.put("providerSignature", new SingleField("providerSignature", providerSignature(providerSubmission.getInputData()), null));
+            fields.put("providerSignature",
+                    new SingleField("providerSignature", providerSignature(providerSubmission.getInputData()), null));
             fields.put("providerSignatureDate",
                     new SingleField("providerSignatureDate",
                             providerSignatureDate(providerSubmission.getSubmittedAt()), null));
@@ -172,7 +173,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
         return fields;
     }
 
-    private String providerSignatureDate(OffsetDateTime submittedAt) {
+    private static String providerSignatureDate(OffsetDateTime submittedAt) {
         if (submittedAt != null) {
             Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submittedAt));
             return formatToStringFromLocalDate(providerSignatureDate);
@@ -180,7 +181,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
         return "";
     }
 
-    private String providerSignature(Map<String, Object> providerInputData) {
+    private static String providerSignature(Map<String, Object> providerInputData) {
         String providerSignature = (String) providerInputData.getOrDefault("providerSignedName", "");
         if (!providerSignature.isEmpty()) {
             return providerSignature;

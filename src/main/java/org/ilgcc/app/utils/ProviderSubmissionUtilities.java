@@ -24,6 +24,7 @@ import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Component
 @Slf4j
@@ -206,9 +207,12 @@ public class ProviderSubmissionUtilities {
 
         if (!providers.isEmpty()) {
             for (var provider : providers) {
+                if (SubmissionStatus.INACTIVE.name().equals(provider.get("providerApplicationResponseStatus"))) {
+                    continue;
+                }
                 Map<String, Object> providerObject = new HashMap<>();
                 providerObject.put("uuid", provider.get("uuid"));
-                providerObject.put("providerResponseStatus", provider.get("providerResponseStatus"));
+                providerObject.put("providerApplicationResponseStatus", provider.get("providerApplicationResponseStatus"));
 
                 String providerType = provider.get("providerType").toString();
                 if (providerType.equals("Individual")) {
