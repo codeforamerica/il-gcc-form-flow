@@ -24,6 +24,7 @@ import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Component
 @Slf4j
@@ -88,7 +89,7 @@ public class ProviderSubmissionUtilities {
         return Optional.empty();
     }
 
-    public static Map<String, String> getFamilySubmission(Optional<Submission> familySubmission) {
+    public static Map<String, String> getFamilyConfirmationCodeAndParentName(Optional<Submission> familySubmission) {
         Map<String, String> applicationData = new HashMap<>();
 
         if (familySubmission.isPresent()) {
@@ -183,7 +184,7 @@ public class ProviderSubmissionUtilities {
                         data.getOrDefault("providerLastName", "").toString()));
         if (subflowIteration != null) {
             Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                    SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+                    SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
             applicationData.put("childrenInitialsList",
                     ProviderSubmissionUtilities.getChildrenInitialsList(mergedChildrenAndSchedules.get(data.get("uuid"))));
 
@@ -206,9 +207,12 @@ public class ProviderSubmissionUtilities {
 
         if (!providers.isEmpty()) {
             for (var provider : providers) {
+                if (SubmissionStatus.INACTIVE.name().equals(provider.get("providerApplicationResponseStatus"))) {
+                    continue;
+                }
                 Map<String, Object> providerObject = new HashMap<>();
                 providerObject.put("uuid", provider.get("uuid"));
-                providerObject.put("providerResponseStatus", provider.get("providerResponseStatus"));
+                providerObject.put("providerApplicationResponseStatus", provider.get("providerApplicationResponseStatus"));
 
                 String providerType = provider.get("providerType").toString();
                 if (providerType.equals("Individual")) {

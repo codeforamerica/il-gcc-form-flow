@@ -1,6 +1,7 @@
 package org.ilgcc.app.email;
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getFamilySubmissionDataForEmails;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getInitials;
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getProviderSubmissionDataForEmails;
 
 import formflow.library.data.Submission;
@@ -48,7 +49,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
 
         List<Map<String, Object>> providerData = new ArrayList<>();
 
-        Map<String, List<Map<String, Object>>> providerSchedules = (Map<String, List<Map<String, Object>>>) SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider(
+        Map<String, List<Map<String, Object>>> providerSchedules = (Map<String, List<Map<String, Object>>>) SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(
                 familySubmission.getInputData());
 
         if (!providerSchedules.isEmpty()) {
@@ -59,7 +60,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
                             .filter(provider -> provider.get("uuid").equals(providerId)).findFirst();
                     if (currentProvider.isPresent()) {
                         String earliestCCAPDateForCurrentProvider =
-                                (String) DateUtilities.getEarliestDate(providerSchedules.get(providerId).stream().map(s -> s.get("ccapStartDate").toString()).toList());
+                                (String) DateUtilities.getEarliestDate(providerSchedules.get(providerId).stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
 
                         if (currentProvider.get().containsKey("providerResponseSubmissionId")) {
                             Optional<Submission> currentProviderSubmission = submissionRepositoryService.findById(
@@ -80,6 +81,9 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
                         }
 
                         currentProviderData.putAll(currentProvider.get());
+                        currentProviderData.put("childCareProviderInitials",
+                                getInitials(currentProvider.get().getOrDefault("providerFirstName", "").toString(),
+                                        currentProvider.get().getOrDefault("providerLastName", "").toString()));
                         currentProviderData.put("childrenInitialsList",
                                 ProviderSubmissionUtilities.getChildrenInitialsList(providerSchedules.get(providerId)));
                         providerData.add(currentProviderData);

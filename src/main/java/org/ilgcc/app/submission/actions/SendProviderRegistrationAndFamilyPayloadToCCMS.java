@@ -1,6 +1,8 @@
 package org.ilgcc.app.submission.actions;
 
 
+import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
+
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -22,17 +24,17 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
     private final SubmissionRepositoryService submissionRepositoryService;
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
     private final boolean ccmsIntegrationEnabled;
-    private final boolean multipleProvidersEnabled;
+    private final boolean enableMultipleProviders;
 
     public SendProviderRegistrationAndFamilyPayloadToCCMS(
             SubmissionRepositoryService submissionRepositoryService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
             @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
-            @Value("${il-gcc.enable-multiple-providers}") boolean multipleProvidersEnabled) {
+            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.submissionRepositoryService = submissionRepositoryService;
         this.ccmsSubmissionPayloadTransactionJob = ccmsSubmissionPayloadTransactionJob;
         this.ccmsIntegrationEnabled = ccmsIntegrationEnabled;
-        this.multipleProvidersEnabled = multipleProvidersEnabled;
+        this.enableMultipleProviders = enableMultipleProviders;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
             if (familySubmissionOptional.isPresent()) {
                 Submission familySubmission = familySubmissionOptional.get();
 
-                if (multipleProvidersEnabled) {
+                if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
                     SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
                     submissionRepositoryService.save(familySubmission);
 

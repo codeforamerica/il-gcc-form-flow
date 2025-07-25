@@ -3,6 +3,8 @@ package org.ilgcc.app.submission.actions;
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.calculateProviderApplicationResponseStatus;
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getProviderApplicationResponseStatus;
+import static org.ilgcc.app.utils.SubmissionUtilities.getProviders;
+import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_PROVIDER_SUBMISSION_STATUS;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_SELECTED_PROVIDER_NAME;
@@ -17,7 +19,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -84,8 +85,8 @@ public class SetProviderSubmissionStatusAndConnectApplications implements Action
     private String getProviderName(Submission familySubmission) {
         Map<String, Object> inputData = familySubmission.getInputData();
 
-        if (enableMultipleProviders) {
-            List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
+        if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
+            List<Map<String, Object>> providers = getProviders(familySubmission.getInputData());
             if (providers.size() == 1) {
                 // If we have exactly 1 provider, just get that provider's name and use it.
                 return providers.getFirst().get("familyIntendedProviderName").toString();
