@@ -5,11 +5,9 @@ import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_APPRO
 
 import formflow.library.data.Submission;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
-import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -99,10 +97,10 @@ public class ProviderresponseExistingProviderFlowJourneyTest extends AbstractBas
         testPage.clickElementById("providerResponseAgreeToCare-true-label");
         testPage.clickButton("Submit");
 
-        //submit-confirmation displays submit-complete-final screen
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        //submit-confirmation
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
         testPage.goBack();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
 
         verifyPDF(TEST_FILLED_PDF_PATH, UNTESTABLE_FIELDS, FLOW);
     }
