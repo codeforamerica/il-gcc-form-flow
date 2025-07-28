@@ -1,9 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
 import formflow.library.config.submission.Action;
-import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
