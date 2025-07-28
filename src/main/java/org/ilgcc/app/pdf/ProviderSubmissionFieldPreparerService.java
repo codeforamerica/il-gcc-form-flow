@@ -66,12 +66,11 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
         Map<String, SubmissionField> results = new HashMap<>();
 
-        // TODO: We were using enableMultipleProviders but we can just use the key from the multiprovider data structure
-        // When enable multi provider in prod, the else of this code can be removed
-        if (familySubmission.getInputData().containsKey("providers")) {
-            Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                    getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
+        Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
+                getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
 
+        // When enable multi provider in prod, the else of this code can be removed
+        if (!mergedChildrenAndSchedules.isEmpty()) {
             String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
 
             if (null != providerUuid) {
