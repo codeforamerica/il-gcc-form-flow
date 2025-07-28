@@ -69,7 +69,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
         Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
                 getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
 
-        // When enable multi provider in prod, the else of this code can be removed
+        // TODO: When enable multi provider in prod, the else of this code can be removed when ENABLE_MULTIPLE_PROVIDERS is productized
         if (!mergedChildrenAndSchedules.isEmpty()) {
             String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
 
