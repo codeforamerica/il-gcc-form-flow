@@ -21,6 +21,11 @@ public class SendFamilyConfirmationEmails implements Action {
 
     @Override
     public void run(Submission familySubmission) {
+        if (familySubmission.getSubmittedAt() == null) {
+            log.error("Submission {} has not been submitted, skipping SendFamilyConfirmationEmails", familySubmission.getId());
+            return;
+        }
+
         if (SubmissionUtilities.isNoProviderSubmission(familySubmission.getInputData())) {
             sendNoProviderConfirmationEmail.send(familySubmission);
         } else {
