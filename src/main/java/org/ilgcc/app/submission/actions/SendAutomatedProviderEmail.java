@@ -20,6 +20,11 @@ public class SendAutomatedProviderEmail implements Action {
 
     @Override
     public void run(Submission familySubmission) {
+        if (familySubmission.getSubmittedAt() == null) {
+            log.error("Submission {} has not been submitted, skipping SendAutomatedProviderEmail", familySubmission.getId());
+            return;
+        }
+
         if ("true".equals(familySubmission.getInputData().get("hasConfirmedIntendedProviderEmail"))) {
             sendAutomatedProviderOutreachEmail.send(familySubmission);
         }
@@ -27,6 +32,11 @@ public class SendAutomatedProviderEmail implements Action {
 
     @Override
     public void run(Submission familySubmission, String contactProvidersSubflowUUID) {
+        if (familySubmission.getSubmittedAt() == null) {
+            log.error("Submission {} has not been submitted, skipping SendAutomatedProviderEmail", familySubmission.getId());
+            return;
+        }
+
         Optional<Map<String, Object>> subflow = Optional.of(familySubmission.getSubflowEntryByUuid("contactProviders", contactProvidersSubflowUUID));
         if ("true".equals(subflow.get().get("hasConfirmedIntendedProviderEmail"))) {
             sendAutomatedProviderOutreachEmail.send(familySubmission, "contactProviders", contactProvidersSubflowUUID);

@@ -13,12 +13,17 @@ import java.util.regex.Pattern;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtilities {
+
     private final static String FULL_DATE_INPUT = "MM/dd/yyyy";
     private final static String FULL_DATE_FORMAT_OUTPUT_PATTER = "MMMM dd, yyyy";
     private final static String MONTH_YEAR_INPUT = "MM/yyyy";
     private final static String MONTH_YEAR_OUTPUT_PATTERN = "MMMM yyyy";
 
     private final static String MONTH_DAY_FULL_TIME_FORMATTER = "MM/dd/yy - hh:mm a";
+
+    private final static Pattern FULL_DATE_REGEX = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{4})");
+    private final static Pattern MONTH_YEAR_REGEX = Pattern.compile("(\\d{1,2})/(\\d{4})");
+
     public static String getFormattedDateFromMonthDateYearInputs(String prefix, Map<String, Object> data) {
         String month = (String) data.get(prefix + "Month");
         String day = (String) data.get(prefix + "Day");
@@ -38,9 +43,9 @@ public class DateUtilities {
             formattedDay = day;
         }
         return String.format("%s/%s/%s",
-            formattedMonth,
-            formattedDay,
-            year);
+                formattedMonth,
+                formattedDay,
+                year);
     }
 
     public static boolean isDateInvalid(String date) {
@@ -54,9 +59,7 @@ public class DateUtilities {
     }
 
     public static Optional<LocalDate> parseStringDate(String dateStr) {
-        String pattern = "(\\d{1,2})/(\\d{1,2})/(\\d{4})";
-        Pattern regex = Pattern.compile(pattern);
-        Matcher matcher = regex.matcher(dateStr);
+        Matcher matcher = FULL_DATE_REGEX.matcher(dateStr);
 
         try {
             if (matcher.matches()) {
@@ -86,11 +89,11 @@ public class DateUtilities {
         return earliestDate.get().isBefore(childcareStartDate.get()) ? dateString1 : dateString2;
     }
 
-    public static String getEarliestDate(List<String> dates){
+    public static String getEarliestDate(List<String> dates) {
         String earliestDate = "";
-        for(String date : dates){
+        for (String date : dates) {
             Optional<LocalDate> parsedDate = DateUtilities.parseStringDate(date);
-            if(parsedDate.isPresent()){
+            if (parsedDate.isPresent()) {
                 earliestDate = getEarliestDate(earliestDate, date);
             }
         }
@@ -98,18 +101,18 @@ public class DateUtilities {
 
     }
 
-    public static String convertDateToFullWordMonthPattern(String dateStr){
-        String fullDatePattern = "(\\d{1,2})/(\\d{1,2})/(\\d{4})";
-        Pattern fullDateRegex = Pattern.compile(fullDatePattern);
-        Matcher fullDateMatcher = fullDateRegex.matcher(dateStr);
+    public static String convertDateToFullWordMonthPattern(String dateStr) {
+        if (dateStr == null || dateStr.isBlank()) {
+            return "";
+        }
+
+        Matcher fullDateMatcher = FULL_DATE_REGEX.matcher(dateStr);
 
         if (fullDateMatcher.matches()) {
             return replaceMonthIntegerWithWord(dateStr, FULL_DATE_INPUT, FULL_DATE_FORMAT_OUTPUT_PATTER);
         }
 
-        String MonthYearDatePattern = "(\\d{1,2})/(\\d{4})";
-        Pattern MonthYearRegex = Pattern.compile(MonthYearDatePattern);
-        Matcher MonthYearMatcher = MonthYearRegex.matcher(dateStr);
+        Matcher MonthYearMatcher = MONTH_YEAR_REGEX.matcher(dateStr);
         if (MonthYearMatcher.matches()) {
             return replaceMonthIntegerWithWord(dateStr, MONTH_YEAR_INPUT, MONTH_YEAR_OUTPUT_PATTERN);
         }
@@ -123,7 +126,7 @@ public class DateUtilities {
         LocalDate date = LocalDate.parse(dateStr, inputFormatter);
         return date.format(outputFormatter);
     }
-    
+
     public static String formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime submittedAt) {
         ZonedDateTime centralTime = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
