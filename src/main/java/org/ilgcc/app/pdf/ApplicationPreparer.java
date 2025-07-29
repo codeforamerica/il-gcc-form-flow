@@ -1,5 +1,6 @@
 package org.ilgcc.app.pdf;
 
+import static org.ilgcc.app.utils.PreparerUtilities.getApplicantFamilySize;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
@@ -105,7 +106,8 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         results.put("childcareStartDate",
                 new SingleField("childcareStartDate",
                         inputData.getOrDefault("earliestChildcareStartDate", "").toString(), null));
-
+        results.put("applicantFamilySize",
+            new SingleField("applicantFamilySize", Integer.toString(getApplicantFamilySize(inputData)), null));
         return results;
     }
 
