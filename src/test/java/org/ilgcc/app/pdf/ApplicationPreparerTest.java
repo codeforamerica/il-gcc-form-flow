@@ -19,6 +19,18 @@ public class ApplicationPreparerTest {
     private Submission submission;
 
     @Test
+    public void addsApplicantSignatureDateIfSignatureExists() {
+        submission = new SubmissionTestBuilder().with("signedName", "Signature")
+                .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 0, 0, 0, 0, ZoneOffset.ofTotalSeconds(0))).build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        // Sets application date to Central (Note that the time is October 11 right at midnight for UTC)
+        assertThat(result.get("applicantSignedAt")).isEqualTo(new SingleField("applicantSignedAt", "10/10/2022", null));
+    }
+
+
+    @Test
     public void addsPartnerSignatureDateIfPartnerSignatureExists() {
         submission = new SubmissionTestBuilder().with("partnerSignedName", "PartnerSignature")
                 .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 12, 0, 0, 0, ZoneOffset.ofTotalSeconds(0))).build();
