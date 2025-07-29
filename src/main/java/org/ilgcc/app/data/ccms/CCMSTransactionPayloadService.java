@@ -1,5 +1,6 @@
 package org.ilgcc.app.data.ccms;
 
+import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
 import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
 import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
@@ -100,7 +101,7 @@ public class CCMSTransactionPayloadService {
 
         List<UserFile> allFiles = new ArrayList<>();
         if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
-            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
+            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().getOrDefault("providers", emptyList());
             for (Map<String, Object> provider : providers) {
                 if (provider.containsKey("providerResponseSubmissionId")) {
                     UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
