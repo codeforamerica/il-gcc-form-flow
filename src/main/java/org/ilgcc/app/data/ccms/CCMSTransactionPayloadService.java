@@ -39,7 +39,7 @@ public class CCMSTransactionPayloadService {
     private boolean allowPdfModification;
 
     public CCMSTransactionPayloadService(CloudFileRepository cloudFileRepository,
-            UserFileRepositoryService userFileRepositoryService, 
+            UserFileRepositoryService userFileRepositoryService,
             MultiProviderPDFService pdfService,
             SubmissionRepositoryService submissionRepositoryService,
             @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders,
@@ -88,7 +88,8 @@ public class CCMSTransactionPayloadService {
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(applicationPdfJSON);
                 } else {
-                    TransactionFile additionalProviderPagesJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(),
+                    TransactionFile additionalProviderPagesJSON = new TransactionFile(fileName,
+                            FileTypeId.UPLOADED_DOCUMENT.getValue(),
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(additionalProviderPagesJSON);
                 }
@@ -101,7 +102,8 @@ public class CCMSTransactionPayloadService {
 
         List<UserFile> allFiles = new ArrayList<>();
         if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
-            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().getOrDefault("providers", emptyList());
+            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
+                    .getOrDefault("providers", emptyList());
             for (Map<String, Object> provider : providers) {
                 if (provider.containsKey("providerResponseSubmissionId")) {
                     UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
@@ -110,18 +112,20 @@ public class CCMSTransactionPayloadService {
                                     userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)));
                 }
             }
-        } 
-        else {
+        } else {
             if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
                 submissionRepositoryService.findById(
-                        UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString())).ifPresent(
-                        providerSubmission -> allFiles.addAll(
-                                userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)));
+                                UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()))
+                        .ifPresent(
+                                providerSubmission -> allFiles.addAll(
+                                        userFileRepositoryService.findAllOrderByOriginalName(providerSubmission,
+                                                PDF_CONTENT_TYPE)));
             }
         }
 
         List<UserFile> userFiles = allowPdfModification ? userFileRepositoryService.findAllConvertedOrderByOriginalName(
-                familySubmission, PDF_CONTENT_TYPE) : userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE);
+                familySubmission, PDF_CONTENT_TYPE)
+                : userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE);
 
         allFiles.addAll(userFiles);
 
