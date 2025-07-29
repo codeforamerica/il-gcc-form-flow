@@ -261,7 +261,8 @@ public class CCMSSubmissionPayloadTransactionJob {
                         }
 
                     } else {
-                        log.warn("Could not create CCMS payload for submission : {}", submission.getId());
+                        log.error("Could not create CCMS payload for submission : {}", submission.getId());
+                        throw new RuntimeException("Could not create CCMS payload for submission " + submission.getId());
                     }
                 } else {
                     throw new RuntimeException("Could not find submission with ID: " + submissionId);
