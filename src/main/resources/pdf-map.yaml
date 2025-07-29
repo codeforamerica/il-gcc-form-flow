@@ -137,6 +137,7 @@ inputFields:
   referralServicesPhysicalOrMentalDisability: REFERRAL_SERVICES_PHYSICAL_OR_MENTAL_DISABILITY
   amountYourHouseholdPaysInChildSupport: APPLICANT_CHILD_SUPPORT_PAID
   signedName: APPLICANT_SIGNATURE
+  applicantSignedAt: APPLICANT_SIGNATURE_DATE
   partnerSignedName: PARTNER_SIGNATURE
   partnerSignedAt: PARTNER_SIGNATURE_DATE
   receivedTimestamp: RECEIVED_TIMESTAMP
@@ -175,7 +176,6 @@ inputFields:
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
   clientResponseConfirmationCode: APPLICATION_CONFIRMATION_CODE
 dbFields:
-  submittedAt: APPLICANT_SIGNATURE_DATE
 
 subflowInfo:
   ccapFamilyMembers:

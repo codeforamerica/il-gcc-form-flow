@@ -21,7 +21,7 @@ public class ApplicationPreparerTest {
     @Test
     public void addsPartnerSignatureDateIfPartnerSignatureExists() {
         submission = new SubmissionTestBuilder().with("partnerSignedName", "PartnerSignature")
-                .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 0, 0, 0, 0, ZoneOffset.ofTotalSeconds(0))).build();
+                .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 12, 0, 0, 0, ZoneOffset.ofTotalSeconds(0))).build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
 
