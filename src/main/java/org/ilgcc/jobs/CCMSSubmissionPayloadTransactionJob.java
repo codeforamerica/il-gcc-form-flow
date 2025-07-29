@@ -100,7 +100,8 @@ public class CCMSSubmissionPayloadTransactionJob {
             // add those into the equation.
             ccmsTransactionDelayOffset = ccmsApiClient.getConfiguration().getOfflineTransactionDelayOffset();
 
-            totalCcmsTransactionDelayOffset.set(ccmsTransactionDelayOffset + (ccmsTransactionDelayOffset * previouslyScheduledCCMSJobs));
+            totalCcmsTransactionDelayOffset.set(
+                    ccmsTransactionDelayOffset + (ccmsTransactionDelayOffset * previouslyScheduledCCMSJobs));
         } else {
             ccmsOfflineTimeRanges = new ArrayList<>();
         }
@@ -202,8 +203,9 @@ public class CCMSSubmissionPayloadTransactionJob {
                             // CCMS / CMS doesn't process the submission properly on the backend
                             Map<String, byte[]> pdfs = multiProviderPDFService.generatePDFs(submission);
 
-                            for (String pdfFileName: pdfs.keySet()) {
-                                MultipartFile multipartFile = new ByteArrayMultipartFile(pdfs.get(pdfFileName), pdfFileName, PDF_CONTENT_TYPE);
+                            for (String pdfFileName : pdfs.keySet()) {
+                                MultipartFile multipartFile = new ByteArrayMultipartFile(pdfs.get(pdfFileName), pdfFileName,
+                                        PDF_CONTENT_TYPE);
                                 String s3ZipPath = SubmissionUtilities.generatePdfPath(pdfFileName, submission.getId());
 
                                 cloudFileRepository.upload(s3ZipPath, multipartFile);
@@ -213,7 +215,6 @@ public class CCMSSubmissionPayloadTransactionJob {
                         }
                     });
 
-
                     Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
                             submission);
                     if (ccmsTransactionOptional.isPresent()) {
@@ -222,7 +223,8 @@ public class CCMSSubmissionPayloadTransactionJob {
                             // Try to acquire a permit with a timeout
                             acquired = concurrencyLimiter.tryAcquire(30, TimeUnit.SECONDS);
                             if (!acquired) {
-                                log.error("Could not acquire concurrency slot within timeout for submission {}. Job will be retried.",
+                                log.error(
+                                        "Could not acquire concurrency slot within timeout for submission {}. Job will be retried.",
                                         submissionId);
                                 // Throw an exception to trigger JobRunr retry
                                 throw new IOException("Timeout waiting to acquire semaphore permit for transmitting to CCMS.");
@@ -239,16 +241,16 @@ public class CCMSSubmissionPayloadTransactionJob {
                                         submissionId);
                             }
 
-                            UUID transactionId =  UUID.fromString(response.get("transactionId").asText());
+                            UUID transactionId = UUID.fromString(response.get("transactionId").asText());
                             transactionRepositoryService.createTransaction(transactionId, submissionId, workItemId);
 
-                            log.info("All providers responded {}. {} sent to CCMS with transaction {}",
+                            log.info("All providers responded: {}. {} sent to CCMS with transaction {}",
                                     SubmissionUtilities.haveAllProvidersResponded(submission), submissionId, transactionId);
                             sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
 
                         } catch (IOException e) {
                             log.error("There was an error when attempting to send submission {} to CCMS",
-                                   submissionId, e);
+                                    submissionId, e);
                             throw e;
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt(); // restore interrupt flag

@@ -73,14 +73,14 @@ public abstract class SendEmail {
             locale = emailData.get().get("familyPreferredLanguage").equals("Spanish") ? Locale.forLanguageTag(
                     "es") : Locale.ENGLISH;
 
-            if(!getRecipientEmail(emailData.get()).isBlank()){
+            if (!getRecipientEmail(emailData.get()).isBlank()) {
                 ILGCCEmail email = new ILGCCEmail(getRecipientEmail(emailData.get()), emailTemplate(emailData.get()),
                         submission.getId());
                 sendEmail(email, submission, subflowName, subflowData, offsetDelaySeconds);
             } else {
                 log.debug(
                         "{}: Skipping email send because because there is no {} associated with the submission: {}",
-                        getClass().getSimpleName(), recipientEmailInputName,  submission.getId());
+                        getClass().getSimpleName(), recipientEmailInputName, submission.getId());
             }
         }
     }
@@ -103,9 +103,10 @@ public abstract class SendEmail {
         return emailData.getOrDefault(recipientEmailInputName, "").toString();
     }
 
-    protected void sendEmail(ILGCCEmail email, Submission submission, String subflowName, Map<String, Object> subflowData, int offsetDelaySeconds) {
+    protected void sendEmail(ILGCCEmail email, Submission submission, String subflowName, Map<String, Object> subflowData,
+            int offsetDelaySeconds) {
         log.info("{}: About to enqueue the Send Email Job for submissionId: {}",
-                email.getEmailType().getDescription(), submission.getId());
+                email.getEmailType(), submission.getId());
         sendEmailJob.enqueueSendSubmissionEmailJob(email, offsetDelaySeconds);
         updateEmailStatus(submission, subflowName, subflowData);
     }
