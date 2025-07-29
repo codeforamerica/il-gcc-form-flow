@@ -227,4 +227,35 @@ public class ApplicationPreparerTest {
         assertThat(result.get("referralServicesPhysicalOrMentalDisability")).isEqualTo(
                 new SingleField("referralServicesPhysicalOrMentalDisability", "true", null));
     }
+
+    @Test
+    public void shouldReturnTotalNumberOfFamilyMembersWhenParentDoesHaveAPartner(){
+        submission = new SubmissionTestBuilder()
+            .withParentDetails()
+            .with("parentHasPartner", "true")
+            .with("hasAdultDependents", "true")
+            .withChild("First", "Child", "false")
+            .withChild("Second", "Child", "true")
+            .withChild("Third", "Child", "true")
+            .withAdultDependent("Fourth", "Dependent")
+            .withAdultDependent("Fifth", "Dependent")
+            .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("applicantFamilySize")).isEqualTo(new SingleField("applicantFamilySize", "7", null));
+    }
+    @Test
+    public void shouldReturnTotalNumberOfFamilyMembersWhenParentDoesNotHaveAPartner(){
+        submission = new SubmissionTestBuilder()
+            .withParentDetails()
+            .with("parentHasPartner", "false")
+            .with("hasAdultDependents", "true")
+            .withChild("First", "Child", "false")
+            .withChild("Second", "Child", "true")
+            .withChild("Third", "Child", "true")
+            .withAdultDependent("Fourth", "Dependent")
+            .withAdultDependent("Fifth", "Dependent")
+            .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("applicantFamilySize")).isEqualTo(new SingleField("applicantFamilySize", "6", null));
+    }
 }

@@ -222,24 +222,25 @@ public class SubmissionUtilities {
     public static boolean isNoProviderSubmission(Map<String, Object> familyInputData) {
         String hasChosenProvider = familyInputData.getOrDefault("hasChosenProvider", "").toString();
 
-        if("false".equals(hasChosenProvider)) {
+        if ("false".equals(hasChosenProvider)) {
             return true;
         }
 
         List<Map<String, Object>> providers = new ArrayList<>();
-        if(familyInputData.containsKey("providers")) {
+        if (familyInputData.containsKey("providers")) {
             providers = (List<Map<String, Object>>) familyInputData.getOrDefault("providers", emptyList());
             if (providers.isEmpty()) {
                 return true;
             }
         }
 
-        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) familyInputData.getOrDefault("childcareSchedules", emptyList());
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) familyInputData.getOrDefault(
+                "childcareSchedules", emptyList());
         if (!childcareSchedules.isEmpty()) {
             AtomicBoolean hasNotChosenAProviderOrHasNoProvidersScheduled = new AtomicBoolean(true);
             providers.forEach(provider -> {
                 childcareSchedules.forEach(childcareSchedule -> {
-                    if(childcareScheduleIncludesThisProvider(childcareSchedule, provider.get("uuid").toString())) {
+                    if (childcareScheduleIncludesThisProvider(childcareSchedule, provider.get("uuid").toString())) {
                         hasNotChosenAProviderOrHasNoProvidersScheduled.set(false);
                     }
                 });
@@ -406,14 +407,14 @@ public class SubmissionUtilities {
 
         return providerUUIDs.size() == 1;
     }
-    
+
     public static boolean isPreMultiProviderApplicationWithSingleProvider(Submission familySubmission) {
         HashMap<String, Object> inputData = (HashMap<String, Object>) familySubmission.getInputData();
         return inputData.containsKey("familyIntendedProviderName") && !inputData.containsKey("providers");
     }
-    
+
     public static boolean isMultiProviderApplication(Submission familySubmission) {
-        return !isPreMultiProviderApplicationWithSingleProvider(familySubmission) && 
+        return !isPreMultiProviderApplicationWithSingleProvider(familySubmission) &&
                 !allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData());
     }
 }
