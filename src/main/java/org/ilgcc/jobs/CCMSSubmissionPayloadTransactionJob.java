@@ -242,7 +242,7 @@ public class CCMSSubmissionPayloadTransactionJob {
                             UUID transactionId =  UUID.fromString(response.get("transactionId").asText());
                             transactionRepositoryService.createTransaction(transactionId, submissionId, workItemId);
 
-                            log.info("All providers responded {}. {} sent to CCMS with transaction {}",
+                            log.info("All providers responded: {}. {} sent to CCMS with transaction {}",
                                     SubmissionUtilities.haveAllProvidersResponded(submission), submissionId, transactionId);
                             sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
 
