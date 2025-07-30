@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '3.5.3'
+    id 'org.springframework.boot' version '3.5.4'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'com.adarshr.test-logger' version '4.0.0'
@@ -48,15 +48,15 @@ repositories {
 }
 
 def profile = props.getProperty('SPRING_PROFILES_ACTIVE')
-def formFlowLibraryVersion = '1.6.35'
+def formFlowLibraryVersion = '1.6.37'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.5.3'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.5.4'
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
-    implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:8.0.1'
-    implementation 'org.apache.commons:commons-text:1.13.1'
+    implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.5.3'
+    implementation 'org.apache.commons:commons-text:1.14.0'
     implementation 'com.sendgrid:sendgrid-java:4.10.3'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.81'
     implementation 'joda-time:joda-time:2.14.0'
@@ -71,16 +71,16 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.38'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.5.3'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.5.4'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.3'
-    testImplementation 'org.springframework.security:spring-security-test:6.5.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.4'
+    testImplementation 'org.springframework.security:spring-security-test:6.5.2'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.34.0'
     testImplementation 'org.jsoup:jsoup:1.21.1'
     testImplementation 'org.awaitility:awaitility:4.3.0'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:6.1.1'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:6.2.0'
     testImplementation 'com.h2database:h2:2.3.232'
     testImplementation 'com.deque.html.axe-core:selenium:4.10.1'
     testImplementation 'org.projectlombok:lombok:1.18.38'

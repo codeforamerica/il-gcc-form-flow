@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 
 public class SubmissionTestBuilder {
 
@@ -28,6 +30,35 @@ public class SubmissionTestBuilder {
 
     public SubmissionTestBuilder with(String key, Object value) {
         submission.getInputData().put(key, value);
+        return this;
+    }
+
+    public SubmissionTestBuilder withSubmittedApplicationAndSingleProvider() {
+        withSubmittedAtDate(OffsetDateTime.now());
+        withFlow("gcc");
+        withShortCode("ABC123");
+        withCCRR();
+        withParentDetails();
+        withParentPartnerDetails();
+        withFamilyIntendedProviderName("Family Intended Provider Name");
+        with("parentGender[]", List.of("MALE"));
+        withHomeAddress("123 FamilyMainSt St.", "Apt #10", "Chicago", "IL", "60601");
+        withMailingAddress("123 FamilyMainSt St.", "Apt #10", "Chicago", "IL", "60601");
+        withAdultDependent("FirstAdult", "Dependent");
+        withAdultDependent("SecondAdult", "Dependent");
+        withChild("First", "Child", "true");
+        withChild("Second", "Child", "true");
+        withChild("Third", "Child", "true");
+        withChild("NoCare", "Child", "false");
+        withRegularWorkSchedule(List.of("Monday", "Wednesday"));
+        withPartnerRegularWorkSchedule(List.of("Tuesday", "Thursday"));
+        withConstantChildcareSchedule(0);
+        withVaryingChildcareSchedule(1);
+        withConstantChildcareSchedule(2);
+        with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
+        with("signedName", "parent first parent last");
+        with("partnerSignedName", "Parent Parent Signature");
+
         return this;
     }
 
@@ -85,15 +116,17 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withParentBasicInfo(){
+    public SubmissionTestBuilder withParentBasicInfo() {
         submission.getInputData().put("parentFirstName", "parent first");
         submission.getInputData().put("parentLastName", "parent last");
         submission.getInputData().put("parentBirthMonth", "12");
         submission.getInputData().put("parentBirthDay", "25");
         submission.getInputData().put("parentBirthYear", "1985");
+        submission.getInputData().put("parentBirthDate", "12/25/1985");
 
         return this;
     }
+
     public SubmissionTestBuilder withParentDetails() {
         withParentBasicInfo();
 
@@ -112,6 +145,8 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("parentBirthMonth", "10");
         submission.getInputData().put("parentBirthDay", "20");
         submission.getInputData().put("parentBirthYear", "1922");
+        submission.getInputData().put("parentBirthDate", "10/20/1922");
+
         return this;
     }
 
@@ -409,7 +444,93 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withMultipleChildcareSchedulesAllBelongingToTheSameProvider(List<String> childIDs, String providerUUID) {
+        List<Map<String, Object>> childcareSchedules = new ArrayList<>();
+
+        for (String childUUID : childIDs) {
+            Map<String, Object> childcareSchedule = new HashMap<>();
+            childcareSchedule.put("childUuid", childUUID);
+
+            List<Map<String, Object>> providerSchedules = new ArrayList<>();
+            Map<String, Object> providerSchedule = new HashMap<>();
+
+            providerSchedule.put("uuid", "provider-child-schedule");
+            providerSchedule.put("childInCare", true);
+            providerSchedule.put("ccapStartDate", "11/17/2025");
+            providerSchedule.put("repeatForValue", providerUUID);
+            providerSchedule.put("iterationIsComplete", true);
+            providerSchedule.put("childcareWeeklySchedule[]", List.of("Monday", "Tuesday"));
+            providerSchedule.put("childcareEndTimeAllDaysAmPm", "PM");
+            providerSchedule.put("childcareEndTimeAllDaysHour", "10");
+            providerSchedule.put("childcareHoursSameEveryDay[]", List.of("yes"));
+            providerSchedule.put("childcareEndTimeAllDaysMinute", "21");
+            providerSchedule.put("childcareStartTimeAllDaysAmPm", "AM");
+            providerSchedule.put("childcareStartTimeAllDaysHour", "10");
+            providerSchedule.put("childcareStartTimeAllDaysMinute", "24");
+
+            providerSchedules.add(providerSchedule);
+            childcareSchedule.put("providerSchedules", providerSchedules);
+
+            childcareSchedules.add(childcareSchedule);
+            childcareSchedule.put("childcareProvidersForCurrentChild[]", List.of(providerUUID));
+        }
+
+        submission.getInputData().put("childcareSchedules", childcareSchedules);
+
+        return this;
+    }
+
     public SubmissionTestBuilder withMultipleChildcareSchedules(List<String> childIDs, List<String> providerUUIDs) {
+        List<Map<String, Object>> childcareSchedules = new ArrayList<>();
+
+        for (int i = 0; i < childIDs.size(); i++) {
+            String childId = childIDs.get(i);
+            String providerUUID = providerUUIDs.get(i);
+
+            // Try to find an existing childcareSchedule for this child
+            Optional<Map<String, Object>> scheduleExistsOptional = childcareSchedules.stream()
+                    .filter(s -> childId.equals(s.get("childUuid")))
+                    .findFirst();
+
+            Map<String, Object> childcareSchedule;
+
+            if (scheduleExistsOptional.isPresent()) {
+                childcareSchedule = scheduleExistsOptional.get();
+            } else {
+                childcareSchedule = new HashMap<>();
+                childcareSchedule.put("childUuid", childId);
+                childcareSchedule.put("providerSchedules", new ArrayList<Map<String, Object>>());
+                childcareSchedules.add(childcareSchedule);
+            }
+
+            // Build a providerSchedule for this child+provider
+            Map<String, Object> providerSchedule = new HashMap<>();
+            providerSchedule.put("uuid", "provider-child-schedule");
+            providerSchedule.put("childInCare", true);
+            providerSchedule.put("ccapStartDate", "11/17/2025");
+            providerSchedule.put("repeatForValue", providerUUID);
+            providerSchedule.put("iterationIsComplete", true);
+            providerSchedule.put("childcareWeeklySchedule[]", List.of("Monday", "Tuesday"));
+            providerSchedule.put("childcareEndTimeAllDaysAmPm", "PM");
+            providerSchedule.put("childcareEndTimeAllDaysHour", "10");
+            providerSchedule.put("childcareHoursSameEveryDay[]", List.of("yes"));
+            providerSchedule.put("childcareEndTimeAllDaysMinute", "21");
+            providerSchedule.put("childcareStartTimeAllDaysAmPm", "AM");
+            providerSchedule.put("childcareStartTimeAllDaysHour", "10");
+            providerSchedule.put("childcareStartTimeAllDaysMinute", "24");
+
+            // Add providerSchedule to the correct childcareSchedule
+            List<Map<String, Object>> providerSchedules =
+                    (List<Map<String, Object>>) childcareSchedule.get("providerSchedules");
+            providerSchedules.add(providerSchedule);
+        }
+
+        submission.getInputData().put("childcareSchedules", childcareSchedules);
+
+        return this;
+    }
+
+    public SubmissionTestBuilder withMultipleChildcareSchedulesBelongingToDifferentProviders(List<String> childIDs, List<String> providerUUIDs) {
         List<Map<String, Object>> childcareSchedules = new ArrayList<>();
 
         for (int i = 0; i < childIDs.size(); i++) {
@@ -435,6 +556,7 @@ public class SubmissionTestBuilder {
 
             providerSchedules.add(providerSchedule);
             childcareSchedule.put("providerSchedules", providerSchedules);
+            childcareSchedule.put("childcareProvidersForCurrentChild[]", List.of(providerUUIDs.get(i)));
 
             childcareSchedules.add(childcareSchedule);
         }
@@ -547,7 +669,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withRegularWorkSchedule(List days) {
-        withJob("jobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withJob("jobs", "Regular Schedule Job", "123 RegularJob Street", "DeKalb", "IL", "60123", "", "false");
 
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
@@ -566,7 +688,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withRegularWorkScheduleAddHour(List days, TimeOption startTime, TimeOption endTime) {
-        withJob("jobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withJob("jobs", "Regular Schedule Job", "123 RegularJob Street", "DeKalb", "IL", "60123", "", "false");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
             return this;
@@ -584,7 +706,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withWorkScheduleByDay(String day, TimeOption startTime, TimeOption endTime) {
-        withJob("jobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withJob("jobs", "Regular Schedule Job", "123 RegularJob Street", "DeKalb", "IL", "60123", "", "false");
 
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("jobs");
         if (jobs == null) {
@@ -610,7 +732,8 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withPartnerRegularWorkSchedule(List days) {
-        withJob("partnerJobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133", "",
+                "false");
 
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (jobs == null) {
@@ -629,7 +752,8 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withPartnerRegularWorkScheduleAddHour(List days, TimeOption startTime, TimeOption endTime) {
-        withJob("partnerJobs", "Regular Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133", "",
+                "false");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (jobs == null) {
             return this;
@@ -648,7 +772,8 @@ public class SubmissionTestBuilder {
 
     public SubmissionTestBuilder withPartnerWorkScheduleByDay(String day, TimeOption startTime, TimeOption endTime) {
         withParentPartnerDetails();
-        withJob("partnerJobs", "Regular Mixed Schedule Job", "123 Main Str", "", "", "", "", "false");
+        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133", "",
+                "false");
         List<Map<String, Object>> partnerJobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (partnerJobs == null) {
             return this;
@@ -795,6 +920,11 @@ public class SubmissionTestBuilder {
         data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "Minute", timeOption.getMinute());
         data.put(inputPrefix + startOrEndKey + "Time" + dayPostFix + "AmPm", timeOption.getAmOrPm());
 
+        return this;
+    }
+    
+    public SubmissionTestBuilder withFamilyIntendedProviderName(String providerName) {
+        submission.getInputData().put("familyIntendedProviderName", providerName);
         return this;
     }
 }

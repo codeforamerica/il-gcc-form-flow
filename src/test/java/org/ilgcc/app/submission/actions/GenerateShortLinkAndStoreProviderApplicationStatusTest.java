@@ -79,7 +79,7 @@ class GenerateShortLinkAndStoreProviderApplicationStatusTest {
             submissionRepositoryService.save(familySubmission);
 
             generateShortLinkAndStoreProviderApplicationStatus = new GenerateShortLinkAndStoreProviderApplicationStatus(
-                    httpRequest, false);
+                    httpRequest, false, 0);
             generateShortLinkAndStoreProviderApplicationStatus.run(familySubmission);
 
             assertThat(familySubmission.getInputData().get("providerApplicationResponseStatus")).isEqualTo(
@@ -94,7 +94,7 @@ class GenerateShortLinkAndStoreProviderApplicationStatusTest {
             submissionRepositoryService.save(familySubmission);
 
             generateShortLinkAndStoreProviderApplicationStatus = new GenerateShortLinkAndStoreProviderApplicationStatus(
-                    httpRequest, false);
+                    httpRequest, false, 0);
             generateShortLinkAndStoreProviderApplicationStatus.run(familySubmission);
 
             assertThat(familySubmission.getInputData().get("providerApplicationResponseStatus")).isEqualTo(
@@ -116,7 +116,7 @@ class GenerateShortLinkAndStoreProviderApplicationStatusTest {
                     .build());
 
             generateShortLinkAndStoreProviderApplicationStatus = new GenerateShortLinkAndStoreProviderApplicationStatus(
-                    httpRequest, false);
+                    httpRequest, false, 0);
         }
 
         @Test
@@ -158,7 +158,7 @@ class GenerateShortLinkAndStoreProviderApplicationStatusTest {
                     .build());
 
             generateShortLinkAndStoreProviderApplicationStatus = new GenerateShortLinkAndStoreProviderApplicationStatus(
-                    httpRequest, true);
+                    httpRequest, true, 120);
         }
 
         @Test

@@ -122,15 +122,16 @@ management:
         application-key: ${DATADOG_APPLICATION_KEY}
   endpoints:
     enabled-by-default: false
-jobrunr:
-  jobs:
-    retry-back-off-time-seed: 10
-  job-scheduler:
-    enabled: true
-  background-job-server:
-    enabled: ${JOBRUNR_SERVER_ENABLED:true}
-  dashboard:
-    enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
+org:
+  jobrunr:
+    jobs:
+      retry-back-off-time-seed: 10
+    job-scheduler:
+      enabled: true
+    background-job-server:
+      enabled: ${JOBRUNR_SERVER_ENABLED:true}
+    dashboard:
+      enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
   caseload_codes:
@@ -138,18 +139,14 @@ il-gcc:
       pending: ${PENDING_CASELOAD_CODES:[]}
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
   enable-faster-application-expiry: ${ENABLE_FASTER_APPLICATION_EXPIRY:false}
+  enable-faster-application-expiry-minutes: ${ENABLE_FASTER_APPLICATION_EXPIRY_MINUTES:120}
   enable-resource-org-emails: ${ENABLE_RESOURCE_ORG_EMAIL:false}
   resource-org-emails: ${RESOURCE_ORG_EMAILS:null}
   resource-org-emails-delay-seconds: ${RESOURCE_ORG_EMAILS_DELAY:15}
+  no-provider-response-delay-seconds: ${NO_PROVIDER_RESPONSE_DELAY:5}
   enable-new-sda-caseload-codes: ${ENABLE_NEW_SDA_CASELOAD_CODES:false}
   enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:false}
   ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
-  dts-integration-enabled: ${ENABLE_DTS_INTEGRATION:false}
-  dts:
-    url: ${DOCUMENT_TRANSFER_SERVICE_URL}
-    consumer-id: ${DOCUMENT_TRANSFER_SERVICE_CONSUMER_ID}
-    auth-token: ${DOCUMENT_TRANSFER_SERVICE_AUTH_TOKEN}
-    presigned-url-Duration: 5 # Minutes
   ccms-api:
     api-subscription-key: ${OCP_APIM_SUBSCRIPTION_KEY}
     base-url: ${CCMS_API_BASE_URL}

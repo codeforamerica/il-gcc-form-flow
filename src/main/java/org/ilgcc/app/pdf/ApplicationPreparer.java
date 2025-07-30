@@ -1,5 +1,6 @@
 package org.ilgcc.app.pdf;
 
+import static org.ilgcc.app.utils.PreparerUtilities.getApplicantFamilySize;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
@@ -10,6 +11,7 @@ import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -30,18 +32,24 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
 
         Optional<OffsetDateTime> submittedAt = Optional.ofNullable(submission.getSubmittedAt());
         submittedAt.ifPresent(offsetDateTime -> {
-            offsetDateTime.atZoneSameInstant(chicagoTimeZone);
-            String formattedSubmittedAtDate = offsetDateTime.atZoneSameInstant(chicagoTimeZone).format(receivedTimestampFormat);
-            results.put("receivedTimestamp", new SingleField("receivedTimestamp", formattedSubmittedAtDate, null));
+            ZonedDateTime chicagoSubmittedAt = offsetDateTime.atZoneSameInstant(chicagoTimeZone);
+            results.put("receivedTimestamp", new SingleField("receivedTimestamp",
+                    chicagoSubmittedAt.format(receivedTimestampFormat), null));
+
+            Optional<LocalDate> signatureDate = Optional.of(LocalDate.from(chicagoSubmittedAt));
+
+            String applicantSignature = (String) inputData.getOrDefault("signedName", "");
+            if (!applicantSignature.isBlank()) {
+                results.put("applicantSignedAt",
+                        new SingleField("applicantSignedAt", formatToStringFromLocalDate(signatureDate), null));
+            }
+
+            String partnerSignature = (String) inputData.getOrDefault("partnerSignedName", "");
+            if (!partnerSignature.isEmpty()) {
+                results.put("partnerSignedAt",
+                        new SingleField("partnerSignedAt", formatToStringFromLocalDate(signatureDate), null));
+            }
         });
-
-        var partnerSignature = inputData.getOrDefault("partnerSignedName", "");
-
-        if (!partnerSignature.equals("")) {
-            Optional<LocalDate> partnerSignatureDate = Optional.of(LocalDate.from(submission.getSubmittedAt()));
-            results.put("partnerSignedAt",
-                    new SingleField("partnerSignedAt", formatToStringFromLocalDate(partnerSignatureDate), null));
-        }
 
         var parentFirstName = inputData.getOrDefault("parentFirstName", "");
         var parentLastName = inputData.getOrDefault("parentLastName", "");
@@ -105,7 +113,8 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         results.put("childcareStartDate",
                 new SingleField("childcareStartDate",
                         inputData.getOrDefault("earliestChildcareStartDate", "").toString(), null));
-
+        results.put("applicantFamilySize",
+            new SingleField("applicantFamilySize", Integer.toString(getApplicantFamilySize(inputData)), null));
         return results;
     }
 
