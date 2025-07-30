@@ -108,24 +108,18 @@ public class CCMSTransactionPayloadService {
                 if (provider.containsKey("providerResponseSubmissionId")) {
                     UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
                     submissionRepositoryService.findById(providerSubmissionId).ifPresent(
-                            providerSubmission -> allFiles.addAll(
-                                    userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)));
+                            providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
                 }
             }
         } else {
             if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
                 submissionRepositoryService.findById(
                                 UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()))
-                        .ifPresent(
-                                providerSubmission -> allFiles.addAll(
-                                        userFileRepositoryService.findAllOrderByOriginalName(providerSubmission,
-                                                PDF_CONTENT_TYPE)));
+                        .ifPresent(providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
             }
         }
 
-        List<UserFile> userFiles = allowPdfModification ? userFileRepositoryService.findAllConvertedOrderByOriginalName(
-                familySubmission, PDF_CONTENT_TYPE)
-                : userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE);
+        List<UserFile> userFiles = findAllFiles(familySubmission);
 
         allFiles.addAll(userFiles);
 
@@ -154,5 +148,13 @@ public class CCMSTransactionPayloadService {
         }
 
         return transactionFiles;
+    }
+
+    private List<UserFile> findAllFiles(Submission submission) {
+        if (allowPdfModification) {
+            return userFileRepositoryService.findAllConvertedOrderByOriginalName(submission, PDF_CONTENT_TYPE);
+        } else {
+            return userFileRepositoryService.findAllOrderByOriginalName(submission, PDF_CONTENT_TYPE);
+        }
     }
 }
