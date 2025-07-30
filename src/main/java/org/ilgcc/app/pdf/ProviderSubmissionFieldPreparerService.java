@@ -1,6 +1,6 @@
 package org.ilgcc.app.pdf;
 
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.getProviderSubmissionId;
 
@@ -12,6 +12,8 @@ import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +30,11 @@ import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPreparer {
-
-    private boolean enableMultipleProviders;
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
@@ -64,20 +63,16 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
     @Autowired
     NeedChildcareChildrenPreparer needChildcareChildrenPreparer;
 
-    public ProviderSubmissionFieldPreparerService(
-            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
-        this.enableMultipleProviders = enableMultipleProviders;
-    }
-
     //Because we are printing the PDF from the GCC flow we need to get the provider submission then pull the responses values from the provider submission
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission familySubmission, PdfMap pdfMap) {
         Map<String, SubmissionField> results = new HashMap<>();
 
-        if (enableMultipleProviders) {
-            Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                    getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+        Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
+                getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
 
+        // TODO: When enable multi provider in prod, the else of this code can be removed when ENABLE_MULTIPLE_PROVIDERS is productized
+        if (!mergedChildrenAndSchedules.isEmpty()) {
             String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
 
             if (null != providerUuid) {
@@ -165,11 +160,12 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
     }
 
-    private  Map<String, SubmissionField> setProviderSignatureAndDate(Submission providerSubmission){
+    public static Map<String, SubmissionField> setProviderSignatureAndDate(Submission providerSubmission) {
         Map<String, SubmissionField> fields = new HashMap<>();
 
         if (providerSubmission.getInputData().getOrDefault("providerResponseAgreeToCare", "false").equals("true")) {
-            fields.put("providerSignature", new SingleField("providerSignature", providerSignature(providerSubmission.getInputData()), null));
+            fields.put("providerSignature",
+                    new SingleField("providerSignature", providerSignature(providerSubmission.getInputData()), null));
             fields.put("providerSignatureDate",
                     new SingleField("providerSignatureDate",
                             providerSignatureDate(providerSubmission.getSubmittedAt()), null));
@@ -178,15 +174,16 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
         return fields;
     }
 
-    private String providerSignatureDate(OffsetDateTime submittedAt) {
+    private static String providerSignatureDate(OffsetDateTime submittedAt) {
         if (submittedAt != null) {
-            Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submittedAt));
+            ZonedDateTime chicagoSubmittedAt = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
+            Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(chicagoSubmittedAt));
             return formatToStringFromLocalDate(providerSignatureDate);
         }
         return "";
     }
 
-    private String providerSignature(Map<String, Object> providerInputData) {
+    private static String providerSignature(Map<String, Object> providerInputData) {
         String providerSignature = (String) providerInputData.getOrDefault("providerSignedName", "");
         if (!providerSignature.isEmpty()) {
             return providerSignature;

@@ -1,21 +1,21 @@
 package org.ilgcc.app.pdf;
 
+import static org.ilgcc.app.utils.PreparerUtilities.formatYesNo;
+
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.ilgcc.app.utils.GenderOption;
 import org.ilgcc.app.utils.RaceEthnicityOption;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.ilgcc.app.utils.PreparerUtilities.formatYesNo;
 
 @Component
 public class NeedChildcareChildrenPreparer implements SubmissionFieldPreparer {
@@ -52,7 +52,7 @@ public class NeedChildcareChildrenPreparer implements SubmissionFieldPreparer {
             results.put("familySectionChildRelationship_" + iteration,
                     new SingleField("familySectionChildRelationship", (String) child.get("childRelationship"), iteration));
 
-            if(!enableMultipleProviders){
+            if(!enableMultipleProviders || SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider(submission)){
                 results.putAll(prepareChildCareSchedule(child, iteration));
             }
 

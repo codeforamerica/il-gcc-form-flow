@@ -7,7 +7,8 @@
     subtext=#{provider-id-fein.subtext},
     inputName='providerTaxIdFEIN',
     formAction=${formAction},
-    inputContent=~{::inputContent})}">
+    inputContent=~{::inputContent},
+    buttonLabel=#{general.button.continue})}">
   <th:block th:ref="inputContent">
     <th:block th:replace="~{fragments/inputs/overrides/text ::
       text(inputName='providerTaxIdFEIN',
