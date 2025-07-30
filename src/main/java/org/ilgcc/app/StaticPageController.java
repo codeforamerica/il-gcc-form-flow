@@ -1,25 +1,16 @@
 package org.ilgcc.app;
 
-import formflow.library.config.FormFlowConfigurationProperties;
 import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.HashMap;
 
 /**
  * A controller to render static pages that are not in any flow.
  */
 @Controller
 public class StaticPageController {
-
-    FormFlowConfigurationProperties formFlowConfigurationProperties;
-
-    public StaticPageController(FormFlowConfigurationProperties formFlowConfigurationProperties) {
-        this.formFlowConfigurationProperties = formFlowConfigurationProperties;
-    }
-
     /**
      * Renders the website index page.
      *
