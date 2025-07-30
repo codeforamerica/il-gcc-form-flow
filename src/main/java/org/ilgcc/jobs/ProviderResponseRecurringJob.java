@@ -74,13 +74,8 @@ public class ProviderResponseRecurringJob {
                 if (!hasProviderResponse(expiredFamilySubmission)) {
                     log.info("No provider response found for family submission {}.", expiredFamilySubmission.getId());
 
-                    ccmsSubmissionPayloadTransaction.enqueueCCMSTransactionPayloadInstantly(
-                            expiredFamilySubmission.getId());
-
-                    if (isCCMSIntegrationEnabled) {
-                        ccmsSubmissionPayloadTransaction.enqueueCCMSTransactionPayloadWithSecondsOffset(
-                                expiredFamilySubmission.getId(), totalOffsetDelaySeconds.get());
-                    }
+                    ccmsSubmissionPayloadTransaction.enqueueCCMSTransactionPayloadWithSecondsOffset(
+                            expiredFamilySubmission.getId(), totalOffsetDelaySeconds.get());
 
                     // After we send a submission, stagger the next job by the offset
                     totalOffsetDelaySeconds.addAndGet(this.offsetDelaySeconds);
