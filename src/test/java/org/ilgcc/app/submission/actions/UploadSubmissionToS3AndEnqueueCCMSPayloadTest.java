@@ -1,43 +1,33 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.awaitility.Awaitility.await;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
-import formflow.library.file.CloudFileRepository;
-import formflow.library.pdf.PdfService;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
+import org.ilgcc.app.data.SubmissionSenderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
+// TODO: Rename this class to just "SendSubmissionToCCMSTest" once mega PR is approved. -Marc
 class UploadSubmissionToS3AndEnqueueCCMSPayloadTest {
-
-    @MockitoBean
-    private PdfService pdfService;
-
-    @MockitoBean
-    private CloudFileRepository cloudFileRepository;
 
     @Autowired
     private UploadSubmissionToS3AndEnqueueCCMSPayload uploadSubmissionToS3AndEnqueueCCMSPayload;
 
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
+
+    @MockitoSpyBean
+    private SubmissionSenderService submissionSenderService;
 
     private Submission submission;
 
@@ -48,22 +38,24 @@ class UploadSubmissionToS3AndEnqueueCCMSPayloadTest {
     }
 
     @Test
-    void whenRun_thenPdfIsZippedAndUploadedToS3() throws IOException {
+    void whenRun_thenNoProviderSubmissionIsSentToCCMS() throws IOException {
 
-        byte[] pdfFiles = new byte[]{1, 2, 3, 4};
-        when(pdfService.getFilledOutPDF(submission)).thenReturn(pdfFiles);
         submission.setSubmittedAt(OffsetDateTime.now());
         submission.getInputData().put("hasChosenProvider", "false");
 
         uploadSubmissionToS3AndEnqueueCCMSPayload.run(submission);
 
-        await().atMost(Duration.ofSeconds(10)).untilAsserted(() -> {
-            verify(pdfService).getFilledOutPDF(submission);
-            verify(cloudFileRepository).upload(eq(generateExpectedPdfPath(submission)), any(MultipartFile.class));
-        });
+        verify(submissionSenderService).sendFamilySubmission(submission);
     }
 
-    private String generateExpectedPdfPath(Submission submission) {
-        return String.format("%s/%s.pdf", submission.getId(), submission.getId());
+    @Test
+    void whenRun_thenProviderSubmissionIsNotSentToCCMS() throws IOException {
+
+        submission.setSubmittedAt(OffsetDateTime.now());
+        submission.getInputData().put("hasChosenProvider", "true");
+
+        uploadSubmissionToS3AndEnqueueCCMSPayload.run(submission);
+
+        verifyNoInteractions(submissionSenderService);
     }
 }
