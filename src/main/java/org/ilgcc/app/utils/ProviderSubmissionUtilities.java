@@ -169,7 +169,7 @@ public class ProviderSubmissionUtilities {
         applicationData.put("ccapStartDate",
                 ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(earliestDate,
                         Optional.empty()));
-        applicationData.put("hasMutipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
+        applicationData.put("hasMultipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
         applicationData.put("hasProviderAndNoProvider",
                 SubmissionUtilities.hasSelectedAProviderAndNoProvider(familySubmission.getInputData()));
 
