@@ -69,6 +69,20 @@ public class PreparerUtilities {
       default -> "";
     };
   }
+  public static int getApplicantFamilySize(Map<String, Object> inputData) {
 
+    int totalFamilyMembers = 1;
+    if (inputData.containsKey("parentHasPartner")) {
+      if("true".equals(inputData.get("parentHasPartner"))){
+        totalFamilyMembers++;
+      }
+    }
+    List<Map<String, Object>> adultDependents = (List<Map<String, Object>>)inputData.getOrDefault("adultDependents", emptyList());
+    totalFamilyMembers += adultDependents.size();
 
+    List<Map<String, Object>> children =  (List<Map<String, Object>>)inputData.getOrDefault("children", emptyList());
+    totalFamilyMembers += children.size();
+
+    return totalFamilyMembers;
+  }
 }

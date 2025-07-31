@@ -30,5 +30,4 @@ management:
         include: '*'
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
-  dts:
-    processing-org: '4c-ccap-apps-testing'
+  base-url: https://staging.getchildcareil.org

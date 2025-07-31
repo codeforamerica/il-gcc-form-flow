@@ -36,5 +36,4 @@ public class SetProvidersData implements Action {
             submissionRepositoryService.save(providerSubmission);
         }
     }
-
 }

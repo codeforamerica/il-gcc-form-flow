@@ -19,9 +19,21 @@ public class ApplicationPreparerTest {
     private Submission submission;
 
     @Test
+    public void addsApplicantSignatureDateIfSignatureExists() {
+        submission = new SubmissionTestBuilder().with("signedName", "Signature")
+                .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 0, 0, 0, 0, ZoneOffset.ofTotalSeconds(0))).build();
+
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+
+        // Sets application date to Central (Note that the time is October 11 right at midnight for UTC)
+        assertThat(result.get("applicantSignedAt")).isEqualTo(new SingleField("applicantSignedAt", "10/10/2022", null));
+    }
+
+
+    @Test
     public void addsPartnerSignatureDateIfPartnerSignatureExists() {
         submission = new SubmissionTestBuilder().with("partnerSignedName", "PartnerSignature")
-                .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 0, 0, 0, 0, ZoneOffset.ofTotalSeconds(0))).build();
+                .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 12, 0, 0, 0, ZoneOffset.ofTotalSeconds(0))).build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
 
@@ -226,5 +238,36 @@ public class ApplicationPreparerTest {
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
         assertThat(result.get("referralServicesPhysicalOrMentalDisability")).isEqualTo(
                 new SingleField("referralServicesPhysicalOrMentalDisability", "true", null));
+    }
+
+    @Test
+    public void shouldReturnTotalNumberOfFamilyMembersWhenParentDoesHaveAPartner(){
+        submission = new SubmissionTestBuilder()
+            .withParentDetails()
+            .with("parentHasPartner", "true")
+            .with("hasAdultDependents", "true")
+            .withChild("First", "Child", "false")
+            .withChild("Second", "Child", "true")
+            .withChild("Third", "Child", "true")
+            .withAdultDependent("Fourth", "Dependent")
+            .withAdultDependent("Fifth", "Dependent")
+            .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("applicantFamilySize")).isEqualTo(new SingleField("applicantFamilySize", "7", null));
+    }
+    @Test
+    public void shouldReturnTotalNumberOfFamilyMembersWhenParentDoesNotHaveAPartner(){
+        submission = new SubmissionTestBuilder()
+            .withParentDetails()
+            .with("parentHasPartner", "false")
+            .with("hasAdultDependents", "true")
+            .withChild("First", "Child", "false")
+            .withChild("Second", "Child", "true")
+            .withChild("Third", "Child", "true")
+            .withAdultDependent("Fourth", "Dependent")
+            .withAdultDependent("Fifth", "Dependent")
+            .build();
+        Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
+        assertThat(result.get("applicantFamilySize")).isEqualTo(new SingleField("applicantFamilySize", "6", null));
     }
 }

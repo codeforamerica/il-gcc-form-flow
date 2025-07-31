@@ -2,7 +2,7 @@ package org.ilgcc.app.pdf;
 
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForAdditionalProviderPDF;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
-import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForProvider;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
@@ -109,7 +109,7 @@ public class MultiProviderPDFService {
         List<Map<String, Object>> providers = SubmissionUtilities.getProviders(familySubmission.getInputData());
 
         Map<String, List<Map<String, Object>>> mergedChildrenAndSchedules =
-                getRelatedChildrenSchedulesForProvider(familySubmission.getInputData());
+                getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
 
         if (mergedChildrenAndSchedules.isEmpty()) {
             return additionalPDFs;
@@ -123,7 +123,6 @@ public class MultiProviderPDFService {
                         providerSchedulesByUuid.get(i));
 
                 Map<String, SubmissionField> submissionFields = new HashMap<>();
-
 
                 List<Map<String, Object>> listOfChildcareSchedulesForCurrentProvider =
                         mergedChildrenAndSchedules.get(providerSchedulesByUuid.get(i));
@@ -153,9 +152,8 @@ public class MultiProviderPDFService {
                     submissionFields.putAll(
                             providerApplicationPreparerHelper.prepareSubmissionFields(
                                     providerSubmission.getInputData()));
-                    submissionFields.put("providerSignatureDate",
-                            new SingleField("providerSignatureDate",
-                                    providerSignatureDate(providerSubmission.getSubmittedAt()), null));
+                    submissionFields.putAll(
+                            ProviderSubmissionFieldPreparerService.setProviderSignatureAndDate(providerSubmissionOptional.get()));
                 } else {
                     submissionFields.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             currentProvider));
@@ -175,8 +173,10 @@ public class MultiProviderPDFService {
                 Optional<OffsetDateTime> submittedAt = Optional.ofNullable(familySubmission.getSubmittedAt());
                 submittedAt.ifPresent(offsetDateTime -> {
                     offsetDateTime.atZoneSameInstant(chicagoTimeZone);
-                    String formattedSubmittedAtDate = offsetDateTime.atZoneSameInstant(chicagoTimeZone).format(receivedTimestampFormat);
-                    submissionFields.put("receivedTimestamp", new SingleField("receivedTimestamp", formattedSubmittedAtDate, null));
+                    String formattedSubmittedAtDate = offsetDateTime.atZoneSameInstant(chicagoTimeZone)
+                            .format(receivedTimestampFormat);
+                    submissionFields.put("receivedTimestamp",
+                            new SingleField("receivedTimestamp", formattedSubmittedAtDate, null));
                 });
 
                 additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size()),

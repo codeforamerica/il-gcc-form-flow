@@ -39,8 +39,7 @@ management:
         include: '*'
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
-  dts:
-    processing-org: '4c-ccap-apps-testing'
+  base-url: https://qa.getchildcareil.org
 sentry:
   environment: qa
   traces-sample-rate: 1.0

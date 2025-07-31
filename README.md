@@ -121,10 +121,17 @@ The `setup.sh` script:
 ```
 
 ### Create cert for https on localhost
+1. Installing mkcert on Windows
+2. Run following command on Windows Powershell (we can provide --location parameter followed by Path additionally to install mkcert at custom location)
 ```
-./generate_localhost_cert.sh
+winget install --id=FiloSottile.mkcert
 ```
-
+3. Add mkcert installation location to System Path variable so that it can be accessed by powershell as a command.
+4. Restart Intellij and run following two commands in local terminal (same as generate_localhost_cert.sh)
+```
+mkcert -install
+mkcert -pkcs12 localhost 127.0.0.1 ::1
+```
 
 ## Running the app for the first time
 
