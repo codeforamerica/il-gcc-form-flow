@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 
 public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
@@ -251,14 +252,24 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-next-work-schedule.title"));
         testPage.clickContinue();
 
-        //activities-job-weekly-schedule
+        //activities-job-weekly-schedule one day
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+        testPage.clickContinue();
+
+        //activities-job-hourly-schedule one day
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
+        assertThat(driver.findElements(By.id("activitiesJobHoursSameEveryDay-Yes")).isEmpty()).isTrue();
+        testPage.goBack();
+
+        //activities-job-weekly-schedule two days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-job-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
+        assertThat(testPage.findElementById("activitiesJobHoursSameEveryDay-Yes").isDisplayed()).isTrue();
 
         testPage.selectFromDropdown("activitiesJobStartTimeMondayHour", "12");
         testPage.enter("activitiesJobStartTimeMondayMinute", "00");
