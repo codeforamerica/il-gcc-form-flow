@@ -69,7 +69,7 @@ public class CCMSTransactionPayloadService {
                     DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(familySubmission.getSubmittedAt())
             ));
         } catch (Exception e) {
-            log.warn(e.getMessage());
+            log.error("generateSubmissionTransactionPayload error for submission {}", familySubmission != null ? familySubmission.getId() : "NULL FAMILY SUBMISSION", e);
             return Optional.empty();
         }
     }
