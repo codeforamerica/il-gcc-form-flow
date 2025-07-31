@@ -88,7 +88,8 @@ public class CCMSTransactionPayloadService {
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(applicationPdfJSON);
                 } else {
-                    TransactionFile additionalProviderPagesJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(), "580d1866-3c15-4823-9271-f326e3690921",
+                    // TEMP
+                    TransactionFile additionalProviderPagesJSON = new TransactionFile(fileName, FileTypeId.UPLOADED_DOCUMENT.getValue(), UUID.randomUUID().toString(),
                             Base64.getEncoder().encodeToString(fileContent));
                     transactionFiles.add(additionalProviderPagesJSON);
                 }
