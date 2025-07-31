@@ -7,6 +7,7 @@
         isSameEveryDay=${!#lists.isEmpty(fieldData.get('activitiesClassHoursSameEveryDay[]'))},
         sameHoursLabel=#{activities-class-hourly-schedule.hours-are-the-same},
         selectedDays=${fieldData['weeklySchedule[]']},
+        onlyOneDay=${fieldData['weeklySchedule[]'] != null && fieldData['weeklySchedule[]'].size() == 1},
         inputName='activitiesClassHoursSameEveryDay',
         inputNamePrefix='activitiesClass'
       )}">

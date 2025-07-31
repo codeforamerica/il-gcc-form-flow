@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 
 public class ActivitiesJourneyTest extends AbstractBasePageTest {
 
@@ -63,14 +64,25 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-next-work-schedule.title"));
         testPage.clickContinue();
 
-        //activities-job-weekly-schedule
+        //activities-job-weekly-schedule one day
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+        testPage.clickContinue();
+
+        //activities-job-hourly-schedule one day
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
+        assertThat(driver.findElements(By.id("activitiesJobHoursSameEveryDay-Yes")).isEmpty()).isTrue();
+        testPage.goBack();
+
+        //activities-job-weekly-schedule two days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
         testPage.clickContinue();
 
-        //activities-job-weekly-schedule
+        //activities-job-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
+        assertThat(testPage.findElementById("activitiesJobHoursSameEveryDay-Yes").isDisplayed()).isTrue();
+
         testPage.selectFromDropdown("activitiesJobStartTimeMondayHour", "12");
         testPage.enter("activitiesJobStartTimeMondayMinute", "00");
         testPage.selectFromDropdown("activitiesJobStartTimeMondayAmPm", "PM");
@@ -133,14 +145,24 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-next-class-schedule.header"));
         testPage.clickContinue();
 
-        //activities-class-weekly-schedule
+        //activities-class-weekly-schedule one day
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("weeklySchedule-Monday");
+        testPage.clickContinue();
+
+        //activities-class-hourly-schedule one day
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(driver.findElements(By.id("activitiesClassHoursSameEveryDay-Yes")).isEmpty()).isTrue();
+        testPage.goBack();
+
+        //activities-class-weekly-schedule two days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("weeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-class-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(testPage.findElementById("activitiesClassHoursSameEveryDay-Yes").isDisplayed()).isTrue();
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
 
         testPage.selectFromDropdown("activitiesClassStartTimeAllDaysHour", "9");
@@ -311,14 +333,24 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-next-class-schedule.header"));
         testPage.clickContinue();
 
-        //activities-class-weekly-schedule
+        //activities-class-weekly-schedule one day
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("weeklySchedule-Monday");
+        testPage.clickContinue();
+
+        //activities-class-hourly-schedule one day
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(driver.findElements(By.id("activitiesClassHoursSameEveryDay-Yes")).isEmpty()).isTrue();
+        testPage.goBack();
+
+        //activities-class-weekly-schedule two days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("weeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-class-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(testPage.findElementById("activitiesClassHoursSameEveryDay-Yes").isDisplayed()).isTrue();
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
         testPage.selectFromDropdown("activitiesClassStartTimeAllDaysHour", "9");
         testPage.enter("activitiesClassStartTimeAllDaysMinute", "00");
@@ -462,14 +494,24 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-next-work-schedule.title"));
         testPage.clickContinue();
 
-        //activities-job-weekly-schedule
+        //activities-job-weekly-schedule one day
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Monday");
+        testPage.clickContinue();
+
+        //activities-job-hourly-schedule one day
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
+        assertThat(driver.findElements(By.id("activitiesJobHoursSameEveryDay-Yes")).isEmpty()).isTrue();
+        testPage.goBack();
+
+        //activities-job-weekly-schedule two days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-weekly-schedule.title"));
         testPage.clickElementById("activitiesJobWeeklySchedule-Sunday");
         testPage.clickContinue();
 
-        //activities-job-weekly-schedule
+        //activities-job-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-job-hourly-schedule.title"));
+        assertThat(testPage.findElementById("activitiesJobHoursSameEveryDay-Yes").isDisplayed()).isTrue();
 
         testPage.selectFromDropdown("activitiesJobStartTimeMondayHour", "12");
         testPage.enter("activitiesJobStartTimeMondayMinute", "00");
@@ -532,14 +574,24 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("activities-next-class-schedule.header"));
         testPage.clickContinue();
 
-        //activities-class-weekly-schedule
+        //activities-class-weekly-schedule one day
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("weeklySchedule-Monday");
+        testPage.clickContinue();
+
+        //activities-class-hourly-schedule one day
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(driver.findElements(By.id("activitiesClassHoursSameEveryDay-Yes")).isEmpty()).isTrue();
+        testPage.goBack();
+
+        //activities-class-weekly-schedule two days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-weekly-schedule.title"));
         testPage.clickElementById("weeklySchedule-Sunday");
         testPage.clickContinue();
 
         //activities-class-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(testPage.findElementById("activitiesClassHoursSameEveryDay-Yes").isDisplayed()).isTrue();
         testPage.clickElementById("activitiesClassHoursSameEveryDay-Yes");
 
         testPage.selectFromDropdown("activitiesClassStartTimeAllDaysHour", "9");
@@ -666,11 +718,24 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("partnerProgramTaught-In-Person-label");
         testPage.clickElementById("partnerProgramSchedule-Yes-label");
         testPage.clickContinue();
+        //activities-class-weekly-schedule one day
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-weekly-schedule.title"));
         testPage.clickElementById("partnerClassWeeklySchedule-Monday");
+        testPage.clickContinue();
+
+        //activities-class-hourly-schedule one day
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(driver.findElements(By.id("partnerClassHoursSameEveryDay-Yes")).isEmpty()).isTrue();
+        testPage.goBack();
+
+        //activities-class-weekly-schedule two days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-weekly-schedule.title"));
         testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
         testPage.clickContinue();
+
+        //activities-class-hourly-schedule
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(testPage.findElementById("partnerClassHoursSameEveryDay-Yes").isDisplayed()).isTrue();
 
         testPage.selectFromDropdown("partnerClassStartTimeMondayHour", "9");
         testPage.enter("partnerClassStartTimeMondayMinute", "00");
@@ -740,11 +805,24 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("partnerProgramTaught-In-Person-label");
         testPage.clickElementById("partnerProgramSchedule-Yes-label");
         testPage.clickContinue();
+        //activities-partner-class-weekly-schedule one day
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-weekly-schedule.title"));
         testPage.clickElementById("partnerClassWeeklySchedule-Monday");
+        testPage.clickContinue();
+
+        //activities-class-hourly-schedule one day
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(driver.findElements(By.id("partnerClassHoursSameEveryDay-Yes")).isEmpty()).isTrue();
+        testPage.goBack();
+
+        //activities-partner-class-weekly-schedule two days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-weekly-schedule.title"));
         testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
         testPage.clickContinue();
+
+        //activities-class-hourly-schedule two days
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-class-hourly-schedule.title"));
+        assertThat(testPage.findElementById("partnerClassHoursSameEveryDay-Yes").isDisplayed()).isTrue();
 
         testPage.selectFromDropdown("partnerClassStartTimeMondayHour", "9");
         testPage.enter("partnerClassStartTimeMondayMinute", "15");
