@@ -3,6 +3,7 @@ package org.ilgcc.app.submission.actions;
 import formflow.library.data.Submission;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.SendProviderAgreesToCareFamilyConfirmationEmail;
+import org.ilgcc.app.email.SendProviderConfirmationAfterResponseEmail;
 import org.ilgcc.app.email.SendProviderConfirmationEmail;
 import org.ilgcc.app.email.SendProviderDeclinesCareFamilyConfirmationEmail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import formflow.library.config.submission.Action;
 @Component
 @Slf4j
 public class SendProviderAndFamilyEmails implements Action {
+
+    @Autowired
+    SendProviderConfirmationAfterResponseEmail sendProviderConfirmationAfterResponseEmail;
 
     @Autowired
     SendProviderAgreesToCareFamilyConfirmationEmail sendProviderAgreesToCareFamilyConfirmationEmail;
@@ -26,5 +30,6 @@ public class SendProviderAndFamilyEmails implements Action {
         sendProviderAgreesToCareFamilyConfirmationEmail.send(submission);
         sendProviderConfirmationEmail.send(submission);
         sendProviderDeclinesCareFamilyConfirmationEmail.send(submission);
+        sendProviderConfirmationAfterResponseEmail.send(submission);
     }
 }

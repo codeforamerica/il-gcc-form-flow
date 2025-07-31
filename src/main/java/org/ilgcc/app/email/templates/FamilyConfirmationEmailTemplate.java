@@ -53,7 +53,7 @@ public class FamilyConfirmationEmailTemplate {
         String p3;
         String p4;
 
-        if ((boolean) emailData.get("hasMutipleProviders")) {
+        if ((boolean) emailData.get("hasMultipleProviders")) {
             p3 = messageSource.getMessage("email.family-confirmation.p3.multiple-providers", null, locale);
             p4 = messageSource.getMessage("email.family-confirmation.p4.multiple-providers",
                     new Object[]{emailData.get("shareableLink")}, locale);
