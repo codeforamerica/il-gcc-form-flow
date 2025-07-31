@@ -65,7 +65,7 @@ public class SendGridEmailValidationService {
                     }
                 }
             } catch (Exception e) {
-                log.error("Sendgrid request failed. Error: {}", e.getMessage());
+                log.error("Sendgrid validation request failed.", e);
             }
         }
         return emailValidationResult;
@@ -86,7 +86,8 @@ public class SendGridEmailValidationService {
     public Boolean sendGridFailedToProcessEmailValidationRequest(Response response) {
         boolean sendGridRequestFailed = response.getStatusCode() != 200;
         if (sendGridRequestFailed) {
-            log.error("Sendgrid request failed.  Error code: {}", response.getStatusCode());
+            log.error("Sendgrid validation request failed.  Status Code: {} Headers: {} Body: {}", response.getStatusCode(),
+                    response.getHeaders(), response.getBody());
         }
         return sendGridRequestFailed;
     }
@@ -98,16 +99,16 @@ public class SendGridEmailValidationService {
         boolean isSuspectedDisposableAddress = result.isSuspectedDisposableAddress();
         boolean hasKnownBounces = result.hasKnownBounces();
 
-        if (!validAddressSyntax){
+        if (!validAddressSyntax) {
             log.debug("Invalid email address syntax");
         }
-        if (!hasMxOrARecord){
+        if (!hasMxOrARecord) {
             log.debug("Invalid email Mx or Record syntax");
         }
-        if (hasKnownBounces){
+        if (hasKnownBounces) {
             log.debug("Invalid email, has known bounces");
         }
-        if (isSuspectedDisposableAddress){
+        if (isSuspectedDisposableAddress) {
             log.debug("Invalid email, is suspected disposable address");
         }
 
