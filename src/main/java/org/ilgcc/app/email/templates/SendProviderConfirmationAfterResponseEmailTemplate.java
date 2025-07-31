@@ -58,13 +58,18 @@ public class SendProviderConfirmationAfterResponseEmailTemplate {
         StringBuilder finalEmail = new StringBuilder();
         finalEmail.append(p1)
             .append(p2).append(p3).append(p4).append(p5);
+        String hasMultipleProvidersWithChildcareSchedules = emailData.getOrDefault("hasMultipleProvidersWithChildcareSchedules", "false").toString();
         String hasMultipleProviders = emailData.getOrDefault("hasMultipleProviders", "false").toString();
+        String isReturningProvider = emailData.getOrDefault("providerHasBeenPaidByCCAP", "false").toString();
 
-        if(hasMultipleProviders.equals("true")) {
+        if(hasMultipleProviders.equals("true") && hasMultipleProvidersWithChildcareSchedules.equals("true")) {
           finalEmail.append(familyHasMoreThanOneProviderParagraph);
         }
 
-
+        if (isReturningProvider.equals("false")) {
+          finalEmail.append(familyIsNewProviderParagraph);
+          finalEmail.append(familyIsNewProviderList);
+        }
 
         return finalEmail.toString();
     }
