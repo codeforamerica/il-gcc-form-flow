@@ -47,16 +47,24 @@ public class SendProviderConfirmationAfterResponseEmailTemplate {
         String p4 = messageSource.getMessage("email.provider-confirmation-after-response.p4", new Object[]{emailData.get("confirmationCode")},
                 locale);
         String p5 = messageSource.getMessage("email.provider-confirmation-after-response.p5", new Object[]{emailData.get("ccrrName")}, locale);
-        String familyHasMoreThanOneProviderParagraph = messageSource.getMessage("email.provider-confirmation-after-response.p6", new Object[]{emailData.get("hasMoreThanOneProvider")}, locale);
+        String familyHasMoreThanOneProviderParagraph = messageSource.getMessage("email.provider-confirmation-after-response.p6", null, locale);
         String familyIsNewProviderParagraph = messageSource.getMessage("email.provider-confirmation-after-response.p7", new Object[]{emailData.get("ccrrName")}, locale);
         String familyIsNewProviderList = messageSource.getMessage("email.provider-confirmation-after-response.p8.ul", null, locale);
 
         String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
 
-        StringBuffer finalEmail = new StringBuffer();
+
+        StringBuilder finalEmail = new StringBuilder();
         finalEmail.append(p1)
             .append(p2).append(p3).append(p4).append(p5);
+        String hasMultipleProviders = emailData.getOrDefault("hasMultipleProviders", "false").toString();
+
+        if(hasMultipleProviders.equals("true")) {
+          finalEmail.append(familyHasMoreThanOneProviderParagraph);
+        }
+
+
 
         return finalEmail.toString();
     }

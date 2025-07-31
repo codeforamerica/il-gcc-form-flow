@@ -131,7 +131,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
             assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
             assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
-            assertThat(emailData.get("hasMutipleProviders")).isEqualTo(false);
+            assertThat(emailData.get("hasMultipleProviders")).isEqualTo(false);
         }
 
         @Test
@@ -225,7 +225,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
             assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
             assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
-            assertThat(emailData.get("hasMutipleProviders")).isEqualTo(true);
+            assertThat(emailData.get("hasMultipleProviders")).isEqualTo(true);
         }
 
         @Test
@@ -308,7 +308,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
             assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
             assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
-            assertThat(emailData.get("hasMutipleProviders")).isEqualTo(false);
+            assertThat(emailData.get("hasMultipleProviders")).isEqualTo(false);
         }
 
         @Test
@@ -414,7 +414,7 @@ public class SendFamilyConfirmationEmailTest {
                 assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
                 assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
                 assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
-                assertThat(emailData.get("hasMutipleProviders")).isEqualTo(true);
+                assertThat(emailData.get("hasMultipleProviders")).isEqualTo(true);
                 assertThat(emailData.get("hasProviderAndNoProvider")).isEqualTo(true);
             }
 
