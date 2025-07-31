@@ -138,7 +138,7 @@ public class ProviderSubmissionUtilities {
         providerApplicationData.put("providerSubmissionId", providerSubmission.getId());
         providerApplicationData.put("providerResponseAgreeToCare", providerSubmission.getInputData().getOrDefault(
                 "providerResponseAgreeToCare", ""));
-
+        providerApplicationData.put("providerHasBeenPaidByCCAP", providerSubmission.getInputData().getOrDefault("providerPaidCcap", "false"));
         return providerApplicationData;
     }
 
@@ -172,6 +172,7 @@ public class ProviderSubmissionUtilities {
         applicationData.put("hasMultipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
         applicationData.put("hasProviderAndNoProvider",
                 SubmissionUtilities.hasSelectedAProviderAndNoProvider(familySubmission.getInputData()));
+        applicationData.put("hasMultipleProvidersWithChildcareSchedules", String.valueOf(!SubmissionUtilities.allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData())));
 
         // provider specific fields can come from a subflow and not the main data
         Map<String, Object> data = subflowIteration == null ? familySubmission.getInputData() : subflowIteration;
