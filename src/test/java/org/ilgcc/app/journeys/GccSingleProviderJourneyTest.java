@@ -658,7 +658,7 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
 
         //activities-class-weekly-schedule two days
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-class-weekly-schedule.title"));
-        testPage.clickElementById("partnerClassWeeklySchedule-Tuesday");
+        testPage.clickElementById("partnerClassWeeklySchedule-Wednesday");
         testPage.clickContinue();
 
         //activities-class-hourly-schedule
