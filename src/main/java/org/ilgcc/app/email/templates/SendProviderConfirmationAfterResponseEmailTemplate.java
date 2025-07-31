@@ -54,7 +54,11 @@ public class SendProviderConfirmationAfterResponseEmailTemplate {
         String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
 
-        return p1 + p2 + p3 + p4 + p5 + p6;
+        StringBuffer finalEmail = new StringBuffer();
+        finalEmail.append(p1)
+            .append(p2).append(p3).append(p4).append(p5);
+
+        return finalEmail.toString();
     }
 
 }
