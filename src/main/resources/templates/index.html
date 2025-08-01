@@ -4,13 +4,22 @@
 <body class="template--index template--static-page">
 <div class="page-wrapper padding-bottom-15">
     <th:block th:replace="~{fragments/toolbar :: toolbar}"/>
-    <main id="content" role="main" class="slab slab--white padding-top-0 padding-bottom-0 spacing-below-0">
+    <main id="content" role="main"
+          class="slab slab--white padding-top-0 padding-bottom-0 spacing-below-0">
         <section class="slab slab--light-purple">
             <div class="grid">
                 <div class="notice--warning spacing-below-35">
                     <th:block
-                            th:with="counties=${T(org.ilgcc.app.utils.CountyUtils).activeCountiesProperCapitalized}">
-                        <p th:utext="'<span aria-hidden=true>🌱 </span>' + ${#messages.msg('index.notice-html', counties.size(), #strings.listJoin(counties, ', '))}"></p>
+                            th:with="enableNewSDACodes=${@environment.getProperty('il-gcc.enable-new-sda-caseload-codes').equals('true')}">
+                        <th:block th:if="${enableNewSDACodes}">
+                            <p th:utext="#{index.notice-group-1}"></p>
+                        </th:block>
+                        <th:block th:unless="${enableNewSDACodes}">
+                            <th:block
+                                    th:with="counties=${T(org.ilgcc.app.utils.CountyUtils).activeCountiesProperCapitalized}">
+                                <p th:utext="'<span aria-hidden=true>🌱 </span>' + ${#messages.msg('index.notice-html', counties.size(), #strings.listJoin(counties, ', '))}"></p>
+                            </th:block>
+                        </th:block>
                     </th:block>
                 </div>
                 <div>
