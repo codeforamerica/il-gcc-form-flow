@@ -8,9 +8,9 @@
     <th:block th:replace="~{fragments/screens/submit-confirmation ::
       screen(
         title=${existingProviderCannotBeIdentified || declinedCare ? 
-            #messages.msg('provider-response-submit-complete-final.title') : 
+            #messages.msg('submit-confirmation.title') :
             (isExistingProvider ? 
-                #messages.msg('provider-response-submit-complete-final.title') : 
+                #messages.msg('submit-confirmation.title') :
                 #messages.msg('submit-confirmation.new-provider-registration.title')
             )},
         header=${existingProviderCannotBeIdentified || declinedCare ? 
