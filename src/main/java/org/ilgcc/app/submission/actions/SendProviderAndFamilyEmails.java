@@ -1,13 +1,15 @@
 package org.ilgcc.app.submission.actions;
 
+import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.SendProviderAgreesToCareFamilyConfirmationEmail;
 import org.ilgcc.app.email.SendProviderConfirmationEmail;
 import org.ilgcc.app.email.SendProviderDeclinesCareFamilyConfirmationEmail;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import formflow.library.config.submission.Action;
+
 @Component
 @Slf4j
 public class SendProviderAndFamilyEmails implements Action {
@@ -23,8 +25,12 @@ public class SendProviderAndFamilyEmails implements Action {
 
     @Override
     public void run(Submission submission) {
-        sendProviderAgreesToCareFamilyConfirmationEmail.send(submission);
-        sendProviderConfirmationEmail.send(submission);
-        sendProviderDeclinesCareFamilyConfirmationEmail.send(submission);
+        // If a provider is an existing provider that has done CCAP stuff before, send emails
+        // New Provider Registration will send the emails later
+        if (!ProviderSubmissionUtilities.isProviderRegistering(submission)) {
+            sendProviderAgreesToCareFamilyConfirmationEmail.send(submission);
+            sendProviderConfirmationEmail.send(submission);
+            sendProviderDeclinesCareFamilyConfirmationEmail.send(submission);
+        }
     }
 }
