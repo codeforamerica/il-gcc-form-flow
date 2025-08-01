@@ -11,14 +11,17 @@ public class TransactionFile {
     private final String fileName;
     private final String fileType;
     private final String filePayload;
+    private final String fileId;
     
     @JsonCreator
     public TransactionFile(
             @JsonProperty("name") String fileName,
             @JsonProperty("type") String fileType,
+            @JsonProperty("id") String fileId,
             @JsonProperty("payload") String filePayload) {
         this.fileName = fileName;
         this.fileType = fileType;
+        this.fileId = fileId;
         this.filePayload = filePayload;
     }
     
@@ -35,6 +38,11 @@ public class TransactionFile {
     @JsonProperty("payload")
     public String getFilePayload() {
         return filePayload;
+    }
+
+    @JsonProperty("id")
+    public String getFileId() {
+        return fileId;
     }
 
     @Getter
