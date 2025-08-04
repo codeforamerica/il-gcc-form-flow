@@ -12,6 +12,8 @@ import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,7 +176,8 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
     private static String providerSignatureDate(OffsetDateTime submittedAt) {
         if (submittedAt != null) {
-            Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submittedAt));
+            ZonedDateTime chicagoSubmittedAt = submittedAt.atZoneSameInstant(ZoneId.of("America/Chicago"));
+            Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(chicagoSubmittedAt));
             return formatToStringFromLocalDate(providerSignatureDate);
         }
         return "";

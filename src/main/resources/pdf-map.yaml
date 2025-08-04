@@ -62,6 +62,8 @@ inputFields:
   parentContactPreferredCommunicationMethod: APPLICANT_COMMUNICATION_PREFERENCE
   activitiesParentChildcareReason_other: APPLICANT_CHILDCARE_REASON_OTHER
   activitiesParentPartnerChildcareReason_other: PARTNER_CHILDCARE_REASON_OTHER
+  activitiesParentPartnerChildcareReason_WORKING: PARTNER_CHILD_CARE_REASON_WORK
+  activitiesParentPartnerChildcareReason_SCHOOL_TANF: PARTNER_CHILD_CARE_REASON_SCHOOL
   activitiesParentChildcareReason_SCHOOL_TANF: CHILD_CARE_REASON_SCHOOL_TANF
   applicantEducationScheduleMondayStart: APPLICANT_EDUCATION_SCHEDULE_MONDAY_START
   applicantEducationScheduleMondayStartAmPm: APPLICANT_EDUCATION_SCHEDULE_MONDAY_START_AM_PM
@@ -137,6 +139,7 @@ inputFields:
   referralServicesPhysicalOrMentalDisability: REFERRAL_SERVICES_PHYSICAL_OR_MENTAL_DISABILITY
   amountYourHouseholdPaysInChildSupport: APPLICANT_CHILD_SUPPORT_PAID
   signedName: APPLICANT_SIGNATURE
+  applicantSignedAt: APPLICANT_SIGNATURE_DATE
   partnerSignedName: PARTNER_SIGNATURE
   partnerSignedAt: PARTNER_SIGNATURE_DATE
   receivedTimestamp: RECEIVED_TIMESTAMP
@@ -175,7 +178,6 @@ inputFields:
   providerSignatureDate: PROVIDER_SIGNATURE_DATE
   clientResponseConfirmationCode: APPLICATION_CONFIRMATION_CODE
 dbFields:
-  submittedAt: APPLICANT_SIGNATURE_DATE
 
 subflowInfo:
   ccapFamilyMembers:

@@ -20,6 +20,7 @@ public class RobotsController {
                 Allow: /$
                 Allow: /faq$
                 Allow: /privacy$
+                Sitemap: /sitemap.xml
                 """;
         } else {
             return """
