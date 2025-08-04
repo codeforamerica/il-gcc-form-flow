@@ -53,6 +53,10 @@ public class CCMSTransactionPayloadService {
     }
 
     public Optional<CCMSTransaction> generateSubmissionTransactionPayload(Submission familySubmission) {
+        if (familySubmission == null) {
+            log.error("generateSubmissionTransactionPayload error: familySubmission is null");
+            return Optional.empty();
+        }
         try {
             return Optional.of(new CCMSTransaction(
                     "application",
@@ -69,7 +73,7 @@ public class CCMSTransactionPayloadService {
                     DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(familySubmission.getSubmittedAt())
             ));
         } catch (Exception e) {
-            log.warn(e.getMessage());
+            log.error("generateSubmissionTransactionPayload error for submission {}", familySubmission != null ? familySubmission.getId() : "NULL FAMILY SUBMISSION", e);
             return Optional.empty();
         }
     }
