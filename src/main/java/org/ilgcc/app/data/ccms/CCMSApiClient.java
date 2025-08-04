@@ -51,6 +51,7 @@
                                             .flatMap(Mono::error)
                             )
                             .bodyToMono(String.class)
+                            .doOnError(e -> log.error("Error occurred during API call for submission ID: {}", requestBody.getSubmissionId(), e))
                             .block();
             return objectMapper.readTree(response);
         }
