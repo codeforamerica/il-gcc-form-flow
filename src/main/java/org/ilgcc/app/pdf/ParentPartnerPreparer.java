@@ -103,6 +103,13 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
                     new SingleField("partnerEducationHighestLevel", "BA degree", null));
         }
 
+        List<String> reasonsForChildcareNeed = (List) submission.getInputData()
+                .getOrDefault("activitiesParentPartnerChildcareReason[]", List.of());
+        results.put("activitiesParentPartnerChildcareReason_WORKING",
+                new SingleField("activitiesParentPartnerChildcareReason_WORKING", String.valueOf(reasonsForChildcareNeed.contains("WORKING")), null));
+        results.put("activitiesParentPartnerChildcareReason_SCHOOL_TANF",
+                new SingleField("activitiesParentPartnerChildcareReason_SCHOOL_TANF", String.valueOf(reasonsForChildcareNeed.contains("SCHOOL") || reasonsForChildcareNeed.contains("TANF_TRAINING")), null));
+
         return results;
     }
 }
