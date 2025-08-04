@@ -62,15 +62,19 @@ public class SendProviderConfirmationAfterResponseEmailTemplate {
         String hasMultipleProviders = emailData.getOrDefault("hasMultipleProviders", "false").toString();
         String isReturningProvider = emailData.getOrDefault("providerHasBeenPaidByCCAP", "false").toString();
 
+        //if there are multiple providers with provider schedules then we need to the text for more than one provider
         if(hasMultipleProviders.equals("true") && hasMultipleProvidersWithChildcareSchedules.equals("true")) {
           finalEmail.append(familyHasMoreThanOneProviderParagraph);
         }
 
+//      if the provider is a new provider then we need to display the prompt for a new provider
         if (isReturningProvider.equals("false")) {
           finalEmail.append(familyIsNewProviderParagraph);
           finalEmail.append(familyIsNewProviderList);
         }
 
+        //We need to add the footer to the message once we are done
+        finalEmail.append(p6).append(p7);
         return finalEmail.toString();
     }
 
