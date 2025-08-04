@@ -44,17 +44,14 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
 
         //partner dob
         Optional<LocalDate> parentPartnerDateOfBirth = getDateInput(submission, "parentPartnerBirth");
-        if (parentPartnerDateOfBirth.isPresent()) {
-            LocalDate dob = parentPartnerDateOfBirth.get();
-            results.put(
-                    "parentPartnerDateOfBirth",
-                    new SingleField(
-                            "parentPartnerDateOfBirth",
-                            dob.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
-                            null
-                    )
-            );
-        }
+        parentPartnerDateOfBirth.ifPresent(dob -> results.put(
+                "parentPartnerDateOfBirth",
+                new SingleField(
+                        "parentPartnerDateOfBirth",
+                        dob.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                        null
+                )
+        ));
         //Term Start Date
         String partnerProgramStart = getDateInputWithDayOptional(submission, "partnerProgramStart");
         if(!partnerProgramStart.isEmpty()){
