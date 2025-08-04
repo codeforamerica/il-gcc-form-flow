@@ -1,6 +1,5 @@
 package org.ilgcc.app.submission.actions;
 
-import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.SendProviderAgreesToCareFamilyConfirmationEmail;
@@ -10,7 +9,7 @@ import org.ilgcc.app.email.SendProviderDeclinesCareFamilyConfirmationEmail;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import formflow.library.config.submission.Action;
 @Component
 @Slf4j
 public class SendProviderAndFamilyEmails implements Action {

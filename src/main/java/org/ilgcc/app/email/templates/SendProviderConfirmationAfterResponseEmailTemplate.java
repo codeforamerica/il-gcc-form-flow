@@ -43,7 +43,7 @@ public class SendProviderConfirmationAfterResponseEmailTemplate {
         String p1 = messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale);
         String p2 = messageSource.getMessage("email.provider-confirmation-after-response.p2",null, locale);
         String p3 = messageSource.getMessage("email.provider-confirmation-after-response.p3",
-                new Object[]{emailData.get("childrenInitials"), emailData.get("ccapStartDate")}, locale);
+                new Object[]{emailData.get("childrenInitialsList"), emailData.get("ccapStartDate")}, locale);
         String p4 = messageSource.getMessage("email.provider-confirmation-after-response.p4", new Object[]{emailData.get("confirmationCode")},
                 locale);
         String p5 = messageSource.getMessage("email.provider-confirmation-after-response.p5", new Object[]{emailData.get("ccrrName")}, locale);
