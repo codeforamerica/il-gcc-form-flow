@@ -187,7 +187,7 @@ public class CCMSSubmissionPayloadTransactionJob {
         totalCcmsTransactionDelayOffset.getAndAdd(ccmsTransactionDelayOffset);
     }
 
-    @Job(name = "Send CCMS Submission Payload", retries = 3)
+    @Job(name = "Send CCMS Submission Payload", retries = 5)
     public void sendCCMSTransaction(@NotNull UUID submissionId) throws IOException {
         Transaction existingTransaction = transactionRepositoryService.getBySubmissionId(submissionId);
         if (existingTransaction == null) {
