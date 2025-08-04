@@ -18,6 +18,4 @@ management:
         include: '*'
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:false}
-  dts:
-    processing-org: '4c-ccap-apps'
   base-url: https://www.getchildcareil.org

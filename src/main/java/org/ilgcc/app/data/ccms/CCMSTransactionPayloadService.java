@@ -53,6 +53,10 @@ public class CCMSTransactionPayloadService {
     }
 
     public Optional<CCMSTransaction> generateSubmissionTransactionPayload(Submission familySubmission) {
+        if (familySubmission == null) {
+            log.error("generateSubmissionTransactionPayload error: familySubmission is null");
+            return Optional.empty();
+        }
         try {
             return Optional.of(new CCMSTransaction(
                     "application",
@@ -69,7 +73,7 @@ public class CCMSTransactionPayloadService {
                     DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(familySubmission.getSubmittedAt())
             ));
         } catch (Exception e) {
-            log.warn(e.getMessage());
+            log.error("generateSubmissionTransactionPayload error for submission {}", familySubmission != null ? familySubmission.getId() : "NULL FAMILY SUBMISSION", e);
             return Optional.empty();
         }
     }
@@ -108,24 +112,18 @@ public class CCMSTransactionPayloadService {
                 if (provider.containsKey("providerResponseSubmissionId")) {
                     UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
                     submissionRepositoryService.findById(providerSubmissionId).ifPresent(
-                            providerSubmission -> allFiles.addAll(
-                                    userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)));
+                            providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
                 }
             }
         } else {
             if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
                 submissionRepositoryService.findById(
                                 UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()))
-                        .ifPresent(
-                                providerSubmission -> allFiles.addAll(
-                                        userFileRepositoryService.findAllOrderByOriginalName(providerSubmission,
-                                                PDF_CONTENT_TYPE)));
+                        .ifPresent(providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
             }
         }
 
-        List<UserFile> userFiles = allowPdfModification ? userFileRepositoryService.findAllConvertedOrderByOriginalName(
-                familySubmission, PDF_CONTENT_TYPE)
-                : userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE);
+        List<UserFile> userFiles = findAllFiles(familySubmission);
 
         allFiles.addAll(userFiles);
 
@@ -154,5 +152,13 @@ public class CCMSTransactionPayloadService {
         }
 
         return transactionFiles;
+    }
+
+    private List<UserFile> findAllFiles(Submission submission) {
+        if (allowPdfModification) {
+            return userFileRepositoryService.findAllConvertedOrderByOriginalName(submission, PDF_CONTENT_TYPE);
+        } else {
+            return userFileRepositoryService.findAllOrderByOriginalName(submission, PDF_CONTENT_TYPE);
+        }
     }
 }
