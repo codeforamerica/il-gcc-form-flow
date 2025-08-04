@@ -53,6 +53,10 @@ public class CCMSTransactionPayloadService {
     }
 
     public Optional<CCMSTransaction> generateSubmissionTransactionPayload(Submission familySubmission) {
+        if (familySubmission == null) {
+            log.error("generateSubmissionTransactionPayload error: familySubmission is null");
+            return Optional.empty();
+        }
         try {
             return Optional.of(new CCMSTransaction(
                     "application",
