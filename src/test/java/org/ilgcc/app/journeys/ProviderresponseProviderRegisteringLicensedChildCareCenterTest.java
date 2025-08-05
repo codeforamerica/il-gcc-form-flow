@@ -201,7 +201,7 @@ public class ProviderresponseProviderRegisteringLicensedChildCareCenterTest exte
         testPage.clickContinue();
 
         // submit-confirmation
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("submit-confirmation.denied-care-or-unidentifiable.header"));
 
         verifyPDF(TEST_FILLED_PDF_PATH, UNTESTABLE_FIELDS, FLOW);
