@@ -128,7 +128,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
             assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                     new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
             assertThat(emailTemplate.getSubject()).isEqualTo(
-                    messageSource.getMessage("email.general.subject.confirmation-code", null, locale));
+                    messageSource.getMessage("email.provider-agrees-to-care.subject", null, locale));
 
             String emailCopy = emailTemplate.getBody().getValue();
 
