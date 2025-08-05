@@ -15,12 +15,9 @@ import org.springframework.stereotype.Component;
 public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
 
     private final SubmissionSenderService submissionSenderService;
-    private final SendProviderConfirmationAfterResponseEmail sendProviderConfirmationAfterResponseEmail;
 
-    public UploadProviderSubmissionToS3AndSendToCCMS(SubmissionSenderService submissionSenderService,
-        SendProviderConfirmationAfterResponseEmail sendProviderConfirmationAfterResponseEmail) {
+    public UploadProviderSubmissionToS3AndSendToCCMS(SubmissionSenderService submissionSenderService) {
         this.submissionSenderService = submissionSenderService;
-        this.sendProviderConfirmationAfterResponseEmail = sendProviderConfirmationAfterResponseEmail;
     }
 
     @Override
@@ -29,10 +26,6 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
         // New Provider Registration will send the application later
         if (!ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
             submissionSenderService.sendProviderSubmission(providerSubmission);
-        }
-
-        if (providerSubmission.getInputData().getOrDefault("providerResponseAgreeToCare", "false").equals("true")) {
-            sendProviderConfirmationAfterResponseEmail.send(providerSubmission);
         }
     }
 }

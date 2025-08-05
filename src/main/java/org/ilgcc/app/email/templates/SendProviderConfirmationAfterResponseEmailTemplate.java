@@ -1,9 +1,11 @@
 package org.ilgcc.app.email.templates;
 
 import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.formatListIntoReadableString;
 
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import lombok.Getter;
@@ -43,7 +45,9 @@ public class SendProviderConfirmationAfterResponseEmailTemplate {
         String p1 = messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale);
         String p2 = messageSource.getMessage("email.provider-confirmation-after-response.p2",null, locale);
         String p3 = messageSource.getMessage("email.provider-confirmation-after-response.p3",
-                new Object[]{emailData.get("childrenInitialsList"), emailData.get("ccapStartDate")}, locale);
+                new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
+                    messageSource.getMessage("general.and", null, locale)),
+                    emailData.get("ccapStartDate")}, locale);
         String p4 = messageSource.getMessage("email.provider-confirmation-after-response.p4", new Object[]{emailData.get("confirmationCode")},
                 locale);
         String p5 = messageSource.getMessage("email.provider-confirmation-after-response.p5", new Object[]{emailData.get("ccrrName")}, locale);

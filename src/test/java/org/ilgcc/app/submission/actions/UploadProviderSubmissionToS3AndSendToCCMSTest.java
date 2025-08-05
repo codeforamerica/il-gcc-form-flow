@@ -28,14 +28,8 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
 
     private Submission providerSubmission;
 
-    private SendProviderConfirmationAfterResponseEmail sendProviderConfirmationAfterResponseEmail;
-
-    @MockitoSpyBean
-    SendEmailJob sendEmailJob;
-    @Autowired
-    protected MessageSource messageSource;
-
     private SubmissionSenderService submissionSenderService;
+
     @Autowired
     private SubmissionRepositoryService submissionRepositoryService;
 
@@ -61,14 +55,13 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
 
     @Test
     void ProviderSubmissionIsEnqueued() {
-        sendProviderConfirmationAfterResponseEmail = new SendProviderConfirmationAfterResponseEmail(sendEmailJob, messageSource, submissionRepositoryService);
         submissionSenderService = new SubmissionSenderService(
                 submissionRepositoryService,
                 ccmsSubmissionPayloadTransactionJob,
                 true,
                 false);
 
-        uploadProviderSubmissionToS3AndSendToCCMS = new UploadProviderSubmissionToS3AndSendToCCMS(submissionSenderService, sendProviderConfirmationAfterResponseEmail);
+        uploadProviderSubmissionToS3AndSendToCCMS = new UploadProviderSubmissionToS3AndSendToCCMS(submissionSenderService);
         uploadProviderSubmissionToS3AndSendToCCMS.run(providerSubmission);
     }
 }
