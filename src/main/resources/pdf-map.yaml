@@ -36,7 +36,7 @@ inputFields:
   partnerLiveInHome: PARTNER_LIVE_IN_HOME
   languageRead: APPLICANT_PRIMARY_LANGUAGE
   applicantFamilySize: APPLICANT_FAMILY_SIZE
-
+  applicantMultipleproviders: APPLICANT_MULTIPLE_PROVIDERS
   parentIsServing: APPLICANT_MILITARY_ACTIVE_DUTY
   parentInMilitaryReserveOrNationalGuard: APPLICANT_MILITARY_NATIONAL_GUARD
   parentBirthDate: APPLICANT_DOB
