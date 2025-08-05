@@ -25,6 +25,8 @@ public class ParentPartnerJobSchedulePreparer implements SubmissionFieldPreparer
         int iteration = 1;
 
         List<Map> jobs = (List<Map>) submission.getInputData().getOrDefault("partnerJobs", emptyList());
+        results.put("partnerEmployerNumberOfJobs",
+                new SingleField("partnerEmployerNumberOfJobs", String.valueOf(jobs.size()), null));
 
         for (var job : jobs) {
             Map<String, String> careSchedule =

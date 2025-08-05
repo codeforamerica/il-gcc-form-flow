@@ -187,7 +187,7 @@ public class CCMSSubmissionPayloadTransactionJob {
         totalCcmsTransactionDelayOffset.getAndAdd(ccmsTransactionDelayOffset);
     }
 
-    @Job(name = "Send CCMS Submission Payload", retries = 3)
+    @Job(name = "Send CCMS Submission Payload", retries = 5)
     public void sendCCMSTransaction(@NotNull UUID submissionId) throws IOException {
         Transaction existingTransaction = transactionRepositoryService.getBySubmissionId(submissionId);
         if (existingTransaction == null) {
@@ -246,7 +246,12 @@ public class CCMSSubmissionPayloadTransactionJob {
 
                             log.info("All providers responded: {}. {} sent to CCMS with transaction {}",
                                     SubmissionUtilities.haveAllProvidersResponded(submission), submissionId, transactionId);
-                            sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
+
+
+                            if (!SubmissionUtilities.isNoProviderSubmission(submission.getInputData())) {
+                                // If there is 1+ provider, send an email letting the family know what the provider(s) did
+                                sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
+                            }
 
                         } catch (IOException e) {
                             log.error("There was an error when attempting to send submission {} to CCMS",

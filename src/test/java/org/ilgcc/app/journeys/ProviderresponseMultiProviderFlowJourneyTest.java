@@ -198,11 +198,11 @@ public class ProviderresponseMultiProviderFlowJourneyTest extends AbstractBasePa
             testPage.clickElementById("providerResponseAgreeToCare-true-label");
             testPage.clickButton("Submit");
 
-            //submit-confirmation displays submit-complete-final screen
-            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+            //submit-confirmation 
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
             testPage.goBack();
 
-            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
         }
 
         @Test
@@ -285,11 +285,11 @@ public class ProviderresponseMultiProviderFlowJourneyTest extends AbstractBasePa
             testPage.clickElementById("providerResponseAgreeToCare-true-label");
             testPage.clickButton("Submit");
 
-            //submit-confirmation displays submit-complete-final screen
-            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+            //submit-confirmation
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
             testPage.goBack();
 
-            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
         }
     }
 
@@ -384,11 +384,11 @@ public class ProviderresponseMultiProviderFlowJourneyTest extends AbstractBasePa
             testPage.clickElementById("providerResponseAgreeToCare-true-label");
             testPage.clickButton("Submit");
 
-            //submit-confirmation displays submit-complete-final screen
-            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+            //submit-confirmation
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
             testPage.goBack();
 
-            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
         }
 
         @Test
@@ -460,11 +460,11 @@ public class ProviderresponseMultiProviderFlowJourneyTest extends AbstractBasePa
             testPage.clickElementById("providerResponseAgreeToCare-true-label");
             testPage.clickButton("Submit");
 
-            //submit-confirmation displays submit-complete-final screen
-            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+            //submit-confirmation
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
             testPage.goBack();
 
-            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-complete-final.title"));
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-confirmation.title"));
         }
     }
 
