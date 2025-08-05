@@ -32,6 +32,7 @@ inputFields:
   partnerProgramStart: PARTNER_EDUCATION_SCHOOL_TERM_BEGIN_DATE
   partnerProgramEnd: PARTNER_EDUCATION_SCHOOL_TERM_END_DATE
   parentPartnerInMilitaryReserveOrNationalGuard: PARTNER_MILITARY_NATIONAL_GUARD
+  partnerEmployerNumberOfJobs: PARTNER_EMPLOYER_NUMBER_OF_JOBS
   partnerLiveInHome: PARTNER_LIVE_IN_HOME
   languageRead: APPLICANT_PRIMARY_LANGUAGE
   applicantFamilySize: APPLICANT_FAMILY_SIZE
@@ -40,6 +41,7 @@ inputFields:
   parentInMilitaryReserveOrNationalGuard: APPLICANT_MILITARY_NATIONAL_GUARD
   parentBirthDate: APPLICANT_DOB
   parentExperiencingHomelessness: APPLICANT_HOMELESSNESS
+  applicantEmployerNumberOfJobs: APPLICANT_EMPLOYER_NUMBER_OF_JOBS
   applicantSchoolName: APPLICANT_EDUCATION_SCHOOL_NAME
   applicantSchoolStreetAddress: APPLICANT_EDUCATION_SCHOOL_ADDRESS
   applicantSchoolCity: APPLICANT_EDUCATION_SCHOOL_CITY
