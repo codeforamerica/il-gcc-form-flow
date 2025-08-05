@@ -113,7 +113,7 @@ public class ILGCCEmail implements Serializable {
                 "New Provider Confirmation Email"), AUTOMATED_PROVIDER_OUTREACH_EMAIL(
                 "Automated Provider Outreach Email"), DAILY_NEW_APPLICATIONS_PROVIDER_EMAIL(
                 "Automated Email going to Processing Organizations Daily"), FAMILY_APPLICATION_TRANSMITTED_CONFIRMATION_EMAIL(
-                "Family Application Transmitted Email"), PROVIDER_CONFIRMATION_AFTER_RESPONSE_EMAIL("Provider Confirmation Email After Response Email");
+                "Family Application Transmitted Email");
         private final String description;
 
         EmailType(String description) {

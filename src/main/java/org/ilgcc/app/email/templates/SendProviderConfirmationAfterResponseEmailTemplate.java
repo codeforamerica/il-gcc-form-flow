@@ -30,7 +30,7 @@ public class SendProviderConfirmationAfterResponseEmailTemplate {
 
    }
    public ILGCCEmailTemplate createTemplate(){
-       return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)), EmailType.PROVIDER_CONFIRMATION_AFTER_RESPONSE_EMAIL);
+       return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)), EmailType.PROVIDER_CONFIRMATION_EMAIL);
    }
 
     private Email senderEmail() {
