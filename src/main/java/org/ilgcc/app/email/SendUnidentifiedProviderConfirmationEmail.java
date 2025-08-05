@@ -22,7 +22,7 @@ public class SendUnidentifiedProviderConfirmationEmail extends SendEmail {
     @Autowired
     public SendUnidentifiedProviderConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
-        super(sendEmailJob, messageSource, submissionRepositoryService, "sendUnidentifiedProviderConfirmationEmailSent",
+        super(sendEmailJob, messageSource, submissionRepositoryService, "providerConfirmationEmailSent",
                 "providerResponseContactEmail");
     }
 
@@ -46,7 +46,7 @@ public class SendUnidentifiedProviderConfirmationEmail extends SendEmail {
 
     @Override
     protected Boolean skipEmailSend(Map<String, Object> inputData) {
-        return inputData.getOrDefault("sendUnidentifiedProviderConfirmationEmailSent", "false").equals("true");
+        return inputData.getOrDefault("providerConfirmationEmailSent", "false").equals("true");
     }
 }
 
