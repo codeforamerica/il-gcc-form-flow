@@ -27,7 +27,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class SendProviderConfirmationAfterResponseEmailTest {
+class ProviderRespondedConfirmationEmailTest {
   @MockitoSpyBean
   SendEmailJob sendEmailJob;
 
@@ -42,7 +42,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
 
   private Submission providerSubmission;
 
-  private SendProviderConfirmationAfterResponseEmail sendEmailClass;
+  private ProviderRespondedConfirmationEmail sendEmailClass;
 
   private final Locale locale = Locale.ENGLISH;
 
@@ -79,7 +79,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new SendProviderConfirmationAfterResponseEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -160,7 +160,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new SendProviderConfirmationAfterResponseEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -277,7 +277,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new SendProviderConfirmationAfterResponseEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -394,7 +394,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new SendProviderConfirmationAfterResponseEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -511,7 +511,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new SendProviderConfirmationAfterResponseEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -628,7 +628,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new SendProviderConfirmationAfterResponseEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach

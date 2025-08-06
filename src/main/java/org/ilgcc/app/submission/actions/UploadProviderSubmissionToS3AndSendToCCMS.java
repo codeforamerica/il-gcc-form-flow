@@ -5,7 +5,6 @@ import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.SubmissionSenderService;
-import org.ilgcc.app.email.SendProviderConfirmationAfterResponseEmail;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.stereotype.Component;
 

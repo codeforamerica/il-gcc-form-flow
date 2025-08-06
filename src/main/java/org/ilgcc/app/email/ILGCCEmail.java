@@ -104,8 +104,8 @@ public class ILGCCEmail implements Serializable {
     public enum EmailType {
         FAMILY_CONFIRMATION_EMAIL("Family Confirmation Email"), FAMILY_CONFIRMATION_EMAIL_NO_PROVIDER(
                 "No Provider Family Confirmation Email"), PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL(
-                "Provider Agrees to Care Family Email"), PROVIDER_CONFIRMATION_EMAIL(
-                "Provider Confirmation Email"), UNIDENTIFIED_PROVIDER_CONFIRMATION_EMAIL(
+                "Provider Agrees to Care Family Email"), PROVIDER_RESPONDED_CONFIRMATION_EMAIL(
+                "Provider Responded Confirmation Email"), UNIDENTIFIED_PROVIDER_CONFIRMATION_EMAIL(
                 "Unidentified Provider Confirmation Email"), PROVIDER_DECLINES_CARE_FAMILY_EMAIL(
                 "Provider Declines Care Family Email"), PROVIDER_DID_NOT_RESPOND_FAMILY_EMAIL(
                 "Provider Did Not Respond Family Email"), NEW_PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL(

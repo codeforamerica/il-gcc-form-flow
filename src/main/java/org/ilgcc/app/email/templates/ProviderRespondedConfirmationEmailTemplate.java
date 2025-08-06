@@ -17,20 +17,20 @@ import org.springframework.context.MessageSource;
 
 @Getter
 @Setter
-public class SendProviderConfirmationAfterResponseEmailTemplate {
+public class ProviderRespondedConfirmationEmailTemplate {
 
     private Map<String, Object> emailData;
     private MessageSource messageSource;
     private Locale locale;
 
-   public SendProviderConfirmationAfterResponseEmailTemplate(Map<String, Object> emailData, MessageSource messageSource, Locale locale) {
+   public ProviderRespondedConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource, Locale locale) {
        this.emailData = emailData;
        this.messageSource = messageSource;
        this.locale = locale;
 
    }
    public ILGCCEmailTemplate createTemplate(){
-       return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)), EmailType.PROVIDER_CONFIRMATION_EMAIL);
+       return new ILGCCEmailTemplate(senderEmail(), setSubject(), new Content("text/html", setBodyCopy(emailData)), EmailType.PROVIDER_RESPONDED_CONFIRMATION_EMAIL);
    }
 
     private Email senderEmail() {
@@ -40,7 +40,7 @@ public class SendProviderConfirmationAfterResponseEmailTemplate {
     private String setSubject() {
         return messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{emailData.get("confirmationCode")}, locale);
     }
-    //TODO: SET UP EMAIL DATA TO GET CHILDREN INITIALS, CCAP START DATE, CCRRNAME, CONFIRMATION_CODE
+
     private String setBodyCopy(Map<String, Object> emailData) {
         String p1 = messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale);
         String p2 = messageSource.getMessage("email.provider-confirmation-after-response.p2",null, locale);
