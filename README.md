@@ -1,5 +1,7 @@
 # Online Application for the Illinois Child Care Assistance Program (CCAP)
 
+> **New to this project?** Check out our [AI Agent Workflow Guide](AI_AGENT_WORKFLOW.md) to understand how automated development assistance works with this codebase.
+
 - [Online Application for the Illinois Child Care Assistance Program (CCAP)](#online-application-for-the-illinois-child-care-assistance-program-ccap)
 - [About GetChildCareIL](#about-getchildcareil)
   - [Product](#product)
