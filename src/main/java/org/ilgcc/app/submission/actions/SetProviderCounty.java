@@ -2,7 +2,7 @@ package org.ilgcc.app.submission.actions;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
-import java.util.List;
+import  java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.data.County;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class SetOrganizationIdAndCCRRName implements Action {
+public class SetProviderCounty implements Action {
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
@@ -37,8 +37,15 @@ public class SetOrganizationIdAndCCRRName implements Action {
     @Override
     public void run(Submission submission) {
         Map<String, Object> inputData = submission.getInputData();
-
-
+        if(inputData.containsKey(PROVIDER_ZIP_INPUT_NAME)) {
+            String providerZip = (String) inputData.get(PROVIDER_ZIP_INPUT_NAME);
+            if (providerZip != null && providerZip.length() >= 5) {
+                Optional<County> providerCountyOpt = ccmsDataServiceImpl.getCountyByZipCode(providerZip);
+                providerCountyOpt.ifPresentOrElse(county -> inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, county.getCounty()), () -> inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, null));
+            } else {
+                inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, null);
+            }
+        }
         boolean experiencingHomelessness = inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
                 List.of("yes"));
 
@@ -108,4 +115,3 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
 
 }
-

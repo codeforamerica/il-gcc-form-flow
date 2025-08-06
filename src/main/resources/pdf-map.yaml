@@ -141,7 +141,7 @@ inputFields:
   partnerSignedName: PARTNER_SIGNATURE
   partnerSignedAt: PARTNER_SIGNATURE_DATE
   receivedTimestamp: RECEIVED_TIMESTAMP
-
+  providerResponseAddressCounty: PROVIDER_ADDRESS_COUNTY
   providerResponseProviderNumber: PROVIDER_ID_NUMBER
   providerResponse: PROVIDER_RESPONSE
   providerResponseFirstName: PROVIDER_NAME_FIRST

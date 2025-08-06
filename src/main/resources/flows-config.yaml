@@ -846,6 +846,7 @@ flow:
   confirm-service-address:
     condition: ShowProviderResponseServiceAddressConfirmationScreen
     onPostAction: SaveValidatedProviderResponseServiceAddress
+    afterSaveAction: SetProviderCounty
     nextScreens:
       - name: mailing-address
         condition: ProviderIsRegistering
