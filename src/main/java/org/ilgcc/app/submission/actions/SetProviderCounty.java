@@ -39,7 +39,8 @@ public class SetProviderCounty implements Action {
                    providerCountyOpt.ifPresentOrElse(county -> inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, county.getCounty()), () -> inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, null));
             }
         }
-
+        boolean experiencingHomelessness = inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
+                List.of("yes"));
         submissionRepositoryService.save(submission);
 
 }
