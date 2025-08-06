@@ -26,6 +26,8 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
         int iteration = 1;
 
         List<Map> jobs = (List<Map>) submission.getInputData().getOrDefault("jobs", emptyList());
+        results.put("applicantEmployerNumberOfJobs",
+                new SingleField("applicantEmployerNumberOfJobs", String.valueOf(jobs.size()), null));
 
         for (var job : jobs) {
             Map<String, String> careSchedule =
