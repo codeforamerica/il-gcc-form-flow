@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
@@ -91,7 +90,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
     @Test
     void correctlySetsEmailRecipient() {
       Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
-      Map<String, Object> emailData = emailDataOptional.get();
+      Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
     }
@@ -172,7 +171,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
     @Test
     void correctlySetsEmailRecipient() {
       Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
-      Map<String, Object> emailData = emailDataOptional.get();
+      Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
     }
@@ -289,7 +288,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
     @Test
     void correctlySetsEmailRecipient() {
       Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
-      Map<String, Object> emailData = emailDataOptional.get();
+      Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
     }
@@ -406,7 +405,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
     @Test
     void correctlySetsEmailRecipient() {
       Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
-      Map<String, Object> emailData = emailDataOptional.get();
+      Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
     }
@@ -523,7 +522,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
     @Test
     void correctlySetsEmailRecipient() {
       Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
-      Map<String, Object> emailData = emailDataOptional.get();
+      Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
     }
@@ -640,7 +639,7 @@ class SendProviderConfirmationAfterResponseEmailTest {
     @Test
     void correctlySetsEmailRecipient() {
       Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
-      Map<String, Object> emailData = emailDataOptional.get();
+      Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
     }

@@ -47,7 +47,7 @@ public class SendProviderConfirmationAfterResponseEmail extends SendEmail {
     @Override
     protected Boolean skipEmailSend(Map<String, Object> inputData) {
         boolean emailSent = inputData.getOrDefault("providerConfirmationEmailSent", "false").equals("true");
-        boolean providerAgreedToCare = inputData.getOrDefault("providerConfirmationAfterResponseEmailSent", "false")
+        boolean providerAgreedToCare = inputData.getOrDefault("providerResponseAgreeToCare", "false")
             .equals("true");
 
         return emailSent || !providerAgreedToCare;
