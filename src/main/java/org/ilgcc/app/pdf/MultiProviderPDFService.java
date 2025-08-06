@@ -92,12 +92,6 @@ public class MultiProviderPDFService {
     }
 
     public Map<String, byte[]> generatePDFs(Submission submission) throws IOException {
-
-        List<Map<String, Object>> providers = SubmissionUtilities.getProviders(submission.getInputData());
-        boolean hasMultipleProviders = providers.size() > 1;
-
-        submission.getInputData().put("applicantMultipleproviders", hasMultipleProviders ? "true" : "false");
-
         Map<String, byte[]> allFiles = new HashMap<>();
         allFiles.put(getCCMSFileNameForApplicationPDF(submission), pdfService.getFilledOutPDF(submission));
 
