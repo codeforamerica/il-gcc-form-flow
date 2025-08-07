@@ -33,7 +33,7 @@ public class ProviderRespondedConfirmationEmail extends SendEmail {
     }
 
     @Override
-    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission, Map<String, Object> subflowData) {
+    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission) {
         Optional<Submission> familySubmission = getFamilyApplication(providerSubmission);
         if (familySubmission.isPresent()) {
             String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
