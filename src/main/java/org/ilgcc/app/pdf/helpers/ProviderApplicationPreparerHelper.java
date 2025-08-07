@@ -25,7 +25,7 @@ public class ProviderApplicationPreparerHelper extends InputDataPreparerHelper {
                         "providerTaxIdFEIN", "providerResponseServiceStreetAddress1", "providerResponseServiceStreetAddress2",
                         "providerResponseServiceCity", "providerResponseServiceState", "providerResponseServiceZipCode",
                         "providerMailingStreetAddress1", "providerMailingStreetAddress2", "providerMailingCity",
-                        "providerMailingState", "providerMailingZipCode", "providerResponseAddressCounty"));
+                        "providerMailingState", "providerMailingZipCode"));
 
         for (String fieldName : providerFields) {
             results.put(fieldName, new SingleField(fieldName, providerInputData.getOrDefault(fieldName, "").toString(), null));
