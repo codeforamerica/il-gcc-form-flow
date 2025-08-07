@@ -221,6 +221,11 @@ class ProviderRespondedConfirmationEmailTest {
       provider.put("iterationIsComplete", true);
       provider.put("familyIntendedProviderEmail", "familyChildCareEmail");
 
+      secondProvider = new HashMap<>();
+      secondProvider.put("uuid", "second-provider-uuid");
+      secondProvider.put("iterationIsComplete", true);
+      secondProvider.put("familyIntendedProviderEmail", "secondProviderChildCareEmail");
+
       Map<String, Object> child1 = new HashMap<>();
       child1.put("uuid", "child-1-uuid");
       child1.put("childFirstName", "First");
@@ -252,7 +257,7 @@ class ProviderRespondedConfirmationEmailTest {
           .with("languageRead", "English")
           .with("providers", List.of(provider, secondProvider))
           .with("children", List.of(child1, child2))
-          .withMultipleChildcareSchedulesAllBelongingToTheSameProvider(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()), provider.get("uuid").toString())
+          .withMultipleChildcareSchedulesForProvider(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()), provider.get("uuid").toString())
           .withSubmittedAtDate(OffsetDateTime.now())
           .withCCRR()
           .withShortCode("ABC123")
@@ -268,6 +273,7 @@ class ProviderRespondedConfirmationEmailTest {
           .with("providerCareStartDate", "01/10/2025")
           .with("providerPaidCcap", "false")
           .with("providerResponseAgreeToCare", "true")
+          .with("currentProviderUuid", provider.get("uuid").toString())
           .build());
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
