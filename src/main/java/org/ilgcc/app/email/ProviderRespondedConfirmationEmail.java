@@ -23,7 +23,7 @@ public class ProviderRespondedConfirmationEmail extends SendEmail {
     @Autowired
     public ProviderRespondedConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
-        super(sendEmailJob, messageSource, submissionRepositoryService, "providerConfirmationEmailSent",
+        super(sendEmailJob, messageSource, submissionRepositoryService, "providerRespondedConfirmationEmailSent",
                 "providerResponseContactEmail");
     }
 
@@ -31,9 +31,12 @@ public class ProviderRespondedConfirmationEmail extends SendEmail {
     protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
         return new ProviderRespondedConfirmationEmailTemplate(emailData, messageSource, Locale.ENGLISH).createTemplate();
     }
-
     @Override
-    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission) {
+    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission){
+        return getEmailData(providerSubmission, null);
+    }
+    @Override
+    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission, Map<String, Object> subflowData) {
         Optional<Submission> familySubmission = getFamilyApplication(providerSubmission);
         if (familySubmission.isPresent()) {
             String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
@@ -55,7 +58,7 @@ public class ProviderRespondedConfirmationEmail extends SendEmail {
 
     @Override
     protected Boolean skipEmailSend(Map<String, Object> inputData) {
-        boolean emailSent = inputData.getOrDefault("providerConfirmationEmailSent", "false").equals("true");
+        boolean emailSent = inputData.getOrDefault("providerRespondedConfirmationEmailSent", "false").equals("true");
         boolean providerAgreedToCare = inputData.getOrDefault("providerResponseAgreeToCare", "false")
             .equals("true");
 
