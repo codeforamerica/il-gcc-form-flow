@@ -73,6 +73,15 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
         // TODO: When enable multi provider in prod, the else of this code can be removed when ENABLE_MULTIPLE_PROVIDERS is productized
         if (!mergedChildrenAndSchedules.isEmpty()) {
+            List<String> providersWithSchedules = mergedChildrenAndSchedules.keySet().stream()
+                    .filter(providerUuid -> !providerUuid.equals("NO_PROVIDER")).toList();
+
+            boolean hasMultipleProviders = providersWithSchedules.size() > 1;
+
+            results.put(
+                    "applicantMultipleProviders",
+                    new SingleField("applicantMultipleProviders", String.valueOf(hasMultipleProviders), null));
+
             String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
 
             if (null != providerUuid) {
@@ -120,6 +129,10 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
             }
 
         } else {
+            results.put(
+                    "applicantMultipleProviders",
+                    new SingleField("applicantMultipleProviders", "false", null));
+
             Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
 
             if (providerSubmissionOptional.isPresent()) {
