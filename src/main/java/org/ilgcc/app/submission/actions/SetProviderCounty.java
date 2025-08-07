@@ -36,7 +36,7 @@ public class SetProviderCounty implements Action {
             if (providerZip != null && providerZip.length() >= 5) {
                 Optional<County> providerCountyOpt = ccmsDataServiceImpl.getCountyByZipCode(providerZip);
                 providerCountyOpt.ifPresentOrElse(county -> { inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, county.getCounty());
-            },() -> inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, null));
+            },() -> inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, ""));
             }
         }
         boolean experiencingHomelessness = inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
