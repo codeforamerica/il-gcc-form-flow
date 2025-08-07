@@ -41,7 +41,7 @@ class ProviderRespondedConfirmationEmailTest {
   MessageSource messageSource;
 
   private Submission providerSubmission;
-
+  private Submission secondProviderSubmission;
   private ProviderRespondedConfirmationEmail sendEmailClass;
 
   private final Locale locale = Locale.ENGLISH;
@@ -89,7 +89,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailRecipient() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
@@ -97,7 +97,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailTemplate() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       assertThat(emailDataOptional.isPresent()).isTrue();
       Map<String, Object> emailData = emailDataOptional.get();
       ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
@@ -170,7 +170,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailRecipient() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
@@ -178,7 +178,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailTemplate() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       assertThat(emailDataOptional.isPresent()).isTrue();
       Map<String, Object> emailData = emailDataOptional.get();
       ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
@@ -209,7 +209,7 @@ class ProviderRespondedConfirmationEmailTest {
   }
 
   @Nested
-  class WhenMultipleProvidersIsOnAndOnlyOneProviderAndProviderIsNewRenderCorrectEmail {
+  class WhenMultipleProvidersIsOnWithSameProviderForEveryChildAndProviderIsNewRenderEmail {
 
     Map<String, Object> provider;
     Map<String, Object> secondProvider;
@@ -220,11 +220,6 @@ class ProviderRespondedConfirmationEmailTest {
       provider.put("uuid", "first-provider-uuid");
       provider.put("iterationIsComplete", true);
       provider.put("familyIntendedProviderEmail", "familyChildCareEmail");
-
-      secondProvider = new HashMap<>();
-      secondProvider.put("uuid", "second-provider-uuid");
-      secondProvider.put("iterationIsComplete", true);
-      secondProvider.put("familyIntendedProviderEmail", "secondFamilyChildCareEmail");
 
       Map<String, Object> child1 = new HashMap<>();
       child1.put("uuid", "child-1-uuid");
@@ -287,7 +282,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailRecipient() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
@@ -295,7 +290,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailTemplate() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       assertThat(emailDataOptional.isPresent()).isTrue();
       Map<String, Object> emailData = emailDataOptional.get();
       ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
@@ -326,10 +321,9 @@ class ProviderRespondedConfirmationEmailTest {
   }
 
   @Nested
-  class WhenMultipleProvidersIsOnAndOnlyOneProviderAndIsAnExistingProviderRenderCorrectEmail {
+  class WhenMultipleProvidersIsOnWithSameProviderAndIsAnExistingProviderRenderEmail {
 
     Map<String, Object> provider;
-    Map<String, Object> secondProvider;
 
     @BeforeEach
     void setUp() {
@@ -337,11 +331,6 @@ class ProviderRespondedConfirmationEmailTest {
       provider.put("uuid", "first-provider-uuid");
       provider.put("iterationIsComplete", true);
       provider.put("familyIntendedProviderEmail", "familyChildCareEmail");
-
-      secondProvider = new HashMap<>();
-      secondProvider.put("uuid", "second-provider-uuid");
-      secondProvider.put("iterationIsComplete", true);
-      secondProvider.put("familyIntendedProviderEmail", "secondFamilyChildCareEmail");
 
       Map<String, Object> child1 = new HashMap<>();
       child1.put("uuid", "child-1-uuid");
@@ -372,9 +361,9 @@ class ProviderRespondedConfirmationEmailTest {
           .with("parentFirstName", "FirstName")
           .with("parentContactEmail", "familyemail@test.com")
           .with("languageRead", "English")
-          .with("providers", List.of(provider, secondProvider))
+          .with("providers", List.of(provider))
           .with("children", List.of(child1, child2))
-          .withMultipleChildcareSchedulesAllBelongingToTheSameProvider(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()), provider.get("uuid").toString())
+          .withMultipleChildcareSchedulesAllBelongingToTheSameProvider(List.of(child1.get("uuid").toString()), provider.get("uuid").toString())
           .withSubmittedAtDate(OffsetDateTime.now())
           .withCCRR()
           .withShortCode("ABC123")
@@ -390,10 +379,10 @@ class ProviderRespondedConfirmationEmailTest {
           .with("providerCareStartDate", "01/10/2025")
           .with("providerPaidCcap", "true")
           .with("providerResponseAgreeToCare", "true")
+          .with("currentProviderUuid", provider.get("uuid").toString())
           .build());
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
-
       sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
@@ -404,7 +393,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailRecipient() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
@@ -412,7 +401,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailTemplate() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       assertThat(emailDataOptional.isPresent()).isTrue();
       Map<String, Object> emailData = emailDataOptional.get();
       ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
@@ -429,7 +418,7 @@ class ProviderRespondedConfirmationEmailTest {
       assertThat(emailCopy).contains(
           messageSource.getMessage("email.provider-confirmation-after-response.p2", null, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p3",
-          new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
+          new Object[]{"F.C.", "January 10, 2025"}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p4",
           new Object[]{"ABC123"}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p5",
@@ -447,7 +436,6 @@ class ProviderRespondedConfirmationEmailTest {
 
     Map<String, Object> provider;
     Map<String, Object> secondProvider;
-
     @BeforeEach
     void setUp() {
       provider = new HashMap<>();
@@ -484,14 +472,40 @@ class ProviderRespondedConfirmationEmailTest {
       child2.put("childIsUsCitizen", "Yes");
       child2.put("ccapStartDate", "01/10/2025");
 
+      Map<String, Object> child3 = new HashMap<>();
+      child3.put("uuid", "child-3-uuid");
+      child3.put("childFirstName", "Third");
+      child3.put("childLastName", "Person");
+      child3.put("childInCare", "true");
+      child3.put("childDateOfBirthMonth", "10");
+      child3.put("childDateOfBirthDay", "11");
+      child3.put("childDateOfBirthYear", "2002");
+      child3.put("needFinancialAssistanceForChild", "true");
+      child3.put("childIsUsCitizen", "Yes");
+      child3.put("ccapStartDate", "01/10/2025");
+
+      Map<String, Object> child4 = new HashMap<>();
+      child4.put("uuid", "child-4-uuid");
+      child4.put("childFirstName", "Fourth");
+      child4.put("childLastName", "Kid");
+      child4.put("childInCare", "true");
+      child4.put("childDateOfBirthMonth", "10");
+      child4.put("childDateOfBirthDay", "11");
+      child4.put("childDateOfBirthYear", "2002");
+      child4.put("needFinancialAssistanceForChild", "true");
+      child4.put("childIsUsCitizen", "Yes");
+      child4.put("ccapStartDate", "01/10/2025");
+
+
       Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
           .withFlow("gcc")
           .with("parentFirstName", "FirstName")
           .with("parentContactEmail", "familyemail@test.com")
           .with("languageRead", "English")
           .with("providers", List.of(provider, secondProvider))
-          .with("children", List.of(child1, child2))
-          .withMultipleChildcareSchedules(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()),List.of(provider.get("uuid").toString(), secondProvider.get("uuid").toString()) )
+          .with("children", List.of(child1, child2, child3, child4))
+          .withMultipleChildcareSchedulesForProvider(List.of(child2.get("uuid").toString(), child4.get("uuid").toString()), secondProvider.get("uuid").toString())
+          .withMultipleChildcareSchedulesForProvider(List.of(child1.get("uuid").toString(), child3.get("uuid").toString()), provider.get("uuid").toString())
           .withSubmittedAtDate(OffsetDateTime.now())
           .withCCRR()
           .withShortCode("ABC123")
@@ -509,7 +523,20 @@ class ProviderRespondedConfirmationEmailTest {
           .with("providerResponseAgreeToCare", "true")
           .build());
 
-      provider.put("providerResponseSubmissionId", providerSubmission.getId());
+      secondProviderSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
+          .withFlow("providerresponse")
+          .with("familySubmissionId", familySubmission.getId().toString())
+          .with("providerResponseContactEmail", "secondProvideremail@test.com")
+          .with("providerResponseFirstName", "SecondProviderFirst")
+          .with("providerResponseLastName", "LastNameSecondProvider")
+          .with("providerResponseBusinessName", "SecondBusinessName")
+          .with("providerCareStartDate", "01/01/2025")
+          .with("providerPaidCcap", "true")
+          .with("providerResponseAgreeToCare", "true")
+          .with("currentProviderUuid", secondProvider.get("uuid").toString())
+          .build());
+
+      secondProvider.put("providerResponseSubmissionId", secondProviderSubmission.getId());
 
       sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
@@ -521,15 +548,16 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailRecipient() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(secondProviderSubmission);
+
       Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
-      assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
+      assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("secondProvideremail@test.com");
     }
 
     @Test
     void correctlySetsEmailTemplate() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(secondProviderSubmission);
       assertThat(emailDataOptional.isPresent()).isTrue();
       Map<String, Object> emailData = emailDataOptional.get();
       ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
@@ -546,7 +574,7 @@ class ProviderRespondedConfirmationEmailTest {
       assertThat(emailCopy).contains(
           messageSource.getMessage("email.provider-confirmation-after-response.p2", null, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p3",
-          new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
+          new Object[]{"S.C. and F.K.", "January 01, 2025"}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p4",
           new Object[]{"ABC123"}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p5",
@@ -601,14 +629,39 @@ class ProviderRespondedConfirmationEmailTest {
       child2.put("childIsUsCitizen", "Yes");
       child2.put("ccapStartDate", "01/10/2025");
 
+      Map<String, Object> child3 = new HashMap<>();
+      child3.put("uuid", "child-3-uuid");
+      child3.put("childFirstName", "Third");
+      child3.put("childLastName", "Person");
+      child3.put("childInCare", "true");
+      child3.put("childDateOfBirthMonth", "10");
+      child3.put("childDateOfBirthDay", "11");
+      child3.put("childDateOfBirthYear", "2002");
+      child3.put("needFinancialAssistanceForChild", "true");
+      child3.put("childIsUsCitizen", "Yes");
+      child3.put("ccapStartDate", "01/10/2025");
+
+      Map<String, Object> child4 = new HashMap<>();
+      child4.put("uuid", "child-4-uuid");
+      child4.put("childFirstName", "Fourth");
+      child4.put("childLastName", "Kid");
+      child4.put("childInCare", "true");
+      child4.put("childDateOfBirthMonth", "10");
+      child4.put("childDateOfBirthDay", "11");
+      child4.put("childDateOfBirthYear", "2002");
+      child4.put("needFinancialAssistanceForChild", "true");
+      child4.put("childIsUsCitizen", "Yes");
+      child4.put("ccapStartDate", "01/10/2025");
+
       Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
           .withFlow("gcc")
           .with("parentFirstName", "FirstName")
           .with("parentContactEmail", "familyemail@test.com")
           .with("languageRead", "English")
           .with("providers", List.of(provider, secondProvider))
-          .with("children", List.of(child1, child2))
-          .withMultipleChildcareSchedules(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()),List.of(provider.get("uuid").toString(), secondProvider.get("uuid").toString()) )
+          .with("children", List.of(child1, child2, child3, child4))
+          .withMultipleChildcareSchedulesForProvider(List.of(child1.get("uuid").toString(), child2.get("uuid").toString(), child3.get("uuid").toString()), provider.get("uuid").toString())
+          .withMultipleChildcareSchedulesForProvider(List.of(child4.get("uuid").toString()), secondProvider.get("uuid").toString())
           .withSubmittedAtDate(OffsetDateTime.now())
           .withCCRR()
           .withShortCode("ABC123")
@@ -623,6 +676,19 @@ class ProviderRespondedConfirmationEmailTest {
           .with("providerResponseBusinessName", "BusinessName")
           .with("providerCareStartDate", "01/10/2025")
           .with("providerPaidCcap", "false")
+          .with("currentProviderUuid", provider.get("uuid").toString())
+          .with("providerResponseAgreeToCare", "true")
+          .build());
+
+      secondProviderSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
+          .withFlow("providerresponse")
+          .with("familySubmissionId", familySubmission.getId().toString())
+          .with("providerResponseContactEmail", "secondProvideremail@test.com")
+          .with("providerResponseFirstName", "SecondProviderFirst")
+          .with("providerResponseLastName", "LastNameSecondProvider")
+          .with("providerResponseBusinessName", "SecondBusinessName")
+          .with("providerCareStartDate", "01/01/2025")
+          .with("providerPaidCcap", "true")
           .with("providerResponseAgreeToCare", "true")
           .build());
 
@@ -638,7 +704,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailRecipient() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       Map<String, Object> emailData = emailDataOptional.orElseGet(HashMap::new);
 
       assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
@@ -646,7 +712,7 @@ class ProviderRespondedConfirmationEmailTest {
 
     @Test
     void correctlySetsEmailTemplate() {
-      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission, provider);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(providerSubmission);
       assertThat(emailDataOptional.isPresent()).isTrue();
       Map<String, Object> emailData = emailDataOptional.get();
       ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
@@ -663,7 +729,7 @@ class ProviderRespondedConfirmationEmailTest {
       assertThat(emailCopy).contains(
           messageSource.getMessage("email.provider-confirmation-after-response.p2", null, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p3",
-          new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
+          new Object[]{"F.C., S.C. and T.P.", "January 10, 2025"}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p4",
           new Object[]{"ABC123"}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p5",
