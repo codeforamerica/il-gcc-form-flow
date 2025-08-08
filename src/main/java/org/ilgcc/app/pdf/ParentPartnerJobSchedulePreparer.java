@@ -48,7 +48,7 @@ public class ParentPartnerJobSchedulePreparer implements SubmissionFieldPreparer
                 results.put("partnerEmployerTravelTimeMins_" + iteration,
                         new SingleField("partnerEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
             }
-            String activitiesWorkVary = (String) job.getOrDefault("activitiesJobWorkScheduleVary", "false");
+            String activitiesWorkVary = (String) job.getOrDefault("activitiesWorkVary", "false");
             if ("true".equalsIgnoreCase(activitiesWorkVary)){
                 results.put("partnerEmployerWorkHoursVaryExplanation_" + iteration,
                         new SingleField("partnerEmployerWorkHoursVaryExplanation", "Work schedule varies",  iteration));
