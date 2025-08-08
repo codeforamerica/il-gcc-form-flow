@@ -124,7 +124,7 @@ public class ProviderresponseProviderRegisteringLicenseExemptInChildHomeJourneyT
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-home-provider-dob.title"));
         testPage.enter("providerIdentityCheckDateOfBirthMonth", "12");
         testPage.enter("providerIdentityCheckDateOfBirthDay", "25");
-        testPage.enter("providerIdentityCheckDateOfBirthYear", "2018");
+        testPage.enter("providerIdentityCheckDateOfBirthYear", "1985");
         testPage.clickContinue();
 
         // registration-payment-tax-id
