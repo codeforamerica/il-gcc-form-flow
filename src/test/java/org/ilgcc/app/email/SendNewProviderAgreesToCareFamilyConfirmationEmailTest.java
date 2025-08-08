@@ -47,38 +47,6 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
     private SendNewProviderAgreesToCareFamilyConfirmationEmail sendEmailClass;
 
     private final Locale locale = Locale.ENGLISH;
-
-
-    @BeforeEach
-    void setUp() {
-        Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                .withFlow("gcc")
-                .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
-                .with("parentContactEmail", "familyemail@test.com")
-                .with("languageRead", "English")
-                .withSubmittedAtDate(OffsetDateTime.now())
-                .withCCRR()
-                .withShortCode("ABC123")
-                .build());
-
-        providerSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                .withFlow("providerresponse")
-                .with("familySubmissionId", familySubmission.getId().toString())
-                .with("providerResponseContactEmail", "provideremail@test.com")
-                .with("providerResponseFirstName", "ProviderFirst")
-                .with("providerResponseLastName", "ProviderLast")
-                .with("providerCareStartDate", "01/10/2025")
-                .with("providerResponseAgreeToCare", "true")
-                .build());
-
-        sendEmailClass = new SendNewProviderAgreesToCareFamilyConfirmationEmail(sendEmailJob, messageSource,
-                submissionRepositoryService);
-    }
-
-    @AfterEach
-    void tearDown() {
-        submissionRepository.deleteAll();
-    }
     
     @Nested
     class whenProviderDoesNotEnterBusinessName {
