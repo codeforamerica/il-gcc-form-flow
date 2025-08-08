@@ -27,7 +27,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class ProviderRespondedConfirmationEmailTest {
+class SendProviderRespondedConfirmationEmailTest {
   @MockitoSpyBean
   SendEmailJob sendEmailJob;
 
@@ -42,7 +42,7 @@ class ProviderRespondedConfirmationEmailTest {
 
   private Submission providerSubmission;
   private Submission secondProviderSubmission;
-  private ProviderRespondedConfirmationEmail sendEmailClass;
+  private SendProviderRespondedConfirmationEmail sendEmailClass;
 
   private final Locale locale = Locale.ENGLISH;
 
@@ -79,7 +79,7 @@ class ProviderRespondedConfirmationEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new SendProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -110,18 +110,18 @@ class ProviderRespondedConfirmationEmailTest {
       String emailCopy = emailTemplate.getBody().getValue();
 
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale));
+          messageSource.getMessage("email.provider-responded-confirmation.p1", null, locale));
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p2", null, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p3",
+          messageSource.getMessage("email.provider-responded-confirmation.p2", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p3",
           new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p4",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p4",
           new Object[]{"ABC123"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p5",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p5",
           new Object[]{emailData.get("ccrrName")},
           locale));
-      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-confirmation-after-response.p6", null, locale));
-      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-confirmation-after-response.p7", new Object[]{emailData.get("ccrrName")}, locale));
+      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-responded-confirmation.p6", null, locale));
+      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-responded-confirmation.p7", new Object[]{emailData.get("ccrrName")}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
@@ -160,7 +160,7 @@ class ProviderRespondedConfirmationEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new SendProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -191,18 +191,18 @@ class ProviderRespondedConfirmationEmailTest {
       String emailCopy = emailTemplate.getBody().getValue();
 
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale));
+          messageSource.getMessage("email.provider-responded-confirmation.p1", null, locale));
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p2", null, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p3",
+          messageSource.getMessage("email.provider-responded-confirmation.p2", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p3",
           new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p4",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p4",
           new Object[]{"ABC123"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p5",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p5",
           new Object[]{emailData.get("ccrrName")},
           locale));
-      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-confirmation-after-response.p6", null, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p7", new Object[]{emailData.get("ccrrName")}, locale));
+      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-responded-confirmation.p6", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p7", new Object[]{emailData.get("ccrrName")}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
@@ -278,7 +278,7 @@ class ProviderRespondedConfirmationEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new SendProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -309,18 +309,18 @@ class ProviderRespondedConfirmationEmailTest {
       String emailCopy = emailTemplate.getBody().getValue();
 
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale));
+          messageSource.getMessage("email.provider-responded-confirmation.p1", null, locale));
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p2", null, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p3",
+          messageSource.getMessage("email.provider-responded-confirmation.p2", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p3",
           new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p4",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p4",
           new Object[]{"ABC123"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p5",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p5",
           new Object[]{emailData.get("ccrrName")},
           locale));
-      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-confirmation-after-response.p6", null, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p7", new Object[]{emailData.get("ccrrName")}, locale));
+      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-responded-confirmation.p6", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p7", new Object[]{emailData.get("ccrrName")}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
@@ -389,7 +389,7 @@ class ProviderRespondedConfirmationEmailTest {
           .build());
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
-      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new SendProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -420,18 +420,18 @@ class ProviderRespondedConfirmationEmailTest {
       String emailCopy = emailTemplate.getBody().getValue();
 
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale));
+          messageSource.getMessage("email.provider-responded-confirmation.p1", null, locale));
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p2", null, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p3",
+          messageSource.getMessage("email.provider-responded-confirmation.p2", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p3",
           new Object[]{"F.C.", "January 10, 2025"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p4",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p4",
           new Object[]{"ABC123"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p5",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p5",
           new Object[]{emailData.get("ccrrName")},
           locale));
-      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-confirmation-after-response.p6", null, locale));
-      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-confirmation-after-response.p7", new Object[]{emailData.get("ccrrName")}, locale));
+      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-responded-confirmation.p6", null, locale));
+      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-responded-confirmation.p7", new Object[]{emailData.get("ccrrName")}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
@@ -544,7 +544,7 @@ class ProviderRespondedConfirmationEmailTest {
 
       secondProvider.put("providerResponseSubmissionId", secondProviderSubmission.getId());
 
-      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new SendProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -576,18 +576,18 @@ class ProviderRespondedConfirmationEmailTest {
       String emailCopy = emailTemplate.getBody().getValue();
 
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale));
+          messageSource.getMessage("email.provider-responded-confirmation.p1", null, locale));
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p2", null, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p3",
+          messageSource.getMessage("email.provider-responded-confirmation.p2", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p3",
           new Object[]{"S.C. and F.K.", "January 01, 2025"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p4",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p4",
           new Object[]{"ABC123"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p5",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p5",
           new Object[]{emailData.get("ccrrName")},
           locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p6", null, locale));
-      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-confirmation-after-response.p7", new Object[]{emailData.get("ccrrName")}, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p6", null, locale));
+      assertThat(emailCopy).doesNotContain(messageSource.getMessage("email.provider-responded-confirmation.p7", new Object[]{emailData.get("ccrrName")}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
@@ -700,7 +700,7 @@ class ProviderRespondedConfirmationEmailTest {
 
       provider.put("providerResponseSubmissionId", providerSubmission.getId());
 
-      sendEmailClass = new ProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
+      sendEmailClass = new SendProviderRespondedConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
     }
 
     @AfterEach
@@ -731,18 +731,18 @@ class ProviderRespondedConfirmationEmailTest {
       String emailCopy = emailTemplate.getBody().getValue();
 
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale));
+          messageSource.getMessage("email.provider-responded-confirmation.p1", null, locale));
       assertThat(emailCopy).contains(
-          messageSource.getMessage("email.provider-confirmation-after-response.p2", null, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p3",
+          messageSource.getMessage("email.provider-responded-confirmation.p2", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p3",
           new Object[]{"F.C., S.C. and T.P.", "January 10, 2025"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p4",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p4",
           new Object[]{"ABC123"}, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p5",
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p5",
           new Object[]{emailData.get("ccrrName")},
           locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p6", null, locale));
-      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-confirmation-after-response.p7", new Object[]{emailData.get("ccrrName")}, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p6", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.provider-responded-confirmation.p7", new Object[]{emailData.get("ccrrName")}, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
       assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }

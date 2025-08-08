@@ -18,10 +18,10 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ProviderRespondedConfirmationEmail extends SendEmail {
+public class SendProviderRespondedConfirmationEmail extends SendEmail {
 
     @Autowired
-    public ProviderRespondedConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
+    public SendProviderRespondedConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
             SubmissionRepositoryService submissionRepositoryService) {
         super(sendEmailJob, messageSource, submissionRepositoryService, "providerRespondedConfirmationEmailSent",
                 "providerResponseContactEmail");

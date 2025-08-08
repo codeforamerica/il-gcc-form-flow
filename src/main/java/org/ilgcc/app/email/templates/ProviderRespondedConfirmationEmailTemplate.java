@@ -42,18 +42,18 @@ public class ProviderRespondedConfirmationEmailTemplate {
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
-        String p1 = messageSource.getMessage("email.provider-confirmation-after-response.p1", null, locale);
-        String p2 = messageSource.getMessage("email.provider-confirmation-after-response.p2",null, locale);
-        String p3 = messageSource.getMessage("email.provider-confirmation-after-response.p3",
+        String p1 = messageSource.getMessage("email.provider-responded-confirmation.p1", null, locale);
+        String p2 = messageSource.getMessage("email.provider-responded-confirmation.p2",null, locale);
+        String p3 = messageSource.getMessage("email.provider-responded-confirmation.p3",
                 new Object[]{formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
                     messageSource.getMessage("general.and", null, locale)),
                     emailData.get("ccapStartDate")}, locale);
-        String p4 = messageSource.getMessage("email.provider-confirmation-after-response.p4", new Object[]{emailData.get("confirmationCode")},
+        String p4 = messageSource.getMessage("email.provider-responded-confirmation.p4", new Object[]{emailData.get("confirmationCode")},
                 locale);
-        String p5 = messageSource.getMessage("email.provider-confirmation-after-response.p5", new Object[]{emailData.get("ccrrName")}, locale);
-        String familyHasMoreThanOneProviderParagraph = messageSource.getMessage("email.provider-confirmation-after-response.p6", null, locale);
-        String familyIsNewProviderParagraph = messageSource.getMessage("email.provider-confirmation-after-response.p7", new Object[]{emailData.get("ccrrName")}, locale);
-        String familyIsNewProviderList = messageSource.getMessage("email.provider-confirmation-after-response.p8.ul", null, locale);
+        String p5 = messageSource.getMessage("email.provider-responded-confirmation.p5", new Object[]{emailData.get("ccrrName")}, locale);
+        String familyHasMoreThanOneProviderParagraph = messageSource.getMessage("email.provider-responded-confirmation.p6", null, locale);
+        String familyIsNewProviderParagraph = messageSource.getMessage("email.provider-responded-confirmation.p7", new Object[]{emailData.get("ccrrName")}, locale);
+        String familyIsNewProviderList = messageSource.getMessage("email.provider-responded-confirmation.p8.ul", null, locale);
 
         String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
         String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
