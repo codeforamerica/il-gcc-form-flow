@@ -1,3 +1,4 @@
+<!--TODO: Modify hasMoreThanOneChildcareOption to only display checkbox fields correctly-->
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
                    hasProviders=${submission.getInputData().containsKey('providers')},
                    showNoProviderOption=${submission.getInputData().getOrDefault('choseProviderForEveryChildInNeedOfCare', 'false').equals('false')},
