@@ -171,7 +171,7 @@ public class ProviderSubmissionUtilities {
         // get earliest date from family application
         applicationData.put("ccapStartDate",
                 DateUtilities.convertDateToFullWordMonthPattern(earliestDate));
-        applicationData.put("hasMutipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
+        applicationData.put("hasMultipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
         applicationData.put("hasProviderAndNoProvider",
                 SubmissionUtilities.hasSelectedAProviderAndNoProvider(familySubmission.getInputData()));
         applicationData.put("hasMultipleProvidersWithChildcareSchedules", String.valueOf(!SubmissionUtilities.allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData())));
