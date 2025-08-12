@@ -18,7 +18,7 @@ plugins {
     id 'jacoco'
     id "org.flywaydb.flyway" version "[9.+,10.0["
     id 'io.miret.etienne.sass' version '1.5.2'
-    id "io.sentry.jvm.gradle" version "5.8.0"
+    id "io.sentry.jvm.gradle" version "5.8.1"
 }
 
 jacoco {
@@ -48,14 +48,14 @@ repositories {
 }
 
 def profile = props.getProperty('SPRING_PROFILES_ACTIVE')
-def formFlowLibraryVersion = '1.6.38'
+def formFlowLibraryVersion = '1.6.39'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator:3.5.4'
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
-    implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.5.3'
+    implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:8.0.2'
     implementation 'org.apache.commons:commons-text:1.14.0'
     implementation 'com.sendgrid:sendgrid-java:4.10.3'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.81'
