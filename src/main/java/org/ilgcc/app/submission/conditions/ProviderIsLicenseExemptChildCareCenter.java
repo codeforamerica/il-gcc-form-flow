@@ -9,7 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProviderIsLicenseExemptChildCareCenter implements Condition {
 
-    final static List<String> providerTypesRequired = List.of(ProviderType.LICENSE_EXEMPT_CHILD_CARE_CENTER.name());
+    final static List<String> providerTypesRequired = List.of(
+            ProviderType.LICENSE_EXEMPT_RELATIVE_IN_PROVIDER_HOME.name(),
+            ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_PROVIDER_HOME.name(),
+            ProviderType.LICENSE_EXEMPT_RELATIVE_IN_CHILDS_HOME.name(),
+            ProviderType.LICENSE_EXEMPT_NONRELATIVE_IN_CHILDS_HOME.name()
+    );
 
 
     @Override
