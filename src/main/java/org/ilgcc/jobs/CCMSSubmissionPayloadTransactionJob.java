@@ -313,8 +313,10 @@ public class CCMSSubmissionPayloadTransactionJob {
                 Map<String, Object> providerObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
                         providerId);
                 String providerResponseSubmissionId = providerObject.get("providerResponseSubmissionId").toString();
-                Optional<Submission> providerSubmission = submissionRepositoryService.findById(UUID.fromString(providerResponseSubmissionId));
-                if (providerSubmission.isPresent()) {
+                Optional<Submission> providerSubmission = submissionRepositoryService.findById(
+                        UUID.fromString(providerResponseSubmissionId));
+                if (providerSubmission.isPresent() && providerSubmission.get().getInputData().getOrDefault(
+                        "providerResponseAgreeToCare", "false").equals("true")) {
                     sendFamilyApplicationTransmittedProviderConfirmationEmail.send(providerSubmission.get());
                 }
             }
@@ -324,7 +326,8 @@ public class CCMSSubmissionPayloadTransactionJob {
             Optional<Submission> providerSubmission =
                     submissionRepositoryService.findById(UUID.fromString(familySubmission.getInputData().get(
                             "providerResponseSubmissionId").toString()));
-            if (providerSubmission.isPresent()) {
+            if (providerSubmission.isPresent() && providerSubmission.get().getInputData().getOrDefault(
+                    "providerResponseAgreeToCare", "false").equals("true")) {
                 sendFamilyApplicationTransmittedProviderConfirmationEmail.send(providerSubmission.get());
             }
         }
