@@ -62,3 +62,4 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
         return results;
     }
 }
+
