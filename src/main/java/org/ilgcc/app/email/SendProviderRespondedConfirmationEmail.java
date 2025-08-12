@@ -31,21 +31,22 @@ public class SendProviderRespondedConfirmationEmail extends SendEmail {
     protected ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData) {
         return new ProviderRespondedConfirmationEmailTemplate(emailData, messageSource, Locale.ENGLISH).createTemplate();
     }
+
     @Override
-    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission){
+    protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission) {
         return getEmailData(providerSubmission, null);
     }
+
     @Override
     protected Optional<Map<String, Object>> getEmailData(Submission providerSubmission, Map<String, Object> subflowData) {
         Optional<Submission> familySubmission = getFamilyApplication(providerSubmission);
         if (familySubmission.isPresent()) {
             String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
             Map<String, Object> currentProvider = SubmissionUtilities.getCurrentProvider(familySubmission.get().getInputData(),
-                currentProviderUuid);
+                    currentProviderUuid);
             if (!currentProvider.isEmpty()) {
                 return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get(), currentProvider));
-            }
-            else {
+            } else {
                 return Optional.of(getCombinedDataForEmails(providerSubmission, familySubmission.get()));
             }
         } else {
