@@ -6,11 +6,9 @@ import formflow.library.data.SubmissionRepositoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.CCMSDataServiceImpl;
 import org.ilgcc.app.data.County;
-import org.ilgcc.app.submission.router.ApplicationRouterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,8 +19,6 @@ public class SetProviderCounty implements Action {
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
 
-    @Autowired
-    ApplicationRouterService applicationRouterService;
     @Autowired
     CCMSDataServiceImpl ccmsDataServiceImpl;
     private static final String PROVIDER_ZIP_INPUT_NAME = "providerResponseServiceZipCode";
@@ -35,12 +31,11 @@ public class SetProviderCounty implements Action {
             String providerZip = (String) inputData.get(PROVIDER_ZIP_INPUT_NAME);
             if (providerZip != null && providerZip.length() >= 5) {
                 Optional<County> providerCountyOpt = ccmsDataServiceImpl.getCountyByZipCode(providerZip);
-                providerCountyOpt.ifPresentOrElse(county -> { inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, county.getCounty());
-            },() -> inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, ""));
+                providerCountyOpt.ifPresentOrElse(county -> {
+                    inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, county.getCounty());
+                }, () -> inputData.put(PROVIDER_COUNTY_OUTPUT_NAME, ""));
             }
         }
-        boolean experiencingHomelessness = inputData.getOrDefault("parentHomeExperiencingHomelessness[]", "no").equals(
-                List.of("yes"));
         submissionRepositoryService.save(submission);
     }
 }
