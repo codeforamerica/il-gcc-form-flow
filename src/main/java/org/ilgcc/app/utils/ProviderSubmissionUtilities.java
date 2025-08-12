@@ -119,11 +119,13 @@ public class ProviderSubmissionUtilities {
         applicationData.putAll(getFamilySubmissionDataForEmails(familySubmission, subflowData));
         applicationData.putAll(getProviderSubmissionDataForEmails(providerSubmission));
 
-        String earliestDate = (String) familySubmission.getInputData()
-                .getOrDefault("earliestChildcareStartDate", "");
-        applicationData.put("ccapStartDate",
-                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(earliestDate,
-                        Optional.of(providerSubmission)));
+        String providerCareStartDate = (String) providerSubmission.getInputData()
+                .getOrDefault("providerCareStartDate", "");
+
+        if (!providerCareStartDate.isBlank()) {
+            applicationData.put("ccapStartDate",
+                    DateUtilities.convertDateToFullWordMonthPattern(providerCareStartDate));
+        }
 
         return applicationData;
     }
@@ -166,10 +168,10 @@ public class ProviderSubmissionUtilities {
         applicationData.put("submittedDate", SubmissionUtilities.getFormattedSubmittedAtDate(familySubmission));
         String earliestDate = (String) familySubmission.getInputData()
                 .getOrDefault("earliestChildcareStartDate", "");
+        // get earliest date from family application
         applicationData.put("ccapStartDate",
-                ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(earliestDate,
-                        Optional.empty()));
-        applicationData.put("hasMultipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
+                DateUtilities.convertDateToFullWordMonthPattern(earliestDate));
+        applicationData.put("hasMutipleProviders", hasMoreThan1Provider(familySubmission.getInputData()));
         applicationData.put("hasProviderAndNoProvider",
                 SubmissionUtilities.hasSelectedAProviderAndNoProvider(familySubmission.getInputData()));
         applicationData.put("hasMultipleProvidersWithChildcareSchedules", String.valueOf(!SubmissionUtilities.allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData())));
@@ -188,6 +190,14 @@ public class ProviderSubmissionUtilities {
                     SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
             applicationData.put("childrenInitialsList",
                     ProviderSubmissionUtilities.getChildrenInitialsList(mergedChildrenAndSchedules.get(data.get("uuid"))));
+            if (subflowIteration.containsKey("uuid")) {
+                String earliestCCAPDate = DateUtilities.getEarliestDate(mergedChildrenAndSchedules.get(subflowIteration.get(
+                        "uuid")).stream().map(s -> s.getOrDefault(
+                        "ccapStartDate", "").toString()).toList());
+
+                applicationData.put("ccapStartDate",
+                        DateUtilities.convertDateToFullWordMonthPattern(earliestCCAPDate));
+            }
 
         }
 

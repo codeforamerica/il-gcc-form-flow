@@ -1,5 +1,6 @@
 package org.ilgcc.jobs;
 
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
 import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_ENDPOINT;
 
@@ -31,6 +32,7 @@ import org.ilgcc.app.data.ccms.CCMSApiClient;
 import org.ilgcc.app.data.ccms.CCMSTransaction;
 import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
 import org.ilgcc.app.email.SendFamilyApplicationTransmittedConfirmationEmail;
+import org.ilgcc.app.email.SendFamilyApplicationTransmittedProviderConfirmationEmail;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.SubmissionUtilities;
@@ -67,6 +69,9 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     @Autowired
     SendFamilyApplicationTransmittedConfirmationEmail sendFamilyApplicationTransmittedConfirmationEmail;
+
+    @Autowired
+    SendFamilyApplicationTransmittedProviderConfirmationEmail sendFamilyApplicationTransmittedProviderConfirmationEmail;
 
     // Limit to 10 concurrent jobs at once
     private static final Semaphore concurrencyLimiter = new Semaphore(10);
@@ -247,10 +252,10 @@ public class CCMSSubmissionPayloadTransactionJob {
                             log.info("All providers responded: {}. {} sent to CCMS with transaction {}",
                                     SubmissionUtilities.haveAllProvidersResponded(submission), submissionId, transactionId);
 
-
                             if (!SubmissionUtilities.isNoProviderSubmission(submission.getInputData())) {
                                 // If there is 1+ provider, send an email letting the family know what the provider(s) did
                                 sendFamilyApplicationTransmittedConfirmationEmail.send(submission);
+                                enqueueProviderEmails(submission);
                             }
 
                         } catch (IOException e) {
@@ -296,5 +301,34 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     private long getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {
         return ccmsApiClient.getConfiguration().getSecondsUntilEndOfOfflineRangeStartingAt(startTime);
+    }
+
+    private void enqueueProviderEmails(Submission familySubmission) {
+        List<String> providersWithSchedules =
+                getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData()).keySet().stream()
+                        .filter(id -> !id.equals("NO_PROVIDER")).toList();
+
+        if (!providersWithSchedules.isEmpty()) {
+            for (String providerId : providersWithSchedules) {
+                Map<String, Object> providerObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
+                        providerId);
+                String providerResponseSubmissionId = providerObject.get("providerResponseSubmissionId").toString();
+                Optional<Submission> providerSubmission = submissionRepositoryService.findById(UUID.fromString(providerResponseSubmissionId));
+                if (providerSubmission.isPresent()) {
+                    sendFamilyApplicationTransmittedProviderConfirmationEmail.send(providerSubmission.get());
+                }
+            }
+        }
+
+        if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
+            Optional<Submission> providerSubmission =
+                    submissionRepositoryService.findById(UUID.fromString(familySubmission.getInputData().get(
+                            "providerResponseSubmissionId").toString()));
+            if (providerSubmission.isPresent()) {
+                sendFamilyApplicationTransmittedProviderConfirmationEmail.send(providerSubmission.get());
+            }
+        }
+
+
     }
 }
