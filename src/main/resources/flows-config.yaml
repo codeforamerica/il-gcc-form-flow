@@ -940,6 +940,7 @@ flow:
   registration-confirm-address:
     condition: ShowProviderResponseServiceAddressConfirmationScreen
     onPostAction: SaveValidatedProviderResponseServiceAddress
+    afterSaveAction: SetProviderCounty
     nextScreens:
       - name: registration-mailing-address
         condition: ProviderIsRegistering
