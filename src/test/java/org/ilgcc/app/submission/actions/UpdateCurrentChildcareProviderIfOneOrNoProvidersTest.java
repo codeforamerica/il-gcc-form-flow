@@ -35,7 +35,7 @@ class UpdateCurrentChildcareProviderIfOneOrNoProvidersTest {
     setUpWhenNoFormDataIsPassed();
     submission = new SubmissionTestBuilder()
         .withProvider("TestProvider", "1")
-        .with("hasChosenProvider", "true").with("choseProviderForEveryChildInNeedOfCare", "true")
+        .with("hasChosenProvider", "true")
         .build();
     action.run(formSubmission, submission, "1");
     Map<String, Object> firstProvider = ((List<Map<String, Object>>) submission.getInputData().get("providers")).getFirst();
@@ -48,7 +48,6 @@ class UpdateCurrentChildcareProviderIfOneOrNoProvidersTest {
     submission = new SubmissionTestBuilder()
         .withProvider("TestProvider", "1")
         .with("hasChosenProvider", "true")
-        .with("choseProviderForEveryChildInNeedOfCare", "false")
         .build();
     Map<String, Object> firstProvider = ((List<Map<String, Object>>) submission.getInputData().get("providers")).getFirst();
     Map<String, Object> formData = new HashMap<>();
