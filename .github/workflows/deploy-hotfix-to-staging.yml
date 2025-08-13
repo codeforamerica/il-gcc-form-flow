@@ -3,66 +3,37 @@ name: Deploy Hotfix to Aptible Staging
 on:
   workflow_dispatch:
     inputs:
-      ref:
-        description: "Branch or tag to deploy (e.g. main, feature/my-branch, v1.2.3)"
+      tag:
+        description: "Tag to deploy (e.g. v1.2.3)"
         required: true
-        default: main
 
 jobs:
   deploy:
+    name: Deploy Hotfix to Aptible Staging
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout the requested ref
+      # 1. Checkout the tag the user provides
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.ref }}
+          ref: ${{ github.event.inputs.tag }}
           fetch-depth: 0
 
-      # 2. Download a fixed Aptible CLI version and login
-      - name: Install Aptible CLI and login
-        run: |
-          # Download specific Aptible CLI version (1.16.0)
-          curl -Lo aptible https://github.com/aptible/aptible-cli/releases/download/v1.16.0/aptible-linux-amd64
-          chmod +x aptible
-          sudo mv aptible /usr/local/bin/
+      # 2. Deploy to Aptible using the aptible-deploy-action
+      - name: Deploy to Aptible
+        uses: aptible/aptible-deploy-action@v5
+        with:
+          type: git
+          app: illinois-get-childcare-staging
+          environment: illinois-staging
+          username: ${{ secrets.APTIBLE_USERNAME }}
+          password: ${{ secrets.APTIBLE_PASSWORD }}
 
-          # Verify installation
-          aptible version
-
-          # Login to Aptible
-          aptible login \
-            --email "${{ secrets.APTIBLE_USERNAME }}" \
-            --password "${{ secrets.APTIBLE_PASSWORD }}" \
-            --environment illinois-staging
-
-      # 3. Add Aptible remote
-      - name: Add Aptible git remote
-        run: git remote add aptible git@primetime.aptible.com:illinois-staging/illinois-get-childcare-staging.git
-
-      # 4. Push the selected ref
-      - name: Push selected ref to Aptible
-        run: |
-          REF="${{ github.event.inputs.ref }}"
-
-          # Ensure the ref exists
-          if ! git rev-parse "$REF" >/dev/null 2>&1; then
-            echo "Ref $REF does not exist!"
-            exit 1
-          fi
-
-          # Deploy tags as tags, branches to main
-          if git show-ref --tags | grep -q "$REF"; then
-            echo "Pushing tag $REF to Aptible..."
-            git push aptible "refs/tags/$REF:refs/tags/$REF" --force
-          else
-            echo "Pushing branch $REF to Aptible main..."
-            git push aptible "HEAD:refs/heads/main" --force
-
-      # 5. Generate Sentry release name
+      # 3. Generate Sentry release name from SHA
       - name: Generate Sentry release name from sha
+        id: generate-release
         run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-      # 6. Create Sentry release
+      # 4. Create Sentry release
       - name: Create Sentry release
         uses: getsentry/action-release@v3
         env:
@@ -74,7 +45,7 @@ jobs:
           ignore_missing: true
           version: ${{ env.RELEASE }}
 
-      # 7. Announce deployment on Slack
+      # 5. Announce on Slack
       - name: Announce on Slack
         uses: ravsamhq/notify-slack-action@v2
         with:
