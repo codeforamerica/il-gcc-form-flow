@@ -18,11 +18,11 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
           fetch-depth: 0
 
-      # 2. Download and install Aptible CLI binary, then login
+      # 2. Download a fixed Aptible CLI version and login
       - name: Install Aptible CLI and login
         run: |
-          # Download latest Aptible CLI binary
-          curl -Lo aptible https://github.com/aptible/aptible-cli/releases/latest/download/aptible-linux-amd64
+          # Download specific Aptible CLI version (1.16.0)
+          curl -Lo aptible https://github.com/aptible/aptible-cli/releases/download/v1.16.0/aptible-linux-amd64
           chmod +x aptible
           sudo mv aptible /usr/local/bin/
 
