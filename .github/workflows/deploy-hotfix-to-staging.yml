@@ -1,5 +1,6 @@
 name: Deploy Hotfix to Aptible Staging
 
+# Keep this workflow only on `main`
 on:
   workflow_dispatch:
     inputs:
@@ -17,15 +18,18 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
           fetch-depth: 0
 
-      - name: Deploy to Aptible
-        uses: aptible/aptible-deploy-action@v5
-        with:
-          type: git
-          app: illinois-get-childcare-staging
-          environment: illinois-staging
-          username: ${{ secrets.APTIBLE_USERNAME }}
-          password: ${{ secrets.APTIBLE_PASSWORD }}
-          git_ref: ${{ github.event.inputs.ref }}   # <-- KEY FIX
+      - name: Login to Aptible
+        run: |
+          aptible login \
+            --email "${{ secrets.APTIBLE_USERNAME }}" \
+            --password "${{ secrets.APTIBLE_PASSWORD }}" \
+            --environment illinois-staging
+
+      - name: Add Aptible git remote
+        run: git remote add aptible git@primetime.aptible.com:illinois-staging/illinois-get-childcare-staging.git
+
+      - name: Push selected ref to Aptible
+        run: git push aptible HEAD:refs/heads/main --force
 
       - name: Generate Sentry release name from sha
         run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
