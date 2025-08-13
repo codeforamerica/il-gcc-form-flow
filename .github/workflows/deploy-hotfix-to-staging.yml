@@ -1,60 +1,38 @@
-name: Deploy Hotfix to Aptible Staging
+name: Deploy to Aptible Staging
 
 on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag to deploy (e.g. v1.2.3)"
+        description: 'Tag to deploy'
         required: true
+        default: 'v1.0.0'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # 1. Checkout the tag
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
           ref: ${{ github.event.inputs.tag }}
-          fetch-depth: 0
 
-      # 2. Install Aptible CLI
-      - name: Install Aptible CLI
+      - name: Set up Aptible CLI
         run: |
-          curl -Lo aptible https://github.com/aptible/aptible-cli/releases/download/v1.16.0/aptible-linux-amd64
+          curl -Lo aptible https://github.com/aptible/aptible-cli/releases/download/v0.16.4/aptible-linux-amd64
           chmod +x aptible
           sudo mv aptible /usr/local/bin/
           aptible version
 
-      # 3. Login to Aptible
       - name: Login to Aptible
         run: |
-          aptible login \
-            --email "${{ secrets.APTIBLE_USERNAME }}" \
-            --password "${{ secrets.APTIBLE_PASSWORD }}" \
-            --environment illinois-staging
+          aptible login --email ${{ secrets.APTIBLE_EMAIL }} --password ${{ secrets.APTIBLE_PASSWORD }} --environment illinois-staging
 
-      # 4. Push the tag to Aptible main
-      - name: Deploy tag to Aptible main
+      - name: Deploy to Aptible
         run: |
-          git push git@primetime.aptible.com:illinois-staging/illinois-get-childcare-staging.git HEAD:refs/heads/main --force
+          aptible deploy --app illinois-get-childcare-staging --environment illinois-staging --git-remote git@primetime.aptible.com:illinois-get-childcare-staging.git
 
-      # 5. Generate Sentry release name
-      - name: Generate Sentry release name
-        run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
-
-      # 6. Create Sentry release
-      - name: Create Sentry release
-        uses: getsentry/action-release@v3
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: codeforamerica
-          SENTRY_PROJECT: il-gcc
-        with:
-          environment: staging
-          ignore_missing: true
-          version: ${{ env.RELEASE }}
-
-      # 7. Announce on Slack
       - name: Announce on Slack
         uses: ravsamhq/notify-slack-action@v2
         with:
