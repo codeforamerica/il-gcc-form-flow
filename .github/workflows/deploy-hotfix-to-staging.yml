@@ -1,4 +1,4 @@
-name: Deploy Hotfix to Aptible Staging
+name: Deploy to Aptible (any branch or tag)
 
 on:
   workflow_dispatch:
@@ -10,7 +10,6 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Aptible (any ref)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,9 +25,9 @@ jobs:
           environment: illinois-staging
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
+          git_ref: ${{ github.event.inputs.ref }}   # <-- KEY FIX
 
       - name: Generate Sentry release name from sha
-        id: generate-release
         run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Create Sentry release
