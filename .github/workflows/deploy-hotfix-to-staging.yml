@@ -12,16 +12,17 @@ jobs:
     name: Deploy Hotfix to Aptible Staging
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout the tag
+      # 1. Checkout the tag AND fetch the main branch
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.tag }}
           fetch-depth: 0
+          ref: ${{ github.event.inputs.tag }}
+          # Fetch all branches so the action can push to main
+          persist-credentials: true
 
-      # 2. Create temporary branch so Aptible action can push
-      - name: Create temporary branch for deployment
-        run: |
-          git checkout -b hotfix-${{ github.event.inputs.tag }}
+      # 2. Fetch main explicitly to have it locally
+      - name: Fetch main branch
+        run: git fetch origin main:main
 
       # 3. Deploy to Aptible
       - name: Deploy to Aptible
@@ -34,7 +35,7 @@ jobs:
           password: ${{ secrets.APTIBLE_PASSWORD }}
 
       # 4. Generate Sentry release
-      - name: Generate Sentry release name
+      - name: Generate Sentry release
         run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       # 5. Create Sentry release
