@@ -4,35 +4,47 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag to deploy'
+        description: "Tag to deploy"
         required: true
-        default: 'v1.0.0'
 
 jobs:
   deploy:
+    name: Deploy Hotfix to Aptible Staging
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # 1. Checkout the specified tag
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag }}
+          fetch-depth: 0
 
-      - name: Set up Aptible CLI
-        run: |
-          curl -Lo aptible https://github.com/aptible/aptible-cli/releases/download/v0.16.4/aptible-linux-amd64
-          chmod +x aptible
-          sudo mv aptible /usr/local/bin/
-          aptible version
-
-      - name: Login to Aptible
-        run: |
-          aptible login --email ${{ secrets.APTIBLE_EMAIL }} --password ${{ secrets.APTIBLE_PASSWORD }} --environment illinois-staging
-
+      # 2. Deploy the tag to Aptible Staging
       - name: Deploy to Aptible
-        run: |
-          aptible deploy --app illinois-get-childcare-staging --environment illinois-staging --git-remote git@primetime.aptible.com:illinois-get-childcare-staging.git
+        uses: aptible/aptible-deploy-action@v5
+        with:
+          type: git
+          app: illinois-get-childcare-staging
+          environment: illinois-staging
+          username: ${{ secrets.APTIBLE_USERNAME }}
+          password: ${{ secrets.APTIBLE_PASSWORD }}
 
+      # 3. Generate Sentry release name from the tag commit
+      - name: Generate Sentry release name
+        run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      # 4. Create Sentry release
+      - name: Create Sentry release
+        uses: getsentry/action-release@v3
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: codeforamerica
+          SENTRY_PROJECT: il-gcc
+        with:
+          environment: staging
+          ignore_missing: true
+          version: ${{ env.RELEASE }}
+
+      # 5. Announce on Slack
       - name: Announce on Slack
         uses: ravsamhq/notify-slack-action@v2
         with:
