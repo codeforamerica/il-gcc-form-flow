@@ -1,4 +1,4 @@
-name: Deploy to Aptible (any branch or tag)
+name: Deploy Hotfix to Aptible Staging
 
 on:
   workflow_dispatch:
