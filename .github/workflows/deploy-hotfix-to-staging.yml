@@ -18,9 +18,11 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
           fetch-depth: 0
 
-      # 2. Install Aptible CLI
+      # 2. Install Aptible CLI and add to PATH
       - name: Install Aptible CLI
-        run: sudo curl -sL https://cli.aptible.com/install.sh | bash
+        run: |
+          curl -sL https://cli.aptible.com/install.sh | bash
+          echo "$HOME/.aptible/bin" >> $GITHUB_PATH
 
       # 3. Login to Aptible
       - name: Login to Aptible
