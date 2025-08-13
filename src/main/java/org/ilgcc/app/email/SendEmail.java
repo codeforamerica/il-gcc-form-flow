@@ -87,11 +87,11 @@ public abstract class SendEmail {
 
     protected abstract ILGCCEmailTemplate emailTemplate(Map<String, Object> emailData);
 
-    protected Optional<Map<String, Object>> getEmailData(Submission familySubmission) {
-        return getEmailData(familySubmission, null);
+    protected Optional<Map<String, Object>> getEmailData(Submission submission) {
+        return getEmailData(submission, null);
     }
 
-    protected Optional<Map<String, Object>> getEmailData(Submission familySubmission, Map<String, Object> subflowData) {
+    protected Optional<Map<String, Object>> getEmailData(Submission submission, Map<String, Object> subflowData) {
         return Optional.empty();
     }
 

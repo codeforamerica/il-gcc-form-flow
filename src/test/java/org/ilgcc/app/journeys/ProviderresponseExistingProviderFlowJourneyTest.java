@@ -56,7 +56,7 @@ public class ProviderresponseExistingProviderFlowJourneyTest extends AbstractBas
         testPage.enter("providerResponseServiceStreetAddress1", "123 Main St");
         testPage.enter("providerResponseServiceCity", "City");
         testPage.selectFromDropdown("providerResponseServiceState", "IL - Illinois");
-        testPage.enter("providerResponseServiceZipCode", "12345");
+        testPage.enter("providerResponseServiceZipCode", "60013");
         testPage.clickButton("Continue");
 
         // confirm-service-address
@@ -75,7 +75,7 @@ public class ProviderresponseExistingProviderFlowJourneyTest extends AbstractBas
         assertThat(testPage.findElementTextById("full-name")).isEqualTo("ProviderSuppliedFirst ProviderSuppliedLast");
         assertThat(testPage.findElementTextById("provider-service-street-address-1")).isEqualTo("123 Main St");
         assertThat(testPage.findElementTextById("provider-service-city-state")).isEqualTo("City, IL");
-        assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("12345");
+        assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("60013");
         assertThat(testPage.findElementTextById("phone")).isEqualTo("(555) 555-5555");
         assertThat(testPage.findElementTextById("email")).isEqualTo("foo@bar.com");
         testPage.clickButton("Continue");
