@@ -18,7 +18,7 @@ jobs:
           ref: ${{ github.event.inputs.tag }}
           fetch-depth: 0
 
-      # 2. Deploy to Aptible using the aptible-deploy-action
+      # 2. Deploy the tag to Aptible using aptible-deploy-action
       - name: Deploy to Aptible
         uses: aptible/aptible-deploy-action@v5
         with:
@@ -27,6 +27,7 @@ jobs:
           environment: illinois-staging
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
+          deploy_ref: ${{ github.event.inputs.tag }}  # deploy tag as tag
 
       # 3. Generate Sentry release name from SHA
       - name: Generate Sentry release name from sha
