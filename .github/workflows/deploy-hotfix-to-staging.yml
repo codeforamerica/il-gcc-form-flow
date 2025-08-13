@@ -12,13 +12,18 @@ jobs:
     name: Deploy Hotfix to Aptible Staging
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout the specified tag
+      # 1. Checkout the tag
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag }}
           fetch-depth: 0
 
-      # 2. Deploy the tag to Aptible Staging
+      # 2. Create temporary branch so Aptible action can push
+      - name: Create temporary branch for deployment
+        run: |
+          git checkout -b hotfix-${{ github.event.inputs.tag }}
+
+      # 3. Deploy to Aptible
       - name: Deploy to Aptible
         uses: aptible/aptible-deploy-action@v5
         with:
@@ -28,11 +33,11 @@ jobs:
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
 
-      # 3. Generate Sentry release name from the tag commit
+      # 4. Generate Sentry release
       - name: Generate Sentry release name
         run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-      # 4. Create Sentry release
+      # 5. Create Sentry release
       - name: Create Sentry release
         uses: getsentry/action-release@v3
         env:
@@ -44,7 +49,7 @@ jobs:
           ignore_missing: true
           version: ${{ env.RELEASE }}
 
-      # 5. Announce on Slack
+      # 6. Announce on Slack
       - name: Announce on Slack
         uses: ravsamhq/notify-slack-action@v2
         with:
