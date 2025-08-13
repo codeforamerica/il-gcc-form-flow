@@ -18,11 +18,13 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
           fetch-depth: 0
 
-      # 2. Install Aptible CLI globally and login
+      # 2. Download and install Aptible CLI binary, then login
       - name: Install Aptible CLI and login
         run: |
-          # Install Aptible CLI globally
-          curl -sL https://cli.aptible.com/install.sh | sudo bash
+          # Download latest Aptible CLI binary
+          curl -Lo aptible https://github.com/aptible/aptible-cli/releases/latest/download/aptible-linux-amd64
+          chmod +x aptible
+          sudo mv aptible /usr/local/bin/
 
           # Verify installation
           aptible version
@@ -51,4 +53,31 @@ jobs:
           # Deploy tags as tags, branches to main
           if git show-ref --tags | grep -q "$REF"; then
             echo "Pushing tag $REF to Aptible..."
-            git p
+            git push aptible "refs/tags/$REF:refs/tags/$REF" --force
+          else
+            echo "Pushing branch $REF to Aptible main..."
+            git push aptible "HEAD:refs/heads/main" --force
+
+      # 5. Generate Sentry release name
+      - name: Generate Sentry release name from sha
+        run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      # 6. Create Sentry release
+      - name: Create Sentry release
+        uses: getsentry/action-release@v3
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: codeforamerica
+          SENTRY_PROJECT: il-gcc
+        with:
+          environment: staging
+          ignore_missing: true
+          version: ${{ env.RELEASE }}
+
+      # 7. Announce deployment on Slack
+      - name: Announce on Slack
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
