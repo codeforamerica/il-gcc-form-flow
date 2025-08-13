@@ -50,6 +50,11 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
                 results.put("applicantEmployerTravelTimeMins_" + iteration,
                         new SingleField("applicantEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
             }
+            String activitiesWorkVary = (String) job.getOrDefault("activitiesWorkVary", "false");
+            if ("true".equalsIgnoreCase(activitiesWorkVary)){
+                results.put("applicantEmployerWorkHoursVaryExplanation_" + iteration,
+                        new SingleField("applicantEmployerWorkHoursVaryExplanation", "Work schedule varies",  iteration));
+            }
             iteration++;
 
         }
