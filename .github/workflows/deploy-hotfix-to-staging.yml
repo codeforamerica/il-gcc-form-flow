@@ -1,6 +1,5 @@
 name: Deploy Hotfix to Aptible Staging
 
-# Keep this workflow only on `main`
 on:
   workflow_dispatch:
     inputs:
@@ -13,11 +12,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # 1. Checkout the requested ref
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.ref }}
           fetch-depth: 0
 
+      # 2. Install Aptible CLI
+      - name: Install Aptible CLI
+        run: sudo curl -sL https://cli.aptible.com/install.sh | bash
+
+      # 3. Login to Aptible
       - name: Login to Aptible
         run: |
           aptible login \
@@ -25,15 +30,35 @@ jobs:
             --password "${{ secrets.APTIBLE_PASSWORD }}" \
             --environment illinois-staging
 
+      # 4. Add Aptible remote
       - name: Add Aptible git remote
         run: git remote add aptible git@primetime.aptible.com:illinois-staging/illinois-get-childcare-staging.git
 
+      # 5. Push the selected ref
       - name: Push selected ref to Aptible
-        run: git push aptible HEAD:refs/heads/main --force
+        run: |
+          REF="${{ github.event.inputs.ref }}"
 
+          # Ensure the ref exists
+          if ! git rev-parse "$REF" >/dev/null 2>&1; then
+            echo "Ref $REF does not exist!"
+            exit 1
+          fi
+
+          # Deploy tags as tags, branches to main
+          if git show-ref --tags | grep -q "$REF"; then
+            echo "Pushing tag $REF to Aptible..."
+            git push aptible "refs/tags/$REF:refs/tags/$REF" --force
+          else
+            echo "Pushing branch $REF to Aptible main..."
+            git push aptible "HEAD:refs/heads/main" --force
+          fi
+
+      # 6. Generate Sentry release name
       - name: Generate Sentry release name from sha
         run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
+      # 7. Create Sentry release
       - name: Create Sentry release
         uses: getsentry/action-release@v3
         env:
@@ -45,7 +70,8 @@ jobs:
           ignore_missing: true
           version: ${{ env.RELEASE }}
 
-      - name: Announce on Slack when deployed
+      # 8. Announce deployment on Slack
+      - name: Announce on Slack
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
