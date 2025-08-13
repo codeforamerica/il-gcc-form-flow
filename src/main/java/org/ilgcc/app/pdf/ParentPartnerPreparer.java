@@ -27,8 +27,9 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
 
-        String parentHasPartner = (String) submission.getInputData().getOrDefault("parentHasPartner", "");
-        String parentHasQualifyingPartner = (String) submission.getInputData().getOrDefault("parentHasQualifyingPartner", "");
+        String parentHasPartner = (String) submission.getInputData().getOrDefault("parentHasPartner", "false");
+        String parentHasQualifyingPartner = (String) submission.getInputData().getOrDefault("parentHasQualifyingPartner",
+                "false");
         //PartnerLiveInHome
         if (parentHasPartner.equals("true") && parentHasQualifyingPartner.equals("true")) {
             results.put("partnerLiveInHome", new SingleField("partnerLiveInHome", "true", null));
@@ -101,7 +102,7 @@ public class ParentPartnerPreparer implements SubmissionFieldPreparer {
                     new SingleField("activitiesParentPartnerChildcareReason_SCHOOL_TANF", String.valueOf(
                             reasonsForChildcareNeed.contains("SCHOOL") || reasonsForChildcareNeed.contains("TANF_TRAINING")),
                             null));
-        } else if (parentHasQualifyingPartner.equals("false")) {
+        } else {
             results.put("partnerLiveInHome", new SingleField("partnerLiveInHome", "false", null));
         }
 
