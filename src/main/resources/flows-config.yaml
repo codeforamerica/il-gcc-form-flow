@@ -1013,7 +1013,7 @@ flow:
     condition: BackgroundCheckOrTrainingRequired
     nextScreens:
       - name: registration-family-response-intro
-        condition: ProviderIsLicenseExemptChildCareCenter
+        condition: ProviderShouldNotSeeConvictionsScreen
       - name: registration-convictions
   registration-convictions:
     nextScreens:
