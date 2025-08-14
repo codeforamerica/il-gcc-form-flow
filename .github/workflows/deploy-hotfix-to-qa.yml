@@ -9,13 +9,13 @@ jobs:
     name: Deploy to QA
     runs-on: ubuntu-latest
     env:
-      ECR_REPOSITORY: illinois-getchildcare-qa-app
+      IMAGE_TAG: ${{ github.sha }}
 
     steps:
       - name: Check out code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # important for building from any branch or tag
+          fetch-depth: 0
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -28,18 +28,11 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Determine Docker image tag
-        run: |
-          REF_NAME=${GITHUB_REF#refs/*/}
-          IMAGE_TAG=${REF_NAME//\//-}   # sanitize slashes for Docker
-          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
-
       - name: Build and push Docker image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          docker build -t $ECR_REGISTRY:${{ env.IMAGE_TAG }} --platform linux/amd64 .
-          docker push $ECR_REGISTRY:${{ env.IMAGE_TAG }}
+          ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
+          docker build -t $ECR_REGISTRY/illinois-getchildcare-qa-app:${{ env.IMAGE_TAG }} --platform linux/amd64 .
+          docker push $ECR_REGISTRY/illinois-getchildcare-qa-app:${{ env.IMAGE_TAG }}
 
       - name: Update SSM Version Parameter
         run: |
@@ -51,9 +44,9 @@ jobs:
       - name: Trigger infrastructure deployment
         run: |
           set -euo pipefail
-          repo_owner="codeforamerica"
-          repo_name="il-gcc-infra"
-          event_type="deploy"
+          repo_owner="codeforamerica" 
+          repo_name="il-gcc-infra"  
+          event_type="deploy" 
           environment="staging"
           config="qa"
           curl --fail --silent --show-error -L \
@@ -65,6 +58,7 @@ jobs:
             -d "{\"event_type\":\"$event_type\",\"client_payload\":{\"environment\":\"$environment\",\"config\":\"$config\"}}"
 
       - name: Generate Sentry release name
+        id: generate-release
         run: |
           REF_NAME=${GITHUB_REF#refs/*/}
           RELEASE_NAME=${REF_NAME//\//-}
