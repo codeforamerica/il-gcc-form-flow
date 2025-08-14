@@ -4,51 +4,44 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: "Branch or tag to deploy (e.g. v1.2.3)"
+        description: "Branch or tag to deploy (e.g. main, feature/my-branch, v1.2.3)"
         required: true
+        default: main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # Checkout the specific branch or tag with full history
-      - name: Checkout repository
+      - name: Checkout the specified ref
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           ref: ${{ github.event.inputs.ref }}
+          fetch-depth: 0
 
-      # Save commit SHA of the tag
-      - name: Get commit SHA
-        id: commit
-        run: echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.APTIBLE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan primetime.aptible.com >> ~/.ssh/known_hosts
 
-      # Push tag commit to Aptible remote
       - name: Push tag commit to Aptible remote
         run: |
           export TEMP_BRANCH="deploy-${{ github.run_id }}"
-          git remote add aptible ssh://git@primetime.aptible.com:illinois-staging/illinois-get-childcare-staging.git
+          git remote add aptible ssh://git@primetime.aptible.com/illinois-get-childcare-staging.git
           git push aptible HEAD:refs/heads/$TEMP_BRANCH --force
           echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
 
-      # Install Aptible CLI
-      - name: Install Aptible CLI
-        run: curl -fsSL https://raw.githubusercontent.com/aptible/aptible-cli/master/install.sh | sh
-
-      # Login to Aptible
-      - name: Aptible login
-        run: ~/.aptible/aptible login \
-              --email "${{ secrets.APTIBLE_USERNAME }}" \
-              --password "${{ secrets.APTIBLE_PASSWORD }}"
-
-      # Deploy specific commit
-      - name: Deploy specific commit
-        run: ~/.aptible/aptible deploy \
-              --app illinois-get-childcare-staging \
-              --environment illinois-staging \
-              --git-commitish=${{ steps.commit.outputs.sha }}
-
-      # Delete the temporary branch from Aptible
-      - name: Clean up temp branch
-        if: always()
-        run: git push aptible --delete ${{ env.temp_branch }}
+      - name: Deploy to Aptible
+        uses: aptible/aptible-deploy-action@v5
+        with:
+          type: git
+          app: illinois-get-childcare-staging
+          environment: illinois-staging
+          username: ${{ secrets.APTIBLE_USERNAME }}
+          password: ${{ secrets.APTIBLE_PASSWORD }}
+          git_remote: primetime.aptible.com
+          auth_root_url: https://auth.aptible.com
+          api_root_url: https://api.aptible.com
+          aptible_remote: aptible
