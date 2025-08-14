@@ -4,36 +4,39 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag to deploy"
+        description: 'Tag to deploy (e.g., v1.2.3)'
         required: true
-        default: ""
 
 jobs:
   deploy:
     name: Deploy to Aptible Staging
     runs-on: ubuntu-latest
     steps:
-      # Checkout the tag commit
-      - uses: actions/checkout@v4
+      # 1. Checkout full repo + tags
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.tag }}
           fetch-depth: 0
-          fetch-tags: true
+          tags: true
 
-      # Generate a temporary branch name
-      - name: Set temporary deploy branch
-        id: temp_branch
+      # 2. Resolve tag commit SHA
+      - name: Get tag commit
+        id: tag_commit
         run: |
-          echo "TEMP_BRANCH=deploy-$((RANDOM))" >> $GITHUB_ENV
+          TAG_COMMIT=$(git rev-list -n 1 ${{ github.event.inputs.tag }})
+          echo "TAG_COMMIT=$TAG_COMMIT" >> $GITHUB_ENV
+          echo "Tag ${{ github.event.inputs.tag }} is at commit $TAG_COMMIT"
 
-      # Push the tag commit to Aptible as a temporary branch
-      - name: Push tag commit to Aptible
+      # 3. Push tag commit to temporary branch on Aptible
+      - name: Push tag commit to Aptible temp branch
         run: |
-          git remote add aptible https://$APTIBLE_USERNAME:$APTIBLE_PASSWORD@primetime.aptible.com/illinois-staging/illinois-get-childcare-staging.git
-          git push aptible HEAD:refs/heads/$TEMP_BRANCH --force
-          echo "Pushed tag commit $GITHUB_SHA to temporary branch $TEMP_BRANCH"
+          TEMP_BRANCH="deploy-$RANDOM"
+          git remote add aptible https://${{ secrets.APTIBLE_USERNAME }}:${{ secrets.APTIBLE_PASSWORD }}@primetime.aptible.com/illinois-staging/illinois-get-childcare-staging.git
+          git push aptible $TAG_COMMIT:refs/heads/$TEMP_BRANCH --force
+          echo "TEMP_BRANCH=$TEMP_BRANCH" >> $GITHUB_ENV
+          echo "Pushed tag commit $TAG_COMMIT to temporary branch $TEMP_BRANCH"
 
-      # Trigger Aptible deploy
+      # 4. Trigger Aptible deploy from the temporary branch
       - name: Deploy to Aptible
         uses: aptible/aptible-deploy-action@v5
         with:
@@ -46,23 +49,5 @@ jobs:
           auth_root_url: https://auth.aptible.com
           api_root_url: https://api.aptible.com
           aptible_remote: aptible
-
-      # Create Sentry release from the tag commit
-      - name: Create Sentry release
-        uses: getsentry/action-release@v3
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: codeforamerica
-          SENTRY_PROJECT: il-gcc
-        with:
-          environment: staging
-          version: ${{ github.event.inputs.tag }}
-          ignore_missing: true
-
-      # Notify Slack
-      - name: Announce on Slack when deployed
-        uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          # Deploy from the temporary branch
+          deploy_ref: ${{ env.TEMP_BRANCH }}
