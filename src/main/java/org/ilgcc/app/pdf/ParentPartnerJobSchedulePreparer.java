@@ -1,6 +1,7 @@
 package org.ilgcc.app.pdf;
 
 import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.PreparerUtilities.WORK_HOURS_VARY_EXPLANATION;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
@@ -51,7 +52,7 @@ public class ParentPartnerJobSchedulePreparer implements SubmissionFieldPreparer
             String activitiesWorkVary = (String) job.getOrDefault("activitiesWorkVary", "false");
             if ("true".equalsIgnoreCase(activitiesWorkVary)){
                 results.put("partnerEmployerWorkHoursVaryExplanation_" + iteration,
-                        new SingleField("partnerEmployerWorkHoursVaryExplanation", "Work schedule varies",  iteration));
+                        new SingleField("partnerEmployerWorkHoursVaryExplanation", WORK_HOURS_VARY_EXPLANATION,  iteration));
             }
             iteration++;
 

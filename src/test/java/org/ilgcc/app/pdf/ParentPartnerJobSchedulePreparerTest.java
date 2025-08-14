@@ -1,6 +1,7 @@
 package org.ilgcc.app.pdf;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.ilgcc.app.utils.PreparerUtilities.WORK_HOURS_VARY_EXPLANATION;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.SingleField;
@@ -57,6 +58,8 @@ public class ParentPartnerJobSchedulePreparerTest {
                 new SingleField("partnerEmployerScheduleSundayEnd", "03:45", 1));
         assertThat(result.get("partnerEmployerScheduleSundayEndAmPm_1")).isEqualTo(
                 new SingleField("partnerEmployerScheduleSundayEndAmPm", "PM", 1));
+        assertThat(result.get("partnerEmployerWorkHoursVaryExplanation_1")).isEqualTo(
+                new SingleField("partnerEmployerWorkHoursVaryExplanation", WORK_HOURS_VARY_EXPLANATION,  1));
     }
 
     @Test
