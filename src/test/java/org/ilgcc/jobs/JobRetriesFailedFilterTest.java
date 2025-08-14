@@ -37,13 +37,12 @@ class JobRetriesFailedFilterTest {
         when(job.getId()).thenReturn(UUID.fromString("11111111-1111-1111-1111-111111111111"));
         when(job.getLastJobStateOfType(FailedState.class))
                 .thenReturn(Optional.of(new FailedState("Help me I've failed and I can't get up!", new IOException("Help me I've failed and I can't get up!"))));
-        // No need to mock ILGCCEmail anymore
         when(job.getJobDetails().getJobParameters()).thenReturn(List.of());
 
-        // act
+        // Run the filter with the failed job
         filter.onFailedAfterRetries(job);
-
-        // assert
+        
+        // Assert the error message is as we would expect
         var lines = appender.list.stream().map(ILoggingEvent::getFormattedMessage).toList();
         assertThat(lines).anySatisfy(msg -> {
             assertThat(msg).contains("Email job with ID 11111111-1111-1111-1111-111111111111");
