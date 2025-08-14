@@ -3,7 +3,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="version" th:content="${@environment.getProperty('il-gcc.app-version')}">
     <meta name="description" content="Get help paying for child care. Apply online for affordable child care assistance in Illinois in under 20 minutes. Easy, secure, and mobile-friendly.">
-    <meta name="test" content="testing">
     <title th:text="${errorMessages == null ? title : #messages.msg('errors.general-title')}"></title>
     <script src="/webjars/form-flow/0.0.1/js/honeycrisp.min.js"></script>
     <th:block th:replace="~{fragments/datadogRum :: datadogRum}"></th:block>
