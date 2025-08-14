@@ -12,11 +12,20 @@ jobs:
     name: Deploy Hotfix to Aptible Staging
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout tag commit
+      - name: Checkout tag
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag }}
           fetch-depth: 0
+
+      - name: Push tag commit to temporary branch
+        run: |
+          TEMP_BRANCH="deploy-$RANDOM"
+          git checkout -b $TEMP_BRANCH
+          git remote add aptible https://${{ secrets.APTIBLE_USERNAME }}:${{ secrets.APTIBLE_PASSWORD }}@primetime.aptible.com/illinois-staging/illinois-get-childcare-staging.git
+          git push aptible $TEMP_BRANCH --force
+          echo "TEMP_BRANCH=$TEMP_BRANCH" >> $GITHUB_ENV
+          echo "Pushed tag commit $GITHUB_SHA to temporary branch $TEMP_BRANCH"
 
       - name: Deploy to Aptible
         uses: aptible/aptible-deploy-action@v5
@@ -26,9 +35,11 @@ jobs:
           environment: illinois-staging
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
+          git_remote: primetime.aptible.com
+          aptible_remote: aptible
+          deploy_ref: ${{ env.TEMP_BRANCH }}
 
-      - name: Generate Sentry release name from sha
-        id: generate-release
+      - name: Generate Sentry release
         run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Create Sentry release
