@@ -3,35 +3,38 @@ name: Deploy Hotfix to Aptible Staging
 on:
   workflow_dispatch:
     inputs:
-      ref:
-        description: "Branch or tag to deploy (e.g. main, v1.2.3)"
+      tag:
+        description: "Tag to deploy"
         required: true
-        default: main
+        default: ""
 
 jobs:
   deploy:
+    name: Deploy to Aptible Staging
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout requested ref
-        uses: actions/checkout@v4
+      # Checkout the tag commit
+      - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.ref }}
-          fetch-depth: 0  # needed to fetch tags
+          ref: ${{ github.event.inputs.tag }}
+          fetch-depth: 0
+          fetch-tags: true
 
-      - name: Show commit info
+      # Generate a temporary branch name
+      - name: Set temporary deploy branch
+        id: temp_branch
         run: |
-          echo "Deploying commit:"
-          git rev-parse HEAD
-          git log -1 --oneline
+          echo "TEMP_BRANCH=deploy-$((RANDOM))" >> $GITHUB_ENV
 
-      - name: Create temporary branch for deployment
+      # Push the tag commit to Aptible as a temporary branch
+      - name: Push tag commit to Aptible
         run: |
-          TEMP_BRANCH="deploy-$(date +%s)"
-          git checkout -b $TEMP_BRANCH
-          echo "TEMP_BRANCH=$TEMP_BRANCH" >> $GITHUB_ENV
+          git remote add aptible https://$APTIBLE_USERNAME:$APTIBLE_PASSWORD@primetime.aptible.com/illinois-staging/illinois-get-childcare-staging.git
+          git push aptible HEAD:refs/heads/$TEMP_BRANCH --force
+          echo "Pushed tag commit $GITHUB_SHA to temporary branch $TEMP_BRANCH"
 
-      - name: Deploy to Aptible Staging
+      # Trigger Aptible deploy
+      - name: Deploy to Aptible
         uses: aptible/aptible-deploy-action@v5
         with:
           type: git
@@ -44,10 +47,7 @@ jobs:
           api_root_url: https://api.aptible.com
           aptible_remote: aptible
 
-      - name: Generate Sentry release name from SHA
-        id: generate-release
-        run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
-
+      # Create Sentry release from the tag commit
       - name: Create Sentry release
         uses: getsentry/action-release@v3
         env:
@@ -56,18 +56,13 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: staging
+          version: ${{ github.event.inputs.tag }}
           ignore_missing: true
-          version: ${{ env.RELEASE }}
 
+      # Notify Slack
       - name: Announce on Slack when deployed
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Delete temporary branch locally
-        run: git branch -D ${{ env.TEMP_BRANCH }}
-
-      - name: Delete temporary branch on Aptible remote
-        run: git push aptible --delete ${{ env.TEMP_BRANCH }}
