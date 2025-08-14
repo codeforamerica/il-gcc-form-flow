@@ -4,49 +4,51 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: "Branch or tag to deploy (e.g. v1.2.3 or hotfix/my-branch)"
+        description: "Branch or tag to deploy (e.g. v1.2.3)"
         required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch repo with all tags and branches
+      # Checkout the specific branch or tag with full history
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.inputs.ref }}
 
-      - name: Verify ref exists
+      # Save commit SHA of the tag
+      - name: Get commit SHA
+        id: commit
+        run: echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      # Push tag commit to Aptible remote
+      - name: Push tag commit to Aptible remote
         run: |
-          if git show-ref --verify --quiet refs/tags/${{ github.event.inputs.ref }}; then
-            echo "Found tag ${{ github.event.inputs.ref }}"
-          elif git show-ref --verify --quiet refs/heads/${{ github.event.inputs.ref }}; then
-            echo "Found branch ${{ github.event.inputs.ref }}"
-          else
-            echo "ERROR: Ref '${{ github.event.inputs.ref }}' not found as a tag or branch."
-            exit 1
-          fi
+          export TEMP_BRANCH="deploy-${{ github.run_id }}"
+          git remote add aptible ssh://git@primetime.aptible.com:illinois-staging/illinois-get-childcare-staging.git
+          git push aptible HEAD:refs/heads/$TEMP_BRANCH --force
+          echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
 
-      - name: Checkout the requested ref
-        run: |
-          git checkout ${{ github.event.inputs.ref }}
+      # Install Aptible CLI
+      - name: Install Aptible CLI
+        run: curl -fsSL https://raw.githubusercontent.com/aptible/aptible-cli/master/install.sh | sh
 
-      - name: Show commit being deployed
-        run: |
-          echo "Deploying commit:"
-          git log -1 --oneline
-          echo "Ref type:"
-          git describe --tags --exact-match || echo "Not a tag"
+      # Login to Aptible
+      - name: Aptible login
+        run: ~/.aptible/aptible login \
+              --email "${{ secrets.APTIBLE_USERNAME }}" \
+              --password "${{ secrets.APTIBLE_PASSWORD }}"
 
-      - name: Deploy to Aptible Staging
-        uses: aptible/aptible-deploy-action@v5
-        with:
-          type: git
-          app: illinois-get-childcare-staging
-          environment: illinois-staging
-          username: ${{ secrets.APTIBLE_USERNAME }}
-          password: ${{ secrets.APTIBLE_PASSWORD }}
-          git_remote: primetime.aptible.com
-          auth_root_url: https://auth.aptible.com
-          api_root_url: https://api.aptible.com
-          aptible_remote: aptible
+      # Deploy specific commit
+      - name: Deploy specific commit
+        run: ~/.aptible/aptible deploy \
+              --app illinois-get-childcare-staging \
+              --environment illinois-staging \
+              --git-commitish=${{ steps.commit.outputs.sha }}
+
+      # Delete the temporary branch from Aptible
+      - name: Clean up temp branch
+        if: always()
+        run: git push aptible --delete ${{ env.temp_branch }}
