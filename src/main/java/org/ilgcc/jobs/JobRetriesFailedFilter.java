@@ -21,7 +21,7 @@ public class JobRetriesFailedFilter implements JobServerFilter {
         if ("Send CCMS Submission Payload".equals(job.getJobName())) {
 
             if (jobParameters.isEmpty() || !jobParameters.getFirst().getClassName().equals(UUID.class.getName())) {
-                log.error("CCMS Submission job with ID {} failed and was unable to recover the UUID parameter. Exception: {}",
+                log.error("CCMS Submission job with ID {} failed after all retries exhausted and was unable to recover the UUID parameter. Exception: {}",
                         job.getId(), exceptionMessage);
                 return;
             }
