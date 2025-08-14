@@ -45,7 +45,7 @@ public class CCMSApiClient {
                         .onStatus(status -> !status.is2xxSuccessful(), resp ->
                                 resp.createException()
                                         .doOnNext(ex -> log.error(
-                                                "Received an error response from CCMS when sending submission  with ID: {}. Status: {}, Body: {}",
+                                                "Received an error response from CCMS when sending submission with ID: {}. Status: {}, Body: {}",
                                                 requestBody.getSubmissionId(),
                                                 ex.getStatusCode(),
                                                 ex.getResponseBodyAsString()))
