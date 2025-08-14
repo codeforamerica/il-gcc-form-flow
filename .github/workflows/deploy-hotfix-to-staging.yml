@@ -9,34 +9,15 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Aptible Staging
+    name: Deploy Hotfix to Aptible Staging
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout full repo + tags
-      - name: Checkout repository
+      - name: Checkout tag commit
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.inputs.tag }}
           fetch-depth: 0
-          tags: true
 
-      # 2. Resolve tag commit SHA
-      - name: Get tag commit
-        id: tag_commit
-        run: |
-          TAG_COMMIT=$(git rev-list -n 1 ${{ github.event.inputs.tag }})
-          echo "TAG_COMMIT=$TAG_COMMIT" >> $GITHUB_ENV
-          echo "Tag ${{ github.event.inputs.tag }} is at commit $TAG_COMMIT"
-
-      # 3. Push tag commit to temporary branch on Aptible
-      - name: Push tag commit to Aptible temp branch
-        run: |
-          TEMP_BRANCH="deploy-$RANDOM"
-          git remote add aptible https://${{ secrets.APTIBLE_USERNAME }}:${{ secrets.APTIBLE_PASSWORD }}@primetime.aptible.com/illinois-staging/illinois-get-childcare-staging.git
-          git push aptible $TAG_COMMIT:refs/heads/$TEMP_BRANCH --force
-          echo "TEMP_BRANCH=$TEMP_BRANCH" >> $GITHUB_ENV
-          echo "Pushed tag commit $TAG_COMMIT to temporary branch $TEMP_BRANCH"
-
-      # 4. Trigger Aptible deploy from the temporary branch
       - name: Deploy to Aptible
         uses: aptible/aptible-deploy-action@v5
         with:
@@ -45,9 +26,25 @@ jobs:
           environment: illinois-staging
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
-          git_remote: primetime.aptible.com
-          auth_root_url: https://auth.aptible.com
-          api_root_url: https://api.aptible.com
-          aptible_remote: aptible
-          # Deploy from the temporary branch
-          deploy_ref: ${{ env.TEMP_BRANCH }}
+
+      - name: Generate Sentry release name from sha
+        id: generate-release
+        run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v3
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: codeforamerica
+          SENTRY_PROJECT: il-gcc
+        with:
+          environment: staging
+          version: ${{ env.RELEASE }}
+          ignore_missing: true
+
+      - name: Announce on Slack when deployed
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
