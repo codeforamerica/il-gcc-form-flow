@@ -13,27 +13,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the specified ref
+      - name: Checkout the requested ref (tag or branch)
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.ref }}
-          fetch-depth: 0
+          fetch-depth: 0 # Important for tags
 
-      - name: Configure SSH
+      - name: Verify ref checked out
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.APTIBLE_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan primetime.aptible.com >> ~/.ssh/known_hosts
+          echo "Deploying commit:"
+          git rev-parse HEAD
+          git status
 
-      - name: Push tag commit to Aptible remote
-        run: |
-          export TEMP_BRANCH="deploy-${{ github.run_id }}"
-          git remote add aptible ssh://git@primetime.aptible.com/illinois-get-childcare-staging.git
-          git push aptible HEAD:refs/heads/$TEMP_BRANCH --force
-          echo "temp_branch=$TEMP_BRANCH" >> $GITHUB_ENV
-
-      - name: Deploy to Aptible
+      - name: Deploy to Aptible Staging
         uses: aptible/aptible-deploy-action@v5
         with:
           type: git
