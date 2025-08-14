@@ -3,29 +3,42 @@ name: Deploy Hotfix to Aptible Staging
 on:
   workflow_dispatch:
     inputs:
-      tag:
-        description: "Tag to deploy"
+      ref:
+        description: "Branch or tag to deploy (e.g. v1.2.3 or hotfix/my-branch)"
         required: true
 
 jobs:
   deploy:
-    name: Deploy Hotfix to Aptible Staging
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout the tag AND fetch the main branch
-      - uses: actions/checkout@v4
+      - name: Fetch repo with all tags and branches
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.event.inputs.tag }}
-          # Fetch all branches so the action can push to main
-          persist-credentials: true
 
-      # 2. Fetch main explicitly to have it locally
-      - name: Fetch main branch
-        run: git fetch origin main:main
+      - name: Verify ref exists
+        run: |
+          if git show-ref --verify --quiet refs/tags/${{ github.event.inputs.ref }}; then
+            echo "Found tag ${{ github.event.inputs.ref }}"
+          elif git show-ref --verify --quiet refs/heads/${{ github.event.inputs.ref }}; then
+            echo "Found branch ${{ github.event.inputs.ref }}"
+          else
+            echo "ERROR: Ref '${{ github.event.inputs.ref }}' not found as a tag or branch."
+            exit 1
+          fi
 
-      # 3. Deploy to Aptible
-      - name: Deploy to Aptible
+      - name: Checkout the requested ref
+        run: |
+          git checkout ${{ github.event.inputs.ref }}
+
+      - name: Show commit being deployed
+        run: |
+          echo "Deploying commit:"
+          git log -1 --oneline
+          echo "Ref type:"
+          git describe --tags --exact-match || echo "Not a tag"
+
+      - name: Deploy to Aptible Staging
         uses: aptible/aptible-deploy-action@v5
         with:
           type: git
@@ -33,27 +46,7 @@ jobs:
           environment: illinois-staging
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
-
-      # 4. Generate Sentry release
-      - name: Generate Sentry release
-        run: echo "RELEASE=$(git rev-parse HEAD)" >> $GITHUB_ENV
-
-      # 5. Create Sentry release
-      - name: Create Sentry release
-        uses: getsentry/action-release@v3
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: codeforamerica
-          SENTRY_PROJECT: il-gcc
-        with:
-          environment: staging
-          ignore_missing: true
-          version: ${{ env.RELEASE }}
-
-      # 6. Announce on Slack
-      - name: Announce on Slack
-        uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          git_remote: primetime.aptible.com
+          auth_root_url: https://auth.aptible.com
+          api_root_url: https://api.aptible.com
+          aptible_remote: aptible
