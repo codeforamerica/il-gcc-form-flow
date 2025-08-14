@@ -2,11 +2,11 @@ name: Deploy Hotfix to Aptible Staging
 
 on:
   workflow_dispatch:
-    inputs: { }  
+    inputs: { }
 
 jobs:
   deploy:
-    name: Deploy to aptible-staging
+    name: Deploy Hotfix to Aptible Staging
     runs-on: ubuntu-latest
     environment: staging
     steps:
@@ -23,6 +23,16 @@ jobs:
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
 
+      - name: Generate Sentry release name from ref
+        id: generate-release
+        run: |
+          # Remove refs/heads/ or refs/tags/ prefix
+          RELEASE_NAME=${GITHUB_REF#refs/heads/}
+          RELEASE_NAME=${RELEASE_NAME#refs/tags/}
+          # Replace slashes with dashes to satisfy Sentry
+          RELEASE_NAME=${RELEASE_NAME//\//-}
+          echo "RELEASE=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "Release name for Sentry: $RELEASE_NAME"
 
       - name: Create Sentry release
         uses: getsentry/action-release@v3
@@ -32,7 +42,8 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: staging
-          version: ${{ github.ref }}
+          release: ${{ env.RELEASE }}
+          ignore_missing: true
 
       - name: Announce on Slack when deployed
         uses: ravsamhq/notify-slack-action@v2
