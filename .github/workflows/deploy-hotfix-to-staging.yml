@@ -2,35 +2,27 @@ name: Deploy Hotfix to Aptible Staging
 
 on:
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag to deploy'
-        required: true
+    inputs: { }  
 
 jobs:
   deploy:
-    name: Deploy to Aptible Staging
+    name: Deploy to aptible-staging
     runs-on: ubuntu-latest
+    environment: staging
     steps:
-      # Checkout the tag commit explicitly
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.tag }}
           fetch-depth: 0
 
-      # Deploy the tag commit using Aptible CLI
-      - name: Deploy tag commit to Aptible
-        run: |
-          curl -Lo aptible https://github.com/aptible/aptible-cli/releases/download/v1.16.0/aptible-linux-amd64
-          chmod +x aptible
-          sudo mv aptible /usr/local/bin/
-          aptible login --username ${{ secrets.APTIBLE_USERNAME }} --password ${{ secrets.APTIBLE_PASSWORD }}
-          aptible deploy --app illinois-get-childcare-staging --git-commitish $GITHUB_SHA
+      - name: Deploy to Aptible
+        uses: aptible/aptible-deploy-action@v5
+        with:
+          type: git
+          app: illinois-get-childcare-staging
+          environment: illinois-staging
+          username: ${{ secrets.APTIBLE_USERNAME }}
+          password: ${{ secrets.APTIBLE_PASSWORD }}
 
-      # Generate Sentry release from tag commit
-      - name: Generate Sentry release name from sha
-        id: generate-release
-        run: echo "::set-output name=RELEASE::$(git rev-parse HEAD)"
 
       - name: Create Sentry release
         uses: getsentry/action-release@v3
@@ -40,8 +32,7 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: staging
-          version: ${{ steps.generate-release.outputs.RELEASE }}
-          ignore_missing: true
+          version: ${{ github.ref }}
 
       - name: Announce on Slack when deployed
         uses: ravsamhq/notify-slack-action@v2
