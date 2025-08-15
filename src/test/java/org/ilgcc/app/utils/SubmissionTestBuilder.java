@@ -714,7 +714,7 @@ public class SubmissionTestBuilder {
         }
 
         Map<String, Object> job = jobs.get(0);
-
+        job.put("activitiesWorkVary", "true");
         job.put("activitiesJobHoursSameEveryDay[]", List.of());
         setTime(job, "activitiesJob", "Start", day, startTime);
         setTime(job, "activitiesJob", "End", day, endTime);
@@ -780,6 +780,7 @@ public class SubmissionTestBuilder {
         }
 
         Map<String, Object> job = partnerJobs.get(0);
+        job.put("activitiesWorkVary", "true");
         job.put("activitiesJobHoursSameEveryDay[]", List.of());
 
         setTime(job, "activitiesJob", "Start", day, startTime);

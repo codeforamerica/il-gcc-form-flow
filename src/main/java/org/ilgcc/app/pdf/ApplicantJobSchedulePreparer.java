@@ -15,6 +15,7 @@ import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.enums.CommuteTimeType;
 import org.ilgcc.app.utils.enums.TimeSpan;
 import org.springframework.stereotype.Component;
+import static org.ilgcc.app.utils.PreparerUtilities.WORK_HOURS_VARY_EXPLANATION;
 
 @Component
 public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
@@ -49,6 +50,11 @@ public class ApplicantJobSchedulePreparer implements SubmissionFieldPreparer {
                         new SingleField("applicantEmployerTravelTimeHours", commuteTimeValue.getPaddedHours(), iteration));
                 results.put("applicantEmployerTravelTimeMins_" + iteration,
                         new SingleField("applicantEmployerTravelTimeMins", commuteTimeValue.getMinutes(), iteration));
+            }
+            String activitiesWorkVary = (String) job.getOrDefault("activitiesWorkVary", "false");
+            if ("true".equalsIgnoreCase(activitiesWorkVary)){
+                results.put("applicantEmployerWorkHoursVaryExplanation_" + iteration,
+                        new SingleField("applicantEmployerWorkHoursVaryExplanation", WORK_HOURS_VARY_EXPLANATION,  iteration));
             }
             iteration++;
 
