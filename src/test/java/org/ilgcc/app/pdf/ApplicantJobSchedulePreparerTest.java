@@ -58,8 +58,6 @@ public class ApplicantJobSchedulePreparerTest {
                 new SingleField("applicantEmployerScheduleSundayEnd", "03:45", 1));
         assertThat(result.get("applicantEmployerScheduleSundayEndAmPm_1")).isEqualTo(
                 new SingleField("applicantEmployerScheduleSundayEndAmPm", "PM", 1));
-        assertThat(result.get("applicantEmployerWorkHoursVaryExplanation_1")).isEqualTo(
-                new SingleField("applicantEmployerWorkHoursVaryExplanation", WORK_HOURS_VARY_EXPLANATION, 1));
     }
 
     @Test
@@ -103,6 +101,8 @@ public class ApplicantJobSchedulePreparerTest {
                 new SingleField("applicantEmployerScheduleFridayEnd", "07:00", 1));
         assertThat(result.get("applicantEmployerScheduleFridayEndAmPm_1")).isEqualTo(
                 new SingleField("applicantEmployerScheduleFridayEndAmPm", "PM", 1));
+        assertThat(result.get("applicantEmployerWorkHoursVaryExplanation_1")).isEqualTo(
+                new SingleField("applicantEmployerWorkHoursVaryExplanation", WORK_HOURS_VARY_EXPLANATION, 1));
     }
 
     @Test
