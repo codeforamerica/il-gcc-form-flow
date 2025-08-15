@@ -82,7 +82,7 @@ dependencies {
     testImplementation 'org.awaitility:awaitility:4.3.0'
     testImplementation 'io.github.bonigarcia:webdrivermanager:6.2.0'
     testImplementation 'com.h2database:h2:2.3.232'
-    testImplementation 'com.deque.html.axe-core:selenium:4.10.1'
+    testImplementation 'com.deque.html.axe-core:selenium:4.10.2'
     testImplementation 'org.projectlombok:lombok:1.18.38'
     testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:4.1.1'
     testImplementation 'io.zonky.test:embedded-database-spring-test:2.6.0'
