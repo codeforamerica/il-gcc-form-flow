@@ -2,6 +2,7 @@ package org.ilgcc.app.utils;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.getProvidersIDsWithChildcareSchedules;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
 
 import formflow.library.data.Submission;
@@ -372,18 +373,25 @@ public class SubmissionUtilities {
         String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
 
         List<Map<String, Object>> providers = getProviders(familySubmission.getInputData());
+        List<String> providersIDsWithChildcareSchedules = getProvidersIDsWithChildcareSchedules(familySubmission.getInputData());
+
         boolean allProvidersResponded = true;
 
         for (Map<String, Object> provider : providers) {
-            if (currentProviderUuid.equals(provider.get("uuid").toString())) {
-                provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
-                provider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
-                provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
-                provider.put("providerResponseName", ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
-            } else if (!provider.containsKey("providerApplicationResponseStatus") || !SubmissionStatus.RESPONDED.name()
-                    .equals(provider.get("providerApplicationResponseStatus").toString())) {
-                allProvidersResponded = false;
+            if (providersIDsWithChildcareSchedules.contains(provider.get("uuid").toString())) {
+                if (currentProviderUuid.equals(provider.get("uuid").toString())) {
+                    provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
+                    provider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
+                    provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
+                    provider.put("providerResponseName", ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
+                } else if (!provider.containsKey("providerApplicationResponseStatus") || !SubmissionStatus.RESPONDED.name()
+                        .equals(provider.get("providerApplicationResponseStatus").toString())) {
+                    allProvidersResponded = false;
+                }
+            } else {
+                provider.put("providerApplicationResponseStatus", SubmissionStatus.INACTIVE.name());
             }
+
         }
 
         familySubmission.getInputData().put("providers", providers);

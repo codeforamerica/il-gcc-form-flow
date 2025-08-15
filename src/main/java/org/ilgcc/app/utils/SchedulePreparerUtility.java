@@ -146,4 +146,10 @@ public class SchedulePreparerUtility {
 
         return providerSchedules.stream().collect(Collectors.groupingBy(provider -> provider.get("repeatForValue").toString()));
     }
+
+    public static List<String> getProvidersIDsWithChildcareSchedules(Map<String, Object> inputData) {
+        Map<String, List<Map<String, Object>>> providerChildCareSchedules = (Map<String, List<Map<String, Object>>>) getProvidersIDsWithChildcareSchedules(
+                inputData);
+        return providerChildCareSchedules.keySet().stream().collect(Collectors.toList());
+    }
 }
