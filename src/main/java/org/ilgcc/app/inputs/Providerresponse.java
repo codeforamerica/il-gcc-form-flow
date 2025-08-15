@@ -93,7 +93,7 @@ public class Providerresponse extends FlowInputs {
 
     @NotBlank(message = "{registration-licensed-care-location.error}")
     private String providerLicensedCareLocation;
-    @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email}")
+    @Email(regexp = RegexUtils.EMAIL_REGEX, message = "{errors.invalid-email.no-suggested-email-address}")
     private String providerResponseContactEmail;
     
     // registration-applicant

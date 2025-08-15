@@ -860,6 +860,7 @@ flow:
     nextScreens:
       - name: contact-info
   contact-info:
+    crossFieldValidationAction: ValidateProviderResponsePhoneAndEmail
     nextScreens:
       - name: info-review
   info-review:
