@@ -24,8 +24,10 @@
                       <span class="text--small spacing-below-0 spacing-right-25">
                         <a th:href="'/flow/' + ${flow} + '/adultDependents/' + ${adultDependent.uuid} + '/deleteConfirmation'"
                            th:text="#{general.remove}"
+                           th:attr="aria-label=|Remove ${adultDependent.adultDependentFirstName} ${adultDependent.adultDependentLastName}|, title=|Remove ${adultDependent.adultDependentFirstName} ${adultDependent.adultDependentLastName}|"
                            class="subflow-delete"
-                           th:id="'delete-iteration-' + ${adultDependent.uuid}"></a>
+                           th:id="'delete-iteration-' + ${adultDependent.uuid}">
+                        </a>
                       </span>
                     </span>
                     </li>
