@@ -410,7 +410,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withMultipleChildcareSchedulesForProvider(List<String> childIDs, String providerUUID) {
-        List<Map<String, Object>> childcareSchedules = new ArrayList<>();
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) submission.getInputData().getOrDefault("childcareSchedules", new ArrayList<>());
 
         for (String childUUID : childIDs) {
             Map<String, Object> childcareSchedule = new HashMap<>();
