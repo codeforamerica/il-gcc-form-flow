@@ -561,8 +561,11 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
-        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        // Adding aria-label assertion:
+        assertThat(testPage.findElementsByClass("subflow-delete").get(0).getAccessibleName())
+                .isEqualTo("Remove ACME Daycare");
 
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
         //Second Iteration
         // providers-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
