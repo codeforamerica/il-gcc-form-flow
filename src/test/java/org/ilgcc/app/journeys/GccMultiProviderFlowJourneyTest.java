@@ -200,6 +200,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-add-jobs (list)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+        assertThat(testPage.findElementsByClass("subflow-delete").get(0).getAccessibleName())
+                .isEqualTo(String.format("%s %s", getEnMessage("general.remove"), "testCompany"));
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
         //children-info-intro

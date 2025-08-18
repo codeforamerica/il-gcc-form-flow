@@ -414,6 +414,8 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
 
         //activities-add-jobs (list)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+        assertThat(testPage.findElementsByClass("subflow-delete").get(0).getAccessibleName())
+                .isEqualTo(String.format("%s %s", getEnMessage("general.remove"), "testCompany"));
 
         List.of("2", "3").forEach(el -> {
             // Add 2nd, 3rd, 4th job
@@ -604,6 +606,8 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
 
         //activities-partner-add-job
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-partner-add-jobs.title"));
+        assertThat(testPage.findElementsByClass("subflow-delete").get(0).getAccessibleName())
+                .isEqualTo(String.format("%s %s", getEnMessage("general.remove"), "testPartnerCompany"));
 
         List.of("2", "3").forEach(el -> {
             // Add a 2nd, 3rd job
