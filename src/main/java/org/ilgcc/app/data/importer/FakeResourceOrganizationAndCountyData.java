@@ -28,7 +28,7 @@ public class FakeResourceOrganizationAndCountyData implements InitializingBean {
     public static ResourceOrganization PROJECT_CHILD_TEST_DATA;
     public static County ACTIVE_PROJECT_CHILD_COUNTY;
     public static ResourceOrganization OUT_OF_SCOPE_DATA;
-    public static County ACTIVE_OUT_OF_SCOPE_COUNTY;
+    public static County COHORT2_COUNTY;
 
     @Override
     public void afterPropertiesSet() {
@@ -86,11 +86,11 @@ public class FakeResourceOrganizationAndCountyData implements InitializingBean {
             OUT_OF_SCOPE_DATA.setEmail("test@gmail.com");
             resourceOrganizationRepository.save(OUT_OF_SCOPE_DATA);
 
-            ACTIVE_OUT_OF_SCOPE_COUNTY = new County();
-            ACTIVE_OUT_OF_SCOPE_COUNTY.setCounty("County in SDA Not Launched");
-            ACTIVE_OUT_OF_SCOPE_COUNTY.setZipCode(new BigInteger("60006"));
-            ACTIVE_OUT_OF_SCOPE_COUNTY.setCaseloadCode("HH");
-            countyRepository.save(ACTIVE_OUT_OF_SCOPE_COUNTY);
+            COHORT2_COUNTY = new County();
+            COHORT2_COUNTY.setCounty("HENDERSON");
+            COHORT2_COUNTY.setZipCode(new BigInteger("61418"));
+            COHORT2_COUNTY.setCaseloadCode("HH");
+            countyRepository.save(COHORT2_COUNTY);
         } catch (NumberFormatException e) {
             throw new RuntimeException(e);
         }

@@ -2,7 +2,7 @@ package org.ilgcc.app.submission.actions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_FOUR_C_COUNTY;
-import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.ACTIVE_OUT_OF_SCOPE_COUNTY;
+import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.COHORT2_COUNTY;
 import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.FOUR_C_TEST_DATA;
 
 import formflow.library.data.Submission;
@@ -75,7 +75,7 @@ class SetOrganizationIdAndCCRRNameTest {
     public void setsResourceOrgBasedOnApplicationCountyIfHomeAddressZipCodeOutsideScopedSDAs() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", ACTIVE_OUT_OF_SCOPE_COUNTY.getZipCode().toString())
+                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", COHORT2_COUNTY.getZipCode().toString())
                 .with("applicationCounty", ACTIVE_FOUR_C_COUNTY.getCounty())
                 .build();
 
@@ -85,14 +85,14 @@ class SetOrganizationIdAndCCRRNameTest {
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
         assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo(
-                ACTIVE_OUT_OF_SCOPE_COUNTY.getCounty());
+                COHORT2_COUNTY.getCounty());
     }
 
     @Test
     public void setsResourceOrgBasedOnApplicationZipIfHomeAddressZipCodeOutsideScopedSDAs() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", ACTIVE_OUT_OF_SCOPE_COUNTY.getZipCode().toString())
+                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", COHORT2_COUNTY.getZipCode().toString())
                 .with("applicationZipCode", ACTIVE_FOUR_C_COUNTY.getZipCode().toString())
                 .build();
 
@@ -102,7 +102,7 @@ class SetOrganizationIdAndCCRRNameTest {
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
         assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo(
-                ACTIVE_OUT_OF_SCOPE_COUNTY.getCounty());
+                COHORT2_COUNTY.getCounty());
     }
 
     @Test
