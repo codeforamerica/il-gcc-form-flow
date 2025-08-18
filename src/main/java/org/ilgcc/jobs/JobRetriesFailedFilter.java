@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 public class JobRetriesFailedFilter implements JobServerFilter {
     @Override
     public void onFailedAfterRetries(Job job) {
-        log.info("Job retries failed: {}", job);
-
         String exceptionMessage = getExceptionMessage(job);
         List<JobParameter> jobParameters = job.getJobDetails().getJobParameters();
 
