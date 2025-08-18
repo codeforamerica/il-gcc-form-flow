@@ -190,13 +190,6 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
         testPage.clickButton(getEnMessage("parent-add-adults.im-done"));
-        // activities-parent-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
-        testPage.clickContinue();
-        //activities-parent-type
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-type.title"));
-        testPage.clickElementById("activitiesParentChildcareReason-TANF_TRAINING");
-        testPage.clickContinue();
         //children-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-single.title"));
         assertThat(testPage.findElementTextById("children-info-intro-single-step")).isEqualTo("Step 2 of 5");

@@ -123,6 +123,8 @@ flow:
   parent-add-adults:
     nextScreens:
       - name: activities-parent-intro
+        condition: EnableMultipleProviders
+      - name: children-info-intro
   parent-add-adults-detail:
     subflow: adultDependents
     crossFieldValidationAction: ValidateAdultDependentBirthdate
