@@ -22,7 +22,7 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up ChromeDriver
         uses: nanasess/setup-chromedriver@v2.3.0
       - name: Set up JDK
@@ -65,7 +65,7 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up ChromeDriver
         uses: nanasess/setup-chromedriver@v2.3.0
       - name: Set up JDK

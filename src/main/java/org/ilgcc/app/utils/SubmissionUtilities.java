@@ -380,8 +380,9 @@ public class SubmissionUtilities {
                 provider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
                 provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
                 provider.put("providerResponseName", ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
-            } else if (!provider.containsKey("providerApplicationResponseStatus") || !SubmissionStatus.RESPONDED.name()
-                    .equals(provider.get("providerApplicationResponseStatus").toString())) {
+            } else if (!provider.containsKey("providerApplicationResponseStatus") ||
+                    !(SubmissionStatus.RESPONDED.name().equals(provider.get("providerApplicationResponseStatus").toString()) ||
+                    SubmissionStatus.INACTIVE.name().equals(provider.get("providerApplicationResponseStatus").toString()))) {
                 allProvidersResponded = false;
             }
         }
