@@ -91,7 +91,7 @@ public class ProviderresponseProviderRegisteringLicenseChildCareCenterJourneyTes
         testPage.enter("providerResponseServiceStreetAddress2", "5th floor");
         testPage.enter("providerResponseServiceCity", "San Francisco");
         testPage.selectFromDropdown("providerResponseServiceState", getEnMessage("state.ca"));
-        testPage.enter("providerResponseServiceZipCode", "94103");
+        testPage.enter("providerResponseServiceZipCode", "60015");
 
         testPage.clickContinue();
 
@@ -109,7 +109,7 @@ public class ProviderresponseProviderRegisteringLicenseChildCareCenterJourneyTes
         assertThat(testPage.getInputValue("providerMailingStreetAddress2")).isEqualTo("5th floor");
         assertThat(testPage.getInputValue("providerMailingCity")).isEqualTo("San Francisco");
         assertThat(testPage.getSelectValue("providerMailingState")).isEqualTo(getEnMessage("state.ca"));
-        assertThat(testPage.getInputValue("providerMailingZipCode")).isEqualTo("94103");
+        assertThat(testPage.getInputValue("providerMailingZipCode")).isEqualTo("60015");
 
         testPage.clickContinue();
 
@@ -129,11 +129,11 @@ public class ProviderresponseProviderRegisteringLicenseChildCareCenterJourneyTes
         assertThat(testPage.findElementTextById("provider-service-street-address-1")).isEqualTo("972 Mission St");
         assertThat(testPage.findElementTextById("provider-service-street-address-2")).isEqualTo("5th floor");
         assertThat(testPage.findElementTextById("provider-service-city-state")).isEqualTo("San Francisco, CA");
-        assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("94103");
+        assertThat(testPage.findElementTextById("provider-service-zipcode")).isEqualTo("60015");
         assertThat(testPage.findElementTextById("provider-mailing-street-address-1")).isEqualTo("972 Mission St");
         assertThat(testPage.findElementTextById("provider-mailing-street-address-2")).isEqualTo("5th floor");
         assertThat(testPage.findElementTextById("provider-mailing-city-state")).isEqualTo("San Francisco, CA");
-        assertThat(testPage.findElementTextById("provider-mailing-zipcode")).isEqualTo("94103");
+        assertThat(testPage.findElementTextById("provider-mailing-zipcode")).isEqualTo("60015");
         assertThat(testPage.findElementTextById("provider-phone")).isEqualTo("(555) 555-5555");
         assertThat(testPage.findElementTextById("provider-email")).isEqualTo("foo@bar.com");
         testPage.clickContinue();

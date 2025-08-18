@@ -366,7 +366,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         List<Map<String,Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         assertThat(testPage.getHeader()).containsIgnoringCase("Child");
-        testPage.clickElementById("none__checkbox-childcareProvidersForCurrentChild-label");
         testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
         testPage.clickContinue();
 

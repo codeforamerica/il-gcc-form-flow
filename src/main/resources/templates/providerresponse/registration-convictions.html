@@ -11,7 +11,7 @@
         <th:block th:replace="~{fragments/gcc-icons :: person}"></th:block>
         <th:block
                 th:replace="~{fragments/cardHeaderForSingleInputScreen ::
-              cardHeaderForSingleInputScreen(header=#{registration-convictions.header}, subtext=#{registration-convictions.subtext}, required='true')}"/>
+              cardHeaderForSingleInputScreen(header=#{registration-convictions.header}, subtext=#{registration-convictions.subtext}, required='false')}"/>
         <th:block th:replace="~{fragments/form :: form(action=${formAction}, content=~{::formContent})}">
           <th:block th:ref="formContent">
             <div class="form-card__content">
