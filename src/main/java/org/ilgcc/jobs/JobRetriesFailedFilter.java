@@ -18,8 +18,8 @@ public class JobRetriesFailedFilter implements JobServerFilter {
         String exceptionMessage = getExceptionMessage(job);
         List<JobParameter> jobParameters = job.getJobDetails().getJobParameters();
 
-        log.info("Job retries failed: " + exceptionMessage);
-        
+        log.info("Job retries failed: " + job);
+
         if ("Send CCMS Submission Payload".equals(job.getJobName())) {
 
             if (jobParameters.isEmpty() || !jobParameters.getFirst().getClassName().equals(UUID.class.getName())) {
