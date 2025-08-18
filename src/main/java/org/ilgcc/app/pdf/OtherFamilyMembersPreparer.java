@@ -1,30 +1,34 @@
 package org.ilgcc.app.pdf;
 
+import static java.util.Collections.emptyList;
+
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import formflow.library.pdf.SubmissionFieldPreparer;
-import org.ilgcc.app.utils.SubmissionUtilities;
-import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Collections.emptyList;
+import org.ilgcc.app.utils.SubmissionUtilities;
+import org.springframework.stereotype.Component;
 
 @Component
 public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
 
+    private static final int MAX_FAMILY_MEMBERS = 5;
+
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
-        var results = new HashMap<String, SubmissionField>();
+        var results = new LinkedHashMap<String, SubmissionField>();
         int iteration = 1;
 
         if (SubmissionUtilities.getChildrenNeedingAssistance(submission.getInputData()).size() > 4) {
             var seekingAssistance = SubmissionUtilities.getAdditionalChildrenNeedingAssistance(submission);
             for (var child : seekingAssistance) {
+                if (iteration > MAX_FAMILY_MEMBERS) {
+                    return results;
+                }
                 results.put("familyMemberFirstName_" + iteration,
                         new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
                 results.put("familyMemberLastName_" + iteration,
@@ -39,9 +43,11 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
         }
 
         var children = ((List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList())).stream()
-                .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("false"))
-                .toList();
+                .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("false")).toList();
         for (var child : children) {
+            if (iteration > MAX_FAMILY_MEMBERS) {
+                return results;
+            }
             results.put("familyMemberFirstName_" + iteration,
                     new SingleField("familyMemberFirstName", (String) child.get("childFirstName"), iteration));
             results.put("familyMemberLastName_" + iteration,
@@ -55,6 +61,9 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
 
         var adultDependents = (List<Map<String, Object>>) submission.getInputData().getOrDefault("adultDependents", emptyList());
         for (var adult : adultDependents) {
+            if (iteration > MAX_FAMILY_MEMBERS) {
+                return results;
+            }
             results.put("familyMemberFirstName_" + iteration,
                     new SingleField("familyMemberFirstName", (String) adult.get("adultDependentFirstName"), iteration));
             results.put("familyMemberLastName_" + iteration,
@@ -62,7 +71,8 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
             results.put("familyMemberDateOfBirth_" + iteration,
                     new SingleField("familyMemberDateOfBirth", formatAdultDependentDateOfBirth(adult), iteration));
             results.put("familyMemberRelationship_" + iteration,
-                new SingleField("familyMemberRelationship", (String) adult.getOrDefault("adultDependentRelationship", ""), iteration));
+                    new SingleField("familyMemberRelationship", (String) adult.getOrDefault("adultDependentRelationship", ""),
+                            iteration));
             iteration++;
         }
 
@@ -70,9 +80,7 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
     }
 
     private String formatChildDateOfBirth(Map<String, Object> child) {
-        return String.format("%s/%s/%s",
-                child.get("childDateOfBirthMonth"),
-                child.get("childDateOfBirthDay"),
+        return String.format("%s/%s/%s", child.get("childDateOfBirthMonth"), child.get("childDateOfBirthDay"),
                 child.get("childDateOfBirthYear"));
     }
 
@@ -82,9 +90,7 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
             return "";
         }
 
-        return String.format("%s/%s/%s",
-                adult.get("adultDependentBirthdateMonth"),
-                adult.get("adultDependentBirthdateDay"),
+        return String.format("%s/%s/%s", adult.get("adultDependentBirthdateMonth"), adult.get("adultDependentBirthdateDay"),
                 year);
     }
 }
