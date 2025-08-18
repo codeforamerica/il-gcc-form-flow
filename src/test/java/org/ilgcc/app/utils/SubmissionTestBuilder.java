@@ -410,7 +410,7 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withMultipleChildcareSchedulesForProvider(List<String> childIDs, String providerUUID) {
-        List<Map<String, Object>> childcareSchedules = new ArrayList<>();
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) submission.getInputData().getOrDefault("childcareSchedules", new ArrayList<>());
 
         for (String childUUID : childIDs) {
             Map<String, Object> childcareSchedule = new HashMap<>();
@@ -714,7 +714,7 @@ public class SubmissionTestBuilder {
         }
 
         Map<String, Object> job = jobs.get(0);
-
+        job.put("activitiesWorkVary", "true");
         job.put("activitiesJobHoursSameEveryDay[]", List.of());
         setTime(job, "activitiesJob", "Start", day, startTime);
         setTime(job, "activitiesJob", "End", day, endTime);
@@ -780,6 +780,7 @@ public class SubmissionTestBuilder {
         }
 
         Map<String, Object> job = partnerJobs.get(0);
+        job.put("activitiesWorkVary", "true");
         job.put("activitiesJobHoursSameEveryDay[]", List.of());
 
         setTime(job, "activitiesJob", "Start", day, startTime);

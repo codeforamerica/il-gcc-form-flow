@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -24,6 +24,14 @@ jobs:
           password: ${{ secrets.APTIBLE_PASSWORD }}
       #         Looking for secrets/variables for the application? Check the configuration tab in the Aptible app GUI
 
+      - name: Generate Sentry release name
+        id: generate-release
+        run: |
+          # Remove refs/heads/ or refs/tags/ prefix and replace slashes with dashes
+          REF_NAME=${GITHUB_REF#refs/*/}
+          RELEASE_NAME=${REF_NAME//\//-}
+          echo "RELEASE=$RELEASE_NAME" >> $GITHUB_ENV
+
       - name: Create Sentry release
         uses: getsentry/action-release@v3
         env:
@@ -32,7 +40,7 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: production
-          version: ${{ github.ref }}
+          release: ${{ env.RELEASE }}
 
       - name: Announce on Slack when deployed
         uses: ravsamhq/notify-slack-action@v2

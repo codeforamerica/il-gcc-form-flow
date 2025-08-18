@@ -17,20 +17,21 @@ import org.springframework.context.MessageSource;
 
 @Getter
 @Setter
-public class NewProviderConfirmationEmailTemplate {
+public class FamilyApplicationTransmittedProviderConfirmationTemplate {
 
     private Map<String, Object> emailData;
     private MessageSource messageSource;
     private Locale locale;
 
-   public NewProviderConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource, Locale locale) {
+   public FamilyApplicationTransmittedProviderConfirmationTemplate(Map<String, Object> emailData, MessageSource messageSource, Locale locale) {
        this.emailData = emailData;
        this.messageSource = messageSource;
        this.locale = locale;
 
    }
    public ILGCCEmailTemplate createTemplate(){
-       return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData), new Content("text/html", setBodyCopy(emailData)), EmailType.NEW_PROVIDER_CONFIRMATION_EMAIL);
+       return new ILGCCEmailTemplate(senderEmail(), setSubject(emailData), new Content("text/html", setBodyCopy(emailData)),
+               EmailType.FAMILY_APPLICATION_TRANSMITTED_PROVIDER_CONFIRMATION_EMAIL);
    }
 
     private Email senderEmail() {
@@ -38,24 +39,24 @@ public class NewProviderConfirmationEmailTemplate {
     }
 
     private String setSubject(Map<String, Object> emailData) {
-        return messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{emailData.get("confirmationCode")},
+        return messageSource.getMessage("email.family-application-transmitted-provider-confirmation-email.subject",
+                null,
                 locale);
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
-        String p1 = messageSource.getMessage("email.provider-confirmation.p1", null, locale);
-        String p2 = messageSource.getMessage("email.provider-confirmation.p2", new Object[]{emailData.get("ccrrName")}, locale);
-        String p3 = messageSource.getMessage("email.provider-confirmation.p3", new Object[]{
+        String p1 = messageSource.getMessage("email.family-application-transmitted-provider-confirmation-email.p1", null, locale);
+        String p2 = messageSource.getMessage("email.family-application-transmitted-provider-confirmation-email.p2", new Object[]{emailData.get("ccrrName")}, locale);
+        String p3 = messageSource.getMessage("email.family-application-transmitted-provider-confirmation-email.p3", new Object[]{
                 formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
                         messageSource.getMessage("general.and", null, locale)), emailData.get("ccapStartDate")}, locale);
-        String p4 = messageSource.getMessage("email.provider-confirmation.p4", new Object[]{emailData.get("confirmationCode")},
+        String p4 = messageSource.getMessage("email.family-application-transmitted-provider-confirmation-email.p4", new Object[]{emailData.get("confirmationCode")},
                 locale);
-        String p5 = messageSource.getMessage("email.provider-confirmation.p5",
+        String p5 = messageSource.getMessage("email.family-application-transmitted-provider-confirmation-email.p5",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
-        String p6 = messageSource.getMessage("email.new-provider-confirmation.note",  new Object[]{emailData.get("ccrrName")}, locale);
-        String p7 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
-        String p8 = messageSource.getMessage("email.general.footer.cfa", null, locale);
-        return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
+        String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
+        String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
+        return p1 + p2 + p3 + p4 + p5 + p6 + p7;
     }
 
 }

@@ -846,6 +846,7 @@ flow:
   confirm-service-address:
     condition: ShowProviderResponseServiceAddressConfirmationScreen
     onPostAction: SaveValidatedProviderResponseServiceAddress
+    afterSaveAction: SetProviderCounty
     nextScreens:
       - name: mailing-address
         condition: ProviderIsRegistering
@@ -859,6 +860,7 @@ flow:
     nextScreens:
       - name: contact-info
   contact-info:
+    crossFieldValidationAction: ValidateProviderResponsePhoneAndEmail
     nextScreens:
       - name: info-review
   info-review:
@@ -939,6 +941,7 @@ flow:
   registration-confirm-address:
     condition: ShowProviderResponseServiceAddressConfirmationScreen
     onPostAction: SaveValidatedProviderResponseServiceAddress
+    afterSaveAction: SetProviderCounty
     nextScreens:
       - name: registration-mailing-address
         condition: ProviderIsRegistering

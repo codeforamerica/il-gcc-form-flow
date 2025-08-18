@@ -145,7 +145,7 @@ inputFields:
   partnerSignedName: PARTNER_SIGNATURE
   partnerSignedAt: PARTNER_SIGNATURE_DATE
   receivedTimestamp: RECEIVED_TIMESTAMP
-
+  providerResponseAddressCounty: PROVIDER_ADDRESS_COUNTY
   providerResponseProviderNumber: PROVIDER_ID_NUMBER
   providerResponse: PROVIDER_RESPONSE
   providerResponseFirstName: PROVIDER_NAME_FIRST
@@ -278,6 +278,7 @@ subflowInfo:
 
       applicantEmployerTravelTimeHours: APPLICANT_EMPLOYER_TRAVEL_TIME_HOURS
       applicantEmployerTravelTimeMins: APPLICANT_EMPLOYER_TRAVEL_TIME_MINS
+      applicantEmployerWorkHoursVaryExplanation: APPLICANT_EMPLOYER_WORK_HOURS_VARY_EXPLANATION
       activitiesJobStart: APPLICANT_EMPLOYER_START_DATE
   parentPartnerJobs:
     totalIterations: 4
@@ -320,6 +321,7 @@ subflowInfo:
 
       partnerEmployerTravelTimeHours: PARTNER_EMPLOYER_TRAVEL_TIME_HOURS
       partnerEmployerTravelTimeMins: PARTNER_EMPLOYER_TRAVEL_TIME_MINS
+      partnerEmployerWorkHoursVaryExplanation: PARTNER_EMPLOYER_WORK_HOURS_VARY_EXPLANATION
       activitiesPartnerJobStart: PARTNER_EMPLOYER_START_DATE
   providerHouseholdMembers:
     totalIterations: 5

@@ -1,6 +1,6 @@
 <th:block th:with="childName=${relatedSubflowIteration.get('childFirstName')},
                    hasProviders=${submission.getInputData().containsKey('providers')},
-                   showNoProviderOption=${submission.getInputData().getOrDefault('choseProviderForEveryChildInNeedOfCare', 'false').equals('false')},
+                   showNoProviderOption=${submission.getInputData().getOrDefault('choseProviderForEveryChildInNeedOfCare', '').equals('false')},
                    hasMoreThanOneChildcareOption=${hasProviders && (submission.getInputData().get('providers').size() > 1 || showNoProviderOption)},
                    providersList=${submission.getInputData().get('providers')}">
   <th:block
@@ -36,5 +36,4 @@
       </th:block>
     </th:block>
   </th:block>
-</th:block>
 </th:block>

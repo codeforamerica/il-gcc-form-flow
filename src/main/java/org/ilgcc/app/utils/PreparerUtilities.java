@@ -85,4 +85,6 @@ public class PreparerUtilities {
 
     return totalFamilyMembers;
   }
+
+  public static final String WORK_HOURS_VARY_EXPLANATION = "Work schedule varies";
 }
