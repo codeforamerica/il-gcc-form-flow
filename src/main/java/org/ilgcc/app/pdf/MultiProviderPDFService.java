@@ -3,7 +3,7 @@ package org.ilgcc.app.pdf;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForAdditionalProviderPDF;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
-import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
+import static org.ilgcc.app.utils.SubmissionUtilities.getCCAPStartDateForProvider;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -17,11 +17,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +34,7 @@ import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
-import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
-import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,11 +137,12 @@ public class MultiProviderPDFService {
 
                 Optional<Submission> providerSubmissionOptional = Optional.empty();
 
-                if (currentProvider.containsKey("providerResponseSubmissionId") || currentProvider.getOrDefault("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name()).equals(SubmissionStatus.INACTIVE.name())) {
-                    UUID providerUUID = currentProvider.getOrDefault("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name()).equals(SubmissionStatus.INACTIVE.name()) ? UUID.fromString(currentProvider.get("uuid").toString()) : UUID.fromString(currentProvider.get(
-                            "providerResponseSubmissionId").toString());
-                    providerSubmissionOptional =
-                            submissionRepositoryService.findById(providerUUID);
+                if (currentProvider.containsKey("providerResponseSubmissionId")) {
+                    UUID providerUUID = UUID.fromString(currentProvider.get("providerResponseSubmissionId").toString());
+                    providerSubmissionOptional = submissionRepositoryService.findById(providerUUID);
+                } else if (SubmissionStatus.INACTIVE.name().equals(currentProvider.get("providerApplicationResponseStatus"))) {
+                    UUID providerUUID = UUID.fromString(currentProvider.get("uuid").toString());
+                    providerSubmissionOptional = submissionRepositoryService.findById(providerUUID);
                 }
 
                 if (providerSubmissionOptional.isPresent()) {
@@ -232,21 +229,5 @@ public class MultiProviderPDFService {
         providerSubmissionFields.putAll(providerSSNPreparerHelper.prepareSubmissionFields(registeringProviderInputData));
 
         return providerSubmissionFields;
-    }
-
-
-    private String providerSignatureDate(OffsetDateTime submittedAt) {
-        if (submittedAt != null) {
-            Optional<LocalDate> providerSignatureDate = Optional.of(LocalDate.from(submittedAt));
-            return formatToStringFromLocalDate(providerSignatureDate);
-        }
-        return "";
-    }
-    private String getCCAPStartDateForProvider(Submission providerSubmission, Submission familySubmission) {
-        Map<String, List<Map<String, Object>>> providerSchedules = SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(
-            familySubmission.getInputData());
-        List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerSubmission.getInputData().get("currentProviderUuid"), Collections.emptyList());
-        String earliestCCAPDateForCurrentProvider = DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
-        return providerSubmission.getInputData().getOrDefault("providerCareStartDate", "").toString().isEmpty() ? earliestCCAPDateForCurrentProvider : providerSubmission.getInputData().getOrDefault("providerCareStartDate", "").toString();
     }
 }

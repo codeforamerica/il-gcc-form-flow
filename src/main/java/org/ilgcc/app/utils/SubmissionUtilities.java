@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -416,5 +417,16 @@ public class SubmissionUtilities {
     public static boolean isMultiProviderApplication(Submission familySubmission) {
         return !isPreMultiProviderApplicationWithSingleProvider(familySubmission) &&
                 !allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData());
+    }
+
+    public static String getCCAPStartDateForProvider(Submission providerSubmission, Submission familySubmission) {
+        if (providerSubmission.getInputData().containsKey("providerCareStartDate")) {
+            return providerSubmission.getInputData().get("providerCareStartDate").toString();
+        } else {
+            Map<String, List<Map<String, Object>>> providerSchedules = SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(
+                    familySubmission.getInputData());
+            List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerSubmission.getInputData().get("currentProviderUuid"), Collections.emptyList());
+            return DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
+        }
     }
 }
