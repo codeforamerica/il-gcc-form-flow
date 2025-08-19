@@ -177,6 +177,10 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
         testPage.enter("adultDependentLastName", "dolt");
         testPage.selectFromDropdown("adultDependentRelationship", getEnMessage("general.relationship-option.step-parent"));
         testPage.clickContinue();
+        // Assertion with  aria-label for the newly added adult
+        assertThat(testPage.findElementsByClass("subflow-delete").get(0).getAccessibleName())
+                .isEqualTo("Remove ada dolt");
+
         // delete-person
         testPage.clickLink(getEnMessage("general.remove"));
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("delete-confirmation.title"));
