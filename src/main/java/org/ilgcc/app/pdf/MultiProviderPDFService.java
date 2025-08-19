@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +36,11 @@ import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
+import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -137,8 +141,8 @@ public class MultiProviderPDFService {
 
                 Optional<Submission> providerSubmissionOptional = Optional.empty();
 
-                if (currentProvider.containsKey("providerResponseSubmissionId")) {
-                    UUID providerUUID = UUID.fromString(currentProvider.get(
+                if (currentProvider.containsKey("providerResponseSubmissionId") || currentProvider.getOrDefault("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name()).equals(SubmissionStatus.INACTIVE.name())) {
+                    UUID providerUUID = currentProvider.getOrDefault("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name()).equals(SubmissionStatus.INACTIVE.name()) ? UUID.fromString(currentProvider.get("uuid").toString()) : UUID.fromString(currentProvider.get(
                             "providerResponseSubmissionId").toString());
                     providerSubmissionOptional =
                             submissionRepositoryService.findById(providerUUID);
@@ -154,11 +158,12 @@ public class MultiProviderPDFService {
                                     providerSubmission.getInputData()));
                     submissionFields.putAll(
                             ProviderSubmissionFieldPreparerService.setProviderSignatureAndDate(providerSubmissionOptional.get()));
+                    submissionFields.put("childcareStartDate", new SingleField("childcareStartDate", getCCAPStartDateForProvider(providerSubmission, familySubmission), null));
                 } else {
                     submissionFields.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             currentProvider));
                 }
-//                TODO: Update childCareStartDate and add to the additional providers pdf fields.
+
                 String parentFirstName = (String) familySubmission.getInputData().getOrDefault("parentFirstName", "");
                 String parentLastName = (String) familySubmission.getInputData().getOrDefault("parentLastName", "");
                 submissionFields.put("parentFullName",
@@ -237,5 +242,11 @@ public class MultiProviderPDFService {
         }
         return "";
     }
-
+    private String getCCAPStartDateForProvider(Submission providerSubmission, Submission familySubmission) {
+        Map<String, List<Map<String, Object>>> providerSchedules = SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(
+            familySubmission.getInputData());
+        List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerSubmission.getInputData().get("currentProviderUuid"), Collections.emptyList());
+        String earliestCCAPDateForCurrentProvider = DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
+        return providerSubmission.getInputData().getOrDefault("providerCareStartDate", "").toString().isEmpty() ? earliestCCAPDateForCurrentProvider : providerSubmission.getInputData().getOrDefault("providerCareStartDate", "").toString();
+    }
 }
