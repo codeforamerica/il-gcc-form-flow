@@ -7,9 +7,13 @@ import org.ilgcc.app.utils.enums.ProviderType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderIsLicenseExemptChildCareCenter implements Condition {
+public class ProviderShouldNotSeeConvictionsScreen implements Condition {
 
-    final static List<String> providerTypesRequired = List.of(ProviderType.LICENSE_EXEMPT_CHILD_CARE_CENTER.name());
+    final static List<String> providerTypesRequired = List.of(
+            ProviderType.LICENSED_DAY_CARE_CENTER.name(),
+            ProviderType.LICENSED_DAY_CARE_HOME.name(),
+            ProviderType.LICENSED_GROUP_CHILD_CARE_HOME.name(),
+            ProviderType.LICENSE_EXEMPT_CHILD_CARE_CENTER.name());
 
 
     @Override
