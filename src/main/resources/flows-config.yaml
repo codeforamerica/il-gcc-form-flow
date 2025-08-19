@@ -31,19 +31,10 @@ flow:
     condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
       - name: parent-info-intro
-  onboarding-county:
-    nextScreens:
-      - name: onboarding-chosen-provider
-  onboarding-zipcode:
-    crossFieldValidationAction: ValidateZipCode
-    nextScreens:
-      - name: onboarding-chosen-provider
-        condition: HasSupportedZipCode
-      - name: pilot-offboard
   onboarding-language-pref:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
-      - name: onboarding-county
+      - name: onboarding-chosen-provider
   parent-info-intro:
     nextScreens:
       - name: parent-info-basic-1
@@ -59,6 +50,7 @@ flow:
     nextScreens:
       - name: parent-home-address
   parent-home-address:
+    crossFieldValidationAction: ValidateHomeAddressZipCode
     onPostAction: ClearHomeAddressWhenExperiencingHomelessnessIsSelected
     nextScreens:
       - name: parent-no-permanent-address
@@ -78,7 +70,17 @@ flow:
     condition: ShowParentMailingAddressConfirmationScreen
     onPostAction: SaveValidatedParentMailingAddress
     nextScreens:
+      - name: parent-county
+  parent-county:
+    condition: DoesNotHaveValidHomeAddressZipCode
+    nextScreens:
       - name: parent-comm-preference
+  parent-zipcode:
+    crossFieldValidationAction: ValidateZipCode
+    nextScreens:
+      - name: parent-comm-preference
+        condition: HasSupportedZipCode
+      - name: pilot-offboard
   parent-comm-preference:
     beforeDisplayAction: SetOrganizationIdAndCCRRName
     nextScreens:
