@@ -40,11 +40,13 @@
                               <li class="text--small spacing-above-15 spacing-below-25 spacing-right-25">
                                 <a th:href="'/flow/' + ${flow} + '/providers-type/' + ${provider.uuid} + '/edit'"
                                    th:text="#{general.edit}"
-                                   class="subflow-delete padding-right-25"
+                                   class="subflow-edit padding-right-25"
+                                   th:attr="title=|#{general.edit} ${provider.familyIntendedProviderName}|,aria-label=|#{general.edit} ${provider.familyIntendedProviderName}|,"
                                    th:id="'edit-iteration-' + ${provider.uuid}"></a>
                                 <a th:href="'/flow/' + ${flow} + '/providers/' + ${provider.uuid} + '/deleteConfirmation'"
                                    th:text="#{general.remove}"
                                    class="subflow-delete padding-left-25"
+                                   th:attr="title=|#{general.remove} ${provider.familyIntendedProviderName}|,aria-label=|#{general.remove} ${provider.familyIntendedProviderName}|,"
                                    th:id="'delete-iteration-' + ${provider.uuid}"></a>
                               </li>
                             </ul>
