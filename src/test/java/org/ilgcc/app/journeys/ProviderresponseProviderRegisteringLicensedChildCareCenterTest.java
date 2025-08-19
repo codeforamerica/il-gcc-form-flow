@@ -135,10 +135,6 @@ public class ProviderresponseProviderRegisteringLicensedChildCareCenterTest exte
 
         // Skips registration-checks-trainings-notice
 
-        // registration-convictions
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickNo();
-
         // Skips registration-convictions-info and registration screens
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
         testPage.clickContinue();

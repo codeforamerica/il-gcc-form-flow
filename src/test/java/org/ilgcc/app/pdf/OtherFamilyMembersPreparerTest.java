@@ -70,8 +70,8 @@ public class OtherFamilyMembersPreparerTest {
         assertThat(result.get("familyMemberFirstName_5")).isEqualTo(new SingleField("familyMemberFirstName", "First A", 5));
         assertThat(result.get("familyMemberLastName_5")).isEqualTo(new SingleField("familyMemberLastName", "Adult-Dependent", 5));
 
-        assertThat(result.get("familyMemberFirstName_6")).isEqualTo(new SingleField("familyMemberFirstName", "Second A", 6));
-        assertThat(result.get("familyMemberLastName_6")).isEqualTo(new SingleField("familyMemberLastName", "Adult-Dependent", 6));
-
+        // We only map the first 5 family members, so #6 is null
+        assertThat(result.get("familyMemberFirstName_6")).isNull();
+        assertThat(result.get("familyMemberLastName_6")).isNull();
     }
 }
