@@ -312,12 +312,16 @@ public class CCMSSubmissionPayloadTransactionJob {
             for (String providerId : providersWithSchedules) {
                 Map<String, Object> providerObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
                         providerId);
-                String providerResponseSubmissionId = providerObject.get("providerResponseSubmissionId").toString();
-                Optional<Submission> providerSubmission = submissionRepositoryService.findById(
-                        UUID.fromString(providerResponseSubmissionId));
-                if (providerSubmission.isPresent() && providerSubmission.get().getInputData().getOrDefault(
-                        "providerResponseAgreeToCare", "false").equals("true")) {
-                    sendFamilyApplicationTransmittedProviderConfirmationEmail.send(providerSubmission.get());
+
+                if (providerObject.containsKey(("providerResponseSubmissionId"))) {
+                    // Only send the provider email if the provider responded
+                    String providerResponseSubmissionId = providerObject.get("providerResponseSubmissionId").toString();
+                    Optional<Submission> providerSubmission = submissionRepositoryService.findById(
+                            UUID.fromString(providerResponseSubmissionId));
+                    if (providerSubmission.isPresent() && providerSubmission.get().getInputData().getOrDefault(
+                            "providerResponseAgreeToCare", "false").equals("true")) {
+                        sendFamilyApplicationTransmittedProviderConfirmationEmail.send(providerSubmission.get());
+                    }
                 }
             }
         }
