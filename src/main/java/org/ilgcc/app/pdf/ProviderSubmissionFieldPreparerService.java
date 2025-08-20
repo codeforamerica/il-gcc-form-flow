@@ -83,7 +83,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                     "applicantMultipleProviders",
                     new SingleField("applicantMultipleProviders", String.valueOf(hasMultipleProviders), null));
 
-            String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
+            String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().getFirst();
 
             if (null != providerUuid) {
                 Map<String, Object> firstProviderObject = new HashMap<>();
@@ -107,30 +107,40 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                             needChildcareChildrenPreparer.prepareChildCareSchedule(
                                     listOfChildcareSchedulesForCurrentProvider.get(j),
                                     j + 1));
+                    results.putAll(needChildcareChildrenPreparer.prepareChildCareSchedule(
+                            listOfChildcareSchedulesForCurrentProvider.get(j), j + 1));
                 }
 
                 Optional<Submission> providerSubmissionOptional = Optional.empty();
 
                 if (firstProviderObject.containsKey("providerResponseSubmissionId")) {
-                    UUID providerUUID = UUID.fromString(firstProviderObject.get(
-                            "providerResponseSubmissionId").toString());
-                    providerSubmissionOptional =
-                            submissionRepositoryService.findById(providerUUID);
+                    UUID providerUUID = UUID.fromString(firstProviderObject.get("providerResponseSubmissionId").toString());
+                    providerSubmissionOptional = submissionRepositoryService.findById(providerUUID);
                 }
 
                 if (providerSubmissionOptional.isPresent()) {
                     Submission providerSubmission = providerSubmissionOptional.get();
+
                     if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
                         results.putAll(mapProviderRegistrationData(providerSubmission.getInputData()));
                     }
-                    results.putAll(
-                            providerApplicationPreparerHelper.prepareSubmissionFields(
-                                    providerSubmission.getInputData()));
+
+                    results.putAll(providerApplicationPreparerHelper.prepareSubmissionFields(providerSubmission.getInputData()));
 
                     results.putAll(setProviderSignatureAndDate(providerSubmissionOptional.get()));
+
+                    // If we are an existing or new provider, and we have responded, we can get the earliest start date for this
+                    // provider and set it as the start date for the main pdf
+                    String earliestStateDateForProvider = ProviderSubmissionUtilities.getCCAPStartDateForProvider(providerSubmission, familySubmission);
+                    results.put("childcareStartDate", new SingleField("childcareStartDate", earliestStateDateForProvider, null));
                 } else {
                     results.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             firstProviderObject));
+
+                    // If we are a provider who failed to respond, we can get the earliest start date for this
+                    // provider and set it as the start date for the main pdf
+                    String earliestStateDateForProvider = ProviderSubmissionUtilities.getCCAPStartDateForProvider(providerUuid, familySubmission);
+                    results.put("childcareStartDate", new SingleField("childcareStartDate", earliestStateDateForProvider, null));
                 }
             }
 
