@@ -302,7 +302,7 @@
           });
 
           removeLink.onclick = destroyerCreator(file);
-          removeLink.innerText = [[#{general.cancel}]].toLowerCase();
+            removeLink.innerText = ([[#{general.cancel}]] + ' ' + file.name).toLowerCase();
           thumbnail.classList.add("hidden");
           window['isUploadComplete' + [[${inputName}]]] = false;
           if (file.type.includes('heic')) {
@@ -383,7 +383,7 @@
               removeFileFromDropzone(file, id);
             }
           }
-          removeLink.innerText = [[#{general.delete}]].toLowerCase();
+            removeLink.innerText = ([[#{general.delete}]] + ' ' + fileName).toLowerCase();
           thumbnail.classList.remove("hidden");
           progressBar.classList.add("hidden");
           $('#submit-my-documents-' + [[${inputName}]]).removeClass("disabled");
@@ -458,7 +458,7 @@
 
         var removeLink = file.previewElement.getElementsByClassName("dz-remove")[0];
         removeLink.onclick = removeCreator(file);
-        removeLink.innerText = [[#{general.remove}]].toLowerCase();
+          removeLink.innerText = ([[#{general.remove}]] + ' ' + file.name).toLowerCase();
         removeLink.classList.add("text--red");
 
         var filePreview = file.previewElement.getElementsByClassName("thumbnail")[0]
