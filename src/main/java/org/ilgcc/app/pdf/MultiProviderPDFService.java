@@ -3,6 +3,7 @@ package org.ilgcc.app.pdf;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForAdditionalProviderPDF;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.MAX_CCAP_CHILDREN;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
@@ -21,7 +22,6 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +36,7 @@ import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
-import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
-import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,6 +130,10 @@ public class MultiProviderPDFService {
                         mergedChildrenAndSchedules.get(providerSchedulesByUuid.get(i));
 
                 for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
+                    if (j == MAX_CCAP_CHILDREN) {
+                        // Only want to map the first 4
+                        break;
+                    }
 
                     submissionFields.putAll(
                             needChildcareChildrenPreparer.prepareChildCareSchedule(

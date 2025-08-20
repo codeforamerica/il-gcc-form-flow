@@ -1,6 +1,7 @@
 package org.ilgcc.app.pdf;
 
 import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.SubmissionUtilities.MAX_FAMILY_MEMBERS;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
@@ -15,8 +16,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
-
-    private static final int MAX_FAMILY_MEMBERS = 5;
 
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {

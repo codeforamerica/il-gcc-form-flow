@@ -1,6 +1,7 @@
 package org.ilgcc.app.pdf;
 
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
+import static org.ilgcc.app.utils.SubmissionUtilities.MAX_CCAP_CHILDREN;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 import static org.ilgcc.app.utils.SubmissionUtilities.getProviderSubmissionId;
 
@@ -97,6 +98,11 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                         mergedChildrenAndSchedules.get(providerUuid);
 
                 for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
+                    if (j == MAX_CCAP_CHILDREN) {
+                        // Only want to map the first 4
+                        break;
+                    }
+
                     results.putAll(
                             needChildcareChildrenPreparer.prepareChildCareSchedule(
                                     listOfChildcareSchedulesForCurrentProvider.get(j),
