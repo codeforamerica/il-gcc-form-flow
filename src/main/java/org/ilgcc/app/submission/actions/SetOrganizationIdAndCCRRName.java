@@ -49,8 +49,8 @@ public class SetOrganizationIdAndCCRRName implements Action {
                 saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
                 return;
             } else {
-                log.info(String.format("Submission: %s has a zipCode (%s) without a matching organization id", submission.getId(),
-                        unvalidatedZip));
+                log.info("Submission: {} has a home address zipCode ({}) without a matching organization id. Falling back to application county or zip code.",
+                        submission.getId(), unvalidatedZip);
             }
         }
 
@@ -59,12 +59,12 @@ public class SetOrganizationIdAndCCRRName implements Action {
             Optional<ResourceOrganization> organization = applicationRouterService.getOrganizationByCountyName(applicationCounty);
 
             if (organization.isPresent()) {
+                log.info("Submission: {} has a countyName {} with a matching organization id.", submission.getId(), applicationCounty);
                 saveOrganizationIdAndNameAndPhoneNumber(submission, organization.get());
                 return;
             } else {
-                log.info(
-                        String.format("Submission: %s has a countyName %s without a matching organization id", submission.getId(),
-                                applicationCounty));
+                log.info("Submission: {} has a countyName {} without a matching organization id. Falling back to application zipcode.",
+                        submission.getId(), applicationCounty);
             }
         }
 
@@ -72,13 +72,14 @@ public class SetOrganizationIdAndCCRRName implements Action {
             final String applicationZipCode = (String) submission.getInputData().get(APPLICATION_ZIPCODE_INPUT_NAME);
             final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(
                     applicationZipCode);
+            log.info("Submission: {} has an application zipcode {} with a matching organization id.", submission.getId(), applicationZipCode);
             if (org.isPresent()) {
                 saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
                 return;
             }
         }
 
-        log.info("Could not assign a caseload number to this application");
+        log.info("Could not assign a caseload number to the application with submission ID: {}", submission.getId());
     }
 
     private void saveOrganizationIdAndNameAndPhoneNumber(Submission submission, ResourceOrganization org) {
@@ -94,7 +95,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
             submission.getInputData().put(APPLICANT_COUNTY_INPUT_NAME, county.get().getCounty());
             submissionRepositoryService.save(submission);
         } else {
-            log.info(String.format("could not assign a zip code to this application: %s", submission.getId()));
+            log.info(String.format("Could not assign a county to to the application with submission ID: %s, using the provided home address zipcode: %s", submission.getId(), zipCode));
         }
 
     }

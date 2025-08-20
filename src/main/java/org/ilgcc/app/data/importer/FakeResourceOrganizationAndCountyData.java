@@ -91,7 +91,6 @@ public class FakeResourceOrganizationAndCountyData implements InitializingBean {
             ACTIVE_OUT_OF_SCOPE_COUNTY.setZipCode(new BigInteger("60006"));
             ACTIVE_OUT_OF_SCOPE_COUNTY.setCaseloadCode("HH");
             countyRepository.save(ACTIVE_OUT_OF_SCOPE_COUNTY);
-            log.info("Finished creating fake resource org and zipcode/county data. Actities are {}. Active counties are {}.", resourceOrganizationRepository.findAll(), countyRepository.findAll());
         } catch (NumberFormatException e) {
             throw new RuntimeException(e);
         }

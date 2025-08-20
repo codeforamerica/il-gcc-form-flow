@@ -78,8 +78,6 @@ flow:
     crossFieldValidationAction: ValidateZipCode
     nextScreens:
       - name: parent-comm-preference
-        condition: HasSupportedZipCodeAndNewSdaCaseloadCodesDisabled
-      - name: pilot-offboard
   parent-comm-preference:
     beforeDisplayAction: SetOrganizationIdAndCCRRName
     nextScreens:
