@@ -4,16 +4,17 @@
                         inputData.get('providerResponseProviderNumber') == null && 
                         inputData.get('providerIdentityCheckSSN') == null &&
                         inputData.get('providerTaxIdEIN') == null},
-                   declinedCare=${inputData.get('providerResponseAgreeToCare') != null && inputData.get('providerResponseAgreeToCare').equals('false')}">
+                   declinedCare=${inputData.get('providerResponseAgreeToCare') != null && inputData.get('providerResponseAgreeToCare').equals('false')},
+                   showDenied=${declinedCare or existingProviderCannotBeIdentified}">
     <th:block th:replace="~{fragments/screens/submit-confirmation ::
       screen(
-        title=${existingProviderCannotBeIdentified || declinedCare ? 
+        title=${showDenied ?
             #messages.msg('submit-confirmation.title') :
             (isExistingProvider ? 
                 #messages.msg('submit-confirmation.title') :
                 #messages.msg('submit-confirmation.new-provider-registration.title')
             )},
-        header=${existingProviderCannotBeIdentified || declinedCare ? 
+        header=${showDenied ?
             #messages.msg('submit-confirmation.denied-care-or-unidentifiable.header') : 
             (isExistingProvider ? 
                 #messages.msg('submit-confirmation.existing-provider.header') : 
