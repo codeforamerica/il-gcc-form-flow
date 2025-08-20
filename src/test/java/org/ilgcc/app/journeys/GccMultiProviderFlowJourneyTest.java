@@ -637,7 +637,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
 
         // Adding aria-label assertion:
-        assertThat(testPage.findElementsByClass("subflow-delete").get(1).getAccessibleName())
+        assertThat(testPage.findElementsByClass("subflow-delete").get(0).getAccessibleName())
                 .isEqualTo("Remove ACME Daycare");
 
         //delete-provider -- don't actually delete!
@@ -652,7 +652,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //delete-provider -- actually delete!
         assertThat(testPage.findElementsByClass("spacing-below-0").get(4).getText()).isEqualTo("Nope Test");
-        assertThat(testPage.findElementsByClass("subflow-delete").get(1).getAccessibleName()).isEqualTo("remove Nope Test");
+        assertThat(testPage.findElementsByClass("subflow-delete").get(1).getAccessibleName()).isEqualTo("Remove Nope Test");
         testPage.findElementsByClass("subflow-delete").get(0).click();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("delete-confirmation.title"));
