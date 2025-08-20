@@ -9,7 +9,6 @@ import formflow.library.address_validation.ValidatedAddress;
 import formflow.library.data.FormSubmission;
 import java.io.IOException;
 import java.util.Map;
-import org.ilgcc.app.submission.router.ApplicationRoutingServiceImpl;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -30,8 +29,6 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
     private final static String COUNTY_LEE_LABEL = "LEE";
     @MockitoBean
     AddressValidationService addressValidationService;
-    @MockitoBean
-    ApplicationRoutingServiceImpl applicationRoutingService;
 
     @Test
     void whenNoHomeAddressAndHasMailingAddress() throws SmartyException, IOException, InterruptedException {

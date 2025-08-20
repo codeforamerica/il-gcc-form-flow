@@ -50,7 +50,6 @@ flow:
     nextScreens:
       - name: parent-home-address
   parent-home-address:
-    crossFieldValidationAction: ValidateHomeAddressZipCode
     onPostAction: ClearHomeAddressWhenExperiencingHomelessnessIsSelected
     nextScreens:
       - name: parent-no-permanent-address
