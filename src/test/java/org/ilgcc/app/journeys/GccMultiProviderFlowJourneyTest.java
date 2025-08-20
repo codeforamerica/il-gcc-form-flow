@@ -248,6 +248,12 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //children-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+
+        // ARIA-LABEL ASSERTION FOR "child mcchild"
+        List<org.openqa.selenium.WebElement> removeLinks = testPage.findElementsByClass("subflow-delete");
+        boolean foundCorrectAriaLabel = removeLinks.stream()
+                .anyMatch(link -> "Remove child mcchild".equals(link.getAttribute("aria-label")));
+        assertThat(foundCorrectAriaLabel).isTrue();
         testPage.clickButton(getEnMessage("children-add.thats-all"));
 
         //providers-intro
