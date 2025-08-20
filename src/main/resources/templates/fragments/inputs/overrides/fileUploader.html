@@ -265,7 +265,7 @@
                     <div class="display-flex body-gray file-details">
                         <div class="dz-size" data-dz-size></div>
                         <span class="file-details-delimiter" aria-hidden="true">•</span>
-                        <a class="dz-remove" href="javascript:undefined;" ></a>
+                         <a class="dz-remove" href="javascript:undefined;" aria-label="" ></a>
                     </div>
                 </div>
               </div>
@@ -303,6 +303,7 @@
 
           removeLink.onclick = destroyerCreator(file);
           removeLink.innerText = [[#{general.cancel}]].toLowerCase();
+          removeLink.setAttribute('aria-label', 'Remove ' + file.name);
           thumbnail.classList.add("hidden");
           window['isUploadComplete' + [[${inputName}]]] = false;
           if (file.type.includes('heic')) {
@@ -384,6 +385,7 @@
             }
           }
           removeLink.innerText = [[#{general.delete}]].toLowerCase();
+          removeLink.setAttribute('aria-label', 'Delete ' + file.name);
           thumbnail.classList.remove("hidden");
           progressBar.classList.add("hidden");
           $('#submit-my-documents-' + [[${inputName}]]).removeClass("disabled");
@@ -459,8 +461,8 @@
         var removeLink = file.previewElement.getElementsByClassName("dz-remove")[0];
         removeLink.onclick = removeCreator(file);
         removeLink.innerText = [[#{general.remove}]].toLowerCase();
+        removeLink.setAttribute('aria-label', 'Remove ' + file.name);
         removeLink.classList.add("text--red");
-
         var filePreview = file.previewElement.getElementsByClassName("thumbnail")[0]
         filePreview.innerHTML = `<svg class=\"margin-auto\" style=\"width: ${thumbnailWidth}px; height: ${thumbnailHeight}px;\" width=\"40\" height=\"47\" viewBox=\"0 0 40 47\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n`
             +
