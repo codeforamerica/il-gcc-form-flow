@@ -351,6 +351,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //providers-add
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.findElementsByClass("subflow-edit").get(0).getAccessibleName()).isEqualTo("edit info ACME Daycare");
+        assertThat(testPage.findElementsByClass("subflow-edit").get(1).getAccessibleName()).isEqualTo("edit info Nope Test");
         testPage.clickButton(getEnMessage("providers-add.button.that-is-all"));
 
         //providers-info-confirm
@@ -644,7 +646,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //delete-provider -- actually delete!
         assertThat(testPage.findElementsByClass("spacing-below-0").get(4).getText()).isEqualTo("Nope Test");
-        testPage.findElementsByClass("subflow-delete").get(1).click();
+        assertThat(testPage.findElementsByClass("subflow-delete").get(1).getAccessibleName()).isEqualTo("remove Nope Test");
+        testPage.findElementsByClass("subflow-delete").get(0).click();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("delete-confirmation.title"));
         testPage.clickButton(getEnMessage("delete-confirmation.yes"));
