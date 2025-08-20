@@ -275,7 +275,6 @@ flow:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
-    beforeSaveAction: SaveCCAPStartDate
     nextScreens:
       - name: schedules-same
         condition: DisplaySchedulesSameScreen
@@ -293,7 +292,7 @@ flow:
     nextScreens:
       - name: schedules-review
   schedules-review:
-    beforeDisplayAction: LocalizeChildcareSchedules
+    beforeDisplayAction: LocalizeChildcareSchedulesAndSaveEarliestCCAPStartDate
     condition: EnableMultipleProviders
     nextScreens:
       - name: unearned-income-intro
