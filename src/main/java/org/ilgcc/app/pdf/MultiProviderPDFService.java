@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +36,11 @@ import org.ilgcc.app.pdf.helpers.ProviderLanguagesPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderRegistrationPreparer;
 import org.ilgcc.app.pdf.helpers.ProviderSSNPreparerHelper;
 import org.ilgcc.app.pdf.helpers.ProviderTypePreparerHelper;
+import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.ilgcc.app.utils.SubmissionUtilities;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -138,12 +142,12 @@ public class MultiProviderPDFService {
                 Optional<Submission> providerSubmissionOptional = Optional.empty();
 
                 if (currentProvider.containsKey("providerResponseSubmissionId")) {
-                    UUID providerUUID = UUID.fromString(currentProvider.get(
-                            "providerResponseSubmissionId").toString());
-                    providerSubmissionOptional =
-                            submissionRepositoryService.findById(providerUUID);
+                    UUID providerUUID = UUID.fromString(currentProvider.get("providerResponseSubmissionId").toString());
+                    providerSubmissionOptional = submissionRepositoryService.findById(providerUUID);
+                } else if (SubmissionStatus.INACTIVE.name().equals(currentProvider.get("providerApplicationResponseStatus"))) {
+                    UUID providerUUID = UUID.fromString(currentProvider.get("uuid").toString());
+                    providerSubmissionOptional = submissionRepositoryService.findById(providerUUID);
                 }
-
                 if (providerSubmissionOptional.isPresent()) {
                     Submission providerSubmission = providerSubmissionOptional.get();
                     if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
@@ -154,6 +158,7 @@ public class MultiProviderPDFService {
                                     providerSubmission.getInputData()));
                     submissionFields.putAll(
                             ProviderSubmissionFieldPreparerService.setProviderSignatureAndDate(providerSubmissionOptional.get()));
+                    submissionFields.put("childcareStartDate", new SingleField("childcareStartDate", ProviderSubmissionUtilities.getCCAPStartDateForProvider(providerSubmission, familySubmission), null));
                 } else {
                     submissionFields.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             currentProvider));
@@ -237,5 +242,4 @@ public class MultiProviderPDFService {
         }
         return "";
     }
-
 }
