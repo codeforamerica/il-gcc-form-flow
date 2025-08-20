@@ -141,13 +141,13 @@ public class MultiProviderPDFService {
 
                 Optional<Submission> providerSubmissionOptional = Optional.empty();
 
-                if (currentProvider.containsKey("providerResponseSubmissionId") || currentProvider.getOrDefault("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name()).equals(SubmissionStatus.INACTIVE.name())) {
-                    UUID providerUUID = currentProvider.getOrDefault("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name()).equals(SubmissionStatus.INACTIVE.name()) ? UUID.fromString(currentProvider.get("uuid").toString()) : UUID.fromString(currentProvider.get(
-                            "providerResponseSubmissionId").toString());
-                    providerSubmissionOptional =
-                            submissionRepositoryService.findById(providerUUID);
+                if (currentProvider.containsKey("providerResponseSubmissionId")) {
+                    UUID providerUUID = UUID.fromString(currentProvider.get("providerResponseSubmissionId").toString());
+                    providerSubmissionOptional = submissionRepositoryService.findById(providerUUID);
+                } else if (SubmissionStatus.INACTIVE.name().equals(currentProvider.get("providerApplicationResponseStatus"))) {
+                    UUID providerUUID = UUID.fromString(currentProvider.get("uuid").toString());
+                    providerSubmissionOptional = submissionRepositoryService.findById(providerUUID);
                 }
-
                 if (providerSubmissionOptional.isPresent()) {
                     Submission providerSubmission = providerSubmissionOptional.get();
                     if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
@@ -158,7 +158,7 @@ public class MultiProviderPDFService {
                                     providerSubmission.getInputData()));
                     submissionFields.putAll(
                             ProviderSubmissionFieldPreparerService.setProviderSignatureAndDate(providerSubmissionOptional.get()));
-                    submissionFields.put("childcareStartDate", new SingleField("childcareStartDate", getCCAPStartDateForProvider(providerSubmission, familySubmission), null));
+                    submissionFields.put("childcareStartDate", new SingleField("childcareStartDate", ProviderSubmissionUtilities.getCCAPStartDateForProvider(providerSubmission, familySubmission), null));
                 } else {
                     submissionFields.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             currentProvider));
@@ -241,12 +241,5 @@ public class MultiProviderPDFService {
             return formatToStringFromLocalDate(providerSignatureDate);
         }
         return "";
-    }
-    private String getCCAPStartDateForProvider(Submission providerSubmission, Submission familySubmission) {
-        Map<String, List<Map<String, Object>>> providerSchedules = SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(
-            familySubmission.getInputData());
-        List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerSubmission.getInputData().get("currentProviderUuid"), Collections.emptyList());
-        String earliestCCAPDateForCurrentProvider = DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
-        return providerSubmission.getInputData().getOrDefault("providerCareStartDate", "").toString().isEmpty() ? earliestCCAPDateForCurrentProvider : providerSubmission.getInputData().getOrDefault("providerCareStartDate", "").toString();
     }
 }
