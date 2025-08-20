@@ -77,7 +77,7 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
                         provider.getOrDefault("providerName", provider.get("childCareProgramName")).toString();
 
         if (provider.containsKey("providerResponseAgreeToCare")) {
-            if (provider.get("providerResponseAgreeToCare").equals("true")) {
+            if ("true".equals(provider.get("providerResponseAgreeToCare"))) {
                 providerResponses = String.format("%s%s", providerResponses,
                         messageSource.getMessage("email.family-application-transmitted-confirmation-email.li-agreed-to-care",
                                 new Object[]{providerName,
