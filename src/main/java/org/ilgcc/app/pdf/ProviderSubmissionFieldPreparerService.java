@@ -98,6 +98,10 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                         mergedChildrenAndSchedules.get(providerUuid);
 
                 for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
+                    results.putAll(
+                            needChildcareChildrenPreparer.prepareChildCareSchedule(
+                                    listOfChildcareSchedulesForCurrentProvider.get(j),
+                                    j + 1));
                     if (j == MAX_MAPPABLE_CHILDCARE_SCHEDULES) {
                         // Only want to map the first 4
                         break;
@@ -114,8 +118,10 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                 Optional<Submission> providerSubmissionOptional = Optional.empty();
 
                 if (firstProviderObject.containsKey("providerResponseSubmissionId")) {
-                    UUID providerUUID = UUID.fromString(firstProviderObject.get("providerResponseSubmissionId").toString());
-                    providerSubmissionOptional = submissionRepositoryService.findById(providerUUID);
+                    UUID providerUUID = UUID.fromString(firstProviderObject.get(
+                            "providerResponseSubmissionId").toString());
+                    providerSubmissionOptional =
+                            submissionRepositoryService.findById(providerUUID);
                 }
 
                 if (providerSubmissionOptional.isPresent()) {
@@ -124,8 +130,9 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                     if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
                         results.putAll(mapProviderRegistrationData(providerSubmission.getInputData()));
                     }
-
-                    results.putAll(providerApplicationPreparerHelper.prepareSubmissionFields(providerSubmission.getInputData()));
+                    results.putAll(
+                            providerApplicationPreparerHelper.prepareSubmissionFields(
+                                    providerSubmission.getInputData()));
 
                     results.putAll(setProviderSignatureAndDate(providerSubmissionOptional.get()));
 
