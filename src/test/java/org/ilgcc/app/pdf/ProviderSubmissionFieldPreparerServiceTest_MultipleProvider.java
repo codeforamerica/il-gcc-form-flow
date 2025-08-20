@@ -132,7 +132,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
             assertThat(result.get("providerResponse"))
                     .isEqualTo(new SingleField("providerResponse", "No response from provider", null));
 
-            validateChildata(result);
+            validateChildData(result);
         }
 
         @Test
@@ -169,7 +169,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
             assertThat(result.get("providerResponse"))
                     .isEqualTo(null);
 
-            validateChildata(result);
+            validateChildData(result);
         }
 
         @Test
@@ -204,7 +204,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
             assertThat(result.get("providerResponse"))
                     .isEqualTo(new SingleField("providerResponse", "No response from provider", null));
 
-            validateChildata(result);
+            validateChildData(result);
         }
 
         @Test
@@ -239,7 +239,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
             assertThat(result.get("providerResponse"))
                     .isEqualTo(null);
 
-            validateChildata(result);
+            validateChildData(result);
         }
     }
 
@@ -632,7 +632,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
         }
     }
 
-    private void validateChildata(Map<String, SubmissionField> result) {
+    private void validateChildData(Map<String, SubmissionField> result) {
         // Details about the child
         assertThat(result.get("childFirstName_1"))
                 .isEqualTo(new SingleField("childFirstName", "First", 1));

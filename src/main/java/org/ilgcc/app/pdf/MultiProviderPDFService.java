@@ -3,7 +3,7 @@ package org.ilgcc.app.pdf;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForAdditionalProviderPDF;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
-import static org.ilgcc.app.utils.SubmissionUtilities.MAX_CCAP_CHILDREN;
+import static org.ilgcc.app.utils.SubmissionUtilities.MAX_MAPPABLE_CHILDCARE_SCHEDULES;
 import static org.ilgcc.app.utils.SubmissionUtilities.formatToStringFromLocalDate;
 
 import formflow.library.data.Submission;
@@ -130,7 +130,7 @@ public class MultiProviderPDFService {
                         mergedChildrenAndSchedules.get(providerSchedulesByUuid.get(i));
 
                 for (int j = 0; j < listOfChildcareSchedulesForCurrentProvider.size(); j++) {
-                    if (j == MAX_CCAP_CHILDREN) {
+                    if (j == MAX_MAPPABLE_CHILDCARE_SCHEDULES) {
                         // Only want to map the first 4
                         break;
                     }
