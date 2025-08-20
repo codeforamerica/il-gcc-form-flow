@@ -308,19 +308,19 @@ public class CCMSSubmissionPayloadTransactionJob {
                 getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData()).keySet().stream()
                         .filter(id -> !id.equals("NO_PROVIDER")).toList();
 
-        if (!providersWithSchedules.isEmpty()) {
-            for (String providerId : providersWithSchedules) {
-                Map<String, Object> providerObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
-                        providerId);
-                String providerResponseSubmissionId = providerObject.get("providerResponseSubmissionId").toString();
-                Optional<Submission> providerSubmission = submissionRepositoryService.findById(
-                        UUID.fromString(providerResponseSubmissionId));
-                if (providerSubmission.isPresent() && providerSubmission.get().getInputData().getOrDefault(
-                        "providerResponseAgreeToCare", "false").equals("true")) {
-                    sendFamilyApplicationTransmittedProviderConfirmationEmail.send(providerSubmission.get());
-                }
-            }
+if (!providersWithSchedules.isEmpty()) {
+    for (String providerId : providersWithSchedules) {
+        Map<String, Object> providerObject = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
+                providerId);
+        String providerResponseSubmissionId = providerObject.get("providerResponseSubmissionId").toString();
+        Optional<Submission> providerSubmission = submissionRepositoryService.findById(
+                UUID.fromString(providerResponseSubmissionId));
+        if (providerSubmission.isPresent() && providerSubmission.get().getInputData().getOrDefault(
+                "providerResponseAgreeToCare", "false").equals("true")) {
+            sendFamilyApplicationTransmittedProviderConfirmationEmail.send(providerSubmission.get());
         }
+    }
+}
 
         if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
             Optional<Submission> providerSubmission =
