@@ -41,25 +41,6 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("languageRead", "English");
         testPage.selectFromDropdown("languageSpeak", "Español");
         testPage.clickContinue();
-        // onboarding-county
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.selectFromDropdown("applicationCounty", "DEKALB");
-        testPage.clickLink(getEnMessage("onboarding-county.link"));
-
-        // onboarding-zipcode
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-zipcode.title"));
-        testPage.enter("applicationZipCode", "40123234324");
-        testPage.clickContinue();
-
-        assertThat(testPage.hasErrorText(getEnMessage("errors.provide-zip"))).isTrue();
-        testPage.enter("applicationZipCode", "94114");
-        testPage.clickContinue();
-
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("pilot-offboard.title"));
-        testPage.goBack();
-
-        testPage.enter("applicationZipCode", "60015");
-        testPage.clickContinue();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
         testPage.clickYes();

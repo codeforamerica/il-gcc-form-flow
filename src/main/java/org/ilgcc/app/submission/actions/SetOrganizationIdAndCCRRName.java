@@ -102,7 +102,5 @@ public class SetOrganizationIdAndCCRRName implements Action {
     private boolean hasValidValue(Map<String, Object> inputData, String inputKey) {
         return !inputData.getOrDefault(inputKey, "").toString().isBlank();
     }
-
-
 }
 

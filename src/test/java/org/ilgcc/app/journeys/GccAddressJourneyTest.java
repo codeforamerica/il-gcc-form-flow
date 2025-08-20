@@ -75,6 +75,11 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("validated-address").isSelected()).isTrue();
         // this selects the suggested address
         testPage.clickContinue();
+        
+        // parent-county
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-county.title"));
+        testPage.selectFromDropdown("applicationCounty", "DEKALB");
+        testPage.clickContinue();
 
         // parent-comm-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));

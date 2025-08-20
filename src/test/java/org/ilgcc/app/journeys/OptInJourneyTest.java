@@ -84,6 +84,10 @@ public class OptInJourneyTest extends AbstractBasePageTest {
         //parent-confirm-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-address.title"));
         testPage.clickButton("Use this address");
+        //parent-county
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-county.title"));
+        testPage.selectFromDropdown("applicationCounty", "DEKALB");
+        testPage.clickContinue();
         //parent-comm-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
         assertThat(testPage.findElementById("parentContactPreferredCommunicationMethod-mail").getAttribute("checked")).isEqualTo(null);

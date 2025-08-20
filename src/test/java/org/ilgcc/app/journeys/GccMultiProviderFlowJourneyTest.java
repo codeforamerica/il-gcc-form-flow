@@ -31,10 +31,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("languageRead", "English");
         testPage.selectFromDropdown("languageSpeak", "Español");
         testPage.clickContinue();
-        // onboarding-county
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
-        testPage.selectFromDropdown("applicationCounty", "DEKALB");
-        testPage.clickContinue();
 
         // parent-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
@@ -83,6 +79,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         // parent-confirm-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-confirm-address.title"));
         testPage.clickButton(getEnMessage("address-validation.button.use-this-address"));
+
         // parent-comm-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
         testPage.selectRadio("parentContactPreferredCommunicationMethod", "email");
