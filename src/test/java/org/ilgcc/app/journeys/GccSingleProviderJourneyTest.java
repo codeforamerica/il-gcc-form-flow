@@ -12,6 +12,7 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 @Slf4j
 public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
@@ -224,6 +225,7 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
         testPage.enter("childDateOfBirthYear", "2018");
         testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.foster-child"));
         testPage.clickContinue();
+
         //children-info-assistance
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
         testPage.clickYes();
@@ -287,6 +289,11 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
         //children-add (with children listed)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+        // Aria-label accessibility check for child remove links
+        List<WebElement> deletes = testPage.findElementsByClass("subflow-delete");
+        assertThat(deletes).isNotEmpty();
+        assertThat(deletes.get(0).getAccessibleName()).isEqualTo("Remove child mcchild");
+        assertThat(deletes.get(1).getAccessibleName()).isEqualTo("Remove mugully glopklin");
         // Add an incomplete iteration and assert that it is removed
         testPage.clickButton(getEnMessage("children-add.add-button"));
         testPage.enter("childFirstName", "ShouldBe");

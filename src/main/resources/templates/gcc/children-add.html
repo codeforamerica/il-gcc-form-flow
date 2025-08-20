@@ -38,6 +38,7 @@
                                                   <span class="text--small spacing-below-0 spacing-right-25">
                                                     <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/deleteConfirmation'"
                                                        th:text="#{general.remove}"
+                                                       th:attr="aria-label='Remove ' + ${child.childFirstName} + ' ' + ${child.childLastName}"
                                                        class="subflow-delete"
                                                        th:id="'delete-iteration-' + ${child.uuid}"></a>
                                                   </span>
@@ -63,10 +64,11 @@
                                                       <span class="child-name"
                                                             th:text="|${child.childFirstName} ${child.childLastName}|"/>
                                                       <span class="text--small spacing-below-0 spacing-right-25">
-                                                        <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/deleteConfirmation'"
-                                                           th:text="#{general.remove}"
-                                                           class="subflow-delete"
-                                                           th:id="'delete-iteration-' + ${child.uuid}"></a>
+                                                       <a th:href="'/flow/' + ${flow} + '/children/' + ${child.uuid} + '/deleteConfirmation'"
+                                                          th:text="#{general.remove}"
+                                                          th:attr="aria-label='Remove ' + ${child.childFirstName} + ' ' + ${child.childLastName}"
+                                                          class="subflow-delete"
+                                                          th:id="'delete-iteration-' + ${child.uuid}"></a>
                                                       </span>
                                                     </span>
                                                 </li>
