@@ -9,6 +9,7 @@ import java.util.Map;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
@@ -200,6 +201,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-add-jobs (list)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
+        assertThat(testPage.findElementsByClass("subflow-delete").get(0).getAccessibleName())
+                .isEqualTo(String.format("%s %s", getEnMessage("general.remove"), "testCompany"));
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
         //children-info-intro
@@ -560,8 +563,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
-        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
 
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
         //Second Iteration
         // providers-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
@@ -624,6 +627,10 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
+
+        // Adding aria-label assertion:
+        assertThat(testPage.findElementsByClass("subflow-delete").get(1).getAccessibleName())
+                .isEqualTo("Remove ACME Daycare");
 
         //delete-provider -- don't actually delete!
         assertThat(testPage.findElementsByClass("spacing-below-0").get(4).getText()).isEqualTo("Nope Test");

@@ -122,17 +122,14 @@ flow:
       - name: children-info-intro
   parent-add-adults:
     nextScreens:
-      - name: parent-intro-family-info
+      - name: activities-parent-intro
+        condition: EnableMultipleProviders
+      - name: children-info-intro
   parent-add-adults-detail:
     subflow: adultDependents
     crossFieldValidationAction: ValidateAdultDependentBirthdate
     nextScreens:
       - name: parent-add-adults
-  parent-intro-family-info:
-    nextScreens:
-      - name: activities-parent-intro
-        condition: EnableMultipleProviders
-      - name: children-info-intro
   children-info-intro:
     nextScreens:
       - name: children-add
@@ -860,6 +857,7 @@ flow:
     nextScreens:
       - name: contact-info
   contact-info:
+    crossFieldValidationAction: ValidateProviderResponsePhoneAndEmail
     nextScreens:
       - name: info-review
   info-review:
@@ -1015,7 +1013,7 @@ flow:
     condition: BackgroundCheckOrTrainingRequired
     nextScreens:
       - name: registration-family-response-intro
-        condition: ProviderIsLicenseExemptChildCareCenter
+        condition: ProviderShouldNotSeeConvictionsScreen
       - name: registration-convictions
   registration-convictions:
     nextScreens:

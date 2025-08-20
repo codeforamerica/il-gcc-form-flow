@@ -7,7 +7,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
     inputs: { }
-        
+
 jobs:
   deploy:
     name: Deploy to QA
@@ -15,11 +15,12 @@ jobs:
     env:
       ECR_REPOSITORY: illinois-getchildcare-qa-app
       IMAGE_TAG: ${{ github.sha }}
-    
-    
+
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # needed for tags & proper branch ref
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -36,8 +37,8 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          docker build -t 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{env.IMAGE_TAG}} --platform linux/amd64 .
-          docker push 891377151751.dkr.ecr.us-east-1.amazonaws.com/illinois-getchildcare-qa-app:${{env.IMAGE_TAG}}
+          docker build -t $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} --platform linux/amd64 .
+          docker push $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
 
       - name: Update SSM Version Parameter
         run: |
@@ -50,13 +51,11 @@ jobs:
       - name: Trigger infrastructure deployment
         run: |
           set -euo pipefail
-      
           repo_owner="codeforamerica" 
           repo_name="il-gcc-infra"  
           event_type="deploy" 
           environment="staging"
           config="qa"
-      
           curl --fail --silent --show-error -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \
@@ -65,9 +64,11 @@ jobs:
             https://api.github.com/repos/$repo_owner/$repo_name/dispatches \
             -d "{\"event_type\":\"$event_type\",\"client_payload\":{\"environment\":\"$environment\",\"config\":\"$config\"}}"
 
-      - name: Generate Sentry release name from sha
-        id: generate-release
-        run: echo "::set-output name=RELEASE::$(git rev-parse HEAD)"
+      - name: Generate Sentry release name
+        run: |
+          REF_NAME=${GITHUB_REF#refs/*/}
+          RELEASE_NAME=${REF_NAME//\//-}
+          echo "RELEASE=$RELEASE_NAME" >> $GITHUB_ENV
 
       - name: Create Sentry release
         uses: getsentry/action-release@v3
@@ -77,6 +78,7 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: qa
+          release: ${{ env.RELEASE }}
           ignore_missing: true
 
       - name: Announce on Slack when deployed

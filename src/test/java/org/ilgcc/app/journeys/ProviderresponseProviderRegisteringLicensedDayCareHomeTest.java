@@ -152,15 +152,6 @@ public class ProviderresponseProviderRegisteringLicensedDayCareHomeTest extends 
 
         // SKIPS registration-checks-trainings-notice
 
-        // registration-convictions
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions.title"));
-        testPage.clickYes();
-
-        // registration-convictions-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-convictions-info.title"));
-        testPage.enter("providerConvictionExplanation", "Reason for conviction");
-        testPage.clickContinue();
-
         // registration-family-response-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-family-response-intro.title"));
         testPage.clickContinue();
