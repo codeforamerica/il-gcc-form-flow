@@ -219,6 +219,7 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person.title"));
 
         assertThat(testPage.findElementsByClass("m").get(1).getText()).isEqualTo("Tester Lastenson");
+        assertThat(testPage.findElementsByClass("subflow-delete").get(1).getAccessibleName()).isEqualTo("remove Tester Lastenson");
         testPage.findElementsByClass("subflow-delete").get(1).click();
 
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-household-add-person-delete.title"));

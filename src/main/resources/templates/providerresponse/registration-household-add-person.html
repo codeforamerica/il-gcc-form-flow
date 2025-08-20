@@ -24,6 +24,7 @@
                       <span class="text--small spacing-below-0 spacing-right-25">
                         <a th:href="'/flow/' + ${flow} + '/providerHouseholdMembers/' + ${providerHouseholdMember.uuid} + '/deleteConfirmation'"
                            th:text="#{general.remove}"
+                           th:attr="aria-label=|#{general.remove} ${providerHouseholdMember.providerHouseholdMemberFirstName} ${providerHouseholdMember.providerHouseholdMemberLastName}|, title=|#{general.remove} ${providerHouseholdMember.providerHouseholdMemberFirstName} ${providerHouseholdMember.providerHouseholdMemberLastName}|"
                            class="subflow-delete"
                            th:id="'delete-iteration-' + ${providerHouseholdMember.uuid}"></a>
                       </span>
