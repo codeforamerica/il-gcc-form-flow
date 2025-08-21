@@ -36,7 +36,7 @@ public class AutomatedProviderOutreachEmailTemplate {
     }
 
     private String setSubject() {
-        return messageSource.getMessage("email.automated-provider-outreach.subject", null,
+        return messageSource.getMessage("email.automated-provider-outreach.subject", new Object[]{emailData.get("confirmationCode")},
                 locale);
     }
 
