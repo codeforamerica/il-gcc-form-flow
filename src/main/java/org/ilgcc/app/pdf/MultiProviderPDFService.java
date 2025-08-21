@@ -123,8 +123,14 @@ public class MultiProviderPDFService {
 
         if (providerSchedulesByUuid.size() > 1) {
             for (int i = 1; i < providerSchedulesByUuid.size(); i++) {
-                Map<String, Object> currentProvider = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
-                        providerSchedulesByUuid.get(i));
+                Map<String, Object> currentProvider = new HashMap<>();
+
+                if (providerSchedulesByUuid.get(i).equals("NO_PROVIDER")) {
+                    currentProvider.put("uuid", "NO_PROVIDER");
+                } else {
+                    currentProvider = SubmissionUtilities.getCurrentProvider(familySubmission.getInputData(),
+                            providerSchedulesByUuid.get(i));
+                }
 
                 Map<String, SubmissionField> submissionFields = new HashMap<>();
 
