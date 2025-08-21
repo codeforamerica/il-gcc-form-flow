@@ -1,6 +1,7 @@
 package org.ilgcc.jobs;
 
 import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.SubmissionUtilities.haveAllProvidersResponded;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -126,14 +127,19 @@ public class ProviderResponseRecurringJob {
     }
 
     private boolean hasProviderResponse(Submission familySubmission) {
-        String providerResponseSubmissionId = (String) familySubmission.getInputData().get("providerResponseSubmissionId");
+        // TODO: the else of this code can be removed when ENABLE_MULTIPLE_PROVIDERS is productized
+        if (familySubmission.getInputData().containsKey("providers")) {
+            return haveAllProvidersResponded(familySubmission);
+        } else {
+            // No sense refactoring this for single provider and risking it being broken, since we'll be removing this
+            String providerResponseSubmissionId = (String) familySubmission.getInputData().get("providerResponseSubmissionId");
 
-        if (providerResponseSubmissionId != null) {
-            Optional<Submission> providerSubmission = submissionRepositoryService.findById(
-                    UUID.fromString(providerResponseSubmissionId));
-            return providerSubmission.isPresent() && providerSubmission.get().getSubmittedAt() != null;
+            if (providerResponseSubmissionId != null) {
+                Optional<Submission> providerSubmission = submissionRepositoryService.findById(
+                        UUID.fromString(providerResponseSubmissionId));
+                return providerSubmission.isPresent() && providerSubmission.get().getSubmittedAt() != null;
+            }
+            return false;
         }
-
-        return false;
     }
 }
