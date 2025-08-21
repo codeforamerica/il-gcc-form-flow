@@ -40,7 +40,7 @@ public class FamilyConfirmationEmailTemplate {
     }
 
     private String setSubject(Map<String, Object> emailData) {
-        return messageSource.getMessage("email.general.subject.confirmation-code",
+        return messageSource.getMessage("email.family-confirmation.subject",
                 new Object[]{emailData.get("confirmationCode")},
                 locale);
     }
