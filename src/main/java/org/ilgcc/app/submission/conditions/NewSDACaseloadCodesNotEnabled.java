@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NewSDACaseloadCodesEnabled implements Condition {
+public class NewSDACaseloadCodesNotEnabled implements Condition {
 
     @Value("${il-gcc.enable-new-sda-caseload-codes}")
     private boolean newSDACaseloadCodesEnabled;
     
     @Override
     public Boolean run(Submission submission) {
-        return newSDACaseloadCodesEnabled;
+        return !newSDACaseloadCodesEnabled;
     }
 }

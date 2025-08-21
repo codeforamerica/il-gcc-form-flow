@@ -41,7 +41,13 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
         testPage.selectFromDropdown("languageRead", "English");
         testPage.selectFromDropdown("languageSpeak", "Español");
         testPage.clickContinue();
+        
+        // onboarding-county
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-county.title"));
+        testPage.selectFromDropdown("applicationCounty", "DEKALB");
+        testPage.clickContinue();
 
+        // onboarding-chosen-provider
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
         testPage.clickYes();
 
