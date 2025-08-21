@@ -1,6 +1,8 @@
 package org.ilgcc.app.pdf;
 
 import static java.util.Collections.emptyList;
+import static org.ilgcc.app.utils.SubmissionUtilities.MAX_MAPPABLE_CHILDCARE_SCHEDULES;
+import static org.ilgcc.app.utils.SubmissionUtilities.MAX_MAPPABLE_FAMILY_MEMBERS;
 
 import formflow.library.data.Submission;
 import formflow.library.pdf.PdfMap;
@@ -16,17 +18,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
 
-    private static final int MAX_FAMILY_MEMBERS = 5;
-
     @Override
     public Map<String, SubmissionField> prepareSubmissionFields(Submission submission, PdfMap pdfMap) {
         var results = new HashMap<String, SubmissionField>();
         int iteration = 1;
 
-        if (SubmissionUtilities.getChildrenNeedingAssistance(submission.getInputData()).size() > 4) {
+        if (SubmissionUtilities.getChildrenNeedingAssistance(submission.getInputData()).size() > MAX_MAPPABLE_CHILDCARE_SCHEDULES) {
             var seekingAssistance = SubmissionUtilities.getAdditionalChildrenNeedingAssistance(submission);
             for (var child : seekingAssistance) {
-                if (iteration > MAX_FAMILY_MEMBERS) {
+                if (iteration > MAX_MAPPABLE_FAMILY_MEMBERS) {
                     return results;
                 }
                 results.put("familyMemberFirstName_" + iteration,
@@ -45,7 +45,7 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
         var children = ((List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList())).stream()
                 .filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("false")).toList();
         for (var child : children) {
-            if (iteration > MAX_FAMILY_MEMBERS) {
+            if (iteration > MAX_MAPPABLE_FAMILY_MEMBERS) {
                 return results;
             }
             results.put("familyMemberFirstName_" + iteration,
@@ -61,7 +61,7 @@ public class OtherFamilyMembersPreparer implements SubmissionFieldPreparer {
 
         var adultDependents = (List<Map<String, Object>>) submission.getInputData().getOrDefault("adultDependents", emptyList());
         for (var adult : adultDependents) {
-            if (iteration > MAX_FAMILY_MEMBERS) {
+            if (iteration > MAX_MAPPABLE_FAMILY_MEMBERS) {
                 return results;
             }
             results.put("familyMemberFirstName_" + iteration,

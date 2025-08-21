@@ -26,6 +26,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 public class SubmissionUtilities {
 
+    public static final int MAX_MAPPABLE_FAMILY_MEMBERS = 5;
+    public static final int MAX_MAPPABLE_CHILDCARE_SCHEDULES = 4;
+
     public static final DateTimeFormatter MM_DD_YYYY = DateTimeFormatter.ofPattern("M/d/uuuu")
             .withZone(ZoneId.of("America/Chicago"));
     public static final DateTimeFormatter YYYY_MM_DD_DASHES = DateTimeFormatter.ofPattern("yyyy-MM-dd")
