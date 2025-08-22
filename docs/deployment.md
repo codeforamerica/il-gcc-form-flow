@@ -30,7 +30,7 @@ If you want to deploy the latest version of `main` to Production, follow the ste
 
 - ℹ️ Here’s an example of what a release could look like before you release it:
 
-  ![Untitled](/docs/images/Untitled.png)
+  ![Untitled](/docs/images/deployment-releasenotes.png)
 
 
 ## Manually trigger a GitHub action run
@@ -48,7 +48,7 @@ If you want to deploy the latest version of `main` to Production, follow the ste
 - Select the tag you created
 - Click `Run workflow`
 
-![Untitled](/docs/images/Untitled%201.png)
+![Untitled](/docs/images/deployment-runworkflow.png)
 
 - Wait for the action to finish, it takes ~6 minutes.
 - (Optional) You can visit [`https://www.getchildcareil.org/actuator/info`](https://www.getchildcareil.org/actuator/info) to see the time of the last deployment to double confirm the deployment worked
@@ -57,7 +57,7 @@ If you want to deploy the latest version of `main` to Production, follow the ste
 
 When work in on the `main` branch and has completed acceptance testing, they will be in the `Ready` column. Once a production deploy is successfully complete, move all of the tickets into the `Done` column.
 
-![Untitled](/docs/images//Untitled%202.png)
+![Untitled](/docs/images/deployment-jira.png)
 
 # Hotfix Deployment
 
@@ -73,7 +73,7 @@ Assuming a branch, either off of `main` or (more likely) the most recent **Stand
     1. Repeat the above steps, as necessary, until the HEAD of Hotfix branch passes acceptance and is ready for deployment to Production
 4. **Create a GitHub release**, except the branch dropdown should be the Hotfix branch and not `main`:
 
-   ![Screenshot 2025-08-15 at 9.40.34 AM.png](/docs/images/Screenshot_2025-08-15_at_9.40.34_AM.png)
+   ![Untitled](/docs/images/deployment-hotfixbranches.png)
 
 5. Follow steps #1 and #2, but select the newly created tag instead of the name of the Hotfix branch
 6. Optionally verify, again, that the proposed fixes work on both Staging and QA as needed. (Time may be of the essence, and re-testing might not be an option here.)
