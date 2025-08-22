@@ -47,7 +47,9 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
     private SendNewProviderAgreesToCareFamilyConfirmationEmail sendEmailClass;
 
     private final Locale locale = Locale.ENGLISH;
-    
+
+    private static final String CONFIRMATION_CODE = "ABC123";
+
     @Nested
     class whenProviderDoesNotEnterBusinessName {
         Map<String, Object> provider;
@@ -93,7 +95,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
                     .withMultipleChildcareSchedulesForProvider(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()), provider.get("uuid").toString())
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withCCRR()
-                    .withShortCode("ABC123")
+                    .withShortCode(CONFIRMATION_CODE)
                     .build());
 
             providerSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
@@ -128,7 +130,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
             assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                     new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
             assertThat(emailTemplate.getSubject()).isEqualTo(
-                    messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
+                    messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
             String emailCopy = emailTemplate.getBody().getValue();
 
@@ -142,7 +144,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
                     new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p4",
-                    new Object[]{"ABC123"}, locale));
+                    new Object[]{CONFIRMATION_CODE}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p5",
                     new Object[]{"Sample Test CCRR", "(603) 555-1244"},
                     locale));
@@ -199,7 +201,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
                     .withMultipleChildcareSchedulesForProvider(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()), provider.get("uuid").toString())
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withCCRR()
-                    .withShortCode("ABC123")
+                    .withShortCode(CONFIRMATION_CODE)
                     .build());
 
             providerSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
@@ -235,7 +237,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
             assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                     new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
             assertThat(emailTemplate.getSubject()).isEqualTo(
-                    messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale));
+                    messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
             String emailCopy = emailTemplate.getBody().getValue();
 
@@ -249,7 +251,7 @@ public class SendNewProviderAgreesToCareFamilyConfirmationEmailTest {
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p3",
                     new Object[]{"F.C. and S.C.", "January 10, 2025"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p4",
-                    new Object[]{"ABC123"}, locale));
+                    new Object[]{CONFIRMATION_CODE}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-agrees.p5",
                     new Object[]{"Sample Test CCRR", "(603) 555-1244"},
                     locale));
