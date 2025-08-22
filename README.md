@@ -38,6 +38,7 @@
       - [Request Public Certificate](#request-public-certificate)
       - [S3 Static Hosting for Redirect Requests (non-www traffic -\> www)](#s3-static-hosting-for-redirect-requests-non-www-traffic---www)
       - [Cloudfront Distribution Setup](#cloudfront-distribution-setup)
+- [IV. Deployment](#iv-Deployment)
 
 # About GetChildCareIL
 
@@ -358,3 +359,7 @@ dependencies:
    defaults.
 3. Create a Route53 Alias record for the root domain which points to your cloudfront distribution.
 
+# IV. Deployment
+## Production Deployment
+
+Read more about how IL GCC uses Github Actions to [deploy to Production](/docs/deployment.md)
