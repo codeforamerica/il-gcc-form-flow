@@ -20,7 +20,6 @@ import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.ilgcc.jobs.SendEmailJob;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +66,8 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
 
     private static Map<String, Object> emailData = new HashMap<>();
 
-    @BeforeAll
-    public static void setUpOnce() {
+    @BeforeEach
+    void setUp() {
         individualProvider.put("uuid", UUID.randomUUID().toString());
         individualProvider.put("iterationIsComplete", true);
         individualProvider.put("providerFirstName", "FirstName");
@@ -124,10 +123,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         child2.put("needFinancialAssistanceForChild", true);
         child2.put("childIsUsCitizen", "Yes");
         child2.put("ccapStartDate", "12/10/2025");
-    }
 
-    @BeforeEach
-    void setUp() {
         familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .with("parentFirstName", "FirstName")
@@ -170,7 +166,6 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
 
         programProvider.put("providerResponseSubmissionId", programProviderSubmission.getId());
         programProvider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
-
 
         sendEmailClass = new SendFamilyApplicationTransmittedConfirmationEmail(sendEmailJob, messageSource,
                 submissionRepositoryService);
@@ -270,7 +265,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
     }
 
     @Test
-    void correctlySetsEmailTemplateData() {
+    void correctlySetsEmailTemplateDataWhenSomeRespond() {
         ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
 
         assertThat(emailTemplate.getSenderEmail()).isEqualTo(
@@ -284,8 +279,9 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
                 messageSource.getMessage("email.family-application-transmitted-confirmation-email.p1", new Object[]{"FirstName"},
                         locale));
 
-        assertThat(emailCopy).contains(messageSource.getMessage("email.family-application-transmitted-confirmation-email.p2",
-                new Object[]{"Sample Test CCRR"}, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.family-application-transmitted-confirmation-email.p2.mixed-response",
+                        new Object[]{"Sample Test CCRR"}, locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage("email.family-application-transmitted-confirmation-email.p3",
                 new Object[]{"ABC123"}, locale));
@@ -307,6 +303,70 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         assertThat(emailCopy).contains(messageSource.getMessage(
                 "email.family-application-transmitted-confirmation-email.li-did-not-complete-application-in-three-days",
                 new Object[]{"Great Care Child Care"}, locale));
+
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
+    }
+
+    @Test
+    void correctlySetsEmailTemplateDataWhenAllRespond() {
+        Submission noResponseSubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
+                .withFlow("providerresponse")
+                .with("familySubmissionId", familySubmission.getId().toString())
+                .with("currentProviderUuid", noResponseProvider.get("uuid").toString())
+                .with("providerResponseContactEmail", "programProviderEmail@test.com")
+                .with("providerResponseBusinessName", "Great Care Child Care")
+                .with("providerCareStartDate", "06/30/2025")
+                .with("providerResponseAgreeToCare", "true")
+                .build());
+
+        noResponseProvider.put("providerResponseSubmissionId", noResponseSubmission.getId());
+        noResponseProvider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
+
+        sendEmailClass = new SendFamilyApplicationTransmittedConfirmationEmail(sendEmailJob, messageSource,
+                submissionRepositoryService);
+
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
+        emailData = emailDataOptional.get();
+
+        ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailData);
+
+        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+                new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+        assertThat(emailTemplate.getSubject()).isEqualTo(
+                messageSource.getMessage("email.family-application-transmitted-confirmation-email.subject", null, locale));
+
+        String emailCopy = emailTemplate.getBody().getValue();
+
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.family-application-transmitted-confirmation-email.p1", new Object[]{"FirstName"},
+                        locale));
+
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.family-application-transmitted-confirmation-email.p2.all-responded",
+                        new Object[]{"Sample Test CCRR"}, locale));
+
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-application-transmitted-confirmation-email.p3",
+                new Object[]{"ABC123"}, locale));
+
+        assertThat(emailCopy).contains(messageSource.getMessage("email.family-application-transmitted-confirmation-email.p4",
+                new Object[]{"Sample Test CCRR", "(603) 555-1244"},
+                locale));
+
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.family-application-transmitted-confirmation-email.li-agreed-to-care",
+                        new Object[]{"BusinessName", "F.C.",
+                                "May 15, 2025"}, locale));
+
+        assertThat(emailCopy).contains(messageSource.getMessage(
+                "email.family-application-transmitted-confirmation-email.li-did-not-agree-to-care",
+                new Object[]{"F.L.", "F.C. and S.C."},
+                locale));
+
+        assertThat(emailCopy).contains(messageSource.getMessage(
+                "email.family-application-transmitted-confirmation-email.li-agreed-to-care",
+                new Object[]{"Great Care Child Care", "S.C.",
+                        "June 30, 2025"}, locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
