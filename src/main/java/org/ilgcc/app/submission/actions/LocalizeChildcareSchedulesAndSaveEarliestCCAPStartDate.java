@@ -1,6 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getCCAPStartDateForProvider;
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getLocalizedChildCareHours;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.relatedSubflowIterationData;
 
@@ -10,7 +11,6 @@ import formflow.library.data.SubmissionRepositoryService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.SchedulePreparerUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,12 +59,10 @@ public class LocalizeChildcareSchedulesAndSaveEarliestCCAPStartDate implements A
             Map<String,
                     Object> currentProvider = relatedSubflowIterationData(submission.getInputData(), "providers",
                     providerId);
-            List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerId,
-                    Collections.EMPTY_LIST);
-            String earliestCCAPDateForProvider = DateUtilities.getEarliestDate(
-                    providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString())
-                            .toList());
-            currentProvider.put(INPUT_NAME, earliestCCAPDateForProvider);
+
+            if (currentProvider != null) {
+                currentProvider.put(INPUT_NAME, getCCAPStartDateForProvider(providerId, submission.getInputData()));
+            }
         });
 
         submissionRepositoryService.save(submission);

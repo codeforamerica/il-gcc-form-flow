@@ -1,6 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.ilgcc.app.utils.TestUtils.createCareSchedule;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
@@ -170,17 +171,5 @@ class LocalizeChildcareSchedulesAndSaveEarliestCCAPStartDateTest {
 
         assertThat(provider1.get("earliestChildcareStartDate")).isEqualTo("01/10/2022");
         assertThat(provider2.get("earliestChildcareStartDate")).isEqualTo("01/10/2027");
-    }
-
-    private Map<String, Object> createCareSchedule(String providerUUID, String childUUID, String ccapStartDate) {
-        Map<String, Object> careSchedule = new HashMap<>();
-
-        careSchedule.put("uuid", String.format("%s-%s", providerUUID, childUUID));
-        careSchedule.put("childInCare", true);
-        careSchedule.put("ccapStartDate", ccapStartDate);
-        careSchedule.put("repeatForValue", providerUUID);
-        careSchedule.put("iterationIsComplete", true);
-
-        return careSchedule;
     }
 }

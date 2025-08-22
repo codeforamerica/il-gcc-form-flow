@@ -110,13 +110,6 @@ public class ApplicationPreparer implements SubmissionFieldPreparer {
         results.put("clientResponseConfirmationCode",
                 new SingleField("clientResponseConfirmationCode", submission.getShortCode(), null));
 
-        // TODO: This start date is overwritten by ProviderSubmissionFieldPreparerService for multi providers, and uses
-        // the earliest start date for the first provider as it gets written to the PDF instead
-        // This code for the start date can be removed when ENABLE_MULTIPLE_PROVIDERS is productized
-        results.put("childcareStartDate",
-                new SingleField("childcareStartDate",
-                        inputData.getOrDefault("earliestChildcareStartDate", "").toString(), null));
-
         results.put("applicantFamilySize",
             new SingleField("applicantFamilySize", Integer.toString(getApplicantFamilySize(inputData)), null));
         return results;

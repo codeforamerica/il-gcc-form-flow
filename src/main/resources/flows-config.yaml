@@ -275,6 +275,7 @@ flow:
     subflow: childcareSchedules
     condition: EnableMultipleProviders
     crossFieldValidationAction: ValidateChildrenCCAPStartDate
+    beforeSaveAction: SaveCCAPStartDate
     nextScreens:
       - name: schedules-same
         condition: DisplaySchedulesSameScreen

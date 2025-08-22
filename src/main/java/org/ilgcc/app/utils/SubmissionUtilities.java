@@ -374,20 +374,24 @@ public class SubmissionUtilities {
         String currentProviderUuid = providerSubmission.getInputData().get("currentProviderUuid").toString();
         String providerResponseAgreeToCare = (String) providerSubmission.getInputData().get("providerResponseAgreeToCare");
 
-        List<Map<String, Object>> providers = getProviders(familySubmission.getInputData());
+        List<Map<String, Object>> providers = new ArrayList<>();
+        List<String> providersExcludingNoProvider = SchedulePreparerUtility.providersNotInactive(familySubmission.getInputData());
         boolean allProvidersResponded = true;
 
-        for (Map<String, Object> provider : providers) {
-            if (currentProviderUuid.equals(provider.get("uuid").toString())) {
-                provider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
-                provider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
-                provider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
-                provider.put("providerResponseName", ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
-            } else if (!provider.containsKey("providerApplicationResponseStatus") ||
-                    !(SubmissionStatus.RESPONDED.name().equals(provider.get("providerApplicationResponseStatus").toString()) ||
-                    SubmissionStatus.INACTIVE.name().equals(provider.get("providerApplicationResponseStatus").toString()))) {
+        for (String providerId : providersExcludingNoProvider) {
+            Map<String, Object> currentProvider = getCurrentProvider(familySubmission.getInputData(), providerId);
+            if (currentProviderUuid.equals(providerId)) {
+                currentProvider.put("providerResponseSubmissionId", providerSubmission.getId().toString());
+                currentProvider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
+                currentProvider.put("providerResponseAgreeToCare", providerResponseAgreeToCare);
+                currentProvider.put("providerResponseName",
+                        ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
+            } else if (!currentProvider.containsKey("providerApplicationResponseStatus") ||
+                    !(SubmissionStatus.RESPONDED.name().equals(currentProvider.get("providerApplicationResponseStatus").toString()) ||
+                            SubmissionStatus.INACTIVE.name().equals(currentProvider.get("providerApplicationResponseStatus").toString()))) {
                 allProvidersResponded = false;
             }
+            providers.add(currentProvider);
         }
 
         familySubmission.getInputData().put("providers", providers);

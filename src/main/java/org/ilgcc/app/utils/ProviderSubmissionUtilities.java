@@ -565,16 +565,10 @@ public class ProviderSubmissionUtilities {
         return submission.getInputData().getOrDefault("providerPaidCcap", "false").toString().equals("false");
     }
 
-    public static String getCCAPStartDateForProvider(Submission providerSubmission, Submission familySubmission) {
-        if (providerSubmission.getInputData().containsKey("providerCareStartDate")) {
-            return providerSubmission.getInputData().get("providerCareStartDate").toString();
-        } else {
-            return getCCAPStartDateForProvider((String) providerSubmission.getInputData().get("currentProviderUuid"), familySubmission);
-        }
-    }
+    public static String getCCAPStartDateForProvider(String providerUuid, Map<String, Object> familyInputData) {
+        Map<String, List<Map<String, Object>>> providerSchedules =
+                SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(familyInputData);
 
-    public static String getCCAPStartDateForProvider(String providerUuid, Submission familySubmission) {
-        Map<String, List<Map<String, Object>>> providerSchedules = SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
         List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerUuid, Collections.emptyList());
         return DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
     }

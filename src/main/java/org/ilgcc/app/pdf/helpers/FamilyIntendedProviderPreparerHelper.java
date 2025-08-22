@@ -1,5 +1,7 @@
 package org.ilgcc.app.pdf.helpers;
 
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getCCAPStartDateForProvider;
+
 import formflow.library.data.Submission;
 import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
@@ -33,6 +35,8 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
         if (SubmissionUtilities.isNoProviderSubmission(submission.getInputData()) || providerData.getOrDefault("uuid", "").equals(
                 "NO_PROVIDER")) {
             results.putAll(prepareNoProviderData());
+            results.put("childcareStartDate", new SingleField("childcareStartDate", getCCAPStartDateForProvider(
+                    "NO_PROVIDER", submission.getInputData()), null));
         } else {
             String submissionStatus = (String) providerData.getOrDefault("providerApplicationResponseStatus", "");
             Boolean hasExpired = SubmissionStatus.EXPIRED.name().equals(submissionStatus);
@@ -59,6 +63,9 @@ public class FamilyIntendedProviderPreparerHelper extends InputDataPreparerHelpe
             results.put("providerResponseBusinessName", new SingleField("providerResponseBusinessName",
                     childCareProgramName, null));
         }
+
+        results.put("childcareStartDate", new SingleField("childcareStartDate",
+                inputData.getOrDefault("earliestChildcareStartDate", "").toString(), null));
 
         results.put("providerResponseFirstName", new SingleField("providerResponseFirstName",
                 inputData.getOrDefault("providerFirstName", "").toString(), null));
