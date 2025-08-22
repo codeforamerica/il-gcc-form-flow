@@ -15,28 +15,6 @@ If you want to deploy the latest version of `main` to Production, follow the ste
 2. **Manually trigger a GitHub action run**
 3. **Move Jira tickets from Ready to Done**
 
-# Hotfix Deployment
-
-The use case/scenario for a Hotfix is that the most recent **Standard Deployment** tag is stable, there are changes in `main` that are not ready for release to Production, and some incremental change between “what is already in Production” and “everything in `main`" needs to be deployed to Production. This needed change could be a bug fix, a subset of “everything in `main`", etc.
-
-Assuming a branch, either off of `main` or (more likely) the most recent **Standard Deployment** tag, has been created and has the proposed change(s) committed and merged in:
-
-1. Deploy the HEAD of the branch to Staging using the `Deploy to Aptible Staging` Github Action
-    1. Click `Run workflow` —> Click `main` —> select the Hotfix branch
-2. Deploy the HEAD of the branch to QA using the `Deploy to AWS QA` Github Action
-    1. Click `Run workflow` —> Click `main` —> select the Hotfix branch
-3. Verify the proposed fixes work on both Staging and QA as needed
-    1. Repeat the above steps, as necessary, until the HEAD of Hotfix branch passes acceptance and is ready for deployment to Production
-4. **Create a GitHub release**, except the branch dropdown should be the Hotfix branch and not `main`:
-
-   ![Screenshot 2025-08-15 at 9.40.34 AM.png](/docs/images/Screenshot_2025-08-15_at_9.40.34_AM.png)
-
-5. Follow steps #1 and #2, but select the newly created tag instead of the name of the Hotfix branch
-6. Optionally verify, again, that the proposed fixes work on both Staging and QA as needed. (Time may be of the essence, and re-testing might not be an option here.)
-7. Follow the steps for to **Manually trigger a GitHub action run**, using the tag created.
-8. **Move Jira tickets from Ready to Done**
-9. If the fix(es) from the Hotfix branch are not already in `main`, be sure to merge them into `main` so the next **Standard Deployment** does not regress the fix(es)
-
 ## Create a GitHub release
 
 - In GitHub, [create a](https://github.com/codeforamerica/il-gcc-form-flow/tags) [`New Release`](https://github.com/codeforamerica/il-gcc-form-flow/releases/new).
@@ -80,3 +58,25 @@ Assuming a branch, either off of `main` or (more likely) the most recent **Stand
 When work in on the `main` branch and has completed acceptance testing, they will be in the `Ready` column. Once a production deploy is successfully complete, move all of the tickets into the `Done` column.
 
 ![Untitled](/docs/images//Untitled%202.png)
+
+# Hotfix Deployment
+
+The use case/scenario for a Hotfix is that the most recent **Standard Deployment** tag is stable, there are changes in `main` that are not ready for release to Production, and some incremental change between “what is already in Production” and “everything in `main`" needs to be deployed to Production. This needed change could be a bug fix, a subset of “everything in `main`", etc.
+
+Assuming a branch, either off of `main` or (more likely) the most recent **Standard Deployment** tag, has been created and has the proposed change(s) committed and merged in:
+
+1. Deploy the HEAD of the branch to Staging using the `Deploy to Aptible Staging` Github Action
+    1. Click `Run workflow` —> Click `main` —> select the Hotfix branch
+2. Deploy the HEAD of the branch to QA using the `Deploy to AWS QA` Github Action
+    1. Click `Run workflow` —> Click `main` —> select the Hotfix branch
+3. Verify the proposed fixes work on both Staging and QA as needed
+    1. Repeat the above steps, as necessary, until the HEAD of Hotfix branch passes acceptance and is ready for deployment to Production
+4. **Create a GitHub release**, except the branch dropdown should be the Hotfix branch and not `main`:
+
+   ![Screenshot 2025-08-15 at 9.40.34 AM.png](/docs/images/Screenshot_2025-08-15_at_9.40.34_AM.png)
+
+5. Follow steps #1 and #2, but select the newly created tag instead of the name of the Hotfix branch
+6. Optionally verify, again, that the proposed fixes work on both Staging and QA as needed. (Time may be of the essence, and re-testing might not be an option here.)
+7. Follow the steps for to **Manually trigger a GitHub action run**, using the tag created.
+8. **Move Jira tickets from Ready to Done**
+9. If the fix(es) from the Hotfix branch are not already in `main`, be sure to merge them into `main` so the next **Standard Deployment** does not regress the fix(es)
