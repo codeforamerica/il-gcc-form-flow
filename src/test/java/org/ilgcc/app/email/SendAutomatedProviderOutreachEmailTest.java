@@ -1,138 +1,154 @@
 package org.ilgcc.app.email;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.FOUR_C_TEST_DATA;
-import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.PROJECT_CHILD_TEST_DATA;
+import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 
+import com.sendgrid.helpers.mail.objects.Email;
+import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepository;
+import formflow.library.data.SubmissionRepositoryService;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-
-import org.ilgcc.app.data.ResourceOrganizationTransaction;
-
-import org.ilgcc.app.email.templates.DailyNewApplicationsProviderEmailTemplate;
-import org.ilgcc.jobs.DailyNewApplicationsProviderEmailRecurringJob;
-
+import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.jobs.SendEmailJob;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 
 @ActiveProfiles("test")
 @SpringBootTest
 public class SendAutomatedProviderOutreachEmailTest {
 
+    @MockitoSpyBean
+    SendEmailJob sendEmailJob;
+
     @Autowired
-    DailyNewApplicationsProviderEmailRecurringJob dailyNewApplicationsProviderEmailRecurringJob;
+    SubmissionRepositoryService submissionRepositoryService;
+
+    @Autowired
+    SubmissionRepository submissionRepository;
 
     @Autowired
     MessageSource messageSource;
-    OffsetDateTime currentDate = OffsetDateTime.of(2025, 10, 14, 2, 0, 0, 0, ZoneOffset.UTC);
-    OffsetDateTime transactionsAsOfDate = currentDate.minusHours(24);
 
-    Locale locale = Locale.ENGLISH;
-    DailyNewApplicationsProviderEmailTemplate dailyNewApplicationsFourcEmailTemplate;
+    private Submission familySubmission;
 
-    DailyNewApplicationsProviderEmailTemplate dailyNewApplicationstransactionlessOrgTemplate;
+    private SendAutomatedProviderOutreachEmail sendEmailClass;
 
-    Map<String, Object> fourcEmailData;
-
-    List<String> fourcShortCodes;
-
-    ILGCCEmailTemplate fourcEmailTemplate;
-
-    Map<String, Object> transactionlessOrgEmailData;
-
-    ILGCCEmailTemplate transactionlessOrgEmailTemplate;
+    private final Locale locale = Locale.ENGLISH;
 
     @BeforeEach
-    public void setUp() {
-        fourcShortCodes = List.of("A12345", "B12345", "C12345", "D12345", "E12345", "F12345");
-        List<ResourceOrganizationTransaction> resourceOrganizationTransactions = new ArrayList<>();
+    void setUp() {
+        familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
+                .withFlow("gcc")
+                .with("parentFirstName", "FirstName").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .withSubmittedAtDate(OffsetDateTime.of(2022, 10, 11, 0, 0, 0, 0, ZoneOffset.ofTotalSeconds(0)))
+                .withCCRR()
+                .with("parentContactEmail", "familyemail@test.com")
+                .with("familyIntendedProviderEmail", "provideremail@test.com")
+                .with("shareableLink", "tempEmailLink")
+                .withShortCode("ABC123")
+                .build());
 
-        for (int i = 0; i < fourcShortCodes.size(); i++) {
-            resourceOrganizationTransactions.add(
-                    new ResourceOrganizationTransaction("12345678901234", OffsetDateTime.now(), fourcShortCodes.get(i),
-                            String.format("W0000%s", i)));
-        }
+        sendEmailClass = new SendAutomatedProviderOutreachEmail(sendEmailJob, messageSource, submissionRepositoryService);
+    }
 
-        fourcEmailData = dailyNewApplicationsProviderEmailRecurringJob.generateEmailData(
-                Optional.of(Map.of("12345678901234", resourceOrganizationTransactions)),
-                FOUR_C_TEST_DATA, transactionsAsOfDate, currentDate);
-
-        dailyNewApplicationsFourcEmailTemplate = new DailyNewApplicationsProviderEmailTemplate(fourcEmailData, messageSource);
-
-        fourcEmailTemplate = dailyNewApplicationsFourcEmailTemplate.createTemplate();
-
-        transactionlessOrgEmailData = dailyNewApplicationsProviderEmailRecurringJob.generateEmailData(
-                Optional.of(Map.of("12345678901235", List.of())),
-                PROJECT_CHILD_TEST_DATA, transactionsAsOfDate, currentDate);
-
-        dailyNewApplicationstransactionlessOrgTemplate = new DailyNewApplicationsProviderEmailTemplate(
-                transactionlessOrgEmailData, messageSource);
-
-        transactionlessOrgEmailTemplate = dailyNewApplicationstransactionlessOrgTemplate.createTemplate();
+    @AfterEach
+    void tearDown() {
+        submissionRepository.deleteAll();
     }
 
     @Test
-    void correctlySetsEmailSubject() {
-        assertThat(fourcEmailTemplate.getSubject()).isEqualTo(messageSource.getMessage("email.automated-new-applications.subject",
-                new Object[]{fourcEmailData.get("processingOrgName").toString(), fourcEmailData.get("transactionsAsOfDate").toString()}, null));
+    void correctlySetsEmailRecipient() {
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
+        Map<String, Object> emailData = emailDataOptional.get();
+
+        assertThat(sendEmailClass.getRecipientEmail(emailData)).isEqualTo("provideremail@test.com");
     }
 
     @Test
-    void correctlySetsBodyCopyWithTransactions() {
-        String emailCopy = fourcEmailTemplate.getBody().getValue();
+    void correctlySetsEmailData() {
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
 
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.header1", new Object[]{FOUR_C_TEST_DATA.getName()},
-                        locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.body1", new Object[]{"6", FOUR_C_TEST_DATA.getName(), "October 13, 2025"},
-                        locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.header2", null,
-                        locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.header3", null,
-                        locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-application.cta", null,
-                        locale));
+        assertThat(emailDataOptional.isPresent()).isTrue();
 
-        fourcShortCodes.forEach(c -> {
-            assertThat(emailCopy).contains(c);
-        });
+        Map<String, Object> emailData = emailDataOptional.get();
 
+        assertThat(emailData.get("parentFirstName")).isEqualTo("FirstName");
+        assertThat(emailData.get("parentContactEmail")).isEqualTo("familyemail@test.com");
+        assertThat(emailData.get("familyIntendedProviderEmail")).isEqualTo("provideremail@test.com");
+        assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
+        assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
+        assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
+        assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+        assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
+        assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
     }
 
     @Test
-    void correctlySetsBodyCopyWithoutTransactions() {
-        String emailCopy = transactionlessOrgEmailTemplate.getBody().getValue();
+    void correctlySetsEmailTemplateData() {
+        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
+        ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
+
+        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+                new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+        assertThat(emailTemplate.getSubject()).isEqualTo(
+                messageSource.getMessage("email.automated-provider-outreach.subject", null, locale));
+
+        String emailCopy = emailTemplate.getBody().getValue();
 
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.header1",
-                        new Object[]{PROJECT_CHILD_TEST_DATA.getName()},
+                messageSource.getMessage("email.automated-provider-outreach.p1", null, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.automated-provider-outreach.p2", new Object[]{"ABC123"}, locale));
+        assertThat(emailCopy).contains(
+                messageSource.getMessage("email.automated-provider-outreach.p3", new Object[]{"tempEmailLink"},
                         locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.body1", new Object[]{"0", PROJECT_CHILD_TEST_DATA.getName(), "October 13, 2025"},
+                messageSource.getMessage("email.automated-provider-outreach.p4", null,
                         locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.automated-provider-outreach.p5",
+                new Object[]{"Sample Test CCRR"}, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.header2", null,
+                messageSource.getMessage("email.automated-provider-outreach.p6", null,
                         locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-applications.header3", null,
-                        locale));
-        assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-new-application.cta", null,
-                        locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
+    }
+
+    @Test
+    void correctlyUpdatesEmailSendStatus() {
+        assertThat(familySubmission.getInputData().containsKey("providerOutreachEmailSent")).isFalse();
+        sendEmailClass.send(familySubmission);
+
+        assertThat(familySubmission.getInputData().containsKey("providerOutreachEmailSent")).isTrue();
+        assertThat(familySubmission.getInputData().get("providerOutreachEmailSent")).isEqualTo("true");
+    }
+
+    @Test
+    void correctlySkipsEmailSendWhenEmailStatusIsTrue() {
+        assertThat(sendEmailClass.skipEmailSend(familySubmission.getInputData())).isFalse();
+
+        familySubmission.getInputData().put("providerOutreachEmailSent", "true");
+        assertThat(sendEmailClass.skipEmailSend(familySubmission.getInputData())).isTrue();
+    }
+
+    @Test
+    void correctlyEnqueuesSendEmailJob() {
+        sendEmailClass.send(familySubmission);
+        verify(sendEmailJob).enqueueSendSubmissionEmailJob(any(ILGCCEmail.class), any(Integer.class));
     }
 
 }
