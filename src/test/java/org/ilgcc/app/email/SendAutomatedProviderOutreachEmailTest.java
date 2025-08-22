@@ -49,6 +49,8 @@ public class SendAutomatedProviderOutreachEmailTest {
 
     private final Locale locale = Locale.ENGLISH;
 
+    private static final String CONFIRMATION_CODE = "ABC123";
+
     @BeforeEach
     void setUp() {
         familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
@@ -59,7 +61,7 @@ public class SendAutomatedProviderOutreachEmailTest {
                 .with("parentContactEmail", "familyemail@test.com")
                 .with("familyIntendedProviderEmail", "provideremail@test.com")
                 .with("shareableLink", "tempEmailLink")
-                .withShortCode("ABC123")
+                .withShortCode(CONFIRMATION_CODE)
                 .build());
 
         sendEmailClass = new SendAutomatedProviderOutreachEmail(sendEmailJob, messageSource, submissionRepositoryService);
@@ -92,7 +94,7 @@ public class SendAutomatedProviderOutreachEmailTest {
         assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
         assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
         assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
-        assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+        assertThat(emailData.get("confirmationCode")).isEqualTo(CONFIRMATION_CODE);
         assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
         assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
     }
@@ -105,14 +107,14 @@ public class SendAutomatedProviderOutreachEmailTest {
         assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                 new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
         assertThat(emailTemplate.getSubject()).isEqualTo(
-                messageSource.getMessage("email.automated-provider-outreach.subject", null, locale));
+                messageSource.getMessage("email.automated-provider-outreach.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.automated-provider-outreach.p1", null, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.automated-provider-outreach.p2", new Object[]{"ABC123"}, locale));
+                messageSource.getMessage("email.automated-provider-outreach.p2", new Object[]{CONFIRMATION_CODE}, locale));
         assertThat(emailCopy).contains(
                 messageSource.getMessage("email.automated-provider-outreach.p3", new Object[]{"tempEmailLink"},
                         locale));
