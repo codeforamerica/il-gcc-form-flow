@@ -66,7 +66,6 @@ public class Gcc extends FlowInputs {
     private String parentHomeCity;
     @NotBlank(message = "{errors.provide-state}")
     private String parentHomeState;
-
     @NotBlank(message = "{errors.provide-zip}")
     @Pattern(regexp = ZIPCODE_REGEX, message = "{errors.invalid-zipcode}")
     private String parentHomeZipCode;

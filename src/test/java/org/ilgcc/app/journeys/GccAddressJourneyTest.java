@@ -19,12 +19,12 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
     private final static String STREET_ADDRESS_LINE_1 = "110 E Sycamore St";
     private final static String STREET_ADDRESS_LINE_2 = "#1010";
     private final static String CITY = "Sycamore";
-    private final static String ZIP_CODE = "60168";
+    private final static String ZIP_CODE = "60002";
 
     private final static String VALIDATED_STREET_ADDRESS_LINE_1 = "110 E Sycamore Street, UNIT 1010";
     private final static String VALIDATED_CITY = "Sycamore";
     private final static String VALIDATED_STATE = "IL";
-    private final static String VALIDATED_ZIP_CODE = "60178";
+    private final static String VALIDATED_ZIP_CODE = "60097";
 
     private final static String COUNTY_LEE_LABEL = "LEE";
     @MockitoBean
