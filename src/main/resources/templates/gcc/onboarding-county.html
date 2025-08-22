@@ -1,5 +1,5 @@
 <th:block
-  th:replace="~{fragments/inputs/screenWithOneInputAndSkip ::
+        th:replace="~{fragments/inputs/screenWithOneInputAndSkip ::
   screenWithOneInputAndSkip(
     title=#{onboarding-county.title},
     header=#{onboarding-county.header},
@@ -10,17 +10,18 @@
     skipText=#{onboarding-county.link},
     formAction=${formAction},
     inputContent=~{::inputContent})}">
-  <th:block th:ref="inputContent">
-    <th:block
-      th:replace="~{fragments/inputs/select :: select(ariaLabel='header', inputName='applicationCounty', content=~{::countyInput})}">
-      <th:block th:ref="countyInput">
+    <th:block th:ref="inputContent">
         <th:block
-                th:replace="~{fragments/inputs/selectOptionPlaceholder :: selectOptionPlaceholder(optionText=#{onboarding-county.placeholder-text})}"/>
-        <th:block th:each="county : ${T(org.ilgcc.app.utils.CountyUtils).getActiveCounties()}">
-          <th:block
-                  th:replace="~{fragments/inputs/selectOption :: selectOption(value=${county.getCounty()}, optionText=${county.getCounty()})}"/>
+                th:replace="~{fragments/inputs/select :: select(ariaLabel='header', inputName='applicationCounty', content=~{::countyInput})}">
+            <th:block th:ref="countyInput">
+                <th:block
+                        th:replace="~{fragments/inputs/selectOptionPlaceholder :: selectOptionPlaceholder(optionText=#{onboarding-county.placeholder-text})}"/>
+                <th:block
+                        th:each="county : ${T(org.ilgcc.app.utils.CountyUtils).getActiveCounties()}">
+                    <th:block
+                            th:replace="~{fragments/inputs/selectOption :: selectOption(value=${county.getCounty()}, optionText=${county.getCounty()})}"/>
+                </th:block>
+            </th:block>
         </th:block>
-      </th:block>
     </th:block>
-  </th:block>
 </th:block>

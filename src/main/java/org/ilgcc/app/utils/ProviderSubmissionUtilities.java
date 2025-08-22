@@ -190,7 +190,7 @@ public class ProviderSubmissionUtilities {
                     SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData());
             applicationData.put("childrenInitialsList",
                     ProviderSubmissionUtilities.getChildrenInitialsList(mergedChildrenAndSchedules.get(data.get("uuid"))));
-            if (subflowIteration.containsKey("uuid")) {
+            if (subflowIteration.containsKey("uuid") && !subflowIteration.containsKey("providerUuid")) {
                 String earliestCCAPDate = DateUtilities.getEarliestDate(mergedChildrenAndSchedules.get(subflowIteration.get(
                         "uuid")).stream().map(s -> s.getOrDefault(
                         "ccapStartDate", "").toString()).toList());
