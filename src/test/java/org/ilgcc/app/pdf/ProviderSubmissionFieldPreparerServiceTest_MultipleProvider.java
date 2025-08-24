@@ -625,9 +625,12 @@ public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
             }
 
             @Test
-            public void childCareStartDateIsNotSetByProviderPreparer() {
+            public void childCareStartDateComesFromProviderCCAPStartDate() {
+                individualProvider.put("earliestChildcareStartDate", "02/10/2020");
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-                assertThat(result.get("childcareStartDate")).isNull();
+                assertThat(result.get("childcareStartDate")).isEqualTo(
+                        new SingleField("childcareStartDate", "02/10/2020",
+                                null));
             }
         }
     }

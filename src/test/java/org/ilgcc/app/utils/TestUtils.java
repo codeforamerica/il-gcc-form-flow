@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TestUtils {
 
@@ -32,5 +33,17 @@ public class TestUtils {
     submission.setId(null);
     submission.setInputData(new HashMap<>());
     submission.setFlow(null);
+  }
+
+  public static Map<String, Object> createCareSchedule(String providerUUID, String childUUID, String ccapStartDate) {
+    Map<String, Object> careSchedule = new HashMap<>();
+
+    careSchedule.put("uuid", String.format("%s-%s", providerUUID, childUUID));
+    careSchedule.put("childInCare", true);
+    careSchedule.put("ccapStartDate", ccapStartDate);
+    careSchedule.put("repeatForValue", providerUUID);
+    careSchedule.put("iterationIsComplete", true);
+
+    return careSchedule;
   }
 }

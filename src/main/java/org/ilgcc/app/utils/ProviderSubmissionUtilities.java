@@ -564,14 +564,12 @@ public class ProviderSubmissionUtilities {
     public static boolean isProviderRegistering(@NotNull Submission submission) {
         return submission.getInputData().getOrDefault("providerPaidCcap", "false").toString().equals("false");
     }
-    public static String getCCAPStartDateForProvider(Submission providerSubmission, Submission familySubmission) {
-        if (providerSubmission.getInputData().containsKey("providerCareStartDate")) {
-            return providerSubmission.getInputData().get("providerCareStartDate").toString();
-        } else {
-            Map<String, List<Map<String, Object>>> providerSchedules = SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(
-                familySubmission.getInputData());
-            List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerSubmission.getInputData().get("currentProviderUuid"), Collections.emptyList());
-            return DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
-        }
+
+    public static String getCCAPStartDateForProvider(String providerUuid, Map<String, Object> familyInputData) {
+        Map<String, List<Map<String, Object>>> providerSchedules =
+                SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider(familyInputData);
+
+        List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerUuid, Collections.emptyList());
+        return DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
     }
 }

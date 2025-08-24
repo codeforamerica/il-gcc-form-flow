@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.ilgcc.app.utils.enums.ProviderDenialReason;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -27,8 +26,11 @@ public class ProviderRegistrationPreparer extends InputDataPreparerHelper {
         }
 
         results.put("providerLicenseNumber", new SingleField("providerLicenseNumber", providerLicense(providerInputData), null));
+
+        // Only registering providers can override the ccap start date and they are required to have a date
         results.put("childcareStartDate",
-                new SingleField("childcareStartDate", providerInputData.getOrDefault("providerCareStartDate", "").toString(), null));
+                new SingleField("childcareStartDate", providerInputData.get("providerCareStartDate").toString(),
+                        null));
 
         return results;
     }

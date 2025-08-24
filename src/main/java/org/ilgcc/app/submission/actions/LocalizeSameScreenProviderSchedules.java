@@ -22,8 +22,6 @@ public class LocalizeSameScreenProviderSchedules implements Action {
 
     @Autowired
     MessageSource messageSource;
-  @Autowired
-  private LocalizeChildcareSchedules localizeChildcareSchedules;
 
 
     @Override

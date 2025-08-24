@@ -83,7 +83,7 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                     "applicantMultipleProviders",
                     new SingleField("applicantMultipleProviders", String.valueOf(hasMultipleProviders), null));
 
-            String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().get(0);
+            String providerUuid = mergedChildrenAndSchedules.keySet().stream().toList().getFirst();
 
             if (null != providerUuid) {
                 Map<String, Object> firstProviderObject = new HashMap<>();
@@ -120,6 +120,12 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
 
                 if (providerSubmissionOptional.isPresent()) {
                     Submission providerSubmission = providerSubmissionOptional.get();
+
+                    // Child care start date needs to be set before registration data is run, in case provider registered and
+                    // added a new date
+                    results.put("childcareStartDate", new SingleField("childcareStartDate",
+                            firstProviderObject.getOrDefault("earliestChildcareStartDate", "").toString(), null));
+
                     if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
                         results.putAll(mapProviderRegistrationData(providerSubmission.getInputData()));
                     }
@@ -140,6 +146,12 @@ public class ProviderSubmissionFieldPreparerService implements SubmissionFieldPr
                     new SingleField("applicantMultipleProviders", "false", null));
 
             Optional<Submission> providerSubmissionOptional = getProviderSubmission(familySubmission);
+
+            // When only a single provider application, get the childcareStart date from the application.
+            // If the provider responds and registers, they may override the start date
+            results.put("childcareStartDate",
+                    new SingleField("childcareStartDate",
+                            familySubmission.getInputData().getOrDefault("earliestChildcareStartDate", "").toString(), null));
 
             if (providerSubmissionOptional.isPresent()) {
                 Submission providerSubmission = providerSubmissionOptional.get();
