@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "daily"
     ignore:
-      - dependency-name: "com.amazonaws:aws-java-sdk-s3"
+      - dependency-name: "org.jobrunr:jobrunr-spring-boot-3-starter"
         update-types: ["version-update:semver-patch"]
   - package-ecosystem: "github-actions"
     directory: "/"
