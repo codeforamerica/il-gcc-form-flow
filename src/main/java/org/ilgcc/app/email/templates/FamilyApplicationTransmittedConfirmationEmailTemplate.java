@@ -2,6 +2,7 @@ package org.ilgcc.app.email.templates;
 
 import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.formatListIntoReadableString;
+import static org.ilgcc.app.utils.SubmissionUtilities.haveAllProvidersResponded;
 
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -49,10 +50,17 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
         String p1 = messageSource.getMessage("email.family-application-transmitted-confirmation-email.p1",
                 new Object[]{emailData.get("parentFirstName")},
                 locale);
-        String p2 = messageSource.getMessage("email.family-application-transmitted-confirmation-email.p2",
-                new Object[]{emailData.get("ccrrName")}, locale);
+        String p2 = "";
 
         List<Map<String, Object>> providers = (List) emailData.getOrDefault("providersData", List.of());
+
+        if (haveAllProvidersResponded(providers)) {
+            p2 = messageSource.getMessage("email.family-application-transmitted-confirmation-email.p2.all-responded",
+                    new Object[]{emailData.get("ccrrName")}, locale);
+        } else {
+            p2 = messageSource.getMessage("email.family-application-transmitted-confirmation-email.p2.mixed-response",
+                    new Object[]{emailData.get("ccrrName")}, locale);
+        }
 
         for (Map<String, Object> provider : providers) {
             p2 += getProviderResponseString(provider, messageSource, locale);

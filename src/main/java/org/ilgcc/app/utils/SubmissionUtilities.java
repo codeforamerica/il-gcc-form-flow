@@ -401,6 +401,10 @@ public class SubmissionUtilities {
         return SubmissionStatus.RESPONDED.name().equals(familySubmission.getInputData().get("providerApplicationResponseStatus"));
     }
 
+    public static boolean haveAllProvidersResponded(List<Map<String, Object>> providers) {
+        return providers.stream().allMatch(p -> p.getOrDefault("providerApplicationResponseStatus", "false").equals(SubmissionStatus.RESPONDED.name()));
+    }
+
     public static boolean allChildcareSchedulesAreForTheSameProvider(Map<String, Object> inputData) {
 
         Map<String, List<Map<String, Object>>> relatedChildrenSchedulesByProvider = getRelatedChildrenSchedulesForEachProvider(
