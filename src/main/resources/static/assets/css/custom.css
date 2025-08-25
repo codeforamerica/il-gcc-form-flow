@@ -881,3 +881,16 @@ div.move-20-up {
 .hidden {
   display: none !important;
 }
+
+
+/* These remove the default html5 functionality that allows to increment or decrement a number input */
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance:textfield;
+}
