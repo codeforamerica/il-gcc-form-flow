@@ -3,6 +3,7 @@
   screenWithYesAndNoButtons(
     title=#{children-ccap-child-other-ed.title},
     header=#{children-ccap-child-other-ed.header(${fieldData.get('childFirstName')})},
+        iconFragment=~{fragments/gcc-icons :: education},
     inputName='childAttendsOtherEd',
     inputContent=~{::inputContent})}">
   <th:block th:ref="inputContent">
