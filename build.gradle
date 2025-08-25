@@ -87,7 +87,7 @@ dependencies {
     testImplementation 'org.projectlombok:lombok:1.18.38'
     testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:4.1.1'
     testImplementation 'io.zonky.test:embedded-database-spring-test:2.6.0'
-    testImplementation 'io.zonky.test:embedded-postgres:2.1.0'
+    testImplementation 'io.zonky.test:embedded-postgres:2.1.1'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
     testCompileOnly 'org.projectlombok:lombok'
