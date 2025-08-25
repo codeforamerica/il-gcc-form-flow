@@ -41,7 +41,7 @@ public class NewProviderAgreesToCareFamilyConfirmationEmailTemplate {
     }
 
     private String setSubject() {
-        return messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", null, locale);
+        return messageSource.getMessage("email.response-email-for-family.provider-agrees.subject", new Object[]{emailData.get("confirmationCode")}, locale);
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {

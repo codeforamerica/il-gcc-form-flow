@@ -48,12 +48,13 @@ public class SendUnidentifiedProviderConfirmationEmailTest {
 
     private final Locale locale = Locale.ENGLISH;
 
+    private static final String CONFIRMATION_CODE = "ABC123";
 
     @BeforeEach
     void setUp() {
         Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder().withFlow("gcc").with("parentPreferredName", "FirstName")
                 .withChild("First", "Child", "true").withChild("Second", "Child", "true")
-                .withSubmittedAtDate(OffsetDateTime.now()).withCCRR().withShortCode("ABC123").build());
+                .withSubmittedAtDate(OffsetDateTime.now()).withCCRR().withShortCode(CONFIRMATION_CODE).build());
 
         providerSubmission = submissionRepositoryService.save(new SubmissionTestBuilder().withFlow("providerresponse")
                 .with("familySubmissionId", familySubmission.getId().toString())
@@ -85,7 +86,7 @@ public class SendUnidentifiedProviderConfirmationEmailTest {
 
         Map<String, Object> emailData = emailDataOptional.get();
 
-        assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+        assertThat(emailData.get("confirmationCode")).isEqualTo(CONFIRMATION_CODE);
         assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
         assertThat(emailData.get("providerName")).isEqualTo("BusinessName");
         assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
@@ -102,7 +103,7 @@ public class SendUnidentifiedProviderConfirmationEmailTest {
         assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                 new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
         assertThat(emailTemplate.getSubject()).isEqualTo(
-                messageSource.getMessage("email.unidentified-provider-confirmation.subject", null, locale));
+                messageSource.getMessage("email.unidentified-provider-confirmation.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
@@ -113,7 +114,7 @@ public class SendUnidentifiedProviderConfirmationEmailTest {
         assertThat(emailCopy).contains(messageSource.getMessage("email.unidentified-provider-confirmation.p3",
                 new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
         assertThat(emailCopy).contains(
-                messageSource.getMessage("email.unidentified-provider-confirmation.p4", new Object[]{"ABC123"}, locale));
+                messageSource.getMessage("email.unidentified-provider-confirmation.p4", new Object[]{CONFIRMATION_CODE}, locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));

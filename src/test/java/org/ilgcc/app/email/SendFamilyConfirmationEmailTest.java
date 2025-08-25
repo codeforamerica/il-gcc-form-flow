@@ -60,6 +60,7 @@ public class SendFamilyConfirmationEmailTest {
 
     private final Locale locale = Locale.ENGLISH;
 
+    private static final String CONFIRMATION_CODE = "ABC123";
 
     @BeforeEach
     void setUp() {
@@ -70,7 +71,7 @@ public class SendFamilyConfirmationEmailTest {
                 .withCCRR()
                 .with("parentContactEmail", "familyemail@test.com")
                 .with("shareableLink", "tempEmailLink")
-                .withShortCode("ABC123")
+                .withShortCode(CONFIRMATION_CODE)
                 .build());
 
         sendEmailClass = new SendFamilyConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
@@ -128,7 +129,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
             assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
             assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
-            assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+            assertThat(emailData.get("confirmationCode")).isEqualTo(CONFIRMATION_CODE);
             assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
             assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
             assertThat(emailData.get("hasMultipleProviders")).isEqualTo(false);
@@ -142,7 +143,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                     new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
             assertThat(emailTemplate.getSubject()).isEqualTo(
-                    messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{"ABC123"}, locale));
+                    messageSource.getMessage("email.family-confirmation.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
             String emailCopy = emailTemplate.getBody().getValue();
 
@@ -160,7 +161,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p6",
                     new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p7",
-                    new Object[]{"ABC123", "October 10, 2022"}, locale));
+                    new Object[]{CONFIRMATION_CODE, "October 10, 2022"}, locale));
             assertThat(emailCopy).contains(
                     messageSource.getMessage("email.family-confirmation.p8", null, locale));
             assertThat(emailCopy).contains(
@@ -207,7 +208,7 @@ public class SendFamilyConfirmationEmailTest {
                     .with("providers", List.of(individualProvider, programProvider))
                     .with("parentContactEmail", "familyemail@test.com")
                     .with("shareableLink", "tempEmailLink")
-                    .withShortCode("ABC123")
+                    .withShortCode(CONFIRMATION_CODE)
                     .build());
 
             sendEmailClass = new SendFamilyConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
@@ -222,7 +223,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
             assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
             assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
-            assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+            assertThat(emailData.get("confirmationCode")).isEqualTo(CONFIRMATION_CODE);
             assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
             assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
             assertThat(emailData.get("hasMultipleProviders")).isEqualTo(true);
@@ -235,7 +236,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                     new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
             assertThat(emailTemplate.getSubject()).isEqualTo(
-                    messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{"ABC123"}, locale));
+                    messageSource.getMessage("email.family-confirmation.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
             String emailCopy = emailTemplate.getBody().getValue();
 
@@ -253,7 +254,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p6",
                     new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p7",
-                    new Object[]{"ABC123", "October 10, 2022"}, locale));
+                    new Object[]{CONFIRMATION_CODE, "October 10, 2022"}, locale));
             assertThat(emailCopy).contains(
                     messageSource.getMessage("email.family-confirmation.p8", null, locale));
             assertThat(emailCopy).contains(
@@ -290,7 +291,7 @@ public class SendFamilyConfirmationEmailTest {
                     .with("providers", List.of(individualProvider))
                     .with("parentContactEmail", "familyemail@test.com")
                     .with("shareableLink", "tempEmailLink")
-                    .withShortCode("ABC123")
+                    .withShortCode(CONFIRMATION_CODE)
                     .build());
 
             sendEmailClass = new SendFamilyConfirmationEmail(sendEmailJob, messageSource, submissionRepositoryService);
@@ -305,7 +306,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
             assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
             assertThat(emailData.get("childrenInitialsList")).isEqualTo(List.of("F.C.", "S.C."));
-            assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+            assertThat(emailData.get("confirmationCode")).isEqualTo(CONFIRMATION_CODE);
             assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
             assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
             assertThat(emailData.get("hasMultipleProviders")).isEqualTo(false);
@@ -318,7 +319,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                     new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
             assertThat(emailTemplate.getSubject()).isEqualTo(
-                    messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{"ABC123"}, locale));
+                    messageSource.getMessage("email.family-confirmation.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
             String emailCopy = emailTemplate.getBody().getValue();
 
@@ -336,7 +337,7 @@ public class SendFamilyConfirmationEmailTest {
             assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p6",
                     new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p7",
-                    new Object[]{"ABC123", "October 10, 2022"}, locale));
+                    new Object[]{CONFIRMATION_CODE, "October 10, 2022"}, locale));
             assertThat(emailCopy).contains(
                     messageSource.getMessage("email.family-confirmation.p8", null, locale));
             assertThat(emailCopy).contains(
@@ -397,7 +398,7 @@ public class SendFamilyConfirmationEmailTest {
                                 List.of(programProvider.get("uuid").toString(), "NO_PROVIDER", individualProvider.get("uuid").toString()))
                         .with("parentContactEmail", "familyemail@test.com")
                         .with("shareableLink", "tempEmailLink")
-                        .withShortCode("ABC123")
+                        .withShortCode(CONFIRMATION_CODE)
                         .build());
 
                 Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
@@ -411,7 +412,7 @@ public class SendFamilyConfirmationEmailTest {
                 assertThat(emailData.get("parentContactEmail")).isEqualTo("familyemail@test.com");
                 assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
                 assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
-                assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+                assertThat(emailData.get("confirmationCode")).isEqualTo(CONFIRMATION_CODE);
                 assertThat(emailData.get("submittedDate")).isEqualTo("October 10, 2022");
                 assertThat(emailData.get("shareableLink")).isEqualTo("tempEmailLink");
                 assertThat(emailData.get("hasMultipleProviders")).isEqualTo(true);
@@ -425,7 +426,7 @@ public class SendFamilyConfirmationEmailTest {
                 assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                         new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
                 assertThat(emailTemplate.getSubject()).isEqualTo(
-                        messageSource.getMessage("email.general.subject.confirmation-code", new Object[]{"ABC123"}, locale));
+                        messageSource.getMessage("email.family-confirmation.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
                 String emailCopy = emailTemplate.getBody().getValue();
 
@@ -447,7 +448,7 @@ public class SendFamilyConfirmationEmailTest {
                 assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p6",
                         new Object[]{"Sample Test CCRR", "(603) 555-1244"}, locale));
                 assertThat(emailCopy).contains(messageSource.getMessage("email.family-confirmation.p7",
-                        new Object[]{"ABC123", "October 10, 2022"}, locale));
+                        new Object[]{CONFIRMATION_CODE, "October 10, 2022"}, locale));
                 assertThat(emailCopy).contains(
                         messageSource.getMessage("email.family-confirmation.p8", null, locale));
                 assertThat(emailCopy).contains(

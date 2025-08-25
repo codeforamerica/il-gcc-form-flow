@@ -29,7 +29,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class SendAutomatedProviderOutreachEmailTest {
+public class DailyNewApplicationsProviderEmailTemplateTest {
 
     @MockitoSpyBean
     SendEmailJob sendEmailJob;

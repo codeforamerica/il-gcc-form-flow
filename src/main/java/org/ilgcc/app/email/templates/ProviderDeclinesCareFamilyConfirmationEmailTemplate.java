@@ -41,7 +41,7 @@ public class ProviderDeclinesCareFamilyConfirmationEmailTemplate {
     }
 
     private String setSubject(Map<String, Object> emailData) {
-        return messageSource.getMessage("email.response-email-for-family.provider-declines.subject", null, locale);
+        return messageSource.getMessage("email.response-email-for-family.provider-declines.subject", new Object[]{emailData.get("confirmationCode")}, locale);
     }
 
 

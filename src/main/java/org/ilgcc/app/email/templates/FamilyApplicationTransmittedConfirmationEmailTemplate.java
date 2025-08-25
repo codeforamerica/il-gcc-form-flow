@@ -41,7 +41,7 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
     }
 
     private String setSubject() {
-        return messageSource.getMessage("email.family-application-transmitted-confirmation-email.subject", null,
+        return messageSource.getMessage("email.family-application-transmitted-confirmation-email.subject", new Object[]{emailData.get("confirmationCode")},
                 locale);
     }
 

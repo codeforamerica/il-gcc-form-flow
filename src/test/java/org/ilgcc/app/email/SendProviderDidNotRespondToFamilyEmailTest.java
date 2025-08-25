@@ -50,6 +50,8 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
 
     private final Locale locale = Locale.ENGLISH;
 
+    private static final String CONFIRMATION_CODE = "ABC123";
+
     @BeforeEach
     void setUp() {
         familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
@@ -60,7 +62,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
                 .with("familyIntendedProviderName", "Intended Provider")
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withCCRR()
-                .withShortCode("ABC123")
+                .withShortCode(CONFIRMATION_CODE)
                 .build());
 
         sendEmailClass = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
@@ -91,7 +93,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
         assertThat(emailData.get("parentContactEmail")).isEqualTo("familyemail@test.com");
         assertThat(emailData.get("ccrrName")).isEqualTo("Sample Test CCRR");
         assertThat(emailData.get("ccrrPhoneNumber")).isEqualTo("(603) 555-1244");
-        assertThat(emailData.get("confirmationCode")).isEqualTo("ABC123");
+        assertThat(emailData.get("confirmationCode")).isEqualTo(CONFIRMATION_CODE);
         assertThat(emailData.get("familyIntendedProviderName")).isEqualTo("Intended Provider");
     }
 
@@ -103,7 +105,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
         assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                 new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
         assertThat(emailTemplate.getSubject()).isEqualTo(
-                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.subject", null, locale));
+                messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
@@ -115,7 +117,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
                         new Object[]{emailDataOptional.get().get("familyIntendedProviderName").toString()},
                         locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p3",
-                new Object[]{"ABC123"}, locale));
+                new Object[]{CONFIRMATION_CODE}, locale));
         assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p4",
                 new Object[]{"Sample Test CCRR", "(603) 555-1244"},
                 locale));
@@ -196,7 +198,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
                     .withChildcareScheduleForProvider("child-1-uuid", "first-provider-uuid")
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withCCRR()
-                    .withShortCode("ABC123")
+                    .withShortCode(CONFIRMATION_CODE)
                     .build());
             sendEmailClass = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
         }
@@ -209,7 +211,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
             assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                     new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
             assertThat(emailTemplate.getSubject()).isEqualTo(
-                    messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.subject", null, locale));
+                    messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
             String emailCopy = emailTemplate.getBody().getValue();
 
@@ -220,7 +222,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
                             new Object[]{emailDataOptional.get().get("childCareProviderInitials").toString()},
                             locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p3",
-                    new Object[]{"ABC123"}, locale));
+                    new Object[]{CONFIRMATION_CODE}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p4",
                     new Object[]{"Sample Test CCRR", "(603) 555-1244"},
                     locale));
@@ -280,7 +282,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
                     .withChildcareScheduleForProvider("child-1-uuid", "first-provider-uuid")
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withCCRR()
-                    .withShortCode("ABC123")
+                    .withShortCode(CONFIRMATION_CODE)
                     .build());
             sendEmailClass = new SendProviderDidNotRespondToFamilyEmail(sendEmailJob, messageSource, submissionRepositoryService);
         }
@@ -293,7 +295,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
             assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                     new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
             assertThat(emailTemplate.getSubject()).isEqualTo(
-                    messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.subject", null, locale));
+                    messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
             String emailCopy = emailTemplate.getBody().getValue();
 
@@ -304,7 +306,7 @@ public class SendProviderDidNotRespondToFamilyEmailTest {
                             new Object[]{emailDataOptional.get().get("childCareProgramName").toString()},
                             locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p3",
-                    new Object[]{"ABC123"}, locale));
+                    new Object[]{CONFIRMATION_CODE}, locale));
             assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p4",
                     new Object[]{"Sample Test CCRR", "(603) 555-1244"},
                     locale));
