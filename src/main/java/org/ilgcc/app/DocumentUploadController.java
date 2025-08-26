@@ -1,5 +1,7 @@
 package org.ilgcc.app;
 
+import static org.ilgcc.app.utils.TextUtilities.sanitize;
+
 import formflow.library.FileController;
 import formflow.library.data.Submission;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,8 +59,8 @@ public class DocumentUploadController {
     public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file, @RequestParam("flow") String flow,
             @RequestParam("inputName") String inputName, @RequestParam("thumbDataURL") String thumbDataUrl,
             @RequestParam("screen") String screen, HttpSession httpSession, HttpServletRequest request, Locale locale) {
-        log.debug("POST doc-upload (url: {}): flow: {} inputName: {}", sanitize(request.getRequestURI().toLowerCase()), sanitize(flow),
-                sanitize(inputName));
+        log.debug("POST doc-upload (url: {}): flow: {} inputName: {}", sanitize(request.getRequestURI().toLowerCase(), "*"), sanitize(flow, "*"),
+                sanitize(inputName, "*"));
 
         Submission submission = fileController.findOrCreateSubmission(httpSession, flow);
 
@@ -87,9 +89,5 @@ public class DocumentUploadController {
         }
 
         return fileController.upload(file, flow, inputName, thumbDataUrl, screen, httpSession, request, locale);
-    }
-
-    private String sanitize(String string) {
-        return string.replaceAll("[^a-zA-Z0-9]", "*").replaceAll("\n", "*").replaceAll("\r", "*");
     }
 }

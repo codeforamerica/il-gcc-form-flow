@@ -1,6 +1,7 @@
 package org.ilgcc.app;
 
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
+import static org.ilgcc.app.utils.TextUtilities.sanitize;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -43,9 +44,9 @@ public class MultipleProviderResponsePdfController {
 
         if (log.isDebugEnabled()) {
             log.debug("GET downloadPdfZip (url: {}): flow: {}, submissionId: {}",
-                    sanitizeString(request.getRequestURI().toLowerCase()),
-                    sanitizeString(flow),
-                    sanitizeString(submissionId));
+                    sanitize(request.getRequestURI().toLowerCase()),
+                    sanitize(flow),
+                    sanitize(submissionId));
         }
 
         final Optional<Submission> optionalFamilySubmission = submissionRepositoryService.findById(UUID.fromString(submissionId));
@@ -58,8 +59,8 @@ public class MultipleProviderResponsePdfController {
 
             if (log.isDebugEnabled()) {
                 log.debug("Downloading PDF with provider submission_id: {} and family submission_id: {}",
-                        sanitizeString(submissionId),
-                        sanitizeString(familySubmission.getId().toString()));
+                        sanitize(submissionId),
+                        sanitize(familySubmission.getId().toString()));
             }
 
             if (multiplePDFs.keySet().size() > 1) {
@@ -82,13 +83,9 @@ public class MultipleProviderResponsePdfController {
 
         if (log.isDebugEnabled()) {
             log.debug("Attempted to download PDF with family submission id: {} but no submission was found",
-                    sanitizeString(submissionId));
+                    sanitize(submissionId));
         }
 
         return response;
-    }
-
-    private String sanitizeString(String input) {
-        return input.replaceAll("[^a-zA-Z0-9_-]", ""); // Allow only alphanumeric characters, hyphens, and underscores
     }
 }
