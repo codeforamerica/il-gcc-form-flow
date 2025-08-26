@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Slf4j
 public class ValidateBirthdate extends VerifyDate {
-  private final MessageSource messageSource;
+  MessageSource messageSource;
   private final String inputName;
   private final String groupName;
 
