@@ -11,7 +11,9 @@
                 <th:block th:replace="~{fragments/gcc-icons :: documents-search}"></th:block>
                 <th:block
                         th:with="childcareSchedules=${fieldData.get('childcareSchedules')},
-                                 hasProvider=${submission.getInputData().containsKey('providers')}">
+                                 hasProvider=${submission.getInputData().containsKey('providers')},
+                                 showNoProviderOption=${submission.getInputData().getOrDefault('choseProviderForEveryChildInNeedOfCare', '').equals('false')},
+                                 hasMoreThanOneChildcareOption=${hasProvider && (submission.getInputData().get('providers').size() > 1 || showNoProviderOption)}">
                     <th:block
                             th:replace="~{fragments/cardHeader :: cardHeader(header= ${#messages.msg('schedules-review.header')}, subtext=${hasProvider ? #messages.msg('schedules-review.body') : #messages.msg('schedules-review.no-provider.body')})}"/>
                     <th:block
@@ -25,6 +27,15 @@
                                         <p class="text--left"><strong
                                                 th:text="${childDetails.get('childFirstName') + ' ' + childDetails.get('childLastName')}"></strong>
                                         </p>
+                                        <th:block th:if="${hasMoreThanOneChildcareOption}">
+                                            <p class="text--small spacing-above-0">
+                                                <a th:href="'/flow/gcc/schedules-start/' + ${childcareIteration.get('uuid')}"
+                                                   th:text="#{schedules-review.edit-providers}"
+                                                   th:id="'add-remove-providers-' + ${childcareIteration.get('uuid')}"
+                                                   class="subflow-edit"></a>
+                                            </p>
+                                        </th:block>
+
                                         <ol class="list--bulleted">
                                             <li
                                                     th:each="providerSchedule: ${childcareIteration.get('providerSchedules')}"
@@ -42,7 +53,7 @@
 
                                                 <p class="text--small spacing-above-10">
                                                     <a th:href="'/flow/gcc/schedules-start-care/' + ${childcareIteration.get('uuid')} +'/' + ${providerSchedule.get('uuid')} + '/edit'"
-                                                       th:text="#{schedules-review.edit}"
+                                                       th:text="#{schedules-review.edit-schedule}"
                                                        th:id="'edit-iteration-' + ${childcareIteration.get('uuid')}"
                                                        class="subflow-edit"></a>
                                                 </p>
