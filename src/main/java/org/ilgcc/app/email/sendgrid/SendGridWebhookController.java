@@ -1,5 +1,7 @@
 package org.ilgcc.app.email.sendgrid;
 
+import static org.ilgcc.app.utils.TextUtilities.sanitize;
+
 import com.sendgrid.helpers.eventwebhook.EventWebhook;
 import com.sendgrid.helpers.eventwebhook.EventWebhookHeader;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +51,7 @@ public class SendGridWebhookController {
         final ECPublicKey ellipticCurvePublicKey = ew.ConvertPublicKeyToECDSA(sendGridPublicKey);
 
         // Sendgrid payloads should always end with a CRLF for validation
-        boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody  + "\r\n", signature, timestamp);
+        boolean valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody + "\r\n", signature, timestamp);
 
         if (!valid) {
             // Sendgrid's test API doesn't apparently have a trailing CRLF, so we can try again
@@ -59,11 +61,13 @@ public class SendGridWebhookController {
             valid = ew.VerifySignature(ellipticCurvePublicKey, requestBody, signature, timestamp);
 
             if (!valid) {
-                log.error("Invalid signature for SendGrid events was provided. Ignoring events. Payload: {} Signature: {}, Timestamp: {}", requestBody, signature, timestamp);
+                log.error(
+                        "Invalid signature for SendGrid events was provided. Ignoring events. Payload: {} Signature: {}, Timestamp: {}",
+                        sanitize(requestBody, "*"), sanitize(signature, "*"), sanitize(timestamp, "*"));
                 return;
             }
         }
 
-        log.info("Received SendGrid events {}", requestBody);
+        log.info("Received SendGrid events {}", sanitize(requestBody, "*"));
     }
 }

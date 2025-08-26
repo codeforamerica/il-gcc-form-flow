@@ -7,14 +7,15 @@ import java.util.Map;
 import org.yaml.snakeyaml.util.UriEncoder;
 
 public class TextUtilities {
-  public static String generateTextMessage (String recipient, String textBody){
-  Map<String, String> params = new HashMap<>();
 
-  params.put("body", textBody);
+  public static String generateTextMessage(String recipient, String textBody) {
+    Map<String, String> params = new HashMap<>();
 
-  return params.keySet().stream()
-      .map(key -> key + "=" + UriEncoder.encode(params.get(key)))
-      .collect(joining("&", String.format("sms://%s?", reformatRecipientNumber(recipient)), ""));
+    params.put("body", textBody);
+
+    return params.keySet().stream()
+            .map(key -> key + "=" + UriEncoder.encode(params.get(key)))
+            .collect(joining("&", String.format("sms://%s?", reformatRecipientNumber(recipient)), ""));
   }
 
 
@@ -29,5 +30,33 @@ public class TextUtilities {
     } else {
       return String.format("+1%s", formattedNumber);
     }
+  }
+
+  /**
+   * Removes all characters that are not A-Z, a-z, 0-9, hyphens, and underscores and replaces with an empty string.
+   *
+   * @param string the string to be sanitized
+   * @return the sanitized string
+   */
+  public static String sanitize(String string) {
+    return sanitize(string, "");
+  }
+
+  /**
+   * Removes all characters that are not A-Z, a-z, 0-9, hyphens, and underscores
+   *
+   * @param string the string to be sanitized
+   * @param replacementValue the value to insert if an invalid character is found
+   * @return the sanitized string
+   */
+  public static String sanitize(String string, String replacementValue) {
+    if (string == null) {
+      return null;
+    }
+
+    return string
+            .replaceAll("[^a-zA-Z0-9_-]", replacementValue)
+            .replaceAll("\n", replacementValue)
+            .replaceAll("\r", replacementValue);
   }
 }

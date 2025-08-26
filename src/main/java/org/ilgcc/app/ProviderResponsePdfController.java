@@ -1,6 +1,7 @@
 package org.ilgcc.app;
 
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
+import static org.ilgcc.app.utils.TextUtilities.sanitize;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -43,9 +44,9 @@ public class ProviderResponsePdfController {
 
         if (log.isDebugEnabled()) {
             log.debug("GET downloadPdf (url: {}): flow: {}, submissionId: {}",
-                    sanitizeString(request.getRequestURI().toLowerCase()),
-                    sanitizeString(flow),
-                    sanitizeString(submissionId));
+                    sanitize(request.getRequestURI().toLowerCase()),
+                    sanitize(flow),
+                    sanitize(submissionId));
         }
 
         ResponseEntity response;
@@ -71,8 +72,8 @@ public class ProviderResponsePdfController {
 
                     if (log.isDebugEnabled()) {
                         log.debug("Downloading PDF with provider submission_id: {} and family submission_id: {}",
-                                sanitizeString(submissionId),
-                                sanitizeString(String.valueOf(familySubmission.getId())));
+                                sanitize(submissionId),
+                                sanitize(String.valueOf(familySubmission.getId())));
                     }
 
                     Map<String, byte[]> multiplePDFs = this.pdfService.generatePDFs(familySubmission);
@@ -96,41 +97,37 @@ public class ProviderResponsePdfController {
                     if (log.isDebugEnabled()) {
                         log.debug(
                                 "Attempted to download PDF with provider submission id: {} but no family submission was found with confirmation code: {}",
-                                sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString()));
+                                sanitize(submissionId), sanitize(providerResponseFamilyShortCode.toString()));
                     }
 
                     response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
                             "Attempted to download PDF with provider submission id: %s but no family submission was found with confirmation code: %s",
-                            sanitizeString(submissionId), sanitizeString(providerResponseFamilyShortCode.toString())));
+                            sanitize(submissionId), sanitize(providerResponseFamilyShortCode.toString())));
                 }
             } else {
                 if (log.isDebugEnabled()) {
                     log.debug(
                             "Attempted to download PDF with provider submission id: {} but no providerResponseFamilyShortCode was found",
-                            sanitizeString(submissionId));
+                            sanitize(submissionId));
                 }
 
                 response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
                         "Attempted to download PDF with provider submission id: %s but no providerResponseFamilyShortCode was found.",
-                        sanitizeString(submissionId)));
+                        sanitize(submissionId)));
             }
 
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Attempted to download PDF with provider submission id: {} but no submission was found",
-                        sanitizeString(submissionId));
+                        sanitize(submissionId));
             }
             response = ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(String.format(
                             "Attempted to download PDF with provider submission id: %s but no submission was found",
-                            sanitizeString(submissionId)));
+                            sanitize(submissionId)));
         }
 
         return response;
 
-    }
-
-    private String sanitizeString(String input) {
-        return input.replaceAll("[^a-zA-Z0-9_-]", ""); // Allow only alphanumeric characters, hyphens, and underscores
     }
 }

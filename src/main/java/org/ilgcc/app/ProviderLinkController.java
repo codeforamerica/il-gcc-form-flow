@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import static org.ilgcc.app.utils.TextUtilities.sanitize;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_CAME_FROM_HOME_PAGE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_CONFIRMATION_CODE;
 import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_FAMILY_SUBMISSION_ID;
@@ -48,8 +49,7 @@ public class ProviderLinkController {
         HttpSession newSession = request.getSession();
         newSession.setAttribute(SESSION_KEY_SUBMISSION_MAP, new HashMap<String, UUID>());
 
-        String sanitizedConfirmationCode =
-                (confirmationCode != null) ? confirmationCode.replace('\n', '_').replace('\r', '_') : null;
+        String sanitizedConfirmationCode = sanitize(confirmationCode);
 
         log.info("Loading submission for code " + sanitizedConfirmationCode);
 
