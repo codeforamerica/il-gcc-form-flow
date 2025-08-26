@@ -57,7 +57,7 @@ public class DocumentUploadController {
     public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file, @RequestParam("flow") String flow,
             @RequestParam("inputName") String inputName, @RequestParam("thumbDataURL") String thumbDataUrl,
             @RequestParam("screen") String screen, HttpSession httpSession, HttpServletRequest request, Locale locale) {
-        log.debug("POST doc-upload (url: {}): flow: {} inputName: {}", request.getRequestURI().toLowerCase(), sanitize(flow),
+        log.debug("POST doc-upload (url: {}): flow: {} inputName: {}", sanitize(request.getRequestURI().toLowerCase()), sanitize(flow),
                 sanitize(inputName));
 
         Submission submission = fileController.findOrCreateSubmission(httpSession, flow);
