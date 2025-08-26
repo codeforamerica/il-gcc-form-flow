@@ -59,6 +59,8 @@ When work in on the `main` branch and has completed acceptance testing, they wil
 
 ![Untitled](/docs/images/deployment-jira.png)
 
+<br/><br/>
+
 # Hotfix Deployment
 
 The use case/scenario for a Hotfix is that the most recent **Standard Deployment** tag is stable, there are changes in `main` that are not ready for release to Production, and some incremental change between “what is already in Production” and “everything in `main`" needs to be deployed to Production. This needed change could be a bug fix, a subset of “everything in `main`", etc.
