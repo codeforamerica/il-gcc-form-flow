@@ -158,6 +158,10 @@ public class MultiProviderPDFService {
                 }
                 if (providerSubmissionOptional.isPresent()) {
                     Submission providerSubmission = providerSubmissionOptional.get();
+                    // Child care start date needs to be set before registration data is run, in case provider registered and
+                    // added a new date
+                    submissionFields.put("childcareStartDate", new SingleField("childcareStartDate",
+                            currentProvider.getOrDefault("earliestChildcareStartDate", "").toString(), null));
                     if (ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
                         submissionFields.putAll(mapProviderRegistrationData(providerSubmission.getInputData()));
                     }
@@ -166,7 +170,6 @@ public class MultiProviderPDFService {
                                     providerSubmission.getInputData()));
                     submissionFields.putAll(
                             ProviderSubmissionFieldPreparerService.setProviderSignatureAndDate(providerSubmissionOptional.get()));
-                    submissionFields.put("childcareStartDate", new SingleField("childcareStartDate", ProviderSubmissionUtilities.getCCAPStartDateForProvider(providerSubmission, familySubmission), null));
                 } else {
                     submissionFields.putAll(familyIntendedProviderPreparerHelper.prepareSubmissionFields(familySubmission,
                             currentProvider));

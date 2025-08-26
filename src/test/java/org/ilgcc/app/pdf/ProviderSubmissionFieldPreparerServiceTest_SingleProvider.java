@@ -411,7 +411,7 @@ public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
             @Test
             public void childCareStartDateIsNotSetByProviderPreparer() {
                 Map<String, SubmissionField> result = preparer.prepareSubmissionFields(familySubmission, null);
-                assertThat(result.get("childcareStartDate")).isNull();
+                assertThat(result.get("childcareStartDate")).isEqualTo(new SingleField("childcareStartDate", "", null));
             }
         }
 

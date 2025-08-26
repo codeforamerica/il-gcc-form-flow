@@ -146,4 +146,12 @@ public class SchedulePreparerUtility {
 
         return providerSchedules.stream().collect(Collectors.groupingBy(provider -> provider.get("repeatForValue").toString()));
     }
+
+    public static List<String> providersWithSchedules(Map<String, Object> inputData){
+        return getRelatedChildrenSchedulesForEachProvider(inputData).keySet().stream().toList();
+    }
+
+    public static List<String> providersNotInactive(Map<String, Object> inputData){
+        return providersWithSchedules(inputData).stream().filter(s -> !s.equals("NO_PROVIDER")).toList();
+    }
 }
