@@ -51,7 +51,7 @@ public class ProviderLinkController {
 
         String sanitizedConfirmationCode = sanitize(confirmationCode);
 
-        log.info("Loading submission for code " + sanitizedConfirmationCode);
+        log.info("Loading submission for code '{}'", sanitizedConfirmationCode);
 
         if (sanitizedConfirmationCode != null) {
             Optional<Submission> familySubmission = submissionRepositoryService.findByShortCode(
@@ -61,7 +61,7 @@ public class ProviderLinkController {
                 setFamilySessionData(familySubmission.get(), newSession);
                 checkRefererValue(referer, newSession);
             } else {
-                log.debug("Unable to load submission for code " + sanitizedConfirmationCode);
+                log.debug("Unable to load submission for code '{}'", sanitizedConfirmationCode);
                 return "redirect:/error-invalid-code";
             }
         }
