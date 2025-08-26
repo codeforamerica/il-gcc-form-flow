@@ -236,6 +236,7 @@ public class CCMSSubmissionPayloadTransactionJob {
                             }
 
                             CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
+                            log.info("Sending submission {} to CCMS", submissionId);
                             JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
                             log.info("Received response from CCMS when sending transaction payload: {}", response);
 
