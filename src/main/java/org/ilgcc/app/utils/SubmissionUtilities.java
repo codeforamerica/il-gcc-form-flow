@@ -342,16 +342,23 @@ public class SubmissionUtilities {
         return String.format("%s.%s", prefix, suffix);
     }
 
-    public static List<Map<String, Object>> getAnyChildcareSchedulesWithTheSameProvider(
+    public static List<Map<String, Object>> getRemainingChildcareSchedulesWithTheSameProvider(
             List<Map<String, Object>> childcareSchedules, String currentProviderUuidOrNoProvider,
             Map<String, Object> currentChildcareSchedule) {
-        List<Map<String, Object>> remainingChildcareSchedules = childcareSchedules.stream()
-                .filter(childcareSchedule -> !childcareSchedule.equals(currentChildcareSchedule))
-                .toList();
-        return remainingChildcareSchedules.stream()
-                .filter(childcareSchedule -> childcareScheduleIncludesThisProvider(childcareSchedule,
-                        currentProviderUuidOrNoProvider)).toList();
+        return getAllChildcareSchedulesWithTheSameProvider(childcareSchedules, currentProviderUuidOrNoProvider).stream()
+                .filter(childcareSchedule -> !childcareSchedule.equals(currentChildcareSchedule)).toList();
     }
+
+    public static List<Map<String, Object>> getAllChildcareSchedulesWithTheSameProvider(List<Map<String, Object>> childcareSchedules, String currentProviderUuidOrNoProvider){
+        return childcareSchedules.stream().filter(childcareSchedule -> childcareScheduleIncludesThisProvider(childcareSchedule, currentProviderUuidOrNoProvider)).toList();
+    }
+
+    //TODO: GENERATE A SET OF CHILDCARE SCHEDULES GROUPED BY PROVIDERUUID
+//    public static Map<String, List<Map<String, Object>>> getAllChildcareSchedulesGroupedByProviderOrNoProvider(List<Map<String, Object>> providers, List<Map<String, Object>> childcareSchedules){
+//
+//
+//    }
+
 
     private static boolean childcareScheduleIncludesThisProvider(Map<String, Object> childcareSchedule,
             String providerUuidOrNoProvider) {
