@@ -457,6 +457,15 @@ public class SubmissionUtilities {
                 !allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData());
     }
 
+
+    /**
+     * @param familySubmission the family submission to be updated.
+     * @param providerIterationId the uuid of the provider iteration to be updated.
+     * @param resourceOrgId the resource organization id to be set for the provider iteration.
+     *                      
+     * This method will update the relevant provider iteration data in the family submission to set a new key 'providerResourceOrgId'
+     * with the value of {@code resourceOrgId}. This is used to track which resource organization a provider belongs to.
+     */
     public static void setProviderResourceOrgId(Submission familySubmission, String providerIterationId, String resourceOrgId) {
 
         List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
