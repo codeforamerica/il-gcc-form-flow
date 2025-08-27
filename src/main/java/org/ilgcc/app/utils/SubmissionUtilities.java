@@ -486,7 +486,6 @@ public class SubmissionUtilities {
         }
     }
 
-
     /**
      * @param familySubmission the family submission to be checked against whose list of providers will be used for the check.
      * @return true if all providers in the family submission belong to the same site administered resource organization otherwise 
