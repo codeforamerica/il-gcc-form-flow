@@ -335,7 +335,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         assertThat(emailTemplate.getSenderEmail()).isEqualTo(
                 new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
         assertThat(emailTemplate.getSubject()).isEqualTo(
-                messageSource.getMessage("email.family-application-transmitted-confirmation-email.subject", null, locale));
+                messageSource.getMessage("email.family-application-transmitted-confirmation-email.subject", new Object[]{CONFIRMATION_CODE}, locale));
 
         String emailCopy = emailTemplate.getBody().getValue();
 
@@ -348,7 +348,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
                         new Object[]{"Sample Test CCRR"}, locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage("email.family-application-transmitted-confirmation-email.p3",
-                new Object[]{"ABC123"}, locale));
+                new Object[]{CONFIRMATION_CODE}, locale));
 
         assertThat(emailCopy).contains(messageSource.getMessage("email.family-application-transmitted-confirmation-email.p4",
                 new Object[]{"Sample Test CCRR", "(603) 555-1244"},
