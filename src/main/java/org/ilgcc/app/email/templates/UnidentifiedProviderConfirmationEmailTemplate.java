@@ -36,7 +36,7 @@ public class UnidentifiedProviderConfirmationEmailTemplate {
     }
 
     private String setSubject() {
-        return messageSource.getMessage("email.unidentified-provider-confirmation.subject", null, locale);
+        return messageSource.getMessage("email.unidentified-provider-confirmation.subject", new Object[]{emailData.get("confirmationCode")}, locale);
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {

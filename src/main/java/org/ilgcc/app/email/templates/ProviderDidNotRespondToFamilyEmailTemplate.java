@@ -36,7 +36,7 @@ public class ProviderDidNotRespondToFamilyEmailTemplate {
     }
 
     private String setSubject(Map<String, Object> emailData) {
-        return messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.subject", null, locale);
+        return messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.subject", new Object[]{emailData.get("confirmationCode")}, locale);
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
