@@ -180,7 +180,8 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("job-recommendation")).contains(getEnMessage("doc-upload-recommended-docs.jobs.body"));
+        assertThat(testPage.getElementText("job-recommendation"))
+                .contains("Add 2 pay stubs from the last 30 days for each job. If a job started within the last 30 days or you are paid in cash, have your employer fill out a Wage Verification form.");
         assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
 
         // doc-upload-add-files
@@ -210,7 +211,8 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
 
         // doc-upload-recommended-docs
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("job-recommendation")).contains(getEnMessage("doc-upload-recommended-docs.jobs.body"));
+        assertThat(testPage.getElementText("job-recommendation"))
+                .contains("Add 2 pay stubs from the last 30 days for each job. If a job started within the last 30 days or you are paid in cash, have your employer fill out a Wage Verification form.");
         assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
 
         // doc-upload-add-files
