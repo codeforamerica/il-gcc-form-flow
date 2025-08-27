@@ -353,12 +353,6 @@ public class SubmissionUtilities {
         return childcareSchedules.stream().filter(childcareSchedule -> childcareScheduleIncludesThisProvider(childcareSchedule, currentProviderUuidOrNoProvider)).toList();
     }
 
-    //TODO: GENERATE A SET OF CHILDCARE SCHEDULES GROUPED BY PROVIDERUUID
-//    public static Map<String, List<Map<String, Object>>> getAllChildcareSchedulesGroupedByProviderOrNoProvider(List<Map<String, Object>> providers, List<Map<String, Object>> childcareSchedules){
-//
-//
-//    }
-
 
     private static boolean childcareScheduleIncludesThisProvider(Map<String, Object> childcareSchedule,
             String providerUuidOrNoProvider) {
