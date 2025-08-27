@@ -6,8 +6,6 @@ import static org.awaitility.Awaitility.await;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.google.common.collect.Iterables;
-import com.lowagie.text.pdf.AcroFields;
-import com.lowagie.text.pdf.PdfReader;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
 import formflow.library.data.SubmissionRepositoryService;
@@ -34,6 +32,8 @@ import org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.openpdf.text.pdf.AcroFields;
+import org.openpdf.text.pdf.PdfReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
