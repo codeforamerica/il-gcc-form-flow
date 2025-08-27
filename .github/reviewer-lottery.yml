@@ -1,6 +1,22 @@
 groups:
-  - name: devs # name of the group
-    internal_reviewers: 1 # how many reviewers do you want to assign when the PR author belongs to this group?
+  # people whose PRs will trigger a review assignment (but no reviewers assigned from here)
+  - name: authors
+    internal_reviewers: 0
+    usernames: # github usernames of the PR authors
+      - enyia21
+      - spokenbird
+      - analoo
+      - cram-cfa
+      - awebb792
+      - kashish1212
+      - khushalvora
+      - MahbubullahMohammed
+      - PuneethBandi
+      - realskywalker818
+      - Sneethikagoli
+  # people who will be assigned reviews
+  - name: devs 
+    internal_reviewers: 1 # how many reviewers do you want to assign?
     usernames: # github usernames of the reviewers
       - enyia21
       - spokenbird
