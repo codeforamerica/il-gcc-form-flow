@@ -48,7 +48,7 @@ public class CCMSDataServiceImpl implements CCMSDataService {
         this.resourceOrganizationRepository = resourceOrganizationRepository;
         this.activeCaseLoadCodes = activeCaseLoadCodes;
         if (enableNewCaseloadCodes && null != pendingCaseLoadCodes && !pendingCaseLoadCodes.isEmpty()) {
-            activeCaseLoadCodes.addAll(pendingCaseLoadCodes);
+            this.activeCaseLoadCodes.addAll(pendingCaseLoadCodes);
         }
     }
 
