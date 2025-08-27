@@ -171,3 +171,11 @@ class SubmissionUtilitiesTest {
     }
 }
 
+
+    @Test
+    void isPreMultiProviderApplicationWithSingleProviderShouldReturnFalseIfIsMultiproviderApplication() {
+        Submission submission = new SubmissionTestBuilder().withMultipleChildcareSchedules(List.of("C1", "C2"), List.of("P1", "P2")).build();
+        boolean result = SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider(submission);
+        assertThat(result).isFalse();
+    }
+}

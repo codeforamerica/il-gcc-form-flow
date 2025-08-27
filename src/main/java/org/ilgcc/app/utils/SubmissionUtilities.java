@@ -456,4 +456,57 @@ public class SubmissionUtilities {
         return !isPreMultiProviderApplicationWithSingleProvider(familySubmission) &&
                 !allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData());
     }
+
+    public static void setProviderResourceOrgId(Submission familySubmission, String providerIterationId, String resourceOrgId) {
+
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
+
+        for (int i = 0; i < providers.size(); i++) {
+            Map<String, Object> provider = providers.get(i);
+            if (providerIterationId.equals(provider.get("uuid").toString())) {
+                Map<String, Object> updatedProviderIteration = new HashMap<>(provider);
+                updatedProviderIteration.put("providerResourceOrgId", resourceOrgId);
+
+                List<Map<String, Object>> newProviders = new ArrayList<>(providers);
+                newProviders.set(i, updatedProviderIteration);
+
+                Map<String, Object> newInputData = new HashMap<>(familySubmission.getInputData());
+                newInputData.put("providers", newProviders);
+                familySubmission.setInputData(newInputData);
+            }
+        }
+    }
+
+
+    /**
+     * @param familySubmission the family submission to be checked against whose list of providers will be used for the check.
+     * @return true if all providers in the family submission belong to the same site administered resource organization otherwise 
+     * false.
+     */
+    public static boolean allProvidersBelongToTheSameSiteAdministeredResourceOrganization(Submission familySubmission) {
+        if (familySubmission.getInputData().containsKey("providers")) {
+            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
+            if (providers.isEmpty()) {
+                return false;
+            }
+            
+            String firstProviderResourceOrgId = null;
+            for (Map<String, Object> provider : providers) {
+                if (!provider.containsKey("providerResourceOrgId")) {
+                    // if we don't know the org we can't say they all the same
+                    return false;
+                }
+                String currentProviderResourceOrgId = provider.get("providerResourceOrgId").toString();
+                if (firstProviderResourceOrgId == null) {
+                    firstProviderResourceOrgId = currentProviderResourceOrgId;
+                } else if (!firstProviderResourceOrgId.equals(currentProviderResourceOrgId)) {
+                    return false;
+                }
+            }
+            // all resource orgs match
+            return true;
+        }
+        // if providers is empty, we can't say they all belong to the same org
+        return false;
+    }
 }
