@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -68,6 +69,35 @@ class SubmissionUtilitiesTest {
 
     
 
+        Map<String, Object> child1 = new HashMap<>();
+        Map<String, Object> child2 = new HashMap<>();
+        
+        @BeforeEach
+        void setup() {
+            child1.put("uuid", UUID.randomUUID().toString());
+            child1.put("childFirstName", "First");
+            child1.put("childLastName", "Child");
+            child1.put("childInCare", "true");
+            child1.put("childDateOfBirthMonth", "10");
+            child1.put("childDateOfBirthDay", "11");
+            child1.put("childDateOfBirthYear", "2020");
+            child1.put("needFinancialAssistanceForChild", true);
+            child1.put("childIsUsCitizen", "Yes");
+            child1.put("ccapStartDate", "01/10/2025");
+
+            child2.put("uuid", UUID.randomUUID().toString());
+            child2.put("childFirstName", "Second");
+            child2.put("childLastName", "Child");
+            child2.put("childInCare", "true");
+            child2.put("childDateOfBirthMonth", "12");
+            child2.put("childDateOfBirthDay", "11");
+            child2.put("childDateOfBirthYear", "2021");
+            child2.put("needFinancialAssistanceForChild", true);
+            child2.put("childIsUsCitizen", "Yes");
+            child2.put("ccapStartDate", "12/10/2025");
+        }
+        
+
         @Test
         void allProvidersBelongToTheSameSiteAdministeredResourceOrganizationReturnsTrueWhenAllProvidersHaveSameResourceOrgId() {
             Map<String, Object> provider1 = new HashMap<>();
@@ -82,6 +112,9 @@ class SubmissionUtilitiesTest {
 
             Submission submission = new SubmissionTestBuilder()
                     .with("providers", List.of(provider1, provider2))
+                    .with("children", List.of(child1, child2))
+                    .withMultipleChildcareSchedules(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()),
+                            List.of(provider1.get("uuid").toString(), provider2.get("uuid").toString()))
                     .build();
             boolean result = SubmissionUtilities.allProvidersBelongToTheSameSiteAdministeredResourceOrganization(submission);
             assertThat(result).isTrue();
@@ -134,6 +167,9 @@ class SubmissionUtilitiesTest {
 
             Submission submission = new SubmissionTestBuilder()
                     .with("providers", List.of(provider1))
+                    .with("children", List.of(child1, child2))
+                    .withMultipleChildcareSchedules(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()),
+                            List.of(provider1.get("uuid").toString(), provider1.get("uuid").toString()))
                     .build();
             boolean result = SubmissionUtilities.allProvidersBelongToTheSameSiteAdministeredResourceOrganization(submission);
             assertThat(result).isTrue();
