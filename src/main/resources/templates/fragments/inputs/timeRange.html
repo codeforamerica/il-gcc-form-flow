@@ -1,38 +1,43 @@
 <th:block
         th:fragment="timeRange"
         th:with="
-          hasHelpText=${!#strings.isEmpty(helpText)},
-          dayLabelId=${startInputName + '-legend'},
-          hasLabel=${!#strings.isEmpty(label)},
-          hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
-            requiredInputsForFlow=${requiredInputs.get(flow)},
-            isRequiredInput=${(requiredInputsForFlow != null && inputName != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)}"
+    hasHelpText=${!#strings.isEmpty(helpText)},
+    dayLegendId=${startInputName + '-legend'},
+    hasLabel=${!#strings.isEmpty(label)},
+    hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
+    requiredInputsForFlow=${requiredInputs.get(flow)},
+    isRequiredInput=${(requiredInputsForFlow != null && inputName != null && requiredInputsForFlow.getOrDefault(inputName, false)) || (required != null && required)}"
         th:assert="${!#strings.isEmpty(startInputName)},${!#strings.isEmpty(endInputName)}, ${hasLabel || hasAriaLabel}">
-    <div th:class="'form-group bottom-border'">
-        <legend class="heading-35 spacing-below-15"
-                th:id="${dayLabelId}"
-                th:inline="text">
+
+    <fieldset class="form-group bottom-border" th:attr="aria-labelledby=${dayLegendId}">
+        <legend class="heading-35 spacing-below-0" th:id="${dayLegendId}" th:inline="text">
             <span th:text="${label}"></span>
             <span th:if="${isRequiredInput && !hasAriaLabel}" class="required-input"
                   th:text="#{general.required-field}"></span>
         </legend>
-        <div th:with="startTimeLabelId=${startInputName + '-label'}">
-            <label th:for="${startInputName}" th:id="${startTimeLabelId}"
+
+        <fieldset th:with="startTimeLegendId=${startInputName + '-legend'}">
+            <legend th:id="${startTimeLegendId}"
                    th:text="#{general.inputs.time.range.start}"
-                   class="form-question"/>
+                   class="form-question"></legend>
+
             <th:block
                     th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
-            <th:block
-                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${startInputName}, ariaDescribedBy=${startTimeLabelId+' ' + dayLabelId})}"/>
-        </div>
-        <div th:with="endTimeLabelId=${endInputName + '-label'}">
-            <label th:for="${endInputName}" th:id="${endTimeLabelId}"
+            <th:block th:replace="~{fragments/inputs/timeSelect :: timeSelect(
+                              inputGroupName=${startInputName},
+                              ariaDescribedBy=${startTimeLegendId + ' ' + dayLegendId})}"></th:block>
+        </fieldset>
+
+        <fieldset th:with="endTimeLegendId=${endInputName + '-legend'}">
+            <legend th:id="${endTimeLegendId}"
                    th:text="#{general.inputs.time.range.end}"
-                   class="form-question"/>
+                   class="form-question"></legend>
+
             <th:block
                     th:replace="~{fragments/inputError :: validationError(inputName=${endInputName})}"></th:block>
-            <th:block
-                    th:replace="~{fragments/inputs/timeSelect :: timeSelect(inputGroupName=${endInputName}, ariaDescribedBy=${endTimeLabelId+' ' + dayLabelId})}"/>
-        </div>
-    </div>
+            <th:block th:replace="~{fragments/inputs/timeSelect :: timeSelect(
+                              inputGroupName=${endInputName},
+                              ariaDescribedBy=${endTimeLegendId + ' ' + dayLegendId})}"></th:block>
+        </fieldset>
+    </fieldset>
 </th:block>
