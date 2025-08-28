@@ -12,14 +12,14 @@
                 <div class="steps-box spacing-below-35">
                     <div class="form-question-stack">
                         <div class="form-question-vertical-align">
-                            <label th:for="${hourInputName}"
+                            <label th:for="${hourInputName + '-select'}"
                                    th:text="#{'general.hour'}"
-                                   th:id="${hourInputName}"
+                                   th:id="${hourInputName + '-label'}"
                                    th:class="spacing-below-5"
                             ></label>
                             <div class="select">
                                 <select class="select__element"
-                                        th:id="${hourInputName}"
+                                        th:id="${hourInputName + '-select'}"
                                         th:name="${hourInputName}"
                                         th:attr="aria-describedby=${hasAriaDescribedByLabel ? hourInputName + ' ' + ariaDescribedBy : 'hourInputName'}">
                                     <option value="" selected disabled hidden></option>
@@ -34,15 +34,15 @@
                     </div>
                     <div class="form-question-stack">
                         <div class="form-question-vertical-align">
-                            <label th:for="${minuteInputName}"
+                            <label th:for="${minuteInputName + '-input'}"
                                    th:text="#{'general.minute'}"
-                                   th:id="${minuteInputName}"
+                                   th:id="${minuteInputName + '-label'}"
                                    th:class="spacing-below-5"
                             ></label>
                             <input type="text" class="time-input"
                                    inputmode="numeric"
                                    minlength="1" maxlength="2"
-                                   th:id="${minuteInputName}"
+                                   th:id="${minuteInputName + '-input'}"
                                    th:name="${minuteInputName}"
                                    th:place
                                    th:attr="aria-describedby=${hasAriaDescribedByLabel ? minuteInputName+ ' ' + ariaDescribedBy : minuteInputName}"
@@ -51,14 +51,14 @@
                     </div>
                     <div class="form-question-stack">
                         <div class="form-question-vertical-align">
-                            <label th:for="${amPmInputName}"
+                            <label th:for="${amPmInputName + '-select'}"
                                    th:text="#{'general.amOrPM'}"
-                                   th:id="${amPmInputName}"
+                                   th:id="${amPmInputName + '-label'}"
                                    th:class="spacing-below-5"
                             ></label>
                             <div class="select">
                                 <select class="select__element"
-                                        th:id="${amPmInputName}"
+                                        th:id="${amPmInputName + '-select'}"
                                         th:name="${amPmInputName}"
                                         th:attr="aria-describedby=${hasAriaDescribedByLabel ? amPmInputName + ' ' + ariaDescribedBy : amPmInputName}">
                                     <option value="" selected disabled hidden></option>
