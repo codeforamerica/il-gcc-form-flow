@@ -25,14 +25,14 @@
                                         th:replace="~{fragments/gcc-icons :: income-parents}"></th:block>
                                 <h2 class="h3 spacing-below-0 spacing-above-0"
                                     th:text="#{doc-upload-recommended-docs.jobs.header}"></h2>
-                                <p th:text="#{doc-upload-recommended-docs.jobs.body}"></p>
+                                <p th:utext="#{doc-upload-recommended-docs.jobs.body}"></p>
                             </div>
                             <div class="spacing-below-60" th:id="self-employment-documentation"
                                  th:if="${showSelfEmploymentDocumentation}">
                                 <th:block th:replace="~{fragments/gcc-icons :: income}"></th:block>
                                 <h2 class="h3 spacing-below-0 spacing-above-0"
                                     th:text="#{doc-upload-recommended-docs.self-employment.header}"></h2>
-                                <p th:text="#{doc-upload-recommended-docs.self-employment.body}"></p>
+                                <p th:utext="#{doc-upload-recommended-docs.self-employment.body}"></p>
                             </div>
                             <div class="spacing-below-60" th:id="education-documentation"
                                  th:if="${showSchoolOrTrainingDocumentation}">
@@ -55,7 +55,7 @@
                                         th:replace="~{fragments/gcc-icons :: homelessness}"></th:block>
                                 <h2 class="h3 spacing-below-0 spacing-above-0"
                                     th:text="#{doc-upload-recommended-docs.homelessness.header}"></h2>
-                                <p th:text="#{doc-upload-recommended-docs.homelessness.body}"></p>
+                                <p th:utext="#{doc-upload-recommended-docs.homelessness.body}"></p>
                             </div>
                         </div>
                         <div class="notice-grey">
