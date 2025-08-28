@@ -457,35 +457,6 @@ public class SubmissionUtilities {
                 !allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData());
     }
 
-
-    /**
-     * @param familySubmission the family submission to be updated.
-     * @param providerIterationId the uuid of the provider iteration to be updated.
-     * @param resourceOrgId the resource organization id to be set for the provider iteration.
-     *                      
-     * This method will update the relevant provider iteration data in the family submission to set a new key 'providerResourceOrgId'
-     * with the value of {@code resourceOrgId}. This is used to track which resource organization a provider belongs to.
-     */
-    public static void setProviderResourceOrgId(Submission familySubmission, String providerIterationId, String resourceOrgId) {
-
-        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
-
-        for (int i = 0; i < providers.size(); i++) {
-            Map<String, Object> provider = providers.get(i);
-            if (providerIterationId.equals(provider.get("uuid").toString())) {
-                Map<String, Object> updatedProviderIteration = new HashMap<>(provider);
-                updatedProviderIteration.put("providerResourceOrgId", resourceOrgId);
-
-                List<Map<String, Object>> newProviders = new ArrayList<>(providers);
-                newProviders.set(i, updatedProviderIteration);
-
-                Map<String, Object> newInputData = new HashMap<>(familySubmission.getInputData());
-                newInputData.put("providers", newProviders);
-                familySubmission.setInputData(newInputData);
-            }
-        }
-    }
-
     /**
      * @param familySubmission the family submission to be checked against whose list of providers will be used for the check.
      * @return true if all providers in the family submission belong to the same site administered resource organization otherwise 
@@ -494,12 +465,15 @@ public class SubmissionUtilities {
     public static boolean allProvidersBelongToTheSameSiteAdministeredResourceOrganization(Submission familySubmission) {
         if (familySubmission.getInputData().containsKey("providers")) {
             List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
-            if (providers.isEmpty()) {
+            Set providerIdsWithSchedules = getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData()).keySet();
+            List<Map<String, Object>> providersWithChildCareSchedules = providers.stream().filter(provider ->
+                    providerIdsWithSchedules.contains(provider.get("uuid").toString())).toList();
+            if (providersWithChildCareSchedules.isEmpty()) {
                 return false;
             }
             
             String firstProviderResourceOrgId = null;
-            for (Map<String, Object> provider : providers) {
+            for (Map<String, Object> provider : providersWithChildCareSchedules) {
                 if (!provider.containsKey("providerResourceOrgId")) {
                     // if we don't know the org we can't say they all the same
                     return false;

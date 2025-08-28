@@ -1,7 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
 import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getFamilySubmissionId;
-import static org.ilgcc.app.utils.SubmissionUtilities.setProviderResourceOrgId;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.relatedSubflowIterationData;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -47,10 +47,11 @@ public class SetResourceOrganization implements Action {
                 if (familySubmissionOptional.isPresent()) {
                     Submission familySubmission = familySubmissionOptional.get();
                     if (familySubmission.getInputData().containsKey("providers")) {
-                        setProviderResourceOrgId(
-                                familySubmission,
-                                providerInputData.getOrDefault("currentProviderUuid", "").toString(),
-                                org.get().getResourceOrgId().toString());
+
+                        Map<String, Object> currentProvider = relatedSubflowIterationData(familySubmission.getInputData(),
+                                "providers",
+                                providerInputData.getOrDefault("currentProviderUuid", "").toString()); 
+                        currentProvider.put("providerResourceOrgId",org.get().getResourceOrgId().toString()); 
                         submissionRepositoryService.save(familySubmission);
                     }
                     if (SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider(familySubmission) || 
@@ -65,5 +66,4 @@ public class SetResourceOrganization implements Action {
         }
 
     }
-
 }
