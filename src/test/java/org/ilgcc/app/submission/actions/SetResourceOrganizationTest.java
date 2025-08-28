@@ -152,5 +152,22 @@ class SetResourceOrganizationTest {
             assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("CCRR Name");
             assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(123) 123-1234");
         }
+        
+        @Test
+        void shouldNotChangeFamilyOrgIdWhenOnlyOneProviderHasAnOrgId() {
+            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
+            providers.get(1).remove("providerResourceOrgId");
+            submissionRepositoryService.save(familySubmission);
+            List<Map<String, Object>> providersAfterRemovingOrgId = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
+            assertThat(providersAfterRemovingOrgId.get(0).get("providerResourceOrgId")).isNotNull();
+            assertThat(providersAfterRemovingOrgId.get(1).get("providerResourceOrgId")).isNull();
+
+            setResourceOrganization.run(providerSubmission);
+            familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
+
+            assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
+            assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("CCRR Name");
+            assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(123) 123-1234");
+        }
     }
 }
