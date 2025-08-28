@@ -357,7 +357,7 @@ public class SubmissionUtilities {
     public static List<Map<String, Object>> getListOfProvidersMissingChildcareSchedules(Map<String, Object> inputData) {
         List<String> providersWithSchedulesUUIDList = providersWithSchedules(inputData);
         List<Map<String, Object>> providers = getProviders(inputData);
-        return providers.stream().filter(provider-> providersWithSchedulesUUIDList.contains(provider.get("uuid").toString())).toList();
+        return providers.stream().filter(provider-> !providersWithSchedulesUUIDList.contains(provider.get("uuid").toString())).toList();
     }
 
     public static List<String> getNamesOfProvidersMissingChildcareSchedules(Map<String, Object> inputData) {
@@ -371,6 +371,14 @@ public class SubmissionUtilities {
         return missingProvidersByName;
     }
 
+    public static boolean getAreAllProvidersAreMissingChildcareSchedules(Map<String, Object> inputData) {
+        String hasChosenProvider = inputData.getOrDefault("hasChosenProvider", "").toString();
+        if (hasChosenProvider.equals("false") || !inputData.containsKey("providers")) {
+            return true;
+        }
+        List<Map<String, Object>> providers = getProviders(inputData);
+        return (providers.size() == getListOfProvidersMissingChildcareSchedules(inputData).size());
+    }
 
     private static boolean childcareScheduleIncludesThisProvider(Map<String, Object> childcareSchedule,
             String providerUuidOrNoProvider) {
