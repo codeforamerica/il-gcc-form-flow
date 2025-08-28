@@ -375,10 +375,62 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //schedules-start
-        List<Map<String,Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(1).get("uuid")));
+        testPage.clickContinue();
+
+        //schedules-start-care
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Nope Test");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickYes();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "12");
+        testPage.enter("ccapStartDay", "15");
+        testPage.enter("ccapStartYear", "2024");
+
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Nope Test");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickElementById("childcareWeeklySchedule-Tuesday");
+        testPage.clickContinue();
+
+        //schedules-hours
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Nope Test");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.selectFromDropdown("childcareStartTimeTuesdayHour", "10");
+        testPage.enter("childcareStartTimeTuesdayMinute", "14");
+        testPage.selectFromDropdown("childcareStartTimeTuesdayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeTuesdayHour", "1");
+        testPage.enter("childcareEndTimeTuesdayMinute", "45");
+        testPage.selectFromDropdown("childcareEndTimeTuesdayAmPm", "PM");
+
+        testPage.clickContinue();
+
+        // schedules-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
+        // Confirms that add-remove-providers link exists
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) getSessionSubmission().getInputData().get(
+                "childcareSchedules");
+        String addProvidersId = String.format("add-remove-providers-%s", childcareSchedules.get(0).get(
+                "uuid"));
+        assertThat(testPage.elementDoesNotExistById(addProvidersId)).isFalse();
+        testPage.clickElementById(addProvidersId);
+
+        //schedules-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
+        // unselect the old option
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(1).get("uuid")));
         testPage.clickContinue();
 
         //schedules-start-care
@@ -427,6 +479,11 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         // schedules-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
+        childcareSchedules = (List<Map<String, Object>>) getSessionSubmission().getInputData().get(
+                "childcareSchedules");
+        addProvidersId = String.format("add-remove-providers-%s", childcareSchedules.get(0).get(
+                "uuid"));
+        assertThat(testPage.elementDoesNotExistById(addProvidersId)).isFalse();
         testPage.clickContinue();
 
         //unearned-income-intro
@@ -486,11 +543,13 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         // contact-providers iteration #1
-        assertThat(testPage.getHeader()).isEqualTo(getRequiredEnMessageWithParams("contact-providers-start.header",  new Object[]{"ACME Daycare"}));
+        assertThat(testPage.getHeader()).isEqualTo(
+                getRequiredEnMessageWithParams("contact-providers-start.header", new Object[]{"ACME Daycare"}));
         testPage.clickElementById("contactProviderMethod-OTHER-label");
         testPage.clickContinue();
 
-        assertThat(testPage.getHeader()).contains(getEnMessageWithParams("contact-providers-share-code.header",  new Object[]{"ACME Daycare", ""}).trim());
+        assertThat(testPage.getHeader()).contains(
+                getEnMessageWithParams("contact-providers-share-code.header", new Object[]{"ACME Daycare", ""}).trim());
         testPage.clickContinue();
 
         // contact-providers-review
@@ -530,12 +589,12 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
-        
+
         //providers-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         testPage.selectRadio("providerType", "Care Program");
         testPage.clickContinue();
-        
+
         //providers-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         testPage.enter("childCareProgramName", "ACME Daycare");
@@ -710,7 +769,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //schedules-start
-        List<Map<String,Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         assertThat(testPage.getHeader()).containsIgnoringCase("Child");
         testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
@@ -886,12 +945,12 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
     }
 
     @Test
-    void navigationWhenOnlyOneOrZeroProvidersAreAvailableForChildrenInNeedOfCare(){
+    void navigationWhenOnlyOneOrZeroProvidersAreAvailableForChildrenInNeedOfCare() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
         saveSubmission(getSessionSubmissionTestBuilder().withParentBasicInfo().with("familyIntendedProviderName", "ACME Daycare")
-            .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
-            .withShortCode("familyShortCode").build());
+                .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .withShortCode("familyShortCode").build());
 
         testPage.navigateToFlowScreen("gcc/children-add");
         testPage.clickButton(getEnMessage("children-add.thats-all"));
@@ -910,12 +969,12 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
-        
+
         //providers-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         testPage.selectRadio("providerType", "Care Program");
         testPage.clickContinue();
-        
+
         //providers-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         testPage.enter("childCareProgramName", "First Daycare");
@@ -944,6 +1003,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
 
     }
+
     @Test
     void AllowsOnlyTwoProvidersToBeAddedWhenClientAnswersNoToHavingChosenAProviderForEveryChildJourneyTest() {
         AddOneProviderInMultiProviderFlow();
@@ -987,17 +1047,17 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
         testPage.clickLink(getEnMessage("general.edit"));
-        
+
         //providers-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         assertThat(testPage.findElementById("providerType-Care Program").isSelected()).isTrue();
         testPage.clickContinue();
-        
+
         //providers-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         assertThat(testPage.getInputValue("childCareProgramName")).isEqualTo("First Daycare");
         testPage.clickContinue();
-        
+
         //providers-location
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         assertThat(testPage.getInputValue("familyIntendedProviderAddress")).isEqualTo("222 Test St");
@@ -1032,15 +1092,17 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.clickContinue();
 
         //schedules-start
-        List<Map<String,Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         assertThat(testPage.getHeader()).containsIgnoringCase("First");
-        assertThat(testPage.getElementText("none__checkbox-childcareProvidersForCurrentChild-label")).isEqualTo(getEnMessage("schedules-start.no-provider"));
+        assertThat(testPage.getElementText("none__checkbox-childcareProvidersForCurrentChild-label")).isEqualTo(
+                getEnMessage("schedules-start.no-provider"));
         assertThat(testPage.getElementText("childcareProvidersForCurrentChild-fake_provider-1-label")).isEqualTo("Fake_Provider");
         testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
 
         testPage.clickContinue();
     }
+
     @Test
     void MultiProviderNavigationWhenNoProviderJourneyTest() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
@@ -1063,12 +1125,13 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         //schedules-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
     }
-    void AddOneProviderInMultiProviderFlow(){
+
+    void AddOneProviderInMultiProviderFlow() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
         saveSubmission(getSessionSubmissionTestBuilder().withParentBasicInfo().with("familyIntendedProviderName", "ACME Daycare")
-            .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
-            .withShortCode("familyShortCode").build());
+                .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .withShortCode("familyShortCode").build());
 
         testPage.navigateToFlowScreen("gcc/children-add");
         testPage.clickButton(getEnMessage("children-add.thats-all"));
