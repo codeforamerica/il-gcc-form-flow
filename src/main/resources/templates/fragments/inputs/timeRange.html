@@ -2,7 +2,7 @@
         th:fragment="timeRange"
         th:with="
     hasHelpText=${!#strings.isEmpty(helpText)},
-    dayLegendId=${startInputName + '-legend'},
+    dayLegendId=${startInputName + '-day-legend'},
     hasLabel=${!#strings.isEmpty(label)},
     hasAriaLabel=${!#strings.isEmpty(ariaLabel)},
     requiredInputsForFlow=${requiredInputs.get(flow)},
@@ -16,7 +16,7 @@
                   th:text="#{general.required-field}"></span>
         </legend>
 
-        <fieldset th:with="startTimeLegendId=${startInputName + '-legend'}">
+        <fieldset th:with="startTimeLegendId=${startInputName + '-start-time-legend'}">
             <legend th:id="${startTimeLegendId}"
                    th:text="#{general.inputs.time.range.start}"
                    class="form-question"></legend>
@@ -25,10 +25,10 @@
                     th:replace="~{fragments/inputError :: validationError(inputName=${startInputName})}"></th:block>
             <th:block th:replace="~{fragments/inputs/timeSelect :: timeSelect(
                               inputGroupName=${startInputName},
-                              ariaDescribedBy=${startTimeLegendId + ' ' + dayLegendId})}"></th:block>
+                              ariaDescribedBy=${dayLegendId + ' ' + startTimeLegendId})}"></th:block>
         </fieldset>
 
-        <fieldset th:with="endTimeLegendId=${endInputName + '-legend'}">
+        <fieldset th:with="endTimeLegendId=${endInputName + '-end-time-legend'}">
             <legend th:id="${endTimeLegendId}"
                    th:text="#{general.inputs.time.range.end}"
                    class="form-question"></legend>
@@ -37,7 +37,7 @@
                     th:replace="~{fragments/inputError :: validationError(inputName=${endInputName})}"></th:block>
             <th:block th:replace="~{fragments/inputs/timeSelect :: timeSelect(
                               inputGroupName=${endInputName},
-                              ariaDescribedBy=${endTimeLegendId + ' ' + dayLegendId})}"></th:block>
+                              ariaDescribedBy=${dayLegendId + ' ' + endTimeLegendId})}"></th:block>
         </fieldset>
     </fieldset>
 </th:block>
