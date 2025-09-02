@@ -64,7 +64,7 @@
                                 </th:block>
                                 <th:block th:with="missingChildcareProviderNames=${T(org.ilgcc.app.utils.SubmissionUtilities).getNamesOfProvidersMissingChildcareSchedules(inputData)},
                                                    totalNumberOfProvidersMissingSchedules=${missingChildcareProviderNames.size()},
-                                                   noProvidersHaveChildcareSchedules=${T(org.ilgcc.app.utils.SubmissionUtilities).getAreAllProvidersAreMissingChildcareSchedules(inputData)}
+                                                   noProvidersHaveChildcareSchedules=${T(org.ilgcc.app.utils.SubmissionUtilities).areAllProvidersMissingChildcareSchedules(inputData)}
                                                    ">
                                     <th:block th:if="${noProvidersHaveChildcareSchedules}">
                                         <div class="notice--warning notice" th:id="no-providers-entered-notice">

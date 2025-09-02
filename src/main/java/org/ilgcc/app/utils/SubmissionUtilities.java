@@ -371,7 +371,7 @@ public class SubmissionUtilities {
         return missingProvidersByName;
     }
 
-    public static boolean getAreAllProvidersAreMissingChildcareSchedules(Map<String, Object> inputData) {
+    public static boolean areAllProvidersMissingChildcareSchedules(Map<String, Object> inputData) {
         String hasChosenProvider = inputData.getOrDefault("hasChosenProvider", "").toString();
         if (hasChosenProvider.equals("false") || !inputData.containsKey("providers")) {
             return true;
