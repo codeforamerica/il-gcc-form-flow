@@ -73,10 +73,12 @@
                                         </div>
                                     </th:block>
                                     <th:block th:if="${!noProvidersHaveChildcareSchedules && totalNumberOfProvidersMissingSchedules > 0}">
-                                        <div class="notice--warning" th:id="providers-are-missing-notice">
-                                            <p th:utext="#{schedules-review.notice.providers-missing-schedules.p1(${missingChildcareProviderNames})}"></p>
-                                            <p th:text="#{schedules-review.notice.providers-missing-schedules.p2}"></p>
-                                        </div>
+                                        <th:block th:with="missingChildcareProviderNamesInReadableForm=${T(org.ilgcc.app.utils.ProviderSubmissionUtilities).formatListIntoReadableString(missingChildcareProviderNames, #messages.msg('general.and'))}">
+                                            <div class="notice--warning" th:id="providers-are-missing-notice">
+                                                <p th:utext="#{schedules-review.notice.providers-missing-schedules.p1(${missingChildcareProviderNamesInReadableForm})}"></p>
+                                                <p th:text="#{schedules-review.notice.providers-missing-schedules.p2}"></p>
+                                            </div>
+                                        </th:block>
                                     </th:block>
                                 </th:block>
                             </div>
