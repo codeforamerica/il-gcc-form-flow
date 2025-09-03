@@ -125,7 +125,6 @@ public class SchedulePreparerUtility {
         return currentIteration.orElse(null);
     }
 
-    //Should this live in submission utilities
     public static Map<String, List<Map<String, Object>>> getRelatedChildrenSchedulesForEachProvider(Map<String, Object> inputData) {
         List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) inputData.getOrDefault("childcareSchedules",
                 Collections.EMPTY_LIST);
