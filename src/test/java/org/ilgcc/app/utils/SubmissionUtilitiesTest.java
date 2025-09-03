@@ -111,7 +111,7 @@ class SubmissionUtilitiesTest {
     }
 
     @Test
-    public void areAllProvidersMissingChildcareSchedulesShouldReturnFalseIfAnyProvidersHasAChildcareSchedule() {
+    public void areAllProvidersMissingChildcareSchedulesShouldReturnFalseIfAnyProviderHasAChildcareSchedule() {
         Map<String, Object> child1  = getChild1();
         Map<String, Object> child2  = getChild2();
         Map<String, Object> child3  = getChild3();
