@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
@@ -203,7 +203,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
         //activities-add-jobs (list)
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
-        assertThat(testPage.findElementsByClass("subflow-delete").get(0).getAccessibleName())
+        assertThat(testPage.findElementsByClass("subflow-delete").getFirst().getAccessibleName())
                 .isEqualTo(String.format("%s %s", getEnMessage("general.remove"), "testCompany"));
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
@@ -254,7 +254,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         // ARIA-LABEL ASSERTION FOR "child mcchild"
         List<org.openqa.selenium.WebElement> removeLinks = testPage.findElementsByClass("subflow-delete");
         boolean foundCorrectAriaLabel = removeLinks.stream()
-                .anyMatch(link -> "Remove child mcchild".equals(link.getAttribute("aria-label")));
+                .anyMatch(link -> "Remove child mcchild".equals(link.getDomAttribute("aria-label")));
         assertThat(foundCorrectAriaLabel).isTrue();
         testPage.clickButton(getEnMessage("children-add.thats-all"));
 
@@ -421,7 +421,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         // Confirms that add-remove-providers link exists
         List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) getSessionSubmission().getInputData().get(
                 "childcareSchedules");
-        String addProvidersId = String.format("add-remove-providers-%s", childcareSchedules.get(0).get(
+        String addProvidersId = String.format("add-remove-providers-%s", childcareSchedules.getFirst().get(
                 "uuid"));
         assertThat(testPage.elementDoesNotExistById(addProvidersId)).isFalse();
         testPage.clickElementById(addProvidersId);
@@ -481,7 +481,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
         childcareSchedules = (List<Map<String, Object>>) getSessionSubmission().getInputData().get(
                 "childcareSchedules");
-        addProvidersId = String.format("add-remove-providers-%s", childcareSchedules.get(0).get(
+        addProvidersId = String.format("add-remove-providers-%s", childcareSchedules.getFirst().get(
                 "uuid"));
         assertThat(testPage.elementDoesNotExistById(addProvidersId)).isFalse();
         testPage.clickContinue();
@@ -772,7 +772,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         List<Map<String, Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         assertThat(testPage.getHeader()).containsIgnoringCase("Child");
-        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.getFirst().get("uuid")));
         testPage.clickContinue();
 
         //ChildSchedule Iteration 1
@@ -1098,7 +1098,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getElementText("none__checkbox-childcareProvidersForCurrentChild-label")).isEqualTo(
                 getEnMessage("schedules-start.no-provider"));
         assertThat(testPage.getElementText("childcareProvidersForCurrentChild-fake_provider-1-label")).isEqualTo("Fake_Provider");
-        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.get(0).get("uuid")));
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.getFirst().get("uuid")));
 
         testPage.clickContinue();
     }
@@ -1125,7 +1125,338 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         //schedules-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
     }
+    @Test
+    void whenProvidersAreNotSelectedButProvidersAreAddedDisplayWarning(){
+        AddOneProviderInMultiProviderFlow();
 
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
+
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+        //Second Iteration
+        //provider-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+
+        //provider-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "All Children Care Program");
+        testPage.clickContinue();
+
+        //provider-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
+        testPage.enter("familyIntendedProviderAddress", "323 Second St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.clickContinue();
+
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.enter("familyIntendedProviderEmail", "test@second.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(355)333-2222");
+        testPage.clickContinue();
+
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
+        testPage.clickLink(getEnMessage("providers-add.button.that-is-all"));
+
+        //providers-info-confirm
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info-confirm.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info-confirm.header"));
+        testPage.clickContinue();
+
+        //schedules-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
+        assertThat(testPage.findElementTextById("schedules-intro-multiple-step")).isEqualTo("Step 5 of 7");
+
+        testPage.clickContinue();
+
+        //schedules-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        assertThat(testPage.getElementText("none__checkbox-childcareProvidersForCurrentChild-label")).isEqualTo(
+            getEnMessage("schedules-start.no-provider"));
+        testPage.clickElementById("none__checkbox-childcareProvidersForCurrentChild-label");
+        testPage.clickContinue();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "8");
+        testPage.enter("ccapStartDay", "12");
+        testPage.enter("ccapStartYear", "2025");
+
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("First");
+        testPage.clickElementById("childcareWeeklySchedule-Wednesday");
+        testPage.clickElementById("childcareWeeklySchedule-Saturday");
+        testPage.clickContinue();
+
+        //schedules-hours
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("First");
+        testPage.selectFromDropdown("childcareStartTimeWednesdayHour", "4");
+        testPage.enter("childcareStartTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeWednesdayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeWednesdayHour", "12");
+        testPage.enter("childcareEndTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeWednesdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareStartTimeSaturdayHour", "2");
+        testPage.enter("childcareStartTimeSaturdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeSaturdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareEndTimeSaturdayHour", "10");
+        testPage.enter("childcareEndTimeSaturdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeSaturdayAmPm", "PM");
+
+        testPage.clickContinue();
+
+        //schedules-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        assertThat(testPage.getElementText("none__checkbox-childcareProvidersForCurrentChild-label")).isEqualTo(
+            getEnMessage("schedules-start.no-provider"));
+        testPage.clickElementById("none__checkbox-childcareProvidersForCurrentChild-label");
+        testPage.clickContinue();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "8");
+        testPage.enter("ccapStartDay", "12");
+        testPage.enter("ccapStartYear", "2025");
+
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-same.title"));
+        testPage.clickElementById("sameSchedule-true");
+        testPage.clickContinue();
+
+        //schedules-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
+        Assertions.assertTrue(
+            testPage.findElementById("no-providers-entered-notice").getText().contains(getEnMessage("schedules-review.notice.no-providers-with-schedules.p1")));
+        testPage.clickContinue();
+    }
+
+    @Test
+    void whenMultipleProvidersAreAddedButSomeProvidersDoNotHaveChildcareSchedules() {
+        testPage.navigateToFlowScreen("gcc/parent-info-disability");
+
+        saveSubmission(getSessionSubmissionTestBuilder().withParentBasicInfo().with("familyIntendedProviderName", "ACME Daycare")
+            .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+            .withShortCode("familyShortCode").build());
+
+        testPage.navigateToFlowScreen("gcc/children-add");
+        testPage.clickButton(getEnMessage("children-add.thats-all"));
+
+        //providers-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title"));
+        testPage.clickContinue();
+
+        //providers-chosen
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
+        testPage.clickYes();
+
+        //providers-all-ccap-children
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-all-ccap-children.title"));
+        testPage.clickYes();
+
+        //First Iteration
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+
+        //providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "ACME Daycare");
+        testPage.clickContinue();
+
+        //providers-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
+        testPage.enter("familyIntendedProviderAddress", "101 Test St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.clickContinue();
+
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.enter("familyIntendedProviderEmail", "test@test.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(555)555-5555");
+        testPage.clickContinue();
+
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+
+        //Second Iteration
+        // providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+
+        // providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "Nope Test");
+        testPage.clickContinue();
+
+        //provider-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
+        testPage.enter("familyIntendedProviderAddress", "151 Second St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.clickContinue();
+
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.enter("familyIntendedProviderEmail", "second@test.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(333)333-2222");
+        testPage.clickContinue();
+
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
+
+        //Third Iteration
+        //providers-type
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
+        testPage.selectRadio("providerType", "Care Program");
+        testPage.clickContinue();
+
+        //providers-name
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
+        testPage.enter("childCareProgramName", "Third Provider");
+        testPage.clickContinue();
+
+
+        //provider-location
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
+        testPage.enter("familyIntendedProviderAddress", "441 Third St");
+        testPage.enter("familyIntendedProviderCity", "Chicago");
+        testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
+        testPage.clickContinue();
+
+        //providers-contact-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-contact-info.title"));
+        testPage.enter("familyIntendedProviderEmail", "third@test.com");
+        testPage.enter("familyIntendedProviderPhoneNumber", "(243)555-5555");
+        testPage.clickContinue();
+
+        //providers-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
+        assertThat(testPage.findElementTextById("continue-link")).isEqualTo(getEnMessage("providers-add.button.that-is-all"));
+        assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
+        assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
+        testPage.clickButton(getEnMessage("providers-add.button.that-is-all"));
+
+        //providers-info-confirm
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-info-confirm.title"));
+        assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-info-confirm.header"));
+        testPage.clickContinue();
+
+        //schedules-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
+        assertThat(testPage.findElementTextById("schedules-intro-multiple-step")).isEqualTo("Step 5 of 7");
+
+        testPage.clickContinue();
+
+        //schedules-start
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.getFirst().get("uuid")));
+        testPage.clickContinue();
+
+        //schedules-start-care
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("ACME Daycare");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickYes();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "8");
+        testPage.enter("ccapStartDay", "12");
+        testPage.enter("ccapStartYear", "2025");
+
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("First");
+        testPage.clickElementById("childcareWeeklySchedule-Wednesday");
+        testPage.clickElementById("childcareWeeklySchedule-Saturday");
+        testPage.clickContinue();
+
+        //schedules-hours
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("First");
+        testPage.selectFromDropdown("childcareStartTimeWednesdayHour", "4");
+        testPage.enter("childcareStartTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeWednesdayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeWednesdayHour", "12");
+        testPage.enter("childcareEndTimeWednesdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeWednesdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareStartTimeSaturdayHour", "2");
+        testPage.enter("childcareStartTimeSaturdayMinute", "00");
+        testPage.selectFromDropdown("childcareStartTimeSaturdayAmPm", "PM");
+
+        testPage.selectFromDropdown("childcareEndTimeSaturdayHour", "10");
+        testPage.enter("childcareEndTimeSaturdayMinute", "00");
+        testPage.selectFromDropdown("childcareEndTimeSaturdayAmPm", "PM");
+
+        testPage.clickContinue();
+
+        //schedules-start
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Second");
+        testPage.clickElementById(String.format("childcareProvidersForCurrentChild-%s-label", providers.getFirst().get("uuid")));
+        testPage.clickContinue();
+
+        //schedules-start-care
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("ACME Daycare");
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickYes();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "8");
+        testPage.enter("ccapStartDay", "12");
+        testPage.enter("ccapStartYear", "2025");
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-same.title"));
+        testPage.clickElementById("sameSchedule-true");
+        testPage.clickContinue();
+
+        //schedules-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
+        Assertions.assertTrue(
+            testPage.findElementById("providers-are-missing-notice").getText().contains("You did not add your providers Nope Test and Third Provider, to the child care details."));
+        testPage.clickContinue();
+    }
     void AddOneProviderInMultiProviderFlow() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
@@ -1177,5 +1508,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderPhoneNumber", "(533)555-5555");
         testPage.clickContinue();
     }
+
+
 
 }
