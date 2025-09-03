@@ -7,89 +7,220 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class SubmissionUtilitiesTest {
 
-    @Test
-    void allChildcareSchedulesAreForTheSameProviderReturnsTrueWhenAllChildcareSchedulesHaveSameProviderUuid() {
-        Map<String, Object> child1  = new HashMap<>();
-        Map<String, Object> child2  = new HashMap<>();
-        child1.put("uuid", UUID.randomUUID().toString());
-        child1.put("childFirstName", "First");
-        child1.put("childLastName", "Child");
-        child1.put("childInCare", "true");
-        child1.put("childDateOfBirthMonth", "10");
-        child1.put("childDateOfBirthDay", "11");
-        child1.put("childDateOfBirthYear", "2002");
-        child1.put("needFinancialAssistanceForChild", true);
-        child1.put("childIsUsCitizen", "Yes");
-        child1.put("ccapStartDate", "01/10/2025");
+    @Nested
+    class method_allChildcareSchedulesAreForTheSameProvider {
 
-        child2.put("uuid", UUID.randomUUID().toString());
-        child2.put("childFirstName", "Second");
-        child2.put("childLastName", "Child");
-        child2.put("childInCare", "true");
-        child2.put("childDateOfBirthMonth", "10");
-        child2.put("childDateOfBirthDay", "11");
-        child2.put("childDateOfBirthYear", "2002");
-        child2.put("needFinancialAssistanceForChild", true);
-        child2.put("childIsUsCitizen", "Yes");
-        child2.put("ccapStartDate", "01/10/2025");
+        @Test
+        void returnsTrueWhenAllChildcareSchedulesHaveSameProviderUuid() {
+            Map<String, Object> child1 = new HashMap<>();
+            Map<String, Object> child2 = new HashMap<>();
+            child1.put("uuid", UUID.randomUUID().toString());
+            child1.put("childFirstName", "First");
+            child1.put("childLastName", "Child");
+            child1.put("childInCare", "true");
+            child1.put("childDateOfBirthMonth", "10");
+            child1.put("childDateOfBirthDay", "11");
+            child1.put("childDateOfBirthYear", "2002");
+            child1.put("needFinancialAssistanceForChild", true);
+            child1.put("childIsUsCitizen", "Yes");
+            child1.put("ccapStartDate", "01/10/2025");
+
+            child2.put("uuid", UUID.randomUUID().toString());
+            child2.put("childFirstName", "Second");
+            child2.put("childLastName", "Child");
+            child2.put("childInCare", "true");
+            child2.put("childDateOfBirthMonth", "10");
+            child2.put("childDateOfBirthDay", "11");
+            child2.put("childDateOfBirthYear", "2002");
+            child2.put("needFinancialAssistanceForChild", true);
+            child2.put("childIsUsCitizen", "Yes");
+            child2.put("ccapStartDate", "01/10/2025");
+
+            Submission submission = new SubmissionTestBuilder()
+                    .with("children", List.of(child1, child2))
+                    .withMultipleChildcareSchedulesAllBelongingToTheSameProvider(
+                            List.of(child1.get("uuid").toString(), child2.get("uuid").toString()), "provider-id").build();
+            boolean result = SubmissionUtilities.allChildcareSchedulesAreForTheSameProvider(
+                    submission.getInputData());
+            assertThat(result).isTrue();
+        }
+
+        @Test
+        void returnsFalseWhenAllChildcareSchedulesDoNotHaveSameProviderUuid() {
+            Map<String, Object> child1 = new HashMap<>();
+            Map<String, Object> child2 = new HashMap<>();
+            child1.put("uuid", UUID.randomUUID().toString());
+            child1.put("childFirstName", "First");
+            child1.put("childLastName", "Child");
+            child1.put("childInCare", "true");
+            child1.put("childDateOfBirthMonth", "10");
+            child1.put("childDateOfBirthDay", "11");
+            child1.put("childDateOfBirthYear", "2002");
+            child1.put("needFinancialAssistanceForChild", true);
+            child1.put("childIsUsCitizen", "Yes");
+            child1.put("ccapStartDate", "01/10/2025");
+
+            child2.put("uuid", UUID.randomUUID().toString());
+            child2.put("childFirstName", "Second");
+            child2.put("childLastName", "Child");
+            child2.put("childInCare", "true");
+            child2.put("childDateOfBirthMonth", "10");
+            child2.put("childDateOfBirthDay", "11");
+            child2.put("childDateOfBirthYear", "2002");
+            child2.put("needFinancialAssistanceForChild", true);
+            child2.put("childIsUsCitizen", "Yes");
+            child2.put("ccapStartDate", "01/10/2025");
+
+            Submission submission = new SubmissionTestBuilder()
+                    .with("children", List.of(child1, child2))
+                    .withMultipleChildcareSchedulesBelongingToDifferentProviders(
+                            List.of(child1.get("uuid").toString(), child2.get("uuid").toString()), List.of("p1", "p2")).build();
+            boolean result = SubmissionUtilities.allChildcareSchedulesAreForTheSameProvider(submission.getInputData());
+            assertThat(result).isFalse();
+        }
+    }
+
+    @Nested
+    class method_isPreMultiProviderApplicationWithSingleProvider {
+
+        @Test
+        void shouldReturnTrueIfApplicationUsesPreMultiProviderDataStructure() {
+            Submission submission = new SubmissionTestBuilder().withFamilyIntendedProviderName("provider-name").build();
+            boolean result = SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider(submission);
+            assertThat(result).isTrue();
+        }
+
+        @Test
+        void shouldReturnFalseIfIsMultiproviderApplication() {
+            Submission submission = new SubmissionTestBuilder().withMultipleChildcareSchedules(List.of("C1", "C2"),
+                    List.of("P1", "P2")).build();
+            boolean result = SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider(submission);
+            assertThat(result).isFalse();
+        }
+    }
+
+    @Nested
+    class method_allProvidersBelongToTheSameSiteAdministeredResourceOrganization {
+
+        Map<String, Object> child1 = new HashMap<>();
+        Map<String, Object> child2 = new HashMap<>();
         
-        Submission submission = new SubmissionTestBuilder()
-                .with("children", List.of(child1, child2))
-                .withMultipleChildcareSchedulesAllBelongingToTheSameProvider(
-                        List.of(child1.get("uuid").toString(), child2.get("uuid").toString()), "provider-id").build();
-        boolean result = SubmissionUtilities.allChildcareSchedulesAreForTheSameProvider(
-                submission.getInputData());
-        assertThat(result).isTrue();
-    }
+        @BeforeEach
+        void setup() {
+            child1.put("uuid", UUID.randomUUID().toString());
+            child1.put("childFirstName", "First");
+            child1.put("childLastName", "Child");
+            child1.put("childInCare", "true");
+            child1.put("childDateOfBirthMonth", "10");
+            child1.put("childDateOfBirthDay", "11");
+            child1.put("childDateOfBirthYear", "2020");
+            child1.put("needFinancialAssistanceForChild", true);
+            child1.put("childIsUsCitizen", "Yes");
+            child1.put("ccapStartDate", "01/10/2025");
 
-    @Test
-    void allChildcareSchedulesAreForTheSameProviderReturnsFalseWhenAllChildcareSchedulesDoNotHaveSameProviderUuid() {
-        Map<String, Object> child1  = new HashMap<>();
-        Map<String, Object> child2  = new HashMap<>();
-        child1.put("uuid", UUID.randomUUID().toString());
-        child1.put("childFirstName", "First");
-        child1.put("childLastName", "Child");
-        child1.put("childInCare", "true");
-        child1.put("childDateOfBirthMonth", "10");
-        child1.put("childDateOfBirthDay", "11");
-        child1.put("childDateOfBirthYear", "2002");
-        child1.put("needFinancialAssistanceForChild", true);
-        child1.put("childIsUsCitizen", "Yes");
-        child1.put("ccapStartDate", "01/10/2025");
-
-        child2.put("uuid", UUID.randomUUID().toString());
-        child2.put("childFirstName", "Second");
-        child2.put("childLastName", "Child");
-        child2.put("childInCare", "true");
-        child2.put("childDateOfBirthMonth", "10");
-        child2.put("childDateOfBirthDay", "11");
-        child2.put("childDateOfBirthYear", "2002");
-        child2.put("needFinancialAssistanceForChild", true);
-        child2.put("childIsUsCitizen", "Yes");
-        child2.put("ccapStartDate", "01/10/2025");
+            child2.put("uuid", UUID.randomUUID().toString());
+            child2.put("childFirstName", "Second");
+            child2.put("childLastName", "Child");
+            child2.put("childInCare", "true");
+            child2.put("childDateOfBirthMonth", "12");
+            child2.put("childDateOfBirthDay", "11");
+            child2.put("childDateOfBirthYear", "2021");
+            child2.put("needFinancialAssistanceForChild", true);
+            child2.put("childIsUsCitizen", "Yes");
+            child2.put("ccapStartDate", "12/10/2025");
+        }
         
-        Submission submission = new SubmissionTestBuilder()
-                .with("children", List.of(child1, child2))
-                .withMultipleChildcareSchedulesBelongingToDifferentProviders(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()), List.of("p1", "p2")).build();
-        boolean result = SubmissionUtilities.allChildcareSchedulesAreForTheSameProvider(submission.getInputData());
-        assertThat(result).isFalse();
-    }
 
-    @Test
-    void isPreMultiProviderApplicationWithSingleProviderShouldReturnTrueIfApplicationUsesPreMultiProviderDataStructure() {
-        Submission submission = new SubmissionTestBuilder().withFamilyIntendedProviderName("provider-name").build();
-        boolean result = SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider(submission);
-        assertThat(result).isTrue();
-    }
+        @Test
+        void returnsTrueWhenAllProvidersHaveSameResourceOrgId() {
+            Map<String, Object> provider1 = new HashMap<>();
+            Map<String, Object> provider2 = new HashMap<>();
+            provider1.put("uuid", UUID.randomUUID().toString());
+            provider1.put("providerName", "First Provider");
+            provider1.put("providerResourceOrgId", "orgID");
 
-    @Test
-    void isPreMultiProviderApplicationWithSingleProviderShouldReturnFalseIfIsMultiproviderApplication() {
-        Submission submission = new SubmissionTestBuilder().withMultipleChildcareSchedules(List.of("C1", "C2"), List.of("P1", "P2")).build();
-        boolean result = SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider(submission);
-        assertThat(result).isFalse();
+            provider2.put("uuid", UUID.randomUUID().toString());
+            provider2.put("providerName", "Second Provider");
+            provider2.put("providerResourceOrgId", "orgID");
+
+            Submission submission = new SubmissionTestBuilder()
+                    .with("providers", List.of(provider1, provider2))
+                    .with("children", List.of(child1, child2))
+                    .withMultipleChildcareSchedules(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()),
+                            List.of(provider1.get("uuid").toString(), provider2.get("uuid").toString()))
+                    .build();
+            boolean result = SubmissionUtilities.allProvidersBelongToTheSameSiteAdministeredResourceOrganization(submission);
+            assertThat(result).isTrue();
+        }
+
+        @Test
+        void returnsFalseWhenProvidersHaveDifferentResourceOrgIds() {
+            Map<String, Object> provider1 = new HashMap<>();
+            Map<String, Object> provider2 = new HashMap<>();
+            provider1.put("uuid", UUID.randomUUID().toString());
+            provider1.put("providerName", "First Provider");
+            provider1.put("providerResourceOrgId", "orgID1");
+
+            provider2.put("uuid", UUID.randomUUID().toString());
+            provider2.put("providerName", "Second Provider");
+            provider2.put("providerResourceOrgId", "orgID2");
+
+            Submission submission = new SubmissionTestBuilder()
+                    .with("providers", List.of(provider1, provider2))
+                    .build();
+            boolean result = SubmissionUtilities.allProvidersBelongToTheSameSiteAdministeredResourceOrganization(submission);
+            assertThat(result).isFalse();
+        }
+
+        @Test
+        void returnsFalseWhenAProviderDoesNotHaveAResourceOrgId() {
+            Map<String, Object> provider1 = new HashMap<>();
+            Map<String, Object> provider2 = new HashMap<>();
+            provider1.put("uuid", UUID.randomUUID().toString());
+            provider1.put("providerName", "First Provider");
+            provider1.put("providerResourceOrgId", "orgID1");
+
+            provider2.put("uuid", UUID.randomUUID().toString());
+            provider2.put("providerName", "Second Provider");
+            // provider2 does not have a resource org id
+
+            Submission submission = new SubmissionTestBuilder()
+                    .with("providers", List.of(provider1, provider2))
+                    .build();
+            boolean result = SubmissionUtilities.allProvidersBelongToTheSameSiteAdministeredResourceOrganization(submission);
+            assertThat(result).isFalse();
+        }
+
+        @Test
+        void returnsTrueWhenThereIsOnlyOneProvider() {
+            Map<String, Object> provider1 = new HashMap<>();
+            provider1.put("uuid", UUID.randomUUID().toString());
+            provider1.put("providerName", "First Provider");
+            provider1.put("providerResourceOrgId", "orgID1");
+
+            Submission submission = new SubmissionTestBuilder()
+                    .with("providers", List.of(provider1))
+                    .with("children", List.of(child1, child2))
+                    .withMultipleChildcareSchedules(List.of(child1.get("uuid").toString(), child2.get("uuid").toString()),
+                            List.of(provider1.get("uuid").toString(), provider1.get("uuid").toString()))
+                    .build();
+            boolean result = SubmissionUtilities.allProvidersBelongToTheSameSiteAdministeredResourceOrganization(submission);
+            assertThat(result).isTrue();
+        }
+
+        @Test
+        void returnsFalseWhenProvidersIsEmpty() {
+            Submission submission = new SubmissionTestBuilder()
+                    .with("providers", List.of())
+                    .build();
+            boolean result = SubmissionUtilities.allProvidersBelongToTheSameSiteAdministeredResourceOrganization(submission);
+            assertThat(result).isFalse();
+        }
     }
 }
