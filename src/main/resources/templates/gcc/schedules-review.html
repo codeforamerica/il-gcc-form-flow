@@ -57,7 +57,6 @@
                                                        th:id="'edit-iteration-' + ${childcareIteration.get('uuid')}"
                                                        class="subflow-edit"></a>
                                                 </p>
-                                                </span>
                                             </li>
                                         </ol>
                                     </th:block>
@@ -67,7 +66,7 @@
                                                    noProvidersHaveChildcareSchedules=${T(org.ilgcc.app.utils.SubmissionUtilities).areAllProvidersMissingChildcareSchedules(inputData)}
                                                    ">
                                     <th:block th:if="${noProvidersHaveChildcareSchedules}">
-                                        <div class="notice--warning notice" th:id="no-providers-entered-notice">
+                                        <div class="notice--warning" th:id="no-providers-entered-notice">
                                             <p th:text="#{schedules-review.notice.no-providers-with-schedules.p1}"></p>
                                             <p th:text="#{schedules-review.notice.no-providers-with-schedules.p2}"></p>
                                         </div>
