@@ -1454,7 +1454,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         //schedules-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
         Assertions.assertTrue(
-            testPage.findElementById("providers-are-missing-notice").getText().contains("You did not add your providers Nope Test and Third Provider, to the child care details."));
+            testPage.findElementById("providers-are-missing-notice").getText().contains("You did not add your providers, Nope Test and Third Provider, to the child care details."));
         testPage.clickContinue();
     }
     void AddOneProviderInMultiProviderFlow() {
