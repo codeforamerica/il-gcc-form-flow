@@ -8,4 +8,7 @@ public class SessionKeys {
     public final static String SESSION_KEY_SELECTED_PROVIDER_NAME = "selectedProviderName";
     public final static String SESSION_KEY_CAME_FROM_HOME_PAGE = "cameFromHomePage";
     public final static String SESSION_KEY_INVALID_PROVIDER_EMAIL = "invalidProviderEmail";
+    public final static String SESSION_KEY_INVALID_PARENT_EMAIL = "invalidParentEmail";
+    public final static String SESSION_KEY_INVALID_PARENT_PARTNER_EMAIL = "invalidParentPartnerEmail";
+    public final static String SESSION_KEY_INVALID_PROVIDER_RESPONSE_CONTACT_EMAIL = "invalidProviderResponseContactEmail";
 }

@@ -1,20 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_INVALID_PARENT_EMAIL;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -34,9 +21,22 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_INVALID_PARENT_PARTNER_EMAIL;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 @ActiveProfiles("test")
 @SpringBootTest(classes = {IlGCCApplication.class, SendGridEmailValidationService.class})
-class ValidateParentContactProvideEmailTest {
+class ValidateParentPartnerContactEmailPhoneTest {
 
     @Mock
     private MessageSource messageSource;
@@ -45,12 +45,14 @@ class ValidateParentContactProvideEmailTest {
     SendGridEmailValidationService mockSendGridEmailValidationService;
 
     @Autowired
-    private ValidateParentContactProvideEmail validator;
+    private ValidateParentPartnerContactEmailPhone validator;
     private AutoCloseable closeable;
     private final String suggestedEmail = "foo@bar.com";
     private final String INVALID_EMAIL = "test@gemail.com";
     private final String VALID_EMAIL = "foobar@gmail.com";
-    private final String PARENT_EMAIL_INPUT = "parentContactEmail";
+    private final String PARTNER_EMAIL_INPUT = "parentPartnerEmail";
+    private final String PARTNER_PHONE_INPUT = "parentPartnerPhoneNumber";
+    private static final String INVALID_PHONE_NUMBER = "545123";
 
     @BeforeEach
     void setUp() {
@@ -60,6 +62,8 @@ class ValidateParentContactProvideEmailTest {
                 .thenReturn("Make sure the email you entered follows the right format.");
         when(messageSource.getMessage("errors.require-email", null, Locale.getDefault()))
                 .thenReturn("Please provide an email address.");
+        when(messageSource.getMessage("errors.invalid-phone-number", null, Locale.getDefault()))
+                .thenReturn("Make sure the phone number is valid and includes 10 digits.");
         when(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, Locale.getDefault()))
                 .thenReturn("Make sure the email address is valid and follows this format: name@email.com");
         when(messageSource.getMessage("errors.invalid-email.with-suggested-email-address", new Object[]{suggestedEmail},
@@ -70,7 +74,7 @@ class ValidateParentContactProvideEmailTest {
     void setupMockSession(String value) {
         HttpServletRequest mockRequest = mock(HttpServletRequest.class);
         HttpSession mockSession = mock(HttpSession.class);
-        when(mockSession.getAttribute(SESSION_KEY_INVALID_PARENT_EMAIL)).thenReturn(value);
+        when(mockSession.getAttribute(SESSION_KEY_INVALID_PARENT_PARTNER_EMAIL)).thenReturn(value);
         when(mockRequest.getSession()).thenReturn(mockSession);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(mockRequest));
     }
@@ -82,47 +86,40 @@ class ValidateParentContactProvideEmailTest {
     }
 
     @Test
-    void shouldNotThrowAnErrorWhenWhenEmailIsPreferredCommunicationAndEmailFieldIsBlank() {
+    void shouldThrowAnErrorWhenPhoneIsNotValid() {
         //create submission object with inputData
-        Submission submission = new SubmissionTestBuilder()
-                .with("parentContactPreferredCommunicationMethod", "")
-                .build();
+        Submission submission = new SubmissionTestBuilder().build();
 
         Map<String, Object> formData = Map.of(
-                PARENT_EMAIL_INPUT, ""
+                PARTNER_PHONE_INPUT,INVALID_PHONE_NUMBER
         );
         FormSubmission formSubmission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, submission);
-        assertThat(errors).doesNotContainKeys(PARENT_EMAIL_INPUT);
+        assertThat(errors).containsKey(PARTNER_PHONE_INPUT);
+        assertThat(errors).containsValue(List.of("Make sure the phone number is valid and includes 10 digits."));
     }
 
     @Test
-    void shouldThrowAnErrorWhenWhenEmailIsPreferredCommunicationAndEmailFieldIsBlank() {
+    void shouldNotThrowAnErrorWhenEmailFieldIsBlank() {
         //create submission object with inputData
-        Submission submission = new SubmissionTestBuilder()
-            .with("parentContactPreferredCommunicationMethod", "email")
-            .build();
-
+        Submission submission = new SubmissionTestBuilder().build();
         Map<String, Object> formData = Map.of(
-                PARENT_EMAIL_INPUT, ""
+                PARTNER_EMAIL_INPUT, ""
         );
         FormSubmission formSubmission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, submission);
-        assertThat(errors).containsKey(PARENT_EMAIL_INPUT);
-        assertThat(errors).containsValue(List.of("Please provide an email address."));
+        assertThat(errors).doesNotContainKeys(PARTNER_EMAIL_INPUT);
     }
 
     @Test
-    void shouldErrorWhenEmailIsThePreferredCommunicationAndTheEmailIsInvalid(){
-        Submission submission = new SubmissionTestBuilder()
-            .with("parentContactPreferredCommunicationMethod", "email")
-            .build();
+    void shouldErrorWhenEmailDoesNotMatchRegex(){
+        Submission submission = new SubmissionTestBuilder().build();
         Map<String, Object> formData = Map.of(
-                PARENT_EMAIL_INPUT, "test@bademaiaddress"
+                PARTNER_EMAIL_INPUT, "test@bademaiaddress"
         );
         FormSubmission formSubmission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, submission);
-        assertThat(errors).containsKey(PARENT_EMAIL_INPUT);
+        assertThat(errors).containsKey(PARTNER_EMAIL_INPUT);
         assertThat(errors).containsValue(List.of("Make sure the email you entered follows the right format."));
     }
 
@@ -132,7 +129,7 @@ class ValidateParentContactProvideEmailTest {
         result.put("endpointReached", "success");
         result.put("emailIsValid", "true");
         setupMockSession("");
-        Map<String, Object> formData = Map.of(PARENT_EMAIL_INPUT, VALID_EMAIL);
+        Map<String, Object> formData = Map.of(PARTNER_EMAIL_INPUT, VALID_EMAIL);
         FormSubmission formSubmission = new FormSubmission(formData);
         when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL))
                 .thenReturn(result);
@@ -148,13 +145,13 @@ class ValidateParentContactProvideEmailTest {
         result.put("hasSuggestion", "false");
 
         setupMockSession("");
-        Map<String, Object> formData = Map.of(PARENT_EMAIL_INPUT, INVALID_EMAIL);
+        Map<String, Object> formData = Map.of(PARTNER_EMAIL_INPUT, INVALID_EMAIL);
         FormSubmission formSubmission = new FormSubmission(formData);
         when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertFalse(errors.isEmpty());
-        AssertionsForClassTypes.assertThat(errors.get(PARENT_EMAIL_INPUT).contains("Make sure the email address is valid and follows this format: name@email.com")).isTrue();
+        AssertionsForClassTypes.assertThat(errors.get(PARTNER_EMAIL_INPUT).contains("Make sure the email address is valid and follows this format: name@email.com")).isTrue();
     }
 
     @Test
@@ -166,13 +163,13 @@ class ValidateParentContactProvideEmailTest {
         result.put("suggestedEmail", suggestedEmail);
 
         setupMockSession("");
-        Map<String, Object> formData = Map.of(PARENT_EMAIL_INPUT, INVALID_EMAIL);
+        Map<String, Object> formData = Map.of(PARTNER_EMAIL_INPUT, INVALID_EMAIL);
         FormSubmission formSubmission = new FormSubmission(formData);
         when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertFalse(errors.isEmpty());
-        AssertionsForClassTypes.assertThat(errors.get(PARENT_EMAIL_INPUT).contains("Make sure the email address is valid. Did you mean foo@bar.com?")).isTrue();
+        AssertionsForClassTypes.assertThat(errors.get(PARTNER_EMAIL_INPUT).contains("Make sure the email address is valid. Did you mean foo@bar.com?")).isTrue();
     }
 
     @Test
@@ -184,7 +181,7 @@ class ValidateParentContactProvideEmailTest {
         result.put("suggestedEmail", suggestedEmail);
 
         setupMockSession(INVALID_EMAIL);
-        Map<String, Object> formData = Map.of(PARENT_EMAIL_INPUT, INVALID_EMAIL);
+        Map<String, Object> formData = Map.of(PARTNER_EMAIL_INPUT, INVALID_EMAIL);
         FormSubmission formSubmission = new FormSubmission(formData);
         when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
                 .thenReturn(result);
