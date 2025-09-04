@@ -765,7 +765,7 @@ subflows:
     relationship:
       relatesTo: children
       relationAlias: childUuid
-      filter: ChildrenInNeedOfChildCare
+      filter: ChildrenInNeedOfChildCareCappedAt4
       repeatFor:
         inputName: childcareProvidersForCurrentChild
         saveDataAs: providerSchedules
