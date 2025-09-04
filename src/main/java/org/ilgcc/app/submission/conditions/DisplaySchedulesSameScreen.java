@@ -26,7 +26,7 @@ public class DisplaySchedulesSameScreen extends EnableMultipleProviders implemen
             Map<String, Object> currentProviderSchedule = relatedSubflowIterationData(currentChildcareSchedule, "providerSchedules",
         repeatForIterationUuid);
             String currentProviderUuidOrNoProvider = (String) currentProviderSchedule.get("repeatForValue");
-            List<Map<String, Object>> childcareSchedulesWithTheSameProvider = SubmissionUtilities.getAnyChildcareSchedulesWithTheSameProvider(childcareSchedules, currentProviderUuidOrNoProvider, currentChildcareSchedule);
+            List<Map<String, Object>> childcareSchedulesWithTheSameProvider = SubmissionUtilities.getRemainingChildcareSchedulesWithTheSameProvider(childcareSchedules, currentProviderUuidOrNoProvider, currentChildcareSchedule);
             return super.run(submission) && (!childcareSchedulesWithTheSameProvider.isEmpty() &&
                hasOnlyOneProviderScheduleForTheSameProvider(childcareSchedulesWithTheSameProvider, currentProviderUuidOrNoProvider));
         }
