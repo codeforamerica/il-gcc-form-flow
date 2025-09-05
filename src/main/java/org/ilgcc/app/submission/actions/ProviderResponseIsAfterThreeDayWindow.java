@@ -1,6 +1,5 @@
 package org.ilgcc.app.submission.actions;
 
-import formflow.library.config.submission.Action;
 import formflow.library.config.submission.Condition;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -10,7 +9,7 @@ import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 
 
 public class ProviderResponseIsAfterThreeDayWindow implements Condition {
-  private final SubmissionRepositoryService submissionRepositoryService;
+  SubmissionRepositoryService submissionRepositoryService;
 
   public ProviderResponseIsAfterThreeDayWindow(SubmissionRepositoryService submissionRepositoryService) {
       this.submissionRepositoryService = submissionRepositoryService;
