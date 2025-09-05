@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.ilgcc.app.submission.actions.ValidateProviderEmail.callSendGridAndValidateEmail;
+import static org.ilgcc.app.utils.constants.SessionKeys.SESSION_KEY_INVALID_PROVIDER_EMAIL;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.sendgrid.SendGridEmailValidationService;
+import org.ilgcc.app.utils.SendGridUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -21,19 +22,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidateProviderEmailWhenInputIsPresent implements Action {
 
-    private final HttpSession httpSession;
-
     @Autowired
     MessageSource messageSource;
+
+    @Autowired
+    HttpSession httpSession;
 
     @Autowired
     SendGridEmailValidationService sendGridEmailValidationService;
 
     private final String INPUT_NAME = "familyIntendedProviderEmail";
-
-    public ValidateProviderEmailWhenInputIsPresent(HttpSession httpSession) {
-        this.httpSession = httpSession;
-    }
 
     @Override
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission submission) {
@@ -47,7 +45,8 @@ public class ValidateProviderEmailWhenInputIsPresent implements Action {
             errorMessages.put(INPUT_NAME, List.of(messageSource.getMessage("errors.invalid-email.blank", null, locale)));
         }
 
-        return callSendGridAndValidateEmail(locale, errorMessages, providerEmail, sendGridEmailValidationService, INPUT_NAME,
-                messageSource, httpSession);
+        SendGridUtilities.callSendGridAndValidateEmail(locale, errorMessages, providerEmail, sendGridEmailValidationService, INPUT_NAME,
+                messageSource, httpSession,SESSION_KEY_INVALID_PROVIDER_EMAIL);
+        return errorMessages;
     }
 }

@@ -98,6 +98,7 @@ public class SendGridEmailValidationService {
         boolean hasMxOrARecord = result.hasMxOrARecord();
         boolean isSuspectedDisposableAddress = result.isSuspectedDisposableAddress();
         boolean hasKnownBounces = result.hasKnownBounces();
+        boolean isSuspectedRoleAddress = result.isSuspectedRoleAddress();
 
         if (!validAddressSyntax) {
             log.debug("Invalid email address syntax");
@@ -111,10 +112,14 @@ public class SendGridEmailValidationService {
         if (isSuspectedDisposableAddress) {
             log.debug("Invalid email, is suspected disposable address");
         }
+        if (isSuspectedRoleAddress) {
+            log.debug("Invalid email, is suspected role address");
+        }
 
         return result.hasValidAddressSyntax() &&
                 result.hasMxOrARecord() &&
                 !result.isSuspectedDisposableAddress() &&
-                !result.hasKnownBounces();
+                !result.hasKnownBounces() &&
+                !result.isSuspectedRoleAddress();
     }
 }

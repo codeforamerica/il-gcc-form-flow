@@ -117,6 +117,7 @@ flow:
     nextScreens:
       - name: parent-partner-contact
   parent-partner-contact:
+    crossFieldValidationAction: ValidateParentPartnerContactEmailPhone
     nextScreens:
       - name: parent-partner-info-service
   parent-partner-info-service:
