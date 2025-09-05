@@ -6,76 +6,73 @@
         th:assert="
           ${hasGroupName}">
     <div th:class="'question-group'">
-        <fieldset th:id="${inputGroupName}">
-            <th:block
-                    th:with="hourInputName=${inputGroupName+'Hour'}, minuteInputName=${inputGroupName+'Minute'}, amPmInputName=${inputGroupName+'AmPm'}">
-                <div class="steps-box spacing-below-35">
-                    <div class="form-question-stack">
-                        <div class="form-question-vertical-align">
-                            <label th:for="${hourInputName}"
-                                   th:text="#{'general.hour'}"
-                                   th:id="${hourInputName}"
-                                   th:class="spacing-below-5"
-                            ></label>
-                            <div class="select">
-                                <select class="select__element"
-                                        th:id="${hourInputName}"
-                                        th:name="${hourInputName}"
-                                        th:attr="aria-describedby=${hasAriaDescribedByLabel ? hourInputName + ' ' + ariaDescribedBy : 'hourInputName'}">
-                                    <option value="" selected disabled hidden></option>
+        <th:block
+                th:with="hourInputName=${inputGroupName+'Hour'}, minuteInputName=${inputGroupName+'Minute'}, amPmInputName=${inputGroupName+'AmPm'}">
+            <div class="steps-box spacing-below-35">
+                <div class="form-question-stack">
+                    <div class="form-question-vertical-align">
+                        <label th:for="${hourInputName + '-select'}"
+                               th:text="#{'general.hour'}"
+                               th:id="${hourInputName + '-label'}"
+                               th:class="spacing-below-5"
+                        ></label>
+                        <div class="select">
+                            <select class="select__element"
+                                    th:id="${hourInputName + '-select'}"
+                                    th:name="${hourInputName}"
+                                    th:attr="aria-describedby=${hasAriaDescribedByLabel ? ariaDescribedBy : 'hourInputName'}">
+                                <option value="" selected disabled hidden></option>
+                                <th:block
+                                        th:each="hour : ${T(org.ilgcc.app.utils.HourSelectOption).values()}">
                                     <th:block
-                                            th:each="hour : ${T(org.ilgcc.app.utils.HourSelectOption).values()}">
-                                        <th:block
-                                                th:replace="~{fragments/inputs/selectOption :: selectOption(value=${hour.getLabel()}, optionText=${hour.getLabel()}, inputName=${hourInputName})}"/>
-                                    </th:block>
-                                </select>
-                            </div>
+                                            th:replace="~{fragments/inputs/selectOption :: selectOption(value=${hour.getLabel()}, optionText=${hour.getLabel()}, inputName=${hourInputName})}"/>
+                                </th:block>
+                            </select>
                         </div>
-                    </div>
-                    <div class="form-question-stack">
-                        <div class="form-question-vertical-align">
-                            <label th:for="${minuteInputName}"
-                                   th:text="#{'general.minute'}"
-                                   th:id="${minuteInputName}"
-                                   th:class="spacing-below-5"
-                            ></label>
-                            <input type="text" class="time-input"
-                                   inputmode="numeric"
-                                   minlength="1" maxlength="2"
-                                   th:id="${minuteInputName}"
-                                   th:name="${minuteInputName}"
-                                   th:place
-                                   th:attr="aria-describedby=${hasAriaDescribedByLabel ? minuteInputName+ ' ' + ariaDescribedBy : minuteInputName}"
-                                   th:value="${fieldData.getOrDefault(minuteInputName, '00')}">
-                        </div>
-                    </div>
-                    <div class="form-question-stack">
-                        <div class="form-question-vertical-align">
-                            <label th:for="${amPmInputName}"
-                                   th:text="#{'general.amOrPM'}"
-                                   th:id="${amPmInputName}"
-                                   th:class="spacing-below-5"
-                            ></label>
-                            <div class="select">
-                                <select class="select__element"
-                                        th:id="${amPmInputName}"
-                                        th:name="${amPmInputName}"
-                                        th:attr="aria-describedby=${hasAriaDescribedByLabel ? amPmInputName + ' ' + ariaDescribedBy : amPmInputName}">
-                                    <option value="" selected disabled hidden></option>
-                                    <th:block
-                                            th:each="amPM : ${T(org.ilgcc.app.utils.AmPmSelectOption).values()}">
-                                        <th:block
-                                                th:replace="~{fragments/inputs/selectOption :: selectOption(value=${amPM.toString()}, optionText=${amPM.toString()}, inputName=${amPmInputName})}"/>
-                                    </th:block>
-                                </select>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
+                <div class="form-question-stack">
+                    <div class="form-question-vertical-align">
+                        <label th:for="${minuteInputName + '-input'}"
+                               th:text="#{'general.minute'}"
+                               th:id="${minuteInputName + '-label'}"
+                               th:class="spacing-below-5"
+                        ></label>
+                        <input type="text" class="time-input"
+                               inputmode="numeric"
+                               minlength="1" maxlength="2"
+                               th:id="${minuteInputName + '-input'}"
+                               th:name="${minuteInputName}"
+                               th:place
+                               th:attr="aria-describedby=${hasAriaDescribedByLabel ? ariaDescribedBy : minuteInputName}"
+                               th:value="${fieldData.getOrDefault(minuteInputName, '00')}">
+                    </div>
+                </div>
+                <div class="form-question-stack">
+                    <div class="form-question-vertical-align">
+                        <label th:for="${amPmInputName + '-select'}"
+                               th:text="#{'general.amOrPM'}"
+                               th:id="${amPmInputName + '-label'}"
+                               th:class="spacing-below-5"
+                        ></label>
+                        <div class="select">
+                            <select class="select__element"
+                                    th:id="${amPmInputName + '-select'}"
+                                    th:name="${amPmInputName}"
+                                    th:attr="aria-describedby=${hasAriaDescribedByLabel ? ariaDescribedBy : amPmInputName}">
+                                <option value="" selected disabled hidden></option>
+                                <th:block
+                                        th:each="amPM : ${T(org.ilgcc.app.utils.AmPmSelectOption).values()}">
+                                    <th:block
+                                            th:replace="~{fragments/inputs/selectOption :: selectOption(value=${amPM.toString()}, optionText=${amPM.toString()}, inputName=${amPmInputName})}"/>
+                                </th:block>
+                            </select>
+                        </div>
+                    </div>
 
-            </th:block>
-        </fieldset>
+                </div>
+            </div>
 
+        </th:block>
     </div>
 </th:block>
