@@ -3,6 +3,7 @@ package org.ilgcc.app.data;
 import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -59,7 +60,7 @@ public class TransactionRepositoryService {
         rows.stream()
                 .forEach(t -> {
                     String organizationId = (String) t[0];
-                    OffsetDateTime createdAt = ((Timestamp) t[1]).toLocalDateTime().atOffset(ZoneOffset.UTC);
+                    OffsetDateTime createdAt = ((Instant) t[1]).atOffset(ZoneOffset.UTC);
                     String shortCode = (String) t[2];
                     String workItemId = (String) t[3];
                     transactions.add(new ResourceOrganizationTransaction(organizationId, createdAt, shortCode, workItemId));

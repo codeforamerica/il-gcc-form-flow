@@ -3,6 +3,7 @@ package org.ilgcc.app.utils;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.providersWithSchedules;
 
 import formflow.library.data.Submission;
 import jakarta.validation.constraints.NotBlank;
@@ -342,15 +343,41 @@ public class SubmissionUtilities {
         return String.format("%s.%s", prefix, suffix);
     }
 
-    public static List<Map<String, Object>> getAnyChildcareSchedulesWithTheSameProvider(
+    public static List<Map<String, Object>> getRemainingChildcareSchedulesWithTheSameProvider(
             List<Map<String, Object>> childcareSchedules, String currentProviderUuidOrNoProvider,
             Map<String, Object> currentChildcareSchedule) {
-        List<Map<String, Object>> remainingChildcareSchedules = childcareSchedules.stream()
-                .filter(childcareSchedule -> !childcareSchedule.equals(currentChildcareSchedule))
-                .toList();
-        return remainingChildcareSchedules.stream()
-                .filter(childcareSchedule -> childcareScheduleIncludesThisProvider(childcareSchedule,
-                        currentProviderUuidOrNoProvider)).toList();
+        return getAllChildcareSchedulesWithTheSameProvider(childcareSchedules, currentProviderUuidOrNoProvider).stream()
+                .filter(childcareSchedule -> !childcareSchedule.equals(currentChildcareSchedule)).toList();
+    }
+
+    public static List<Map<String, Object>> getAllChildcareSchedulesWithTheSameProvider(List<Map<String, Object>> childcareSchedules, String currentProviderUuidOrNoProvider){
+        return childcareSchedules.stream().filter(childcareSchedule -> childcareScheduleIncludesThisProvider(childcareSchedule, currentProviderUuidOrNoProvider)).toList();
+    }
+
+    public static List<Map<String, Object>> getListOfProvidersMissingChildcareSchedules(Map<String, Object> inputData) {
+        List<String> providersWithSchedulesUUIDList = providersWithSchedules(inputData);
+        List<Map<String, Object>> providers = getProviders(inputData);
+        return providers.stream().filter(provider-> !providersWithSchedulesUUIDList.contains(provider.get("uuid").toString())).toList();
+    }
+
+    public static List<String> getNamesOfProvidersMissingChildcareSchedules(Map<String, Object> inputData) {
+        List<String> missingProvidersByName = new ArrayList<>();
+        List<Map<String, Object>> providersMissingChildcareSchedules = getListOfProvidersMissingChildcareSchedules(inputData);
+        if (!providersMissingChildcareSchedules.isEmpty()){
+            for (Map<String, Object> provider : providersMissingChildcareSchedules) {
+                missingProvidersByName.add(provider.get("familyIntendedProviderName").toString());
+            }
+        }
+        return missingProvidersByName;
+    }
+
+    public static boolean areAllProvidersMissingChildcareSchedules(Map<String, Object> inputData) {
+        String hasChosenProvider = inputData.getOrDefault("hasChosenProvider", "").toString();
+        if (hasChosenProvider.equals("false") || !inputData.containsKey("providers")) {
+            return true;
+        }
+        List<Map<String, Object>> providers = getProviders(inputData);
+        return (providers.size() == getListOfProvidersMissingChildcareSchedules(inputData).size());
     }
 
     private static boolean childcareScheduleIncludesThisProvider(Map<String, Object> childcareSchedule,

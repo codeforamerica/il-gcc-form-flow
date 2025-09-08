@@ -34,7 +34,7 @@ public class LocalizeSameScreenProviderSchedules implements Action {
             repeatForIterationUuid);
         String currentProviderUuidOrNoProvider = (String) currentProviderSchedule.get("repeatForValue");
 
-        List<Map<String, Object>> childCareSchedulesWithMatchingProvider = SubmissionUtilities.getAnyChildcareSchedulesWithTheSameProvider(childcareSchedules,currentProviderUuidOrNoProvider, currentChildcareSchedule);
+        List<Map<String, Object>> childCareSchedulesWithMatchingProvider = SubmissionUtilities.getRemainingChildcareSchedulesWithTheSameProvider(childcareSchedules,currentProviderUuidOrNoProvider, currentChildcareSchedule);
 
         childCareSchedulesWithMatchingProvider.forEach(childCareScheduleMatch -> {
             List<Map<String, Object>> providerSchedules = (List<Map<String, Object>>) childCareScheduleMatch.getOrDefault("providerSchedules", Collections.emptyList());
