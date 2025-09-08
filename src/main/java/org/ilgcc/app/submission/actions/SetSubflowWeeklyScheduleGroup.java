@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -71,7 +70,9 @@ public class SetSubflowWeeklyScheduleGroup implements Action {
             }
         }
 
-        iterationData.put(DISPLAY_LABEL, lastDay == null ? firstDay : "%s-%s".formatted(firstDay, lastDay));
+        iterationData.put(DISPLAY_LABEL, lastDay == null ? firstDay
+                : messageSource.getMessage("general.week.day-range", new Object[]{firstDay, lastDay},
+                        LocaleContextHolder.getLocale()));
     }
 
     private String formatWeekdaysSeparated(List<String> sortedDays, Locale locale) {
