@@ -54,6 +54,7 @@ class ValidateProviderResponsePhoneAndEmailTest {
     private final String VALID_EMAIL_ADDRESS =  "test@email.com";
     private final String INVALID_EMAIL_ADDRESS = "test@email";
     private final String VALID_REGEX_EMAIL_ADDRESS = "test@gemail.com";
+    private final String ROLE_EMAIL = "admin@gmail.com";
     private final String suggestedEmail = "test@gmail.com";
 
     @BeforeEach
@@ -188,7 +189,7 @@ class ValidateProviderResponsePhoneAndEmailTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of("providerResponseContactEmail", VALID_EMAIL_ADDRESS);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL_ADDRESS))
+        when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL_ADDRESS,false))
                 .thenReturn(result);
         Map<String, List<String>> errors = validateProviderResponsePhoneAndEmail.runValidation(formSubmission, new Submission());
         assertTrue(errors.isEmpty());
@@ -204,7 +205,7 @@ class ValidateProviderResponsePhoneAndEmailTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of("providerResponseContactEmail", VALID_REGEX_EMAIL_ADDRESS);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS))
+        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS,false))
                 .thenReturn(result);
         Map<String, List<String>> errors = validateProviderResponsePhoneAndEmail.runValidation(formSubmission, new Submission());
         assertFalse(errors.isEmpty());
@@ -222,11 +223,26 @@ class ValidateProviderResponsePhoneAndEmailTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of("providerResponseContactEmail", VALID_REGEX_EMAIL_ADDRESS);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS))
+        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS,false))
                 .thenReturn(result);
         Map<String, List<String>> errors = validateProviderResponsePhoneAndEmail.runValidation(formSubmission, new Submission());
         assertFalse(errors.isEmpty());
         AssertionsForClassTypes.assertThat(errors.get("providerResponseContactEmail").contains("Make sure the email address is valid. Did you mean test@gmail.com?")).isTrue();
+    }
+
+    @Test
+    void shouldNotReturnErrorWhenSendGridIsReachedEmailIsRoleAddress() throws IOException {
+        HashMap<String, String> result = new HashMap<>();
+        result.put("endpointReached", "success");
+        result.put("emailIsValid", "true");
+
+        setupMockSession("");
+        Map<String, Object> formData = Map.of("providerResponseContactEmail", ROLE_EMAIL);
+        FormSubmission formSubmission = new FormSubmission(formData);
+        when(mockSendGridEmailValidationService.validateEmail(ROLE_EMAIL,false))
+                .thenReturn(result);
+        Map<String, List<String>> errors = validateProviderResponsePhoneAndEmail.runValidation(formSubmission, new Submission());
+        assertTrue(errors.isEmpty());
     }
 
     @Test
@@ -240,7 +256,7 @@ class ValidateProviderResponsePhoneAndEmailTest {
         setupMockSession(VALID_REGEX_EMAIL_ADDRESS);
         Map<String, Object> formData = Map.of("providerResponseContactEmail", VALID_REGEX_EMAIL_ADDRESS);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS))
+        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS,false))
                 .thenReturn(result);
         Map<String, List<String>> errors = validateProviderResponsePhoneAndEmail.runValidation(formSubmission, new Submission());
         assertTrue(errors.isEmpty());

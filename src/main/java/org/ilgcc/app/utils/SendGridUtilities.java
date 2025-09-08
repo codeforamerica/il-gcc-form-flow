@@ -15,10 +15,10 @@ public class SendGridUtilities {
 
     public static void callSendGridAndValidateEmail(Locale locale, Map<String, List<String>> errorMessages,
                                                                   String email, SendGridEmailValidationService sendGridEmailValidationService, String inputName,
-                                                                  MessageSource messageSource, HttpSession httpSession,String sessionKey) {
+                                                                  MessageSource messageSource, HttpSession httpSession,String sessionKey, Boolean isFamilyEmail) {
         if (email.matches(RegexUtils.EMAIL_REGEX)) {
             try {
-                HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(email);
+                HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(email,isFamilyEmail);
                 if (emailValidationResult.getOrDefault("endpointReached", "").equals("success")) {
                     if (!emailValidationResult.get("emailIsValid").equals("true")) {
                         if(httpSession.getAttribute(sessionKey) != null && httpSession.getAttribute(sessionKey).equals(email)) {

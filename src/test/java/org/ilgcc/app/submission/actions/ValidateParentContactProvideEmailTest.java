@@ -50,6 +50,7 @@ class ValidateParentContactProvideEmailTest {
     private final String suggestedEmail = "foo@bar.com";
     private final String INVALID_EMAIL = "test@gemail.com";
     private final String VALID_EMAIL = "foobar@gmail.com";
+    private final String ROLE_EMAIL = "admin@gmail.com";
     private final String PARENT_EMAIL_INPUT = "parentContactEmail";
 
     @BeforeEach
@@ -134,7 +135,7 @@ class ValidateParentContactProvideEmailTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of(PARENT_EMAIL_INPUT, VALID_EMAIL);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL))
+        when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL,true))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertTrue(errors.isEmpty());
@@ -150,7 +151,7 @@ class ValidateParentContactProvideEmailTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of(PARENT_EMAIL_INPUT, INVALID_EMAIL);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
+        when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL,true))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertFalse(errors.isEmpty());
@@ -168,11 +169,28 @@ class ValidateParentContactProvideEmailTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of(PARENT_EMAIL_INPUT, INVALID_EMAIL);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
+        when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL,true))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertFalse(errors.isEmpty());
         AssertionsForClassTypes.assertThat(errors.get(PARENT_EMAIL_INPUT).contains("Make sure the email address is valid. Did you mean foo@bar.com?")).isTrue();
+    }
+
+    @Test
+    void shouldReturnErrorWhenSendGridIsReachedEmailIsRoleAddress() throws IOException {
+        HashMap<String, String> result = new HashMap<>();
+        result.put("endpointReached", "success");
+        result.put("emailIsValid", "false");
+        result.put("hasSuggestion", "false");
+
+        setupMockSession("");
+        Map<String, Object> formData = Map.of(PARENT_EMAIL_INPUT, ROLE_EMAIL);
+        FormSubmission formSubmission = new FormSubmission(formData);
+        when(mockSendGridEmailValidationService.validateEmail(ROLE_EMAIL,true))
+                .thenReturn(result);
+        Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
+        assertFalse(errors.isEmpty());
+        AssertionsForClassTypes.assertThat(errors.get(PARENT_EMAIL_INPUT).contains("Make sure the email address is valid and follows this format: name@email.com")).isTrue();
     }
 
     @Test
@@ -186,7 +204,7 @@ class ValidateParentContactProvideEmailTest {
         setupMockSession(INVALID_EMAIL);
         Map<String, Object> formData = Map.of(PARENT_EMAIL_INPUT, INVALID_EMAIL);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL))
+        when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL,true))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertTrue(errors.isEmpty());

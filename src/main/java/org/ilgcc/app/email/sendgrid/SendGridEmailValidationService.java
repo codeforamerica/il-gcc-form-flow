@@ -36,7 +36,7 @@ public class SendGridEmailValidationService {
         this.sendGrid = sendGrid;
     }
 
-    public HashMap<String, String> validateEmail(String emailAddress) throws IOException {
+    public HashMap<String, String> validateEmail(String emailAddress,boolean familyEmail) throws IOException {
         HashMap<String, String> emailValidationResult = new HashMap<>();
         if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(RegexUtils.EMAIL_REGEX)) {
             log.info(
@@ -55,7 +55,7 @@ public class SendGridEmailValidationService {
                         SendGridValidationResponseBody.class);
                 emailValidationResult.put("endpointReached", "success");
 
-                Boolean emailIsValid = isValidEmail(responseBody);
+                Boolean emailIsValid = isValidEmail(responseBody,familyEmail);
                 emailValidationResult.put("emailIsValid", emailIsValid.toString());
                 if (!emailIsValid) {
                     Boolean hasSuggestedEmail = responseBody.getResult().hasSuggestedEmailAddress();
@@ -92,7 +92,7 @@ public class SendGridEmailValidationService {
         return sendGridRequestFailed;
     }
 
-    public Boolean isValidEmail(@NotNull SendGridValidationResponseBody responseBody) {
+    public Boolean isValidEmail(@NotNull SendGridValidationResponseBody responseBody, boolean isFamilyEmail) {
         SendGridValidationResponseBody.Result result = responseBody.getResult();
         boolean validAddressSyntax = result.hasValidAddressSyntax();
         boolean hasMxOrARecord = result.hasMxOrARecord();
@@ -112,7 +112,7 @@ public class SendGridEmailValidationService {
         if (isSuspectedDisposableAddress) {
             log.debug("Invalid email, is suspected disposable address");
         }
-        if (isSuspectedRoleAddress) {
+        if (isFamilyEmail && isSuspectedRoleAddress) {
             log.debug("Invalid email, is suspected role address");
         }
 
@@ -120,6 +120,6 @@ public class SendGridEmailValidationService {
                 result.hasMxOrARecord() &&
                 !result.isSuspectedDisposableAddress() &&
                 !result.hasKnownBounces() &&
-                !result.isSuspectedRoleAddress();
+                (!isFamilyEmail || !result.isSuspectedRoleAddress());
     }
 }

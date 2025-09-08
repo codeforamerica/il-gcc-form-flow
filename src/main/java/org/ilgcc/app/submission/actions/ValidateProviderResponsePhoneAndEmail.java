@@ -55,7 +55,7 @@ public class ValidateProviderResponsePhoneAndEmail implements Action {
                 errorMessages.put(EMAIL, List.of(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, locale)));
             }else{
                 SendGridUtilities.callSendGridAndValidateEmail(locale, errorMessages, email, sendGridEmailValidationService, EMAIL,
-                        messageSource, httpSession,SESSION_KEY_INVALID_PROVIDER_RESPONSE_CONTACT_EMAIL);
+                        messageSource, httpSession,SESSION_KEY_INVALID_PROVIDER_RESPONSE_CONTACT_EMAIL,false);
             }
 
         }

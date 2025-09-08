@@ -53,7 +53,7 @@ public class ValidateParentContactProvideEmail implements Action {
       errorMessages.put(INPUT_NAME_EMAIL, List.of(messageSource.getMessage("errors.invalid-email", null, locale)));
     } else{
       SendGridUtilities.callSendGridAndValidateEmail(locale, errorMessages, parentEmail, sendGridEmailValidationService, INPUT_NAME_EMAIL,
-              messageSource, httpSession,SESSION_KEY_INVALID_PARENT_EMAIL);
+              messageSource, httpSession,SESSION_KEY_INVALID_PARENT_EMAIL,true);
     }
 
     return errorMessages;

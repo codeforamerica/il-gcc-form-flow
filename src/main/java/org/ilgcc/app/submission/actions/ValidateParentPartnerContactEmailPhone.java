@@ -56,7 +56,7 @@ public class ValidateParentPartnerContactEmailPhone implements Action {
         errorMessages.put(INPUT_NAME_EMAIL, List.of(messageSource.getMessage("errors.invalid-email", null, locale)));
       } else{
         SendGridUtilities.callSendGridAndValidateEmail(locale, errorMessages, partnerEmail, sendGridEmailValidationService, INPUT_NAME_EMAIL,
-                messageSource, httpSession,SESSION_KEY_INVALID_PARENT_PARTNER_EMAIL);
+                messageSource, httpSession,SESSION_KEY_INVALID_PARENT_PARTNER_EMAIL,true);
       }
     }
 
