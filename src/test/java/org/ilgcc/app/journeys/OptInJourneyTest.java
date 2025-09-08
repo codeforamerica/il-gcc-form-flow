@@ -12,9 +12,9 @@ public class OptInJourneyTest extends AbstractBasePageTest {
 
     @BeforeEach
     protected void seedSubmissionForSession() throws Exception {
-        super.setUp();
-
         driver.manage().deleteAllCookies();
+        super.setUp();
+        repo.deleteAll();
 
         testPage.navigateToFlowScreen("gcc/parent-home-address");
 
