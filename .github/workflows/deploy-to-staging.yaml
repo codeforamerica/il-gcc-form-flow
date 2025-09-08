@@ -1,21 +1,23 @@
 name: Deploy to Aptible Staging
 
 on:
-  workflow_run:
-    workflows: [ "Run tests" ]
-    types: [ completed ]
-    branches: [ main ]
   workflow_dispatch:
-    inputs: { }
+    inputs:
+      branch:
+        description: "Branch to deploy"
+        required: false
+        default: "main"
 
 jobs:
   deploy:
     name: Deploy to Aptible Staging
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout selected branch
+        uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ inputs.branch }}
           fetch-depth: 0
 
       - name: Deploy to Aptible
@@ -26,12 +28,12 @@ jobs:
           environment: illinois-staging
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
-      #         Looking for secrets/variables for the application? Check the configuration tab in the Aptible app GUI
+      # Looking for secrets/variables for the application? Check the configuration tab in the Aptible app GUI
 
       - name: Generate Sentry release name from sha
         id: generate-release
         run: echo "RELEASE=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-      
+
       - name: Create Sentry release
         uses: getsentry/action-release@v3
         env:
