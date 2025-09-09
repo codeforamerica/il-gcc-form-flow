@@ -19,9 +19,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-@TestPropertySource(properties = {
-        "ACTIVE_CASELOAD_CODES=BB,QQ",
-})
 @ActiveProfiles("test")
 class SetResourceOrganizationTest {
 

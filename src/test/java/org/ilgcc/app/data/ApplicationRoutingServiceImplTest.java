@@ -30,11 +30,10 @@ class ApplicationRoutingServiceImplTest {
 
   private final String FOUR_C_CASELOAD_CODE = "BB";
   private final String PROJECT_CHILD_CASELOAD_CODE = "QQ";
-  private final String INACTIVE_CASELOAD_CODE = "INACTIVE";
 
   @Test
   void shouldReturnEmptyListWhenNoActiveCaseLoadCodes() {
-    ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository, false, List.of(), List.of());
+    ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository);
     applicationRoutingServiceImpl = new ApplicationRoutingServiceImpl(ccmsDataServiceImpl);
 
     assert(ccmsDataServiceImpl.getActiveCaseLoadCodes()).equals(Collections.emptyList());
@@ -46,7 +45,7 @@ class ApplicationRoutingServiceImplTest {
 
   @Test
   void shouldReturnEmptyListWhenNoCountiesFound() {
-    ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository, false, List.of(INACTIVE_CASELOAD_CODE), List.of());
+    ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository);
     applicationRoutingServiceImpl = new ApplicationRoutingServiceImpl(ccmsDataServiceImpl);
 
     List<County> result = applicationRoutingServiceImpl.getActiveCountiesByCaseLoadCodes();
@@ -56,7 +55,7 @@ class ApplicationRoutingServiceImplTest {
 
   @Test
   void shouldReturnUniqueAndSortedCounties() {
-    ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository, false, List.of(FOUR_C_CASELOAD_CODE, PROJECT_CHILD_CASELOAD_CODE), List.of());
+    ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository);
     applicationRoutingServiceImpl = new ApplicationRoutingServiceImpl(ccmsDataServiceImpl);
 
     List<County> mchenryCountyEntries = ccmsDataServiceImpl.getCountyByCountyName("MCHENRY");
