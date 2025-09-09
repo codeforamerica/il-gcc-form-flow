@@ -21,6 +21,7 @@ public class GetCCRRNameFromFamilySubmission implements Action {
 
     private Optional<Submission> familySubmissionOptional;
     private static final String CCRR_NAME_INPUT = "ccrrName";
+    private static final String CCRR_PHONE_NUMBER_INPUT = "ccrrPhoneNumber";
 
     @Override
     public void run(Submission providerSubmission) {
@@ -36,6 +37,11 @@ public class GetCCRRNameFromFamilySubmission implements Action {
                     providerInputData.put(CCRR_NAME_INPUT, familyInputData.getOrDefault(CCRR_NAME_INPUT, ""));
                 } else {
                     log.error("Could not find CCR&R name for the familySubmissionId: {}", familySubmissionID);
+                }
+                if (familyInputData.containsKey(CCRR_PHONE_NUMBER_INPUT)) {
+                    providerInputData.put(CCRR_PHONE_NUMBER_INPUT, familyInputData.getOrDefault(CCRR_PHONE_NUMBER_INPUT, ""));
+                } else {
+                    log.error("Could not find CCR&R phone number for the familySubmissionId: {}", familySubmissionID);
                 }
             } else {
                 log.error("Could not find submission for the familySubmissionId: {}", familySubmissionID);
