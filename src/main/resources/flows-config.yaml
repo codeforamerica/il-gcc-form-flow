@@ -838,6 +838,10 @@ flow:
   error-response-recorded:
     condition: EnableMultipleProviders
     nextScreens: null
+  error-response-time-out:
+    condition: EnableMultipleProviders
+    beforeDisplayAction: GetCCRRNameAndPhoneNumberFromFamilySubmission
+    nextScreens: null
   paid-by-ccap:
     beforeDisplayAction: SetCurrentProviderForSingleProviderSubmission
     nextScreens:
@@ -886,6 +890,8 @@ flow:
     beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
+      - name: error-response-time-out
+        condition: ProviderResponseIsAfterThreeDayWindow
       - name: submit-confirmation
   #Existing Provider Flow: FEIN
   fein:
@@ -898,9 +904,11 @@ flow:
     nextScreens: 
       - name: submit-response
   confirm-application-submission-no-response:
-    beforeDisplayAction: GetCCRRNameFromFamilySubmission
+    beforeDisplayAction: GetCCRRNameAndPhoneNumberFromFamilySubmission
     afterSaveAction: SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission
     nextScreens:
+      - name: error-response-time-out
+        condition: ProviderResponseIsAfterThreeDayWindow
       - name: submit-confirmation
   # Provider Registration Flow
   registration-start:
@@ -1068,6 +1076,8 @@ flow:
   registration-signature:
     afterSaveAction: SendProviderRegistrationAndFamilyPayloadToCCMS
     nextScreens:
+      - name: error-response-time-out
+        condition: ProviderResponseIsAfterThreeDayWindow
       - name: registration-submit-complete
   registration-submit-complete:
     beforeDisplayAction: SendNewProviderAndFamilyConfirmationEmails
