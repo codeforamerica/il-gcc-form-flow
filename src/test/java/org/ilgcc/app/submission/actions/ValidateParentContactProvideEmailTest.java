@@ -83,7 +83,7 @@ class ValidateParentContactProvideEmailTest {
     }
 
     @Test
-    void shouldNotThrowAnErrorWhenWhenEmailIsPreferredCommunicationAndEmailFieldIsBlank() {
+    void shouldNotThrowAnErrorWhenEmailFieldIsBlankAndThePreferredCommunicationMethodIsNotEmail() {
         //create submission object with inputData
         Submission submission = new SubmissionTestBuilder()
                 .with("parentContactPreferredCommunicationMethod", "")
