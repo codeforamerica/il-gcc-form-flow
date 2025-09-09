@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -90,7 +91,7 @@ public class CCMSDataServiceImpl implements CCMSDataService {
     @Override
     public Optional<ResourceOrganization> getSiteAdministeredResourceOrganizationByProviderId(BigInteger providerId,
             List<Short> activeSDAs) {
-        return resourceOrganizationRepository.findActiveSiteAdministeredOrgByProviderId(providerId, activeSDAs);
+        return resourceOrganizationRepository.findByProvidersProviderId(providerId);
     }
 
     @Override
@@ -100,20 +101,12 @@ public class CCMSDataServiceImpl implements CCMSDataService {
 
     @Override
     public List<ResourceOrganization> getActiveResourceOrganizations() {
-        return resourceOrganizationRepository.findAll().stream()
-                .filter(t -> {
-                    String code = t.getCaseloadCode();
-                    if ("SITE".equals(code)) {
-                        return getActiveSDAsBasedOnActiveCaseLoadCodes().contains(t.getSda());
-                    } else {
-                        return activeCaseLoadCodes.contains(code);
-                    }
-                })
-                .toList();
+        return resourceOrganizationRepository.findAll();
     }
 
+
     @Override
-    public List<County> getCountiesByCaseloadCode(String caseloadCode) {
-        return countyRepository.findCountiesByCaseloadCode(caseloadCode);
+    public List<County> getAllCounties(){
+        return countyRepository.findAll().stream().sorted().collect(Collectors.toList());
     }
-}
+ }

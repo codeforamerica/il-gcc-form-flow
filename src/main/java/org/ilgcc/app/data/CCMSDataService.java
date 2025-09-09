@@ -73,9 +73,8 @@ public interface CCMSDataService {
     /**
      * Retrieves a list of Counties by caseload code.
      *
-     * @param caseloadCode the caseload code to search for
-     * @return a list of all counties with the corresponding caseload code.
+     * @return a list of all counties
      */
-    List<County> getCountiesByCaseloadCode(String caseloadCode);
+    List<County> getAllCounties();
 }
 

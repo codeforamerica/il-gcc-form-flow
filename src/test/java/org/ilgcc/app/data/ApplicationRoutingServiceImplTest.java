@@ -1,6 +1,7 @@
 package org.ilgcc.app.data;
 
 import org.ilgcc.app.submission.router.ApplicationRoutingServiceImpl;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
@@ -23,49 +24,23 @@ class ApplicationRoutingServiceImplTest {
   @Autowired
   ResourceOrganizationRepository resourceOrganizationRepository;
 
-  private ApplicationRoutingServiceImpl applicationRoutingServiceImpl;
+  @Nested
+  class GetActiveResourceOrganizations{
+    @Test
+    void shouldReturnUniqueAndSortedCounties() {
+      CCMSDataServiceImpl ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository);
+      ApplicationRoutingServiceImpl applicationRoutingServiceImpl = new ApplicationRoutingServiceImpl(ccmsDataServiceImpl);
 
-  private CCMSDataServiceImpl ccmsDataServiceImpl;
+      List<County> mchenryCountyEntries = ccmsDataServiceImpl.getCountyByCountyName("MCHENRY");
+      assertEquals(2, mchenryCountyEntries.size());
 
+      List<County> result = applicationRoutingServiceImpl.getActiveCountiesByCaseLoadCodes();
 
-  private final String FOUR_C_CASELOAD_CODE = "BB";
-  private final String PROJECT_CHILD_CASELOAD_CODE = "QQ";
-
-  @Test
-  void shouldReturnEmptyListWhenNoActiveCaseLoadCodes() {
-    ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository);
-    applicationRoutingServiceImpl = new ApplicationRoutingServiceImpl(ccmsDataServiceImpl);
-
-    assert(ccmsDataServiceImpl.getActiveCaseLoadCodes()).equals(Collections.emptyList());
-
-    List<County> result = applicationRoutingServiceImpl.getActiveCountiesByCaseLoadCodes();
-
-    assertEquals(0, result.size());
+      assertEquals(3, result.size());
+      assertEquals("DEKALB", result.get(0).getCounty());
+      assertEquals("FAYETTE", result.get(1).getCounty());
+      assertEquals("MCHENRY", result.get(2).getCounty());
+    }
   }
 
-  @Test
-  void shouldReturnEmptyListWhenNoCountiesFound() {
-    ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository);
-    applicationRoutingServiceImpl = new ApplicationRoutingServiceImpl(ccmsDataServiceImpl);
-
-    List<County> result = applicationRoutingServiceImpl.getActiveCountiesByCaseLoadCodes();
-
-    assertEquals(0, result.size());
-  }
-
-  @Test
-  void shouldReturnUniqueAndSortedCounties() {
-    ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository);
-    applicationRoutingServiceImpl = new ApplicationRoutingServiceImpl(ccmsDataServiceImpl);
-
-    List<County> mchenryCountyEntries = ccmsDataServiceImpl.getCountyByCountyName("MCHENRY");
-    assertEquals(2, mchenryCountyEntries.size());
-
-    List<County> result = applicationRoutingServiceImpl.getActiveCountiesByCaseLoadCodes();
-
-    assertEquals(3, result.size());
-    assertEquals("DEKALB", result.get(0).getCounty());
-    assertEquals("FAYETTE", result.get(1).getCounty());
-    assertEquals("MCHENRY", result.get(2).getCounty());
-  }
 }
