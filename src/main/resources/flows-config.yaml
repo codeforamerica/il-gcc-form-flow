@@ -1089,9 +1089,10 @@ flow:
         condition: ProviderIsRegistering
       - name: submit-start
   submit-confirmation:
+    condition: ProviderResponseIsBeforeThreeDayWindow
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
-      - name: submit-confirmation
+      - name: error-response-time-out
   registration-household-delete-person:
     nextScreens: null
   registration-doc-upload-recommended-docs:
