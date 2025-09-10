@@ -57,7 +57,7 @@ public class ApplicationRoutingServiceImpl implements ApplicationRouterService {
     }
 
     @Override
-    public List<County> getActiveCountiesByCaseLoadCodes() {
+    public List<String> getUniqueCountiesNames() {
         return ccmsDataService.getAllCounties();
     }
 }

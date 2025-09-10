@@ -151,26 +151,8 @@
                                 <p th:text="#{faq.questions-about-the-online-application.what-is-get-child-care-il-answer}"></p>
                                 <h3 class="h3"
                                     th:text="#{faq.questions-about-the-online-application.who-can-use-the-online-application-question}"></h3>
-                                <th:block
-                                        th:with="counties=${T(org.ilgcc.app.utils.CountyUtils).activeCountiesProperCapitalized}">
-                                    <th:block
-                                            th:with="enableNewSDACodes=${@environment.getProperty('il-gcc.enable-new-sda-caseload-codes').equals('true')}">
-                                        <th:block th:unless="${enableNewSDACodes}">
-                                            <p th:text="${#messages.msg('faq.questions-about-the-online-application.counties', counties.size())}"></p>
-                                            <div class="counties-table">
-                                                <th:block th:each="county : ${counties}">
-                                                    <div class="counties-table-item"
-                                                         th:text="${county}"></div>
-                                                </th:block>
-                                            </div>
-                                            <p th:utext="#{faq.country-apply-now}"></p>
-                                        </th:block>
-
-                                        <th:block th:if="${enableNewSDACodes}">
-                                            <p th:text="#{faq.questions-about-the-online-application.available-through-2025}"></p>
-                                        </th:block>
-                                    </th:block>
-                                    <hr/>
+                                    <p th:text="#{faq.questions-about-the-online-application.available-through-2025}"></p>
+=                                   <hr/>
                                     <h3 class="h3"
                                         th:text="#{faq.questions-about-the-online-application.what-can-i-do}"></h3>
                                     <p th:text="#{faq.questions-about-the-online-application.what-can-i-do.please-contact}"></p>

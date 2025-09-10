@@ -15,32 +15,33 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class ApplicationRoutingServiceImplTest {
 
-  @Autowired
-  ProviderRepository providerRepository;
+    @Autowired
+    ProviderRepository providerRepository;
 
-  @Autowired
-  CountyRepository countyRepository;
+    @Autowired
+    CountyRepository countyRepository;
 
-  @Autowired
-  ResourceOrganizationRepository resourceOrganizationRepository;
+    @Autowired
+    ResourceOrganizationRepository resourceOrganizationRepository;
 
-  @Nested
-  class GetActiveResourceOrganizations{
-    @Test
-    void shouldReturnUniqueAndSortedCounties() {
-      CCMSDataServiceImpl ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository, resourceOrganizationRepository);
-      ApplicationRoutingServiceImpl applicationRoutingServiceImpl = new ApplicationRoutingServiceImpl(ccmsDataServiceImpl);
+    @Nested
+    class getActiveResourceOrganizations {
 
-      List<County> mchenryCountyEntries = ccmsDataServiceImpl.getCountyByCountyName("MCHENRY");
-      assertEquals(2, mchenryCountyEntries.size());
+        @Test
+        void shouldReturnUniqueAndSortedCountyNames() {
+            CCMSDataServiceImpl ccmsDataServiceImpl = new CCMSDataServiceImpl(providerRepository, countyRepository,
+                    resourceOrganizationRepository);
+            ApplicationRoutingServiceImpl applicationRoutingServiceImpl = new ApplicationRoutingServiceImpl(ccmsDataServiceImpl);
 
-      List<County> result = applicationRoutingServiceImpl.getActiveCountiesByCaseLoadCodes();
+            List<String> result = applicationRoutingServiceImpl.getUniqueCountiesNames();
 
-      assertEquals(3, result.size());
-      assertEquals("DEKALB", result.get(0).getCounty());
-      assertEquals("FAYETTE", result.get(1).getCounty());
-      assertEquals("MCHENRY", result.get(2).getCounty());
+            assertEquals(4, result.size());
+            assertEquals("DEKALB", result.get(0));
+            assertEquals("FAYETTE", result.get(1));
+            assertEquals("HENDERSON", result.get(2));
+            assertEquals("MCHENRY", result.get(3));
+
+        }
     }
-  }
 
 }

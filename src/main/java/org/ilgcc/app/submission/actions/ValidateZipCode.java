@@ -24,9 +24,6 @@ public class ValidateZipCode implements Action {
 
     @Autowired
     ApplicationRoutingServiceImpl applicationRoutingService;
-
-    @Value("${il-gcc.enable-new-sda-caseload-codes}")
-    private boolean newSDACaseloadCodesEnabled;
     
     public static final Locale locale = LocaleContextHolder.getLocale();
 
@@ -42,7 +39,7 @@ public class ValidateZipCode implements Action {
         String providedZipCode = formSubmission.getFormData().get("applicationZipCode").toString();
         if (!providedZipCode.isBlank() && (providedZipCode.length() == 5)) {
             resourceOrganizationOptional = applicationRoutingService.getOrganizationIdByZipCode(providedZipCode);
-            if (resourceOrganizationOptional.isEmpty() && newSDACaseloadCodesEnabled) {
+            if (resourceOrganizationOptional.isEmpty()) {
                 errorMessages.put(INPUT_NAME,
                     List.of(messageSource.getMessage("errors.out-of-state-zip", null, locale)));
             }

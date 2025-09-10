@@ -75,6 +75,6 @@ public interface CCMSDataService {
      *
      * @return a list of all counties
      */
-    List<County> getAllCounties();
+    List<String> getAllCounties();
 }
 

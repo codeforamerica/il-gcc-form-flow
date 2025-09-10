@@ -17,10 +17,7 @@
                class="button button--primary spacing-below-35" id="place-to-get-mail-link"></a>
           </div>
           <div>
-            <th:block th:with="enableNewSDACodes=${@environment.getProperty('il-gcc.enable-new-sda-caseload-codes').equals('true')}">
-              <a th:href="${enableNewSDACodes} ?
-                 ('/flow/' + ${flow} + '/parent-county') :
-                 ('/flow/' + ${flow} + '/parent-comm-preference?unhousedPrefersEmail=true')"
+              <a th:href="$'/flow/' + ${flow} + '/parent-county')"
                  th:text="#{parent-no-permanent-address.contact-by-email}"
                  id="contact-by-email"></a>
             </th:block>

@@ -3,6 +3,7 @@ package org.ilgcc.app.data;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -106,7 +107,7 @@ public class CCMSDataServiceImpl implements CCMSDataService {
 
 
     @Override
-    public List<County> getAllCounties(){
-        return countyRepository.findAll().stream().sorted().collect(Collectors.toList());
+    public List<String> getAllCounties(){
+        return countyRepository.findAll().stream().map(County::getCounty).distinct().sorted().toList();
     }
  }
