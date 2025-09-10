@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
-<head th:replace="~{fragments/head :: head(title=#{'provider-response-time-out-error.title'})}"></head>
+<head th:replace="~{fragments/head :: head(title=#{'error-provider-response-timed-out.title'})}"></head>
 <body>
 <div class="page-wrapper">
     <div th:replace="~{fragments/toolbar :: toolbar}"></div>
@@ -13,7 +13,7 @@
                                  ccrrPhoneNumber=${submission.getInputData().getOrDefault('ccrrPhoneNumber', '')}">
                     <th:block th:replace="~{fragments/gcc-icons :: code}"></th:block>
                     <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-time-out-error.header}, subtext=#{provider-response-time-out-error.subtext(${ccrrName}, ${ccrrPhoneNumber})})}"/>
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{error-provider-response-timed-out.header}, subtext=#{error-provider-response-timed-out.subtext(${ccrrName}, ${ccrrPhoneNumber})})}"/>
                     <div class="form-card__footer">
                         <div>
                             <a th:href="'/'"
