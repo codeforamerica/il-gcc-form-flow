@@ -72,7 +72,8 @@ flow:
     nextScreens:
       - name: parent-mailing-address
   parent-no-permanent-address:
-    nextScreens: null
+    nextScreens:
+      - name: parent-mailing-address
   parent-mailing-address:
     nextScreens:
       - name: confirm-parent-mailing-address
