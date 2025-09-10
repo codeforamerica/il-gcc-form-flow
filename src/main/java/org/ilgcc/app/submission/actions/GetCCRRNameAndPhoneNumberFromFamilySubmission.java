@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class GetCCRRNameFromFamilySubmission implements Action {
+public class GetCCRRNameAndPhoneNumberFromFamilySubmission implements Action {
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;

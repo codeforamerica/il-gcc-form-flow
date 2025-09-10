@@ -8,7 +8,9 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import org.springframework.stereotype.Component;
 
+@Component
 @Slf4j
 public class ProviderResponseIsAfterThreeDayWindow implements Condition {
   SubmissionRepositoryService submissionRepositoryService;
