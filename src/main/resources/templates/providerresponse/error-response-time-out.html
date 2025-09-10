@@ -9,11 +9,11 @@
             <div th:replace="~{fragments/goBack :: goBackLink}"></div>
             <main id="content" role="main" class="form-card spacing-above-35">
                 <th:block
-                        th:with="ccrrName=${inputData.getOrDefault('ccrrName', '')},
-                                 ccrrPhoneNumber=${inputData.getOrDefault('ccrrPhoneNumber', '')}">
+                        th:with="ccrrName=${submission.getInputData().getOrDefault('ccrrName', '')},
+                                 ccrrPhoneNumber=${submission.getInputData().getOrDefault('ccrrPhoneNumber', '')}">
                     <th:block th:replace="~{fragments/gcc-icons :: code}"></th:block>
                     <th:block
-                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-time-out-error.header(${ccrrName}, ${ccrrPhoneNumber})})}"/>
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{provider-response-time-out-error.header}, subtext=#{provider-response-time-out-error.subtext(${ccrrName}, ${ccrrPhoneNumber})})}"/>
                     <div class="form-card__footer">
                         <div>
                             <a th:href="'/'"

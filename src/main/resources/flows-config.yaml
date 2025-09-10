@@ -1114,6 +1114,7 @@ subflows:
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
+    - error-response-time-out
     - registration-submit-complete
     - submit-confirmation
     - registration-submit-next-steps
