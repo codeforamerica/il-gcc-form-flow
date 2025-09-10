@@ -69,10 +69,10 @@ class SetOrganizationIdAndCCRRNameTest {
     }
 
     @Test
-    public void setsResourceOrgBasedOnApplicationCountyIfHomeAddressZipCodeOutsideScopedSDAs() {
+    public void setsResourceOrgBasedOnApplicationCountyIfHomeAddressZipCodeOutsideIllinois() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", COHORT2_COUNTY.getZipCode().toString())
+                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", "94114")
                 .with("applicationCounty", ACTIVE_FOUR_C_COUNTY.getCounty())
                 .build();
 
@@ -86,10 +86,10 @@ class SetOrganizationIdAndCCRRNameTest {
     }
 
     @Test
-    public void setsResourceOrgBasedOnApplicationZipIfHomeAddressZipCodeOutsideScopedSDAs() {
+    public void setsResourceOrgBasedOnApplicationZipIfHomeAddressZipCodeOutsideIllinois() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", COHORT2_COUNTY.getZipCode().toString())
+                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", "94114")
                 .with("applicationZipCode", ACTIVE_FOUR_C_COUNTY.getZipCode().toString())
                 .build();
 
@@ -103,7 +103,7 @@ class SetOrganizationIdAndCCRRNameTest {
     }
 
     @Test
-    public void setsResourceOrgFromUnvalidatedParentHomeAddressIfInSDAScope() {
+    public void setsResourceOrgFromUnvalidatedParentHomeAddressIfInIllinois() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", ACTIVE_FOUR_C_COUNTY.getZipCode().toString())

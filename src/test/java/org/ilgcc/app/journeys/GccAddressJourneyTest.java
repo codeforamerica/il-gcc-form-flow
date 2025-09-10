@@ -76,6 +76,11 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
         // this selects the suggested address
         testPage.clickContinue();
 
+        // parent-county
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-county.title"));
+        testPage.selectFromDropdown("applicationCounty", "DEKALB");
+        testPage.clickContinue();
+
         // parent-comm-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
         testPage.selectRadio("parentContactPreferredCommunicationMethod", "email");
@@ -129,6 +134,11 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
         //parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
         testPage.clickLink(getEnMessage("parent-no-permanent-address.contact-by-email"));
+
+        // parent-county
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-county.title"));
+        testPage.selectFromDropdown("applicationCounty", "DEKALB");
+        testPage.clickContinue();
 
         // parent-comm-preference
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));

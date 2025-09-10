@@ -53,25 +53,13 @@ class SetResourceOrganizationTest {
     }
 
     @Test
-    void shouldChangeFamilyOrgIdWhenProviderIsSiteAdministeredAndSDAIsActive() {
+    void shouldChangeFamilyOrgIdWhenProviderIsSiteAdministered() {
         setResourceOrganization.run(providerSubmission);
         familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
         assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo(
                 ACTIVE_SITE_ADMIN_RESOURCE_ORG.getResourceOrgId().intValue());
         assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo(ACTIVE_SITE_ADMIN_RESOURCE_ORG.getName());
         assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo(ACTIVE_SITE_ADMIN_RESOURCE_ORG.getPhone());
-    }
-
-    @Test
-    void shouldNotChangeFamilyOrgIdWhenProviderIsSiteAdministeredAndSDAIsInactive() {
-        providerSubmission.getInputData()
-                .put("providerResponseProviderNumber", ACTIVE_SITE_ADMINISTERED_PROVIDER_OUTSIDE_SDA.getProviderId().toString());
-
-        setResourceOrganization.run(providerSubmission);
-        familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
-        assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
-        assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("CCRR Name");
-        assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(123) 123-1234");
     }
 
     @Test
