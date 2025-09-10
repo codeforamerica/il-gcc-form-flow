@@ -837,7 +837,7 @@ flow:
   error-response-recorded:
     condition: EnableMultipleProviders
     nextScreens: null
-  error-response-time-out:
+  error-provider-response-timed-out:
     condition: EnableMultipleProviders
     beforeDisplayAction: GetCCRRNameAndPhoneNumberFromFamilySubmission
     nextScreens: null
@@ -890,7 +890,7 @@ flow:
     beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
-      - name: error-response-time-out
+      - name: error-provider-response-timed-out
         condition: ProviderResponseIsAfterThreeDayWindow
       - name: submit-confirmation
   #Existing Provider Flow: FEIN
@@ -907,7 +907,7 @@ flow:
     beforeDisplayAction: GetCCRRNameAndPhoneNumberFromFamilySubmission
     afterSaveAction: SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission
     nextScreens:
-      - name: error-response-time-out
+      - name: error-provider-response-timed-out
         condition: ProviderResponseIsAfterThreeDayWindow
       - name: submit-confirmation
   # Provider Registration Flow
@@ -1078,7 +1078,7 @@ flow:
   registration-signature:
     afterSaveAction: SendProviderRegistrationAndFamilyPayloadToCCMS
     nextScreens:
-      - name: error-response-time-out
+      - name: error-provider-response-timed-out
         condition: ProviderResponseIsAfterThreeDayWindow
       - name: registration-submit-complete
   registration-submit-complete:
@@ -1094,7 +1094,7 @@ flow:
     condition: ProviderResponseIsBeforeThreeDayWindow
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
-      - name: error-response-time-out
+      - name: error-provider-response-timed-out
   registration-household-delete-person:
     nextScreens: null
   registration-doc-upload-recommended-docs:
@@ -1115,7 +1115,7 @@ subflows:
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
-    - error-response-time-out
+    - error-provider-response-timed-out
     - registration-submit-complete
     - submit-confirmation
     - registration-submit-next-steps
