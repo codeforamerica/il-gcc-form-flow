@@ -51,7 +51,7 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty")).isNull();
+        assertThat(submission.getInputData().get("applicationCounty")).isEqualTo("DEKALB");
     }
 
     @Test
@@ -65,7 +65,7 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty")).isNull();
+        assertThat(submission.getInputData().get("applicationCounty")).isEqualTo(ACTIVE_FOUR_C_COUNTY.getCounty());
     }
 
     @Test
@@ -81,8 +81,8 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo(
-                COHORT2_COUNTY.getCounty());
+        assertThat(submission.getInputData().get("applicationCounty").toString()).isEqualTo(
+                ACTIVE_FOUR_C_COUNTY.getCounty());
     }
 
     @Test
@@ -98,8 +98,8 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo(
-                COHORT2_COUNTY.getCounty());
+        assertThat(submission.getInputData().get("applicationCounty").toString()).isEqualTo(
+                ACTIVE_FOUR_C_COUNTY.getCounty());
     }
 
     @Test
@@ -114,7 +114,7 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo(
+        assertThat(submission.getInputData().get("applicationCounty").toString()).isEqualTo(
                 ACTIVE_FOUR_C_COUNTY.getCounty());
     }
 

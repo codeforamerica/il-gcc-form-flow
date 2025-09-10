@@ -31,7 +31,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
     private static final String ZIP_CODE_INPUT_NAME = "parentHomeZipCode";
     private static final String APPLICATION_COUNTY_INPUT_NAME = "applicationCounty";
     private static final String APPLICATION_ZIPCODE_INPUT_NAME = "applicationZipCode";
-    private static final String APPLICANT_COUNTY_INPUT_NAME = "applicantAddressCounty";
+
     @Override
     public void run(Submission submission) {
         Map<String, Object> inputData = submission.getInputData();
@@ -70,6 +70,8 @@ public class SetOrganizationIdAndCCRRName implements Action {
 
         if (hasValidValue(inputData, APPLICATION_ZIPCODE_INPUT_NAME)) {
             final String applicationZipCode = (String) submission.getInputData().get(APPLICATION_ZIPCODE_INPUT_NAME);
+            saveCountyFromZip(submission, applicationZipCode);
+
             final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(
                     applicationZipCode);
             log.info("Submission: {} has an application zipcode {} with a matching organization id.", submission.getId(), applicationZipCode);
@@ -92,7 +94,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
     private void saveCountyFromZip(Submission submission, String zipCode) {
         Optional<County> county = ccmsDataServiceImpl.getCountyByZipCode(zipCode);
         if (county.isPresent()) {
-            submission.getInputData().put(APPLICANT_COUNTY_INPUT_NAME, county.get().getCounty());
+            submission.getInputData().put(APPLICATION_COUNTY_INPUT_NAME, county.get().getCounty());
             submissionRepositoryService.save(submission);
         } else {
             log.info(String.format("Could not assign a county to to the application with submission ID: %s, using the provided home address zipcode: %s", submission.getId(), zipCode));

@@ -1,15 +1,10 @@
 package org.ilgcc.app.data;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -19,47 +14,12 @@ public class CCMSDataServiceImpl implements CCMSDataService {
     private final ProviderRepository providerRepository;
     private final CountyRepository countyRepository;
     private final ResourceOrganizationRepository resourceOrganizationRepository;
-    private final List<String> activeCaseLoadCodes = new ArrayList<>();
-
-    private final Map<String, Short> caseLoadCodeToSDA = Map.ofEntries(
-            Map.entry("AA", (short) 1),
-            Map.entry("BB", (short) 2),
-            Map.entry("CC", (short) 3),
-            Map.entry("EE", (short) 4),
-            Map.entry("FF", (short) 5),
-            Map.entry("GG", (short) 6),
-            Map.entry("HH", (short) 7),
-            Map.entry("II", (short) 8),
-            Map.entry("JJ", (short) 9),
-            Map.entry("KK", (short) 10),
-            Map.entry("LL", (short) 11),
-            Map.entry("MM", (short) 12),
-            Map.entry("NN", (short) 13),
-            Map.entry("PP", (short) 14),
-            Map.entry("QQ", (short) 15),
-            Map.entry("RR", (short) 16)
-    );
 
     public CCMSDataServiceImpl(ProviderRepository providerRepository, CountyRepository countyRepository,
             ResourceOrganizationRepository resourceOrganizationRepository) {
         this.providerRepository = providerRepository;
         this.countyRepository = countyRepository;
         this.resourceOrganizationRepository = resourceOrganizationRepository;
-    }
-
-    @Override
-    public List<String> getActiveCaseLoadCodes() {
-        return activeCaseLoadCodes;
-    }
-
-    @Override
-    public List<Short> getActiveSDAsBasedOnActiveCaseLoadCodes() {
-        List<Short> activeSDAs = new ArrayList<>();
-        activeCaseLoadCodes.stream().forEach(c -> {
-            activeSDAs.add(caseLoadCodeToSDA.get(c));
-        });
-
-        return activeSDAs;
     }
 
     @Override
@@ -90,8 +50,7 @@ public class CCMSDataServiceImpl implements CCMSDataService {
     }
 
     @Override
-    public Optional<ResourceOrganization> getSiteAdministeredResourceOrganizationByProviderId(BigInteger providerId,
-            List<Short> activeSDAs) {
+    public Optional<ResourceOrganization> getSiteAdministeredResourceOrganizationByProviderId(BigInteger providerId) {
         return resourceOrganizationRepository.findByProvidersProviderId(providerId);
     }
 
