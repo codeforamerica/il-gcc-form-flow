@@ -24,7 +24,7 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
     private Locale locale;
 
     public FamilyApplicationTransmittedConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource,
-            Locale locale) {
+                                                                 Locale locale) {
         this.emailData = emailData;
         this.messageSource = messageSource;
         this.locale = locale;
@@ -70,33 +70,52 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
     }
 
     private String getProviderResponseString(Map<String, Object> provider, MessageSource messageSource, Locale locale) {
-
         String providerResponses = "";
-        String providerName =
-                provider.get("providerType").equals("Individual") ? provider.get("childCareProviderInitials").toString() :
-                        provider.getOrDefault("providerName", provider.get("childCareProgramName")).toString();
+        String providerType = provider.get("providerType") != null ? provider.get("providerType").toString() : "";
 
-        if (provider.containsKey("providerResponseAgreeToCare")) {
-            if (provider.get("providerResponseAgreeToCare").equals("true")) {
-                providerResponses = String.format("%s%s", providerResponses,
-                        messageSource.getMessage("email.family-application-transmitted-confirmation-email.li-agreed-to-care",
-                                new Object[]{providerName,
-                                        formatListIntoReadableString((List<String>) provider.get("childrenInitialsList"),
-                                                messageSource.getMessage("general.and", null, locale)),
-                                        provider.get("ccapStartDate")}, locale));
-            } else {
-                providerResponses = String.format("%s%s", providerResponses,
-                        messageSource.getMessage(
-                                "email.family-application-transmitted-confirmation-email.li-did-not-agree-to-care",
-                                new Object[]{providerName,
-                                        formatListIntoReadableString((List<String>) provider.get("childrenInitialsList"),
-                                                messageSource.getMessage("general.and", null, locale))},
-                                locale));
-            }
+        // Safely get initials for Individual type
+        String providerName = "";
+        if ("Individual".equals(providerType)) {
+            Object initialsObj = provider.get("childCareProviderInitials");
+            providerName = initialsObj != null ? initialsObj.toString() : "";
         } else {
+            Object nameObj = provider.getOrDefault("providerName", null);
+            if (nameObj == null) {
+                nameObj = provider.getOrDefault("childCareProgramName", "");
+            }
+            providerName = nameObj != null ? nameObj.toString() : "";
+        }
+
+        String agreeToCare = provider.get("providerResponseAgreeToCare") != null
+                ? provider.get("providerResponseAgreeToCare").toString()
+                : null;
+
+        String andWord = messageSource.getMessage("general.and", null, locale);
+        Object childrenInitialsObj = provider.get("childrenInitialsList");
+        List<String> childrenInitialsList = childrenInitialsObj instanceof List ? (List<String>) childrenInitialsObj : List.of();
+
+        if ("true".equals(agreeToCare)) {
+            Object ccapStartDateObj = provider.get("ccapStartDate");
+            String ccapStartDate = ccapStartDateObj != null ? ccapStartDateObj.toString() : "";
+
             providerResponses = String.format("%s%s", providerResponses,
-                    messageSource.getMessage(
-                            "email.family-application-transmitted-confirmation-email.li-did-not-complete-application-in-three-days",
+                    messageSource.getMessage("email.family-application-transmitted-confirmation-email.li-agreed-to-care",
+                            new Object[]{
+                                    providerName,
+                                    formatListIntoReadableString(childrenInitialsList, andWord),
+                                    ccapStartDate
+                            }, locale));
+        } else if ("false".equals(agreeToCare)) {
+            providerResponses = String.format("%s%s", providerResponses,
+                    messageSource.getMessage("email.family-application-transmitted-confirmation-email.li-did-not-agree-to-care",
+                            new Object[]{
+                                    providerName,
+                                    formatListIntoReadableString(childrenInitialsList, andWord)
+                            }, locale));
+        } else {
+            // Did not respond case
+            providerResponses = String.format("%s%s", providerResponses,
+                    messageSource.getMessage("email.family-application-transmitted-confirmation-email.li-did-not-complete-application-in-three-days",
                             new Object[]{providerName}, locale));
         }
 
