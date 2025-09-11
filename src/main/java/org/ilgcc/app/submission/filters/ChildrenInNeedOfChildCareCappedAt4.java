@@ -8,11 +8,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ChildrenInNeedOfChildCare implements SubflowRelationshipFilter {
+public class ChildrenInNeedOfChildCareCappedAt4 implements SubflowRelationshipFilter {
 
     @Override
     public List<HashMap<String, Object>> filter(List<HashMap<String, Object>> children, Submission submission) {
         return children.stream().filter(child -> child.getOrDefault("needFinancialAssistanceForChild", "false").equals("true"))
+                .limit(4)
                 .collect(Collectors.toList());
     }
 }

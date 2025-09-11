@@ -2,18 +2,34 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import formflow.library.data.Submission;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class OptInJourneyTest extends AbstractBasePageTest {
 
+    @BeforeEach
+    protected void seedSubmissionForSession() throws Exception {
+        driver.manage().deleteAllCookies();
+        super.setUp();
+        repo.deleteAll();
+
+        testPage.navigateToFlowScreen("gcc/parent-home-address");
+
+        Submission sessionSubmission = getSessionSubmission();
+        Submission seed = new SubmissionTestBuilder()
+                .withDayCareProvider()
+                .withHomelessDetails()
+                .build();
+
+        sessionSubmission.getInputData().putAll(seed.getInputData());
+        saveSubmission(sessionSubmission);
+    }
+
     @Test
     void shouldPreselectEmailWhenParentExperiencingHomelessnessClicksContactByEmailWithoutExistingSelectedPreference() {
-        // Activities Screen
-        testPage.navigateToFlowScreen("gcc/parent-home-address");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-            .withHomelessDetails()
-            .build());
 
         //parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
@@ -27,12 +43,9 @@ public class OptInJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("parentContactPreferredCommunicationMethod-email").getAttribute("checked")).isEqualTo("true");
         testPage.selectRadio("parentContactPreferredCommunicationMethod", "mail");
     }
+    
     @Test
-    void shouldSetPreferredCommunicationToUserInputAfterUserSelectsAPreferredCommunicationMethod(){
-        testPage.navigateToFlowScreen("gcc/parent-home-address");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-            .withHomelessDetails()
-            .build());
+    void shouldSetPreferredCommunicationToUserInputAfterUserSelectsAPreferredCommunicationMethod() {
 
         //parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
@@ -56,16 +69,11 @@ public class OptInJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
         testPage.clickLink(getEnMessage("parent-no-permanent-address.contact-by-email"));
         assertThat(testPage.findElementById("parentContactPreferredCommunicationMethod-mail").getAttribute("checked")).isEqualTo("true");
-
-
-
     }
+    
     @Test
-    void shouldSelectNothingIfAParentExperiencingHomelessnessDoesNotSelectContactByEmail(){
-        testPage.navigateToFlowScreen("gcc/parent-home-address");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-            .withHomelessDetails()
-            .build());
+    void shouldSelectNothingIfAParentExperiencingHomelessnessDoesNotSelectContactByEmail() {
+ 
         //parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
         testPage.clickElementById("parentHomeExperiencingHomelessness-yes");

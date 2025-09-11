@@ -100,6 +100,8 @@ spring:
       max-lifetime: 270000
       idle-timeout: 250000
       keepalive-time: 180000
+      maximum-pool-size: 15
+      minimum-idle: 5
   servlet:
     multipart:
       max-file-size: ${form-flow.uploads.max-file-size}MB

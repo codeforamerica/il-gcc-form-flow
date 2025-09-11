@@ -63,8 +63,8 @@
                                 </th:block>
                                 <th:block th:with="missingChildcareProviderNames=${T(org.ilgcc.app.utils.SubmissionUtilities).getNamesOfProvidersMissingChildcareSchedules(inputData)},
                                                    totalNumberOfProvidersMissingSchedules=${missingChildcareProviderNames.size()},
-                                                   noProvidersHaveChildcareSchedules=${T(org.ilgcc.app.utils.SubmissionUtilities).areAllProvidersMissingChildcareSchedules(inputData)}
-                                                   ">
+                                                   noProvidersHaveChildcareSchedules=${T(org.ilgcc.app.utils.SubmissionUtilities).areAllProvidersMissingChildcareSchedules(inputData)},
+                                                   hasMoreThan4ChildrenWhoNeedCare=${T(org.ilgcc.app.utils.SubmissionUtilities).getChildrenNeedingAssistance(inputData).size() > 4}">
                                     <th:block th:if="${noProvidersHaveChildcareSchedules}">
                                         <div class="notice--warning" th:id="no-providers-entered-notice">
                                             <p th:text="#{schedules-review.notice.no-providers-with-schedules.p1}"></p>
@@ -78,6 +78,12 @@
                                                 <p th:text="#{schedules-review.notice.providers-missing-schedules.p2}"></p>
                                             </div>
                                         </th:block>
+                                    </th:block>
+                                    <th:block th:if="${hasMoreThan4ChildrenWhoNeedCare}">
+                                        <div class="notice--warning" th:id="more-than-4-children-needing-care-notice">
+                                            <p th:text="#{schedules-review.notice.more-than-4-children-needing-care.p1}"></p>
+                                            <p th:text="#{schedules-review.notice.more-than-4-children-needing-care.p2}"></p>
+                                        </div>
                                     </th:block>
                                 </th:block>
                             </div>
