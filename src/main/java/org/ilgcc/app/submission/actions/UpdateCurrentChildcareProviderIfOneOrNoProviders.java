@@ -20,7 +20,7 @@ public class UpdateCurrentChildcareProviderIfOneOrNoProviders implements Action 
 
         List<String> childcareProvidersForCurrentChild = (List<String>) formSubmission.getFormData().getOrDefault("childcareProvidersForCurrentChild[]", new ArrayList<>());
 
-        if(childcareProvidersForCurrentChild.isEmpty()) {
+        if (childcareProvidersForCurrentChild.isEmpty()) {
             List<Map<String, Object>> providers = (List<Map<String, Object>>) inputData.getOrDefault("providers", emptyList());
             if (hasNoProviders(inputData)) {
                 childcareProvidersForCurrentChild.add("NO_PROVIDER");
