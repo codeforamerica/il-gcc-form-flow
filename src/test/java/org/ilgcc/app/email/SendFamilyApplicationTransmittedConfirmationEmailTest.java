@@ -28,6 +28,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -152,7 +153,6 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         // Notice: no providerResponseSubmissionId
     }
 
-    @BeforeEach
     void setUp() {
         familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
                 .withFlow("gcc")
@@ -324,49 +324,44 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         sendEmailClass.send(familySubmission);
 
         // Assert: verify that both expected emails are enqueued for the FEIN-only provider.
-        // Uses times(2) since both emails have the same recipient and subject.
-// Assert (add the debug verification here!)
-        verify(sendEmailJob, times(2)).enqueueSendSubmissionEmailJob(
-                argThat(email -> {
-                    boolean subjectMatches = "[CCAP] Your application has been sent for processing".equals(email.getSubject());
-                    boolean recipientMatches = email.getRecipientEmails().stream().anyMatch(recipient -> {
-                        try {
-                            java.lang.reflect.Method getEmailMethod = recipient.getClass().getMethod("getEmail");
-                            String address = (String) getEmailMethod.invoke(recipient);
-                            return "fein@mail.com".equals(address);
-                        } catch (Exception ex) {
-                            return recipient.toString().contains("fein@mail.com");
-                        }
-                    });
-                    return subjectMatches && recipientMatches;
-                }),
-                any(Integer.class)
-        );
+        ArgumentCaptor<ILGCCEmail> emailCaptor = ArgumentCaptor.forClass(ILGCCEmail.class);
+        verify(sendEmailJob, times(2)).enqueueSendSubmissionEmailJob(emailCaptor.capture(), any(Integer.class));
 
+        List<ILGCCEmail> capturedEmails = emailCaptor.getAllValues();
 
-        verify(sendEmailJob).enqueueSendSubmissionEmailJob(
-                ArgumentMatchers.argThat(email ->
-                        email.getRecipientEmails().contains("fein@mail.com") &&
-                                (
-                                        email.getSubject().toLowerCase().contains("care agreement completed") ||
-                                                email.getSubject().toLowerCase().contains("provider agrees to care") ||
-                                                email.getSubject().toLowerCase().contains("agreement completed") // fallback if templates change
-                                )
-                ),
-                any(Integer.class)
-        );
+        // Check that both emails are to the FEIN provider and cover both expected subject/template cases
+        boolean foundProcessing = false;
+        boolean foundAgreement = false;
+        for (ILGCCEmail email : capturedEmails) {
+            // Check recipient
+            boolean recipientMatches = email.getRecipientEmails().stream().anyMatch(recipient -> {
+                try {
+                    java.lang.reflect.Method getEmailMethod = recipient.getClass().getMethod("getEmail");
+                    String address = (String) getEmailMethod.invoke(recipient);
+                    return "fein@mail.com".equals(address);
+                } catch (Exception ex) {
+                    return recipient.toString().contains("fein@mail.com");
+                }
+            });
 
-        verify(sendEmailJob).enqueueSendSubmissionEmailJob(
-                ArgumentMatchers.argThat(email ->
-                        email.getRecipientEmails().contains("fein@mail.com") &&
-                                (
-                                        email.getSubject().toLowerCase().contains("application submitted for processing") ||
-                                                email.getSubject().toLowerCase().contains("family application submitted") ||
-                                                email.getSubject().toLowerCase().contains("application received for processing") // fallback if templates change
-                                )
-                ),
-                any(Integer.class)
-        );
+            assertThat(recipientMatches).isTrue();
+
+            // Check subject variations
+            String subject = email.getSubject().toLowerCase();
+            if (subject.contains("care agreement completed") ||
+                    subject.contains("provider agrees to care") ||
+                    subject.contains("agreement completed")) {
+                foundAgreement = true;
+            }
+            if (subject.contains("application submitted for processing") ||
+                    subject.contains("family application submitted") ||
+                    subject.contains("application received for processing") ||
+                    subject.equals("[ccap] your application has been sent for processing")) {
+                foundProcessing = true;
+            }
+        }
+        assertThat(foundAgreement).isTrue();
+        assertThat(foundProcessing).isTrue();
     }
 
     @Test

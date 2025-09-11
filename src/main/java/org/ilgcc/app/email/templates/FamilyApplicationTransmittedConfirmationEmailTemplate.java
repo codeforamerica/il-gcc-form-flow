@@ -73,13 +73,14 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
         String providerResponses = "";
         String providerType = provider.get("providerType") != null ? provider.get("providerType").toString() : "";
 
-        // Safely get initials for Individual type
+        // Safely get initials for Individual type or name for Care Program
         String providerName = "";
+        Object nameObj = null;
         if ("Individual".equals(providerType)) {
             Object initialsObj = provider.get("childCareProviderInitials");
             providerName = initialsObj != null ? initialsObj.toString() : "";
         } else {
-            Object nameObj = provider.getOrDefault("providerName", null);
+            nameObj = provider.getOrDefault("providerName", null);
             if (nameObj == null) {
                 nameObj = provider.getOrDefault("childCareProgramName", "");
             }
