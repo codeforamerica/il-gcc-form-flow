@@ -1095,6 +1095,8 @@ flow:
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: error-provider-response-timed-out
+        condition: ProviderResponseIsAfterThreeDayWindow
+      - name: submit-confirmation
   registration-household-delete-person:
     nextScreens: null
   registration-doc-upload-recommended-docs:
