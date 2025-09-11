@@ -971,6 +971,7 @@ flow:
     nextScreens:
       - name: registration-contact-info
   registration-contact-info:
+    onPostAction: TrimEmailOnPost
     nextScreens:
       - name: registration-info-review
   registration-info-review:
