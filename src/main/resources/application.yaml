@@ -124,16 +124,15 @@ management:
         application-key: ${DATADOG_APPLICATION_KEY}
   endpoints:
     enabled-by-default: false
-org:
-  jobrunr:
-    jobs:
-      retry-back-off-time-seed: 10
-    job-scheduler:
-      enabled: true
-    background-job-server:
-      enabled: ${JOBRUNR_SERVER_ENABLED:true}
-    dashboard:
-      enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
+jobrunr:
+  jobs:
+    retry-back-off-time-seed: 10
+  job-scheduler:
+    enabled: true
+  background-job-server:
+    enabled: ${JOBRUNR_SERVER_ENABLED:true}
+  dashboard:
+    enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
   caseload_codes:
