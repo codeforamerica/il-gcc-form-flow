@@ -1,6 +1,7 @@
 package org.ilgcc.app.utils;
 
 import static java.lang.Integer.parseInt;
+import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
 import static org.ilgcc.app.utils.SchedulePreparerUtility.providersWithSchedules;
@@ -414,8 +415,10 @@ public class SubmissionUtilities {
                 currentProvider.put("providerResponseName",
                         ProviderSubmissionUtilities.getProviderResponseName(providerSubmission));
             } else if (!currentProvider.containsKey("providerApplicationResponseStatus") ||
-                    !(SubmissionStatus.RESPONDED.name().equals(currentProvider.get("providerApplicationResponseStatus").toString()) ||
-                            SubmissionStatus.INACTIVE.name().equals(currentProvider.get("providerApplicationResponseStatus").toString()))) {
+                    !(SubmissionStatus.RESPONDED.name()
+                            .equals(currentProvider.get("providerApplicationResponseStatus").toString()) ||
+                            SubmissionStatus.INACTIVE.name()
+                                    .equals(currentProvider.get("providerApplicationResponseStatus").toString()))) {
                 allProvidersResponded = false;
             }
             providers.add(currentProvider);
@@ -433,7 +436,8 @@ public class SubmissionUtilities {
     }
 
     public static boolean haveAllProvidersResponded(List<Map<String, Object>> providers) {
-        return providers.stream().allMatch(p -> p.getOrDefault("providerApplicationResponseStatus", "false").equals(SubmissionStatus.RESPONDED.name()));
+        return providers.stream().allMatch(
+                p -> p.getOrDefault("providerApplicationResponseStatus", "false").equals(SubmissionStatus.RESPONDED.name()));
     }
 
     public static boolean allChildcareSchedulesAreForTheSameProvider(Map<String, Object> inputData) {
@@ -455,5 +459,39 @@ public class SubmissionUtilities {
     public static boolean isMultiProviderApplication(Submission familySubmission) {
         return !isPreMultiProviderApplicationWithSingleProvider(familySubmission) &&
                 !allChildcareSchedulesAreForTheSameProvider(familySubmission.getInputData());
+    }
+
+    /**
+     * @param familySubmission the family submission to be checked against whose list of providers will be used for the check.
+     * @return true if all providers in the family submission belong to the same site administered resource organization otherwise
+     * false.
+     */
+    public static boolean allProvidersBelongToTheSameSiteAdministeredResourceOrganization(Submission familySubmission) {
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
+                .getOrDefault("providers", EMPTY_LIST);
+        
+        Set providerIdsWithSchedules = getRelatedChildrenSchedulesForEachProvider(familySubmission.getInputData()).keySet();
+        List<Map<String, Object>> providersWithChildCareSchedules = providers.stream().filter(provider ->
+                providerIdsWithSchedules.contains(provider.get("uuid").toString())).toList();
+        
+        if (providersWithChildCareSchedules.isEmpty()) {
+            return false;
+        }
+
+        String firstProviderResourceOrgId = null;
+        for (Map<String, Object> provider : providersWithChildCareSchedules) {
+            if (!provider.containsKey("providerResourceOrgId")) {
+                // if we don't know the org we can't say they all the same
+                return false;
+            }
+            String currentProviderResourceOrgId = provider.get("providerResourceOrgId").toString();
+            if (firstProviderResourceOrgId == null) {
+                firstProviderResourceOrgId = currentProviderResourceOrgId;
+            } else if (!firstProviderResourceOrgId.equals(currentProviderResourceOrgId)) {
+                return false;
+            }
+        }
+        // all resource orgs match
+        return true;
     }
 }
