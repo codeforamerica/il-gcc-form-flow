@@ -124,8 +124,8 @@ public class CCMSSubmissionPayloadTransactionJob {
 
             JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofMinutes(jobDelayMinutes)),
                     () -> sendCCMSTransaction(submissionId));
-            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in {} minutes",
-                    jobId, submissionId, jobDelayMinutes);
+            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in {} minutes. CCMS integration enabled {}",
+                    jobId, submissionId, jobDelayMinutes, isCCMSIntegrationEnabled());
         } else {
             enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
         }
@@ -143,8 +143,8 @@ public class CCMSSubmissionPayloadTransactionJob {
 
             JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofSeconds(offsetDelaySeconds)),
                     () -> sendCCMSTransaction(submissionId));
-            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in {} seconds",
-                    jobId, submissionId, offsetDelaySeconds);
+            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in {} seconds. CCMS integration enabled {}",
+                    jobId, submissionId, offsetDelaySeconds, isCCMSIntegrationEnabled());
         } else {
             enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
         }
@@ -160,8 +160,8 @@ public class CCMSSubmissionPayloadTransactionJob {
             }
 
             JobId jobId = jobScheduler.enqueue(() -> sendCCMSTransaction(submissionId));
-            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}", jobId,
-                    submissionId);
+            log.info("Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {}. CCMS integration enabled {}", jobId,
+                    submissionId, isCCMSIntegrationEnabled());
 
         } else {
             enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
@@ -184,8 +184,8 @@ public class CCMSSubmissionPayloadTransactionJob {
                 () -> sendCCMSTransaction(submissionId));
 
         log.info(
-                "CCMS offline for another {} seconds. Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in: {} seconds",
-                secondsUntilEndOfOfflineRange, jobId, submissionId, jobDelaySeconds);
+                "CCMS offline for another {} seconds. Enqueued Submission CCMS Payload Transaction job with ID: {} for submission with ID: {} in: {} seconds. CCMS integration enabled {}",
+                secondsUntilEndOfOfflineRange, jobId, submissionId, jobDelaySeconds, isCCMSIntegrationEnabled());
 
         // And finally we can bump up the amount of time we need to wait for the next job. As the number of delayed jobs increases,
         // this will increase.
@@ -282,8 +282,8 @@ public class CCMSSubmissionPayloadTransactionJob {
                 }
             } else {
                 log.info(
-                        "Skipping CCMS transaction because CCMS is currently offline. Requeuing CCMS Payload Transaction job for {}",
-                        submissionId);
+                        "Skipping CCMS transaction because CCMS is currently offline. Requeuing CCMS Payload Transaction job for {}. CCMS integration enabled {}",
+                        submissionId, isCCMSIntegrationEnabled());
                 enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
             }
         } else {
@@ -298,6 +298,10 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     private boolean isOnlineAt(ZonedDateTime dateTime) {
         return ccmsApiClient.getConfiguration().isOnlineAt(dateTime);
+    }
+
+    private boolean isCCMSIntegrationEnabled() {
+        return ccmsApiClient.getConfiguration().isCCMSIntegrationEnabled();
     }
 
     private long getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {

@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CCMSApiConfiguration {
 
+    private boolean ccmsIntegrationEnabled;
     private String apiSubscriptionKey;
     private String baseUrl;
 
@@ -54,11 +55,15 @@ public class CCMSApiConfiguration {
     }
 
     public boolean isOnlineAt(ZonedDateTime dateTime) {
-        if (!ccmsOfflineTimeRanges.isEmpty()) {
+        if (isCCMSIntegrationEnabled() && !ccmsOfflineTimeRanges.isEmpty()) {
             return !ccmsOfflineTimeRanges.stream().anyMatch(range -> range.isTimeWithinRange(dateTime));
         } else {
             return true;
         }
+    }
+
+    public boolean isCCMSIntegrationEnabled() {
+        return ccmsIntegrationEnabled;
     }
 
     public long getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {
