@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head :: head(title=#{'error-provider-response-timed-out.title'})}"></head>
+<body>
+<div class="page-wrapper">
+    <div th:replace="~{fragments/toolbar :: toolbar}"></div>
+    <section class="slab">
+        <div class="grid">
+            <div th:replace="~{fragments/goBack :: goBackLink}"></div>
+            <main id="content" role="main" class="form-card spacing-above-35">
+                <th:block
+                        th:with="ccrrName=${submission.getInputData().getOrDefault('ccrrName', '')},
+                                 ccrrPhoneNumber=${submission.getInputData().getOrDefault('ccrrPhoneNumber', '')}">
+                    <th:block th:replace="~{fragments/gcc-icons :: code}"></th:block>
+                    <th:block
+                            th:replace="~{fragments/cardHeader :: cardHeader(header=#{error-provider-response-timed-out.header}, subtext=#{error-provider-response-timed-out.subtext(${ccrrName}, ${ccrrPhoneNumber})})}"/>
+                    <div class="form-card__footer">
+                        <div>
+                            <a th:href="'/'"
+                               th:text="#{general.button.return.home}"
+                               class="button button--primary"
+                               id="home-link"></a>
+                        </div>
+                    </div>
+                </th:block>
+            </main>
+        </div>
+    </section>
+</div>
+<th:block th:replace="~{fragments/footer :: footer}"/>
+</body>
+</html>
