@@ -46,7 +46,7 @@ public class MultiProviderIsEnabledAndHasMultipleProviders implements Condition 
             log.warn("No family submission short code was found for provider submission: {}.", submission.getId());
             return false; // If we have no shortcode, we can't do anything
         }
-        Optional<Submission> familySubmissionOptional = submissionRepositoryService.findByShortCode(familySubmissionShortCode.get());
+        Optional<Submission> familySubmissionOptional = submissionRepositoryService.findByShortCode(familySubmissionShortCode.get().toUpperCase());
         if (familySubmissionOptional.isEmpty()) {
             log.warn("No family submission found for the provider submission: {}.", submission.getId());
             return false; // If we have no family submission, we can't do anything

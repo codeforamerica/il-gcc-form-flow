@@ -83,7 +83,7 @@ public class ProviderSubmissionUtilities {
         if (providerSubmission.getInputData().containsKey("providerResponseFamilyShortCode")) {
             String providerResponseFamilyShortCode = (String) providerSubmission.getInputData().get(
                     "providerResponseFamilyShortCode");
-            return Optional.of(providerResponseFamilyShortCode);
+            return Optional.of(providerResponseFamilyShortCode.toUpperCase());
         }
 
         return Optional.empty();
