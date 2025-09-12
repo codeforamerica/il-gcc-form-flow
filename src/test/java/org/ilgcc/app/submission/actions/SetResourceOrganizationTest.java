@@ -8,6 +8,7 @@ import static org.ilgcc.app.data.importer.FakeProviderDataImporter.ACTIVE_SITE_A
 import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_APPROVED_PROVIDER;
 import static org.mockito.Mockito.when;
 
+import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.math.BigInteger;
@@ -45,6 +46,8 @@ class SetResourceOrganizationTest {
     Submission familySubmission;
     Submission providerSubmission;
 
+    private FormSubmission formSubmission;
+
     @BeforeEach
     void setUp() {
         Map<String, Object> familyInputData = new HashMap<>();
@@ -71,11 +74,15 @@ class SetResourceOrganizationTest {
                 .thenReturn(Optional.of(ACTIVE_SITE_ADMIN_RESOURCE_ORG));
 
         submissionRepositoryService.save(providerSubmission);
+        
+        Map<String, Object> formData = new HashMap<>();
+        formData.put("providerResponseAgreeToCare", true);
+        formSubmission = new FormSubmission(formData);
     }
 
     @Test
     void shouldChangeFamilyOrgIdWhenProviderIsSiteAdministered() {
-        setResourceOrganization.run(providerSubmission);
+        setResourceOrganization.run(formSubmission, providerSubmission);
         familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
         assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo(
                 ACTIVE_SITE_ADMIN_RESOURCE_ORG.getResourceOrgId().intValue());
@@ -88,7 +95,7 @@ class SetResourceOrganizationTest {
         providerSubmission.getInputData()
                 .put("providerResponseProviderNumber", CURRENT_APPROVED_PROVIDER.getProviderId().toString());
         submissionRepositoryService.save(providerSubmission);
-        setResourceOrganization.run(providerSubmission);
+        setResourceOrganization.run(formSubmission, providerSubmission);
         familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
         assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
         assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("CCRR Name");
@@ -168,13 +175,17 @@ class SetResourceOrganizationTest {
             submissionRepositoryService.save(familySubmission);
             providerSubmission.getInputData().put("familySubmissionId", familySubmission.getId().toString());
             submissionRepositoryService.save(providerSubmission);
+
+            Map<String, Object> formData = new HashMap<>();
+            formData.put("providerResponseAgreeToCare", true);
+            formSubmission = new FormSubmission(formData);
         }
 
         @Test
         void shouldChangeFamilyOrgIdWhenAllProvidersHaveTheSameOrgId() {
             providerSubmission.getInputData().put("currentProviderUuid", provider2.get("uuid").toString());
             submissionRepositoryService.save(providerSubmission);
-            setResourceOrganization.run(providerSubmission);
+            setResourceOrganization.run(formSubmission, providerSubmission);
             familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
 
             assertThat(familySubmission.getInputData().get("organizationId"))
@@ -217,7 +228,7 @@ class SetResourceOrganizationTest {
             submissionRepositoryService.save(providerSubmission);
             submissionRepositoryService.save(familySubmission);
 
-            setResourceOrganization.run(providerSubmission);
+            setResourceOrganization.run(formSubmission, providerSubmission);
             familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
 
             assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
@@ -258,7 +269,7 @@ class SetResourceOrganizationTest {
             submissionRepositoryService.save(providerSubmission);
             submissionRepositoryService.save(familySubmission);
 
-            setResourceOrganization.run(providerSubmission);
+            setResourceOrganization.run(formSubmission, providerSubmission);
             familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
 
             assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
@@ -277,9 +288,38 @@ class SetResourceOrganizationTest {
             providerSubmission.getInputData().put("currentProviderUuid", providersAfterRemovingOrgId.get(0).get("uuid").toString());
             submissionRepositoryService.save(providerSubmission);
 
-            setResourceOrganization.run(providerSubmission);
+            setResourceOrganization.run(formSubmission, providerSubmission);
             familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
 
+            assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
+            assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("CCRR Name");
+            assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(123) 123-1234");
+        }
+        
+        @Test
+        void shouldNotChangeFamilyOrgIdWhenProviderDoesNotAgreeToCare() {
+            formSubmission.getFormData().put("providerResponseAgreeToCare", false);
+            providerSubmission.getInputData().put("currentProviderUuid", provider2.get("uuid").toString());
+            submissionRepositoryService.save(providerSubmission);
+            setResourceOrganization.run(formSubmission, providerSubmission);
+            familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
+
+            assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
+            assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("CCRR Name");
+            assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(123) 123-1234");
+        }
+        
+        @Test
+        void shouldNotChangeFamilyOrgIdWhenAProviderHasNotYetResponded() {
+            formSubmission.getFormData().put("providerResponseAgreeToCare", true);
+            providerSubmission.getInputData().put("currentProviderUuid", provider2.get("uuid").toString());
+            submissionRepositoryService.save(providerSubmission);
+            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
+            providers.get(1).remove("providerResponseAgreeToCare");
+            submissionRepositoryService.save(familySubmission);
+            
+            setResourceOrganization.run(formSubmission, providerSubmission);
+            familySubmission = submissionRepositoryService.findById(familySubmission.getId()).orElseThrow();
             assertThat(familySubmission.getInputData().get("organizationId")).isEqualTo("testValue");
             assertThat(familySubmission.getInputData().get("ccrrName")).isEqualTo("CCRR Name");
             assertThat(familySubmission.getInputData().get("ccrrPhoneNumber")).isEqualTo("(123) 123-1234");
