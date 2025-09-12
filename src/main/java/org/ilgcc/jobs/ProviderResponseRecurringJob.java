@@ -47,7 +47,7 @@ public class ProviderResponseRecurringJob {
     @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
     @Job(name = "No provider response job")
     public void runNoProviderResponseJob() {
-        
+
         log.info("Running No Provider Response Job for expired submissions.");
 
         Set<Submission> expiringSubmissionsToSend = transactionRepositoryService.findExpiringSubmissionsWithoutTransactions();

@@ -53,5 +53,5 @@ il-gcc:
   enable-emails: false
   base-url: https://localhost:8080
   ccms-api:
-    ccms-integration-enabled: true
+    integration-enabled: true
     offline-time-ranges: '[]'

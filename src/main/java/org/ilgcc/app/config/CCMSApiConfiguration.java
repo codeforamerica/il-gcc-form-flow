@@ -3,6 +3,7 @@ package org.ilgcc.app.config;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.Nullable;
 import jakarta.annotation.PostConstruct;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CCMSApiConfiguration {
 
-    private boolean ccmsIntegrationEnabled;
+    private boolean integrationEnabled;
     private String apiSubscriptionKey;
     private String baseUrl;
 
@@ -63,7 +64,7 @@ public class CCMSApiConfiguration {
     }
 
     public boolean isCCMSIntegrationEnabled() {
-        return ccmsIntegrationEnabled;
+        return integrationEnabled;
     }
 
     public long getSecondsUntilEndOfOfflineRangeStartingAt(ZonedDateTime startTime) {
