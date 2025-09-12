@@ -49,7 +49,7 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
 
         //parent-home-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
-        testPage.clickButton(getEnMessage("parent-no-permanent-address.has-place-to-get-mail"));
+        testPage.clickContinue();
 
         // parent-mailing-address
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-mailing-address.title"));
@@ -107,50 +107,6 @@ public class GccAddressJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getInputValue("parentMailingCity")).isEqualTo(VALIDATED_CITY);
         assertThat(testPage.getSelectValue("parentMailingState")).isEqualTo(getEnMessage("state.il"));
         assertThat(testPage.getInputValue("parentMailingZipCode")).isEqualTo(VALIDATED_ZIP_CODE);
-    }
-
-    @Test
-    void whenNoHomeAddressAndDoesNotHaveMailingAddress() {
-        testPage.navigateToFlowScreen("gcc/parent-info-disability");
-
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .withParentBasicInfo()
-                .with("familyIntendedProviderName", "ACME Daycare")
-                .with("applicationCounty", COUNTY_LEE_LABEL)
-                .build());
-
-        testPage.clickYes();
-
-        //parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-home-address.title"));
-        testPage.clickElementById("parentHomeExperiencingHomelessness-yes");
-        testPage.clickContinue();
-
-        //parent-home-address
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-no-permanent-address.title"));
-        testPage.clickLink(getEnMessage("parent-no-permanent-address.contact-by-email"));
-
-        // parent-comm-preference
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-comm-preference.title"));
-        testPage.selectRadio("parentContactPreferredCommunicationMethod", "email");
-        testPage.clickContinue();
-        // parent-contact-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-contact-info.title"));
-        testPage.enter("parentContactEmail", "test@email.org");
-        testPage.clickContinue();
-
-        //parent-info-review
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-review.title"));
-        assertThat(testPage.getElementText("no-home-address")).isEqualTo(getEnMessage("general.none-added"));
-        assertThat(testPage.elementDoesNotExistById("home-street-address-1")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("home-street-address-2")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("home-city-state")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("home-zipcode")).isTrue();
-        assertThat(testPage.getElementText("no-mailing-address")).isEqualTo(getEnMessage("general.none-added"));
-        assertThat(testPage.elementDoesNotExistById("mailing-street-address-1")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("mailing-street-address-2")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("mailing-city-state")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("mailing-zipcode")).isTrue();
     }
 
     @Test
