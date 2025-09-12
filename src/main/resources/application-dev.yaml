@@ -24,10 +24,9 @@ server:
     key-store: ./localhost+2.p12
     key-store-type: PKCS12
     key-store-password: ${KEY_STORE_PASSWORD}
-org:
-  jobrunr:
-    jobs:
-      retry-back-off-time-seed: 1
+jobrunr:
+  jobs:
+    retry-back-off-time-seed: 1
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:false}
   base-url: https://localhost:8080
