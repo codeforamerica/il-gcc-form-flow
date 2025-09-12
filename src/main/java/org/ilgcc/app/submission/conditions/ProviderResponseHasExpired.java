@@ -5,9 +5,9 @@ import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,17 +20,19 @@ public class ProviderResponseHasExpired implements Condition {
   }
 
   @Override
-  public Boolean run(Submission providerSubmission){
+  public Boolean run(Submission providerSubmission) {
     Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
     if (familySubmissionId.isPresent()) {
       Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(familySubmissionId.get());
-      AtomicBoolean familySubmissionIsAfterThreeDays = new AtomicBoolean(false);
-      familySubmissionOptional.ifPresent(familySubmission -> {
-        familySubmissionIsAfterThreeDays.set(ProviderSubmissionUtilities.providerApplicationHasExpired(familySubmission));
-      });
-      return familySubmissionIsAfterThreeDays.get();
-    }else{
-      return false;
+      if (familySubmissionOptional.isPresent()) {
+        Submission familySubmission = familySubmissionOptional.get();
+        Optional<SubmissionStatus> providerSubmissionStatusOptional = ProviderSubmissionUtilities.getOneProviderApplicationResponseStatus(
+            familySubmission, providerSubmission);
+        if (providerSubmissionStatusOptional.isPresent()) {
+          return providerSubmissionStatusOptional.get().equals(SubmissionStatus.EXPIRED);
+        }
+      }
     }
+    return false;
   }
 }

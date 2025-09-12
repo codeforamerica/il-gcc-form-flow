@@ -2,6 +2,7 @@ package org.ilgcc.app.utils;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
+import static org.ilgcc.app.utils.SubmissionUtilities.getProviders;
 
 import formflow.library.data.Submission;
 import jakarta.validation.constraints.NotNull;
@@ -438,6 +439,19 @@ public class ProviderSubmissionUtilities {
         } else {
             return Optional.empty();
         }
+    }
+
+    public static Optional<SubmissionStatus> getOneProviderApplicationResponseStatus(Submission familySubmission, Submission providerSubmission){
+        List<Map<String, Object>> providers = getProviders(familySubmission.getInputData());
+        for(Map<String, Object> provider : providers) {
+            boolean providerSubmissionMatchesFamilyProvider = provider.getOrDefault("providerResponseSubmissionId", "").equals(providerSubmission.getId().toString());
+            if (providerSubmissionMatchesFamilyProvider) {
+                if(providerSubmission.getInputData().containsKey("providerApplicationResponseStatus")) {
+                    return Optional.of(SubmissionStatus.valueOf(provider.get("providerApplicationResponseStatus").toString()));
+                }
+            }
+        }
+        return Optional.empty();
     }
 
 
