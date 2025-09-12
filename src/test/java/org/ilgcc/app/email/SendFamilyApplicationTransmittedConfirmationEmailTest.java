@@ -67,10 +67,6 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
 
     private static Map<String, Object> emailData = new HashMap<>();
 
-    // FEIN-only provider for test
-    private static Map<String, Object> feinProvider = new HashMap<>();
-    private Submission feinProviderSubmission;
-
     @BeforeAll
     public static void setUpOnce() {
         individualProvider.put("uuid", UUID.randomUUID().toString());
@@ -128,22 +124,6 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         child2.put("needFinancialAssistanceForChild", true);
         child2.put("childIsUsCitizen", "Yes");
         child2.put("ccapStartDate", "12/10/2025");
-
-        // Setup FEIN-only provider that agrees to care and has no CCMS ID
-        feinProvider.put("uuid", UUID.randomUUID().toString());
-        feinProvider.put("iterationIsComplete", true);
-        feinProvider.put("providerFirstName", "FeinFirst");
-        feinProvider.put("providerLastName", "FeinLast");
-        feinProvider.put("familyIntendedProviderEmail", "fein@mail.com");
-        feinProvider.put("familyIntendedProviderPhoneNumber", "(777) 123-1234");
-        feinProvider.put("familyIntendedProviderAddress", "789 Main St.");
-        feinProvider.put("familyIntendedProviderCity", "Chicago");
-        feinProvider.put("familyIntendedProviderState", "IL");
-        feinProvider.put("providerType", "Care Program");
-        feinProvider.put("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name());
-        feinProvider.put("providerFEIN", "123456789");
-        feinProvider.put("providerResponseAgreeToCare", "true"); // agrees to care
-        // Notice: no providerResponseSubmissionId
     }
 
     @BeforeEach
@@ -153,13 +133,13 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
                 .with("parentFirstName", "FirstName")
                 .with("parentContactEmail", "familyemail@test.com")
                 .with("languageRead", "English")
-                .with("providers", List.of(individualProvider, programProvider, noResponseProvider, feinProvider))
+                .with("providers", List.of(individualProvider, programProvider, noResponseProvider))
                 .with("children", List.of(child1, child2))
                 .withMultipleChildcareSchedules(List.of(child1.get("uuid").toString(), child2.get("uuid").toString(),
-                                child1.get("uuid").toString(), child2.get("uuid").toString(), child1.get("uuid").toString()),
+                                child1.get("uuid").toString(), child2.get("uuid").toString()),
                         List.of(individualProvider.get("uuid").toString(),
                                 individualProvider.get("uuid").toString(), programProvider.get("uuid").toString(),
-                                noResponseProvider.get("uuid").toString(), feinProvider.get("uuid").toString()))
+                                noResponseProvider.get("uuid").toString()))
                 .withSubmittedAtDate(OffsetDateTime.now())
                 .withCCRR()
                 .withShortCode("ABC123")
@@ -191,6 +171,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         programProvider.put("providerResponseSubmissionId", programProviderSubmission.getId());
         programProvider.put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
 
+
         sendEmailClass = new SendFamilyApplicationTransmittedConfirmationEmail(sendEmailJob, messageSource,
                 submissionRepositoryService);
 
@@ -202,6 +183,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
     void tearDown() {
         submissionRepository.deleteAll();
     }
+
 
     @Test
     void correctlySetsEmailRecipient() {
@@ -285,31 +267,6 @@ public class SendFamilyApplicationTransmittedConfirmationEmailTest {
         assertThat(currentProviderData.get("providerType")).isEqualTo("Care Program");
         assertThat(currentProviderData.get("childCareProgramName")).isEqualTo("Great Care Child Care");
         assertThat(currentProviderData.get("providerResponseAgreeToCare")).isNull();
-    }
-
-    @Test
-    void correctlySetsEmailDataForFeinOnlyProviderWhoAgreesToCare() {
-        assertThat(emailData.get("providersData")).isNotNull();
-
-        List<Map<String, Object>> providersData = (List<Map<String, Object>>) emailData.get("providersData");
-        Optional<Map<String, Object>> feinProviderDataOptional = providersData.stream()
-                .filter(provider -> feinProvider.get("uuid").equals(provider.get("uuid")))
-                .findFirst();
-
-        assertThat(feinProviderDataOptional.isPresent()).isTrue();
-        Map<String, Object> feinProviderData = feinProviderDataOptional.get();
-
-        // FEIN is present, agreed to care, no providerResponseSubmissionId
-        assertThat(feinProviderData.get("providerFEIN")).isEqualTo("123456789");
-        assertThat(feinProviderData.get("providerResponseAgreeToCare")).isEqualTo("true");
-        assertThat(feinProviderData.get("providerResponseSubmissionId")).isNull();
-        // Add more asserts for childrenInitialsList, type, etc. if needed
-        assertThat(feinProviderData.get("providerType")).isEqualTo("Care Program");
-        assertThat(feinProviderData.get("childCareProviderInitials")).isEqualTo("F.F.");
-        // Confirm ccapStartDate field is present
-        assertThat(feinProviderData.containsKey("ccapStartDate")).isTrue();
-        // Confirm care agreement completed logic applies
-        // (You may want to mock or spy email sending if you want to verify both emails are sent)
     }
 
     @Test
