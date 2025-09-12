@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class ProviderResponseIsBeforeThreeDayWindow implements Condition {
+public class ProviderResponseHasNotExpired implements Condition {
   SubmissionRepositoryService submissionRepositoryService;
-  ProviderResponseIsBeforeThreeDayWindow(SubmissionRepositoryService submissionRepositoryService) {
+  ProviderResponseHasNotExpired(SubmissionRepositoryService submissionRepositoryService) {
     this.submissionRepositoryService = submissionRepositoryService;
   }
   @Override
   public Boolean run(Submission providerSubmission) {
-    ProviderResponseIsAfterThreeDayWindow providerResponseIsAfterThreeDayWindow = new ProviderResponseIsAfterThreeDayWindow(submissionRepositoryService);
-    return !providerResponseIsAfterThreeDayWindow.run(providerSubmission);
+    ProviderResponseHasExpired providerResponseHasExpired = new ProviderResponseHasExpired(submissionRepositoryService);
+    return !providerResponseHasExpired.run(providerSubmission);
   }
 }

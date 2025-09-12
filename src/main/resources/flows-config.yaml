@@ -891,7 +891,7 @@ flow:
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: error-provider-response-timed-out
-        condition: ProviderResponseIsAfterThreeDayWindow
+        condition: ProviderResponseHasExpired
       - name: submit-confirmation
   #Existing Provider Flow: FEIN
   fein:
@@ -908,7 +908,7 @@ flow:
     afterSaveAction: SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission
     nextScreens:
       - name: error-provider-response-timed-out
-        condition: ProviderResponseIsAfterThreeDayWindow
+        condition: ProviderResponseHasExpired
       - name: submit-confirmation
   # Provider Registration Flow
   registration-start:
@@ -1079,7 +1079,7 @@ flow:
     afterSaveAction: SendProviderRegistrationAndFamilyPayloadToCCMS
     nextScreens:
       - name: error-provider-response-timed-out
-        condition: ProviderResponseIsAfterThreeDayWindow
+        condition: ProviderResponseHasExpired
       - name: registration-submit-complete
   registration-submit-complete:
     beforeDisplayAction: SendNewProviderAndFamilyConfirmationEmails
@@ -1091,11 +1091,11 @@ flow:
         condition: ProviderIsRegistering
       - name: submit-start
   submit-confirmation:
-    condition: ProviderResponseIsBeforeThreeDayWindow
+    condition: ProviderResponseHasNotExpired
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: error-provider-response-timed-out
-        condition: ProviderResponseIsAfterThreeDayWindow
+        condition: ProviderResponseHasExpired
       - name: submit-confirmation
   registration-household-delete-person:
     nextScreens: null

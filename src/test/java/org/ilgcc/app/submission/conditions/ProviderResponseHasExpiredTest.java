@@ -14,17 +14,17 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class ProviderResponseIsAfterThreeDayWindowTest {
+class ProviderResponseHasExpiredTest {
  @Autowired
  SubmissionRepositoryService submissionRepositoryService;
 
   private Submission familySubmission;
   private Submission providerSubmission;
-  ProviderResponseIsAfterThreeDayWindow providerResponseIsAfterThreeDayWindow;
+  ProviderResponseHasExpired providerResponseHasExpired;
 
   @Test
   void shouldReturnFalseIfResponseIsBeforeThreeDayWindow() {
-    providerResponseIsAfterThreeDayWindow = new ProviderResponseIsAfterThreeDayWindow(submissionRepositoryService);
+    providerResponseHasExpired = new ProviderResponseHasExpired(submissionRepositoryService);
     familySubmission = new SubmissionTestBuilder()
         .withParentBasicInfo()
         .withSubmittedAtDate(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(OffsetDateTime.now().plusDays(1)))
@@ -47,12 +47,12 @@ class ProviderResponseIsAfterThreeDayWindowTest {
         .with("providerPaidCcap", "true")
         .with("currentProviderUuid", "daycareone-1")
         .build();
-    assertThat(providerResponseIsAfterThreeDayWindow.run(providerSubmission)).isFalse();
+    assertThat(providerResponseHasExpired.run(providerSubmission)).isFalse();
   }
 
   @Test
   void shouldReturnTrueIfResponseIsAfterThreeDayWindow() {
-    providerResponseIsAfterThreeDayWindow = new ProviderResponseIsAfterThreeDayWindow(submissionRepositoryService);
+    providerResponseHasExpired = new ProviderResponseHasExpired(submissionRepositoryService);
     familySubmission = new SubmissionTestBuilder()
         .withParentBasicInfo()
         .withSubmittedAtDate(ProviderSubmissionUtilities.threeBusinessDaysBeforeDate(OffsetDateTime.now().minusDays(1)))
@@ -75,6 +75,6 @@ class ProviderResponseIsAfterThreeDayWindowTest {
         .with("providerPaidCcap", "true")
         .with("currentProviderUuid", "daycareone-1")
         .build();
-    assertThat(providerResponseIsAfterThreeDayWindow.run(providerSubmission)).isTrue();
+    assertThat(providerResponseHasExpired.run(providerSubmission)).isTrue();
   }
 }
