@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class ProviderResponseIsAfterThreeDayWindow implements Condition {
+public class ProviderResponseHasExpired implements Condition {
   SubmissionRepositoryService submissionRepositoryService;
 
-  public ProviderResponseIsAfterThreeDayWindow(SubmissionRepositoryService submissionRepositoryService) {
+  public ProviderResponseHasExpired(SubmissionRepositoryService submissionRepositoryService) {
       this.submissionRepositoryService = submissionRepositoryService;
   }
 
