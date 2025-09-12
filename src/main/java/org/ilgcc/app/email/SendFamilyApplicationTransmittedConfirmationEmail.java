@@ -29,7 +29,7 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
 
     @Autowired
     public SendFamilyApplicationTransmittedConfirmationEmail(SendEmailJob sendEmailJob, MessageSource messageSource,
-            SubmissionRepositoryService submissionRepositoryService) {
+                                                             SubmissionRepositoryService submissionRepositoryService) {
         super(sendEmailJob, messageSource, submissionRepositoryService, "familyApplicationTransmittedEmailSent",
                 "parentContactEmail");
     }
@@ -62,17 +62,29 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
                         String earliestCCAPDateForCurrentProvider =
                                 (String) DateUtilities.getEarliestDate(providerSchedules.get(providerId).stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
 
-                        if (currentProvider.get().containsKey("providerResponseSubmissionId")) {
-                            Optional<Submission> currentProviderSubmission = submissionRepositoryService.findById(
-                                    UUID.fromString(currentProvider.get().get("providerResponseSubmissionId").toString()));
+                        boolean agreesToCare = "true".equals(
+                                currentProvider.get().getOrDefault("providerResponseAgreeToCare", "false")
+                        );
+                        boolean hasFEIN = currentProvider.get().containsKey("providerFEIN") &&
+                                currentProvider.get().get("providerFEIN") != null &&
+                                !currentProvider.get().get("providerFEIN").toString().isEmpty();
+
+                        // Updated logic: allow both emails for CCMS or FEIN+agreesToCare
+                        if (currentProvider.get().containsKey("providerResponseSubmissionId") || (hasFEIN && agreesToCare)) {
+                            Optional<Submission> currentProviderSubmission = Optional.empty();
+                            if (currentProvider.get().containsKey("providerResponseSubmissionId")) {
+                                currentProviderSubmission = submissionRepositoryService.findById(
+                                        UUID.fromString(currentProvider.get().get("providerResponseSubmissionId").toString()));
+                            }
                             currentProviderData.put("ccapStartDate",
                                     ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(
                                             earliestCCAPDateForCurrentProvider,
                                             currentProviderSubmission));
                             if (currentProviderSubmission.isPresent()) {
                                 currentProviderData.putAll(getProviderSubmissionDataForEmails(currentProviderSubmission.get()));
-
                             }
+                            // At this point, both "Care Agreement Completed" and "Application Submitted for Processing"
+                            // emails will be triggered for FEIN-only providers who agree to care.
                         } else {
                             currentProviderData.put("ccapStartDate",
                                     ProviderSubmissionUtilities.getCCAPStartDateFromProviderOrFamilyChildcareStartDate(
@@ -88,7 +100,6 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
                                 ProviderSubmissionUtilities.getChildrenInitialsList(providerSchedules.get(providerId)));
                         providerData.add(currentProviderData);
                     }
-
                 }
 
                 emailData.put("providersData", providerData);
@@ -97,6 +108,4 @@ public class SendFamilyApplicationTransmittedConfirmationEmail extends SendEmail
 
         return Optional.of(emailData);
     }
-
 }
-

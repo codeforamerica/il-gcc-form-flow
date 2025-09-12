@@ -25,7 +25,7 @@ public class FamilyApplicationTransmittedConfirmationEmailTemplate {
     private Locale locale;
 
     public FamilyApplicationTransmittedConfirmationEmailTemplate(Map<String, Object> emailData, MessageSource messageSource,
-            Locale locale) {
+                                                                 Locale locale) {
         this.emailData = emailData;
         this.messageSource = messageSource;
         this.locale = locale;
