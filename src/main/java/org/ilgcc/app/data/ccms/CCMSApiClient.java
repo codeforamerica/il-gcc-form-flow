@@ -36,31 +36,41 @@ public class CCMSApiClient {
     }
 
     public JsonNode sendRequest(String endpoint, CCMSTransaction requestBody) throws JsonProcessingException {
-        String response =
-                client.post()
-                        .uri(endpoint)
-                        .headers(h -> h.addAll(createRequestHeaders()))
-                        .bodyValue(requestBody)
-                        .retrieve()
-                        .onStatus(status -> !status.is2xxSuccessful(), resp ->
-                                resp.createException()
-                                        .doOnNext(ex -> log.error(
-                                                "Received an error response from CCMS when sending submission with ID: {}. Status: {}, Body: {}",
-                                                requestBody.getSubmissionId(),
-                                                ex.getStatusCode(),
-                                                ex.getResponseBodyAsString()))
-                                        .flatMap(Mono::error)
-                        )
-                        .bodyToMono(String.class)
-                        .doOnError(e -> {
-                            if (!(e instanceof WebClientResponseException)) {
-                                log.error("Error occurred during API call for submission ID: {}",
-                                        requestBody.getSubmissionId(), e);
-                            }
-                        }).block();
+        String response = client.post()
+                .uri(endpoint)
+                .headers(h -> h.addAll(createRequestHeaders()))
+                .bodyValue(requestBody)
+                .retrieve()
+                .onStatus(status -> !status.is2xxSuccessful(), resp ->
+                        resp.bodyToMono(String.class).flatMap(body -> {
+                            String errorMessage = String.format(
+                                    "Received an error response from CCMS when sending submission with ID: %s. Status: %s, Body: %s",
+                                    requestBody.getSubmissionId(),
+                                    resp.statusCode(),
+                                    body
+                            );
+
+                            log.error(errorMessage);
+
+                            return Mono.error(new CCMSException(
+                                    errorMessage,
+                                    resp.statusCode(),
+                                    body
+                            ));
+                        })
+                )
+                .bodyToMono(String.class)
+                .doOnError(e -> {
+                    if (!(e instanceof CCMSException)) {
+                        log.error("Unexpected error occurred during API call for submission ID: {}",
+                                requestBody.getSubmissionId(), e);
+                    }
+                })
+                .block();
+
         return objectMapper.readTree(response);
     }
-        
+
     public JsonNode sendRequest(String endpoint, CCMSTransactionLookup requestBody) throws JsonProcessingException {
         String response = client.post()
                 .uri(endpoint)
