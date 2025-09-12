@@ -27,6 +27,7 @@ public class ShouldSkipConfirmationCode implements Condition {
 
         if (shouldSkip) {
             String confirmationCode = (String) httpSession.getAttribute(SESSION_KEY_FAMILY_CONFIRMATION_CODE);
+            confirmationCode = confirmationCode != null ? confirmationCode.toUpperCase() : null;
             submission.getInputData().put("providerResponseFamilyShortCode", confirmationCode);
             submissionRepositoryService.save(submission);
         }
