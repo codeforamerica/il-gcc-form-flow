@@ -27,7 +27,6 @@ public class ProviderResponseRecurringJob {
     private final TransactionRepositoryService transactionRepositoryService;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransaction;
-    private final boolean isCCMSIntegrationEnabled;
 
     private final SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
 
@@ -38,25 +37,17 @@ public class ProviderResponseRecurringJob {
             TransactionRepositoryService transactionRepositoryService,
             SubmissionRepositoryService submissionRepositoryService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransaction,
-            @Value("${il-gcc.ccms-integration-enabled:false}") boolean isCCMSIntegrationEnabled,
             SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail) {
         this.transactionRepositoryService = transactionRepositoryService;
         this.submissionRepositoryService = submissionRepositoryService;
         this.ccmsSubmissionPayloadTransaction = ccmsSubmissionPayloadTransaction;
-        this.isCCMSIntegrationEnabled = isCCMSIntegrationEnabled;
         this.sendProviderDidNotRespondToFamilyEmail = sendProviderDidNotRespondToFamilyEmail;
     }
 
     @Recurring(id = "no-provider-response-job", cron = "0 * * * *")
     @Job(name = "No provider response job")
     public void runNoProviderResponseJob() {
-
-        if (!isCCMSIntegrationEnabled) {
-            // Nothing is enabled. This seems wrong!
-            log.error("CCMS integration is not turned on. Why?");
-            return;
-        }
-
+        
         log.info("Running No Provider Response Job for expired submissions.");
 
         Set<Submission> expiringSubmissionsToSend = transactionRepositoryService.findExpiringSubmissionsWithoutTransactions();
