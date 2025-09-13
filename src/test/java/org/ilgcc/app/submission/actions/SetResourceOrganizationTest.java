@@ -116,10 +116,12 @@ class SetResourceOrganizationTest {
             provider1.put("uuid", UUID.randomUUID().toString());
             provider1.put("providerName", "First Provider");
             provider1.put("providerResourceOrgId", "10101");
+            provider1.put("providerResponseAgreeToCare", true);
 
             provider2.put("uuid", UUID.randomUUID().toString());
             provider2.put("providerName", "Second Provider");
             provider2.put("providerResourceOrgId", "10101");
+            provider2.put("providerResponseAgreeToCare", true);
 
             child1.put("uuid", UUID.randomUUID().toString());
             child1.put("childFirstName", "First");
@@ -311,11 +313,14 @@ class SetResourceOrganizationTest {
         
         @Test
         void shouldNotChangeFamilyOrgIdWhenAProviderHasNotYetResponded() {
-            formSubmission.getFormData().put("providerResponseAgreeToCare", true);
+            Map<String, Object> formData = new HashMap<>();
+            formData.put("providerResponseAgreeToCare", false);
+            formSubmission = new FormSubmission(formData);
             providerSubmission.getInputData().put("currentProviderUuid", provider2.get("uuid").toString());
             submissionRepositoryService.save(providerSubmission);
             List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData().get("providers");
             providers.get(1).remove("providerResponseAgreeToCare");
+            familySubmission.getInputData().put("providers", providers);
             submissionRepositoryService.save(familySubmission);
             
             setResourceOrganization.run(formSubmission, providerSubmission);
