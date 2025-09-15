@@ -49,9 +49,9 @@ public class ValidateRegistrationContactInfo implements Action {
         if (!email.isBlank()) {
             if(!email.matches(RegexUtils.EMAIL_REGEX)){
                 errorMessages.put(EMAIL, List.of(messageSource.getMessage("errors.invalid-email.no-suggested-email-address", null, locale)));
-            }else{
+            } else {
                 SendGridUtilities.callSendGridAndValidateEmail(locale, errorMessages, email, sendGridEmailValidationService, EMAIL,
-                        messageSource, httpSession,SESSION_KEY_INVALID_REGISTRATION_CONTACT_INFO_EMAIL,false);
+                        messageSource, httpSession, SESSION_KEY_INVALID_REGISTRATION_CONTACT_INFO_EMAIL, false);
             }
 
         }

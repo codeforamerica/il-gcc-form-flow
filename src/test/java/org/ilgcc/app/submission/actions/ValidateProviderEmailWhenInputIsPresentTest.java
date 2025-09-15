@@ -89,7 +89,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     result.put("ShouldNotReachThisService", "true");
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, "");
     FormSubmission formSubmission = new FormSubmission(formData);
-    doReturn(result).when(mockSendGridEmailValidationService).validateEmail(PROVIDER_EMAIL_INPUT,false);
+    doReturn(result).when(mockSendGridEmailValidationService).validateEmail(PROVIDER_EMAIL_INPUT, false);
     Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertFalse(errors.isEmpty());
     assertThat(errors.get(PROVIDER_EMAIL_INPUT).contains("Enter your provider's email")).isTrue();
@@ -101,7 +101,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, MALFORMED_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
 
-    verify(mockSendGridEmailValidationService, never()).validateEmail(MALFORMED_EMAIL,false);
+    verify(mockSendGridEmailValidationService, never()).validateEmail(MALFORMED_EMAIL, false);
     Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());
   }
@@ -115,7 +115,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     String VALID_EMAIL = "bar@foo.com";
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, VALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL,false))
+    when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL, false))
         .thenReturn(emailIsValidReturn);
     Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());
@@ -130,7 +130,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     setupMockSession("");
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL,false))
+    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL, false))
         .thenReturn(emailIsInvalidReturn);
     Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertFalse(errors.isEmpty());
@@ -147,7 +147,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     setupMockSession("");
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL,false))
+    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL, false))
         .thenReturn(emailIsInvalidReturn);
     Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertFalse(errors.isEmpty());
@@ -180,7 +180,7 @@ class ValidateProviderEmailWhenInputIsPresentTest {
     setupMockSession(INVALID_EMAIL);
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL,false))
+    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL, false))
         .thenReturn(emailIsInvalidReturn);
     Map<String, List<String>> errors = validateProviderEmailWhenInputIsPresentAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());

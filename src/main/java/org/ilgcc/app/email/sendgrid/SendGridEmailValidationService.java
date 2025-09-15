@@ -36,7 +36,7 @@ public class SendGridEmailValidationService {
         this.sendGrid = sendGrid;
     }
 
-    public HashMap<String, String> validateEmail(String emailAddress,boolean familyEmail) throws IOException {
+    public HashMap<String, String> validateEmail(String emailAddress, boolean familyEmail) throws IOException {
         HashMap<String, String> emailValidationResult = new HashMap<>();
         if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(RegexUtils.EMAIL_REGEX)) {
             log.info(
@@ -55,7 +55,7 @@ public class SendGridEmailValidationService {
                         SendGridValidationResponseBody.class);
                 emailValidationResult.put("endpointReached", "success");
 
-                Boolean emailIsValid = isValidEmail(responseBody,familyEmail);
+                Boolean emailIsValid = isValidEmail(responseBody, familyEmail);
                 emailValidationResult.put("emailIsValid", emailIsValid.toString());
                 if (!emailIsValid) {
                     Boolean hasSuggestedEmail = responseBody.getResult().hasSuggestedEmailAddress();

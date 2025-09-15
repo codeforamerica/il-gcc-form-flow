@@ -89,7 +89,7 @@ class ValidateProviderEmailTest {
     result.put("ShouldNotReachThisService", "true");
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, "");
     FormSubmission formSubmission = new FormSubmission(formData);
-    doReturn(result).when(mockSendGridEmailValidationService).validateEmail(PROVIDER_EMAIL_INPUT,false);
+    doReturn(result).when(mockSendGridEmailValidationService).validateEmail(PROVIDER_EMAIL_INPUT, false);
     Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());
   }
@@ -99,7 +99,7 @@ class ValidateProviderEmailTest {
     String MALFORMED_EMAIL = "foo@bar";
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, MALFORMED_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    verify(mockSendGridEmailValidationService, never()).validateEmail(MALFORMED_EMAIL,false);
+    verify(mockSendGridEmailValidationService, never()).validateEmail(MALFORMED_EMAIL, false);
     Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());
   }
@@ -113,7 +113,7 @@ class ValidateProviderEmailTest {
     String VALID_EMAIL = "bar@foo.com";
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, VALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL,false))
+    when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL, false))
         .thenReturn(emailIsValidReturn);
     Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());
@@ -129,7 +129,7 @@ class ValidateProviderEmailTest {
     setupMockSession("");
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL,false))
+    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL, false))
         .thenReturn(emailIsInvalidReturn);
     Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
     assertFalse(errors.isEmpty());
@@ -147,7 +147,7 @@ class ValidateProviderEmailTest {
     setupMockSession("");
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL,false))
+    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL, false))
         .thenReturn(emailIsInvalidReturn);
     Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
     assertFalse(errors.isEmpty());
@@ -163,7 +163,7 @@ class ValidateProviderEmailTest {
     setupMockSession("");
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, ROLE_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    when(mockSendGridEmailValidationService.validateEmail(ROLE_EMAIL,false))
+    when(mockSendGridEmailValidationService.validateEmail(ROLE_EMAIL, false))
             .thenReturn(result);
     Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());
@@ -180,7 +180,7 @@ class ValidateProviderEmailTest {
     setupMockSession(INVALID_EMAIL);
     Map<String, Object> formData = Map.of(PROVIDER_EMAIL_INPUT, INVALID_EMAIL);
     FormSubmission formSubmission = new FormSubmission(formData);
-    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL,false))
+    when(mockSendGridEmailValidationService.validateEmail(INVALID_EMAIL, false))
         .thenReturn(emailIsInvalidReturn);
     Map<String, List<String>> errors = validateProviderEmailAction.runValidation(formSubmission, new Submission());
     assertTrue(errors.isEmpty());

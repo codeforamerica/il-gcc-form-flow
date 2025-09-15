@@ -94,7 +94,7 @@ class ValidateRegistrationContactInfoTest {
 
         Map<String, Object> formData = Map.of(
                 "providerResponseContactEmail", INVALID_EMAIL_ADDRESS,
-                "providerResponseContactPhoneNumber",BLANK_PHONE_EMAIL
+                "providerResponseContactPhoneNumber", BLANK_PHONE_EMAIL
         );
         FormSubmission formSubmission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, submission);
@@ -110,7 +110,7 @@ class ValidateRegistrationContactInfoTest {
 
         Map<String, Object> formData = Map.of(
                 "providerResponseContactEmail", VALID_EMAIL_ADDRESS,
-                "providerResponseContactPhoneNumber",BLANK_PHONE_EMAIL
+                "providerResponseContactPhoneNumber", BLANK_PHONE_EMAIL
         );
         FormSubmission formSubmission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, submission);
@@ -141,7 +141,7 @@ class ValidateRegistrationContactInfoTest {
 
         Map<String, Object> formData = Map.of(
                 "providerResponseContactEmail", BLANK_PHONE_EMAIL,
-                "providerResponseContactPhoneNumber",VALID_PHONE_NUMBER
+                "providerResponseContactPhoneNumber", VALID_PHONE_NUMBER
         );
         FormSubmission formSubmission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, submission);
@@ -156,7 +156,7 @@ class ValidateRegistrationContactInfoTest {
 
         Map<String, Object> formData = Map.of(
                 "providerResponseContactEmail", VALID_EMAIL_ADDRESS,
-                "providerResponseContactPhoneNumber",VALID_PHONE_NUMBER
+                "providerResponseContactPhoneNumber", VALID_PHONE_NUMBER
         );
         FormSubmission formSubmission = new FormSubmission(formData);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, submission);
@@ -172,7 +172,7 @@ class ValidateRegistrationContactInfoTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of("providerResponseContactEmail", VALID_EMAIL_ADDRESS);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL_ADDRESS,false))
+        when(mockSendGridEmailValidationService.validateEmail(VALID_EMAIL_ADDRESS, false))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertTrue(errors.isEmpty());
@@ -188,7 +188,7 @@ class ValidateRegistrationContactInfoTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of("providerResponseContactEmail", VALID_REGEX_EMAIL_ADDRESS);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS,false))
+        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS, false))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertFalse(errors.isEmpty());
@@ -206,7 +206,7 @@ class ValidateRegistrationContactInfoTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of("providerResponseContactEmail", VALID_REGEX_EMAIL_ADDRESS);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS,false))
+        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS, false))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertFalse(errors.isEmpty());
@@ -222,7 +222,7 @@ class ValidateRegistrationContactInfoTest {
         setupMockSession("");
         Map<String, Object> formData = Map.of("providerResponseContactEmail", ROLE_EMAIL);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(ROLE_EMAIL,false))
+        when(mockSendGridEmailValidationService.validateEmail(ROLE_EMAIL, false))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertTrue(errors.isEmpty());
@@ -239,7 +239,7 @@ class ValidateRegistrationContactInfoTest {
         setupMockSession(VALID_REGEX_EMAIL_ADDRESS);
         Map<String, Object> formData = Map.of("providerResponseContactEmail", VALID_REGEX_EMAIL_ADDRESS);
         FormSubmission formSubmission = new FormSubmission(formData);
-        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS,false))
+        when(mockSendGridEmailValidationService.validateEmail(VALID_REGEX_EMAIL_ADDRESS, false))
                 .thenReturn(result);
         Map<String, List<String>> errors = validator.runValidation(formSubmission, new Submission());
         assertTrue(errors.isEmpty());

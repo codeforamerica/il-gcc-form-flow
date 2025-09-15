@@ -54,9 +54,9 @@ public class ValidateParentPartnerContactEmailPhone implements Action {
     if (!partnerEmail.isBlank()){
       if (!partnerEmail.matches(RegexUtils.EMAIL_REGEX)) {
         errorMessages.put(INPUT_NAME_EMAIL, List.of(messageSource.getMessage("errors.invalid-email", null, locale)));
-      } else{
+      } else {
         SendGridUtilities.callSendGridAndValidateEmail(locale, errorMessages, partnerEmail, sendGridEmailValidationService, INPUT_NAME_EMAIL,
-                messageSource, httpSession,SESSION_KEY_INVALID_PARENT_PARTNER_EMAIL,true);
+                messageSource, httpSession, SESSION_KEY_INVALID_PARENT_PARTNER_EMAIL, true);
       }
     }
 

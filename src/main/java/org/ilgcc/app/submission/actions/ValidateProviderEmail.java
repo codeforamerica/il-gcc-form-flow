@@ -45,7 +45,7 @@ public class ValidateProviderEmail implements Action {
     String providerEmail = formData.getOrDefault(INPUT_NAME, "").toString();
 
     SendGridUtilities.callSendGridAndValidateEmail(locale, errorMessages, providerEmail, sendGridEmailValidationService, INPUT_NAME,
-        messageSource, httpSession,SESSION_KEY_INVALID_PROVIDER_EMAIL,false);
+        messageSource, httpSession, SESSION_KEY_INVALID_PROVIDER_EMAIL, false);
     return errorMessages;
   }
 }

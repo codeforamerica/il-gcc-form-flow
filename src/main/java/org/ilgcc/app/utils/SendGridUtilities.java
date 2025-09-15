@@ -18,10 +18,10 @@ public class SendGridUtilities {
                                                                   MessageSource messageSource, HttpSession httpSession,String sessionKey, Boolean isFamilyEmail) {
         if (email.matches(RegexUtils.EMAIL_REGEX)) {
             try {
-                HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(email,isFamilyEmail);
+                HashMap<String, String> emailValidationResult = sendGridEmailValidationService.validateEmail(email, isFamilyEmail);
                 if (emailValidationResult.getOrDefault("endpointReached", "").equals("success")) {
                     if (!emailValidationResult.get("emailIsValid").equals("true")) {
-                        if(httpSession.getAttribute(sessionKey) != null && httpSession.getAttribute(sessionKey).equals(email)) {
+                        if (httpSession.getAttribute(sessionKey) != null && httpSession.getAttribute(sessionKey).equals(email)) {
                             return;
                         }
                         if (emailValidationResult.get("hasSuggestion").equals("true")) {

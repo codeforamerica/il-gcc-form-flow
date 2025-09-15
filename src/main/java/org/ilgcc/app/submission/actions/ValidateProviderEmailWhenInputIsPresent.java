@@ -46,7 +46,7 @@ public class ValidateProviderEmailWhenInputIsPresent implements Action {
         }
 
         SendGridUtilities.callSendGridAndValidateEmail(locale, errorMessages, providerEmail, sendGridEmailValidationService, INPUT_NAME,
-                messageSource, httpSession,SESSION_KEY_INVALID_PROVIDER_EMAIL,false);
+                messageSource, httpSession, SESSION_KEY_INVALID_PROVIDER_EMAIL, false);
         return errorMessages;
     }
 }
