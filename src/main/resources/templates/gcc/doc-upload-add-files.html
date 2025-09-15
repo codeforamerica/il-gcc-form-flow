@@ -46,7 +46,7 @@
             </div>
             <div class="form-card__footer">
               <th:block th:replace="~{fragments/inputs/submitButton :: submitButton(
-                  text=#{doc-upload-add-files.confirmation}, classes='button', isHidden=true)}"/>
+                  text=#{doc-upload-add-files.confirmation}, classes='button--primary button', isHidden=false)}"/>
             </div>
           </th:block>
         </th:block>
@@ -55,6 +55,5 @@
   </section>
 </div>
 <th:block th:replace="~{fragments/footer :: footer}"/>
-<script defer>FormFlowDZ.hideContinueIfNoFiles("uploadDocuments", "form-submit-button")</script>
 </body>
 </html>
