@@ -17,7 +17,7 @@ jobs:
       - name: Checkout selected branch
         uses: actions/checkout@v5
         with:
-          ref: ${{ inputs.branch }}
+          ref: ${{ github.event.inputs.branch }}
           fetch-depth: 0
 
       - name: Deploy to Aptible
