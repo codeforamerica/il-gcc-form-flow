@@ -15,7 +15,6 @@
                 ariaLabel='header',
                 content=~{::radioContent})}">
                 <th:block th:ref="radioContent">
-                  <!-- Copy the below input if you want to add more -->
                   <th:block
                       th:replace="~{fragments/inputs/radio :: radio(inputName='parentContactPreferredCommunicationMethod',value='mail', label=#{parent-comm-preference.mail})}"/>
                   <th:block
