@@ -16,9 +16,6 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest(
         classes = IlGCCApplication.class
 )
-@TestPropertySource(properties = {
-        "ACTIVE_CASELOAD_CODES=BB,QQ",
-})
 @ActiveProfiles("test")
 class ValidateZipCodeTest {
 
