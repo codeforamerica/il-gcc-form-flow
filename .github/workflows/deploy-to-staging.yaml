@@ -20,6 +20,10 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
           fetch-depth: 0
 
+      # Ensure the branch exists locally so Aptible can push it
+      - name: Ensure branch exists locally
+        run: git checkout -B "${{ github.event.inputs.branch }}"
+
       - name: Deploy to Aptible
         uses: aptible/aptible-deploy-action@v5
         with:
