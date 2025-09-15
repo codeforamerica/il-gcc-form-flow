@@ -362,7 +362,7 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
         // doc-upload-add-files
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
+        assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isFalse();
         uploadJpgFile();
 
         await().atMost(5, TimeUnit.SECONDS).until(

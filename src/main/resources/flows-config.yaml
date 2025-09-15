@@ -72,7 +72,8 @@ flow:
     nextScreens:
       - name: parent-mailing-address
   parent-no-permanent-address:
-    nextScreens: null
+    nextScreens:
+      - name: parent-mailing-address
   parent-mailing-address:
     nextScreens:
       - name: confirm-parent-mailing-address
@@ -766,7 +767,7 @@ subflows:
     relationship:
       relatesTo: children
       relationAlias: childUuid
-      filter: ChildrenInNeedOfChildCare
+      filter: ChildrenInNeedOfChildCareCappedAt4
       repeatFor:
         inputName: childcareProvidersForCurrentChild
         saveDataAs: providerSchedules

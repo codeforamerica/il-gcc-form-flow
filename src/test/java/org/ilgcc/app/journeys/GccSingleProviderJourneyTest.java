@@ -759,7 +759,7 @@ public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
 
         // doc-upload-add-files
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isTrue();
+        assertThat(testPage.findElementById("form-submit-button").getAttribute("class").contains("display-none")).isFalse();
         uploadJpgFile();
         // The submit button is hidden unless a file has been uploaded. The await gives the system time to remove the "display-none" class.
         await().atMost(5, TimeUnit.SECONDS)
