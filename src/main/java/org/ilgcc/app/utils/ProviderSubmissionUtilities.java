@@ -25,7 +25,6 @@ import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Component
 @Slf4j
@@ -444,9 +443,9 @@ public class ProviderSubmissionUtilities {
     public static Optional<SubmissionStatus> getOneProviderApplicationResponseStatus(Submission familySubmission, Submission providerSubmission){
         List<Map<String, Object>> providers = getProviders(familySubmission.getInputData());
         for(Map<String, Object> provider : providers) {
-            boolean providerSubmissionMatchesFamilyProvider = provider.getOrDefault("providerResponseSubmissionId", "").equals(providerSubmission.getId().toString());
+            boolean providerSubmissionMatchesFamilyProvider = provider.getOrDefault("uuid", "").equals(providerSubmission.getInputData().get("currentProviderUuid").toString());
             if (providerSubmissionMatchesFamilyProvider) {
-                if(providerSubmission.getInputData().containsKey("providerApplicationResponseStatus")) {
+                if(provider.containsKey("providerApplicationResponseStatus")) {
                     return Optional.of(SubmissionStatus.valueOf(provider.get("providerApplicationResponseStatus").toString()));
                 }
             }
