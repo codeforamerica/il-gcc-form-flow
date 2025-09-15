@@ -671,6 +671,7 @@ flow:
       - name: contact-providers-edit-email
   contact-providers-edit-email:
     condition: ContactProviderViaEmail
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     subflow: contactProviders
     nextScreens:
