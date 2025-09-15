@@ -11,4 +11,5 @@ public class SessionKeys {
     public final static String SESSION_KEY_INVALID_PARENT_EMAIL = "invalidParentEmail";
     public final static String SESSION_KEY_INVALID_PARENT_PARTNER_EMAIL = "invalidParentPartnerEmail";
     public final static String SESSION_KEY_INVALID_PROVIDER_RESPONSE_CONTACT_EMAIL = "invalidProviderResponseContactEmail";
+    public final static String SESSION_KEY_INVALID_REGISTRATION_CONTACT_INFO_EMAIL = "invalidRegistrationContactInfoEmail";
 }
