@@ -12,19 +12,19 @@ import org.springframework.stereotype.Component;
 public class TrimEmailOnPost implements Action {
   @Override
   public void run(FormSubmission formSubmission, Submission submission){
-    trimEmail(formSubmission, submission);
+    trimEmail(formSubmission);
   }
   @Override
   public void run(FormSubmission formSubmission, Submission submission, String id){
-    trimEmail(formSubmission, submission);
+    trimEmail(formSubmission);
   }
 
   @Override
   public void run(FormSubmission formSubmission, Submission submission, String id, String repeatForUuid){
-    trimEmail(formSubmission, submission);
+    trimEmail(formSubmission);
   }
 
-  private void trimEmail(FormSubmission formSubmission, Submission submission){
+  private void trimEmail(FormSubmission formSubmission){
     AtomicReference<String> emailKey = new AtomicReference<>("");
     AtomicReference<String> trimmedEmail = new AtomicReference<>("");
     Map<String, Object> formData = formSubmission.getFormData();
