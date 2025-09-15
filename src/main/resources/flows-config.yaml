@@ -658,6 +658,7 @@ flow:
         condition: ContactProviderViaOther
   contact-providers-email-address:
     condition: DisplayContactProvidersEmailScreen
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     subflow: contactProviders
     nextScreens:
