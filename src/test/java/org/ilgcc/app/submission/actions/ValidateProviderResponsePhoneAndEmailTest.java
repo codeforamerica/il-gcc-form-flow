@@ -89,7 +89,6 @@ class ValidateProviderResponsePhoneAndEmailTest {
 
     @Test
     void shouldThrowAnErrorWhenEmailDoesNotMatchRegexAndPhoneIsBlank() {
-        //create submission object with inputData
         Submission submission = new SubmissionTestBuilder().build();
 
         Map<String, Object> formData = Map.of(
@@ -105,7 +104,6 @@ class ValidateProviderResponsePhoneAndEmailTest {
 
     @Test
     void shouldNotThrowAnErrorWhenEmailIsValidAndPhoneIsBlank() {
-        //create submission object with inputData
         Submission submission = new SubmissionTestBuilder().build();
 
         Map<String, Object> formData = Map.of(
@@ -120,7 +118,6 @@ class ValidateProviderResponsePhoneAndEmailTest {
 
     @Test
     void shouldThrowAnErrorWhenEmailIsBlankAndPhoneIsNotValid() {
-        //create submission object with inputData
         Submission submission = new SubmissionTestBuilder().build();
 
         Map<String, Object> formData = Map.of(
@@ -136,7 +133,6 @@ class ValidateProviderResponsePhoneAndEmailTest {
 
     @Test
     void shouldNotThrowAnErrorWhenEmailIsBlankAndPhoneIsValid() {
-        //create submission object with inputData
         Submission submission = new SubmissionTestBuilder().build();
 
         Map<String, Object> formData = Map.of(
@@ -151,7 +147,6 @@ class ValidateProviderResponsePhoneAndEmailTest {
 
     @Test
     void shouldThrowAnErrorWhenEmailAndPhoneNumberIsBlank() {
-        //create submission object with inputData
         Submission submission = new SubmissionTestBuilder().build();
 
         Map<String, Object> formData = Map.of(
@@ -168,7 +163,6 @@ class ValidateProviderResponsePhoneAndEmailTest {
 
     @Test
     void shouldNotThrowAnErrorWhenEmailAndPhoneNumberIsValid() {
-        //create submission object with inputData
         Submission submission = new SubmissionTestBuilder().build();
 
         Map<String, Object> formData = Map.of(

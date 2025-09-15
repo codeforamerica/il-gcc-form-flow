@@ -88,7 +88,6 @@ class ValidateParentPartnerContactEmailPhoneTest {
 
     @Test
     void shouldThrowAnErrorWhenPhoneIsNotValid() {
-        //create submission object with inputData
         Submission submission = new SubmissionTestBuilder().build();
 
         Map<String, Object> formData = Map.of(
@@ -102,7 +101,6 @@ class ValidateParentPartnerContactEmailPhoneTest {
 
     @Test
     void shouldNotThrowAnErrorWhenEmailFieldIsBlank() {
-        //create submission object with inputData
         Submission submission = new SubmissionTestBuilder().build();
         Map<String, Object> formData = Map.of(
                 PARTNER_EMAIL_INPUT, ""
