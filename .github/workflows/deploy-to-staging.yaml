@@ -18,7 +18,7 @@ jobs:
         uses: aptible/aptible-deploy-action@v5
         with:
           type: git
-          app: illinois-staging
+          app: illinois-get-childcare-staging
           environment: illinois-staging
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
