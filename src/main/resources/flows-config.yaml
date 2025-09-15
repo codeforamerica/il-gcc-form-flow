@@ -6,6 +6,10 @@ flow:
   onboarding-2-part:
     nextScreens:
       - name: onboarding-language-pref
+  onboarding-language-pref:
+    beforeDisplayAction: SetLanguagePreferences
+    nextScreens:
+      - name: onboarding-chosen-provider
   onboarding-chosen-provider:
     condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
