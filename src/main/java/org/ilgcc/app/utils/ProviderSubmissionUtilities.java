@@ -1,8 +1,8 @@
 package org.ilgcc.app.utils;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.relatedSubflowIterationData;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
-import static org.ilgcc.app.utils.SubmissionUtilities.getProviders;
 
 import formflow.library.data.Submission;
 import jakarta.validation.constraints.NotNull;
@@ -440,19 +440,18 @@ public class ProviderSubmissionUtilities {
         }
     }
 
-    public static Optional<SubmissionStatus> getOneProviderApplicationResponseStatus(Submission familySubmission, Submission providerSubmission){
-        List<Map<String, Object>> providers = getProviders(familySubmission.getInputData());
-        for(Map<String, Object> provider : providers) {
-            boolean providerSubmissionMatchesFamilyProvider = provider.getOrDefault("uuid", "").equals(providerSubmission.getInputData().get("currentProviderUuid").toString());
-            if (providerSubmissionMatchesFamilyProvider) {
-                if(provider.containsKey("providerApplicationResponseStatus")) {
-                    return Optional.of(SubmissionStatus.valueOf(provider.get("providerApplicationResponseStatus").toString()));
-                }
-            }
-        }
-        return Optional.empty();
+
+    public static String getOneProviderApplicationResponseStatus(Submission familySubmission, Submission providerSubmission){
+        Map<String, Object> currentProvider = relatedSubflowIterationData(familySubmission.getInputData(),
+            "providers", providerSubmission.getInputData().getOrDefault("currentProviderUuid", "").toString());
+        return (String) currentProvider.getOrDefault("providerApplicationResponseStatus", "");
     }
 
+    //Block expired provider response
+    public static boolean hasProviderApplicationExpired (Submission familySubmission, Submission providerSubmission){
+        String providerApplicationResponseStatus = getOneProviderApplicationResponseStatus(familySubmission, providerSubmission);
+        return providerApplicationResponseStatus.equalsIgnoreCase(SubmissionStatus.EXPIRED.toString());
+    }
 
     public static boolean isFamilySubmissionStatusNotInactive(@NotNull Submission familySubmission) {
         Optional<SubmissionStatus> statusOptional = getProviderApplicationResponseStatus(familySubmission);
