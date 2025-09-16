@@ -1,0 +1,29 @@
+name: Run Selenium IDE tests
+
+on:
+  workflow_dispatch:   # 👈 only manual runs from GitHub UI
+
+jobs:
+  selenium-e2e:
+    runs-on: ubuntu-latest
+    env:
+      COUNTY: COOK
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up ChromeDriver
+        uses: nanasess/setup-chromedriver@v2.3.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install selenium-side-runner
+        run: npm install -g selenium-side-runner
+
+      - name: Run Selenium .side tests
+        run: |
+          export DISPLAY=:99
+          /usr/bin/Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          selenium-side-runner '.github/il-gcc-selenium-tests.side'
