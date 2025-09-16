@@ -74,10 +74,12 @@ flow:
       - name: parent-county
   parent-county:
     condition: DoesNotHaveValidHomeAddressZipCode
+    beforeDisplayAction: ClearOnboardingZipcode
     nextScreens:
       - name: parent-comm-preference
   parent-zipcode:
     crossFieldValidationAction: ValidateZipCode
+    beforeDisplayAction: ClearOnboardingCounty
     nextScreens:
       - name: parent-comm-preference
   parent-comm-preference:
