@@ -58,8 +58,6 @@ public class CCMSSubmissionPayloadTransactionJob {
     CloudFileRepository cloudFileRepository;
 
     private int jobDelayMinutes;
-    
-    private boolean v2ApiEnabled;
 
     private static final ZoneId CENTRAL_ZONE = ZoneId.of("America/Chicago");
     private List<OfflineTimeRange> ccmsOfflineTimeRanges;
@@ -97,7 +95,6 @@ public class CCMSSubmissionPayloadTransactionJob {
     void init() {
         jobDelayMinutes = ccmsApiClient.getConfiguration().getTransactionDelayMinutes();
         ccmsOfflineTimeRanges = ccmsApiClient.getConfiguration().getCcmsOfflineTimeRanges();
-        v2ApiEnabled = ccmsApiClient.getConfiguration().isEnableV2Api();
 
         // On startup, if we have offline time ranges...
         if (ccmsOfflineTimeRanges != null && !ccmsOfflineTimeRanges.isEmpty()) {
@@ -240,12 +237,7 @@ public class CCMSSubmissionPayloadTransactionJob {
 
                             CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
                             log.info("Sending submission {} to CCMS", submissionId);
-                            JsonNode response = null;
-                            if (v2ApiEnabled) {
-                                // TODO Do the V2 API thing here
-                            } else {
-                                response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
-                            }
+                            JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
                             log.info("Received response from CCMS when sending transaction payload: {}", response);
 
                             String workItemId = response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
