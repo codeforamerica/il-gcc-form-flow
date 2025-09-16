@@ -51,7 +51,7 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty")).isNull();
+        assertThat(submission.getInputData().get("applicationCounty")).isEqualTo("DEKALB");
     }
 
     @Test
@@ -65,14 +65,14 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty")).isNull();
+        assertThat(submission.getInputData().get("applicationCounty")).isEqualTo(ACTIVE_FOUR_C_COUNTY.getCounty());
     }
 
     @Test
-    public void setsResourceOrgBasedOnApplicationCountyIfHomeAddressZipCodeOutsideScopedSDAs() {
+    public void setsResourceOrgBasedOnApplicationCountyIfHomeAddressZipCodeOutsideIllinois() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", COHORT2_COUNTY.getZipCode().toString())
+                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", "94114")
                 .with("applicationCounty", ACTIVE_FOUR_C_COUNTY.getCounty())
                 .build();
 
@@ -81,15 +81,15 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo(
-                COHORT2_COUNTY.getCounty());
+        assertThat(submission.getInputData().get("applicationCounty").toString()).isEqualTo(
+                ACTIVE_FOUR_C_COUNTY.getCounty());
     }
 
     @Test
-    public void setsResourceOrgBasedOnApplicationZipIfHomeAddressZipCodeOutsideScopedSDAs() {
+    public void setsResourceOrgBasedOnApplicationZipIfHomeAddressZipCodeOutsideIllinois() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
-                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", COHORT2_COUNTY.getZipCode().toString())
+                .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", "94114")
                 .with("applicationZipCode", ACTIVE_FOUR_C_COUNTY.getZipCode().toString())
                 .build();
 
@@ -98,12 +98,12 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo(
-                COHORT2_COUNTY.getCounty());
+        assertThat(submission.getInputData().get("applicationCounty").toString()).isEqualTo(
+                ACTIVE_FOUR_C_COUNTY.getCounty());
     }
 
     @Test
-    public void setsResourceOrgFromUnvalidatedParentHomeAddressIfInSDAScope() {
+    public void setsResourceOrgFromUnvalidatedParentHomeAddressIfInIllinois() {
         Submission submission = new SubmissionTestBuilder()
                 .withFlow("gcc")
                 .withHomeAddress("123 Main St.", "Apt 2", "Chicago", "IL", ACTIVE_FOUR_C_COUNTY.getZipCode().toString())
@@ -114,7 +114,7 @@ class SetOrganizationIdAndCCRRNameTest {
         assertThat(submission.getInputData().get("organizationId").toString()).isEqualTo(
                 FOUR_C_TEST_DATA.getResourceOrgId().toString());
         assertThat(submission.getInputData().get("ccrrName").toString()).isEqualTo(FOUR_C_TEST_DATA.getName());
-        assertThat(submission.getInputData().get("applicantAddressCounty").toString()).isEqualTo(
+        assertThat(submission.getInputData().get("applicationCounty").toString()).isEqualTo(
                 ACTIVE_FOUR_C_COUNTY.getCounty());
     }
 
