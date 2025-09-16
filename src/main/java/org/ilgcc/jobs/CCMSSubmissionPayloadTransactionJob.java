@@ -59,7 +59,7 @@ public class CCMSSubmissionPayloadTransactionJob {
 
     private int jobDelayMinutes;
     
-    private boolean v2ApiEnabled;
+    private boolean enableV2Api;
 
     private static final ZoneId CENTRAL_ZONE = ZoneId.of("America/Chicago");
     private List<OfflineTimeRange> ccmsOfflineTimeRanges;
@@ -97,7 +97,7 @@ public class CCMSSubmissionPayloadTransactionJob {
     void init() {
         jobDelayMinutes = ccmsApiClient.getConfiguration().getTransactionDelayMinutes();
         ccmsOfflineTimeRanges = ccmsApiClient.getConfiguration().getCcmsOfflineTimeRanges();
-        v2ApiEnabled = ccmsApiClient.getConfiguration().isEnableV2Api();
+        enableV2Api = ccmsApiClient.getConfiguration().isEnableV2Api();
 
         // On startup, if we have offline time ranges...
         if (ccmsOfflineTimeRanges != null && !ccmsOfflineTimeRanges.isEmpty()) {
@@ -241,7 +241,7 @@ public class CCMSSubmissionPayloadTransactionJob {
                             CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
                             log.info("Sending submission {} to CCMS", submissionId);
                             JsonNode response = null;
-                            if (v2ApiEnabled) {
+                            if (enableV2Api) {
                                 // TODO Do the V2 API thing here
                             } else {
                                 response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
