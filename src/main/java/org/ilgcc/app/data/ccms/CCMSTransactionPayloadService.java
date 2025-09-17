@@ -2,7 +2,6 @@ package org.ilgcc.app.data.ccms;
 
 import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
-import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
 import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 
 import formflow.library.data.Submission;
@@ -105,23 +104,17 @@ public class CCMSTransactionPayloadService {
         }
 
         List<UserFile> allFiles = new ArrayList<>();
-        if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
-            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
-                    .getOrDefault("providers", emptyList());
-            for (Map<String, Object> provider : providers) {
-                if (provider.containsKey("providerResponseSubmissionId")) {
-                    UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
-                    submissionRepositoryService.findById(providerSubmissionId).ifPresent(
-                            providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
-                }
-            }
-        } else {
-            if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
-                submissionRepositoryService.findById(
-                                UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()))
-                        .ifPresent(providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
+
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
+                .getOrDefault("providers", emptyList());
+        for (Map<String, Object> provider : providers) {
+            if (provider.containsKey("providerResponseSubmissionId")) {
+                UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
+                submissionRepositoryService.findById(providerSubmissionId).ifPresent(
+                        providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
             }
         }
+        
 
         List<UserFile> userFiles = findAllFiles(familySubmission);
 
