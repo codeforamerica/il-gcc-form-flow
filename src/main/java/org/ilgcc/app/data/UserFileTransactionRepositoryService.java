@@ -16,11 +16,11 @@ public class UserFileTransactionRepositoryService {
         this.userFileTransactionRepository = userFileTransactionRepository;
     }
     
-    List<UserFileTransaction> findByTransactionId_TransactionIdAndTransactionStatus(UUID transactionId, TransactionStatus status) {
+    public List<UserFileTransaction> findByTransactionId_TransactionIdAndTransactionStatus(UUID transactionId, TransactionStatus status) {
         return userFileTransactionRepository.findByTransaction_TransactionIdAndTransactionStatus(transactionId, status);
     }
     
-    List<UserFileTransaction> findBySubmissionId_SubmissionIdAndTransactionStatus(UUID submissionId, TransactionStatus status) {
+    public List<UserFileTransaction> findBySubmissionId_SubmissionIdAndTransactionStatus(UUID submissionId, TransactionStatus status) {
         return userFileTransactionRepository.findBySubmission_IdAndTransactionStatus(submissionId, status);
     }
 }
