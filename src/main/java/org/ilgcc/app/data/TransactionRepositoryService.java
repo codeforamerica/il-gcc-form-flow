@@ -2,11 +2,9 @@ package org.ilgcc.app.data;
 
 import formflow.library.data.Submission;
 import jakarta.transaction.Transactional;
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
