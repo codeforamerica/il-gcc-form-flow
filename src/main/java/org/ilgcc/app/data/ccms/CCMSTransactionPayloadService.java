@@ -111,6 +111,7 @@ public class CCMSTransactionPayloadService {
                         providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
             }
         }
+        
 
         List<UserFile> userFiles = findAllFiles(familySubmission);
 
