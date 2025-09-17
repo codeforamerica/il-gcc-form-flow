@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TrimEmailOnPost implements Action {
+  private static String EMAIL_KEY = "";
+  private static String TRIMMED_EMAIL = "";
+
   @Override
   public void run(FormSubmission formSubmission, Submission submission){
     trimEmail(formSubmission);
@@ -25,17 +28,16 @@ public class TrimEmailOnPost implements Action {
   }
 
   private void trimEmail(FormSubmission formSubmission){
-    AtomicReference<String> emailKey = new AtomicReference<>("");
-    AtomicReference<String> trimmedEmail = new AtomicReference<>("");
+    Pattern emailKeyPattern = Pattern.compile(Pattern.quote("email"), Pattern.CASE_INSENSITIVE);
     Map<String, Object> formData = formSubmission.getFormData();
     formData.forEach((key, value) -> {
-      if(Pattern.compile(Pattern.quote("email"), Pattern.CASE_INSENSITIVE).matcher(key).find()){
-        emailKey.set(key);
-        trimmedEmail.set(value.toString().trim());
+      if(emailKeyPattern.matcher(key).find()){
+        EMAIL_KEY = key;
+        TRIMMED_EMAIL = (value.toString().trim());
       }
     });
-    if(!emailKey.get().isEmpty()){
-      formData.put(emailKey.get(), trimmedEmail.get());
+    if(!EMAIL_KEY.isEmpty()){
+      formData.put(EMAIL_KEY, TRIMMED_EMAIL);
     }
   }
 }
