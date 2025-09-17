@@ -1,7 +1,7 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -9,8 +9,6 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.data.SubmissionSenderService;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
@@ -20,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -29,14 +27,13 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
     private UploadProviderSubmissionToS3AndSendToCCMS uploadProviderSubmissionToS3AndSendToCCMS;
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
-    @MockitoBean
-    private CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
 
     private Submission familySubmission;
 
     private Submission providerSubmission;
 
-    private SubmissionSenderService submissionSenderService;
+    @MockitoSpyBean
+    SubmissionSenderService submissionSenderService;
 
     Map<String, Object> provider1 = new HashMap<>();
     Map<String, Object> provider2 = new HashMap<>();
@@ -81,18 +78,13 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
 
         submissionRepositoryService.save(providerSubmission);
 
-        submissionSenderService = new SubmissionSenderService(
-                submissionRepositoryService,
-                ccmsSubmissionPayloadTransactionJob,
-                false);
-
         uploadProviderSubmissionToS3AndSendToCCMS = new UploadProviderSubmissionToS3AndSendToCCMS(submissionSenderService, submissionRepositoryService);
         uploadProviderSubmissionToS3AndSendToCCMS.run(providerSubmission);
-        verify(ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(any(UUID.class));
+        verify(submissionSenderService).sendProviderSubmission(providerSubmission);
     }
 
     @Test
-    void ProviderSubmissionIsEnqueuedWhenProviderSubmissionIsDisabled() {
+    void ProviderSubmissionIsNotEnqueuedWhenProviderSubmissionIsDisabled() {
         providerSubmission = new SubmissionTestBuilder()
             .withFlow("providerresponse")
             .with("familySubmissionId", familySubmission.getId().toString())
@@ -102,13 +94,8 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
 
         submissionRepositoryService.save(providerSubmission);
 
-        submissionSenderService = new SubmissionSenderService(
-            submissionRepositoryService,
-            ccmsSubmissionPayloadTransactionJob,
-            true,
-            false);
-
         uploadProviderSubmissionToS3AndSendToCCMS = new UploadProviderSubmissionToS3AndSendToCCMS(submissionSenderService, submissionRepositoryService);
         uploadProviderSubmissionToS3AndSendToCCMS.run(providerSubmission);
+        verifyNoInteractions(submissionSenderService);
     }
 }

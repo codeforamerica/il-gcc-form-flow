@@ -30,7 +30,7 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
     public void run(Submission providerSubmission) {
         // If a provider is an existing provider that has done CCAP stuff before, send their submission to CCMS
         // New Provider Registration will send the application later
-        // Prevent sending provider submissions if a provider application has expired.
+        // Prevent sending provider submissions if a providers application has expired.
         boolean hasProviderApplicationExpired = false;
         Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
         if (familySubmissionId.isPresent()) {
@@ -42,7 +42,7 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
         }
 
         if (!hasProviderApplicationExpired) {
-            if (!ProviderSubmissionUtilities.isProviderRegistering(providerSubmission) && !hasProviderApplicationExpired) {
+            if (!ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
                 submissionSenderService.sendProviderSubmission(providerSubmission);
             }
         }else {
