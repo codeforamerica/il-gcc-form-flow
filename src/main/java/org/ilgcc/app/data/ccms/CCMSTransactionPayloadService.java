@@ -29,25 +29,22 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class CCMSTransactionPayloadService {
-
+    
     private final CloudFileRepository cloudFileRepository;
     private final UserFileRepositoryService userFileRepositoryService;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final MultiProviderPDFService pdfService;
-    private final boolean enableMultipleProviders;
-    private boolean allowPdfModification;
+    private final boolean allowPdfModification;
 
     public CCMSTransactionPayloadService(CloudFileRepository cloudFileRepository,
             UserFileRepositoryService userFileRepositoryService,
             MultiProviderPDFService pdfService,
             SubmissionRepositoryService submissionRepositoryService,
-            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders,
             @Value("${form-flow.uploads.file-conversion.allow-pdf-modification}") boolean allowPdfModification) {
         this.cloudFileRepository = cloudFileRepository;
         this.userFileRepositoryService = userFileRepositoryService;
         this.pdfService = pdfService;
         this.submissionRepositoryService = submissionRepositoryService;
-        this.enableMultipleProviders = enableMultipleProviders;
         this.allowPdfModification = allowPdfModification;
     }
 
@@ -114,7 +111,6 @@ public class CCMSTransactionPayloadService {
                         providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
             }
         }
-        
 
         List<UserFile> userFiles = findAllFiles(familySubmission);
 
@@ -138,10 +134,11 @@ public class CCMSTransactionPayloadService {
                         userFile.getFileId(), familySubmission.getId());
                 continue;
             }
-
-            transactionFiles.add(new TransactionFile(
+            TransactionFile transactionFile = new TransactionFile(
                     FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
-                    FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes())));
+                    FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes()));
+            transactionFile.setUserFile(userFile);
+            transactionFiles.add(transactionFile);
         }
 
         return transactionFiles;

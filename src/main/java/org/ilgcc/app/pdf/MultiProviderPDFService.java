@@ -97,11 +97,8 @@ public class MultiProviderPDFService {
         Map<String, byte[]> allFiles = new HashMap<>();
 
         allFiles.put(getCCMSFileNameForApplicationPDF(submission), pdfService.getFilledOutPDF(submission));
-
-        if (enableMutipleProviders) {
-            allFiles.putAll(generateAdditionalProviderPDF(submission));
-        }
-
+        allFiles.putAll(generateAdditionalProviderPDF(submission));
+        
         return allFiles;
     }
 
