@@ -8,14 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class ProviderResponseHasNotExpired implements Condition {
-  SubmissionRepositoryService submissionRepositoryService;
+public class ProviderResponseHasNotExpired extends ProviderResponseHasExpired implements Condition {
   ProviderResponseHasNotExpired(SubmissionRepositoryService submissionRepositoryService) {
-    this.submissionRepositoryService = submissionRepositoryService;
+    super(submissionRepositoryService);
   }
   @Override
   public Boolean run(Submission providerSubmission) {
-    ProviderResponseHasExpired providerResponseHasExpired = new ProviderResponseHasExpired(submissionRepositoryService);
-    return !providerResponseHasExpired.run(providerSubmission);
+    return !super.run(providerSubmission);
   }
 }
