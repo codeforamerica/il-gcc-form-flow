@@ -59,7 +59,7 @@ dependencies {
     implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.5.3'
     implementation 'org.apache.commons:commons-text:1.14.0'
     implementation 'com.sendgrid:sendgrid-java:4.10.3'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.81'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.82'
     implementation 'joda-time:joda-time:2.14.0'
 
     if (useLocalLibrary == 'true') {
