@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TrimEmailOnPost implements Action {
-  private static String EMAIL_KEY = "";
-  private static String TRIMMED_EMAIL = "";
+
+  private String EMAIL_KEY = "";
+  private String TRIMMED_EMAIL = "";
+  private static final Pattern emailKeyPattern = Pattern.compile(Pattern.quote("email"), Pattern.CASE_INSENSITIVE);
 
   @Override
   public void run(FormSubmission formSubmission, Submission submission){
@@ -28,7 +30,6 @@ public class TrimEmailOnPost implements Action {
   }
 
   private void trimEmail(FormSubmission formSubmission){
-    Pattern emailKeyPattern = Pattern.compile(Pattern.quote("email"), Pattern.CASE_INSENSITIVE);
     Map<String, Object> formData = formSubmission.getFormData();
     formData.forEach((key, value) -> {
       if(emailKeyPattern.matcher(key).find()){
