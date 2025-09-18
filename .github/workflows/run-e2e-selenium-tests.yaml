@@ -31,7 +31,7 @@ jobs:
         run: |
           export DISPLAY=:99
           /usr/bin/Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          SELENIUM_BROWSER=chrome \
           selenium-side-runner \
-            --browser chrome \
-            --params COUNTY=${COUNTY} \
-            '.github/il-gcc-selenium-tests.side'
+          --params COUNTY=${COUNTY} \
+          '.github/il-gcc-selenium-tests.side'
