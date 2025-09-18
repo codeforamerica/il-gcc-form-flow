@@ -39,8 +39,6 @@ class UploadProviderSubmissionToS3AndSendToCCMSTest {
     Map<String, Object> provider2 = new HashMap<>();
     @BeforeEach
     void setUp() {
-
-
         provider1.put("uuid", "dayCareProvider-1");
         provider1.put("iterationIsComplete", true);
         provider1.put("providerFirstName", "FirstName");
