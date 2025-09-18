@@ -1,7 +1,7 @@
 name: Run Selenium IDE tests
 
 on:
-  workflow_dispatch:   # 👈 only manual runs from GitHub UI
+  workflow_dispatch:
 
 jobs:
   selenium-e2e:
@@ -10,6 +10,11 @@ jobs:
       COUNTY: COOK
     steps:
       - uses: actions/checkout@v5
+
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
 
       - name: Set up ChromeDriver
         uses: nanasess/setup-chromedriver@v2.3.0
@@ -26,4 +31,7 @@ jobs:
         run: |
           export DISPLAY=:99
           /usr/bin/Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
-          selenium-side-runner '.github/il-gcc-selenium-tests.side'
+          selenium-side-runner \
+            --browser chrome \
+            --params COUNTY=${COUNTY} \
+            '.github/il-gcc-selenium-tests.side'
