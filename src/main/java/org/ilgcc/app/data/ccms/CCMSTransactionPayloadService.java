@@ -2,7 +2,6 @@ package org.ilgcc.app.data.ccms;
 
 import static java.util.Collections.emptyList;
 import static org.ilgcc.app.utils.FileNameUtility.getCCMSFileNameForApplicationPDF;
-import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
 import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 
 import formflow.library.data.Submission;
@@ -30,25 +29,22 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class CCMSTransactionPayloadService {
-
+    
     private final CloudFileRepository cloudFileRepository;
     private final UserFileRepositoryService userFileRepositoryService;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final MultiProviderPDFService pdfService;
-    private final boolean enableMultipleProviders;
-    private boolean allowPdfModification;
+    private final boolean allowPdfModification;
 
     public CCMSTransactionPayloadService(CloudFileRepository cloudFileRepository,
             UserFileRepositoryService userFileRepositoryService,
             MultiProviderPDFService pdfService,
             SubmissionRepositoryService submissionRepositoryService,
-            @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders,
             @Value("${form-flow.uploads.file-conversion.allow-pdf-modification}") boolean allowPdfModification) {
         this.cloudFileRepository = cloudFileRepository;
         this.userFileRepositoryService = userFileRepositoryService;
         this.pdfService = pdfService;
         this.submissionRepositoryService = submissionRepositoryService;
-        this.enableMultipleProviders = enableMultipleProviders;
         this.allowPdfModification = allowPdfModification;
     }
 
@@ -105,21 +101,14 @@ public class CCMSTransactionPayloadService {
         }
 
         List<UserFile> allFiles = new ArrayList<>();
-        if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
-            List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
-                    .getOrDefault("providers", emptyList());
-            for (Map<String, Object> provider : providers) {
-                if (provider.containsKey("providerResponseSubmissionId")) {
-                    UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
-                    submissionRepositoryService.findById(providerSubmissionId).ifPresent(
-                            providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
-                }
-            }
-        } else {
-            if (familySubmission.getInputData().containsKey("providerResponseSubmissionId")) {
-                submissionRepositoryService.findById(
-                                UUID.fromString(familySubmission.getInputData().get("providerResponseSubmissionId").toString()))
-                        .ifPresent(providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
+
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
+                .getOrDefault("providers", emptyList());
+        for (Map<String, Object> provider : providers) {
+            if (provider.containsKey("providerResponseSubmissionId")) {
+                UUID providerSubmissionId = UUID.fromString(provider.get("providerResponseSubmissionId").toString());
+                submissionRepositoryService.findById(providerSubmissionId).ifPresent(
+                        providerSubmission -> allFiles.addAll(findAllFiles(providerSubmission)));
             }
         }
 
@@ -145,10 +134,11 @@ public class CCMSTransactionPayloadService {
                         userFile.getFileId(), familySubmission.getId());
                 continue;
             }
-
-            transactionFiles.add(new TransactionFile(
+            TransactionFile transactionFile = new TransactionFile(
                     FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
-                    FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes())));
+                    FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes()));
+            transactionFile.setUserFile(userFile);
+            transactionFiles.add(transactionFile);
         }
 
         return transactionFiles;

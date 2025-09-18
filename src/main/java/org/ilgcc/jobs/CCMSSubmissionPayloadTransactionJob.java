@@ -7,6 +7,8 @@ import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_ENDPOINT;
 import com.fasterxml.jackson.databind.JsonNode;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
+import formflow.library.data.UserFile;
+import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.NotNull;
@@ -20,22 +22,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.JobrunrJobRepository;
 import org.ilgcc.app.data.Transaction;
 import org.ilgcc.app.data.TransactionRepositoryService;
+import org.ilgcc.app.data.UserFileTransaction;
+import org.ilgcc.app.data.UserFileTransactionRepositoryService;
 import org.ilgcc.app.data.ccms.CCMSApiClient;
 import org.ilgcc.app.data.ccms.CCMSTransaction;
 import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
+import org.ilgcc.app.data.ccms.TransactionFile;
 import org.ilgcc.app.email.SendFamilyApplicationTransmittedConfirmationEmail;
 import org.ilgcc.app.email.SendFamilyApplicationTransmittedProviderConfirmationEmail;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.SubmissionUtilities;
+import org.ilgcc.app.utils.enums.TransactionStatus;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
@@ -53,6 +59,8 @@ public class CCMSSubmissionPayloadTransactionJob {
     private final TransactionRepositoryService transactionRepositoryService;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final JobrunrJobRepository jobrunrJobRepository;
+    private final UserFileRepositoryService userFileRepositoryService;
+    private final UserFileTransactionRepositoryService userFileTransactionRepositoryService;
 
     private final MultiProviderPDFService multiProviderPDFService;
     CloudFileRepository cloudFileRepository;
@@ -81,7 +89,8 @@ public class CCMSSubmissionPayloadTransactionJob {
     public CCMSSubmissionPayloadTransactionJob(JobScheduler jobScheduler,
             CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
             TransactionRepositoryService transactionRepositoryService, SubmissionRepositoryService submissionRepositoryService,
-            JobrunrJobRepository jobrunrJobRepository,
+            JobrunrJobRepository jobrunrJobRepository, UserFileRepositoryService userFileRepositoryService,
+            UserFileTransactionRepositoryService userFileTransactionRepositoryService,
             MultiProviderPDFService multiProviderPDFService, CloudFileRepository cloudFileRepository) {
         this.jobScheduler = jobScheduler;
         this.ccmsTransactionPayloadService = ccmsTransactionPayloadService;
@@ -89,6 +98,8 @@ public class CCMSSubmissionPayloadTransactionJob {
         this.transactionRepositoryService = transactionRepositoryService;
         this.submissionRepositoryService = submissionRepositoryService;
         this.jobrunrJobRepository = jobrunrJobRepository;
+        this.userFileRepositoryService = userFileRepositoryService;
+        this.userFileTransactionRepositoryService = userFileTransactionRepositoryService;
         this.multiProviderPDFService = multiProviderPDFService;
         this.cloudFileRepository = cloudFileRepository;
     }
@@ -204,24 +215,38 @@ public class CCMSSubmissionPayloadTransactionJob {
                 if (submissionOptional.isPresent()) {
                     Submission submission = submissionOptional.get();
 
-                    CompletableFuture.runAsync(() -> {
-                        try {
-                            // Put the submission pdf asynchronously into S3 as a backup
-                            // Do not fail on exceptions, as this is a backup just in case
-                            // CCMS / CMS doesn't process the submission properly on the backend
-                            Map<String, byte[]> pdfs = multiProviderPDFService.generatePDFs(submission);
+                    List<UserFile> backupPdfFiles = new ArrayList<>();
+                    try {
+                        Map<String, byte[]> pdfs = multiProviderPDFService.generatePDFs(submission);
 
-                            for (String pdfFileName : pdfs.keySet()) {
-                                MultipartFile multipartFile = new ByteArrayMultipartFile(pdfs.get(pdfFileName), pdfFileName,
-                                        PDF_CONTENT_TYPE);
-                                String s3ZipPath = SubmissionUtilities.generatePdfPath(pdfFileName, submission.getId());
+                        for (Map.Entry<String, byte[]> entry : pdfs.entrySet()) {
+                            String pdfFileName = entry.getKey();
+                            byte[] pdfBytes = entry.getValue();
 
-                                cloudFileRepository.upload(s3ZipPath, multipartFile);
-                            }
-                        } catch (IOException | InterruptedException e) {
-                            log.error("Error uploading submission {} to S3", submissionId, e);
+                            MultipartFile multipartFile =
+                                    new ByteArrayMultipartFile(pdfBytes, pdfFileName, PDF_CONTENT_TYPE);
+
+                            String s3ZipPath = SubmissionUtilities.generatePdfPath(pdfFileName, submission.getId());
+                            cloudFileRepository.upload(s3ZipPath, multipartFile);
+                            UserFile applicationPDF = UserFile.builder()
+                                    .fileId(UUID.randomUUID())
+                                    .submission(submission)
+                                    .originalName(pdfFileName)
+                                    .repositoryPath(s3ZipPath)
+                                    .filesize((float) pdfBytes.length)
+                                    .mimeType(PDF_CONTENT_TYPE)
+                                    .virusScanned(true)
+                                    .build();
+                            userFileRepositoryService.save(applicationPDF);
+                            backupPdfFiles.add(applicationPDF);
                         }
-                    });
+                    } catch (IOException e) {
+                        log.error("Error uploading submission {} backup PDFs to S3 (continuing with CCMS send)", submissionId, e);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        log.error("Interrupted while uploading PDF backup files to S3 for submission {} (continuing with CCMS send)",
+                                submissionId, e);
+                    }
 
                     Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
                             submission);
@@ -256,7 +281,19 @@ public class CCMSSubmissionPayloadTransactionJob {
                             }
 
                             UUID transactionId = UUID.fromString(response.get("transactionId").asText());
-                            transactionRepositoryService.createTransaction(transactionId, submissionId, workItemId);
+                            Transaction transaction = transactionRepositoryService.createTransaction(transactionId, submissionId,
+                                    workItemId);
+                            List<UserFile> userFiles = ccmsTransaction.getFiles().stream().map(TransactionFile::getUserFile).collect(
+                                    Collectors.toCollection(ArrayList::new));
+                            userFiles.addAll(backupPdfFiles);
+                            userFileTransactionRepositoryService.saveAll(
+                                    userFiles.stream().map(userFile -> UserFileTransaction.builder()
+                                            .userFile(userFile)
+                                            .transaction(transaction)
+                                            .submission(submission)
+                                            .transactionStatus(TransactionStatus.REQUESTED)
+                                            .build()).toList()
+                            );
 
                             log.info("All providers responded: {}. {} sent to CCMS with transaction {}",
                                     SubmissionUtilities.haveAllProvidersResponded(submission), submissionId, transactionId);
