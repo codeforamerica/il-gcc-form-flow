@@ -22,7 +22,8 @@ public class ProviderResponseHasExpired implements Condition {
   @Override
   public Boolean run(Submission providerSubmission) {
     Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
-    if (familySubmissionId.isPresent()) {
+    String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
+    if (familySubmissionId.isPresent() && !currentProviderUuid.isEmpty()) {
       Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(familySubmissionId.get());
       if (familySubmissionOptional.isPresent()) {
         Submission familySubmission = familySubmissionOptional.get();
