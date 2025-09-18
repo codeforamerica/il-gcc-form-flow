@@ -40,36 +40,43 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
     @Override
     public void run(Submission providerSubmission) {
         Optional<UUID> familySubmissionIdOptional = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+        boolean hasProviderApplicationExpired = false;
         if (familySubmissionIdOptional.isPresent()) {
             UUID familySubmissionId = familySubmissionIdOptional.get();
             Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(familySubmissionId);
             if (familySubmissionOptional.isPresent()) {
                 Submission familySubmission = familySubmissionOptional.get();
 
-                if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
-                    SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
-                    submissionRepositoryService.save(familySubmission);
+                hasProviderApplicationExpired = ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmission, providerSubmission);
+                if (!hasProviderApplicationExpired) {
+                    if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
+                        SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
+                        submissionRepositoryService.save(familySubmission);
 
-                    if (SubmissionUtilities.haveAllProvidersResponded(familySubmission)) {
-                        log.info("New Provider submitted response for family submission {}, enqueuing transfer of documents because all providers responded.",
+                        if (SubmissionUtilities.haveAllProvidersResponded(familySubmission)) {
+                            log.info("New Provider submitted response for family submission {}, enqueuing transfer of documents because all providers responded.",
                                 familySubmissionId);
-                        if (ccmsIntegrationEnabled) {
-                            ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission.getId());
+                            if (ccmsIntegrationEnabled) {
+                                ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission.getId());
+                            }
+                        } else {
+                            log.info("New Provider submitted response for family submission {}, skipping transfer of documents because all providers have not responded.",
+                                familySubmissionId);
                         }
                     } else {
-                        log.info("New Provider submitted response for family submission {}, skipping transfer of documents because all providers have not responded.",
-                                familySubmissionId);
+                        log.info("New Provider submitted response for family submission {}, enqueuing transfer of documents.",
+                            familySubmissionId);
+                        familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
+                        familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
+                        submissionRepositoryService.save(familySubmission);
+                        if (ccmsIntegrationEnabled) {
+                            ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmissionId);
+                        }
                     }
                 } else {
-                    log.info("New Provider submitted response for family submission {}, enqueuing transfer of documents.",
-                            familySubmissionId);
-                    familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
-                    familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
-                    submissionRepositoryService.save(familySubmission);
-                    if (ccmsIntegrationEnabled) {
-                        ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmissionId);
-                    }
+                    log.error("The provider submission: {} expired.", providerSubmission.getId());
                 }
+
             } else {
                 log.error("We can not find a match for your family submission: {}", familySubmissionId);
             }
