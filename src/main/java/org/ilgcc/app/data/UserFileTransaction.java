@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +31,7 @@ import org.ilgcc.app.utils.enums.TransactionStatus;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserFileTransaction {
     
     @Id
