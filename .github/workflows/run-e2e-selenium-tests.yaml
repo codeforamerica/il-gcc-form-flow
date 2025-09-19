@@ -25,7 +25,7 @@ jobs:
           node-version: '20'
 
       - name: Install selenium-side-runner
-        run: npm install -g selenium-side-runner
+        run: npm install -g selenium-side-runner@latest
 
       - name: Run Selenium .side tests
         run: |
