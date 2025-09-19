@@ -6,8 +6,6 @@ on:
 jobs:
   selenium-e2e:
     runs-on: ubuntu-latest
-    env:
-      COUNTY: COOK
     steps:
       - uses: actions/checkout@v5
 

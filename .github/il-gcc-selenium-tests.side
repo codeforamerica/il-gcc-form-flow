@@ -198,7 +198,7 @@
           "command": "select",
           "target": "id=applicationCounty",
           "targets": [],
-          "value": "label=${COUNTY}"
+          "value": "label=COOK"
         },
         {
           "id": "8f77a5e9-bdcd-45ad-b61c-4b53df742ad8",
