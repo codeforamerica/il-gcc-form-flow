@@ -280,6 +280,68 @@ class SubmissionUtilitiesTest {
         }
     }
     
+    @Nested
+    class method_allRespondedProvidersAgreedToCare {
+        
+        @Test
+        void retursTrueWhenAllProvidersRespondedAndAgreedToCare() {
+            Map<String, Object> provider1 = new HashMap<>();
+            provider1.put("uuid", UUID.randomUUID().toString());
+            provider1.put("providerName", "First Provider");
+            provider1.put("providerResponseAgreeToCare", true);
+
+            Map<String, Object> provider2 = new HashMap<>();
+            provider2.put("uuid", UUID.randomUUID().toString());
+            provider2.put("providerName", "Second Provider");
+            provider2.put("providerResponseAgreeToCare", true);
+
+            Submission submission = new SubmissionTestBuilder()
+                    .with("providers", List.of(provider1, provider2))
+                    .build();
+
+            boolean result = SubmissionUtilities.allProvidersAgreedToCare(submission);
+            assertThat(result).isTrue();
+        }
+        
+        @Test
+        void returnsFalseWhenAnyRespondedProviderDidNotAgreeToCare() {
+            Map<String, Object> provider1 = new HashMap<>();
+            provider1.put("uuid", UUID.randomUUID().toString());
+            provider1.put("providerName", "First Provider");
+            provider1.put("providerResponseAgreeToCare", true);
+            Map<String, Object> provider2 = new HashMap<>();
+            provider2.put("uuid", UUID.randomUUID().toString());
+            provider2.put("providerName", "Second Provider");
+            provider2.put("providerResponseAgreeToCare", false);
+
+            Submission submission = new SubmissionTestBuilder()
+                    .with("providers", List.of(provider1, provider2))
+                    .build();
+
+            boolean result = SubmissionUtilities.allProvidersAgreedToCare(submission);
+            assertThat(result).isFalse();
+        }
+        
+        @Test
+        void returnsFalseIfAnyProviderHasNotResponded() {
+            Map<String, Object> provider1 = new HashMap<>();
+            provider1.put("uuid", UUID.randomUUID().toString());
+            provider1.put("providerName", "First Provider");
+            provider1.put("providerResponseAgreeToCare", true);
+            Map<String, Object> provider2 = new HashMap<>();
+            provider2.put("uuid", UUID.randomUUID().toString());
+            provider2.put("providerName", "Second Provider");
+            // no response because they agreed to care key is not there yet
+
+            Submission submission = new SubmissionTestBuilder()
+                    .with("providers", List.of(provider1, provider2))
+                    .build();
+
+            boolean result = SubmissionUtilities.allProvidersAgreedToCare(submission);
+            assertThat(result).isFalse();
+        }
+    }
+    
     private static Map<String, Object> provider(String name, String resourceOrgId) {
         Map<String, Object> p = new HashMap<>();
         p.put("uuid", UUID.randomUUID().toString());
