@@ -15,7 +15,4 @@ public interface CountyRepository extends JpaRepository<County, String> {
     List<County> findByCounty(@Param("countyName") String countyName);
 
     Optional<County> findByZipCode(BigInteger truncatedZip);
-
-    List<County> findCountiesByCaseloadCode(String caseloadCode);
-
 }

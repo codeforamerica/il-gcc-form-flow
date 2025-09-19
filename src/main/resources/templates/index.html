@@ -8,14 +8,6 @@
           class="slab slab--white padding-top-0 padding-bottom-0 spacing-below-0">
         <section class="slab slab--light-purple">
             <div class="grid">
-                <th:block
-                        th:with="enableNewSDACodes=${@environment.getProperty('il-gcc.enable-new-sda-caseload-codes').equals('true')}">
-                    <th:block th:unless="${enableNewSDACodes}">
-                        <div class="notice--warning spacing-below-35">
-                            <p th:utext="#{index.notice-group-1}"></p>
-                        </div>
-                    </th:block>
-                </th:block>
                 <div>
                     <div class="tracking-home-language-links width-one-half">
                         <h1 class="spacing-below-35 spacing-above-5" th:text="#{index.title}"></h1>

@@ -32,6 +32,7 @@ public class SetOrganizationIdAndCCRRName implements Action {
     private static final String APPLICATION_COUNTY_INPUT_NAME = "applicationCounty";
     private static final String APPLICATION_ZIPCODE_INPUT_NAME = "applicationZipCode";
     private static final String APPLICANT_COUNTY_INPUT_NAME = "applicantAddressCounty";
+
     @Override
     public void run(Submission submission) {
         Map<String, Object> inputData = submission.getInputData();

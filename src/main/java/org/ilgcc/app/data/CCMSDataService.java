@@ -6,20 +6,6 @@ import java.util.Optional;
 
 public interface CCMSDataService {
 
-    /**
-     * Retrieves a list of active caseload codes
-     *
-     * @return an List containing a list of caseload code strings
-     */
-
-    List<String> getActiveCaseLoadCodes();
-
-    /**
-     * Retrieves a list of active SDAs based on active caseload codes
-     *
-     * @return a List<Short> of the Active SDAs
-     */
-    List<Short> getActiveSDAsBasedOnActiveCaseLoadCodes();
 
     /**
      * Retrieves a county based on the given zip code.
@@ -49,11 +35,9 @@ public interface CCMSDataService {
      * Retrieves a site administered resource organization associated with a given provider ID.
      *
      * @param providerId the unique identifier of the provider
-     * @param activeSDAs the sdas that are currently active
      * @return an Optional containing the matching resource organization if found, or an empty Optional if not found
      */
-    Optional<ResourceOrganization> getSiteAdministeredResourceOrganizationByProviderId(BigInteger providerId,
-            List<Short> activeSDAs);
+    Optional<ResourceOrganization> getSiteAdministeredResourceOrganizationByProviderId(BigInteger providerId);
 
     /**
      * Retrieves a list of resource organizations based on the given caseload code.
@@ -73,9 +57,8 @@ public interface CCMSDataService {
     /**
      * Retrieves a list of Counties by caseload code.
      *
-     * @param caseloadCode the caseload code to search for
-     * @return a list of all counties with the corresponding caseload code.
+     * @return a list of all counties
      */
-    List<County> getCountiesByCaseloadCode(String caseloadCode);
+    List<String> getAllCounties();
 }
 

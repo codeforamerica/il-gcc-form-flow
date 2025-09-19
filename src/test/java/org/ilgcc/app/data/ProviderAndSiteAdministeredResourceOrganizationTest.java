@@ -25,9 +25,6 @@ import org.springframework.test.context.TestPropertySource;
  * the columns are set correctly via manual inspection as well as the programmatic tests.
  */
 @SpringBootTest(classes = IlGCCApplication.class)
-@TestPropertySource(properties = {
-        "ACTIVE_CASELOAD_CODES=BB,QQ",
-})
 @ActiveProfiles("test")
 class ProviderAndSiteAdministeredResourceOrganizationTest {
 

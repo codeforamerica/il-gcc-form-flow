@@ -19,7 +19,7 @@
                 th:replace="~{fragments/inputs/selectOptionPlaceholder :: selectOptionPlaceholder(optionText=#{parent-county.placeholder-text})}"/>
         <th:block th:each="county : ${T(org.ilgcc.app.utils.CountyUtils).getActiveCounties()}">
           <th:block
-                  th:replace="~{fragments/inputs/selectOption :: selectOption(value=${county.getCounty()}, optionText=${county.getCounty()})}"/>
+                  th:replace="~{fragments/inputs/selectOption :: selectOption(value=${county}, optionText=${county})}"/>
         </th:block>
       </th:block>
     </th:block>

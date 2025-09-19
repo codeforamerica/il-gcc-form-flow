@@ -14,16 +14,4 @@ public interface ResourceOrganizationRepository extends JpaRepository<ResourceOr
     List<ResourceOrganization> findByCaseloadCode(String caseloadCode);
 
     Optional<ResourceOrganization> findByProvidersProviderId(BigInteger providerId);
-
-    @Query("""
-            SELECT r FROM Provider p
-               JOIN ResourceOrganization r
-               ON p.resourceOrganization = r
-               where r.caseloadCode = 'SITE'
-               and p.providerId = :providerId
-               and r.sda in :activeSDAs
-            """)
-    Optional<ResourceOrganization> findActiveSiteAdministeredOrgByProviderId(@Param("providerId") BigInteger providerId,
-            @Param("activeSDAs") List<Short> activeSDAs);
-
 }

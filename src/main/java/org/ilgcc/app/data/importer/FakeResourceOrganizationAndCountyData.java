@@ -27,7 +27,6 @@ public class FakeResourceOrganizationAndCountyData implements InitializingBean {
     public static County ACTIVE_FOUR_C_COUNTY_MCHENRY_ZIPCODE_60097;
     public static ResourceOrganization PROJECT_CHILD_TEST_DATA;
     public static County ACTIVE_PROJECT_CHILD_COUNTY;
-    public static ResourceOrganization OUT_OF_SCOPE_DATA;
     public static County COHORT2_COUNTY;
 
     @Override
@@ -77,14 +76,6 @@ public class FakeResourceOrganizationAndCountyData implements InitializingBean {
             ACTIVE_PROJECT_CHILD_COUNTY.setCaseloadCode("QQ");
             countyRepository.save(ACTIVE_PROJECT_CHILD_COUNTY);
 
-            OUT_OF_SCOPE_DATA = new ResourceOrganization();
-            OUT_OF_SCOPE_DATA.setResourceOrgId(new BigInteger("12345678901236"));
-            OUT_OF_SCOPE_DATA.setName("Provider in SDA not Launched");
-            OUT_OF_SCOPE_DATA.setSda(Short.valueOf("7"));
-            OUT_OF_SCOPE_DATA.setCaseloadCode("HH");
-            OUT_OF_SCOPE_DATA.setPhone("123456789");
-            OUT_OF_SCOPE_DATA.setEmail("test@gmail.com");
-            resourceOrganizationRepository.save(OUT_OF_SCOPE_DATA);
 
             COHORT2_COUNTY = new County();
             COHORT2_COUNTY.setCounty("HENDERSON");

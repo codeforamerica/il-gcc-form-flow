@@ -6,6 +6,10 @@ flow:
   onboarding-2-part:
     nextScreens:
       - name: onboarding-language-pref
+  onboarding-language-pref:
+    beforeDisplayAction: SetLanguagePreferences
+    nextScreens:
+      - name: onboarding-chosen-provider
   onboarding-chosen-provider:
     condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
@@ -31,21 +35,6 @@ flow:
     condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
       - name: parent-info-intro
-  onboarding-language-pref:
-    beforeDisplayAction: SetLanguagePreferences
-    nextScreens:
-      - name: onboarding-county
-        condition: NewSDACaseloadCodesNotEnabled
-      - name: onboarding-chosen-provider
-  onboarding-county:
-    nextScreens:
-      - name: onboarding-chosen-provider
-  onboarding-zipcode:
-    crossFieldValidationAction: ValidateZipCode
-    nextScreens:
-      - name: onboarding-chosen-provider
-        condition: HasSupportedZipCode
-      - name: pilot-offboard
   parent-info-intro:
     nextScreens:
       - name: parent-info-basic-1
@@ -81,8 +70,6 @@ flow:
     condition: ShowParentMailingAddressConfirmationScreen
     onPostAction: SaveValidatedParentMailingAddress
     nextScreens:
-      - name: parent-comm-preference
-        condition: NewSDACaseloadCodesNotEnabled
       - name: parent-county
   parent-county:
     condition: DoesNotHaveValidHomeAddressZipCode

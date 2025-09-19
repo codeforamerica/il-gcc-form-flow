@@ -15,7 +15,6 @@
                 ariaLabel='header',
                 content=~{::radioContent})}">
                 <th:block th:ref="radioContent">
-                  <!-- Copy the below input if you want to add more -->
                   <th:block
                       th:replace="~{fragments/inputs/radio :: radio(inputName='parentContactPreferredCommunicationMethod',value='mail', label=#{parent-comm-preference.mail})}"/>
                   <th:block
@@ -24,17 +23,3 @@
               </th:block>
     </th:block>
 </th:block>
-<script defer>
-  let url = new URL(document.URL)
-  let contactByEmail = url.searchParams.get("unhousedPrefersEmail")
-
-  let mailIsNotPreferredCommunicationMethod = document.getElementById("parentContactPreferredCommunicationMethod-mail").checked===false;
-  //checks that unhousedPrefersEmail is in the query params and is set to true, also checks that mail is not a field that is passed by submission
-
-  if((contactByEmail!==null) && mailIsNotPreferredCommunicationMethod){
-    let email = document.getElementById('parentContactPreferredCommunicationMethod-email');
-    if(contactByEmail){
-      email.checked=true;
-    }
-  }
-</script>
