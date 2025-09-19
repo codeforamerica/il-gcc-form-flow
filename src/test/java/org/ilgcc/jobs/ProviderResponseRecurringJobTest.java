@@ -91,7 +91,6 @@ public class ProviderResponseRecurringJobTest {
                 transactionRepositoryService,
                 submissionRepositoryService,
                 ccmsSubmissionPayloadTransactionJob,
-                true,
                 sendProviderDidNotRespondToFamilyEmail
         );
     }

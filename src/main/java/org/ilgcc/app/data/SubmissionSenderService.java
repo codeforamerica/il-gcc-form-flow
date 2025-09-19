@@ -22,17 +22,14 @@ public class SubmissionSenderService {
 
     private final SubmissionRepositoryService submissionRepositoryService;
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
-    private final boolean ccmsIntegrationEnabled;
     private final boolean enableMultipleProviders;
 
     public SubmissionSenderService(
             SubmissionRepositoryService submissionRepositoryService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
-            @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
             @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.submissionRepositoryService = submissionRepositoryService;
         this.ccmsSubmissionPayloadTransactionJob = ccmsSubmissionPayloadTransactionJob;
-        this.ccmsIntegrationEnabled = ccmsIntegrationEnabled;
         this.enableMultipleProviders = enableMultipleProviders;
     }
 
@@ -69,7 +66,7 @@ public class SubmissionSenderService {
                 sendFamilyEmail.ifPresent(email -> email.send(familySubmission));
 
 
-                if (ccmsIntegrationEnabled && haveAllProvidersResponded(familySubmission)) {
+                if (haveAllProvidersResponded(familySubmission)) {
                     if (sendToCCMSInstantly) {
                         ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadInstantly(familySubmission.getId());
                     } else {
@@ -85,8 +82,6 @@ public class SubmissionSenderService {
     }
 
     public void sendFamilySubmission(Submission familySubmission) {
-        if (ccmsIntegrationEnabled) {
-            ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission.getId());
-        }
+        ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission.getId());
     }
 }

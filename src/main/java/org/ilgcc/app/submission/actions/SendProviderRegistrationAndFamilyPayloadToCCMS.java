@@ -23,17 +23,14 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
 
     private final SubmissionRepositoryService submissionRepositoryService;
     private final CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob;
-    private final boolean ccmsIntegrationEnabled;
     private final boolean enableMultipleProviders;
 
     public SendProviderRegistrationAndFamilyPayloadToCCMS(
             SubmissionRepositoryService submissionRepositoryService,
             CCMSSubmissionPayloadTransactionJob ccmsSubmissionPayloadTransactionJob,
-            @Value("${il-gcc.ccms-integration-enabled:false}") boolean ccmsIntegrationEnabled,
             @Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
         this.submissionRepositoryService = submissionRepositoryService;
         this.ccmsSubmissionPayloadTransactionJob = ccmsSubmissionPayloadTransactionJob;
-        this.ccmsIntegrationEnabled = ccmsIntegrationEnabled;
         this.enableMultipleProviders = enableMultipleProviders;
     }
 
@@ -53,9 +50,7 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
                     if (SubmissionUtilities.haveAllProvidersResponded(familySubmission)) {
                         log.info("New Provider submitted response for family submission {}, enqueuing transfer of documents because all providers responded.",
                                 familySubmissionId);
-                        if (ccmsIntegrationEnabled) {
-                            ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission.getId());
-                        }
+                        ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmission.getId());
                     } else {
                         log.info("New Provider submitted response for family submission {}, skipping transfer of documents because all providers have not responded.",
                                 familySubmissionId);
@@ -66,9 +61,7 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
                     familySubmission.getInputData().put("providerResponseSubmissionId", providerSubmission.getId().toString());
                     familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
                     submissionRepositoryService.save(familySubmission);
-                    if (ccmsIntegrationEnabled) {
-                        ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmissionId);
-                    }
+                    ccmsSubmissionPayloadTransactionJob.enqueueCCMSTransactionPayloadWithDelay(familySubmissionId);
                 }
             } else {
                 log.error("We can not find a match for your family submission: {}", familySubmissionId);
