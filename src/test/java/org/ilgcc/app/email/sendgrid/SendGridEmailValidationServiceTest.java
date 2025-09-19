@@ -3,6 +3,7 @@ package org.ilgcc.app.email.sendgrid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -59,7 +60,7 @@ public class SendGridEmailValidationServiceTest {
 
     doReturn(fakeResponse).when(spysendGridEmailValidationService).getSendGridResponse(MOCK_VALID_EMAIL);
 
-    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_VALID_EMAIL);
+    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_VALID_EMAIL, false);
     assertEquals("success", result.get("endpointReached"));
     assertEquals("true", result.get("emailIsValid"));
   }
@@ -81,7 +82,7 @@ public class SendGridEmailValidationServiceTest {
 
     doReturn(fakeResponse).when(spysendGridEmailValidationService).getSendGridResponse(MOCK_INVALID_EMAIL);
 
-    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_INVALID_EMAIL);
+    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_INVALID_EMAIL, false);
     assertEquals("success", result.get("endpointReached"));
     assertEquals("false", result.get("emailIsValid"));
   }
@@ -103,7 +104,7 @@ public class SendGridEmailValidationServiceTest {
 
     doReturn(fakeResponse).when(spysendGridEmailValidationService).getSendGridResponse(MOCK_INVALID_EMAIL);
 
-    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_INVALID_EMAIL);
+    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_INVALID_EMAIL, false);
     assertEquals("success", result.get("endpointReached"));
     assertEquals("false", result.get("emailIsValid"));
   }
@@ -125,7 +126,7 @@ public class SendGridEmailValidationServiceTest {
 
     doReturn(fakeResponse).when(spysendGridEmailValidationService).getSendGridResponse(MOCK_INVALID_EMAIL);
 
-    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_INVALID_EMAIL);
+    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_INVALID_EMAIL, false);
     assertEquals("success", result.get("endpointReached"));
     assertEquals("false", result.get("emailIsValid"));
   }
@@ -147,7 +148,7 @@ public class SendGridEmailValidationServiceTest {
 
     doReturn(fakeResponse).when(spysendGridEmailValidationService).getSendGridResponse(MOCK_INVALID_EMAIL);
 
-    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_INVALID_EMAIL);
+    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_INVALID_EMAIL, false);
     assertEquals("success", result.get("endpointReached"));
     assertEquals("false", result.get("emailIsValid"));
   }
@@ -169,7 +170,7 @@ public class SendGridEmailValidationServiceTest {
 
     doReturn(fakeResponse).when(spysendGridEmailValidationService).getSendGridResponse(MOCK_VALID_EMAIL);
 
-    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_VALID_EMAIL);
+    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_VALID_EMAIL, false);
     assertEquals("success", result.get("endpointReached"));
     assertEquals("true", result.get("emailIsValid"));
   }
@@ -179,7 +180,7 @@ public class SendGridEmailValidationServiceTest {
     SendGridEmailValidationService sendGridEmailValidationService = new SendGridEmailValidationService(false, mockSendGrid);
     SendGridEmailValidationService spysendGridEmailValidationService = spy(sendGridEmailValidationService);
 
-    HashMap<String, String> emailValidationResult = spysendGridEmailValidationService.validateEmail(MOCK_VALID_EMAIL);
+    HashMap<String, String> emailValidationResult = spysendGridEmailValidationService.validateEmail(MOCK_VALID_EMAIL,false);
     assertTrue(emailValidationResult.isEmpty());
     verify(spysendGridEmailValidationService, never()).getSendGridResponse(MOCK_VALID_EMAIL);
   }
@@ -193,8 +194,8 @@ public class SendGridEmailValidationServiceTest {
 
     doReturn(fakeResponse).when(spysendGridEmailValidationService).getSendGridResponse(MOCK_VALID_EMAIL);
 
-    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_VALID_EMAIL);
+    HashMap<String, String> result = spysendGridEmailValidationService.validateEmail(MOCK_VALID_EMAIL, false);
     assertEquals("failed", result.get("endpointReached"));
-    verify(spysendGridEmailValidationService, never()).isValidEmail(any());
+    verify(spysendGridEmailValidationService, never()).isValidEmail(any(), anyBoolean());
   }
 }
