@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '3.5.5'
+    id 'org.springframework.boot' version '3.5.6'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'com.adarshr.test-logger' version '4.0.0'
@@ -53,13 +53,13 @@ def formFlowLibraryVersion = '1.6.41'
 def useLocalLibrary = props.getProperty('USE_LOCAL_LIBRARY')
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.5.5'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.5.6'
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
-    implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:7.5.3'
+    implementation 'org.jobrunr:jobrunr-spring-boot-3-starter:8.0.2'
     implementation 'org.apache.commons:commons-text:1.14.0'
     implementation 'com.sendgrid:sendgrid-java:4.10.3'
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.81'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.82'
     implementation 'joda-time:joda-time:2.14.0'
 
     if (useLocalLibrary == 'true') {
@@ -70,21 +70,21 @@ dependencies {
         println "📚Using form flow library ${formFlowLibraryVersion}"
     }
 
-    compileOnly 'org.projectlombok:lombok:1.18.40'
+    compileOnly 'org.projectlombok:lombok:1.18.42'
 
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.5.5'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.5.6'
 
-    annotationProcessor 'org.projectlombok:lombok:1.18.40'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.5'
-    testImplementation 'org.springframework.security:spring-security-test:6.5.3'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.6'
+    testImplementation 'org.springframework.security:spring-security-test:6.5.5'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.35.0'
     testImplementation 'org.jsoup:jsoup:1.21.2'
     testImplementation 'org.awaitility:awaitility:4.3.0'
     testImplementation 'io.github.bonigarcia:webdrivermanager:6.3.2'
     testImplementation 'com.h2database:h2:2.3.232'
     testImplementation 'com.deque.html.axe-core:selenium:4.10.2'
-    testImplementation 'org.projectlombok:lombok:1.18.40'
+    testImplementation 'org.projectlombok:lombok:1.18.42'
     testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:4.1.1'
     testImplementation 'io.zonky.test:embedded-database-spring-test:2.6.0'
     testImplementation 'io.zonky.test:embedded-postgres:2.1.1'
@@ -92,7 +92,7 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok'
 
-    runtimeOnly 'org.postgresql:postgresql:42.7.7'
+    runtimeOnly 'org.postgresql:postgresql:42.7.8'
 }
 
 springBoot {

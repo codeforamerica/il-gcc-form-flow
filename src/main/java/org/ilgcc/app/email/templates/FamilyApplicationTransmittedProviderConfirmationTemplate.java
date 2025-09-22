@@ -39,9 +39,11 @@ public class FamilyApplicationTransmittedProviderConfirmationTemplate {
     }
 
     private String setSubject(Map<String, Object> emailData) {
-        return messageSource.getMessage("email.family-application-transmitted-provider-confirmation-email.subject",
-                null,
-                locale);
+        return messageSource.getMessage(
+                "email.family-application-transmitted-provider-confirmation-email.subject",
+                new Object[]{emailData.get("confirmationCode")},
+                locale
+        );
     }
 
     private String setBodyCopy(Map<String, Object> emailData) {
