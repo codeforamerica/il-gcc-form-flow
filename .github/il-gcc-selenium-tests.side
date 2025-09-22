@@ -1894,6 +1894,6 @@
     "timeout": 300,
     "tests": []
   }],
-  "urls": ["https://staging.getchildcareil.org/",
+  "urls": ["https://staging.getchildcareil.org/"],
   "plugins": []
 }
