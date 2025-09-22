@@ -20,9 +20,6 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(classes = IlGCCApplication.class)
 @ActiveProfiles("test")
-@TestPropertySource(properties = {
-        "ACTIVE_CASELOAD_CODES=BB,QQ",
-})
 class SetOrganizationIdAndCCRRNameTest {
 
     @Autowired

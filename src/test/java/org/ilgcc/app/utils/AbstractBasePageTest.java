@@ -50,9 +50,6 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Slf4j
 @Import({WebDriverConfiguration.class, FakeResourceOrganizationAndCountyData.class})
-@TestPropertySource(properties = {
-        "ACTIVE_CASELOAD_CODES=BB,QQ"
-})
 @ActiveProfiles({"test", "selenium-test"})
 public abstract class AbstractBasePageTest {
 
