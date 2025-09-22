@@ -502,9 +502,14 @@ public class SubmissionUtilities {
     public static boolean allProvidersAgreedToCare(Submission familySubmission) {
         List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
                 .getOrDefault("providers", EMPTY_LIST);
-
-        return providers.stream().allMatch(provider ->
-                Boolean.TRUE.equals(provider.get("providerResponseAgreeToCare"))
-        );
+        // This needs to check boolean and string because the library converts to string
+        // TODO change this when we standardize to boolean in the library
+        return providers.stream().allMatch(provider -> {
+            Object value = provider.getOrDefault("providerResponseAgreeToCare", "false");
+            if (value instanceof Boolean) {
+                return (Boolean) value;
+            }
+            return "true".equalsIgnoreCase(value.toString());
+        });
     }
 }
