@@ -5,6 +5,7 @@ import static org.ilgcc.app.utils.SchedulePreparerUtility.relatedSubflowIteratio
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
+import formflow.library.data.SubmissionRepositoryService;
 import jakarta.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -583,5 +584,22 @@ public class ProviderSubmissionUtilities {
 
         List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerUuid, Collections.emptyList());
         return DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
+    }
+
+    public static boolean providerSubmissionIsActive(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+        Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
+        String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
+        if (familySubmissionOptional.isPresent() && !currentProviderUuid.isEmpty()) {
+            return !(ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmissionOptional.get(), providerSubmission));
+        }
+        return true;
+    }
+
+    public static Optional<Submission> getFamilySubmission(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+        if (familySubmissionId.isPresent()) {
+            return submissionRepositoryService.findById(familySubmissionId.get());
+        }
+        return Optional.empty();
     }
 }
