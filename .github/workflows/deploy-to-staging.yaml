@@ -2,22 +2,16 @@ name: Deploy to Aptible Staging
 
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to deploy"
-        required: false
-        default: "main"
+    inputs: { }
 
 jobs:
   deploy:
-    name: Deploy to Aptible Staging
+    name: Deploy to aptible-staging
     runs-on: ubuntu-latest
-
+    environment: staging
     steps:
-      - name: Checkout selected branch
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
-          ref: ${{ inputs.branch }}
           fetch-depth: 0
 
       - name: Deploy to Aptible
@@ -28,11 +22,15 @@ jobs:
           environment: illinois-staging
           username: ${{ secrets.APTIBLE_USERNAME }}
           password: ${{ secrets.APTIBLE_PASSWORD }}
-      # Looking for secrets/variables for the application? Check the configuration tab in the Aptible app GUI
+      #         Looking for secrets/variables for the application? Check the configuration tab in the Aptible app GUI
 
-      - name: Generate Sentry release name from sha
+      - name: Generate Sentry release name
         id: generate-release
-        run: echo "RELEASE=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        run: |
+          # Remove refs/heads/ or refs/tags/ prefix and replace slashes with dashes
+          REF_NAME=${GITHUB_REF#refs/*/}
+          RELEASE_NAME=${REF_NAME//\//-}
+          echo "RELEASE=$RELEASE_NAME" >> $GITHUB_ENV
 
       - name: Create Sentry release
         uses: getsentry/action-release@v3
@@ -42,11 +40,9 @@ jobs:
           SENTRY_PROJECT: il-gcc
         with:
           environment: staging
-          ignore_missing: true
-          release: ${{ steps.generate-release.outputs.RELEASE }}
+          release: ${{ env.RELEASE }}
 
       - name: Announce on Slack when deployed
-        if: always()
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}

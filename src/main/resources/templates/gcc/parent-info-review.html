@@ -16,6 +16,8 @@
                             th:text="#{parent-info-review.personal.information}"></strong></p>
                     <ol class="list--bulleted">
                         <li th:text="|${inputData.get('parentFirstName')} ${inputData.get('parentLastName')}|"></li>
+                        <li th:if="${!#strings.isEmpty(inputData.get('parentPreferredName'))}"
+                            th:utext="${inputData.get('parentPreferredName')}"></li>
                         <li th:text="|${inputData.get('parentBirthMonth')}/${inputData.get('parentBirthDay')}/${inputData.get('parentBirthYear')}|"></li>
                     </ol>
                     <a id="edit-parent-info-basic" th:href="|/flow/${flow}/parent-info-basic-1|"

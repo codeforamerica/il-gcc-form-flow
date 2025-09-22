@@ -31,9 +31,6 @@ import org.springframework.test.context.TestPropertySource;
         classes = IlGCCApplication.class
 )
 @ActiveProfiles("test")
-@TestPropertySource(properties = {
-        "ACTIVE_CASELOAD_CODES=BB,QQ"
-})
 public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
     @Autowired

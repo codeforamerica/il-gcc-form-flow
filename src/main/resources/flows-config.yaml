@@ -6,6 +6,10 @@ flow:
   onboarding-2-part:
     nextScreens:
       - name: onboarding-language-pref
+  onboarding-language-pref:
+    beforeDisplayAction: SetLanguagePreferences
+    nextScreens:
+      - name: onboarding-chosen-provider
   onboarding-chosen-provider:
     condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
@@ -14,6 +18,7 @@ flow:
       - name: onboarding-provider-info
   onboarding-provider-info:
     condition: SkipWhenEnableMultipleProvidersIsEnabled
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateProviderEmail
     nextScreens:
       - name: onboarding-provider-info-review
@@ -31,21 +36,6 @@ flow:
     condition: SkipWhenEnableMultipleProvidersIsEnabled
     nextScreens:
       - name: parent-info-intro
-  onboarding-language-pref:
-    beforeDisplayAction: SetLanguagePreferences
-    nextScreens:
-      - name: onboarding-county
-        condition: NewSDACaseloadCodesNotEnabled
-      - name: onboarding-chosen-provider
-  onboarding-county:
-    nextScreens:
-      - name: onboarding-chosen-provider
-  onboarding-zipcode:
-    crossFieldValidationAction: ValidateZipCode
-    nextScreens:
-      - name: onboarding-chosen-provider
-        condition: HasSupportedZipCode
-      - name: pilot-offboard
   parent-info-intro:
     nextScreens:
       - name: parent-info-basic-1
@@ -81,8 +71,6 @@ flow:
     condition: ShowParentMailingAddressConfirmationScreen
     onPostAction: SaveValidatedParentMailingAddress
     nextScreens:
-      - name: parent-comm-preference
-        condition: NewSDACaseloadCodesNotEnabled
       - name: parent-county
   parent-county:
     condition: DoesNotHaveValidHomeAddressZipCode
@@ -97,6 +85,7 @@ flow:
     nextScreens:
       - name: parent-contact-info
   parent-contact-info:
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateParentContactProvideEmail
     nextScreens:
       - name: parent-info-review
@@ -118,6 +107,7 @@ flow:
     nextScreens:
       - name: parent-partner-contact
   parent-partner-contact:
+    onPostAction: TrimEmailOnPost
     nextScreens:
       - name: parent-partner-info-service
   parent-partner-info-service:
@@ -255,6 +245,7 @@ flow:
       - name: providers-contact-info
   providers-contact-info:
     condition: EnableMultipleProviders
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateProviderEmail
     subflow: providers
     nextScreens:
@@ -593,6 +584,7 @@ flow:
       - name: doc-upload-recommended-docs
   submit-contact-provider-email:
     condition: DisplaySubmitContactProviderEmailScreen
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     nextScreens:
       - name: submit-confirm-provider-email
@@ -604,6 +596,7 @@ flow:
         condition: HasConfirmedProviderEmail
       - name: submit-edit-provider-email
   submit-edit-provider-email:
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     nextScreens:
       - name: submit-confirm-provider-email
@@ -652,6 +645,7 @@ flow:
         condition: ContactProviderViaOther
   contact-providers-email-address:
     condition: DisplayContactProvidersEmailScreen
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     subflow: contactProviders
     nextScreens:
@@ -666,6 +660,7 @@ flow:
       - name: contact-providers-edit-email
   contact-providers-edit-email:
     condition: ContactProviderViaEmail
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateProviderEmailWhenInputIsPresent
     subflow: contactProviders
     nextScreens:
@@ -870,6 +865,7 @@ flow:
     nextScreens:
       - name: contact-info
   contact-info:
+    onPostAction: TrimEmailOnPost
     crossFieldValidationAction: ValidateProviderResponsePhoneAndEmail
     nextScreens:
       - name: info-review
@@ -965,6 +961,7 @@ flow:
     nextScreens:
       - name: registration-contact-info
   registration-contact-info:
+    onPostAction: TrimEmailOnPost
     nextScreens:
       - name: registration-info-review
   registration-info-review:
