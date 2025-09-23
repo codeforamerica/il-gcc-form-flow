@@ -108,6 +108,7 @@ flow:
       - name: parent-partner-contact
   parent-partner-contact:
     onPostAction: TrimEmailOnPost
+    crossFieldValidationAction: ValidateParentPartnerContactEmailPhone
     nextScreens:
       - name: parent-partner-info-service
   parent-partner-info-service:
@@ -962,6 +963,7 @@ flow:
       - name: registration-contact-info
   registration-contact-info:
     onPostAction: TrimEmailOnPost
+    crossFieldValidationAction: ValidateRegistrationContactInfo
     nextScreens:
       - name: registration-info-review
   registration-info-review:
