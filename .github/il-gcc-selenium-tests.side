@@ -367,7 +367,7 @@
         ["xpath=//main[@id='content']/form/div/div/div/select", "xpath:idRelative"],
         ["xpath=//select", "xpath:position"]
       ],
-      "value": ${COUNTY}
+      "value": "${COUNTY}"
     }, {
       "id": "21198cca-d06f-4f68-8baa-3f275894ffb2",
       "comment": "",
