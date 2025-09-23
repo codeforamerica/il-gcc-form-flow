@@ -53,7 +53,7 @@ public class UserFileTransaction {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_status", nullable = false)
-    private TransactionStatus transactionStatus = TransactionStatus.NOT_STARTED;
+    private TransactionStatus transactionStatus = TransactionStatus.REQUESTED;
     
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
