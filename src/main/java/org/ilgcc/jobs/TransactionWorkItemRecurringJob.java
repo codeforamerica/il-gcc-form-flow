@@ -24,7 +24,7 @@ public class TransactionWorkItemRecurringJob {
     private final JobScheduler jobScheduler;
 
     public TransactionWorkItemRecurringJob(TransactionRepositoryService transactionRepositoryService,
-            EnqueueTransactionWorkItemLookupJob enqueueTransactionWorkItemLookupJob, JobScheduler jobScheduler) {
+                                           EnqueueTransactionWorkItemLookupJob enqueueTransactionWorkItemLookupJob, JobScheduler jobScheduler) {
         this.transactionRepositoryService = transactionRepositoryService;
         this.enqueueTransactionWorkItemLookupJob = enqueueTransactionWorkItemLookupJob;
         this.jobScheduler = jobScheduler;
@@ -41,15 +41,14 @@ public class TransactionWorkItemRecurringJob {
                 transactionsOlderThanOneHour.size(),
                 transactionsOlderThanOneHour.stream().map(Transaction::getTransactionId).toList());
         transactionsOlderThanOneHour.forEach(transaction -> {
-                    log.info("Enqueuing work item lookup job for transaction with ID: {}", transaction.getTransactionId());
-                    jobScheduler.enqueue(() -> enqueueTransactionWorkItemLookupJob.lookupWorkItemIDForTransaction(transaction));
-                });
+            log.info("Enqueuing work item lookup job for transaction with ID: {}", transaction.getTransactionId());
+            jobScheduler.enqueue(() -> enqueueTransactionWorkItemLookupJob.lookupWorkItemIDForTransaction(transaction));
+        });
     }
 
     public List<Transaction> getTransactionsWithoutWorkItemIdsOlderThanOneHour() {
         Instant oneHourAgo = Instant.now().minus(1, ChronoUnit.HOURS);
         return transactionRepositoryService.getTransactionsWithoutWorkItemIds().stream()
-                .filter(transaction -> transaction.getCreatedAt().isBefore(oneHourAgo))
-                .toList();
+                .filter(transaction -> transaction.getCreatedAt().isBefore(oneHourAgo)).toList();
     }
 }
