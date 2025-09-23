@@ -1,13 +1,12 @@
 package org.ilgcc.jobs;
 
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.Transaction;
 import org.ilgcc.app.data.TransactionRepositoryService;
+import org.ilgcc.jobs.EnqueueTransactionWorkItemLookupJob;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.jobs.annotations.Recurring;
 import org.jobrunr.scheduling.JobScheduler;
@@ -49,6 +48,7 @@ public class TransactionWorkItemRecurringJob {
     public List<Transaction> getTransactionsWithoutWorkItemIdsOlderThanOneHour() {
         Instant oneHourAgo = Instant.now().minus(1, ChronoUnit.HOURS);
         return transactionRepositoryService.getTransactionsWithoutWorkItemIds().stream()
-                .filter(transaction -> transaction.getCreatedAt().isBefore(oneHourAgo)).toList();
+                .filter(transaction -> transaction.getCreatedAt().isBefore(oneHourAgo))
+                .toList();
     }
 }
