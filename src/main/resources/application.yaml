@@ -21,11 +21,7 @@ form-flow:
     accepted-file-types: '.jpg, .jpeg, .png, .pdf, .bmp, .gif, .doc, .docx, .odt, .ods, .odp'
     thumbnail-width: '64'
     thumbnail-height: '60'
-    # 20 files maximum
     max-files: '20'
-    # 20 MB file size limit
-    # If this is not set then the server values below for servlet max-file-size and tomcat max POST size will not be set
-    # which will cause the server to use the default values of 1MB preventing uploads larger than that.
     max-file-size: '10'
     virus-scanning:
       enabled: false
@@ -100,6 +96,9 @@ spring:
       max-lifetime: 270000
       idle-timeout: 250000
       keepalive-time: 180000
+  jpa:
+    properties:
+      hibernate.jdbc.time_zone: UTC
   servlet:
     multipart:
       max-file-size: ${form-flow.uploads.max-file-size}MB
@@ -114,6 +113,7 @@ server:
   error:
     whitelabel:
       enabled: false
+  timezone: UTC # Optional, good for documentation
 management:
   datadog:
     metrics:
@@ -135,8 +135,8 @@ org:
 il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
   caseload_codes:
-      active: ${ACTIVE_CASELOAD_CODES:[]}
-      pending: ${PENDING_CASELOAD_CODES:[]}
+    active: ${ACTIVE_CASELOAD_CODES:[]}
+    pending: ${PENDING_CASELOAD_CODES:[]}
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
   enable-faster-application-expiry: ${ENABLE_FASTER_APPLICATION_EXPIRY:false}
   enable-faster-application-expiry-minutes: ${ENABLE_FASTER_APPLICATION_EXPIRY_MINUTES:120}

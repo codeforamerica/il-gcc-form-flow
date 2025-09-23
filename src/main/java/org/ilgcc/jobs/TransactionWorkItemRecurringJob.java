@@ -45,10 +45,11 @@ public class TransactionWorkItemRecurringJob {
                     jobScheduler.enqueue(() -> enqueueTransactionWorkItemLookupJob.lookupWorkItemIDForTransaction(transaction));
                 });
     }
-    
+
     public List<Transaction> getTransactionsWithoutWorkItemIdsOlderThanOneHour() {
         Instant oneHourAgo = Instant.now().minus(1, ChronoUnit.HOURS);
         return transactionRepositoryService.getTransactionsWithoutWorkItemIds().stream()
-                .filter(transaction -> transaction.getCreatedAt().before(Date.from(oneHourAgo))).toList();
+                .filter(transaction -> transaction.getCreatedAt().isBefore(oneHourAgo))
+                .toList();
     }
 }
