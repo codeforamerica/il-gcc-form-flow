@@ -135,10 +135,6 @@ jobrunr:
     enabled: ${JOBRUNR_DASHBOARD_ENABLED:false}
 il-gcc:
   app-version: ${APTIBLE_GIT_REF:no-version-set}
-  caseload_codes:
-    active: ${ACTIVE_CASELOAD_CODES:[]}
-    pending: ${PENDING_CASELOAD_CODES:[]}
-
   enable-emails: ${ENABLE_EMAILS_FLAG:true}
   enable-faster-application-expiry: ${ENABLE_FASTER_APPLICATION_EXPIRY:false}
   enable-faster-application-expiry-minutes: ${ENABLE_FASTER_APPLICATION_EXPIRY_MINUTES:120}
