@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 @DataJpaTest
 @EntityScan(basePackageClasses = {
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Import;
 })
 @Import(UserFileTransactionRepositoryService.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("test")
 class UserFileTransactionRepositoryServiceTest {
 
     @Autowired TestEntityManager testEntityManager;
