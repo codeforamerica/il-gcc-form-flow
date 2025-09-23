@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
+import formflow.library.data.UserFileRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(
         classes = IlGCCApplication.class
@@ -44,6 +44,9 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
     @Autowired
     SubmissionRepository submissionRepository;
+    
+    @Autowired
+    UserFileRepository userFileRepository;
 
     @Autowired
     CCMSDataService ccmsDataService;
@@ -96,6 +99,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
     @AfterEach
     protected void clearSubmissions() {
+        userFileRepository.deleteAll();
         transactionRepository.deleteAll();
         submissionRepository.deleteAll();
     }
