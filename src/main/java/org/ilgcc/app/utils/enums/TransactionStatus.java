@@ -5,7 +5,6 @@ import lombok.Getter;
 @Getter
 public enum TransactionStatus {
     
-    NOT_STARTED("Not Started"),
     REQUESTED("Requested"),
     COMPLETED("Completed"),
     FAILED("Failed"),
