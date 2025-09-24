@@ -31,7 +31,6 @@ public class SetOrganizationIdAndCCRRName implements Action {
     private static final String ZIP_CODE_INPUT_NAME = "parentHomeZipCode";
     private static final String APPLICATION_COUNTY_INPUT_NAME = "applicationCounty";
     private static final String APPLICATION_ZIPCODE_INPUT_NAME = "applicationZipCode";
-    private static final String APPLICANT_COUNTY_INPUT_NAME = "applicantAddressCounty";
 
     @Override
     public void run(Submission submission) {
@@ -50,7 +49,8 @@ public class SetOrganizationIdAndCCRRName implements Action {
                 saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
                 return;
             } else {
-                log.info("Submission: {} has a home address zipCode ({}) without a matching organization id. Falling back to application county or zip code.",
+                log.info(
+                        "Submission: {} has a home address zipCode ({}) without a matching organization id. Falling back to application county or zip code.",
                         submission.getId(), unvalidatedZip);
             }
         }
@@ -60,20 +60,25 @@ public class SetOrganizationIdAndCCRRName implements Action {
             Optional<ResourceOrganization> organization = applicationRouterService.getOrganizationByCountyName(applicationCounty);
 
             if (organization.isPresent()) {
-                log.info("Submission: {} has a countyName {} with a matching organization id.", submission.getId(), applicationCounty);
+                log.info("Submission: {} has a countyName {} with a matching organization id.", submission.getId(),
+                        applicationCounty);
                 saveOrganizationIdAndNameAndPhoneNumber(submission, organization.get());
                 return;
             } else {
-                log.info("Submission: {} has a countyName {} without a matching organization id. Falling back to application zipcode.",
+                log.info(
+                        "Submission: {} has a countyName {} without a matching organization id. Falling back to application zipcode.",
                         submission.getId(), applicationCounty);
             }
         }
 
         if (hasValidValue(inputData, APPLICATION_ZIPCODE_INPUT_NAME)) {
             final String applicationZipCode = (String) submission.getInputData().get(APPLICATION_ZIPCODE_INPUT_NAME);
+            saveCountyFromZip(submission, applicationZipCode);
+
             final Optional<ResourceOrganization> org = applicationRouterService.getOrganizationIdByZipCode(
                     applicationZipCode);
-            log.info("Submission: {} has an application zipcode {} with a matching organization id.", submission.getId(), applicationZipCode);
+            log.info("Submission: {} has an application zipcode {} with a matching organization id.", submission.getId(),
+                    applicationZipCode);
             if (org.isPresent()) {
                 saveOrganizationIdAndNameAndPhoneNumber(submission, org.get());
                 return;
@@ -93,12 +98,13 @@ public class SetOrganizationIdAndCCRRName implements Action {
     private void saveCountyFromZip(Submission submission, String zipCode) {
         Optional<County> county = ccmsDataServiceImpl.getCountyByZipCode(zipCode);
         if (county.isPresent()) {
-            submission.getInputData().put(APPLICANT_COUNTY_INPUT_NAME, county.get().getCounty());
+            submission.getInputData().put(APPLICATION_COUNTY_INPUT_NAME, county.get().getCounty());
             submissionRepositoryService.save(submission);
         } else {
-            log.info(String.format("Could not assign a county to to the application with submission ID: %s, using the provided home address zipcode: %s", submission.getId(), zipCode));
+            log.info(String.format(
+                    "Could not assign a county to to the application with submission ID: %s, using the provided home address zipcode: %s",
+                    submission.getId(), zipCode));
         }
-
     }
 
     private boolean hasValidValue(Map<String, Object> inputData, String inputKey) {

@@ -9,7 +9,7 @@ inputFields:
   parentHomeCity: APPLICANT_ADDRESS_HOME_CITY
   parentHomeState: APPLICANT_ADDRESS_HOME_STATE
   parentHomeZipCode: APPLICANT_ADDRESS_HOME_ZIP
-  applicantAddressCounty: APPLICANT_ADDRESS_COUNTY
+  applicationCounty: APPLICANT_ADDRESS_COUNTY
   parentMailingStreetAddress1: APPLICANT_ADDRESS_MAILING_STREET
   parentMailingCity: APPLICANT_ADDRESS_MAILING_CITY
   parentMailingState: APPLICANT_ADDRESS_MAILING_STATE

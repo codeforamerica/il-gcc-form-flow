@@ -36,7 +36,7 @@ public class SendGridEmailValidationService {
         this.sendGrid = sendGrid;
     }
 
-    public HashMap<String, String> validateEmail(String emailAddress) throws IOException {
+    public HashMap<String, String> validateEmail(String emailAddress, boolean familyEmail) throws IOException {
         HashMap<String, String> emailValidationResult = new HashMap<>();
         if (emailAddress == null || emailAddress.isBlank() || !emailAddress.matches(RegexUtils.EMAIL_REGEX)) {
             log.info(
@@ -55,7 +55,7 @@ public class SendGridEmailValidationService {
                         SendGridValidationResponseBody.class);
                 emailValidationResult.put("endpointReached", "success");
 
-                Boolean emailIsValid = isValidEmail(responseBody);
+                Boolean emailIsValid = isValidEmail(responseBody, familyEmail);
                 emailValidationResult.put("emailIsValid", emailIsValid.toString());
                 if (!emailIsValid) {
                     Boolean hasSuggestedEmail = responseBody.getResult().hasSuggestedEmailAddress();
@@ -92,12 +92,13 @@ public class SendGridEmailValidationService {
         return sendGridRequestFailed;
     }
 
-    public Boolean isValidEmail(@NotNull SendGridValidationResponseBody responseBody) {
+    public Boolean isValidEmail(@NotNull SendGridValidationResponseBody responseBody, boolean isFamilyEmail) {
         SendGridValidationResponseBody.Result result = responseBody.getResult();
         boolean validAddressSyntax = result.hasValidAddressSyntax();
         boolean hasMxOrARecord = result.hasMxOrARecord();
         boolean isSuspectedDisposableAddress = result.isSuspectedDisposableAddress();
         boolean hasKnownBounces = result.hasKnownBounces();
+        boolean isSuspectedRoleAddress = result.isSuspectedRoleAddress();
 
         if (!validAddressSyntax) {
             log.debug("Invalid email address syntax");
@@ -111,10 +112,14 @@ public class SendGridEmailValidationService {
         if (isSuspectedDisposableAddress) {
             log.debug("Invalid email, is suspected disposable address");
         }
+        if (isFamilyEmail && isSuspectedRoleAddress) {
+            log.debug("Invalid email, is suspected role address");
+        }
 
         return result.hasValidAddressSyntax() &&
                 result.hasMxOrARecord() &&
                 !result.isSuspectedDisposableAddress() &&
-                !result.hasKnownBounces();
+                !result.hasKnownBounces() &&
+                (!isFamilyEmail || !result.isSuspectedRoleAddress());
     }
 }

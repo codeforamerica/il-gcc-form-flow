@@ -74,10 +74,12 @@ flow:
       - name: parent-county
   parent-county:
     condition: DoesNotHaveValidHomeAddressZipCode
+    beforeDisplayAction: ClearOnboardingZipcode
     nextScreens:
       - name: parent-comm-preference
   parent-zipcode:
     crossFieldValidationAction: ValidateZipCode
+    beforeDisplayAction: ClearOnboardingCounty
     nextScreens:
       - name: parent-comm-preference
   parent-comm-preference:
@@ -108,6 +110,7 @@ flow:
       - name: parent-partner-contact
   parent-partner-contact:
     onPostAction: TrimEmailOnPost
+    crossFieldValidationAction: ValidateParentPartnerContactEmailPhone
     nextScreens:
       - name: parent-partner-info-service
   parent-partner-info-service:
@@ -962,6 +965,7 @@ flow:
       - name: registration-contact-info
   registration-contact-info:
     onPostAction: TrimEmailOnPost
+    crossFieldValidationAction: ValidateRegistrationContactInfo
     nextScreens:
       - name: registration-info-review
   registration-info-review:
