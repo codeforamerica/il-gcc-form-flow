@@ -80,6 +80,14 @@ public class ProviderSubmissionUtilities {
         return Optional.empty();
     }
 
+    private static Optional<Submission> getFamilySubmission(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+        if (familySubmissionId.isPresent()) {
+            return submissionRepositoryService.findById(familySubmissionId.get());
+        }
+        return Optional.empty();
+    }
+
     public static Optional<String> getFamilySubmissionShortCode(Submission providerSubmission) {
         if (providerSubmission.getInputData().containsKey("providerResponseFamilyShortCode")) {
             String providerResponseFamilyShortCode = (String) providerSubmission.getInputData().get(
@@ -430,6 +438,15 @@ public class ProviderSubmissionUtilities {
                         todaysDate) > 0;
     }
 
+    public static boolean hasProviderApplicationExpired (Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+        Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
+        String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
+        if (familySubmissionOptional.isPresent() && !currentProviderUuid.isEmpty()) {
+            return !(ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmissionOptional.get(), providerSubmission));
+        }
+        return true;
+    }
+
     public static Optional<SubmissionStatus> getProviderApplicationResponseStatus(Submission familySubmission) {
         boolean hasProviderApplicationResponseStatus = familySubmission.getInputData()
                 .containsKey("providerApplicationResponseStatus");
@@ -584,22 +601,5 @@ public class ProviderSubmissionUtilities {
 
         List<Map<String, Object>> providerSchedulesForThisProvider = providerSchedules.getOrDefault(providerUuid, Collections.emptyList());
         return DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
-    }
-
-    public static boolean providerSubmissionHasNotExpired(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
-        Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
-        String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
-        if (familySubmissionOptional.isPresent() && !currentProviderUuid.isEmpty()) {
-            return !(ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmissionOptional.get(), providerSubmission));
-        }
-        return true;
-    }
-
-    public static Optional<Submission> getFamilySubmission(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
-        if (familySubmissionId.isPresent()) {
-            return submissionRepositoryService.findById(familySubmissionId.get());
-        }
-        return Optional.empty();
     }
 }

@@ -28,7 +28,7 @@ public class ValidateProviderNoResponseSubmissionHasNotExpired implements Action
     @Override
     public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission providerSubmission) {
         Map<String, List<String>> errorMessages = new HashMap<>();
-        boolean providerSubmissionHasExpired = !(ProviderSubmissionUtilities.providerSubmissionHasNotExpired(providerSubmission, submissionRepositoryService));
+        boolean providerSubmissionHasExpired = !(ProviderSubmissionUtilities.hasProviderApplicationExpired(providerSubmission, submissionRepositoryService));
         Map<String, Object> providerData = providerSubmission.getInputData();
 
         Locale locale = LocaleContextHolder.getLocale();

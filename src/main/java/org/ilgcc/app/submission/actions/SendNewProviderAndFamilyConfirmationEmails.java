@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerSubmissionHasNotExpired;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.hasProviderApplicationExpired;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -29,7 +29,7 @@ public class SendNewProviderAndFamilyConfirmationEmails implements Action {
 
     @Override
     public void run(Submission providerSubmission) {
-        if (providerSubmissionHasNotExpired(providerSubmission, submissionRepositoryService)) {
+        if (hasProviderApplicationExpired(providerSubmission, submissionRepositoryService)) {
             sendNewProviderAgreesToCareFamilyConfirmationEmail.send(providerSubmission);
             sendProviderRespondedConfirmationEmail.send(providerSubmission);
         }
