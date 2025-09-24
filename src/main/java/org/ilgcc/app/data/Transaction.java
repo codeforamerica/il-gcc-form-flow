@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -36,9 +38,9 @@ public class Transaction {
     
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-    private Date createdAt;
+    private Instant createdAt;
     
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Instant updatedAt;
 }
