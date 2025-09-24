@@ -17,27 +17,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidateProviderNoResponseSubmissionHasNotExpired implements Action {
 
-    private final SubmissionRepositoryService submissionRepositoryService;
-    private static final String HIDDEN_PROVIDER_NO_RESPONSE_INPUT = "applicationSubmissionValid";
-    private final MessageSource messageSource;
-  public ValidateProviderNoResponseSubmissionHasNotExpired(SubmissionRepositoryService submissionRepositoryService, MessageSource messageSource) {
-      this.submissionRepositoryService = submissionRepositoryService;
-      this.messageSource = messageSource;
+  private final SubmissionRepositoryService submissionRepositoryService;
+  private static final String HIDDEN_PROVIDER_NO_RESPONSE_INPUT = "applicationSubmissionValid";
+  private final MessageSource messageSource;
+
+  public ValidateProviderNoResponseSubmissionHasNotExpired(SubmissionRepositoryService submissionRepositoryService,
+      MessageSource messageSource) {
+    this.submissionRepositoryService = submissionRepositoryService;
+    this.messageSource = messageSource;
   }
 
-    @Override
-    public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission providerSubmission) {
-        Map<String, List<String>> errorMessages = new HashMap<>();
-        boolean providerSubmissionHasExpired = !(ProviderSubmissionUtilities.hasProviderApplicationExpired(providerSubmission, submissionRepositoryService));
-        Map<String, Object> providerData = providerSubmission.getInputData();
+  @Override
+  public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission providerSubmission) {
+    Map<String, List<String>> errorMessages = new HashMap<>();
+    boolean providerSubmissionHasExpired = !(ProviderSubmissionUtilities.hasProviderApplicationExpired(providerSubmission,
+        submissionRepositoryService));
+    Map<String, Object> providerData = providerSubmission.getInputData();
 
-        Locale locale = LocaleContextHolder.getLocale();
-        if (providerSubmissionHasExpired) {
-            errorMessages.put(HIDDEN_PROVIDER_NO_RESPONSE_INPUT,
-                List.of(messageSource.getMessage("errors.provider-response-expired",
-                    new Object[]{providerData.getOrDefault("ccrrName", ""), providerData.getOrDefault("ccrrPhoneNumber", "")},
-                    locale)));
-        }
-        return errorMessages;
+    Locale locale = LocaleContextHolder.getLocale();
+    if (providerSubmissionHasExpired) {
+      errorMessages.put(HIDDEN_PROVIDER_NO_RESPONSE_INPUT,
+          List.of(messageSource.getMessage("errors.provider-response-expired",
+              new Object[]{providerData.getOrDefault("ccrrName", ""), providerData.getOrDefault("ccrrPhoneNumber", "")},
+              locale)));
     }
+    return errorMessages;
+  }
 }
