@@ -18,6 +18,7 @@ import org.ilgcc.app.data.TransactionRepository;
 import org.ilgcc.app.data.TransactionRepositoryService;
 import org.ilgcc.app.email.ILGCCEmail;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.enums.TransactionType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,7 +96,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
         for (int i = 0; i < allSubmissions.size(); i++) {
             transactionRepositoryService.createTransaction(UUID.randomUUID(), allSubmissions.get(i).getId(),
-                    String.format("WI-000%s", i));
+                    String.format("WI-000%s", i), TransactionType.APPLICATION);
         }
     }
 

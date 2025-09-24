@@ -106,4 +106,21 @@ class CCMSSubmissionPayloadTransactionJobTest {
         assertThat(transaction).isNotNull();
         assertThat(uft.getTransaction().getTransactionId()).isEqualTo(transaction.getTransactionId());
     }
+
+    @Test
+    void sendCCMSTransaction_createsTransactionAndSetsTransactionTypeToApplication() throws Exception {
+        byte[] pdf = "fake-pdf".getBytes();
+        when(pdfService.generatePDFs(any(Submission.class))).thenReturn(Map.of("application.pdf", pdf));
+        doNothing().when(cloudFileRepository).upload(anyString(), any());
+        
+        CCMSTransaction txPayload = org.mockito.Mockito.mock(CCMSTransaction.class);
+        when(txPayload.getFiles()).thenReturn(List.of());
+        when(payloadService.generateSubmissionTransactionPayload(any(Submission.class))).thenReturn(Optional.of(txPayload));
+
+        job.sendCCMSTransaction(submissionId);
+
+        Transaction transaction = transactionRepositoryService.getBySubmissionId(submissionId);
+        assertThat(transaction).isNotNull();
+        assertThat(transaction.getTransactionType().toString()).isEqualTo("APPLICATION");
+    }
 }

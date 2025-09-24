@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.ilgcc.app.utils.enums.TransactionType;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -79,17 +80,12 @@ public class TransactionRepositoryService {
         }
     }
 
-    public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId) {
+    public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId, TransactionType transactionType) {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(transactionId);
         transaction.setSubmissionId(submissionId);
         transaction.setWorkItemId(workItemId);
-        return transactionRepository.save(transaction);
-    }
-
-    public Transaction setWorkItemId(UUID transactionId, String workItemId) {
-        Transaction transaction = transactionRepository.findByTransactionId(transactionId);
-        transaction.setWorkItemId(workItemId);
+        transaction.setTransactionType(transactionType);
         return transactionRepository.save(transaction);
     }
 }
