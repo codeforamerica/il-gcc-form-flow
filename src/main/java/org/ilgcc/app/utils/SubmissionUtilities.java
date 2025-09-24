@@ -494,4 +494,22 @@ public class SubmissionUtilities {
         // all resource orgs match
         return true;
     }
+    
+    /**
+     * @param familySubmission the family submission to be checked against whose list of providers will be used for the check.
+     * @return true if all providers for an application agreed to care otherwise false.
+     */
+    public static boolean allProvidersAgreedToCare(Submission familySubmission) {
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
+                .getOrDefault("providers", EMPTY_LIST);
+        // This needs to check boolean and string because the library converts to string
+        // TODO change this when we standardize to boolean in the library
+        return providers.stream().allMatch(provider -> {
+            Object value = provider.getOrDefault("providerResponseAgreeToCare", "false");
+            if (value instanceof Boolean) {
+                return (Boolean) value;
+            }
+            return "true".equalsIgnoreCase(value.toString());
+        });
+    }
 }

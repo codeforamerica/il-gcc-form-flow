@@ -878,12 +878,12 @@ flow:
   provider-number:
     crossFieldValidationAction: ValidateProviderNumber
     beforeSaveAction: SaveProviderNumberAsBigInteger
-    afterSaveAction: SetResourceOrganization
     nextScreens:
       - name: submit-response
   submit-response:
     beforeDisplayAction: FindApplicationData
     beforeSaveAction: SendProviderAndFamilyEmails
+    onPostAction: SetResourceOrganization
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
       - name: submit-confirmation
