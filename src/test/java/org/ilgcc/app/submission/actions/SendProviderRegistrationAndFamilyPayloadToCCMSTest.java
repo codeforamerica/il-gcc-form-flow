@@ -78,7 +78,6 @@ class SendProviderRegistrationAndFamilyPayloadToCCMSTest {
     sendProviderRegistrationAndFamilyPayloadToCCMS = new SendProviderRegistrationAndFamilyPayloadToCCMS(
         submissionRepositoryService,
         ccmsSubmissionPayloadTransactionJob,
-        true,
         true);
 
     sendProviderRegistrationAndFamilyPayloadToCCMS.run(providerSubmission);
@@ -120,7 +119,6 @@ class SendProviderRegistrationAndFamilyPayloadToCCMSTest {
     sendProviderRegistrationAndFamilyPayloadToCCMS = new SendProviderRegistrationAndFamilyPayloadToCCMS(
         submissionRepositoryService,
         ccmsSubmissionPayloadTransactionJob,
-        true,
         true);
 
     sendProviderRegistrationAndFamilyPayloadToCCMS.run(providerSubmission);
@@ -164,7 +162,6 @@ class SendProviderRegistrationAndFamilyPayloadToCCMSTest {
     sendProviderRegistrationAndFamilyPayloadToCCMS = new SendProviderRegistrationAndFamilyPayloadToCCMS(
         submissionRepositoryService,
         ccmsSubmissionPayloadTransactionJob,
-        true,
         true);
 
     sendProviderRegistrationAndFamilyPayloadToCCMS.run(providerSubmission);
