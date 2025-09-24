@@ -22,8 +22,10 @@ public class TransactionWorkItemRecurringJob {
     private final EnqueueTransactionWorkItemLookupJob enqueueTransactionWorkItemLookupJob;
     private final JobScheduler jobScheduler;
 
-    public TransactionWorkItemRecurringJob(TransactionRepositoryService transactionRepositoryService,
-                                           EnqueueTransactionWorkItemLookupJob enqueueTransactionWorkItemLookupJob, JobScheduler jobScheduler) {
+    public TransactionWorkItemRecurringJob(
+            TransactionRepositoryService transactionRepositoryService,
+            EnqueueTransactionWorkItemLookupJob enqueueTransactionWorkItemLookupJob,
+            JobScheduler jobScheduler) {
         this.transactionRepositoryService = transactionRepositoryService;
         this.enqueueTransactionWorkItemLookupJob = enqueueTransactionWorkItemLookupJob;
         this.jobScheduler = jobScheduler;
