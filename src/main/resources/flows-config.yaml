@@ -1080,8 +1080,6 @@ flow:
     crossFieldValidationAction: ValidateNewProviderSubmissionHasNotExpired
     afterSaveAction: SendProviderRegistrationAndFamilyPayloadToCCMS
     nextScreens:
-      - name: error-provider-response-timed-out
-        condition: ProviderResponseHasExpired
       - name: registration-submit-complete
   registration-submit-complete:
     beforeDisplayAction: SendNewProviderAndFamilyConfirmationEmails
@@ -1096,8 +1094,6 @@ flow:
     condition: ProviderResponseHasNotExpired
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
-      - name: error-provider-response-timed-out
-        condition: ProviderResponseHasExpired
       - name: submit-confirmation
   registration-household-delete-person:
     nextScreens: null
