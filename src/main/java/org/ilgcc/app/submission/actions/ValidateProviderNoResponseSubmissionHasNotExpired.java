@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -29,9 +31,14 @@ public class ValidateProviderNoResponseSubmissionHasNotExpired implements Action
 
   @Override
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission providerSubmission) {
+
     Map<String, List<String>> errorMessages = new HashMap<>();
-    boolean providerSubmissionHasExpired = !(ProviderSubmissionUtilities.hasProviderApplicationExpired(providerSubmission,
-        submissionRepositoryService));
+    Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
+    //check if family submission is present and if so check, that the
+    boolean providerSubmissionHasExpired = familySubmissionOptional.map(familySubmission ->
+        ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmission, providerSubmission))
+        .orElse(false);
+
     Map<String, Object> providerData = providerSubmission.getInputData();
 
     Locale locale = LocaleContextHolder.getLocale();
@@ -42,5 +49,13 @@ public class ValidateProviderNoResponseSubmissionHasNotExpired implements Action
               locale)));
     }
     return errorMessages;
+  }
+
+  private static Optional<Submission> getFamilySubmission(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+    Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+    if (familySubmissionId.isPresent()) {
+      return submissionRepositoryService.findById(familySubmissionId.get());
+    }
+    return Optional.empty();
   }
 }

@@ -6,10 +6,12 @@ import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.SubmissionSenderService;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
 import org.ilgcc.app.email.SendUnidentifiedProviderConfirmationEmail;
+import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -38,11 +40,20 @@ public class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmiss
         // Because this is an unidentified provider, they don't get to upload documents and the job should be
         // enqueued instantly
         // If the providerSubmission has expired before this action has run, we should not send the emails linked to this action
-        if (hasProviderApplicationExpired(providerSubmission, submissionRepositoryService)) {
+        Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
+        if (familySubmissionOptional.isPresent() && !hasProviderApplicationExpired(familySubmissionOptional.get(), providerSubmission)) {
             submissionSenderService.sendProviderSubmissionInstantly(providerSubmission,
                 Optional.of(sendProviderDidNotRespondToFamilyEmail));
 
             sendUnidentifiedProviderConfirmationEmail.send(providerSubmission);
         }
+    }
+
+    private static Optional<Submission> getFamilySubmission(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+        if (familySubmissionId.isPresent()) {
+            return submissionRepositoryService.findById(familySubmissionId.get());
+        }
+        return Optional.empty();
     }
 }

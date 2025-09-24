@@ -31,22 +31,25 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
         // If a provider is an existing provider that has done CCAP stuff before, send their submission to CCMS
         // New Provider Registration will send the application later
         // Prevent sending provider submissions if a providers application has expired.
-        boolean hasProviderApplicationExpired = false;
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
-        if (familySubmissionId.isPresent()) {
-            Optional<Submission> familySubmissionOptional = submissionRepositoryService.findById(familySubmissionId.get());
-            if (familySubmissionOptional.isPresent()) {
-                Submission familySubmission = familySubmissionOptional.get();
-                hasProviderApplicationExpired = ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmission, providerSubmission);
-            }
-        }
 
-        if (!hasProviderApplicationExpired) {
-            if (!ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
-                submissionSenderService.sendProviderSubmission(providerSubmission);
+        Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
+        if (familySubmissionOptional.isPresent()) {
+            if (!ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmissionOptional.get(), providerSubmission)){
+                if (!ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
+                    submissionSenderService.sendProviderSubmission(providerSubmission);
+                }
+            }else {
+                log.error("Your provider submission {} expired.", providerSubmission.getId());
             }
         }else {
-            log.error("Your provider submission {} expired.", providerSubmission.getId());
+            log.error("Family Submission not found for provider: " + providerSubmission.getId());
         }
+    }
+    private static Optional<Submission> getFamilySubmission(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+        if (familySubmissionId.isPresent()) {
+            return submissionRepositoryService.findById(familySubmissionId.get());
+        }
+        return Optional.empty();
     }
 }

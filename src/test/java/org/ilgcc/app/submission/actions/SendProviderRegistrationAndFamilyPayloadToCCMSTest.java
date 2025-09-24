@@ -145,10 +145,9 @@ class SendProviderRegistrationAndFamilyPayloadToCCMSTest {
         .withChild("Second", "Child", "true")
         .withSubmittedAtDate(OffsetDateTime.now())
         .with("providers", List.of(provider1, newProvider))
-        .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE)
         .withMultipleChildcareSchedulesForProvider(List.of("first-child"), provider1.get("uuid").toString())
         .withMultipleChildcareSchedulesForProvider(List.of("second-child"), newProvider.get("uuid").toString())
-        .with("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name())
+        .with("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name())
         .withShortCode("shortCodeTest")
         .build();
     submissionRepositoryService.save(familySubmission);

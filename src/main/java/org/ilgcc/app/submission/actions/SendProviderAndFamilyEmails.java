@@ -2,6 +2,8 @@ package org.ilgcc.app.submission.actions;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.email.SendProviderAgreesToCareFamilyConfirmationEmail;
 import org.ilgcc.app.email.SendProviderRespondedConfirmationEmail;
@@ -33,11 +35,19 @@ public class SendProviderAndFamilyEmails implements Action {
         // If a provider is an existing provider that has done CCAP stuff before, send emails
         // New Provider Registration will send the emails later
         // if the providerSubmission has expired then we should not send the emails linked to this action
-
-        if (!ProviderSubmissionUtilities.isProviderRegistering(providerSubmission) && ProviderSubmissionUtilities.hasProviderApplicationExpired(providerSubmission, submissionRepositoryService)) {
+        Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
+        if (familySubmissionOptional.isPresent() && !ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmissionOptional.get(), providerSubmission) && !ProviderSubmissionUtilities.isProviderRegistering(providerSubmission)) {
             sendProviderAgreesToCareFamilyConfirmationEmail.send(providerSubmission);
             sendProviderDeclinesCareFamilyConfirmationEmail.send(providerSubmission);
             sendProviderRespondedConfirmationEmail.send(providerSubmission);
         }
+    }
+
+    private static Optional<Submission> getFamilySubmission(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+        if (familySubmissionId.isPresent()) {
+            return submissionRepositoryService.findById(familySubmissionId.get());
+        }
+        return Optional.empty();
     }
 }

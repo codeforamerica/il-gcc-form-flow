@@ -25,8 +25,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 class SendNewProviderAndFamilyConfirmationEmailsTest {
 
   SendNewProviderAndFamilyConfirmationEmails sendNewProviderAndFamilyConfirmationEmails;
-  Map<String, Object> providerIsActive = new HashMap<>();
-  Map<String, Object> providerIsNotActive = new HashMap<>();
+  Map<String, Object> providerStatusNotExpired = new HashMap<>();
+  Map<String, Object> providerStatusExpired = new HashMap<>();
 
   private Submission familySubmission;
   Submission providerSubmission;
@@ -42,16 +42,16 @@ class SendNewProviderAndFamilyConfirmationEmailsTest {
 
   @BeforeEach
   void setUp() {
-    providerIsActive.put("uuid", "activeDayCareProviderUuid");
-    providerIsActive.put("iterationIsComplete", true);
-    providerIsActive.put("providerFirstName", "FirstName");
-    providerIsActive.put("providerLastName", "LastName");
+    providerStatusNotExpired.put("uuid", "activeDayCareProviderUuid");
+    providerStatusNotExpired.put("iterationIsComplete", true);
+    providerStatusNotExpired.put("providerFirstName", "FirstName");
+    providerStatusNotExpired.put("providerLastName", "LastName");
 
-    providerIsNotActive.put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.toString());
-    providerIsNotActive.put("uuid", "inactiveDayCareProviderUuid");
-    providerIsNotActive.put("iterationIsComplete", true);
-    providerIsNotActive.put("providerFirstName", "FirstName");
-    providerIsNotActive.put("providerLastName", "LastName");
+    providerStatusExpired.put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.toString());
+    providerStatusExpired.put("uuid", "inactiveDayCareProviderUuid");
+    providerStatusExpired.put("iterationIsComplete", true);
+    providerStatusExpired.put("providerFirstName", "FirstName");
+    providerStatusExpired.put("providerLastName", "LastName");
 
     familySubmission = new SubmissionTestBuilder()
         .withFlow("gcc")
@@ -59,9 +59,9 @@ class SendNewProviderAndFamilyConfirmationEmailsTest {
         .withChild("First", "Child", "true")
         .withChild("Second", "Child", "true")
         .withSubmittedAtDate(OffsetDateTime.now())
-        .with("providers", List.of(providerIsActive, providerIsNotActive))
-        .withMultipleChildcareSchedulesForProvider(List.of("first-child"), providerIsActive.get("uuid").toString())
-        .withMultipleChildcareSchedulesForProvider(List.of("second-child"), providerIsNotActive.get("uuid").toString())
+        .with("providers", List.of(providerStatusNotExpired, providerStatusExpired))
+        .withMultipleChildcareSchedulesForProvider(List.of("first-child"), providerStatusNotExpired.get("uuid").toString())
+        .withMultipleChildcareSchedulesForProvider(List.of("second-child"), providerStatusExpired.get("uuid").toString())
         .withShortCode("shortCodeTest")
         .build();
 

@@ -1,8 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
 
-import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
-
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
@@ -11,7 +9,6 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
-import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.ilgcc.jobs.CCMSSubmissionPayloadTransactionJob;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -45,9 +42,8 @@ public class SendProviderRegistrationAndFamilyPayloadToCCMS implements Action {
 
                 boolean hasProviderApplicationExpired = ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmission, providerSubmission);
                 if (!hasProviderApplicationExpired) {
-                    if (enableMultipleProviders && !isPreMultiProviderApplicationWithSingleProvider(familySubmission)) {
-                        SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
-                        submissionRepositoryService.save(familySubmission);
+                    SubmissionUtilities.setCurrentProviderResponseInFamilyApplication(providerSubmission, familySubmission);
+                    submissionRepositoryService.save(familySubmission);
 
                         if (SubmissionUtilities.haveAllProvidersResponded(familySubmission)) {
                             log.info("New Provider submitted response for family submission {}, enqueuing transfer of documents because all providers responded.",

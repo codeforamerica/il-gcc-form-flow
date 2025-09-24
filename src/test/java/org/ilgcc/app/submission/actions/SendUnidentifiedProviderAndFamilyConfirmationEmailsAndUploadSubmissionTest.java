@@ -27,8 +27,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmissionTest {
 
   SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission sendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission;
-  Map<String, Object> providerIsActive = new HashMap<>();
-  Map<String, Object> providerIsNotActive = new HashMap<>();
+  Map<String, Object> providerWithStatusNotExpired = new HashMap<>();
+  Map<String, Object> providerWithStatusExpired = new HashMap<>();
 
   private Submission familySubmission;
   Submission providerSubmission;
@@ -47,16 +47,16 @@ class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmissionTest
 
   @BeforeEach
   void setUp() {
-    providerIsActive.put("uuid", "activeDayCareProviderUuid");
-    providerIsActive.put("iterationIsComplete", true);
-    providerIsActive.put("providerFirstName", "FirstName");
-    providerIsActive.put("providerLastName", "LastName");
+    providerWithStatusNotExpired.put("uuid", "activeDayCareProviderUuid");
+    providerWithStatusNotExpired.put("iterationIsComplete", true);
+    providerWithStatusNotExpired.put("providerFirstName", "FirstName");
+    providerWithStatusNotExpired.put("providerLastName", "LastName");
 
-    providerIsNotActive.put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.toString());
-    providerIsNotActive.put("uuid", "inactiveDayCareProviderUuid");
-    providerIsNotActive.put("iterationIsComplete", true);
-    providerIsNotActive.put("providerFirstName", "FirstName");
-    providerIsNotActive.put("providerLastName", "LastName");
+    providerWithStatusExpired.put("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.toString());
+    providerWithStatusExpired.put("uuid", "inactiveDayCareProviderUuid");
+    providerWithStatusExpired.put("iterationIsComplete", true);
+    providerWithStatusExpired.put("providerFirstName", "FirstName");
+    providerWithStatusExpired.put("providerLastName", "LastName");
 
     familySubmission = new SubmissionTestBuilder()
         .withFlow("gcc")
@@ -64,9 +64,9 @@ class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmissionTest
         .withChild("First", "Child", "true")
         .withChild("Second", "Child", "true")
         .withSubmittedAtDate(OffsetDateTime.now())
-        .with("providers", List.of(providerIsActive, providerIsNotActive))
-        .withMultipleChildcareSchedulesForProvider(List.of("first-child"), providerIsActive.get("uuid").toString())
-        .withMultipleChildcareSchedulesForProvider(List.of("second-child"), providerIsNotActive.get("uuid").toString())
+        .with("providers", List.of(providerWithStatusNotExpired, providerWithStatusExpired))
+        .withMultipleChildcareSchedulesForProvider(List.of("first-child"), providerWithStatusNotExpired.get("uuid").toString())
+        .withMultipleChildcareSchedulesForProvider(List.of("second-child"), providerWithStatusExpired.get("uuid").toString())
         .withShortCode("shortCodeTest")
         .build();
 

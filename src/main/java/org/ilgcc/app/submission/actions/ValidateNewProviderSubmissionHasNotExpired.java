@@ -1,8 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
 
-import static org.ilgcc.app.utils.ProviderSubmissionUtilities.getFamilySubmissionId;
-
 import formflow.library.config.submission.Action;
 import formflow.library.data.FormSubmission;
 import formflow.library.data.Submission;
@@ -26,7 +24,6 @@ public class ValidateNewProviderSubmissionHasNotExpired implements Action {
   private final SubmissionRepositoryService submissionRepositoryService;
   private static final String PROVIDER_SIGNED_NAME = "providerSignedName";
   private final MessageSource messageSource;
-  private Optional<Submission> familySubmissionOptional;
   private static final String CCRR_NAME_INPUT = "ccrrName";
   private static final String CCRR_PHONE_NUMBER_INPUT = "ccrrPhoneNumber";
 
@@ -39,37 +36,44 @@ public class ValidateNewProviderSubmissionHasNotExpired implements Action {
   @Override
   public Map<String, List<String>> runValidation(FormSubmission formSubmission, Submission providerSubmission) {
     Map<String, Object> providerInputData = providerSubmission.getInputData();
-    Optional<UUID> familySubmissionIdOptional = getFamilySubmissionId(providerSubmission);
-
-    familySubmissionIdOptional.ifPresent(familySubmissionId -> {
-      familySubmissionOptional = submissionRepositoryService.findById(familySubmissionId);
-      if (familySubmissionOptional.isPresent()) {
-        Map<String, Object> familyInputData = familySubmissionOptional.get().getInputData();
-        if (familyInputData.containsKey(CCRR_NAME_INPUT)) {
-          providerInputData.put(CCRR_NAME_INPUT, familyInputData.getOrDefault(CCRR_NAME_INPUT, ""));
-        } else {
-          log.error("Could not find CCR&R name for the familySubmissionId: {}", familySubmissionId);
-        }
-        if (familyInputData.containsKey(CCRR_PHONE_NUMBER_INPUT)) {
-          providerInputData.put(CCRR_PHONE_NUMBER_INPUT, familyInputData.getOrDefault(CCRR_PHONE_NUMBER_INPUT, ""));
-        } else {
-          log.error("Could not find CCR&R phone number for the familySubmissionId: {}", familySubmissionId);
-        }
-      } else {
-        log.error("Could not find submission for the familySubmissionId: {}", familySubmissionId);
-      }
-    });
+    Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
     Map<String, List<String>> errorMessages = new HashMap<>();
-    boolean providerSubmissionHasExpired = !(ProviderSubmissionUtilities.hasProviderApplicationExpired(providerSubmission,
-        submissionRepositoryService));
-    Locale locale = LocaleContextHolder.getLocale();
-    Map<String, Object> providerData = providerSubmission.getInputData();
-    if (providerSubmissionHasExpired) {
-      errorMessages.put(PROVIDER_SIGNED_NAME,
-          List.of(messageSource.getMessage("errors.provider-response-expired",
-              new Object[]{providerData.getOrDefault("ccrrName", ""), providerData.getOrDefault("ccrrPhoneNumber", "")},
-              locale)));
+    if (familySubmissionOptional.isPresent()) {
+      addCcrrNameAndPhoneNumberToProviderData(familySubmissionOptional.get(), providerInputData);
+      boolean providerSubmissionHasExpired = ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmissionOptional.get(), providerSubmission);
+      Map<String, Object> providerData = providerSubmission.getInputData();
+      Locale locale = LocaleContextHolder.getLocale();
+      if (providerSubmissionHasExpired) {
+        errorMessages.put(PROVIDER_SIGNED_NAME,
+            List.of(messageSource.getMessage("errors.provider-response-expired",
+                new Object[]{providerData.getOrDefault("ccrrName", ""), providerData.getOrDefault("ccrrPhoneNumber", "")},
+                locale)));
+      }
+    } else {
+      log.error("Could not find submission for the familySubmission for provider: {}", providerSubmission.getId());
     }
     return errorMessages;
+  }
+
+  private static void addCcrrNameAndPhoneNumberToProviderData(Submission familySubmission, Map<String, Object> providerInputData) {
+    Map<String, Object> familyInputData = familySubmission.getInputData();
+    if (familyInputData.containsKey(CCRR_NAME_INPUT)) {
+      providerInputData.put(CCRR_NAME_INPUT, familyInputData.getOrDefault(CCRR_NAME_INPUT, ""));
+    } else {
+      log.error("Could not find CCR&R name for the familySubmissionId: {}", familySubmission.getId());
+    }
+    if (familyInputData.containsKey(CCRR_PHONE_NUMBER_INPUT)) {
+      providerInputData.put(CCRR_PHONE_NUMBER_INPUT, familyInputData.getOrDefault(CCRR_PHONE_NUMBER_INPUT, ""));
+    } else {
+      log.error("Could not find CCR&R phone number for the familySubmissionId: {}", familySubmission.getId());
+    }
+  }
+
+  private static Optional<Submission> getFamilySubmission(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+    Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
+    if (familySubmissionId.isPresent()) {
+      return submissionRepositoryService.findById(familySubmissionId.get());
+    }
+    return Optional.empty();
   }
 }

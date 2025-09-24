@@ -5,7 +5,6 @@ import static org.ilgcc.app.utils.SchedulePreparerUtility.relatedSubflowIteratio
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
-import formflow.library.data.SubmissionRepositoryService;
 import jakarta.validation.constraints.NotNull;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -76,14 +75,6 @@ public class ProviderSubmissionUtilities {
         if (providerSubmission.getInputData().containsKey("familySubmissionId")) {
             String familySubmissionId = (String) providerSubmission.getInputData().get("familySubmissionId");
             return Optional.of(UUID.fromString(familySubmissionId));
-        }
-        return Optional.empty();
-    }
-
-    private static Optional<Submission> getFamilySubmission(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
-        Optional<UUID> familySubmissionId = ProviderSubmissionUtilities.getFamilySubmissionId(providerSubmission);
-        if (familySubmissionId.isPresent()) {
-            return submissionRepositoryService.findById(familySubmissionId.get());
         }
         return Optional.empty();
     }
@@ -438,15 +429,6 @@ public class ProviderSubmissionUtilities {
                         todaysDate) > 0;
     }
 
-    public static boolean hasProviderApplicationExpired (Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
-        Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
-        String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
-        if (familySubmissionOptional.isPresent() && !currentProviderUuid.isEmpty()) {
-            return !(ProviderSubmissionUtilities.hasProviderApplicationExpired(familySubmissionOptional.get(), providerSubmission));
-        }
-        return true;
-    }
-
     public static Optional<SubmissionStatus> getProviderApplicationResponseStatus(Submission familySubmission) {
         boolean hasProviderApplicationResponseStatus = familySubmission.getInputData()
                 .containsKey("providerApplicationResponseStatus");
@@ -459,15 +441,17 @@ public class ProviderSubmissionUtilities {
     }
 
 
-    public static String getOneProviderApplicationResponseStatus(Submission familySubmission, Submission providerSubmission){
+    public static String getCurrentProviderApplicationResponseStatus(Submission familySubmission, Submission providerSubmission){
         Map<String, Object> currentProvider = relatedSubflowIterationData(familySubmission.getInputData(),
             "providers", providerSubmission.getInputData().getOrDefault("currentProviderUuid", "").toString());
         return (String) currentProvider.getOrDefault("providerApplicationResponseStatus", "");
     }
 
-    //Block expired provider response
+    /**
+     * Checks if the current provider's submission is expired, because the corresponding family submission is expired
+     */
     public static boolean hasProviderApplicationExpired (Submission familySubmission, Submission providerSubmission){
-        String providerApplicationResponseStatus = getOneProviderApplicationResponseStatus(familySubmission, providerSubmission);
+        String providerApplicationResponseStatus = getCurrentProviderApplicationResponseStatus(familySubmission, providerSubmission);
         return providerApplicationResponseStatus.equalsIgnoreCase(SubmissionStatus.EXPIRED.toString());
     }
 
