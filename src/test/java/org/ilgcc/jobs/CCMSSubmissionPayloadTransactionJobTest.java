@@ -93,7 +93,7 @@ class CCMSSubmissionPayloadTransactionJobTest {
 
         // We expect exactly one UserFileTransaction with status REQUESTED for this submission.
         List<UserFileTransaction> userFileTransactions = userFileTransactionRepositoryService
-                .findBySubmissionId_SubmissionIdAndTransactionStatus(submissionId, TransactionStatus.REQUESTED);
+                .findBySubmissionIdAndTransactionStatus(submissionId, TransactionStatus.REQUESTED);
         assertThat(userFileTransactions.size()).isEqualTo(1);
         UserFileTransaction uft = userFileTransactions.getFirst();
 

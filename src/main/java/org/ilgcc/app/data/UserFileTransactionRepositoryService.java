@@ -39,8 +39,8 @@ public class UserFileTransactionRepositoryService {
      * @param status The TransactionStatus to filter by.
      * @return A list of UserFileTransactions matching the given Transaction ID and TransactionStatus.
      */
-    public List<UserFileTransaction> findByTransactionId_TransactionIdAndTransactionStatus(UUID transactionId, TransactionStatus status) {
-        return userFileTransactionRepository.findByTransaction_TransactionIdAndTransactionStatus(transactionId, status);
+    public List<UserFileTransaction> findByTransactionIdAndTransactionStatus(UUID transactionId, TransactionStatus status) {
+        return userFileTransactionRepository.findByTransactionTransactionIdAndTransactionStatus(transactionId, status);
     }
 
     /**
@@ -48,7 +48,7 @@ public class UserFileTransactionRepositoryService {
      * @param status The TransactionStatus to filter by.
      * @return A list of UserFileTransactions matching the given Submission ID and TransactionStatus.
      */
-    public List<UserFileTransaction> findBySubmissionId_SubmissionIdAndTransactionStatus(UUID submissionId, TransactionStatus status) {
-        return userFileTransactionRepository.findBySubmission_IdAndTransactionStatus(submissionId, status);
+    public List<UserFileTransaction> findBySubmissionIdAndTransactionStatus(UUID submissionId, TransactionStatus status) {
+        return userFileTransactionRepository.findBySubmissionIdAndTransactionStatus(submissionId, status);
     }
 }

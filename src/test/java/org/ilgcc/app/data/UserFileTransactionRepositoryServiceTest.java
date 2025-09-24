@@ -82,7 +82,7 @@ class UserFileTransactionRepositoryServiceTest {
         testEntityManager.clear();
         
         List<UserFileTransaction> byTxRequested =
-                userFileTransactionRepositoryService.findByTransactionId_TransactionIdAndTransactionStatus(transactionId, TransactionStatus.REQUESTED);
+                userFileTransactionRepositoryService.findByTransactionIdAndTransactionStatus(transactionId, TransactionStatus.REQUESTED);
         
         assertThat(byTxRequested).hasSize(2);
         assertThat(byTxRequested.get(0).getTransactionStatus()).isEqualTo(TransactionStatus.REQUESTED);
@@ -144,7 +144,7 @@ class UserFileTransactionRepositoryServiceTest {
         testEntityManager.clear();
 
         List<UserFileTransaction> byTxRequested =
-                userFileTransactionRepositoryService.findByTransactionId_TransactionIdAndTransactionStatus(transactionId, TransactionStatus.REQUESTED);
+                userFileTransactionRepositoryService.findByTransactionIdAndTransactionStatus(transactionId, TransactionStatus.REQUESTED);
 
         assertThat(byTxRequested).hasSize(1);
         assertThat(byTxRequested.getFirst().getTransactionStatus()).isEqualTo(TransactionStatus.REQUESTED);
@@ -203,7 +203,7 @@ class UserFileTransactionRepositoryServiceTest {
         testEntityManager.clear();
 
         List<UserFileTransaction> bySubmissionCompleted =
-                userFileTransactionRepositoryService.findBySubmissionId_SubmissionIdAndTransactionStatus(submission.getId(), TransactionStatus.COMPLETED);
+                userFileTransactionRepositoryService.findBySubmissionIdAndTransactionStatus(submission.getId(), TransactionStatus.COMPLETED);
 
         assertThat(bySubmissionCompleted).hasSize(2);
         assertThat(bySubmissionCompleted.get(0).getSubmission().getId()).isEqualTo(submission.getId());
@@ -267,7 +267,7 @@ class UserFileTransactionRepositoryServiceTest {
         testEntityManager.clear();
 
         List<UserFileTransaction> bySubmissionCompleted =
-                userFileTransactionRepositoryService.findBySubmissionId_SubmissionIdAndTransactionStatus(submission.getId(), TransactionStatus.COMPLETED);
+                userFileTransactionRepositoryService.findBySubmissionIdAndTransactionStatus(submission.getId(), TransactionStatus.COMPLETED);
 
         assertThat(bySubmissionCompleted).hasSize(1);
         assertThat(bySubmissionCompleted.getFirst().getSubmission().getId()).isEqualTo(submission.getId());
@@ -280,10 +280,10 @@ class UserFileTransactionRepositoryServiceTest {
     @Test
     void methodsReturnEmptyListWhenNoMatch() {
         List<UserFileTransaction> none1 =
-                userFileTransactionRepositoryService.findByTransactionId_TransactionIdAndTransactionStatus(
+                userFileTransactionRepositoryService.findByTransactionIdAndTransactionStatus(
                         UUID.randomUUID(), TransactionStatus.REQUESTED);
         List<UserFileTransaction> none2 =
-                userFileTransactionRepositoryService.findBySubmissionId_SubmissionIdAndTransactionStatus(
+                userFileTransactionRepositoryService.findBySubmissionIdAndTransactionStatus(
                         UUID.randomUUID(), TransactionStatus.COMPLETED);
 
         assertThat(none1).isEmpty();

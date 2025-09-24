@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserFileTransactionRepository extends JpaRepository<UserFileTransaction, UUID> {
 
-    List<UserFileTransaction> findByTransaction_TransactionIdAndTransactionStatus(UUID transactionId, TransactionStatus status);
+    List<UserFileTransaction> findByTransactionTransactionIdAndTransactionStatus(UUID transactionId, TransactionStatus status);
     
-    List<UserFileTransaction> findBySubmission_IdAndTransactionStatus(UUID submissionId, TransactionStatus status);
+    List<UserFileTransaction> findBySubmissionIdAndTransactionStatus(UUID submissionId, TransactionStatus status);
 }
