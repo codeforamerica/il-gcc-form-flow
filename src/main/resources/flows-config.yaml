@@ -887,11 +887,10 @@ flow:
       - name: submit-response
   submit-response:
     beforeDisplayAction: FindApplicationData
+    crossFieldValidationAction: ValidateExistingProviderSubmissionHasNotExpired
     beforeSaveAction: SendProviderAndFamilyEmails
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
     nextScreens:
-      - name: error-provider-response-timed-out
-        condition: ProviderResponseHasExpired
       - name: submit-confirmation
   #Existing Provider Flow: FEIN
   fein:
@@ -904,7 +903,9 @@ flow:
     nextScreens: 
       - name: submit-response
   confirm-application-submission-no-response:
+    condition: ProviderResponseHasNotExpired
     beforeDisplayAction: GetCCRRNameAndPhoneNumberFromFamilySubmission
+    crossFieldValidationAction: ValidateProviderNoResponseSubmissionHasNotExpired
     afterSaveAction: SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission
     nextScreens:
       - name: error-provider-response-timed-out
@@ -1076,6 +1077,7 @@ flow:
     nextScreens:
       - name: registration-signature
   registration-signature:
+    crossFieldValidationAction: ValidateNewProviderSubmissionHasNotExpired
     afterSaveAction: SendProviderRegistrationAndFamilyPayloadToCCMS
     nextScreens:
       - name: error-provider-response-timed-out

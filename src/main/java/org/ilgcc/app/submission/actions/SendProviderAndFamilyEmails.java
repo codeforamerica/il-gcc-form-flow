@@ -34,7 +34,7 @@ public class SendProviderAndFamilyEmails implements Action {
         // New Provider Registration will send the emails later
         // if the providerSubmission has expired then we should not send the emails linked to this action
 
-        if (!ProviderSubmissionUtilities.isProviderRegistering(providerSubmission) && ProviderSubmissionUtilities.providerSubmissionIsActive(providerSubmission, submissionRepositoryService)) {
+        if (!ProviderSubmissionUtilities.isProviderRegistering(providerSubmission) && ProviderSubmissionUtilities.providerSubmissionHasNotExpired(providerSubmission, submissionRepositoryService)) {
             sendProviderAgreesToCareFamilyConfirmationEmail.send(providerSubmission);
             sendProviderDeclinesCareFamilyConfirmationEmail.send(providerSubmission);
             sendProviderRespondedConfirmationEmail.send(providerSubmission);

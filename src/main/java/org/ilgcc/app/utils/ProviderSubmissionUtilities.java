@@ -586,7 +586,7 @@ public class ProviderSubmissionUtilities {
         return DateUtilities.getEarliestDate(providerSchedulesForThisProvider.stream().map(s -> s.getOrDefault("ccapStartDate", "").toString()).toList());
     }
 
-    public static boolean providerSubmissionIsActive(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
+    public static boolean providerSubmissionHasNotExpired(Submission providerSubmission, SubmissionRepositoryService submissionRepositoryService) {
         Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
         String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
         if (familySubmissionOptional.isPresent() && !currentProviderUuid.isEmpty()) {

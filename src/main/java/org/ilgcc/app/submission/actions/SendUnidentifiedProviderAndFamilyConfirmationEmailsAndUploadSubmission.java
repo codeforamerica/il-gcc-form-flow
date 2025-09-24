@@ -1,6 +1,6 @@
 package org.ilgcc.app.submission.actions;
 
-import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerSubmissionIsActive;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.providerSubmissionHasNotExpired;
 
 import formflow.library.config.submission.Action;
 import formflow.library.data.Submission;
@@ -38,7 +38,7 @@ public class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmiss
         // Because this is an unidentified provider, they don't get to upload documents and the job should be
         // enqueued instantly
         // If the providerSubmission has expired before this action has run, we should not send the emails linked to this action
-        if (providerSubmissionIsActive(providerSubmission, submissionRepositoryService)) {
+        if (providerSubmissionHasNotExpired(providerSubmission, submissionRepositoryService)) {
             submissionSenderService.sendProviderSubmissionInstantly(providerSubmission,
                 Optional.of(sendProviderDidNotRespondToFamilyEmail));
 
