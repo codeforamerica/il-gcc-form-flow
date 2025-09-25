@@ -7,30 +7,53 @@ import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.SubmissionUtilities;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 public class RemoveIncompleteChildIterations implements Action {
 
-    static final String INPUT_NAME = "earliestChildcareStartDate";
-    private final SubmissionRepositoryService submissionRepositoryService;
+    @Autowired
+    SubmissionRepositoryService submissionRepositoryService;
 
-    public RemoveIncompleteChildIterations(SubmissionRepositoryService submissionRepositoryService) {
-        this.submissionRepositoryService = submissionRepositoryService;
-    }
+    static final String INPUT_NAME = "earliestChildcareStartDate";
 
     @Override
     public void run(Submission submission) {
-        var subflowData = (List<Map<String, Object>>) submission.getInputData().getOrDefault("children", emptyList());
-        if (!subflowData.isEmpty()) {
-            log.info("Removing incomplete child iterations from submission {}", submission.getId());
-            subflowData.removeIf(childIteration -> !(boolean) childIteration.getOrDefault("iterationIsComplete", false));
-            submissionRepositoryService.save(submission);
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().getOrDefault(
+                "children",
+                emptyList());
+
+        if (children.isEmpty()) {
+            submission.getInputData().remove("childcareSchedules");
+        } else {
+            submission.getInputData().put("children", children.stream()
+                    .filter(childIteration -> (boolean) childIteration.getOrDefault("iterationIsComplete", false))
+                    .collect(Collectors.toList()));
+            if (submission.getInputData().containsKey("childcareSchedules")) {
+                List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) submission.getInputData()
+                        .get("childcareSchedules");
+
+                Set<String> validChildUuids = children.stream()
+                        .map(child -> (String) child.get("uuid"))
+                        .collect(Collectors.toSet());
+
+                childcareSchedules.removeIf(schedule -> {
+                    String scheduleChildUuid = (String) schedule.get("childUuid");
+                    return scheduleChildUuid == null || !validChildUuids.contains(scheduleChildUuid);
+                });
+            }
         }
+
+        submissionRepositoryService.save(submission);
+
+        // ToDo: remove as part of EnableMultipleProviders cleanup?
         updateEarliestCCAPStartDate(submission);
     }
 
@@ -43,7 +66,8 @@ public class RemoveIncompleteChildIterations implements Action {
     }
 
     private String findEarliestCCAPDate(Submission submission) {
-        List<Map<String, Object>> childrenNeedingAssistance = SubmissionUtilities.getChildrenNeedingAssistance(submission.getInputData());
+        List<Map<String, Object>> childrenNeedingAssistance = SubmissionUtilities.getChildrenNeedingAssistance(
+                submission.getInputData());
 
         if (childrenNeedingAssistance.isEmpty()) {
             return "";
