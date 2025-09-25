@@ -82,7 +82,7 @@ public class CCMSTransactionPayloadServiceTest {
         familyInputData.put("parentFirstName", "Tésty");
         familyInputData.put("parentLastName", "McTéstersün");
         familyInputData.put("parentBirthDate", "12/17/1987");
-        familyInputData.put("providerResponseSubmissionId", providerSubmission.getId());
+        familyInputData.put("providers", List.of(Map.of("providerResponseSubmissionId", providerSubmission.getId())));
         
         familySubmission = Submission.builder()
                 .id(UUID.randomUUID())

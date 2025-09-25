@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepository;
+import formflow.library.data.UserFileRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -20,17 +21,18 @@ import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(
         classes = IlGCCApplication.class
 )
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
     @Autowired
@@ -44,6 +46,9 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
     @Autowired
     SubmissionRepository submissionRepository;
+    
+    @Autowired
+    UserFileRepository userFileRepository;
 
     @Autowired
     CCMSDataService ccmsDataService;
@@ -53,7 +58,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
     String FOUR_RESOURCE_ORG_EMAILS = "{\"12345678901234\": [\"12345678901234@mail.com\", \"12345678901234-2@mail.com\", \"12345678901234-3@mail.com\"], \"12345678901235\": [\"12345678901235@mail.com\"]}";
 
 
-    @Mock
+    @MockitoBean
     private SendEmailJob sendEmailJob;
 
     private DailyNewApplicationsProviderEmailRecurringJob dailyNewApplicationsProviderEmailRecurringJob;
@@ -96,6 +101,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
     @AfterEach
     protected void clearSubmissions() {
+        userFileRepository.deleteAll();
         transactionRepository.deleteAll();
         submissionRepository.deleteAll();
     }

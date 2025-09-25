@@ -1,9 +1,12 @@
 package org.ilgcc.app.data.ccms;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import formflow.library.data.UserFile;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 @EqualsAndHashCode
 public class TransactionFile {
@@ -11,6 +14,11 @@ public class TransactionFile {
     private final String fileName;
     private final String fileType;
     private final String filePayload;
+    
+    @Getter
+    @Setter
+    @JsonIgnore
+    private UserFile userFile;
     
     @JsonCreator
     public TransactionFile(
@@ -20,6 +28,7 @@ public class TransactionFile {
         this.fileName = fileName;
         this.fileType = fileType;
         this.filePayload = filePayload;
+        this.userFile = null;
     }
     
     @JsonProperty("name")
