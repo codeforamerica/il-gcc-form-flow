@@ -44,7 +44,7 @@
            th:text="#{general.files.uploaded-documents}"></p>
       </div>
       <div th:id="${'file-preview-template-' + inputName}" class="file-preview-template">
-        <div class="preview-container"></div>
+        <div class="preview-container" role="list" aria-label="Uploaded files"></div>
       </div>
     </div>
   </div>
@@ -261,7 +261,7 @@
                     <img class="dz-thumb" data-dz-thumbnail aria-hidden="true" />
                 </div>
                 <div class="file">
-                    <div class="dz-filename"><div class="filename-text" data-dz-name></div></div>
+                    <div class="dz-filename"><div class="filename-text" data-dz-name tabindex="0"></div></div>
                     <div class="display-flex body-gray file-details">
                         <div class="dz-size" data-dz-size></div>
                         <span class="file-details-delimiter" aria-hidden="true">•</span>
@@ -291,10 +291,14 @@
           var removeLink = file.previewElement.getElementsByClassName("dz-remove")[0];
           var thumbnail = file.previewElement.getElementsByClassName("dz-thumb")[0];
           fileNameSpan.setAttribute('aria-label', fileNameSpan.innerText);
-          fileNameSpan.innerHTML = "<span class='filename-text-name' aria-hidden='true'>"
+          fileNameSpan.innerHTML = "<span class='filename-text-name'>"
               + fileNameComponents[0] + "</span>" +
-              "<span class='filename-text-ext' aria-hidden='true'>" + fileNameComponents[1]
+              "<span class='filename-text-ext'>" + fileNameComponents[1]
               + "</span>";
+            var announceDiv = document.getElementById('file-announcements-' + [[${inputName}]]);
+            if (announceDiv) {
+                announceDiv.textContent = 'File added: ' + file.name;
+            }
           mixpanel.track('initiate_file_upload', {
             'page_name': window.location.pathname,
             'file_format': file.type,
