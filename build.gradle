@@ -82,7 +82,7 @@ dependencies {
     testImplementation 'org.jsoup:jsoup:1.21.2'
     testImplementation 'org.awaitility:awaitility:4.3.0'
     testImplementation 'io.github.bonigarcia:webdrivermanager:6.3.2'
-    testImplementation 'com.h2database:h2:2.3.232'
+    testImplementation 'com.h2database:h2:2.4.240'
     testImplementation 'com.deque.html.axe-core:selenium:4.10.2'
     testImplementation 'org.projectlombok:lombok:1.18.42'
     testImplementation 'net.javacrumbs.json-unit:json-unit-assertj:4.1.1'
