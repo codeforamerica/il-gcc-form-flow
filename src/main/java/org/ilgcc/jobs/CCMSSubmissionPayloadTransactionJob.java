@@ -42,6 +42,7 @@ import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.TransactionStatus;
+import org.ilgcc.app.utils.enums.TransactionType;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
@@ -282,7 +283,7 @@ public class CCMSSubmissionPayloadTransactionJob {
 
                             UUID transactionId = UUID.fromString(response.get("transactionId").asText());
                             Transaction transaction = transactionRepositoryService.createTransaction(transactionId, submissionId,
-                                    workItemId);
+                                    workItemId, TransactionType.APPLICATION.getValue());
                             List<UserFile> userFiles = ccmsTransaction.getFiles().stream().map(TransactionFile::getUserFile).collect(
                                     Collectors.toCollection(ArrayList::new));
                             userFiles.addAll(backupPdfFiles);
