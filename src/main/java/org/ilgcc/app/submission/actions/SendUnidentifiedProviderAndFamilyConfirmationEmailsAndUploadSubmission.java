@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.SubmissionSenderService;
-import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
+import org.ilgcc.app.email.SendProviderNotIdentifiedFamilyEmail;
 import org.ilgcc.app.email.SendUnidentifiedProviderConfirmationEmail;
 import org.ilgcc.app.utils.ProviderSubmissionUtilities;
 import org.springframework.stereotype.Component;
@@ -18,19 +18,19 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission implements Action {
 
-    private final SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
+    private final SendProviderNotIdentifiedFamilyEmail sendProviderNotIdentifiedFamilyEmail;
     private final SendUnidentifiedProviderConfirmationEmail sendUnidentifiedProviderConfirmationEmail;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final SubmissionSenderService submissionSenderService;
 
     public SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission(
             SubmissionSenderService submissionSenderService,
-        SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail,
+        SendProviderNotIdentifiedFamilyEmail sendProviderNotIdentifiedFamilyEmail,
         SendUnidentifiedProviderConfirmationEmail sendUnidentifiedProviderConfirmationEmail,
         SubmissionRepositoryService submissionRepositoryService) {
 
         this.submissionSenderService = submissionSenderService;
-        this.sendProviderDidNotRespondToFamilyEmail = sendProviderDidNotRespondToFamilyEmail;
+        this.sendProviderNotIdentifiedFamilyEmail = sendProviderNotIdentifiedFamilyEmail;
         this.sendUnidentifiedProviderConfirmationEmail = sendUnidentifiedProviderConfirmationEmail;
         this.submissionRepositoryService = submissionRepositoryService;
     }
@@ -43,7 +43,7 @@ public class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmiss
         Optional<Submission> familySubmissionOptional = getFamilySubmission(providerSubmission, submissionRepositoryService);
         if (familySubmissionOptional.isPresent() && !hasProviderApplicationExpired(familySubmissionOptional.get(), providerSubmission)) {
             submissionSenderService.sendProviderSubmissionInstantly(providerSubmission,
-                Optional.of(sendProviderDidNotRespondToFamilyEmail));
+                Optional.of(sendProviderNotIdentifiedFamilyEmail));
 
             sendUnidentifiedProviderConfirmationEmail.send(providerSubmission);
         }
