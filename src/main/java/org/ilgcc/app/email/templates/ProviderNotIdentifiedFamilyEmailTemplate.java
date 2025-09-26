@@ -56,16 +56,27 @@ public class ProviderNotIdentifiedFamilyEmailTemplate {
                     : messageSource.getMessage("email.response-email-for-family.provider-not-identified.p2-program",
                             new Object[]{emailData.get("childCareProgramName").toString()}, locale);
         }
+        String p3;
+        if (providerType.isBlank()) {
+            p3 = messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
+                new Object[]{emailData.get("familyIntendedProviderName"),toString()}, locale);
+        } else {
+            p3 = providerType.equals("Individual")
+                ? messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
+                new Object[]{emailData.get("childCareProviderInitials").toString()}, locale)
+                : messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
+                    new Object[]{emailData.get("childCareProgramName").toString()}, locale);
+        }
         
-        String p3 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p3",
+        String p4 = messageSource.getMessage("email.response-email-for-family.provider-not-identified.p4",
                 new Object[]{emailData.get("confirmationCode")},
                 locale);
-        String p4 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p4",
+        String p5 = messageSource.getMessage("email.response-email-for-family.provider-not-identified.p5",
                 new Object[]{emailData.get("ccrrName"), emailData.get("ccrrPhoneNumber")}, locale);
-        String p5 = messageSource.getMessage("email.response-email-for-family.provider-did-not-respond.p5", null, locale);
-        String p6 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
-        String p7 = messageSource.getMessage("email.general.footer.cfa", null, locale);
-        return p1 + p2 + p3 + p4 + p5 + p6+ p7;
+        String p6 = messageSource.getMessage("email.response-email-for-family.provider-not-identified.p6", null, locale);
+        String p7 = messageSource.getMessage("email.general.footer.automated-response", null, locale);
+        String p8 = messageSource.getMessage("email.general.footer.cfa", null, locale);
+        return p1 + p2 + p3 + p4 + p5 + p6+ p7 +p8;
     }
 
 }
