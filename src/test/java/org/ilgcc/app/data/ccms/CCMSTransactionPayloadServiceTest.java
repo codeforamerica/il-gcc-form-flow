@@ -94,26 +94,31 @@ public class CCMSTransactionPayloadServiceTest {
 
         testFilledCcapPdf.setMimeType(PDF_CONTENT_TYPE);
         testFilledCcapPdf.setFileId(UUID.randomUUID());
+        testFilledCcapPdf.setOriginalName("CCAP-Application-Form.pdf");
         testFilledCcapPdf.setRepositoryPath("testFilledCcapPath");
         testFilledCcapPdf.setSubmission(familySubmission);
         
         testConvertedJpegPdf.setMimeType(PDF_CONTENT_TYPE);
         testConvertedJpegPdf.setFileId(UUID.randomUUID());
+        testConvertedJpegPdf.setOriginalName("testJpeg.jpg");
         testConvertedJpegPdf.setRepositoryPath("testConvertedJpegPath");
         testConvertedJpegPdf.setSubmission(familySubmission);
         
         testConvertedPngPdf.setMimeType(PDF_CONTENT_TYPE);
         testConvertedPngPdf.setFileId(UUID.randomUUID());
+        testConvertedPngPdf.setOriginalName("testPng.png");
         testConvertedPngPdf.setRepositoryPath("testConvertedPngPath");
         testConvertedPngPdf.setSubmission(familySubmission);
         
         testProviderUploadedPdf1.setMimeType(PDF_CONTENT_TYPE);
         testProviderUploadedPdf1.setFileId(UUID.randomUUID());
+        testProviderUploadedPdf1.setOriginalName("testProviderUploaded1.pdf");
         testProviderUploadedPdf1.setRepositoryPath("testProviderUploadedPdf1Path");
         testProviderUploadedPdf1.setSubmission(providerSubmission);
         
         testProviderUploadedPdf2.setMimeType(PDF_CONTENT_TYPE);
         testProviderUploadedPdf2.setFileId(UUID.randomUUID());
+        testProviderUploadedPdf2.setOriginalName("testProviderUploaded2.pdf");
         testProviderUploadedPdf2.setRepositoryPath("testProviderUploadedPdf2Path");
         testProviderUploadedPdf2.setSubmission(providerSubmission);
 
