@@ -142,9 +142,7 @@ il-gcc:
   resource-org-emails: ${RESOURCE_ORG_EMAILS:null}
   resource-org-emails-delay-seconds: ${RESOURCE_ORG_EMAILS_DELAY:15}
   no-provider-response-delay-seconds: ${NO_PROVIDER_RESPONSE_DELAY:5}
-  enable-new-sda-caseload-codes: ${ENABLE_NEW_SDA_CASELOAD_CODES:false}
   enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:false}
-  ccms-integration-enabled: ${ENABLE_CCMS_INTEGRATION:false}
   ccms-api:
     api-subscription-key: ${OCP_APIM_SUBSCRIPTION_KEY}
     base-url: ${CCMS_API_BASE_URL}
