@@ -17,12 +17,12 @@ import org.springframework.test.context.ActiveProfiles;
     classes = IlGCCApplication.class
 )
 @ActiveProfiles("test")
-class GetCCRRNameFromFamilySubmissionTest {
+class GetCCRRNameAndPhoneNumberFromFamilySubmissionTest {
 
   @Autowired
   private SubmissionRepositoryService submissionRepositoryService;
   @Autowired
-  private GetCCRRNameFromFamilySubmission getCCRRNameFromFamilySubmission;
+  private GetCCRRNameAndPhoneNumberFromFamilySubmission getCCRRNameAndPhoneNumberFromFamilySubmission;
 
 
   @Autowired
@@ -51,7 +51,7 @@ class GetCCRRNameFromFamilySubmissionTest {
         .withProviderSubmissionData()
         .build());
 
-    getCCRRNameFromFamilySubmission.run(providerSubmission);
+    getCCRRNameAndPhoneNumberFromFamilySubmission.run(providerSubmission);
     assertTrue(providerSubmission.getInputData().containsKey(CCRR_NAME_INPUT));
     assertEquals(CCRR_NAME_VALUE, familySubmission.getInputData().get(CCRR_NAME_INPUT));
   }
@@ -69,7 +69,7 @@ class GetCCRRNameFromFamilySubmissionTest {
         .withProviderSubmissionData()
         .build());
 
-    getCCRRNameFromFamilySubmission.run(providerSubmission);
+    getCCRRNameAndPhoneNumberFromFamilySubmission.run(providerSubmission);
     assertFalse(providerSubmission.getInputData().containsKey(CCRR_NAME_INPUT));
   }
 }

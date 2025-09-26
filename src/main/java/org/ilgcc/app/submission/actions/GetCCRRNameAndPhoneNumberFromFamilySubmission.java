@@ -14,31 +14,37 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class GetCCRRNameFromFamilySubmission implements Action {
+public class GetCCRRNameAndPhoneNumberFromFamilySubmission implements Action {
 
     @Autowired
     SubmissionRepositoryService submissionRepositoryService;
 
     private Optional<Submission> familySubmissionOptional;
     private static final String CCRR_NAME_INPUT = "ccrrName";
+    private static final String CCRR_PHONE_NUMBER_INPUT = "ccrrPhoneNumber";
 
     @Override
     public void run(Submission providerSubmission) {
         Map<String, Object> providerInputData = providerSubmission.getInputData();
         //get family submission from provider submission
-        Optional<UUID> familySubmissionID = getFamilySubmissionId(providerSubmission);
+        Optional<UUID> familySubmissionIdOptional = getFamilySubmissionId(providerSubmission);
 
-        familySubmissionID.ifPresent(familySubmissionId -> {
+        familySubmissionIdOptional.ifPresent(familySubmissionId -> {
             familySubmissionOptional = submissionRepositoryService.findById(familySubmissionId);
             if (familySubmissionOptional.isPresent()) {
                 Map<String, Object> familyInputData = familySubmissionOptional.get().getInputData();
                 if (familyInputData.containsKey(CCRR_NAME_INPUT)) {
                     providerInputData.put(CCRR_NAME_INPUT, familyInputData.getOrDefault(CCRR_NAME_INPUT, ""));
                 } else {
-                    log.error("Could not find CCR&R name for the familySubmissionId: {}", familySubmissionID);
+                    log.error("Could not find CCR&R name for the familySubmissionId: {}", familySubmissionId);
+                }
+                if (familyInputData.containsKey(CCRR_PHONE_NUMBER_INPUT)) {
+                    providerInputData.put(CCRR_PHONE_NUMBER_INPUT, familyInputData.getOrDefault(CCRR_PHONE_NUMBER_INPUT, ""));
+                } else {
+                    log.error("Could not find CCR&R phone number for the familySubmissionId: {}", familySubmissionId);
                 }
             } else {
-                log.error("Could not find submission for the familySubmissionId: {}", familySubmissionID);
+                log.error("Could not find submission for the familySubmissionId: {}", familySubmissionId);
             }
         });
     }

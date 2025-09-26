@@ -14,6 +14,7 @@
           <th:block th:replace="~{fragments/form :: form(action=|/flow/${flow}/${screen}/submit|, content=~{::formContent})}">
             <th:block th:ref="formContent">
               <div class="form-card__content">
+                <input type="hidden" name="applicationSubmissionValid" value="validate">
                 <p th:utext="#{confirm-application-submission-no-response.body.p1}"></p>
                 <p th:text="#{confirm-application-submission-no-response.body.p2}"></p>
                 <p th:utext="#{confirm-application-submission-no-response.body.p3(${submission.getInputData().getOrDefault('ccrrName', '')})}"></p>

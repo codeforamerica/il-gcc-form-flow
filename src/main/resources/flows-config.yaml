@@ -837,6 +837,10 @@ flow:
   error-response-recorded:
     condition: EnableMultipleProviders
     nextScreens: null
+  error-provider-response-timed-out:
+    condition: EnableMultipleProviders
+    beforeDisplayAction: GetCCRRNameAndPhoneNumberFromFamilySubmission
+    nextScreens: null
   paid-by-ccap:
     beforeDisplayAction: SetCurrentProviderForSingleProviderSubmission
     nextScreens:
@@ -882,6 +886,7 @@ flow:
       - name: submit-response
   submit-response:
     beforeDisplayAction: FindApplicationData
+    crossFieldValidationAction: ValidateExistingProviderSubmissionHasNotExpired
     beforeSaveAction: SendProviderAndFamilyEmails
     onPostAction: SetResourceOrganization
     afterSaveAction: UploadProviderSubmissionToS3AndSendToCCMS
@@ -898,9 +903,13 @@ flow:
     nextScreens: 
       - name: submit-response
   confirm-application-submission-no-response:
-    beforeDisplayAction: GetCCRRNameFromFamilySubmission
+    condition: ProviderResponseHasNotExpired
+    beforeDisplayAction: GetCCRRNameAndPhoneNumberFromFamilySubmission
+    crossFieldValidationAction: ValidateProviderNoResponseSubmissionHasNotExpired
     afterSaveAction: SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission
     nextScreens:
+      - name: error-provider-response-timed-out
+        condition: ProviderResponseHasExpired
       - name: submit-confirmation
   # Provider Registration Flow
   registration-start:
@@ -1068,6 +1077,7 @@ flow:
     nextScreens:
       - name: registration-signature
   registration-signature:
+    crossFieldValidationAction: ValidateNewProviderSubmissionHasNotExpired
     afterSaveAction: SendProviderRegistrationAndFamilyPayloadToCCMS
     nextScreens:
       - name: registration-submit-complete
@@ -1081,6 +1091,7 @@ flow:
         condition: ProviderIsRegistering
       - name: submit-start
   submit-confirmation:
+    condition: ProviderResponseHasNotExpired
     beforeDisplayAction: FormatSubmittedAtDate
     nextScreens:
       - name: submit-confirmation
@@ -1104,6 +1115,7 @@ subflows:
 landmarks:
   firstScreen: submit-start
   afterSubmitPages:
+    - error-provider-response-timed-out
     - registration-submit-complete
     - submit-confirmation
     - registration-submit-next-steps

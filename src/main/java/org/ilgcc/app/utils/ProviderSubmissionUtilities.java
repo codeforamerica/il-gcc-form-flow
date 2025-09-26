@@ -1,6 +1,7 @@
 package org.ilgcc.app.utils;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static org.ilgcc.app.utils.SchedulePreparerUtility.relatedSubflowIterationData;
 import static org.ilgcc.app.utils.SubmissionUtilities.MM_DD_YYYY;
 
 import formflow.library.data.Submission;
@@ -24,7 +25,6 @@ import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Component
 @Slf4j
@@ -440,6 +440,20 @@ public class ProviderSubmissionUtilities {
         }
     }
 
+
+    public static String getCurrentProviderApplicationResponseStatus(Submission familySubmission, Submission providerSubmission){
+        Map<String, Object> currentProvider = relatedSubflowIterationData(familySubmission.getInputData(),
+            "providers", providerSubmission.getInputData().getOrDefault("currentProviderUuid", "").toString());
+        return (String) currentProvider.getOrDefault("providerApplicationResponseStatus", "");
+    }
+
+    /**
+     * Checks if the current provider's submission is expired, because the corresponding family submission is expired
+     */
+    public static boolean hasProviderApplicationExpired (Submission familySubmission, Submission providerSubmission){
+        String providerApplicationResponseStatus = getCurrentProviderApplicationResponseStatus(familySubmission, providerSubmission);
+        return providerApplicationResponseStatus.equalsIgnoreCase(SubmissionStatus.EXPIRED.toString());
+    }
 
     public static boolean isFamilySubmissionStatusNotInactive(@NotNull Submission familySubmission) {
         Optional<SubmissionStatus> statusOptional = getProviderApplicationResponseStatus(familySubmission);
