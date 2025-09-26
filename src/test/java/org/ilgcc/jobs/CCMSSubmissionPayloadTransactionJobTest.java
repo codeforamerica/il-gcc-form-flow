@@ -121,6 +121,6 @@ class CCMSSubmissionPayloadTransactionJobTest {
 
         Transaction transaction = transactionRepositoryService.getBySubmissionId(submissionId);
         assertThat(transaction).isNotNull();
-        assertThat(transaction.getTransactionType().toString()).isEqualTo("APPLICATION");
+        assertThat(transaction.getTransactionType().toString()).isEqualTo("application");
     }
 }
