@@ -13,7 +13,7 @@ $$
 
             -- Backfill existing rows with APPLICATION
             UPDATE transactions
-            SET transaction_type = 'APPLICATION'
+            SET transaction_type = 'application'
             WHERE transaction_type IS NULL;
 
             -- Now make the column NOT NULL

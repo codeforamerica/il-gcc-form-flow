@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.ilgcc.app.utils.enums.TransactionType;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -80,7 +79,7 @@ public class TransactionRepositoryService {
         }
     }
 
-    public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId, TransactionType transactionType) {
+    public Transaction createTransaction(UUID transactionId, UUID submissionId, String workItemId, String transactionType) {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(transactionId);
         transaction.setSubmissionId(submissionId);

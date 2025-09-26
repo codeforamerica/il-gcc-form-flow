@@ -283,7 +283,7 @@ public class CCMSSubmissionPayloadTransactionJob {
 
                             UUID transactionId = UUID.fromString(response.get("transactionId").asText());
                             Transaction transaction = transactionRepositoryService.createTransaction(transactionId, submissionId,
-                                    workItemId, TransactionType.APPLICATION);
+                                    workItemId, TransactionType.APPLICATION.getValue());
                             List<UserFile> userFiles = ccmsTransaction.getFiles().stream().map(TransactionFile::getUserFile).collect(
                                     Collectors.toCollection(ArrayList::new));
                             userFiles.addAll(backupPdfFiles);

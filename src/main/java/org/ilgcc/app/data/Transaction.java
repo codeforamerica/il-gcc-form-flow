@@ -2,10 +2,7 @@ package org.ilgcc.app.data;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
@@ -15,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.ilgcc.app.utils.enums.TransactionType;
 
 
 @Entity
@@ -30,13 +26,12 @@ public class Transaction {
     private UUID transactionId;
     
     @Column(name = "transaction_type")
-    @Enumerated(EnumType.STRING)
-    private TransactionType transactionType;
+    private String transactionType;
     
     @Column(name = "work_item_id")
     private String workItemId;
     
-    @JoinColumn(name = "submission_id")
+    @Column(name = "submission_id")
     private UUID submissionId;
     
     @CreationTimestamp
