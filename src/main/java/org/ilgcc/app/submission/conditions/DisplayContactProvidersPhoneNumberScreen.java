@@ -7,12 +7,12 @@ import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DisplayContactProvidersPhoneNumberScreen extends EnableMultipleProviders implements Condition {
+public class DisplayContactProvidersPhoneNumberScreen implements Condition {
 
     @Override
     public Boolean run(Submission submission, String subflowUuid) {
         Map<String, Object> subflowData = submission.getSubflowEntryByUuid("contactProviders", subflowUuid);
-        return super.run(submission) && SubmissionUtilities.isSelectedAsProviderContactMethod(subflowData, "TEXT")
+        return SubmissionUtilities.isSelectedAsProviderContactMethod(subflowData, "TEXT")
                 && isMissingProviderPhoneNumber(subflowData);
     }
 

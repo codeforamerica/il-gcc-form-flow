@@ -1,12 +1,9 @@
 <th:block
-        th:with="textPrefix=${@environment.getProperty('il-gcc.enable-multiple-providers') == 'true' ? 'children-info-intro-multiple' : 'children-info-intro-single'},
-currentStep=${@environment.getProperty('il-gcc.enable-multiple-providers') == 'true' ? '3' : '2'}">
-    <th:block
-            th:replace="~{fragments/screens/family-application-intro-screen ::
+        th:replace="~{fragments/screens/family-application-intro-screen ::
       screen(
-        textPrefix=${textPrefix},
+        textPrefix='children-info-intro-multiple',
         iconFragment=~{fragments/gcc-icons :: household-family},
-        currentStep=${currentStep}
+        currentStep='3',
+        stepCount='7'
         )}">
-    </th:block>
 </th:block>

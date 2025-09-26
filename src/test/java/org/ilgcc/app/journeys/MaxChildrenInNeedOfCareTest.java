@@ -13,10 +13,8 @@ import org.ilgcc.app.utils.AbstractMockMvcTest;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.ResultActions;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class MaxChildrenInNeedOfCareTest extends AbstractMockMvcTest {
 
     @Override

@@ -334,7 +334,7 @@ public abstract class AbstractBasePageTest {
     }
 
     /**
-     * This compares the pdf fields in the generated pdf and our expected test pdf, "test_filled_ccap.pdf". If there are updates
+     * This compares the pdf fields in the generated pdf and our expected test pdf. If there are updates
      * to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and
      * values.
      */

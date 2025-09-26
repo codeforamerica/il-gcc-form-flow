@@ -8,14 +8,14 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AgreesToCopySchedule extends EnableMultipleProviders implements Condition {
+public class AgreesToCopySchedule implements Condition {
 
     @Override
     public Boolean run(Submission submission, String subflowUuid, String repeatForIterationUuid) {
         Map<String, Object> childcareSubflow = submission.getSubflowEntryByUuid("childcareSchedules", subflowUuid);
         Map<String, Object> currentProviderSchedule = relatedSubflowIterationData(childcareSubflow, "providerSchedules",
                 repeatForIterationUuid);
-        return super.run(submission) && clientAgreesToCopySchedule(currentProviderSchedule);
+        return clientAgreesToCopySchedule(currentProviderSchedule);
     }
 
     private boolean clientAgreesToCopySchedule(Map<String, Object> currentProviderSchedule) {

@@ -7,12 +7,12 @@ import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DisplayContactProvidersEmailScreen extends EnableMultipleProviders implements Condition {
+public class DisplayContactProvidersEmailScreen implements Condition {
 
     @Override
     public Boolean run(Submission submission, String subflowUuid) {
         Map<String, Object> subflow = submission.getSubflowEntryByUuid("contactProviders", subflowUuid);
-        return super.run(submission) && SubmissionUtilities.isSelectedAsProviderContactMethod(subflow, "EMAIL")
+        return SubmissionUtilities.isSelectedAsProviderContactMethod(subflow, "EMAIL")
                 && isMissingProviderEmail(subflow);
     }
 

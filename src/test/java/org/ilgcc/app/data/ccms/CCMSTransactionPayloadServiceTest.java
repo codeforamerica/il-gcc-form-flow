@@ -66,7 +66,7 @@ public class CCMSTransactionPayloadServiceTest {
     private final UserFile testConvertedPngPdf = new UserFile();
     private final UserFile testProviderUploadedPdf1 = new UserFile();
     private final UserFile testProviderUploadedPdf2 = new UserFile();
-    private final Path testFilledCcapPdfPath = Path.of("src/test/resources/output/test_filled_ccap.pdf");
+    private final Path testFilledCcapPdfPath = Path.of("src/test/resources/output/test_filled_ccap_NO_PROVIDER.pdf");
     private final Path testConvertedJpegPath = Path.of("src/test/resources/test-image-jpeg-converted.pdf");
     private final Path testConvertedPngPath = Path.of("src/test/resources/test-image-png-converted.pdf");
     

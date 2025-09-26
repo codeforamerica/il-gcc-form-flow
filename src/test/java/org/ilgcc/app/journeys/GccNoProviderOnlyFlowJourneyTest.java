@@ -11,7 +11,7 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
-public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
+public class GccNoProviderOnlyFlowJourneyTest extends AbstractBasePageTest {
 
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap_NO_PROVIDER.pdf";
 
