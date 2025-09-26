@@ -21,10 +21,13 @@ import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
+import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.DateUtilities;
 import org.ilgcc.app.utils.FileNameUtility;
+import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -78,28 +81,56 @@ public class CCMSTransactionPayloadService {
         List<TransactionFile> transactionFiles = new ArrayList<>();
 
         try {
-            Map<String, byte[]> filledOutPDFs = pdfService.generatePDFs(familySubmission);
-            for (Map.Entry<String, byte[]> entry : filledOutPDFs.entrySet()) {
-                String fileName = entry.getKey();
-                byte[] fileContent = entry.getValue();
+            Map<String, byte[]> pdfs = pdfService.generatePDFs(familySubmission);
 
-                if (fileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))) {
-                    TransactionFile applicationPdfJSON = new TransactionFile(fileName, FileTypeId.APPLICATION_PDF.getValue(),
-                            Base64.getEncoder().encodeToString(fileContent));
+            for (Map.Entry<String, byte[]> entry : pdfs.entrySet()) {
+                String pdfFileName = entry.getKey();
+                byte[] pdfBytes = entry.getValue();
+
+                MultipartFile multipartFile =
+                        new ByteArrayMultipartFile(pdfBytes, pdfFileName, PDF_CONTENT_TYPE);
+
+                String s3ZipPath = SubmissionUtilities.generatePdfPath(pdfFileName, familySubmission.getId());
+                cloudFileRepository.upload(s3ZipPath, multipartFile);
+                UserFile applicationPDF = UserFile.builder()
+                        .fileId(UUID.randomUUID())
+                        .submission(familySubmission)
+                        .originalName(pdfFileName)
+                        .repositoryPath(s3ZipPath)
+                        .filesize((float) pdfBytes.length)
+                        .mimeType(PDF_CONTENT_TYPE)
+                        .virusScanned(true)
+                        .build();
+                userFileRepositoryService.save(applicationPDF);
+
+                if (pdfFileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))) {
+                    TransactionFile applicationPdfJSON = new TransactionFile(pdfFileName, FileTypeId.APPLICATION_PDF.getValue(),
+                            Base64.getEncoder().encodeToString(pdfBytes), applicationPDF);
                     transactionFiles.add(applicationPdfJSON);
                 } else {
-                    TransactionFile additionalProviderPagesJSON = new TransactionFile(fileName,
+                    TransactionFile additionalProviderPagesJSON = new TransactionFile(pdfFileName,
                             FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                            Base64.getEncoder().encodeToString(fileContent));
+                            Base64.getEncoder().encodeToString(pdfBytes), applicationPDF);
                     transactionFiles.add(additionalProviderPagesJSON);
                 }
             }
         } catch (IOException e) {
-            log.error(
-                    "There was an error when generating the application PDF for sending to the CCMS Submission Endpoint for Submission with ID {}.",
-                    familySubmission.getId(), e);
+            log.error("Error uploading submission {} PDFs to S3. Could not complete sending the submission to CCMS.",
+                    familySubmission, e);
+            throw new RuntimeException(
+                    String.format("Failed to upload PDF files for Submission %s to S3. Could not complete CCMS submission.",
+                            familySubmission.getId()), e
+            );
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.error("Interrupted while uploading PDF files to S3 for submission {}. Could not complete CCMS submission.",
+                    familySubmission, e);
+            throw new RuntimeException(
+                    String.format("Failed to upload PDF files for Submission %s to S3. Could not complete CCMS submission.",
+                            familySubmission.getId()), e
+            );
         }
-
+        
         List<UserFile> allFiles = new ArrayList<>();
 
         List<Map<String, Object>> providers = (List<Map<String, Object>>) familySubmission.getInputData()
@@ -112,9 +143,11 @@ public class CCMSTransactionPayloadService {
             }
         }
 
-        List<UserFile> userFiles = findAllFiles(familySubmission);
-
-        allFiles.addAll(userFiles);
+        List<UserFile> usersUploadedFiles = findAllFiles(familySubmission).stream()
+                .filter(userFile -> !userFile.getOriginalName().contains("CCAP-Application-Form"))
+                .toList();
+        
+        allFiles.addAll(usersUploadedFiles);
 
         for (int i = 0; i < allFiles.size(); i++) {
             UserFile userFile = allFiles.get(i);
@@ -136,8 +169,7 @@ public class CCMSTransactionPayloadService {
             }
             TransactionFile transactionFile = new TransactionFile(
                     FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
-                    FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes()));
-            transactionFile.setUserFile(userFile);
+                    FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes()), userFile);
             transactionFiles.add(transactionFile);
         }
 

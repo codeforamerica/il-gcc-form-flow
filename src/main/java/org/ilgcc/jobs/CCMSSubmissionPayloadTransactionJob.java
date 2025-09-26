@@ -1,7 +1,6 @@
 package org.ilgcc.jobs;
 
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
-import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
 import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_ENDPOINT;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -39,7 +38,6 @@ import org.ilgcc.app.data.ccms.TransactionFile;
 import org.ilgcc.app.email.SendFamilyApplicationTransmittedConfirmationEmail;
 import org.ilgcc.app.email.SendFamilyApplicationTransmittedProviderConfirmationEmail;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
-import org.ilgcc.app.utils.ByteArrayMultipartFile;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.TransactionStatus;
 import org.ilgcc.app.utils.enums.TransactionType;
@@ -48,7 +46,6 @@ import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -215,40 +212,6 @@ public class CCMSSubmissionPayloadTransactionJob {
                 Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
                 if (submissionOptional.isPresent()) {
                     Submission submission = submissionOptional.get();
-
-                    List<UserFile> backupPdfFiles = new ArrayList<>();
-                    try {
-                        Map<String, byte[]> pdfs = multiProviderPDFService.generatePDFs(submission);
-
-                        for (Map.Entry<String, byte[]> entry : pdfs.entrySet()) {
-                            String pdfFileName = entry.getKey();
-                            byte[] pdfBytes = entry.getValue();
-
-                            MultipartFile multipartFile =
-                                    new ByteArrayMultipartFile(pdfBytes, pdfFileName, PDF_CONTENT_TYPE);
-
-                            String s3ZipPath = SubmissionUtilities.generatePdfPath(pdfFileName, submission.getId());
-                            cloudFileRepository.upload(s3ZipPath, multipartFile);
-                            UserFile applicationPDF = UserFile.builder()
-                                    .fileId(UUID.randomUUID())
-                                    .submission(submission)
-                                    .originalName(pdfFileName)
-                                    .repositoryPath(s3ZipPath)
-                                    .filesize((float) pdfBytes.length)
-                                    .mimeType(PDF_CONTENT_TYPE)
-                                    .virusScanned(true)
-                                    .build();
-                            userFileRepositoryService.save(applicationPDF);
-                            backupPdfFiles.add(applicationPDF);
-                        }
-                    } catch (IOException e) {
-                        log.error("Error uploading submission {} backup PDFs to S3 (continuing with CCMS send)", submissionId, e);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        log.error("Interrupted while uploading PDF backup files to S3 for submission {} (continuing with CCMS send)",
-                                submissionId, e);
-                    }
-
                     Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
                             submission);
                     if (ccmsTransactionOptional.isPresent()) {
@@ -286,7 +249,6 @@ public class CCMSSubmissionPayloadTransactionJob {
                                     workItemId, TransactionType.APPLICATION.getValue());
                             List<UserFile> userFiles = ccmsTransaction.getFiles().stream().map(TransactionFile::getUserFile).collect(
                                     Collectors.toCollection(ArrayList::new));
-                            userFiles.addAll(backupPdfFiles);
                             userFileTransactionRepositoryService.saveAll(
                                     userFiles.stream().map(userFile -> UserFileTransaction.builder()
                                             .userFile(userFile)
