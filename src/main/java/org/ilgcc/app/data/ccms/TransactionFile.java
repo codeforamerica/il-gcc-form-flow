@@ -24,11 +24,12 @@ public class TransactionFile {
     public TransactionFile(
             @JsonProperty("name") String fileName,
             @JsonProperty("type") String fileType,
-            @JsonProperty("payload") String filePayload) {
+            @JsonProperty("payload") String filePayload,
+            UserFile userFile) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.filePayload = filePayload;
-        this.userFile = null;
+        this.userFile = userFile;
     }
     
     @JsonProperty("name")
