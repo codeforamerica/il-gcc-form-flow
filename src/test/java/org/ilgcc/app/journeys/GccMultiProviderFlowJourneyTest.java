@@ -10,9 +10,7 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
     @Test

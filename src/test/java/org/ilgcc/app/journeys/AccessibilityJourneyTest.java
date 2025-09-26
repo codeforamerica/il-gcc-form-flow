@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @Tag("a11y")
-public class AccessibilityJourneyTest extends GccSingleProviderJourneyTest {
+public class AccessibilityJourneyTest extends GccMultiProviderFlowJourneyTest {
 
     protected static List<Rule> resultsList = new ArrayList<>();
     protected static Results results;
