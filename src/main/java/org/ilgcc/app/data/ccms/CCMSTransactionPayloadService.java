@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.data.ccms.TransactionFile.FileTypeId;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
@@ -79,40 +80,53 @@ public class CCMSTransactionPayloadService {
 
     private List<TransactionFile> getTransactionFiles(Submission familySubmission) {
         List<TransactionFile> transactionFiles = new ArrayList<>();
-
+        
+        // Preload existing files for this Submission in case this is a retry
+        List<UserFile> existing = userFileRepositoryService.findAllOrderByOriginalName(familySubmission);
+        Map<String, UserFile> existingFilesByName = existing.stream()
+                .collect(Collectors.toMap(UserFile::getOriginalName, uf -> uf, (a, b) -> a));
+        
         try {
             Map<String, byte[]> pdfs = pdfService.generatePDFs(familySubmission);
 
             for (Map.Entry<String, byte[]> entry : pdfs.entrySet()) {
                 String pdfFileName = entry.getKey();
                 byte[] pdfBytes = entry.getValue();
+                
+                UserFile pdfUserFile = existingFilesByName.get(pdfFileName);
+                if (pdfUserFile == null) {
+                    // Only save to S3 and create UserFile if it doesn't already exist
+                    String s3Path = SubmissionUtilities.generatePdfPath(pdfFileName, familySubmission.getId());
+                    MultipartFile multipartFile =
+                            new ByteArrayMultipartFile(pdfBytes, pdfFileName, PDF_CONTENT_TYPE);
+                    cloudFileRepository.upload(s3Path, multipartFile);
+                    pdfUserFile = userFileRepositoryService.save(
+                            UserFile.builder()
+                                    .fileId(UUID.randomUUID())
+                                    .submission(familySubmission)
+                                    .originalName(pdfFileName)
+                                    .repositoryPath(s3Path)
+                                    .filesize((float) pdfBytes.length)
+                                    .mimeType(PDF_CONTENT_TYPE)
+                                    .virusScanned(true)
+                                    .build()
+                    );
 
-                MultipartFile multipartFile =
-                        new ByteArrayMultipartFile(pdfBytes, pdfFileName, PDF_CONTENT_TYPE);
-
-                String s3ZipPath = SubmissionUtilities.generatePdfPath(pdfFileName, familySubmission.getId());
-                cloudFileRepository.upload(s3ZipPath, multipartFile);
-                UserFile applicationPDF = UserFile.builder()
-                        .fileId(UUID.randomUUID())
-                        .submission(familySubmission)
-                        .originalName(pdfFileName)
-                        .repositoryPath(s3ZipPath)
-                        .filesize((float) pdfBytes.length)
-                        .mimeType(PDF_CONTENT_TYPE)
-                        .virusScanned(true)
-                        .build();
-                userFileRepositoryService.save(applicationPDF);
-
-                if (pdfFileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))) {
-                    TransactionFile applicationPdfJSON = new TransactionFile(pdfFileName, FileTypeId.APPLICATION_PDF.getValue(),
-                            Base64.getEncoder().encodeToString(pdfBytes), applicationPDF);
-                    transactionFiles.add(applicationPdfJSON);
+                    existingFilesByName.put(pdfFileName, pdfUserFile);
                 } else {
-                    TransactionFile additionalProviderPagesJSON = new TransactionFile(pdfFileName,
-                            FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                            Base64.getEncoder().encodeToString(pdfBytes), applicationPDF);
-                    transactionFiles.add(additionalProviderPagesJSON);
+                    log.info("Reusing existing PDF '{}' for submission {} when regenerating CCMS transaction for retry.", pdfFileName, familySubmission.getId());
                 }
+
+                String fileType = pdfFileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))
+                        ? FileTypeId.APPLICATION_PDF.getValue()
+                        : FileTypeId.UPLOADED_DOCUMENT.getValue();
+
+                transactionFiles.add(new TransactionFile(
+                        pdfFileName,
+                        fileType,
+                        Base64.getEncoder().encodeToString(pdfBytes),
+                        pdfUserFile
+                ));
             }
         } catch (IOException e) {
             log.error("Error uploading submission {} PDFs to S3. Could not complete sending the submission to CCMS.",
