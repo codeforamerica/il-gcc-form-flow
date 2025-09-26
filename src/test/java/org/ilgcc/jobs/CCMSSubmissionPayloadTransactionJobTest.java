@@ -5,8 +5,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
+import formflow.library.data.UserFile;
+import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +24,7 @@ import org.ilgcc.app.data.UserFileTransaction;
 import org.ilgcc.app.data.UserFileTransactionRepositoryService;
 import org.ilgcc.app.data.ccms.CCMSTransaction;
 import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
+import org.ilgcc.app.data.ccms.TransactionFile;
 import org.ilgcc.app.email.SendFamilyApplicationTransmittedConfirmationEmail;
 import org.ilgcc.app.email.SendFamilyApplicationTransmittedProviderConfirmationEmail;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
@@ -44,7 +48,8 @@ class CCMSSubmissionPayloadTransactionJobTest {
     private TransactionRepositoryService transactionRepositoryService;
     @Autowired
     private UserFileTransactionRepositoryService userFileTransactionRepositoryService;
-    
+    @Autowired
+    private UserFileRepositoryService userFileRepositoryService;
     @MockitoBean 
     private CCMSTransactionPayloadService payloadService;
     @MockitoBean 
@@ -61,14 +66,16 @@ class CCMSSubmissionPayloadTransactionJobTest {
 
     @Autowired
     Flyway flyway;
-    
+    @Autowired
+    private Submission submission;
+
     @BeforeEach
     void setUp() {
 
         flyway.clean();
         flyway.migrate();
         
-        Submission submission = Submission.builder()
+        submission = Submission.builder()
                 .inputData(Map.of())
                 .flow("test-flow")
                 .build();
@@ -86,7 +93,17 @@ class CCMSSubmissionPayloadTransactionJobTest {
         // Stub payload service to return an Optional<CCMSTransaction>
         // We don't need files from ccmsTransaction here; the backupPdfFiles path is enough to create a UFT row.
         CCMSTransaction txPayload = org.mockito.Mockito.mock(CCMSTransaction.class);
-        when(txPayload.getFiles()).thenReturn(List.of());
+        UserFile userFile = UserFile.builder()
+            .fileId(UUID.randomUUID())
+            .repositoryPath("testPath")
+            .mimeType("application/pdf")
+            .filesize((float) pdf.length)
+            .submission(submission)
+            .originalName("CCAP-Application-Form.pdf").build();
+
+        userFileRepositoryService.save(userFile);
+        
+        when(txPayload.getFiles()).thenReturn(List.of(new TransactionFile("application.pdf", "67936", "base64-payload", userFile)));
         when(payloadService.generateSubmissionTransactionPayload(any(Submission.class))).thenReturn(Optional.of(txPayload));
         
         job.sendCCMSTransaction(submissionId);
