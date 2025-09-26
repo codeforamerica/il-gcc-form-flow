@@ -8,15 +8,13 @@ import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CurrentProviderHasResponded extends EnableMultipleProviders implements Condition {
+public class CurrentProviderHasResponded implements Condition {
 
     @Override
     public Boolean run(Submission submission) {
-        if (super.run(submission)) {
-            Map<String, Object> currentProvider = ProviderSubmissionUtilities.getCurrentProvider(submission);
-            return currentProvider != null && SubmissionStatus.RESPONDED.name()
-                    .equals(currentProvider.get("providerApplicationResponseStatus"));
-        }
-        return false;
+        Map<String, Object> currentProvider = ProviderSubmissionUtilities.getCurrentProvider(submission);
+        return currentProvider != null && SubmissionStatus.RESPONDED.name()
+                .equals(currentProvider.get("providerApplicationResponseStatus"));
+
     }
 }
