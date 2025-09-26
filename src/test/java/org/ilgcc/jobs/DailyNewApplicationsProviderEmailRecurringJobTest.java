@@ -96,7 +96,7 @@ public class DailyNewApplicationsProviderEmailRecurringJobTest {
 
         for (int i = 0; i < allSubmissions.size(); i++) {
             transactionRepositoryService.createTransaction(UUID.randomUUID(), allSubmissions.get(i).getId(),
-                    String.format("WI-000%s", i), TransactionType.APPLICATION);
+                    String.format("WI-000%s", i), TransactionType.APPLICATION.getValue());
         }
     }
 
