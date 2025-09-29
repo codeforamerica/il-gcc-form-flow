@@ -81,7 +81,7 @@ public class SetResourceOrganization implements Action {
 
     }
 
-    private static boolean nonBlank(Object value) {
+    private static boolean notBlank(Object value) {
         return value != null && !value.toString().isBlank();
     }
 }
