@@ -23,8 +23,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +56,32 @@ import org.springframework.test.context.TestPropertySource;
 public abstract class AbstractBasePageTest {
 
     private static final String UPLOADED_JPG_FILE_NAME = "test.jpeg";
+
+    protected static Map<String, Object> child_1 = Map.of("firstName", "childFirst", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);
+    protected static Map<String, Object> child_2 = Map.of("firstName", "childSecond", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);
+    protected static Map<String, Object> child_3 = Map.of("firstName", "childThird", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);
+    protected static Map<String, Object> child_4 = Map.of("firstName", "childFourth", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);
+
+    protected static Map<String, Object> individualProvider = Map.of("uuid", UUID.randomUUID().toString(), "iterationIsComplete",
+            true, "providerFirstName", "FirstName", "providerLastName", "LastName", "familyIntendedProviderEmail",
+            "firstLast@mail.com", "familyIntendedProviderPhoneNumber",
+            "(999) 123-1234", "familyIntendedProviderAddress", "123 Main St.", "familyIntendedProviderCity", "Chicago",
+            "familyIntendedProviderState", "IL", "providerType", "Individual");
+
+    protected static Map<String, Object> programProvider = Map.of("uuid", UUID.randomUUID().toString(), "iterationIsComplete",
+            true, "childCareProgramName", "Child Care Program Name", "familyIntendedProviderName", "Child Care Program Name",
+            "familyIntendedProviderEmail", "ccpn@mail.com", "familyIntendedProviderPhoneNumber", "(123) 123-1234",
+            "familyIntendedProviderAddress", "456 Main St.", "familyIntendedProviderCity", "Chicago",
+            "familyIntendedProviderState", "IL",
+            "providerType", "Care Program");
 
     @Autowired
     protected RemoteWebDriver driver;
@@ -334,9 +362,8 @@ public abstract class AbstractBasePageTest {
     }
 
     /**
-     * This compares the pdf fields in the generated pdf and our expected test pdf, "test_filled_ccap.pdf". If there are updates
-     * to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and
-     * values.
+     * This compares the pdf fields in the generated pdf and our expected test pdf. If there are updates to the template pdf (used
+     * to generate the client pdf), the test pdf should be updated to have the expected fields and values.
      */
     protected void verifyPDF(String pdfPath, List<String> untestableFields, String flow) throws IOException {
         File pdfFile = getDownloadedPDF(flow);

@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=false"})
 public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageTest {
 
     boolean hasPartner = false;

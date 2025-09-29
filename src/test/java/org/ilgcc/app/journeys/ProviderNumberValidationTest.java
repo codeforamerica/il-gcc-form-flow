@@ -25,8 +25,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class ProviderNumberValidationTest extends AbstractBasePageTest {
 
     @Test

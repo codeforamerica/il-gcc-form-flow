@@ -9,24 +9,10 @@ import org.junit.jupiter.api.Test;
 class HasProviderForOneChildTest {
 
   Submission submission;
-  boolean enableMultipleProviders;
 
   @Test
-  void shouldReturnFalseIfEnableMultipleProvidersIsFalse() {
-    enableMultipleProviders = false;
-    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild(enableMultipleProviders);
-    submission = new SubmissionTestBuilder()
-        .withChild("First", "Child", "true")
-        .with("hasChosenProvider", "true")
-        .build();
-
-    assertFalse(hasProviderForOneChild.run(submission));
-  }
-
-  @Test
-  void shouldReturnFalseHasChosenProviderIsFalse() {
-    enableMultipleProviders = true;
-    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild(enableMultipleProviders);
+  void returnsFalseWhenHasChosenProviderIsFalse() {
+    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild();
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .with("hasChosenProvider", "false")
@@ -36,9 +22,8 @@ class HasProviderForOneChildTest {
   }
 
   @Test
-  void shouldReturnFalseIfMoreThanOneChildNeedsAssistance() {
-    enableMultipleProviders = true;
-    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild(enableMultipleProviders);
+  void returnsFalseIfMoreThanOneChildNeedsAssistance() {
+    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild();
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .withChild("Second", "Child", "true")
@@ -49,9 +34,8 @@ class HasProviderForOneChildTest {
   }
 
   @Test
-  void shouldReturnTrueIfEnableMultipleProvidersIsTrueAndHasChosenProviderIsTrueAndOnlyOneChildNeedsAssistance() {
-    enableMultipleProviders = true;
-    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild(enableMultipleProviders);
+  void returnsTrueIfHasChosenProviderIsTrueAndOnlyOneChildNeedsAssistance() {
+    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild();
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .with("hasChosenProvider", "true")

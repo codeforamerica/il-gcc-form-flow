@@ -11,8 +11,10 @@ import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=false"})
 public class ProviderResponseConfirmationCodeTest extends AbstractBasePageTest {
 
     Submission familySubmission;

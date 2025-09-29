@@ -10,7 +10,9 @@ import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=false"})
 public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap_NO_PROVIDER.pdf";

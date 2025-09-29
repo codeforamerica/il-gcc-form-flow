@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class SignatureJourneyTest extends AbstractBasePageTest {
 
     @Test

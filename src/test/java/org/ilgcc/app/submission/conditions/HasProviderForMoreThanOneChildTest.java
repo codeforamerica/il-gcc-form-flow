@@ -11,22 +11,8 @@ class HasProviderForMoreThanOneChildTest {
   boolean enableMultipleProviders;
 
   @Test
-  void shouldReturnFalseIfEnableMultipleProvidersIsFalse() {
-    enableMultipleProviders = false;
-    HasProviderForMoreThanOneChild hasProviderForMoreThanOneChild = new HasProviderForMoreThanOneChild(enableMultipleProviders);
-    submission = new SubmissionTestBuilder()
-        .withChild("First", "Child", "true")
-        .withChild("Second", "Child", "true")
-        .with("hasChosenProvider", "true")
-        .build();
-
-    assertFalse(hasProviderForMoreThanOneChild.run(submission));
-  }
-
-  @Test
-  void shouldReturnFalseHasChosenProviderIsFalse() {
-    enableMultipleProviders = true;
-    HasProviderForMoreThanOneChild hasProviderForMoreThanOneChild = new HasProviderForMoreThanOneChild(enableMultipleProviders);
+  void returnsFalseWhenHasChosenProviderIsFalse() {
+    HasProviderForMoreThanOneChild hasProviderForMoreThanOneChild = new HasProviderForMoreThanOneChild();
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .withChild("Second", "Child", "true")
@@ -37,9 +23,8 @@ class HasProviderForMoreThanOneChildTest {
   }
 
   @Test
-  void shouldReturnFalseIfOnlyOneChildNeedsAssistance() {
-    enableMultipleProviders = true;
-    HasProviderForMoreThanOneChild hasProviderForMoreThanOneChild = new HasProviderForMoreThanOneChild(enableMultipleProviders);
+  void returnsFalseIfOnlyOneChildNeedsAssistance() {
+    HasProviderForMoreThanOneChild hasProviderForMoreThanOneChild = new HasProviderForMoreThanOneChild();
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .with("hasChosenProvider", "true")
@@ -49,9 +34,8 @@ class HasProviderForMoreThanOneChildTest {
   }
 
   @Test
-  void shouldReturnTrueIfEnableMultipleProvidersIsTrueAndHasChosenProviderIsTrueAndMoreThanOneChildNeedsAssistance() {
-    enableMultipleProviders = true;
-    HasProviderForMoreThanOneChild hasProviderForMoreThanOneChild = new HasProviderForMoreThanOneChild(enableMultipleProviders);
+  void returnsTrueIfHasChosenProviderIsTrueAndMoreThanOneChildNeedsAssistance() {
+    HasProviderForMoreThanOneChild hasProviderForMoreThanOneChild = new HasProviderForMoreThanOneChild();
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .withChild("Second", "Child", "true")

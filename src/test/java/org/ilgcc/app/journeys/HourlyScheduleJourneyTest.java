@@ -2,125 +2,176 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
-    @Test
-    void missingChildCareTimeRaisesError() {
-        addAChild();
 
-        //children-ccap-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-weekly-schedule.title"));
-        testPage.clickElementById("childcareWeeklySchedule-Thursday");
-        testPage.clickContinue();
+    @Nested
+    class childcareTimeValidation {
 
-        //children-childcare-hourly-schedule
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-hourly-schedule.title"));
-        testPage.clickContinue();
+        @Test
+        void missingChildCareTimeRaisesError() {
+            testPage.navigateToFlowScreen("gcc/providers-intro");
 
-        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-1")
-                .equals(getEnMessage("errors.validate.time-hour")));
-        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-2")
-                .equals(getEnMessage("errors.validate.time-ampm")));
-        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
+            saveSubmission(
+                    getSessionSubmissionTestBuilder().withValidSubmissionUpTo5SchedulesIntro(List.of(child_1),
+                                    List.of(new HashMap<>()))
+                            .build());
 
-        assertThat(testPage.getElementText("childcareEndTimeThursday-error-message-1")
-                .equals(getEnMessage("errors.validate.time-hour")));
-        assertThat(testPage.getElementText("childcareEndTimeThursday-error-message-2")
-                .equals(getEnMessage("errors.validate.time-ampm")));
-        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
+            testPage.navigateToFlowScreen("gcc/schedules-intro");
+            testPage.clickContinue();
 
-        testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
-        testPage.enter("childcareEndTimeThursdayMinute", "00");
-        testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
+            // schedules-start
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+            testPage.clickContinue();
 
-        testPage.clickContinue();
+            // schedules-start-care
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+            testPage.clickYes();
 
-        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-1")
-                .equals(getEnMessage("errors.validate.time-hour")));
-        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-2")
-                .equals(getEnMessage("errors.validate.time-ampm")));
-        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
+            //schedules-start-date
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+            testPage.enter("ccapStartMonth", "12");
+            testPage.enter("ccapStartDay", "15");
+            testPage.enter("ccapStartYear", "2024");
 
-        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-1")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-2")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
+            testPage.clickContinue();
 
-        testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
-        testPage.enter("childcareStartTimeThursdayMinute", "15");
-        testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
+            //schedules-days
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
+            testPage.clickElementById("childcareWeeklySchedule-Thursday");
+            testPage.clickContinue();
 
-        testPage.clickContinue();
+            //schedules-hours
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
+            testPage.clickContinue();
 
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
-    }
+            assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-1")
+                    .equals(getEnMessage("errors.validate.time-hour")));
+            assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-2")
+                    .equals(getEnMessage("errors.validate.time-ampm")));
+            assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
 
-    @Test
-    void invalidChildCareTimeRaisesError() {
-        addAChild();
+            assertThat(testPage.getElementText("childcareEndTimeThursday-error-message-1")
+                    .equals(getEnMessage("errors.validate.time-hour")));
+            assertThat(testPage.getElementText("childcareEndTimeThursday-error-message-2")
+                    .equals(getEnMessage("errors.validate.time-ampm")));
+            assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
 
-        //children-ccap-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-weekly-schedule.title"));
-        testPage.clickElementById("childcareWeeklySchedule-Thursday");
-        testPage.clickContinue();
+            testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
+            testPage.enter("childcareEndTimeThursdayMinute", "00");
+            testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
 
-        //children-childcare-hourly-schedule
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-hourly-schedule.title"));
+            testPage.clickContinue();
 
-        testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
-        testPage.enter("childcareStartTimeThursdayMinute", "65");
-        testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
+            assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-1")
+                    .equals(getEnMessage("errors.validate.time-hour")));
+            assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-2")
+                    .equals(getEnMessage("errors.validate.time-ampm")));
+            assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
 
-        testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
-        testPage.enter("childcareEndTimeThursdayMinute", "00");
-        testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
+            assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-1")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-2")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
 
-        testPage.clickContinue();
+            testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
+            testPage.enter("childcareStartTimeThursdayMinute", "15");
+            testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
 
-        assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-1")
-                .equals(getEnMessage("errors.validate.minute")));
-        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-2")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
+            testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
+            testPage.enter("childcareEndTimeThursdayMinute", "00");
+            testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
 
-        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-1")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-2")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
+            testPage.clickContinue();
 
-        testPage.enter("childcareStartTimeThursdayMinute", "15");
+            // schedules-review
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
+        }
 
-        testPage.clickContinue();
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
+        @Test
+        void invalidChildCareTimeRaisesError() {
+            testPage.navigateToFlowScreen("gcc/providers-intro");
 
-        testPage.goBack();
+            saveSubmission(
+                    getSessionSubmissionTestBuilder().withValidSubmissionUpTo5SchedulesIntro(List.of(child_1),
+                                    List.of(new HashMap<>()))
+                            .build());
 
-        testPage.enter("childcareEndTimeThursdayMinute", "-15");
-        testPage.clickContinue();
+            testPage.navigateToFlowScreen("gcc/schedules-intro");
+            testPage.clickContinue();
 
-        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-1")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-2")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
+            // schedules-start
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+            testPage.clickContinue();
 
-        assertThat(testPage.getElementText("childcareEndTimeThursday-error-message-1")
-                .equals(getEnMessage("errors.validate.minute")));
-        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-2")).isTrue();
-        assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
+            // schedules-start-care
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-care.title"));
+            testPage.clickYes();
 
-        testPage.enter("childcareEndTimeThursdayMinute", "15");
-        testPage.clickContinue();
+            //schedules-start-date
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+            testPage.enter("ccapStartMonth", "12");
+            testPage.enter("ccapStartDay", "15");
+            testPage.enter("ccapStartYear", "2024");
 
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
+            testPage.clickContinue();
+
+            //schedules-days
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
+            testPage.clickElementById("childcareWeeklySchedule-Thursday");
+            testPage.clickContinue();
+
+            //schedules-hours
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
+
+            testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
+            testPage.enter("childcareStartTimeThursdayMinute", "65");
+            testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
+
+            testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
+            testPage.enter("childcareEndTimeThursdayMinute", "00");
+            testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
+
+            testPage.clickContinue();
+
+            assertThat(testPage.getElementText("childcareStartTimeThursday-error-message-1")
+                    .equals(getEnMessage("errors.validate.minute")));
+            assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-2")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("childcareStartTimeThursday-error-message-3")).isTrue();
+
+            assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-1")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-2")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("childcareEndTimeThursday-error-message-3")).isTrue();
+
+            testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
+            testPage.enter("childcareEndTimeThursdayMinute", "15");
+            testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
+
+            testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
+            testPage.enter("childcareEndTimeThursdayMinute", "00");
+            testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
+
+            testPage.clickContinue();
+
+            // schedules-review
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
+        }
     }
 
     @Test
     void missingParentJobTimeRaisesError() {
         testPage.navigateToFlowScreen("gcc/activities-add-jobs");
 
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpTo2ParentActivities()
                 .build());
 
         testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
@@ -254,10 +305,7 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
     void invalidParentJobTimeRaisesError() {
         testPage.navigateToFlowScreen("gcc/activities-add-jobs");
 
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpTo2ParentActivities()
                 .build());
 
         testPage.clickButton(getEnMessage("activities-add-jobs.add-a-job"));
@@ -444,11 +492,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
     @Test
     void missingParentPartnerJobTimeRaisesError() {
         testPage.navigateToFlowScreen("gcc/activities-partner-add-job");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpTo2ParentActivities().withParentPartnerDetails().with(
+                        "parentHasPartner", "true")
                 .build());
 
         //activities-partner-add-job
@@ -508,11 +553,8 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
     @Test
     void invalidParentPartnerJobTimeRaisesError() {
         testPage.navigateToFlowScreen("gcc/activities-partner-add-job");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpTo2ParentActivities().withParentPartnerDetails().with(
+                        "parentHasPartner", "true")
                 .build());
 
         //activities-partner-add-job
@@ -690,67 +732,28 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
     }
 
-    void addAChild() {
-        // children-add
-        testPage.navigateToFlowScreen("gcc/children-add");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .build());
-
-        // children-add
-        testPage.clickButton(getEnMessage("children-add.add-button"));
-
-        //children-info-basic
-        testPage.enter("childFirstName", "Firstly");
-        testPage.enter("childLastName", "McChild");
-        testPage.enter("childDateOfBirthMonth", "10");
-        testPage.enter("childDateOfBirthDay", "25");
-        testPage.enter("childDateOfBirthYear", "2018");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.foster-child"));
-        testPage.clickContinue();
-
-        // children-info-assistance
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
-        testPage.clickYes();
-
-        //children-ccap-info
-        testPage.clickElementById("childGender-MALE");
-        testPage.clickElementById("childGender-TRANSGENDER");
-        testPage.selectRadio("childHasDisability", "No");
-        testPage.selectRadio("childIsUsCitizen", "Yes");
-        testPage.clickElementById("none__checkbox-childRaceEthnicity");
-        testPage.clickContinue();
-
-        //children-ccap-in-care
-        testPage.clickYes();
-        testPage.enter("ccapStartMonth", "11");
-        testPage.enter("ccapStartDay", "1");
-        testPage.enter("ccapStartYear", "2010");
-        testPage.clickContinue();
-    }
-
     void addParentSchool() {
-        // Activities Screen
-        testPage.navigateToFlowScreen("gcc/activities-add-ed-program");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        // activities-parent-intro
+        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpTo2ParentActivities()
                 .build());
+
+        testPage.clickContinue();
+
+        // activities-parent-type
+        testPage.clickElementById("activitiesParentChildcareReason-SCHOOL-label");
+        testPage.clickContinue();
 
         //activities-add-ed-program
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickContinue();
 
         //parent-info-bachelors
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-bachelors.title"));
         testPage.clickYes();
 
         //activities-ed-program-type
-        assertThat(testPage.getElementText("educationType-highSchoolOrGed-label")).isEqualTo(
-                getEnMessage("activities-ed-program-type.highSchool"));
         testPage.clickElementById("educationType-highSchoolOrGed-label");
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
+
+        // activities-ed-program
         testPage.clickContinue();
 
         //activities-ed-program-name
@@ -778,17 +781,25 @@ public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
     }
 
     void addParentPartnerSchool() {
-        //parent-partner-info-bachelors
-        testPage.navigateToFlowScreen("gcc/parent-partner-info-bachelors");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        // activities-parent-intro
+        testPage.navigateToFlowScreen("gcc/activities-parent-intro");
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpTo2ParentActivities().withParentPartnerDetails().with(
+                "parentHasPartner", "true")
                 .build());
 
+        testPage.clickContinue();
+        // activities-parent-type
+        testPage.clickElementById("activitiesParentChildcareReason-TANF_TRAINING-label");
+        testPage.clickElementById("activitiesParentPartnerChildcareReason-SCHOOL-label");
+        testPage.clickContinue();
+
+        //activities-add-ed-program
+        testPage.clickContinue();
+
+        //parent-info-bachelors
         testPage.clickElementById("partnerHasBachelorsDegree-skip");
 
+        //
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program.title"));
         testPage.clickElementById("partnerEducationType-twoYearCollege-label");
         testPage.clickContinue();

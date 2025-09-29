@@ -46,33 +46,15 @@ class ContactProviderViaTextTest {
     }
     
     @Test
-    void contactProviderViaText_shouldReturnTrueWhenUserSelectedText() {
-        contactProviderViaText = new ContactProviderViaText(false);
-        assertThat(contactProviderViaText.run(testSubmission)).isTrue();
-
-        contactProviderViaText = new ContactProviderViaText(true);
+    void returnsTrueWhenUserSelectedText() {
+        contactProviderViaText = new ContactProviderViaText();
         assertThat(contactProviderViaText.run(testSubmission)).isTrue();
     }
 
     @Test
-    void contactProviderViaText_shouldReturnFalseWhenUserDidNotSelectText() {
-        contactProviderViaText = new ContactProviderViaText(false);
+    void returnsFalseWhenUserDidNotSelectText() {
+        contactProviderViaText = new ContactProviderViaText();
         testSubmission.getInputData().put("contactProviderMethod[]", List.of("EMAIL", "OTHER"));
         assertThat(contactProviderViaText.run(testSubmission)).isFalse();
-
-        contactProviderViaText = new ContactProviderViaText(true);
-        testSubmission.getInputData().put("contactProviderMethod[]", List.of("EMAIL", "OTHER"));
-        assertThat(contactProviderViaText.run(testSubmission)).isFalse();
-    }
-
-    @Test
-    void contactProviderViaText_shouldReturnTrueWhenUserSelectedText_MultipleProviders() {
-        contactProviderViaText = new ContactProviderViaText(false);
-        assertThat(contactProviderViaText.run(testSubmission, uuid1.toString())).isFalse();
-
-        contactProviderViaText = new ContactProviderViaText(true);
-        assertThat(contactProviderViaText.run(testSubmission, uuid1.toString())).isTrue();
-        assertThat(contactProviderViaText.run(testSubmission, uuid2.toString())).isFalse();
-        assertThat(contactProviderViaText.run(testSubmission, uuid3.toString())).isTrue();
     }
 }

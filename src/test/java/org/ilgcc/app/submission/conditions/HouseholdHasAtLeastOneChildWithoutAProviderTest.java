@@ -7,31 +7,19 @@ import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 
 class HouseholdHasAtLeastOneChildWithoutAProviderTest {
-
   @Test
-  void shouldReturnFalseWhenEnableMultipleProvidersIsFalse() {
-    boolean mockEnableMultipleProviders = false;
-    Submission submission = new SubmissionTestBuilder().with("choseProviderForEveryChildInNeedOfCare", "false").build();
-    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider(mockEnableMultipleProviders);
-
-    assertFalse(condition.run(submission));
-  }
-  //If all the children have a chosen provider this should return false
-  @Test
-  void shouldReturnFalseWhenEnableMultipleProvidersIsTrueAndChoseProviderForEveryChildInNeedOfCareIsTrue() {
-    boolean mockEnableMultipleProviders = true;
+  void shouldReturnFalseWhenChoseProviderForEveryChildInNeedOfCareIsTrue() {
     Submission submission = new SubmissionTestBuilder().with("choseProviderForEveryChildInNeedOfCare", "true").build();
-    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider(mockEnableMultipleProviders);
+    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider();
 
     assertFalse(condition.run(submission));
   }
 
   //If at least one child does not have a chose provider this should return true
   @Test
-  void shouldReturnFalseWhenEnableMultipleProvidersIsTrueAndChoseProviderForEveryChildInNeedOfCareIsFalse() {
-    boolean mockEnableMultipleProviders = true;
+  void shouldReturnFalseChoseProviderForEveryChildInNeedOfCareIsFalse() {
     Submission submission = new SubmissionTestBuilder().with("choseProviderForEveryChildInNeedOfCare", "false").build();
-    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider(mockEnableMultipleProviders);
+    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider();
     assertTrue(condition.run(submission));
   }
 }

@@ -13,7 +13,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=false"})
 @Slf4j
 public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap.pdf";

@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=false"})
 class ContactProviderViaOtherTest {
     
     Submission testSubmission;
@@ -46,33 +48,13 @@ class ContactProviderViaOtherTest {
     }
     
     @Test
-    void contactProviderViaOther_shouldReturnTrueWhenUserSelectedOther() {
-        contactProviderViaOther = new ContactProviderViaOther(false);
-        assertThat(contactProviderViaOther.run(testSubmission)).isTrue();
-
-        contactProviderViaOther = new ContactProviderViaOther(true);
+    void returnsTrueWhenUserSelectedOther() {
         assertThat(contactProviderViaOther.run(testSubmission)).isTrue();
     }
 
     @Test
-    void contactProviderViaOther_shouldReturnFalseWhenUserDidNotSelectOther() {
-        contactProviderViaOther = new ContactProviderViaOther(false);
+    void returnsFalseWhenUserDidNotSelectOther() {
         testSubmission.getInputData().put("contactProviderMethod[]", List.of("EMAIL", "TEXT"));
         assertThat(contactProviderViaOther.run(testSubmission)).isFalse();
-
-        contactProviderViaOther = new ContactProviderViaOther(true);
-        testSubmission.getInputData().put("contactProviderMethod[]", List.of("EMAIL", "TEXT"));
-        assertThat(contactProviderViaOther.run(testSubmission)).isFalse();
-    }
-
-    @Test
-    void contactProviderViaOther_shouldReturnTrueWhenUserSelectedOther_MultipleProviders() {
-        contactProviderViaOther = new ContactProviderViaOther(false);
-        assertThat(contactProviderViaOther.run(testSubmission, uuid1.toString())).isFalse();
-
-        contactProviderViaOther = new ContactProviderViaOther(true);
-        assertThat(contactProviderViaOther.run(testSubmission, uuid1.toString())).isTrue();
-        assertThat(contactProviderViaOther.run(testSubmission, uuid2.toString())).isFalse();
-        assertThat(contactProviderViaOther.run(testSubmission, uuid3.toString())).isTrue();
     }
 }
