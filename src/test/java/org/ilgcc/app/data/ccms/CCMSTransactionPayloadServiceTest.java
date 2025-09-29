@@ -61,7 +61,8 @@ public class CCMSTransactionPayloadServiceTest {
 
     private Submission familySubmission;
     private Submission providerSubmission;
-
+    
+    private final UserFile testFilledCcapPdf = new UserFile();
     private final UserFile testConvertedJpegPdf = new UserFile();
     private final UserFile testConvertedPngPdf = new UserFile();
     private final UserFile testProviderUploadedPdf1 = new UserFile();
@@ -90,24 +91,34 @@ public class CCMSTransactionPayloadServiceTest {
                 .submittedAt(OffsetDateTime.now())
                 .inputData(familyInputData)
                 .build();
+
+        testFilledCcapPdf.setMimeType(PDF_CONTENT_TYPE);
+        testFilledCcapPdf.setFileId(UUID.randomUUID());
+        testFilledCcapPdf.setOriginalName("CCAP-Application-Form.pdf");
+        testFilledCcapPdf.setRepositoryPath("testFilledCcapPath");
+        testFilledCcapPdf.setSubmission(familySubmission);
         
         testConvertedJpegPdf.setMimeType(PDF_CONTENT_TYPE);
         testConvertedJpegPdf.setFileId(UUID.randomUUID());
+        testConvertedJpegPdf.setOriginalName("testJpeg.jpg");
         testConvertedJpegPdf.setRepositoryPath("testConvertedJpegPath");
         testConvertedJpegPdf.setSubmission(familySubmission);
         
         testConvertedPngPdf.setMimeType(PDF_CONTENT_TYPE);
         testConvertedPngPdf.setFileId(UUID.randomUUID());
+        testConvertedPngPdf.setOriginalName("testPng.png");
         testConvertedPngPdf.setRepositoryPath("testConvertedPngPath");
         testConvertedPngPdf.setSubmission(familySubmission);
         
         testProviderUploadedPdf1.setMimeType(PDF_CONTENT_TYPE);
         testProviderUploadedPdf1.setFileId(UUID.randomUUID());
+        testProviderUploadedPdf1.setOriginalName("testProviderUploaded1.pdf");
         testProviderUploadedPdf1.setRepositoryPath("testProviderUploadedPdf1Path");
         testProviderUploadedPdf1.setSubmission(providerSubmission);
         
         testProviderUploadedPdf2.setMimeType(PDF_CONTENT_TYPE);
         testProviderUploadedPdf2.setFileId(UUID.randomUUID());
+        testProviderUploadedPdf2.setOriginalName("testProviderUploaded2.pdf");
         testProviderUploadedPdf2.setRepositoryPath("testProviderUploadedPdf2Path");
         testProviderUploadedPdf2.setSubmission(providerSubmission);
 
@@ -138,23 +149,23 @@ public class CCMSTransactionPayloadServiceTest {
                 new TransactionFile(
                         String.format("%s-CCAP-Application-Form.pdf", familySubmission.getId()),
                         TransactionFile.FileTypeId.APPLICATION_PDF.getValue(),
-                        Base64.getEncoder().encodeToString(Files.readAllBytes(testFilledCcapPdfPath))),
+                        Base64.getEncoder().encodeToString(Files.readAllBytes(testFilledCcapPdfPath)), testFilledCcapPdf),
                 new TransactionFile(
                         String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 1, 4),
                         FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                        Base64.getEncoder().encodeToString("testBase64String1".getBytes())),
+                        Base64.getEncoder().encodeToString("testBase64String1".getBytes()), testProviderUploadedPdf1),
                 new TransactionFile(
                         String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 2, 4),
                         FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                        Base64.getEncoder().encodeToString("testBase64String2".getBytes())),
+                        Base64.getEncoder().encodeToString("testBase64String2".getBytes()), testProviderUploadedPdf2),
                 new TransactionFile(
                         String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 3, 4),
                         FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedPngPath))),
+                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedPngPath)), testConvertedPngPdf),
                 new TransactionFile(
                         String.format("%s-Supporting-Document-%d-of-%d.pdf", familySubmission.getId(), 4, 4),
                         FileTypeId.UPLOADED_DOCUMENT.getValue(),
-                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedJpegPath)))
+                        Base64.getEncoder().encodeToString(Files.readAllBytes(testConvertedJpegPath)), testConvertedJpegPdf)
         );
 
         Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(familySubmission);
