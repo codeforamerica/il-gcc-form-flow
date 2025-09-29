@@ -43,6 +43,7 @@ public class SetResourceOrganization implements Action {
         if (!hasProviderNumber && isFein) {
             log.warn("Provider submission {} is missing provider number but has FEIN. Skipping setting resource organization.",
                     providerSubmission.getId());
+            return;
         }
         
         BigInteger providerId = new BigInteger(providerInputData.get(PROVIDER_NUMBER).toString());
@@ -80,7 +81,7 @@ public class SetResourceOrganization implements Action {
 
     }
 
-    private static boolean nonBlank(Object v) {
-        return v != null && !v.toString().isBlank();
+    private static boolean nonBlank(Object value) {
+        return value != null && !value.toString().isBlank();
     }
 }
