@@ -37,8 +37,8 @@ public class SetResourceOrganization implements Action {
         boolean agreedToCare = formSubmission.getFormData().getOrDefault("providerResponseAgreeToCare", "false")
                 .toString()
                 .equals("true");
-        boolean isFein = nonBlank(providerInputData.get("providerTaxIdFEIN"));
-        boolean hasProviderNumber = nonBlank(providerInputData.get(PROVIDER_NUMBER));
+        boolean isFein = notBlank(providerInputData.get("providerTaxIdFEIN"));
+        boolean hasProviderNumber = notBlank(providerInputData.get(PROVIDER_NUMBER));
         
         if (!hasProviderNumber && isFein) {
             // We don't have a provider number, but we do have a FEIN.
