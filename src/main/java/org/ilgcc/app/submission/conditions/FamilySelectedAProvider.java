@@ -17,4 +17,9 @@ public class FamilySelectedAProvider implements Condition {
                 Collections.EMPTY_LIST);
         return !selectedChildcareProviders.equals(List.of("NO_PROVIDER"));
     }
+
+    @Override
+    public Boolean run(Submission submission, String subflowUuid, String repeatForIterationUuid) {
+        return run(submission, subflowUuid);
+    }
 }

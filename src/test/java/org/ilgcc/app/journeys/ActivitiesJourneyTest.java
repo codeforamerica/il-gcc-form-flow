@@ -12,10 +12,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
     void ParentOnlyWithJobAndWorkTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
                 .build());
 
         //activities-parent-intro
@@ -184,17 +181,15 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        //children-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-multiple.title"));
     }
 
     @Test
     void ParentOnlyWithJobOnlyTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
                 .build());
 
         //activities-parent-intro
@@ -277,17 +272,15 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        // children-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-multiple.title"));
     }
 
     @Test
     void ParentOnlyWithSchoolOnlyTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
                 .build());
 
         //activities-parent-intro
@@ -369,17 +362,15 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        // children-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-multiple.title"));
     }
 
     @Test
     void ParentOnlyWithNoJobOrSchoolTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
                 .build());
 
         //activities-parent-intro
@@ -390,18 +381,18 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("activitiesParentChildcareReason-TANF_TRAINING");
         testPage.clickContinue();
 
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        // children-info-intro-multiple
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-multiple.title"));
     }
 
     @Test
     void ParentPartnerDoesNotAppearIfIneligible() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
-                .with("parentHasPartner", "true")
+
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
+                .withParentPartnerDetails()
+                .with("parentHasQualifyingPartner", "false")
                 .build());
 
         //activities-parent-intro
@@ -417,12 +408,9 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
     void ParentPartnerAppearsIfEligible() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
+                .withParentPartnerDetails()
                 .with("parentHasPartner", "true")
-                .with("parentHasQualifyingPartner", "true")
                 .build());
 
         //activities-parent-intro
@@ -438,11 +426,9 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
     void ParentAndPartnerWithJobAndWorkTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
                 .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+                .with("parentHasPartner", "true")
                 .build());
 
         //activities-parent-intro
@@ -759,19 +745,17 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 
-        //unearned-income-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        // children-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-multiple.title"));
     }
 
     @Test
     void ParentAndPartnerWithPartnerSchoolOnlyTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
                 .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+                .with("parentHasPartner", "true")
                 .build());
 
         //activities-parent-intro
@@ -847,19 +831,17 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-ed-program-dates.title"));
         testPage.clickContinue();
 
-        //unearned-income-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        // children-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-multiple.title"));
     }
 
     @Test
     void ParentAndPartnerWithPartnerJobOnlyTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
                 .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+                .with("parentHasPartner", "true")
                 .build());
 
         //activities-parent-intro
@@ -879,11 +861,9 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
     void ParentAndPartnerWithoutJobOrSchoolTest() {
         // Activities Screen
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
-        saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider()
-                .withParentDetails()
+        saveSubmission(getSessionSubmissionTestBuilder().withValidSubmissionUpToStep2()
                 .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
+                .with("parentHasPartner", "true")
                 .build());
 
         //activities-parent-intro
@@ -895,7 +875,7 @@ public class ActivitiesJourneyTest extends AbstractBasePageTest {
         testPage.clickElementById("activitiesParentPartnerChildcareReason-TANF_TRAINING");
         testPage.clickContinue();
 
-        //unearned-income-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
+        // children-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-multiple.title"));
     }
 }

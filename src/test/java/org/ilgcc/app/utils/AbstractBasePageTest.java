@@ -21,8 +21,10 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -54,6 +56,31 @@ import org.springframework.test.context.TestPropertySource;
 public abstract class AbstractBasePageTest {
 
     private static final String UPLOADED_JPG_FILE_NAME = "test.jpeg";
+
+    protected static Map<String, Object> child_1 = Map.of("firstName", "childFirst", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);
+    protected static Map<String, Object> child_2 = Map.of("firstName", "childSecond", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);;
+    protected static Map<String, Object> child_3 = Map.of("firstName", "childThird", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);;
+    protected static Map<String, Object> child_4 = Map.of("firstName", "childFourth", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);;
+    protected static Map<String, Object> child_5 = Map.of("firstName", "childFifth", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);;
+    protected static Map<String, Object> child_6 = Map.of("firstName", "childSixth", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);;
+    protected static Map<String, Object> child_7 = Map.of("firstName", "childSeventh", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);;
+    protected static Map<String, Object> child_8 = Map.of("firstName", "childEight", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);;
 
     @Autowired
     protected RemoteWebDriver driver;
@@ -334,9 +361,8 @@ public abstract class AbstractBasePageTest {
     }
 
     /**
-     * This compares the pdf fields in the generated pdf and our expected test pdf. If there are updates
-     * to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and
-     * values.
+     * This compares the pdf fields in the generated pdf and our expected test pdf. If there are updates to the template pdf (used
+     * to generate the client pdf), the test pdf should be updated to have the expected fields and values.
      */
     protected void verifyPDF(String pdfPath, List<String> untestableFields, String flow) throws IOException {
         File pdfFile = getDownloadedPDF(flow);
