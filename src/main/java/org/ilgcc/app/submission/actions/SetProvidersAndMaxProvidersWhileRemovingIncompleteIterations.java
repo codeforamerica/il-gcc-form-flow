@@ -34,9 +34,10 @@ public class SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations implem
         if (providers.isEmpty()) {
             submission.getInputData().remove("childcareSchedules");
         } else {
-            submission.getInputData().put("providers", providers.stream()
+
+            providers = providers.stream()
                     .filter(providerIteration -> (boolean) providerIteration.getOrDefault("iterationIsComplete", false))
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList());
 
             if (submission.getInputData().containsKey("childcareSchedules")) {
                 List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) submission.getInputData()
@@ -65,9 +66,9 @@ public class SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations implem
                 });
             }
         }
-
-        submission.getInputData().put("maxProvidersAllowed", getMaxProvidersAllowed(submission));
+        
         submission.getInputData().put("providers", providers);
+        submission.getInputData().put("maxProvidersAllowed", getMaxProvidersAllowed(submission));
 
         submissionRepositoryService.save(submission);
     }
