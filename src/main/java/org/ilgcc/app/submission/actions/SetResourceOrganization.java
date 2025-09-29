@@ -41,8 +41,8 @@ public class SetResourceOrganization implements Action {
         boolean hasProviderNumber = nonBlank(providerInputData.get(PROVIDER_NUMBER));
         
         if (!hasProviderNumber && isFein) {
-            log.warn("Provider submission {} is missing provider number but has FEIN. Skipping setting resource organization.",
-                    providerSubmission.getId());
+            // We don't have a provider number, but we do have a FEIN.
+            // In this scenario we return early because we cannot set the resource organization for FEIN only providers.
             return;
         }
         
