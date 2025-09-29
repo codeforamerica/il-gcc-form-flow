@@ -151,6 +151,5 @@ il-gcc:
     offline-transaction-delay-offset: ${CCMS_OFFLINE_TRANSACTION_DELAY_OFFSET:15}
     enable-v2-api: ${ENABLE_CCMS_APPLICATION_V2:false}
 sendgrid:
-  public-key: ${SENDGRID_PUBLIC_KEY}
   enable-sendgrid-email-validation: ${ENABLE_SENDGRID_EMAIL_VALIDATION:false}
   email-validation-api-key: ${SENDGRID_EMAIL_VALIDATION_API_KEY:no-key}
