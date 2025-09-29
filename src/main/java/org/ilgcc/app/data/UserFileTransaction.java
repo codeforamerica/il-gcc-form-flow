@@ -62,4 +62,17 @@ public class UserFileTransaction {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
+
+    @Override
+    public String toString() {
+        return "UserFileTransaction{" +
+            "transactionFileId=" + transactionFileId +
+            ", userFile=" + (userFile != null ? userFile.getUserFileId() : null) +
+            ", transaction=" + (transaction != null ? transaction.getTransactionId() : null) +
+            ", submission=" + (submission != null ? submission.getId() : null) +
+            ", transactionStatus=" + transactionStatus +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
+    }
 }
