@@ -37,8 +37,15 @@ public class SetResourceOrganization implements Action {
         boolean agreedToCare = formSubmission.getFormData().getOrDefault("providerResponseAgreeToCare", "false")
                 .toString()
                 .equals("true");
-
-        // Because of validation, providerResponseProviderNumber cannot be null or invalid
+        boolean isFein = notBlank(providerInputData.get("providerTaxIdFEIN"));
+        boolean hasProviderNumber = notBlank(providerInputData.get(PROVIDER_NUMBER));
+        
+        if (!hasProviderNumber && isFein) {
+            // We don't have a provider number, but we do have a FEIN.
+            // In this scenario we return early because we cannot set the resource organization for FEIN only providers.
+            return;
+        }
+        
         BigInteger providerId = new BigInteger(providerInputData.get(PROVIDER_NUMBER).toString());
         Optional<ResourceOrganization> org = applicationRouterServiceImpl.getSiteAdministeredOrganizationByProviderId(providerId);
 
@@ -72,5 +79,9 @@ public class SetResourceOrganization implements Action {
             }
         }
 
+    }
+
+    private static boolean notBlank(Object value) {
+        return value != null && !value.toString().isBlank();
     }
 }
