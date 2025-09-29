@@ -16,7 +16,7 @@ plugins {
     id 'java'
     id 'com.adarshr.test-logger' version '4.0.0'
     id 'jacoco'
-    id "org.flywaydb.flyway" version "11.13.0"
+    id "org.flywaydb.flyway" version "11.13.2"
     id 'io.miret.etienne.sass' version '1.5.2'
     id "io.sentry.jvm.gradle" version "5.12.0"
     id 'com.bakdata.mockito' version '1.11.1'
@@ -61,8 +61,8 @@ dependencies {
     implementation 'com.sendgrid:sendgrid-java:4.10.3'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.82'
     implementation 'joda-time:joda-time:2.14.0'
-    implementation 'org.flywaydb:flyway-core:11.13.0'
-    implementation 'org.flywaydb:flyway-database-postgresql:11.13.0'
+    implementation 'org.flywaydb:flyway-core:11.13.2'
+    implementation 'org.flywaydb:flyway-database-postgresql:11.13.2'
 
     if (useLocalLibrary == 'true') {
         implementation fileTree(dir: "$rootDir/../form-flow/build/libs", include: '*.jar')
