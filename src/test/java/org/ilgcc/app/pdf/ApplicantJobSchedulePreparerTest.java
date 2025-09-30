@@ -17,11 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest(
-        classes = IlGCCApplication.class,
-        properties = "il-gcc.enable-multiple-providers=true"
-
-)
 @ActiveProfiles("test")
 public class ApplicantJobSchedulePreparerTest {
 

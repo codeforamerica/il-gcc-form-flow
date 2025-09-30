@@ -17,13 +17,14 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=false"})
+@Disabled
 public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
     @AfterEach

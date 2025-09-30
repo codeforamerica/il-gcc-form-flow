@@ -32,7 +32,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 
 @ActiveProfiles("test")
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 @SpringBootTest
 public class SendProviderAgreesToCareFamilyConfirmationEmailTest {
 

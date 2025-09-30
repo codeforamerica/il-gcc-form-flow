@@ -71,17 +71,10 @@ public abstract class AbstractBasePageTest {
             "iterationIsComplete", true);
 
     protected static Map<String, Object> individualProvider = Map.of("uuid", UUID.randomUUID().toString(), "iterationIsComplete",
-            true, "providerFirstName", "FirstName", "providerLastName", "LastName", "familyIntendedProviderEmail",
-            "firstLast@mail.com", "familyIntendedProviderPhoneNumber",
-            "(999) 123-1234", "familyIntendedProviderAddress", "123 Main St.", "familyIntendedProviderCity", "Chicago",
-            "familyIntendedProviderState", "IL", "providerType", "Individual");
+            true, "providerType", "Individual");
 
     protected static Map<String, Object> programProvider = Map.of("uuid", UUID.randomUUID().toString(), "iterationIsComplete",
-            true, "childCareProgramName", "Child Care Program Name", "familyIntendedProviderName", "Child Care Program Name",
-            "familyIntendedProviderEmail", "ccpn@mail.com", "familyIntendedProviderPhoneNumber", "(123) 123-1234",
-            "familyIntendedProviderAddress", "456 Main St.", "familyIntendedProviderCity", "Chicago",
-            "familyIntendedProviderState", "IL",
-            "providerType", "Care Program");
+            true, "providerType", "Care Program");
 
     @Autowired
     protected RemoteWebDriver driver;
@@ -322,15 +315,14 @@ public abstract class AbstractBasePageTest {
         testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
         testPage.clickContinue();
     }
-
     protected String createAValidLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).with("earliestChildcareStartDate", "10/10/2011")
-                .withSubmittedAtDate(OffsetDateTime.now()).build());
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder()
+                        .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1),
+                                List.of(individualProvider))
+                        .withShortCode("ABC123")
+                        .withSubmittedAtDate(OffsetDateTime.now()).build());
 
         testPage.clickContinue();
 

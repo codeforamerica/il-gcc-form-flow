@@ -18,6 +18,7 @@ import org.ilgcc.app.utils.enums.ProviderDenialReason;
 import org.ilgcc.app.utils.enums.ProviderType;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -27,10 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(
-        classes = IlGCCApplication.class,
-        properties = "il-gcc.enable-multiple-providers=false"
-)
+@Disabled
 @ActiveProfiles("test")
 public class ProviderSubmissionFieldPreparerServiceTest_SingleProvider {
 

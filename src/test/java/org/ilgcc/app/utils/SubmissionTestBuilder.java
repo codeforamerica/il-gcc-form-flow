@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 
 public class SubmissionTestBuilder {
@@ -139,6 +140,25 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List<Map<String, Object>> childrenData, List<Map<String,
+            Object>> providersData) {
+        Map<String, List<String>> childcareScheduleIDs = new HashMap<>();
+        List<String> childIds = childrenData.stream().map(child -> "%s-%s".formatted(child.get("firstName"),
+                child.get("lastName")).toLowerCase()).collect(Collectors.toList());
+        List<String> providerIds =
+                providersData.stream().map(provider -> provider.get("uuid").toString()).collect(Collectors.toList());
+
+        childcareScheduleIDs.put("childIds", childIds);
+        childcareScheduleIDs.put("providerIds", providerIds);
+        withValidSubmissionUpTo6ParentIncome(childrenData, providersData, childcareScheduleIDs);
+        with("unearnedIncomeSource[]", List.of("NONE"));
+        with("unearnedIncomePrograms[]", List.of("NONE"));
+        with("unearnedIncomeReferralServices[]", List.of("NONE"));
+        with("doesAnyoneInHouseholdPayChildSupport", "false");
+        with("unearnedIncomeAssetsMoreThanOneMillionDollars", "false");
+        return this;
+    }
+
 
     public SubmissionTestBuilder withProviders(List<Map<String, Object>> providersData) {
         List<Map<String, Object>> providers = (List<Map<String, Object>>) submission.getInputData().getOrDefault("providers",
@@ -168,6 +188,7 @@ public class SubmissionTestBuilder {
         }
         newProvider.put("providerLastName", "providerLast");
         newProvider.put("providerFirstName", "providerFirst");
+        newProvider.put("familyIntendedProviderPhoneNumber", "(999) 123-1234");
         newProvider.put("familyIntendedProviderCity", "Aliqua Ex facilis e");
         newProvider.put("familyIntendedProviderEmail", "providerEmailr@mailinator.com");
         newProvider.put("familyIntendedProviderState", "IL");

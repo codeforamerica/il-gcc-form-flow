@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=false"})
 class ContactProviderViaOtherTest {
     
     Submission testSubmission;

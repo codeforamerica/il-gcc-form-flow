@@ -10,15 +10,13 @@ import java.util.Map;
 import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(
-        classes = IlGCCApplication.class,
-        properties = "il-gcc.enable-multiple-providers=false"
-)
+@Disabled
 @ActiveProfiles("test")
 public class ProviderSubmissionFieldPreparerServiceTest_NoProvider {
 

@@ -14,9 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(
-        classes = IlGCCApplication.class,
-        properties = "il-gcc.enable-multiple-providers=true"
-
+        classes = IlGCCApplication.class
 )
 @ActiveProfiles("test")
 public class ParentPartnerPreparerTest {

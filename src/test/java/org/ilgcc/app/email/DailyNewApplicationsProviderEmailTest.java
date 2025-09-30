@@ -25,7 +25,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 @ActiveProfiles("test")
 @SpringBootTest
 public class DailyNewApplicationsProviderEmailTest {

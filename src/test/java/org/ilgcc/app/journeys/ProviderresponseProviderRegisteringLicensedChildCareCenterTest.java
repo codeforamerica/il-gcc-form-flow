@@ -8,11 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=false"})
+@Disabled
 public class ProviderresponseProviderRegisteringLicensedChildCareCenterTest extends AbstractBasePageTest {
 
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap_REGISTERING_LICENSED_CHILD_CARE_CENTER.pdf";

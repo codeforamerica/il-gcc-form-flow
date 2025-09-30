@@ -27,7 +27,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 @ActiveProfiles("test")
 @SpringBootTest
 public class SendAutomatedProviderOutreachEmailTest {

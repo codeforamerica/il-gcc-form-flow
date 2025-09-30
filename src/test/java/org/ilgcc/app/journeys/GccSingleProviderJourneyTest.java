@@ -10,12 +10,13 @@ import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=false"})
+@Disabled
 @Slf4j
 public class GccSingleProviderJourneyTest extends AbstractBasePageTest {
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap.pdf";
