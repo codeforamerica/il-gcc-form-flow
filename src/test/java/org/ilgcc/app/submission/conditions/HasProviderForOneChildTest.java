@@ -12,7 +12,7 @@ class HasProviderForOneChildTest {
 
   @Test
   void returnsFalseWhenHasChosenProviderIsFalse() {
-    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild();
+    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild(true);
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .with("hasChosenProvider", "false")
@@ -23,7 +23,7 @@ class HasProviderForOneChildTest {
 
   @Test
   void returnsFalseIfMoreThanOneChildNeedsAssistance() {
-    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild();
+    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild(true);
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .withChild("Second", "Child", "true")
@@ -35,7 +35,7 @@ class HasProviderForOneChildTest {
 
   @Test
   void returnsTrueIfHasChosenProviderIsTrueAndOnlyOneChildNeedsAssistance() {
-    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild();
+    HasProviderForOneChild hasProviderForOneChild = new HasProviderForOneChild(true);
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .with("hasChosenProvider", "true")

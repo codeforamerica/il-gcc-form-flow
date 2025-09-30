@@ -336,9 +336,6 @@ public class SubmissionTestBuilder {
         child.put("childDateOfBirthYear", "2002");
         child.put("needFinancialAssistanceForChild", needFinancialAssistanceForChild);
         child.put("childIsUsCitizen", "Yes");
-        child.put("childAttendsOtherEd", "false");
-        child.put("childRaceEthnicity[]", List.of("NONE"));
-        with("childGender[]", List.of("NONE"));
         with("childRelationship", "Grandchild");
         with("childHasDisability", "No");
         child.put(Submission.ITERATION_IS_COMPLETE_KEY, iterationIsComplete);

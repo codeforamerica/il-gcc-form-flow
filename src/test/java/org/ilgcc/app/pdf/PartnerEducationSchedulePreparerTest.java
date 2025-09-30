@@ -7,10 +7,20 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.List;
 import java.util.Map;
+import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.app.utils.TimeOption;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
+@SpringBootTest(
+        classes = IlGCCApplication.class,
+        properties = "il-gcc.enable-multiple-providers=true"
+
+)
+@ActiveProfiles("test")
 public class PartnerEducationSchedulePreparerTest {
 
     PartnerEducationSchedulePreparer preparer = new PartnerEducationSchedulePreparer();

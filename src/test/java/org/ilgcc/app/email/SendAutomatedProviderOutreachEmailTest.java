@@ -24,9 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 @ActiveProfiles("test")
 @SpringBootTest
 public class SendAutomatedProviderOutreachEmailTest {
