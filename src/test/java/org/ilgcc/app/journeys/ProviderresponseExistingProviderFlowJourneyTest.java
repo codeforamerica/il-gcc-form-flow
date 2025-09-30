@@ -5,16 +5,17 @@ import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_APPRO
 
 import formflow.library.data.Submission;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@Disabled
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class ProviderresponseExistingProviderFlowJourneyTest extends AbstractBasePageTest {
 
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap_EXISTING_PROVIDER_RESPONSE.pdf";
@@ -29,7 +30,10 @@ public class ProviderresponseExistingProviderFlowJourneyTest extends AbstractBas
     @Test
     void fullExistingProviderResponseFlow() throws IOException {
         Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                .withSubmittedApplicationAndSingleProvider()
+                .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1, child_2, child_3),
+                        List.of(programProvider, programProvider, programProvider))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
+                .withShortCode("ABC123")
                 .build());
 
         driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
@@ -92,9 +96,9 @@ public class ProviderresponseExistingProviderFlowJourneyTest extends AbstractBas
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
         assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
-        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-        assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
-        assertThat(testPage.findElementTextById("child-name-2")).contains("Third Child");
+        assertThat(testPage.findElementTextById("child-name-0")).contains("childFirst childLast");
+        assertThat(testPage.findElementTextById("child-name-1")).contains("childSecond childLast");
+        assertThat(testPage.findElementTextById("child-name-2")).contains("childThird childLast");
         assertThat(testPage.elementDoesNotExistById("child-name-3")).isTrue();
 
         testPage.clickElementById("providerResponseAgreeToCare-true-label");

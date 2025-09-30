@@ -11,20 +11,19 @@ import static org.ilgcc.app.data.importer.FakeProviderDataImporter.OUTDATED_PEND
 
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@Disabled
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
     @AfterEach
@@ -36,10 +35,12 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     void ProviderresponseJourneyTest_validLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now()).build());
+        Submission s = submissionRepositoryService.save(new SubmissionTestBuilder()
+                .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1),
+                        List.of(programProvider))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
+                .withShortCode("ABC123")
+                .build());
 
         testPage.clickContinue();
 
@@ -102,9 +103,9 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
-        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
+        assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
 
-        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
+        assertThat(testPage.findElementTextById("child-name-0")).contains("childFirst childLast");
 
         assertThat(testPage.elementDoesNotExistById("child-name-1")).isTrue();
         assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
@@ -130,10 +131,12 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     void ProviderresponseJourneyTest_noLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now()).build());
+        Submission s = submissionRepositoryService.save(new SubmissionTestBuilder()
+                .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1),
+                        List.of(programProvider))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
+                .withShortCode("ABC123")
+                .build());
 
         testPage.clickContinue();
 
@@ -196,9 +199,9 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         // response
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         assertThat(testPage.findElementTextById("confirmation-code")).contains(s.getShortCode());
-        assertThat(testPage.findElementTextById("parent-name")).contains("FirstName parent last");
+        assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
 
-        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
+        assertThat(testPage.findElementTextById("child-name-0")).contains("childFirst childLast");
 
         assertThat(testPage.elementDoesNotExistById("child-name-1")).isTrue();
         assertThat(testPage.elementDoesNotExistById("child-name-2")).isTrue();
@@ -216,10 +219,12 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     void ProviderresponseJourneyTest_noLink_invalidConfirmationCode() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now()).build());
+        Submission s = submissionRepositoryService.save(new SubmissionTestBuilder()
+                .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1, child_2, child_3),
+                        List.of(programProvider, programProvider, programProvider))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
+                .withShortCode("ABC123")
+                .build());
 
         testPage.clickContinue();
 
@@ -254,10 +259,13 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
     void ProviderresponseJourneyTest_noLink_expiredConfirmationCode() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).withSubmittedAtDate(OffsetDateTime.now().minusDays(10)).build());
+        Submission s = submissionRepositoryService.save(new SubmissionTestBuilder()
+                .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1, child_2, child_3),
+                        List.of(programProvider, programProvider, programProvider))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
+                .with("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name())
+                .withShortCode("ABC123")
+                .build());
 
         testPage.clickContinue();
 
@@ -275,28 +283,20 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
         // expired
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         assertThat(testPage.getHeader()).isEqualTo(
-                getEnMessageWithParams("provider-response-submit-start.expired.header", new Object[]{"Open Sesame"}));
+                getEnMessageWithParams("provider-response-submit-start.expired.header", new Object[]{"child care provider"}));
     }
 
     @Test
     void ProviderresponseJourneyTest_noLink_alreadyResponded() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        Submission providerSubmission = new Submission();
-        providerSubmission.setFlow("providerresponse");
-        providerSubmission.setSubmittedAt(OffsetDateTime.now().minusDays(1));
-        saveSubmission(providerSubmission);
-
-        Submission familySubmission = new Submission();
-        familySubmission.setFlow("gcc");
-        familySubmission.setSubmittedAt(OffsetDateTime.now().minusDays(2));
-        Map<String, Object> inputData = new HashMap<>();
-        inputData.put("familyIntendedProviderName", "Dev Provider");
-        inputData.put("parentFirstName", "Devy");
-        inputData.put("parentLastName", "McDeverson");
-        inputData.put("providerResponseSubmissionId", providerSubmission.getId());
-        familySubmission.setInputData(inputData);
-        familySubmission = saveSubmission(familySubmission);
+        Submission s = submissionRepositoryService.save(new SubmissionTestBuilder()
+                .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1, child_2, child_3),
+                        List.of(programProvider, programProvider, programProvider))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
+                .with("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name())
+                .withShortCode("ABC123")
+                .build());
 
         testPage.clickContinue();
 
@@ -308,23 +308,25 @@ public class ProviderresponseFlowJourneyTest extends AbstractBasePageTest {
 
         // confirmation-code
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-confirmation-code.title"));
-        testPage.enter("providerResponseFamilyShortCode", familySubmission.getShortCode());
+        testPage.enter("providerResponseFamilyShortCode", s.getShortCode());
         testPage.clickContinue();
 
         // submit-start
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
         assertThat(testPage.getHeader()).isEqualTo(
-                getEnMessageWithParams("provider-response-error-response-recorded.header", new Object[]{"Dev Provider"}));
+                getEnMessageWithParams("provider-response-error-response-recorded.header", new Object[]{"child care provider"}));
     }
 
     @Test
     void ProviderresponseJourneyTest_ProviderNumberValidation() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "Yes").withChild("Second", "Child", "No")
-                .withChild("NoAssistance", "Child", "No").withConstantChildcareSchedule(0)
-                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2)).build());
+        Submission s = submissionRepositoryService.save(new SubmissionTestBuilder()
+                .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1, child_2, child_3),
+                        List.of(programProvider, programProvider, programProvider))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
+                .withShortCode("ABC123")
+                .build());
 
         testPage.clickContinue();
 

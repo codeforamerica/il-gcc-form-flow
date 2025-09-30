@@ -15,7 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@Disabled
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBasePageTest {
 
     @AfterEach
@@ -142,6 +142,9 @@ public class ProviderresponseProviderRegistrationJourneyTest extends AbstractBas
 
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.enter("providerCareStartDay", "11");
+        testPage.enter("providerCareStartMonth", "3");
+        testPage.enter("providerCareStartYear", "2025");
         testPage.clickContinue();
 
         // registration-checks-trainings-intro

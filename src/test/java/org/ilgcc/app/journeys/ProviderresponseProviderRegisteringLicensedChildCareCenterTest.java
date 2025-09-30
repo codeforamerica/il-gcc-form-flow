@@ -4,16 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import formflow.library.data.Submission;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
+import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@Disabled
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class ProviderresponseProviderRegisteringLicensedChildCareCenterTest extends AbstractBasePageTest {
 
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap_REGISTERING_LICENSED_CHILD_CARE_CENTER.pdf";
@@ -28,8 +30,11 @@ public class ProviderresponseProviderRegisteringLicensedChildCareCenterTest exte
     @Test
     void fullFlow() throws IOException {
         Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                .withSubmittedApplicationAndSingleProvider()
-                .with("earliestChildcareStartDate", "11/11/2025")
+                .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1, child_2, child_3),
+                        List.of(programProvider, programProvider, programProvider))
+                .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
+                .with("providerApplicationResponseStatus", SubmissionStatus.ACTIVE.name())
+                .withShortCode("ABC123")
                 .build());
 
         driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
@@ -130,6 +135,9 @@ public class ProviderresponseProviderRegisteringLicensedChildCareCenterTest exte
 
         // registration-start-date
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("registration-start-date.title"));
+        testPage.enter("providerCareStartDay", "11");
+        testPage.enter("providerCareStartMonth", "12");
+        testPage.enter("providerCareStartYear", "2025");
         testPage.clickContinue();
 
         // registration-checks-trainings-intro
@@ -146,9 +154,9 @@ public class ProviderresponseProviderRegisteringLicensedChildCareCenterTest exte
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-response.title"));
         assertThat(testPage.findElementTextById("confirmation-code")).contains(familySubmission.getShortCode());
         assertThat(testPage.findElementTextById("parent-name")).contains("parent first parent last");
-        assertThat(testPage.findElementTextById("child-name-0")).contains("First Child");
-        assertThat(testPage.findElementTextById("child-name-1")).contains("Second Child");
-        assertThat(testPage.findElementTextById("child-name-2")).contains("Third Child");
+        assertThat(testPage.findElementTextById("child-name-0")).contains("childFirst childLast");
+        assertThat(testPage.findElementTextById("child-name-1")).contains("childSecond childLast");
+        assertThat(testPage.findElementTextById("child-name-2")).contains("childThird childLast");
         testPage.selectRadio("providerResponseAgreeToCare", "false");
         testPage.selectRadio("providerResponseDenyCareReason", "NO_SPACE");
         testPage.clickContinue();

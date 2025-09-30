@@ -4,18 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@Disabled
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class ProviderResponseConfirmationCodeTest extends AbstractBasePageTest {
 
     Submission familySubmission;
@@ -31,14 +31,9 @@ public class ProviderResponseConfirmationCodeTest extends AbstractBasePageTest {
         @Test
         void usesAConfirmationCode() {
             familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                    .withFlow("gcc")
-                    .withParentDetails()
-                    .with("parentPreferredName", "FirstName")
-                    .withChild("First", "Child", "true")
-                    .withChild("Second", "Child", "true")
-                    .withChild("NoAssistance", "Child", "No")
-                    .withConstantChildcareSchedule(0)
-                    .withSubmittedAtDate(OffsetDateTime.now())
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1),
+                            List.of(programProvider))
+                    .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
                     .withShortCode("ABC123")
                     .build());
 
@@ -61,14 +56,9 @@ public class ProviderResponseConfirmationCodeTest extends AbstractBasePageTest {
         @Test
         void usesALink() {
             familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                    .withFlow("gcc")
-                    .withParentDetails()
-                    .with("parentPreferredName", "FirstName")
-                    .withChild("First", "Child", "true")
-                    .withChild("Second", "Child", "true")
-                    .withChild("NoAssistance", "Child", "No")
-                    .withConstantChildcareSchedule(0)
-                    .withSubmittedAtDate(OffsetDateTime.now())
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1),
+                            List.of(programProvider))
+                    .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
                     .withShortCode("ABC123")
                     .build());
 
@@ -135,16 +125,11 @@ public class ProviderResponseConfirmationCodeTest extends AbstractBasePageTest {
         @Test
         void whenApplicationHasExpired() {
             familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                    .withFlow("gcc")
-                    .withParentDetails()
-                    .with("parentPreferredName", "FirstName")
-                    .with("familyIntendedProviderName", "Open Sesame")
-                    .withChild("First", "Child", "true")
-                    .withChild("Second", "Child", "true")
-                    .withChild("NoAssistance", "Child", "No")
-                    .withConstantChildcareSchedule(0)
-                    .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1),
+                            List.of(programProvider))
+                    .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
                     .withShortCode("ABC123")
+                    .with("providerApplicationResponseStatus", SubmissionStatus.EXPIRED.name())
                     .build());
 
             driver.navigate().to("http://localhost:%s/s".formatted(localServerPort));
@@ -161,21 +146,15 @@ public class ProviderResponseConfirmationCodeTest extends AbstractBasePageTest {
             // expired
             assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
             assertThat(testPage.getHeader()).isEqualTo(
-                    getEnMessageWithParams("provider-response-submit-start.expired.header", new Object[]{"Open Sesame"}));
+                    getEnMessageWithParams("provider-response-submit-start.expired.header", new Object[]{"child care provider"}));
         }
 
         @Test
         void familyApplicationAlreadyHasResponse() {
             familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                    .withFlow("gcc")
-                    .withParentDetails()
-                    .with("parentPreferredName", "FirstName")
-                    .with("familyIntendedProviderName", "Dev Provider")
-                    .withChild("First", "Child", "true")
-                    .withChild("Second", "Child", "true")
-                    .withChild("NoAssistance", "Child", "No")
-                    .withConstantChildcareSchedule(0)
-                    .withSubmittedAtDate(OffsetDateTime.now().minusDays(10))
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1),
+                            List.of(programProvider))
+                    .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
                     .withShortCode("ABC123")
                     .with("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name())
                     .build());
@@ -194,9 +173,8 @@ public class ProviderResponseConfirmationCodeTest extends AbstractBasePageTest {
             // submit-start
             assertThat(testPage.getTitle()).isEqualTo(getEnMessage("provider-response-submit-start.title"));
             assertThat(testPage.getHeader()).isEqualTo(
-                    getEnMessageWithParams("provider-response-error-response-recorded.header", new Object[]{"Dev Provider"}));
+                    getEnMessageWithParams("provider-response-error-response-recorded.header", new Object[]{"child care provider"}));
         }
-
     }
 
 }

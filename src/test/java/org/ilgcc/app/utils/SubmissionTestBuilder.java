@@ -140,8 +140,9 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List<Map<String, Object>> childrenData, List<Map<String,
-            Object>> providersData) {
+    public SubmissionTestBuilder withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(
+            List<Map<String, Object>> childrenData, List<Map<String,
+                    Object>> providersData) {
         Map<String, List<String>> childcareScheduleIDs = new HashMap<>();
         List<String> childIds = childrenData.stream().map(child -> "%s-%s".formatted(child.get("firstName"),
                 child.get("lastName")).toLowerCase()).collect(Collectors.toList());
