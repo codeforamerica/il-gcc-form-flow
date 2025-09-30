@@ -50,7 +50,7 @@ public class CCMSApiClient {
                                     body
                             );
 
-                            log.error(errorMessage);
+                            log.warn(errorMessage);
 
                             return Mono.error(new CCMSException(
                                     errorMessage,
