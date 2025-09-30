@@ -10,9 +10,7 @@ import java.util.Map;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.app.utils.TimeOption;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
 public class ApplicantEducationSchedulePreparerTest {
 
     ApplicantEducationSchedulePreparer preparer = new ApplicantEducationSchedulePreparer();
