@@ -2,12 +2,12 @@ package org.ilgcc.jobs;
 
 import static org.ilgcc.app.utils.SchedulePreparerUtility.getRelatedChildrenSchedulesForEachProvider;
 import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_ENDPOINT;
+import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_V2_ENDPOINT;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import formflow.library.data.UserFile;
-import formflow.library.data.UserFileRepositoryService;
 import formflow.library.file.CloudFileRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.constraints.NotNull;
@@ -58,10 +58,7 @@ public class CCMSSubmissionPayloadTransactionJob {
     private final TransactionRepositoryService transactionRepositoryService;
     private final SubmissionRepositoryService submissionRepositoryService;
     private final JobrunrJobRepository jobrunrJobRepository;
-    private final UserFileRepositoryService userFileRepositoryService;
     private final UserFileTransactionRepositoryService userFileTransactionRepositoryService;
-
-    private final MultiProviderPDFService multiProviderPDFService;
     CloudFileRepository cloudFileRepository;
 
     private int jobDelayMinutes;
@@ -88,18 +85,15 @@ public class CCMSSubmissionPayloadTransactionJob {
     public CCMSSubmissionPayloadTransactionJob(JobScheduler jobScheduler,
             CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
             TransactionRepositoryService transactionRepositoryService, SubmissionRepositoryService submissionRepositoryService,
-            JobrunrJobRepository jobrunrJobRepository, UserFileRepositoryService userFileRepositoryService,
-            UserFileTransactionRepositoryService userFileTransactionRepositoryService,
-            MultiProviderPDFService multiProviderPDFService, CloudFileRepository cloudFileRepository) {
+            JobrunrJobRepository jobrunrJobRepository, UserFileTransactionRepositoryService userFileTransactionRepositoryService,
+            CloudFileRepository cloudFileRepository) {
         this.jobScheduler = jobScheduler;
         this.ccmsTransactionPayloadService = ccmsTransactionPayloadService;
         this.ccmsApiClient = ccmsApiClient;
         this.transactionRepositoryService = transactionRepositoryService;
         this.submissionRepositoryService = submissionRepositoryService;
         this.jobrunrJobRepository = jobrunrJobRepository;
-        this.userFileRepositoryService = userFileRepositoryService;
         this.userFileTransactionRepositoryService = userFileTransactionRepositoryService;
-        this.multiProviderPDFService = multiProviderPDFService;
         this.cloudFileRepository = cloudFileRepository;
     }
 
@@ -215,7 +209,7 @@ public class CCMSSubmissionPayloadTransactionJob {
                     Submission submission = submissionOptional.get();
                     try {
                         CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
-                            submission);
+                            submission, enableV2Api);
                         boolean acquired = false;
                         try {
                             // Try to acquire a permit with a timeout
@@ -231,7 +225,7 @@ public class CCMSSubmissionPayloadTransactionJob {
                             log.info("Sending submission {} to CCMS", submissionId);
                             JsonNode response = null;
                             if (enableV2Api) {
-                                // TODO Do the V2 API thing here
+                                response = ccmsApiClient.sendRequest(APP_SUBMISSION_V2_ENDPOINT.getValue(), ccmsTransaction);
                             } else {
                                 response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(), ccmsTransaction);
                             }

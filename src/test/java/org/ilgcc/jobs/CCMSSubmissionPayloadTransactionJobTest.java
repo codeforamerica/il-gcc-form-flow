@@ -104,7 +104,7 @@ class CCMSSubmissionPayloadTransactionJobTest {
         userFileRepositoryService.save(userFile);
         
         when(txPayload.getFiles()).thenReturn(List.of(new TransactionFile("application.pdf", "67936", "base64-payload", userFile)));
-        when(payloadService.generateSubmissionTransactionPayload(any(Submission.class))).thenReturn(txPayload);
+        when(payloadService.generateSubmissionTransactionPayload(any(Submission.class), false)).thenReturn(txPayload);
         
         job.sendCCMSTransaction(submissionId);
 
@@ -132,7 +132,7 @@ class CCMSSubmissionPayloadTransactionJobTest {
         
         CCMSTransaction txPayload = org.mockito.Mockito.mock(CCMSTransaction.class);
         when(txPayload.getFiles()).thenReturn(List.of());
-        when(payloadService.generateSubmissionTransactionPayload(any(Submission.class))).thenReturn(txPayload);
+        when(payloadService.generateSubmissionTransactionPayload(any(Submission.class), false)).thenReturn(txPayload);
 
         job.sendCCMSTransaction(submissionId);
 

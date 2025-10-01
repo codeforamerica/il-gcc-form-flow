@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +51,7 @@ public class CCMSTransactionPayloadService {
         this.allowPdfModification = allowPdfModification;
     }
 
-    public CCMSTransaction generateSubmissionTransactionPayload(Submission familySubmission) {
+    public CCMSTransaction generateSubmissionTransactionPayload(Submission familySubmission, boolean v2ApiEnabled) {
         return new CCMSTransaction(
                 "application",
                 familySubmission.getId(),
@@ -63,13 +62,13 @@ public class CCMSTransactionPayloadService {
                 FileNameUtility.removeNonSpaceOrDashCharacters(
                         familySubmission.getInputData().get("parentLastName").toString()),
                 familySubmission.getInputData().get("parentBirthDate").toString(),
-                getTransactionFiles(familySubmission),
+                getTransactionFiles(familySubmission, v2ApiEnabled),
                 DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime.now()),
                 DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(familySubmission.getSubmittedAt())
         );
     }
 
-    private List<TransactionFile> getTransactionFiles(Submission familySubmission) {
+    private List<TransactionFile> getTransactionFiles(Submission familySubmission, boolean v2ApiEnabled) {
         List<TransactionFile> transactionFiles = new ArrayList<>();
         
         // Preload existing files for this Submission in case this is a retry
@@ -112,12 +111,24 @@ public class CCMSTransactionPayloadService {
                         ? FileTypeId.APPLICATION_PDF.getValue()
                         : FileTypeId.UPLOADED_DOCUMENT.getValue();
 
-                transactionFiles.add(new TransactionFile(
-                        pdfFileName,
-                        fileType,
-                        Base64.getEncoder().encodeToString(pdfBytes),
-                        pdfUserFile
-                ));
+                TransactionFile transactionFile = v2ApiEnabled ?
+                        new TransactionFile(
+                                pdfFileName,
+                                fileType,
+                                Base64.getEncoder().encodeToString(pdfBytes),
+                                // v2 API requires the userFileId to be sent
+                                pdfUserFile.getFileId(),
+                                pdfUserFile
+                        ) :
+                        // Can be removed when v2 API is productized
+                        new TransactionFile(
+                                pdfFileName,
+                                fileType,
+                                Base64.getEncoder().encodeToString(pdfBytes),
+                                pdfUserFile
+                        );
+
+                transactionFiles.add(transactionFile);
             }
         } catch (IOException e) {
             log.error("Error uploading submission {} PDFs to S3. Could not complete sending the submission to CCMS.",

@@ -1,35 +1,44 @@
 package org.ilgcc.app.data.ccms;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import formflow.library.data.UserFile;
+import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @EqualsAndHashCode
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransactionFile {
     
     private final String fileName;
     private final String fileType;
     private final String filePayload;
+    private final UUID userFileId;
     
     @Getter
     @Setter
     @JsonIgnore
     private UserFile userFile;
     
-    @JsonCreator
     public TransactionFile(
-            @JsonProperty("name") String fileName,
-            @JsonProperty("type") String fileType,
-            @JsonProperty("payload") String filePayload,
+            String fileName,
+            String fileType,
+            String filePayload,
+            UUID userFileId,
             UserFile userFile) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.filePayload = filePayload;
+        this.userFileId = userFileId;
         this.userFile = userFile;
+    }
+    
+    // Overloaded constructor without userFileId -- can be removed when v2 API is productized
+    public TransactionFile(String fileName, String fileType, String filePayload, UserFile userFile) {
+        this(fileName, fileType, filePayload, null, userFile);
     }
     
     @JsonProperty("name")
@@ -46,6 +55,9 @@ public class TransactionFile {
     public String getFilePayload() {
         return filePayload;
     }
+
+    @JsonProperty("id")
+    public UUID getUserFileId() { return userFileId; }
 
     @Getter
     public enum FileTypeId {

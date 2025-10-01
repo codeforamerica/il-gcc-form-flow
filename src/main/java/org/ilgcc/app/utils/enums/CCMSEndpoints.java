@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum CCMSEndpoints {
 
     APP_SUBMISSION_ENDPOINT("appSubmission"),
+    APP_SUBMISSION_V2_ENDPOINT("v2/appSubmission"),
     WORK_ITEM_LOOKUP_ENDPOINT("fetch");
 
     private final String value;
