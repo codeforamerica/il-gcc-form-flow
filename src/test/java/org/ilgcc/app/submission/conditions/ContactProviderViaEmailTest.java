@@ -45,13 +45,13 @@ class ContactProviderViaEmailTest {
 
     @Test
     void returnsTrueWhenUserSelectedEmail() {
-        contactProviderViaEmail = new ContactProviderViaEmail(true);
+        contactProviderViaEmail = new ContactProviderViaEmail();
         assertThat(contactProviderViaEmail.run(testSubmission)).isTrue();
     }
 
     @Test
     void returnsFalseWhenUserDidNotSelectEmail() {
-        contactProviderViaEmail = new ContactProviderViaEmail(true);
+        contactProviderViaEmail = new ContactProviderViaEmail();
 
         testSubmission.getInputData().put("contactProviderMethod[]", List.of("TEXT", "OTHER"));
         assertThat(contactProviderViaEmail.run(testSubmission)).isFalse();

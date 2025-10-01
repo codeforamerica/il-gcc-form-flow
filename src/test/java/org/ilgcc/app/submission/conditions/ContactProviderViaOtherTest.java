@@ -15,7 +15,7 @@ class ContactProviderViaOtherTest {
     
     Submission testSubmission;
     
-    ContactProviderViaOther contactProviderViaOther = new ContactProviderViaOther(true);
+    ContactProviderViaOther contactProviderViaOther = new ContactProviderViaOther();
     UUID uuid1;
     UUID uuid2;
     UUID uuid3;

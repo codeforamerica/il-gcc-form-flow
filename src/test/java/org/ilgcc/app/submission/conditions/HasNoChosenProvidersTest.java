@@ -11,7 +11,7 @@ class HasNoChosenProvidersTest {
 
   @Test
   void returnsTrueIfHasChosenProviderIsFalse() {
-    HasNoChosenProviders hasNoChosenProviders = new HasNoChosenProviders(true);
+    HasNoChosenProviders hasNoChosenProviders = new HasNoChosenProviders();
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .withChild("Second", "Child", "true")
@@ -23,7 +23,7 @@ class HasNoChosenProvidersTest {
 
   @Test
   void shouldReturnFalseIfHasChosenProviderIsTrue() {
-    HasNoChosenProviders hasNoChosenProviders = new HasNoChosenProviders(true);
+    HasNoChosenProviders hasNoChosenProviders = new HasNoChosenProviders();
     submission = new SubmissionTestBuilder()
         .withChild("First", "Child", "true")
         .withChild("Second", "Child", "true")
