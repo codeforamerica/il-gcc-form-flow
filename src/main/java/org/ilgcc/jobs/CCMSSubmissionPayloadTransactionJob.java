@@ -214,7 +214,7 @@ public class CCMSSubmissionPayloadTransactionJob {
                 if (submissionOptional.isPresent()) {
                     Submission submission = submissionOptional.get();
                     try {
-                        Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
+                        CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
                             submission);
                         boolean acquired = false;
                         try {
@@ -228,7 +228,6 @@ public class CCMSSubmissionPayloadTransactionJob {
                                 throw new IOException("Timeout waiting to acquire semaphore permit for transmitting to CCMS.");
                             }
 
-                            CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
                             log.info("Sending submission {} to CCMS", submissionId);
                             JsonNode response = null;
                             if (enableV2Api) {
@@ -282,7 +281,7 @@ public class CCMSSubmissionPayloadTransactionJob {
                             }
                         }
 
-                    } catch (Exception e) {
+                    } catch (NullPointerException e) {
                         throw new FatalJobrunrErrorDoNotRetryException("Could not create CCMS payload for submission " + submission.getId(), e);
                     }
                 } else {

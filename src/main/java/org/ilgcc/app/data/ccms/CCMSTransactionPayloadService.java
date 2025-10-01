@@ -52,8 +52,8 @@ public class CCMSTransactionPayloadService {
         this.allowPdfModification = allowPdfModification;
     }
 
-    public Optional<CCMSTransaction> generateSubmissionTransactionPayload(Submission familySubmission) {
-        return Optional.of(new CCMSTransaction(
+    public CCMSTransaction generateSubmissionTransactionPayload(Submission familySubmission) {
+        return new CCMSTransaction(
                 "application",
                 familySubmission.getId(),
                 familySubmission.getShortCode(),
@@ -66,7 +66,7 @@ public class CCMSTransactionPayloadService {
                 getTransactionFiles(familySubmission),
                 DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime.now()),
                 DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(familySubmission.getSubmittedAt())
-        ));
+        );
     }
 
     private List<TransactionFile> getTransactionFiles(Submission familySubmission) {
