@@ -2,6 +2,7 @@ package org.ilgcc.app.data.ccms;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.ilgcc.app.utils.constants.MediaTypes.PDF_CONTENT_TYPE;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import formflow.library.data.Submission;
@@ -132,6 +133,7 @@ public class CCMSTransactionPayloadServiceTest {
         when(pdfService.generatePDFs(familySubmission)).thenReturn(Map.of(FileNameUtility.getCCMSFileNameForApplicationPDF(familySubmission), Files.readAllBytes(testFilledCcapPdfPath)));
         when(userFileRepositoryService.findAllOrderByOriginalName(familySubmission, PDF_CONTENT_TYPE)).thenReturn(
                 List.of(testConvertedPngPdf, testConvertedJpegPdf));
+        when(userFileRepositoryService.save(any(UserFile.class))).thenReturn(testFilledCcapPdf);
         when(submissionRepositoryService.findById(providerSubmission.getId())).thenReturn(Optional.ofNullable(providerSubmission));
         when(userFileRepositoryService.findAllOrderByOriginalName(providerSubmission, PDF_CONTENT_TYPE)).thenReturn(
                 List.of(testProviderUploadedPdf1, testProviderUploadedPdf2));
@@ -194,6 +196,25 @@ public class CCMSTransactionPayloadServiceTest {
             assertThat(expectedFilesContainsCurrentFile)
                     .as("The two lists did not have a matching file for %s. Because of the naming convention the indexes need to match as well.", expectedFile.getFileName()) // This message displays if the assertion in the loop fails
                     .isTrue();
+        }
+    }
+    
+    @Test
+    void shouldIncludeFileIdInCCMSTransactionWhenV2FlagIsSet() {
+        Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(familySubmission, true);
+        assertThat(ccmsTransactionOptional.isPresent()).isTrue();
+
+        CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
+        
+        assertThat(ccmsTransaction).isNotNull();
+        assertThat(ccmsTransaction.getFiles().size()).isEqualTo(5);
+
+        List<TransactionFile> actualFiles = ccmsTransaction.getFiles();
+        for (TransactionFile actualFile : actualFiles) {
+            if (actualFile.getFileName().contains("CCAP-Application-Form")) {
+                assertThat(actualFile.getUserFileId().equals(familySubmission.getId()));
+            }
+            assertThat(actualFile.getUserFileId()).isNotNull();
         }
     }
 }

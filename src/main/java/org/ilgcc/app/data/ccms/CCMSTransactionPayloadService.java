@@ -84,15 +84,22 @@ public class CCMSTransactionPayloadService {
                 byte[] pdfBytes = entry.getValue();
                 
                 UserFile pdfUserFile = existingFilesByName.get(pdfFileName);
+                String fileType = pdfFileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))
+                        ? FileTypeId.APPLICATION_PDF.getValue()
+                        : FileTypeId.UPLOADED_DOCUMENT.getValue();
                 if (pdfUserFile == null) {
                     // Only save to S3 and create UserFile if it doesn't already exist
                     String s3Path = SubmissionUtilities.generatePdfPath(pdfFileName, familySubmission.getId());
                     MultipartFile multipartFile =
                             new ByteArrayMultipartFile(pdfBytes, pdfFileName, PDF_CONTENT_TYPE);
                     cloudFileRepository.upload(s3Path, multipartFile);
+                    UUID fileId = fileType.equals(FileTypeId.APPLICATION_PDF.getValue())
+                            ? familySubmission.getId()
+                            : UUID.randomUUID();
+
                     pdfUserFile = userFileRepositoryService.save(
                             UserFile.builder()
-                                    .fileId(UUID.randomUUID())
+                                    .fileId(fileId)
                                     .submission(familySubmission)
                                     .originalName(pdfFileName)
                                     .repositoryPath(s3Path)
@@ -106,10 +113,6 @@ public class CCMSTransactionPayloadService {
                 } else {
                     log.info("Reusing existing PDF '{}' for submission {} when regenerating CCMS transaction for retry.", pdfFileName, familySubmission.getId());
                 }
-
-                String fileType = pdfFileName.equals(getCCMSFileNameForApplicationPDF(familySubmission))
-                        ? FileTypeId.APPLICATION_PDF.getValue()
-                        : FileTypeId.UPLOADED_DOCUMENT.getValue();
 
                 TransactionFile transactionFile = v2ApiEnabled ?
                         new TransactionFile(
@@ -183,9 +186,19 @@ public class CCMSTransactionPayloadService {
                         userFile.getFileId(), familySubmission.getId());
                 continue;
             }
-            TransactionFile transactionFile = new TransactionFile(
-                    FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
-                    FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes()), userFile);
+            TransactionFile transactionFile = v2ApiEnabled ?
+                    new TransactionFile(
+                            FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
+                            FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes()),
+                            userFile.getFileId(),
+                            userFile
+                    ) :
+                    new TransactionFile(
+                            FileNameUtility.getCCMSFileNameForUploadedDocument(familySubmission, i + 1, allFiles.size()),
+                            FileTypeId.UPLOADED_DOCUMENT.getValue(), Base64.getEncoder().encodeToString(cloudFile.getFileBytes()),
+                            userFile
+                    );
+            
             transactionFiles.add(transactionFile);
         }
 
