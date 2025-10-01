@@ -37,6 +37,7 @@ import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
 import org.ilgcc.app.data.ccms.TransactionFile;
 import org.ilgcc.app.email.SendFamilyApplicationTransmittedConfirmationEmail;
 import org.ilgcc.app.email.SendFamilyApplicationTransmittedProviderConfirmationEmail;
+import org.ilgcc.app.exception.FatalJobrunrErrorDoNotRetryException;
 import org.ilgcc.app.pdf.MultiProviderPDFService;
 import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.TransactionStatus;
@@ -212,9 +213,9 @@ public class CCMSSubmissionPayloadTransactionJob {
                 Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
                 if (submissionOptional.isPresent()) {
                     Submission submission = submissionOptional.get();
-                    Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
+                    try {
+                        Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
                             submission);
-                    if (ccmsTransactionOptional.isPresent()) {
                         boolean acquired = false;
                         try {
                             // Try to acquire a permit with a timeout
@@ -281,9 +282,8 @@ public class CCMSSubmissionPayloadTransactionJob {
                             }
                         }
 
-                    } else {
-                        log.error("Could not create CCMS payload for submission : {}", submission.getId());
-                        throw new RuntimeException("Could not create CCMS payload for submission " + submission.getId());
+                    } catch (Exception e) {
+                        throw new FatalJobrunrErrorDoNotRetryException("Could not create CCMS payload for submission " + submission.getId(), e);
                     }
                 } else {
                     throw new RuntimeException("Could not find submission with ID: " + submissionId);

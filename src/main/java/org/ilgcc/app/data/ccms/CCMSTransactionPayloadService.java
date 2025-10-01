@@ -53,29 +53,20 @@ public class CCMSTransactionPayloadService {
     }
 
     public Optional<CCMSTransaction> generateSubmissionTransactionPayload(Submission familySubmission) {
-        if (familySubmission == null) {
-            log.error("generateSubmissionTransactionPayload error: familySubmission is null");
-            return Optional.empty();
-        }
-        try {
-            return Optional.of(new CCMSTransaction(
-                    "application",
-                    familySubmission.getId(),
-                    familySubmission.getShortCode(),
-                    familySubmission.getInputData().get("organizationId").toString(),
-                    FileNameUtility.removeNonSpaceOrDashCharacters(
-                            familySubmission.getInputData().get("parentFirstName").toString()),
-                    FileNameUtility.removeNonSpaceOrDashCharacters(
-                            familySubmission.getInputData().get("parentLastName").toString()),
-                    familySubmission.getInputData().get("parentBirthDate").toString(),
-                    getTransactionFiles(familySubmission),
-                    DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime.now()),
-                    DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(familySubmission.getSubmittedAt())
-            ));
-        } catch (Exception e) {
-            log.error("generateSubmissionTransactionPayload error for submission {}", familySubmission.getId(), e);
-            return Optional.empty();
-        }
+        return Optional.of(new CCMSTransaction(
+                "application",
+                familySubmission.getId(),
+                familySubmission.getShortCode(),
+                familySubmission.getInputData().get("organizationId").toString(),
+                FileNameUtility.removeNonSpaceOrDashCharacters(
+                        familySubmission.getInputData().get("parentFirstName").toString()),
+                FileNameUtility.removeNonSpaceOrDashCharacters(
+                        familySubmission.getInputData().get("parentLastName").toString()),
+                familySubmission.getInputData().get("parentBirthDate").toString(),
+                getTransactionFiles(familySubmission),
+                DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(OffsetDateTime.now()),
+                DateUtilities.formatDateToYearMonthDayHourCSTWithOffset(familySubmission.getSubmittedAt())
+        ));
     }
 
     private List<TransactionFile> getTransactionFiles(Submission familySubmission) {
