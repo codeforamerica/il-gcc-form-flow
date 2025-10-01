@@ -1,11 +1,9 @@
 <th:block
-        th:with="currentStep=${@environment.getProperty('il-gcc.enable-multiple-providers') == 'true' ? '7' : '5'}">
-    <th:block
-            th:replace="~{fragments/screens/family-application-intro-screen ::
+        th:replace="~{fragments/screens/family-application-intro-screen ::
       screen(
         textPrefix='submit-intro',
         iconFragment=~{fragments/gcc-icons :: application-mail},
-        currentStep=${currentStep}
+        currentStep='7',
+        stepCount='7'
         )}">
-    </th:block>
 </th:block>

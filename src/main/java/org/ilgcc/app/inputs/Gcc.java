@@ -163,20 +163,20 @@ public class Gcc extends FlowInputs {
     private String childIsUsCitizen;
     private List<String> childRaceEthnicity;
 
-    // children-ccap-in-care
+    // schedules-start-care
     private String childInCare;
 
-    // children-ccap-start-date
+    // schedules-start-date
     private String ccapStartDay;
     private String ccapStartMonth;
     private String ccapStartYear;
     private String ccapStartDate;
 
-    // children-childcare-weekly-schedule
+    // schedules-hours
     @NotEmpty(message = "{errors.select-at-least-one-day}")
     private List<String> childcareWeeklySchedule;
 
-    // children-childcare-hourly-schedule
+    // schedules-hours
     private Boolean childcareHoursSameEveryDay;
 
     private String childcareStartTimeAllDaysHour;

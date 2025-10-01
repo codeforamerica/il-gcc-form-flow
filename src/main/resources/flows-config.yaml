@@ -9,33 +9,9 @@ flow:
   onboarding-language-pref:
     beforeDisplayAction: SetLanguagePreferences
     nextScreens:
-      - name: onboarding-chosen-provider
-  onboarding-chosen-provider:
-    condition: SkipWhenEnableMultipleProvidersIsEnabled
-    nextScreens:
-      - name: onboarding-no-provider-intro
-        condition: NoProviderChosen
-      - name: onboarding-provider-info
-  onboarding-provider-info:
-    condition: SkipWhenEnableMultipleProvidersIsEnabled
-    onPostAction: TrimEmailOnPost
-    crossFieldValidationAction: ValidateProviderEmail
-    nextScreens:
-      - name: onboarding-provider-info-review
-  onboarding-no-provider-intro:
-    condition: SkipWhenEnableMultipleProvidersIsEnabled
-    nextScreens:
       - name: parent-info-intro
   pilot-offboard:
     nextScreens: null
-  onboarding-provider-info-review:
-    condition: SkipWhenEnableMultipleProvidersIsEnabled
-    nextScreens:
-      - name: onboarding-provider-info-confirm
-  onboarding-provider-info-confirm:
-    condition: SkipWhenEnableMultipleProvidersIsEnabled
-    nextScreens:
-      - name: parent-info-intro
   parent-info-intro:
     nextScreens:
       - name: parent-info-basic-1
@@ -124,195 +100,14 @@ flow:
       - name: parent-add-adults
         condition: HasAdultDependents
       - name: activities-parent-intro
-        condition: EnableMultipleProviders
-      - name: children-info-intro
   parent-add-adults:
     nextScreens:
       - name: activities-parent-intro
-        condition: EnableMultipleProviders
-      - name: children-info-intro
   parent-add-adults-detail:
     subflow: adultDependents
     crossFieldValidationAction: ValidateAdultDependentBirthdate
     nextScreens:
       - name: parent-add-adults
-  children-info-intro:
-    nextScreens:
-      - name: children-add
-  children-add:
-    beforeDisplayAction: RemoveIncompleteChildIterations
-    nextScreens:
-      - name: providers-intro
-        condition: EnableMultipleProviders
-      - name: activities-parent-intro
-  children-info-basic:
-    crossFieldValidationAction: ValidateChildBirth
-    subflow: children
-    nextScreens:
-      - name: children-info-assistance
-  children-info-assistance:
-    subflow: children
-    nextScreens:
-      - name: children-ccap-max-number
-        condition: ReachedMaxChildrenNeedingAssistance
-      - name: children-ccap-info
-        condition: NeedsFinancialAssistanceForChild
-      - name: children-ccap-child-other-ed
-        condition: NeedsCCAPWithMultipleProviderFlagOn
-      - name: children-add
-  children-ccap-max-number:
-    subflow: children
-    nextScreens:
-      - name: children-add
-  children-ccap-info:
-    subflow: children
-    nextScreens:
-      - name: children-childcare-weekly-schedule
-        condition: NoProviderChosen
-      - name: children-ccap-in-care
-  children-ccap-in-care:
-    subflow: children
-    condition: SkipWhenEnableMultipleProvidersIsEnabled
-    nextScreens:
-      - name: children-ccap-start-date
-  children-ccap-start-date:
-    condition: SkipWhenEnableMultipleProvidersIsEnabled
-    subflow: children
-    crossFieldValidationAction: ValidateChildrenCCAPStartDate
-    beforeSaveAction: SaveCCAPStartDate
-    nextScreens:
-      - name: children-childcare-weekly-schedule
-  children-childcare-weekly-schedule:
-    condition: SkipWhenEnableMultipleProvidersIsEnabled
-    subflow: children
-    nextScreens:
-      - name: children-childcare-hourly-schedule
-  children-childcare-hourly-schedule:
-    condition: SkipWhenEnableMultipleProvidersIsEnabled
-    beforeDisplayAction: SetSubflowWeeklyScheduleGroup
-    subflow: children
-    crossFieldValidationAction: ValidateChildcareHourlySchedule
-    nextScreens:
-      - name: children-ccap-child-other-ed
-  children-ccap-child-other-ed:
-    condition: IsFiveOrOlder
-    subflow: children
-    nextScreens:
-      - name: children-school-weekly-schedule
-        condition: ChildAttendsOtherSchoolDuringDay
-      - name: children-add
-  children-school-weekly-schedule:
-    subflow: children
-    nextScreens:
-      - name: children-add
-  providers-intro:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: providers-chosen
-  providers-chosen:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: providers-all-ccap-children
-        condition: HasProviderForMoreThanOneChild
-      - name: providers-add
-        condition: HasProviderForOneChild
-      - name: providers-no-provider-intro
-        condition: HasNoChosenProviders
-  providers-no-provider-intro:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: schedules-intro
-  providers-all-ccap-children:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: providers-add
-  providers-add:
-    beforeDisplayAction: SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: providers-type
-  providers-type:
-    subflow: providers
-    nextScreens:
-      - name: providers-name
-  providers-name:
-    subflow: providers
-    onPostAction: SetFamilyIntendedProviderName
-    crossFieldValidationAction: ValidateProviderName
-    nextScreens:
-      - name: providers-location
-  providers-location:
-    condition: EnableMultipleProviders
-    subflow: providers
-    nextScreens:
-      - name: providers-contact-info
-  providers-contact-info:
-    condition: EnableMultipleProviders
-    onPostAction: TrimEmailOnPost
-    crossFieldValidationAction: ValidateProviderEmail
-    subflow: providers
-    nextScreens:
-      - name: providers-add
-  delete-provider:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: null
-  providers-info-confirm:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: schedules-intro
-  schedules-intro:
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: schedules-start
-        condition: EnableMultipleProviders
-      - name: unearned-income-intro
-  schedules-start:
-    subflow: childcareSchedules
-    condition: EnableMultipleProviders
-    onPostAction: UpdateCurrentChildcareProviderIfOneOrNoProviders
-    nextScreens:
-      - name: schedules-start-care
-  schedules-start-care:
-    subflow: childcareSchedules
-    condition: DisplaySchedulesStartCareScreen
-    nextScreens:
-      - name: schedules-start-date
-  schedules-start-date:
-    subflow: childcareSchedules
-    condition: EnableMultipleProviders
-    crossFieldValidationAction: ValidateChildrenCCAPStartDate
-    beforeSaveAction: SaveCCAPStartDate
-    nextScreens:
-      - name: schedules-same
-        condition: DisplaySchedulesSameScreen
-      - name: schedules-days
-  schedules-days:
-    subflow: childcareSchedules
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: schedules-hours
-  schedules-hours:
-    subflow: childcareSchedules
-    beforeDisplayAction: SetSubflowWeeklyScheduleGroup
-    crossFieldValidationAction: ValidateChildcareHourlySchedule
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: schedules-review
-  schedules-review:
-    beforeDisplayAction: LocalizeChildcareSchedulesAndSaveEarliestCCAPStartDate
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: unearned-income-intro
-  schedules-same:
-    beforeDisplayAction: LocalizeSameScreenProviderSchedules
-    onPostAction: CopySameChildcareSchedule
-    subflow: childcareSchedules
-    condition: EnableMultipleProviders
-    nextScreens:
-      - name: schedules-review
-        condition: AgreesToCopySchedule
-      - name: schedules-days
   activities-parent-intro:
     nextScreens:
       - name: activities-parent-type
@@ -327,8 +122,6 @@ flow:
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
       - name: children-info-intro
-        condition: EnableMultipleProviders
-      - name: unearned-income-intro
   activities-add-jobs:
     beforeDisplayAction: RemoveIncompleteJobIterations
     nextScreens:
@@ -339,8 +132,6 @@ flow:
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
       - name: children-info-intro
-        condition: EnableMultipleProviders
-      - name: unearned-income-intro
   activities-employer-name:
     subflow: jobs
     nextScreens:
@@ -424,16 +215,12 @@ flow:
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
       - name: children-info-intro
-        condition: EnableMultipleProviders
-      - name: unearned-income-intro
   activities-partner-add-job:
     beforeDisplayAction: RemoveIncompletePartnerJobIterations
     nextScreens:
       - name: activities-partner-add-ed-program
         condition: PartnerInSchool
       - name: children-info-intro
-        condition: EnableMultipleProviders
-      - name: unearned-income-intro
   activities-partner-employer-name:
     subflow: partnerJobs
     nextScreens:
@@ -513,8 +300,135 @@ flow:
     crossFieldValidationAction: ValidateMonthYearPartnerActivitiesProgram
     nextScreens:
       - name: children-info-intro
-        condition: EnableMultipleProviders
+  children-info-intro:
+    nextScreens:
+      - name: children-add
+  children-add:
+    beforeDisplayAction: RemoveIncompleteChildIterations
+    nextScreens:
+      - name: providers-intro
+  children-info-basic:
+    crossFieldValidationAction: ValidateChildBirth
+    subflow: children
+    nextScreens:
+      - name: children-info-assistance
+  children-info-assistance:
+    subflow: children
+    nextScreens:
+      - name: children-ccap-max-number
+        condition: ReachedMaxChildrenNeedingAssistance
+      - name: children-ccap-info
+        condition: NeedsFinancialAssistanceForChild
+      - name: children-add
+  children-ccap-info:
+    subflow: children
+    nextScreens:
+      - name: children-ccap-child-other-ed
+  children-ccap-max-number:
+    subflow: children
+    nextScreens:
+      - name: children-add
+  children-ccap-child-other-ed:
+    condition: IsFiveOrOlder
+    subflow: children
+    nextScreens:
+      - name: children-school-weekly-schedule
+        condition: ChildAttendsOtherSchoolDuringDay
+      - name: children-add
+  children-school-weekly-schedule:
+    subflow: children
+    nextScreens:
+      - name: children-add
+  providers-intro:
+    nextScreens:
+      - name: providers-chosen
+  providers-chosen:
+    nextScreens:
+      - name: providers-all-ccap-children
+        condition: HasProviderForMoreThanOneChild
+      - name: providers-add
+        condition: HasProviderForOneChild
+      - name: providers-no-provider-intro
+        condition: HasNoChosenProviders
+  providers-no-provider-intro:
+    nextScreens:
+      - name: schedules-intro
+  providers-all-ccap-children:
+    nextScreens:
+      - name: providers-add
+  providers-add:
+    beforeDisplayAction: SetProvidersAndMaxProvidersWhileRemovingIncompleteIterations
+    nextScreens:
+      - name: providers-type
+  providers-type:
+    subflow: providers
+    nextScreens:
+      - name: providers-name
+  providers-name:
+    subflow: providers
+    onPostAction: SetFamilyIntendedProviderName
+    crossFieldValidationAction: ValidateProviderName
+    nextScreens:
+      - name: providers-location
+  providers-location:
+    subflow: providers
+    nextScreens:
+      - name: providers-contact-info
+  providers-contact-info:
+    onPostAction: TrimEmailOnPost
+    crossFieldValidationAction: ValidateProviderEmail
+    subflow: providers
+    nextScreens:
+      - name: providers-add
+  delete-provider:
+    nextScreens:
+      - name: null
+  providers-info-confirm:
+    nextScreens:
+      - name: schedules-intro
+  schedules-intro:
+    nextScreens:
+      - name: schedules-start
+  schedules-start:
+    subflow: childcareSchedules
+    onPostAction: UpdateCurrentChildcareProviderIfOneOrNoProviders
+    nextScreens:
+      - name: schedules-start-care
+  schedules-start-care:
+    condition: FamilySelectedAProvider
+    subflow: childcareSchedules
+    nextScreens:
+      - name: schedules-start-date
+  schedules-start-date:
+    subflow: childcareSchedules
+    crossFieldValidationAction: ValidateChildrenCCAPStartDate
+    beforeSaveAction: SaveCCAPStartDate
+    nextScreens:
+      - name: schedules-same
+        condition: DisplaySchedulesSameScreen
+      - name: schedules-days
+  schedules-days:
+    subflow: childcareSchedules
+    nextScreens:
+      - name: schedules-hours
+  schedules-hours:
+    subflow: childcareSchedules
+    beforeDisplayAction: SetSubflowWeeklyScheduleGroup
+    crossFieldValidationAction: ValidateChildcareHourlySchedule
+    nextScreens:
+      - name: schedules-review
+  schedules-review:
+    beforeDisplayAction: LocalizeChildcareSchedulesAndSaveEarliestCCAPStartDate
+    nextScreens:
       - name: unearned-income-intro
+  schedules-same:
+    beforeDisplayAction: LocalizeSameScreenProviderSchedules
+    onPostAction: CopySameChildcareSchedule
+    subflow: childcareSchedules
+    nextScreens:
+      - name: schedules-review
+        condition: AgreesToCopySchedule
+      - name: schedules-days
   unearned-income-intro:
     nextScreens:
       - name: unearned-income-source
@@ -636,7 +550,6 @@ flow:
       - name: doc-upload-recommended-docs
   contact-providers-start:
     subflow: contactProviders
-    condition: EnableMultipleProviders
     beforeDisplayAction: FormatSubmittedAtDate
     beforeSaveAction: PopulateContactProvidersIteration
     nextScreens:
@@ -707,13 +620,11 @@ flow:
     nextScreens:
       - name: contact-providers-review
   contact-providers-review:
-    condition: EnableMultipleProviders
     nextScreens:
       - name: contact-provider-child-without-provider
         condition: HouseholdHasAtLeastOneChildWithoutAProvider
       - name: doc-upload-recommended-docs
   contact-provider-child-without-provider:
-    condition: EnableMultipleProviders
     nextScreens:
       - name: doc-upload-recommended-docs
   doc-upload-confirm:
@@ -821,24 +732,20 @@ flow:
       - name: submit-start
         condition: IsConfirmationCodeInactive
       - name: multiple-providers
-        condition: MultiProviderIsEnabledAndHasMultipleProviders
-      - name: paid-by-ccap
   multiple-providers:
-    condition: MultiProviderIsEnabledAndHasMultipleProviders
+    condition: HasMultipleProviders
     beforeDisplayAction: SetProvidersData
     nextScreens:
       - name: error-response-recorded
         condition: CurrentProviderHasResponded
       - name: confirm-provider
   confirm-provider:
-    condition: MultiProviderIsEnabledAndHasMultipleProviders
+    condition: HasMultipleProviders
     nextScreens:
       - name: paid-by-ccap
   error-response-recorded:
-    condition: EnableMultipleProviders
     nextScreens: null
   error-provider-response-timed-out:
-    condition: EnableMultipleProviders
     beforeDisplayAction: GetCCRRNameAndPhoneNumberFromFamilySubmission
     nextScreens: null
   paid-by-ccap:

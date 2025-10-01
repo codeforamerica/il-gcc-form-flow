@@ -1,16 +1,11 @@
 <th:block
-        th:with="multipleProviderFlagIsOn=${@environment.getProperty('il-gcc.enable-multiple-providers').equalsIgnoreCase('true')},
-                 submissionHasNoProvider=${T(org.ilgcc.app.utils.SubmissionUtilities).isNoProviderSubmission(submission.getInputData())}">
+        th:with="submissionHasNoProvider=${T(org.ilgcc.app.utils.SubmissionUtilities).isNoProviderSubmission(submission.getInputData())}">
     <th:block
-        th:if="${multipleProviderFlagIsOn && !submissionHasNoProvider}">
+            th:unless="${submissionHasNoProvider}">
         <th:block th:replace="~{fragments/screens/after-submit-contact-multiple-providers :: screen}"/>
-    </th:block>
-    <th:block
-     th:if="${!multipleProviderFlagIsOn && !submissionHasNoProvider}">
-        <th:block th:replace="~{fragments/screens/choose-messaging-method :: screen}"/>
     </th:block>
     <th:block th:if="${submissionHasNoProvider}">
         <th:block
-            th:replace="~{fragments/screens/after-submit-no-provider :: screen}"/>
+                th:replace="~{fragments/screens/after-submit-no-provider :: screen}"/>
     </th:block>
 </th:block>
