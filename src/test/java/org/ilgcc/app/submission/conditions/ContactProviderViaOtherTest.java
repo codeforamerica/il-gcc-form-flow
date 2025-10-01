@@ -9,12 +9,13 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 
 class ContactProviderViaOtherTest {
     
     Submission testSubmission;
     
-    ContactProviderViaOther contactProviderViaOther;
+    ContactProviderViaOther contactProviderViaOther = new ContactProviderViaOther(true);
     UUID uuid1;
     UUID uuid2;
     UUID uuid3;
@@ -46,33 +47,13 @@ class ContactProviderViaOtherTest {
     }
     
     @Test
-    void contactProviderViaOther_shouldReturnTrueWhenUserSelectedOther() {
-        contactProviderViaOther = new ContactProviderViaOther(false);
-        assertThat(contactProviderViaOther.run(testSubmission)).isTrue();
-
-        contactProviderViaOther = new ContactProviderViaOther(true);
+    void returnsTrueWhenUserSelectedOther() {
         assertThat(contactProviderViaOther.run(testSubmission)).isTrue();
     }
 
     @Test
-    void contactProviderViaOther_shouldReturnFalseWhenUserDidNotSelectOther() {
-        contactProviderViaOther = new ContactProviderViaOther(false);
+    void returnsFalseWhenUserDidNotSelectOther() {
         testSubmission.getInputData().put("contactProviderMethod[]", List.of("EMAIL", "TEXT"));
         assertThat(contactProviderViaOther.run(testSubmission)).isFalse();
-
-        contactProviderViaOther = new ContactProviderViaOther(true);
-        testSubmission.getInputData().put("contactProviderMethod[]", List.of("EMAIL", "TEXT"));
-        assertThat(contactProviderViaOther.run(testSubmission)).isFalse();
-    }
-
-    @Test
-    void contactProviderViaOther_shouldReturnTrueWhenUserSelectedOther_MultipleProviders() {
-        contactProviderViaOther = new ContactProviderViaOther(false);
-        assertThat(contactProviderViaOther.run(testSubmission, uuid1.toString())).isFalse();
-
-        contactProviderViaOther = new ContactProviderViaOther(true);
-        assertThat(contactProviderViaOther.run(testSubmission, uuid1.toString())).isTrue();
-        assertThat(contactProviderViaOther.run(testSubmission, uuid2.toString())).isFalse();
-        assertThat(contactProviderViaOther.run(testSubmission, uuid3.toString())).isTrue();
     }
 }

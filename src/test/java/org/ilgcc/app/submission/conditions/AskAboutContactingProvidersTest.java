@@ -7,29 +7,20 @@ import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
 
 class AskAboutContactingProvidersTest {
-  @Test
-  void shouldReturnFalseWhenEnableMultipleProvidersIsFalse() {
-    boolean mockEnableMultipleProviders = false;
-    Submission submission = new SubmissionTestBuilder().with("hasChosenProvider", "true").build();
-    AskAboutContactingProviders condition = new AskAboutContactingProviders(mockEnableMultipleProviders);
-
-    assertFalse(condition.run(submission));
-  }
 
   @Test
-  void shouldReturnFalseWhenEnableMultipleProvidersIsTrueAndHasChoseProviderIsFalse() {
+  void returnsFalseWhenHasChoseProviderIsFalse() {
     boolean mockEnableMultipleProviders = true;
     Submission submission = new SubmissionTestBuilder().with("hasChosenProvider", "false").build();
-    AskAboutContactingProviders condition = new AskAboutContactingProviders(mockEnableMultipleProviders);
+    AskAboutContactingProviders condition = new AskAboutContactingProviders(true);
 
     assertFalse(condition.run(submission));
   }
 
   @Test
-  void shouldReturnFalseWhenEnableMultipleProvidersIsTrueAndHasChoseProviderIsTrue() {
-    boolean mockEnableMultipleProviders = true;
+  void returnFalseWhenHasChoseProviderIsTrue() {
     Submission submission = new SubmissionTestBuilder().with("hasChosenProvider", "true").build();
-    AskAboutContactingProviders condition = new AskAboutContactingProviders(mockEnableMultipleProviders);
+    AskAboutContactingProviders condition = new AskAboutContactingProviders(true);
     assertTrue(condition.run(submission));
   }
 }

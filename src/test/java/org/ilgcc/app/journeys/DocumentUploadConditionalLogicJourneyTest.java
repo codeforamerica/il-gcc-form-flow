@@ -2,359 +2,381 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.ilgcc.app.utils.AbstractBasePageTest;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageTest {
 
-    boolean hasPartner = false;
+    Map<String, List<String>> childcareScheduleIDs = new HashMap<>();
 
-    @Test
-    void SkipsRecommendedDocumentsScreenIfNoneAreRequired() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentChildcareReason[]", List.of())
-                .with("activitiesParentPartnerChildcareReason[]", List.of())
-                .withParentPartnerDetails()
-                .build());
-        hasPartner = true;
-        navigatePassedSignedName(hasPartner);
+    @Nested
+    class whenParentHasReasonForChildcare {
 
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
+        boolean hasPartner = false;
 
-        // doc-upload-add-files
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("controlId")).isTrue();
+        @Test
+        void skipsRecommendedDocumentsScreenIfNoneAreRequired() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .with("activitiesParentChildcareReason[]", List.of())
+                    .with("activitiesParentPartnerChildcareReason[]", List.of())
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("controlId")).isTrue();
+        }
+
+        @Test
+        void displaysJobsInstructionsWhenParentSelectsJob() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .with("activitiesParentChildcareReason[]", List.of("WORKING"))
+                    .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+                    .withJob("jobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234",
+                            "false")
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-recommended-docs
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+            assertThat(testPage.elementDoesNotExistById("job-recommendation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("education-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
+            testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("self-employment-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isTrue();
+        }
+
+        @Test
+        void displaySelfEmploymentInstructionsWhenParentSelectsSelfEmployment() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .with("activitiesParentChildcareReason[]", List.of("WORKING"))
+                    .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+                    .withJob("jobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234",
+                            "true")
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-recommended-docs
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+            assertThat(testPage.elementDoesNotExistById("job-recommendation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("education-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
+            testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("self-employment-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isTrue();
+        }
+
+        @Test
+        void displaysTanfInstructionsWhenParentSelectsTanf() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+                    .with("activitiesParentChildcareReason[]", List.of("TANF_TRAINING"))
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-recommended-docs
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+            assertThat(testPage.elementDoesNotExistById("job-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("education-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
+            testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isTrue();
+        }
+
+        @Test
+        void displaySchoolInstructionsWhenPartnerSelectsSchool() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .with("activitiesParentChildcareReason[]", List.of("SCHOOL"))
+                    .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-recommended-docs
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+            assertThat(testPage.elementDoesNotExistById("job-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("education-documentation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
+            testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isTrue();
+        }
+
+        @Test
+        void displayHomelessInstructionsWhenPartnerSelectsHomeless() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .with("parentHomeExperiencingHomelessness[]", List.of("yes"))
+                    .with("activitiesParentChildcareReason[]", List.of())
+                    .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-recommended-docs
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+            assertThat(testPage.elementDoesNotExistById("job-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("education-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isFalse();
+            testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isFalse();
+        }
+
     }
 
-    @Test
-    void DisplaysRecommendedDocumentsScreenIfDocsAreRequired() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentChildcareReason[]", List.of("TANF_TRAINING"))
-                .build());
-        hasPartner = false;
-        navigatePassedSignedName(hasPartner);
+    @Nested
+    class whenParentHasPartnerWithReasonForChildcare {
 
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
+        boolean hasPartner = true;
 
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+        @Test
+        void skipsRecommendedDocumentsScreenIfNoneAreRequired() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
 
-        //doc-upload-add-files
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("controlId")).isFalse();
-        assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isFalse();
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .withParentPartnerDetails()
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .with("activitiesParentChildcareReason[]", List.of())
+                    .with("activitiesParentPartnerChildcareReason[]", List.of())
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("controlId")).isTrue();
+        }
+
+        @Test
+        void displaysJobsInstructionsWhenPartnerSelectsJob() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .withParentPartnerDetails()
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .with("activitiesParentChildcareReason[]", List.of())
+                    .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+                    .with("activitiesParentPartnerChildcareReason[]", List.of("WORKING"))
+                    .withPartnerJob("partnerJobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234",
+                            "false")
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-recommended-docs
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+            assertThat(testPage.elementDoesNotExistById("job-recommendation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("education-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
+            testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("self-employment-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isTrue();
+        }
+
+        @Test
+        void displaySelfEmploymentInstructionsWhenPartnerSelectsSelfEmployment() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .withParentPartnerDetails()
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .with("activitiesParentChildcareReason[]", List.of())
+                    .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+                    .with("activitiesParentPartnerChildcareReason[]", List.of("WORKING"))
+                    .withPartnerJob("partnerJobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234",
+                            "true")
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-recommended-docs
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+            assertThat(testPage.elementDoesNotExistById("job-recommendation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("education-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
+            testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("self-employment-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isTrue();
+        }
+
+        @Test
+        void displaysTanfInstructionsWhenPartnerSelectsTanf() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .withParentPartnerDetails()
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .with("activitiesParentChildcareReason[]", List.of())
+                    .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+                    .with("activitiesParentPartnerChildcareReason[]", List.of("TANF_TRAINING"))
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-recommended-docs
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+            assertThat(testPage.elementDoesNotExistById("job-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("education-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
+            testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isTrue();
+        }
+
+        @Test
+        void displaySchoolInstructionsWhenPartnerSelectsSchool() {
+            testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
+
+            saveSubmission(getSessionSubmissionTestBuilder()
+                    .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1), List.of(individualProvider))
+                    .withParentPartnerDetails()
+                    .with("parentHomeExperiencingHomelessness[]", List.of())
+                    .with("activitiesParentChildcareReason[]", List.of())
+                    .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
+                    .with("activitiesParentPartnerChildcareReason[]", List.of("SCHOOL"))
+                    .build()
+            );
+
+            navigatePassedSignedName(hasPartner);
+
+            // doc-upload-recommended-docs
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
+            assertThat(testPage.elementDoesNotExistById("job-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("education-documentation")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
+            testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
+
+            // doc-upload-add-files
+            assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
+            assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("self-employment-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isFalse();
+            assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isTrue();
+            assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isTrue();
+        }
+
     }
 
-    @Test
-    void shouldNotDisplayHomelessnessInstructionsForDocumentUploadIfHomelessnessNotSelected() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentChildcareReason[]", List.of("TANF_TRAINING"))
-                .build());
-        hasPartner = false;
-        navigatePassedSignedName(hasPartner);
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
-
-        // doc-upload-recommended docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("tanf-training-recommendation")).contains(
-                getEnMessage("doc-upload-recommended-docs.training.body"));
-        assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
-
-        // doc-upload-add-files
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isFalse();
-        assertThat(testPage.elementDoesNotExistById("homelessness-upload-instruction")).isTrue();
-    }
-
-    @Test
-    void shouldNotDisplaySchoolInstructionsForDocumentUploadIfSchoolNotSelected() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentChildcareReason[]", List.of("TANF_TRAINING"))
-                .build());
-        hasPartner = false;
-        navigatePassedSignedName(hasPartner);
-
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
-
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("tanf-training-recommendation")).contains(
-                getEnMessage("doc-upload-recommended-docs.training.body"));
-        assertThat(testPage.elementDoesNotExistById("education-documentation")).isTrue();
-
-        // doc-upload-add-files
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isFalse();
-        assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isTrue();
-    }
-
-    @Test
-    void shouldNotDisplayJobInstructionsForDocumentUploadIfJobIsNotSelected() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentChildcareReason[]", List.of("TANF_TRAINING"))
-                .build());
-        hasPartner = false;
-        navigatePassedSignedName(hasPartner);
-
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
-
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("tanf-training-recommendation")).contains(
-                getEnMessage("doc-upload-recommended-docs.training.body"));
-        assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
-
-        // doc-upload-add-files
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("homeless-documentation")).isTrue();
-    }
-
-    @Test
-    void shouldNotDisplaySelfEmploymentInstructionsForDocumentUploadIfSelfEmploymentIsNotSelected() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentChildcareReason[]", List.of("WORKING"))
-                .withJob("jobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234", "false")
-                .build());
-        hasPartner = false;
-        navigatePassedSignedName(hasPartner);
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
-
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("job-recommendation"))
-                .contains("Add 2 pay stubs from the last 30 days for each job. If a job started within the last 30 days or you are paid in cash, have your employer fill out a Wage Verification form.");
-        assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
-
-        // doc-upload-add-files
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isTrue();
-    }
-
-    @Test
-    void shouldNotDisplayTanfInstructionsForDocumentUploadIfTanfIsNotSelected() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentChildcareReason[]", List.of("WORKING"))
-                .withJob("jobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234", "false")
-                .build());
-        hasPartner = false;
-        navigatePassedSignedName(hasPartner);
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
-
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("job-recommendation"))
-                .contains("Add 2 pay stubs from the last 30 days for each job. If a job started within the last 30 days or you are paid in cash, have your employer fill out a Wage Verification form.");
-        assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
-
-        // doc-upload-add-files
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("tanf-training-recommendation")).isTrue();
-    }
-
-    @Test
-    void shouldDisplayJobsInstructionsIfPartnerSelectsJobsAndParentDoesNot() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentChildcareReason[]", List.of("TANF_TRAINING"))
-                .with("activitiesParentPartnerChildcareReason[]", List.of("TANF_TRAINING", "WORKING"))
-                .withPartnerJob("partnerJobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234",
-                        "false")
-                .build());
-        hasPartner = true;
-        navigatePassedSignedName(hasPartner);
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
-
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("tanf-training-recommendation")).contains(
-                getEnMessage("doc-upload-recommended-docs.training.body"));
-        assertThat(testPage.elementDoesNotExistById("job-recommendation")).isFalse();
-
-        // doc-upload-add-files
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("job-upload-instruction")).isFalse();
-    }
-
-    @Test
-    void shouldDisplaySelfEmploymentInstructionsIfPartnerSelectsSelfEmploymentAndParentDoesNot() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentChildcareReason[]", List.of("TANF_TRAINING"))
-                .withPartnerJob("partnerJobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234",
-                        "true")
-                .build());
-        hasPartner = true;
-        navigatePassedSignedName(hasPartner);
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
-
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("tanf-training-recommendation")).contains(
-                getEnMessage("doc-upload-recommended-docs.training.body"));
-        assertThat(testPage.elementDoesNotExistById("self-employment-documentation")).isFalse();
-
-        // doc-upload-add-files
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-    }
-
-    @Test
-    void shouldDisplayTanfInstructionsIfPartnerSelectsTanfAndParentDoesNot() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentPartnerChildcareReason[]", List.of("TANF_TRAINING"))
-                .withPartnerJob("partnerJobs", "Company Name", "123 Main St", "Springfield", "IL", "60652", "(651) 123-1234",
-                        "true")
-                .build());
-        hasPartner = true;
-        navigatePassedSignedName(hasPartner);
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
-
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("tanf-training-recommendation")).contains(
-                getEnMessage("doc-upload-recommended-docs.training.body"));
-
-        // doc-upload-add-files
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("tanf-upload-instruction")).isFalse();
-    }
-
-    @Test
-    void shouldDisplaySchoolInstructionsIfPartnerSelectsSchoolAndParentDoesNot() {
-        testPage.navigateToFlowScreen("gcc/submit-ccap-terms");
-        saveSubmission(getSessionSubmissionTestBuilder()
-                .with("hasChosenProvider", "true")
-                .withParentDetails()
-                .withParentPartnerDetails()
-                .withChild("First", "Child", "true")
-                .with("parentMailingAddressSameAsHomeAddress[]", List.of("no"))
-                .withMailingAddress("972 Mission St", "5", "San Francisco", "CA", "94103")
-                .with("parentHomeExperiencingHomelessness[]", List.of())
-                .with("activitiesParentPartnerChildcareReason[]", List.of("TANF_TRAINING", "SCHOOL"))
-                .build());
-        hasPartner = true;
-        navigatePassedSignedName(hasPartner);
-        // submit-share-confirmation-code
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-share-confirmation-code.title"));
-        testPage.clickButton(getEnMessage("general.button.next.submit-documents"));
-
-        // doc-upload-recommended-docs
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-recommended-docs.title"));
-        assertThat(testPage.getElementText("education-documentation")).contains(
-                getEnMessage("doc-upload-recommended-docs.school.body"));
-
-        // doc-upload-add-files
-        testPage.clickButton(getEnMessage("doc-upload-recommended-docs.submit"));
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("doc-upload-add-files.title"));
-        assertThat(testPage.elementDoesNotExistById("school-upload-instruction")).isFalse();
-    }
-
-    void navigatePassedSignedName(boolean hasQualifiedPartner) {
+    private void navigatePassedSignedName(boolean hasQualifiedPartner) {
         // submit-ccap-terms
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-ccap-terms.title"));
         testPage.clickElementById("agreesToLegalTerms-true");
         testPage.clickContinue();
 
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("submit-sign-name.title"));
         testPage.enter("signedName", "parent first parent last");
         if (hasQualifiedPartner) {
             testPage.enter("partnerSignedName", "partner parent");
@@ -362,12 +384,16 @@ public class DocumentUploadConditionalLogicJourneyTest extends AbstractBasePageT
         testPage.clickButton(getEnMessage("submit-sign-name.submit-application"));
 
         // after-submit-contact-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("after-submit-contact-provider.title"));
         testPage.clickContinue();
 
-        // after-submit-contact-provider
-        assertThat(testPage.hasErrorText(getEnMessage("errors.submit-contact-method"))).isTrue();
+        // contact-providers-start
         testPage.clickElementById("contactProviderMethod-OTHER-label");
+        testPage.clickContinue();
+
+        // contact-providers-share-code
+        testPage.clickContinue();
+
+        // contact-providers-review
         testPage.clickContinue();
     }
 }

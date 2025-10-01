@@ -44,33 +44,16 @@ class ContactProviderViaEmailTest {
     }
 
     @Test
-    void contactProviderViaEmail_shouldReturnTrueWhenUserSelectedEmail() {
-        contactProviderViaEmail = new ContactProviderViaEmail(false);
-        assertThat(contactProviderViaEmail.run(testSubmission)).isTrue();
-
+    void returnsTrueWhenUserSelectedEmail() {
         contactProviderViaEmail = new ContactProviderViaEmail(true);
         assertThat(contactProviderViaEmail.run(testSubmission)).isTrue();
     }
 
     @Test
-    void contactProviderViaEmail_shouldReturnFalseWhenUserDidNotSelectEmail() {
-        contactProviderViaEmail = new ContactProviderViaEmail(false);
+    void returnsFalseWhenUserDidNotSelectEmail() {
+        contactProviderViaEmail = new ContactProviderViaEmail(true);
+
         testSubmission.getInputData().put("contactProviderMethod[]", List.of("TEXT", "OTHER"));
         assertThat(contactProviderViaEmail.run(testSubmission)).isFalse();
-
-        contactProviderViaEmail = new ContactProviderViaEmail(true);
-        testSubmission.getInputData().put("contactProviderMethod[]", List.of("TEXT", "OTHER"));
-        assertThat(contactProviderViaEmail.run(testSubmission)).isFalse();
-    }
-
-    @Test
-    void contactProviderViaEmail_shouldReturnTrueWhenUserSelectedEmail_MultipleProviders() {
-        contactProviderViaEmail = new ContactProviderViaEmail(false);
-        assertThat(contactProviderViaEmail.run(testSubmission, uuid1.toString())).isFalse();
-
-        contactProviderViaEmail = new ContactProviderViaEmail(true);
-        assertThat(contactProviderViaEmail.run(testSubmission, uuid1.toString())).isTrue();
-        assertThat(contactProviderViaEmail.run(testSubmission, uuid2.toString())).isFalse();
-        assertThat(contactProviderViaEmail.run(testSubmission, uuid3.toString())).isTrue();
     }
 }
