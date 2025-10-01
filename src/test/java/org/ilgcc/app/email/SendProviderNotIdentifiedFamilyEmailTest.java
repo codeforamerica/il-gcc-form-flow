@@ -99,7 +99,36 @@ public class SendProviderNotIdentifiedFamilyEmailTest {
 
     @Test
     void correctlySetsEmailTemplateDataWhenProviderTypeIsNotSet() {
-        TestProviderNotIdentifiedIndividualProviderTemplate(familySubmission);
+      Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission, null);
+      ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
+
+      assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+          new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+      assertThat(emailTemplate.getSubject()).isEqualTo(
+          messageSource.getMessage("email.response-email-for-family.provider-not-identified.subject", new Object[]{CONFIRMATION_CODE}, locale));
+
+      String emailCopy = emailTemplate.getBody().getValue();
+
+      assertThat(emailCopy).contains(
+          messageSource.getMessage("email.response-email-for-family.provider-not-identified.p1",
+              new Object[]{emailDataOptional.get().get("parentFirstName").toString()}, locale));
+      assertThat(emailCopy).contains(
+          messageSource.getMessage("email.response-email-for-family.provider-not-identified.p2-individual",
+              new Object[]{emailDataOptional.get().get("familyIntendedProviderName").toString()},
+              locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
+          new Object[]{"F.C. and S.C."}, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p4",
+          new Object[]{CONFIRMATION_CODE},
+          locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p5",
+          new Object[]{"Sample Test CCRR", "(603) 555-1244"},
+          locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p6",
+          null,
+          locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+      assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
 
     @Test
@@ -140,11 +169,13 @@ public class SendProviderNotIdentifiedFamilyEmailTest {
             provider.put("childCareProgramName", "FamilyChildCareName");
             provider.put("providerType", "Individual");
             provider.put("familyIntendedProviderEmail", "familyChildCareEmail");
+            provider.put("providerFirstName", "John");
+            provider.put("providerLastName", "Smith");
 
             Map<String, Object> child1 = new HashMap<>();
             child1.put("uuid", "child-1-uuid");
-            child1.put("childFirstName", "First");
-            child1.put("childLastName", "Child");
+            child1.put("childFirstName", "James");
+            child1.put("childLastName", "Kid");
             child1.put("childInCare", "true");
             child1.put("childDateOfBirthMonth", "10");
             child1.put("childDateOfBirthDay", "11");
@@ -155,8 +186,8 @@ public class SendProviderNotIdentifiedFamilyEmailTest {
 
             Map<String, Object> child2 = new HashMap<>();
             child2.put("uuid", "child-2-uuid");
-            child2.put("childFirstName", "Second");
-            child2.put("childLastName", "Child");
+            child2.put("childFirstName", "Frank");
+            child2.put("childLastName", "Second");
             child2.put("childInCare", "true");
             child2.put("childDateOfBirthMonth", "10");
             child2.put("childDateOfBirthDay", "11");
@@ -182,7 +213,36 @@ public class SendProviderNotIdentifiedFamilyEmailTest {
 
         @Test
         void correctlySetsEmailTemplateDataWhenProviderTypeIsIndividual() {
-            TestProviderNotIdentifiedIndividualProviderTemplate(familySubmissionIndividualProvider);
+          Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmissionIndividualProvider, provider);
+          ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
+
+          assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+              new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+          assertThat(emailTemplate.getSubject()).isEqualTo(
+              messageSource.getMessage("email.response-email-for-family.provider-not-identified.subject", new Object[]{CONFIRMATION_CODE}, locale));
+
+          String emailCopy = emailTemplate.getBody().getValue();
+
+          assertThat(emailCopy).contains(
+              messageSource.getMessage("email.response-email-for-family.provider-not-identified.p1",
+                  new Object[]{emailDataOptional.get().get("parentFirstName").toString()}, locale));
+          assertThat(emailCopy).contains(
+              messageSource.getMessage("email.response-email-for-family.provider-not-identified.p2-individual",
+                  new Object[]{emailDataOptional.get().get("childCareProviderInitials").toString()},
+                  locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
+              new Object[]{"J.K."}, locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p4",
+              new Object[]{CONFIRMATION_CODE},
+              locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p5",
+              new Object[]{"Sample Test CCRR", "(603) 555-1244"},
+              locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p6",
+              null,
+              locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
         }
     }
 
@@ -203,8 +263,8 @@ public class SendProviderNotIdentifiedFamilyEmailTest {
 
             Map<String, Object> child1 = new HashMap<>();
             child1.put("uuid", "child-1-uuid");
-            child1.put("childFirstName", "First");
-            child1.put("childLastName", "Child");
+            child1.put("childFirstName", "Joshua");
+            child1.put("childLastName", "Branch");
             child1.put("childInCare", "true");
             child1.put("childDateOfBirthMonth", "10");
             child1.put("childDateOfBirthDay", "11");
@@ -215,8 +275,8 @@ public class SendProviderNotIdentifiedFamilyEmailTest {
 
             Map<String, Object> child2 = new HashMap<>();
             child2.put("uuid", "child-2-uuid");
-            child2.put("childFirstName", "Second");
-            child2.put("childLastName", "Child");
+            child2.put("childFirstName", "Will");
+            child2.put("childLastName", "IAm");
             child2.put("childInCare", "true");
             child2.put("childDateOfBirthMonth", "10");
             child2.put("childDateOfBirthDay", "11");
@@ -232,7 +292,7 @@ public class SendProviderNotIdentifiedFamilyEmailTest {
                     .with("languageRead", "English")
                     .with("providers", List.of(provider))
                     .with("children", List.of(child1, child2))
-                    .withMultipleChildcareSchedulesForProvider(List.of("child-1-uuid"), provider.get("uuid").toString())
+                    .withMultipleChildcareSchedulesForProvider(List.of("child-1-uuid", "child-2-uuid"), provider.get("uuid").toString())
                     .withSubmittedAtDate(OffsetDateTime.now())
                     .withCCRR()
                     .withShortCode(CONFIRMATION_CODE)
@@ -243,72 +303,37 @@ public class SendProviderNotIdentifiedFamilyEmailTest {
 
         @Test
         void correctlySetsEmailTemplateDataWhenProviderTypeIsProgram() {
-            TestProviderNotIdentifiedProgramProviderTemplate(familySubmissionProgramProvider);
+          Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmissionProgramProvider, provider);
+          ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
+
+          assertThat(emailTemplate.getSenderEmail()).isEqualTo(
+              new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
+          assertThat(emailTemplate.getSubject()).isEqualTo(
+              messageSource.getMessage("email.response-email-for-family.provider-not-identified.subject", new Object[]{CONFIRMATION_CODE}, locale));
+
+          String emailCopy = emailTemplate.getBody().getValue();
+
+          assertThat(emailCopy).contains(
+              messageSource.getMessage("email.response-email-for-family.provider-not-identified.p1",
+                  new Object[]{emailDataOptional.get().get("parentFirstName").toString()}, locale));
+          assertThat(emailCopy).contains(
+              messageSource.getMessage("email.response-email-for-family.provider-not-identified.p2-program",
+                  new Object[]{emailDataOptional.get().get("childCareProgramName").toString()},
+                  locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
+              new Object[]{"J.B. and W.I."}, locale));
+
+          assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p4",
+              new Object[]{CONFIRMATION_CODE},
+              locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p5",
+              new Object[]{"Sample Test CCRR", "(603) 555-1244"},
+              locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p6",
+              null,
+              locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
+          assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
         }
-    }
-    void TestProviderNotIdentifiedProgramProviderTemplate(Submission familySubmission) {
-        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
-        ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
-
-        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
-            new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
-        assertThat(emailTemplate.getSubject()).isEqualTo(
-            messageSource.getMessage("email.response-email-for-family.provider-not-identified.subject", new Object[]{CONFIRMATION_CODE}, locale));
-
-        String emailCopy = emailTemplate.getBody().getValue();
-
-        assertThat(emailCopy).contains(
-            messageSource.getMessage("email.response-email-for-family.provider-not-identified.p1",
-                new Object[]{emailDataOptional.get().get("parentFirstName").toString()}, locale));
-        assertThat(emailCopy).contains(
-            messageSource.getMessage("email.response-email-for-family.provider-not-identified.p2-program",
-                new Object[]{emailDataOptional.get().get("childCareProgramName").toString()},
-                locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
-            new Object[]{emailDataOptional.get().get("childCareProviderInitials").toString()}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p4",
-            new Object[]{CONFIRMATION_CODE},
-            locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p5",
-            new Object[]{"Sample Test CCRR", "(603) 555-1244"},
-            locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p6",
-            null,
-            locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
-    }
-
-    void TestProviderNotIdentifiedIndividualProviderTemplate(Submission familySubmission) {
-        Optional<Map<String, Object>> emailDataOptional = sendEmailClass.getEmailData(familySubmission);
-        ILGCCEmailTemplate emailTemplate = sendEmailClass.emailTemplate(emailDataOptional.get());
-
-        assertThat(emailTemplate.getSenderEmail()).isEqualTo(
-            new Email(FROM_ADDRESS, messageSource.getMessage(ILGCCEmail.EMAIL_SENDER_KEY, null, locale)));
-        assertThat(emailTemplate.getSubject()).isEqualTo(
-            messageSource.getMessage("email.response-email-for-family.provider-not-identified.subject", new Object[]{CONFIRMATION_CODE}, locale));
-
-        String emailCopy = emailTemplate.getBody().getValue();
-
-        assertThat(emailCopy).contains(
-            messageSource.getMessage("email.response-email-for-family.provider-not-identified.p1",
-                new Object[]{emailDataOptional.get().get("parentFirstName").toString()}, locale));
-        assertThat(emailCopy).contains(
-            messageSource.getMessage("email.response-email-for-family.provider-not-identified.p2-individual",
-                new Object[]{emailDataOptional.get().get("familyIntendedProviderName").toString()},
-                locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
-            new Object[]{emailDataOptional.get().get("childCareProviderInitials").toString()}, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p4",
-            new Object[]{CONFIRMATION_CODE},
-            locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p5",
-            new Object[]{"Sample Test CCRR", "(603) 555-1244"},
-            locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.response-email-for-family.provider-not-identified.p6",
-            null,
-            locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.automated-response", null, locale));
-        assertThat(emailCopy).contains(messageSource.getMessage("email.general.footer.cfa", null, locale));
     }
 }

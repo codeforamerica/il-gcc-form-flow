@@ -1,9 +1,11 @@
 package org.ilgcc.app.email.templates;
 
 import static org.ilgcc.app.email.ILGCCEmail.FROM_ADDRESS;
+import static org.ilgcc.app.utils.ProviderSubmissionUtilities.formatListIntoReadableString;
 
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import lombok.Getter;
@@ -56,17 +58,12 @@ public class ProviderNotIdentifiedFamilyEmailTemplate {
                     : messageSource.getMessage("email.response-email-for-family.provider-not-identified.p2-program",
                             new Object[]{emailData.get("childCareProgramName").toString()}, locale);
         }
-        String p3;
-        if (providerType.isBlank()) {
-            p3 = messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
-                new Object[]{emailData.get("familyIntendedProviderName"),toString()}, locale);
-        } else {
-            p3 = providerType.equals("Individual")
-                ? messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
-                new Object[]{emailData.get("childCareProviderInitials").toString()}, locale)
-                : messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
-                    new Object[]{emailData.get("childCareProgramName").toString()}, locale);
-        }
+        String childrenInitialsList = formatListIntoReadableString((List<String>) emailData.get("childrenInitialsList"),
+            messageSource.getMessage("general.and", null, locale));
+
+        String p3 = messageSource.getMessage("email.response-email-for-family.provider-not-identified.p3",
+            new Object[]{childrenInitialsList},
+            locale);
         
         String p4 = messageSource.getMessage("email.response-email-for-family.provider-not-identified.p4",
                 new Object[]{emailData.get("confirmationCode")},
