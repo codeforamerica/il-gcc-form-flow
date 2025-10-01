@@ -7,9 +7,7 @@ import java.util.List;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class HourlyScheduleJourneyTest extends AbstractBasePageTest {
 
 

@@ -9,9 +9,7 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class AddFamilyMembersJourneyTest extends AbstractBasePageTest {
 
     @Autowired

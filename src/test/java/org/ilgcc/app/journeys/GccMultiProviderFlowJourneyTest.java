@@ -10,9 +10,7 @@ import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
     @Test
@@ -267,24 +265,24 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-add.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-add.header"));
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
-        
+
         //providers-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         testPage.selectRadio("providerType", "Individual");
         testPage.clickContinue();
-        
+
         //providers-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         assertThat(testPage.elementDoesNotExistById("childCareProgramName")).isTrue();
         assertThat(testPage.findElementById("providerFirstName")).isNotNull();
         assertThat(testPage.findElementById("providerLastName")).isNotNull();
-        
+
         // Go back and Select Care Program
         testPage.goBack();
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         testPage.selectRadio("providerType", "Care Program");
         testPage.clickContinue();
-        
+
         //providers-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         assertThat(testPage.findElementById("childCareProgramName")).isNotNull();
@@ -297,11 +295,10 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("providers-location.header"));
         testPage.clickContinue();
-        
-        
+
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-street"))).isTrue();
         assertThat(testPage.hasErrorText(getEnMessage("errors.provide-city"))).isTrue();
-        
+
         testPage.enter("familyIntendedProviderAddress", "101 Test St");
         testPage.enter("familyIntendedProviderCity", "Chicago");
         testPage.selectFromDropdown("familyIntendedProviderState", "IL - Illinois");
@@ -333,12 +330,12 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         testPage.selectRadio("providerType", "Care Program");
         testPage.clickContinue();
-        
+
         // providers-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         testPage.enter("childCareProgramName", "Nope Test");
         testPage.clickContinue();
-        
+
         //provider-info
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         testPage.enter("familyIntendedProviderAddress", "151 Second St");
@@ -634,7 +631,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         testPage.selectRadio("providerType", "Care Program");
         testPage.clickContinue();
-        
+
         // providers-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         testPage.enter("childCareProgramName", "Nope Test");
@@ -665,13 +662,12 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         testPage.selectRadio("providerType", "Care Program");
         testPage.clickContinue();
-        
+
         //providers-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         testPage.enter("childCareProgramName", "Third Provider");
         testPage.clickContinue();
-        
-        
+
         //provider-location
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
         testPage.enter("familyIntendedProviderAddress", "441 Third St");
@@ -720,12 +716,12 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("continue-link").getCssValue("pointer-events")).isEqualTo("auto");
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("auto");
         testPage.clickButton(getEnMessage("providers-add.button.add-a-provider"));
-        
+
         //provider-type
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-type.title"));
         testPage.selectRadio("providerType", "Care Program");
         testPage.clickContinue();
-        
+
         //provider-name
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         testPage.enter("childCareProgramName", "Favorite Daycare");
@@ -1069,15 +1065,16 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.findElementById("add-providers").getCssValue("pointer-events")).isEqualTo("none");
         testPage.clickButton(getEnMessage("providers-add.button.that-is-all"));
     }
+
     @Test
     void TwoChildrenWithOneProviderAndOneChildWithNoProviderRendersCorrectly() {
         testPage.navigateToFlowScreen("gcc/providers-intro");
         saveSubmission(getSessionSubmissionTestBuilder()
-            .withParentBasicInfo()
-            .withChild("First", "Child", "true")
-            .withChild("Second", "Child", "true")
-            .withProvider("Fake_Provider", "1")
-            .with("choseProviderForEveryChildInNeedOfCare", "false").build());
+                .withParentBasicInfo()
+                .withChild("First", "Child", "true")
+                .withChild("Second", "Child", "true")
+                .withProvider("Fake_Provider", "1")
+                .with("choseProviderForEveryChildInNeedOfCare", "false").build());
         testPage.navigateToFlowScreen("gcc/schedules-intro");
 
         //schedules-intro
@@ -1120,8 +1117,9 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         //schedules-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
     }
+
     @Test
-    void whenProvidersAreNotSelectedButProvidersAreAddedDisplayWarning(){
+    void whenProvidersAreNotSelectedButProvidersAreAddedDisplayWarning() {
         AddOneProviderInMultiProviderFlow();
 
         //providers-add
@@ -1178,7 +1176,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         assertThat(testPage.getHeader()).containsIgnoringCase("Child");
         assertThat(testPage.getElementText("none__checkbox-childcareProvidersForCurrentChild-label")).isEqualTo(
-            getEnMessage("schedules-start.no-provider"));
+                getEnMessage("schedules-start.no-provider"));
         testPage.clickElementById("none__checkbox-childcareProvidersForCurrentChild-label");
         testPage.clickContinue();
 
@@ -1222,7 +1220,7 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
         assertThat(testPage.getHeader()).containsIgnoringCase("Second");
         assertThat(testPage.getElementText("none__checkbox-childcareProvidersForCurrentChild-label")).isEqualTo(
-            getEnMessage("schedules-start.no-provider"));
+                getEnMessage("schedules-start.no-provider"));
         testPage.clickElementById("none__checkbox-childcareProvidersForCurrentChild-label");
         testPage.clickContinue();
 
@@ -1242,7 +1240,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         //schedules-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
         Assertions.assertTrue(
-            testPage.findElementById("no-providers-entered-notice").getText().contains(getEnMessage("schedules-review.notice.no-providers-with-schedules.p1")));
+                testPage.findElementById("no-providers-entered-notice").getText()
+                        .contains(getEnMessage("schedules-review.notice.no-providers-with-schedules.p1")));
         testPage.clickContinue();
     }
 
@@ -1251,8 +1250,8 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
         saveSubmission(getSessionSubmissionTestBuilder().withParentBasicInfo().with("familyIntendedProviderName", "ACME Daycare")
-            .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
-            .withShortCode("familyShortCode").build());
+                .with("applicationCounty", "LEE").withChild("First", "Child", "true").withChild("Second", "Child", "true")
+                .withShortCode("familyShortCode").build());
 
         testPage.navigateToFlowScreen("gcc/children-add");
         testPage.clickButton(getEnMessage("children-add.thats-all"));
@@ -1340,7 +1339,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-name.title"));
         testPage.enter("childCareProgramName", "Third Provider");
         testPage.clickContinue();
-
 
         //provider-location
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-location.title"));
@@ -1449,9 +1447,11 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         //schedules-review
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
         Assertions.assertTrue(
-            testPage.findElementById("providers-are-missing-notice").getText().contains("You did not add your providers, Nope Test and Third Provider, to the child care details."));
+                testPage.findElementById("providers-are-missing-notice").getText()
+                        .contains("You did not add your providers, Nope Test and Third Provider, to the child care details."));
         testPage.clickContinue();
     }
+
     void AddOneProviderInMultiProviderFlow() {
         testPage.navigateToFlowScreen("gcc/parent-info-disability");
 
@@ -1503,7 +1503,6 @@ public class GccMultiProviderFlowJourneyTest extends AbstractBasePageTest {
         testPage.enter("familyIntendedProviderPhoneNumber", "(533)555-5555");
         testPage.clickContinue();
     }
-
 
 
 }

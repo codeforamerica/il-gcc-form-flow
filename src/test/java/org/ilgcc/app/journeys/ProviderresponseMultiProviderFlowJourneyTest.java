@@ -17,10 +17,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class ProviderresponseMultiProviderFlowJourneyTest extends AbstractBasePageTest {
 
     private static Map<String, Object> individualProvider = new HashMap<>();

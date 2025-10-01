@@ -33,9 +33,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(
-        classes = IlGCCApplication.class,
-        properties = "il-gcc.enable-multiple-providers=true"
-
+        classes = IlGCCApplication.class
 )
 @ActiveProfiles("test")
 public class ProviderSubmissionFieldPreparerServiceTest_MultipleProvider {
