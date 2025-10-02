@@ -500,6 +500,7 @@ public class SubmissionTestBuilder {
                 childcareSchedule = new HashMap<>();
                 childcareSchedule.put("childUuid", childId);
                 childcareSchedule.put("providerSchedules", new ArrayList<Map<String, Object>>());
+                childcareSchedule.put("childcareProvidersForCurrentChild[]", List.of(providerUUID));
                 childcareSchedules.add(childcareSchedule);
             }
 
