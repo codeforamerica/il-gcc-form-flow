@@ -69,6 +69,7 @@ flow:
       - name: confirm-parent-mailing-address
   confirm-parent-mailing-address:
     condition: ShowParentMailingAddressConfirmationScreen
+    beforeDisplayAction: ValidateAddressWithESRI
     onPostAction: SaveValidatedParentMailingAddress
     nextScreens:
       - name: parent-county
