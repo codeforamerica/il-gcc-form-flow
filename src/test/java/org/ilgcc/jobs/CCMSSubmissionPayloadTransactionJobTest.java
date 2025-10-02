@@ -3,6 +3,7 @@ package org.ilgcc.jobs;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -104,7 +105,8 @@ class CCMSSubmissionPayloadTransactionJobTest {
         userFileRepositoryService.save(userFile);
         
         when(txPayload.getFiles()).thenReturn(List.of(new TransactionFile("application.pdf", "67936", "base64-payload", userFile)));
-        when(payloadService.generateSubmissionTransactionPayload(any(Submission.class), false)).thenReturn(txPayload);
+        when(payloadService.generateSubmissionTransactionPayload(any(Submission.class), eq(false)))
+                .thenReturn(txPayload);
         
         job.sendCCMSTransaction(submissionId);
 
@@ -132,7 +134,8 @@ class CCMSSubmissionPayloadTransactionJobTest {
         
         CCMSTransaction txPayload = org.mockito.Mockito.mock(CCMSTransaction.class);
         when(txPayload.getFiles()).thenReturn(List.of());
-        when(payloadService.generateSubmissionTransactionPayload(any(Submission.class), false)).thenReturn(txPayload);
+        when(payloadService.generateSubmissionTransactionPayload(any(Submission.class), eq(false)))
+                .thenReturn(txPayload);
 
         job.sendCCMSTransaction(submissionId);
 
