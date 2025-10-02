@@ -38,7 +38,7 @@ public class CCMSJobSchedulingService {
 
     @Getter
     @Setter
-    public class JobSchedule {
+    public static class JobSchedule {
 
         private final long offsetDelaySeconds;
         private final String message;
