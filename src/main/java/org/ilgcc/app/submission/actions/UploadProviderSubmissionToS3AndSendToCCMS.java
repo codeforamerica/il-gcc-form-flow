@@ -36,7 +36,7 @@ public class UploadProviderSubmissionToS3AndSendToCCMS implements Action {
                     submissionSenderService.sendProviderSubmission(providerSubmission);
                 }
             } else {
-                log.info("Provider submission {} expired for family submission {}.", providerSubmission.getId(), familySubmissionOptional.get().getId());
+                log.info("Provider submission {} expired for family submission {}", providerSubmission.getId(), familySubmissionOptional.get().getId());
             }
         } else {
             log.error("Family submission not found for provider submission: " + providerSubmission.getId());
