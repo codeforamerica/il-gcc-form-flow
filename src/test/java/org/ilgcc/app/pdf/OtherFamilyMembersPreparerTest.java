@@ -7,9 +7,14 @@ import formflow.library.pdf.SingleField;
 import formflow.library.pdf.SubmissionField;
 import java.util.List;
 import java.util.Map;
+import org.ilgcc.app.IlGCCApplication;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
+@ActiveProfiles("test")
 public class OtherFamilyMembersPreparerTest {
 
     OtherFamilyMembersPreparer preparer = new OtherFamilyMembersPreparer();
@@ -19,12 +24,12 @@ public class OtherFamilyMembersPreparerTest {
     @Test
     public void includesChildrenNeedingAssistanceBeyondFourAllowed() {
         submission = new SubmissionTestBuilder()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
-                .withChild("Third", "Child", "true")
-                .withChild("Fourth", "Child", "true")
-                .withChild("Fifth", "Child", "true")
-                .withChild("Sixth", "Child", "true")
+                .withChild("First", "Child", "true", true)
+                .withChild("Second", "Child", "true", true)
+                .withChild("Third", "Child", "true", true)
+                .withChild("Fourth", "Child", "true", true)
+                .withChild("Fifth", "Child", "true", true)
+                .withChild("Sixth", "Child", "true", true)
                 .build();
 
         Map<String, SubmissionField> result = preparer.prepareSubmissionFields(submission, null);
@@ -41,14 +46,14 @@ public class OtherFamilyMembersPreparerTest {
     @Test
     public void correctlyPreparesChildAndAdultInformation() {
         submission = new SubmissionTestBuilder()
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
-                .withChild("Third", "Child", "true")
-                .withChild("Fourth", "Child", "true")
-                .withChild("Fifth", "Child", "true")
-                .withChild("Sixth", "Child", "false")
-                .withChild("Seventh", "Child", "false")
-                .withChild("Eight", "Child", "false")
+                .withChild("First", "Child", "true", true)
+                .withChild("Second", "Child", "true", true)
+                .withChild("Third", "Child", "true", true)
+                .withChild("Fourth", "Child", "true", true)
+                .withChild("Fifth", "Child", "true", true)
+                .withChild("Sixth", "Child", "false", true)
+                .withChild("Seventh", "Child", "false", true)
+                .withChild("Eight", "Child", "false", true)
                 .withAdultDependent("First A", "Adult-Dependent")
                 .withAdultDependent("Second A", "Adult-Dependent")
                 .build();

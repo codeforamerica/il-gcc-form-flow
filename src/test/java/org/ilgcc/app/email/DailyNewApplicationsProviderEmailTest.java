@@ -24,7 +24,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 
-
 @ActiveProfiles("test")
 @SpringBootTest
 public class DailyNewApplicationsProviderEmailTest {

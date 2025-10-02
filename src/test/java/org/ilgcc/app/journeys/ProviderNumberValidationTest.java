@@ -1,7 +1,6 @@
 package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_APPROVED_PROVIDER;
 import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_DENIED_PROVIDER;
 import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_STATUS_C_PROVIDER;
 import static org.ilgcc.app.data.importer.FakeProviderDataImporter.CURRENT_STATUS_R_PROVIDER;
@@ -11,34 +10,22 @@ import static org.ilgcc.app.data.importer.FakeProviderDataImporter.OUTDATED_PEND
 
 import formflow.library.data.Submission;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.springframework.test.context.TestPropertySource;
 
 @Slf4j
+@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class ProviderNumberValidationTest extends AbstractBasePageTest {
 
     @Test
     void ProviderNumberValidationTest() {
         Submission familySubmission = submissionRepositoryService.save(new SubmissionTestBuilder()
-                .withFlow("gcc")
-                .withParentDetails()
-                .with("parentPreferredName", "FirstName")
-                .withChild("First", "Child", "true")
-                .withChild("Second", "Child", "true")
-                .withChild("NoAssistance", "Child", "No")
-                .withConstantChildcareSchedule(0)
+                .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1),
+                        List.of(programProvider, programProvider, programProvider))
                 .withSubmittedAtDate(OffsetDateTime.now().minusDays(2))
                 .withShortCode("ABC123")
                 .build());

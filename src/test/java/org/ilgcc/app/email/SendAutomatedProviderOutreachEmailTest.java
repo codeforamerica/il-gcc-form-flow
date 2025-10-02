@@ -26,7 +26,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-
 @ActiveProfiles("test")
 @SpringBootTest
 public class SendAutomatedProviderOutreachEmailTest {

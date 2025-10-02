@@ -17,6 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 @Tag("staticPagesJourney")
 @TestPropertySource(properties = {
         "form-flow.design-system.name=honeycrisp",
+        "il-gcc.enable-multiple-providers=true",
 })
 public class DesignSystemHoneycrispJourneyTest extends AbstractBasePageTest {
 

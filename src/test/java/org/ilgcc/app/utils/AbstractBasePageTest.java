@@ -23,8 +23,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +56,25 @@ import org.springframework.test.context.TestPropertySource;
 public abstract class AbstractBasePageTest {
 
     private static final String UPLOADED_JPG_FILE_NAME = "test.jpeg";
+
+    protected static Map<String, Object> child_1 = Map.of("firstName", "childFirst", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);
+    protected static Map<String, Object> child_2 = Map.of("firstName", "childSecond", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);
+    protected static Map<String, Object> child_3 = Map.of("firstName", "childThird", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);
+    protected static Map<String, Object> child_4 = Map.of("firstName", "childFourth", "lastName", "childLast",
+            "needFinancialAssistanceForChild", "true",
+            "iterationIsComplete", true);
+
+    protected static Map<String, Object> individualProvider = Map.of("uuid", UUID.randomUUID().toString(), "iterationIsComplete",
+            true, "providerType", "Individual");
+
+    protected static Map<String, Object> programProvider = Map.of("uuid", UUID.randomUUID().toString(), "iterationIsComplete",
+            true, "providerType", "Care Program");
 
     @Autowired
     protected RemoteWebDriver driver;
@@ -294,15 +315,14 @@ public abstract class AbstractBasePageTest {
         testPage.selectFromDropdown("activitiesJobCommuteTime", getEnMessage("general.hours.1.5.hours"));
         testPage.clickContinue();
     }
-
     protected String createAValidLink() {
         testPage.navigateToFlowScreen("gcc/activities-parent-intro");
 
-        Submission s = saveSubmission(getSessionSubmissionTestBuilder().withDayCareProvider().withParentDetails()
-                .with("parentPreferredName", "FirstName").withChild("First", "Child", "true")
-                .withChild("Second", "Child", "false").withChild("NoAssistance", "Child", "false")
-                .withConstantChildcareSchedule(0).with("earliestChildcareStartDate", "10/10/2011")
-                .withSubmittedAtDate(OffsetDateTime.now()).build());
+        Submission s = saveSubmission(getSessionSubmissionTestBuilder()
+                        .withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(List.of(child_1),
+                                List.of(individualProvider))
+                        .withShortCode("ABC123")
+                        .withSubmittedAtDate(OffsetDateTime.now()).build());
 
         testPage.clickContinue();
 
@@ -334,9 +354,8 @@ public abstract class AbstractBasePageTest {
     }
 
     /**
-     * This compares the pdf fields in the generated pdf and our expected test pdf, "test_filled_ccap.pdf". If there are updates
-     * to the template pdf (used to generate the client pdf), the test pdf should be updated to have the expected fields and
-     * values.
+     * This compares the pdf fields in the generated pdf and our expected test pdf. If there are updates to the template pdf (used
+     * to generate the client pdf), the test pdf should be updated to have the expected fields and values.
      */
     protected void verifyPDF(String pdfPath, List<String> untestableFields, String flow) throws IOException {
         File pdfFile = getDownloadedPDF(flow);

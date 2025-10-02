@@ -3,12 +3,15 @@ package org.ilgcc.app.utils;
 import static java.util.Collections.emptyList;
 
 import formflow.library.data.Submission;
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
 
 public class SubmissionTestBuilder {
@@ -62,12 +65,146 @@ public class SubmissionTestBuilder {
         return this;
     }
 
+    public SubmissionTestBuilder withValidSubmissionUpTo2ParentActivities() {
+        withFlow("gcc");
+        withParentBasicInfo();
+        with("languageRead", "English");
+        with("languageSpeak", "English");
+        with("parentContactPreferredCommunicationMethod", "mail");
+        with("ccrrName", "TEST CCRR");
+        with("organizationId", new BigInteger("12345678901"));
+        with("ccrrPhoneNumber", "(222); 222-2222");
+        with("parentHasPartner", "false");
+        with("applicationCounty", "testApplicationCounty");
+        with("parentHomeZipCode", "");
+        with("parentMailingCity", "IlCity");
+        with("hasAdultDependents", "false");
+        with("parentContactEmail", "mail@mailinator.com");
+        with("parentMailingState", "IL");
+        with("parentMailingZipCode", "60652");
+        with("validate_parentMailing", "true");
+        with("parentContactPhoneNumber", "(417) 472-1398");
+        with("parentMailingStreetAddress1", "638 Rocky Nobel Street");
+        with("parentMailingStreetAddress2", "");
+        with("useSuggestedParentMailingAddress", "false");
+        with("parentHomeExperiencingHomelessness[]", List.of("yes"));
+
+        return this;
+    }
+
+    public SubmissionTestBuilder withValidSubmissionUpTo3ChildrenInfo() {
+        withValidSubmissionUpTo2ParentActivities();
+        with("activitiesParentChildcareReason[]", List.of("TANF_TRAINING"));
+
+        return this;
+    }
+
+    public SubmissionTestBuilder withValidSubmissionUpTo4ProvidersInfo(List<Map<String, Object>> childrenData) {
+        withValidSubmissionUpTo3ChildrenInfo();
+
+        childrenData.forEach(child -> {
+            withChild(child.get("firstName").toString(), child.get("lastName").toString(), child.get(
+                            "needFinancialAssistanceForChild").toString(),
+                    Boolean.valueOf(child.get("iterationIsComplete").toString()));
+        });
+
+        return this;
+    }
+
+    public SubmissionTestBuilder withValidSubmissionUpTo5SchedulesIntro(List<Map<String, Object>> childrenData,
+            List<Map<String, Object>> providersData) {
+        withValidSubmissionUpTo4ProvidersInfo(childrenData);
+        withProviders(providersData);
+
+        return this;
+    }
+
+    public SubmissionTestBuilder withValidSubmissionUpTo6ParentIncome(List<Map<String, Object>> childrenData,
+            List<Map<String, Object>> providersData, Map<String, List<String>> schedulesIds) {
+        withValidSubmissionUpTo5SchedulesIntro(childrenData, providersData);
+        List<String> childIds = schedulesIds.get("childIds");
+        List<String> providerIds = schedulesIds.get("providerIds");
+
+        withMultipleChildcareSchedules(childIds, providerIds);
+        return this;
+    }
+
+    public SubmissionTestBuilder withValidSubmissionUpTo7SignAndEmail(List<Map<String, Object>> childrenData, List<Map<String,
+            Object>> providersData, Map<String, List<String>> schedulesIds) {
+        withValidSubmissionUpTo6ParentIncome(childrenData, providersData, schedulesIds);
+        with("unearnedIncomeSource[]", List.of("NONE"));
+        with("unearnedIncomePrograms[]", List.of("NONE"));
+        with("unearnedIncomeReferralServices[]", List.of("NONE"));
+        with("doesAnyoneInHouseholdPayChildSupport", "false");
+        with("unearnedIncomeAssetsMoreThanOneMillionDollars", "false");
+        return this;
+    }
+
+    public SubmissionTestBuilder withValidSubmissionUpTo7SignAndEmailWithSingleChildAndProvider(
+            List<Map<String, Object>> childrenData, List<Map<String,
+                    Object>> providersData) {
+        Map<String, List<String>> childcareScheduleIDs = new HashMap<>();
+        List<String> childIds = childrenData.stream().map(child -> "%s-%s".formatted(child.get("firstName"),
+                child.get("lastName")).toLowerCase()).collect(Collectors.toList());
+        List<String> providerIds =
+                providersData.stream().map(provider -> provider.get("uuid").toString()).collect(Collectors.toList());
+
+        childcareScheduleIDs.put("childIds", childIds);
+        childcareScheduleIDs.put("providerIds", providerIds);
+        withValidSubmissionUpTo6ParentIncome(childrenData, providersData, childcareScheduleIDs);
+        with("unearnedIncomeSource[]", List.of("NONE"));
+        with("unearnedIncomePrograms[]", List.of("NONE"));
+        with("unearnedIncomeReferralServices[]", List.of("NONE"));
+        with("doesAnyoneInHouseholdPayChildSupport", "false");
+        with("unearnedIncomeAssetsMoreThanOneMillionDollars", "false");
+        return this;
+    }
+
+
+    public SubmissionTestBuilder withProviders(List<Map<String, Object>> providersData) {
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) submission.getInputData().getOrDefault("providers",
+                new ArrayList<>());
+
+        providersData.forEach(provider -> {
+            providers.add(withProvider(
+                    provider.getOrDefault("uuid", UUID.randomUUID()).toString(),
+                    provider.getOrDefault("providerType", "Individual").toString(),
+                    Boolean.valueOf(provider.getOrDefault(
+                            "iterationIsComplete", "true").toString())));
+        });
+        with("hasChosenProvider", "true");
+        submission.getInputData().put("providers", providers);
+        return this;
+    }
+
+    public Map<String, Object> withProvider(String uuid, String providerType, Boolean iterationIsComplete) {
+        Map<String, Object> newProvider = new HashMap<>();
+        newProvider.put("uuid", uuid);
+        newProvider.put("providerType", providerType);
+        if (providerType.equals("Individual")) {
+            newProvider.put("familyIntendedProviderName", "providerFirst and Last");
+        }
+        if (providerType.equals("Care Program")) {
+            newProvider.put("childCareProgramName", "Gray Ramos");
+        }
+        newProvider.put("providerLastName", "providerLast");
+        newProvider.put("providerFirstName", "providerFirst");
+        newProvider.put("familyIntendedProviderPhoneNumber", "(999) 123-1234");
+        newProvider.put("familyIntendedProviderCity", "Aliqua Ex facilis e");
+        newProvider.put("familyIntendedProviderEmail", "providerEmailr@mailinator.com");
+        newProvider.put("familyIntendedProviderState", "IL");
+        newProvider.put("familyIntendedProviderAddress", "123 Main St.");
+        newProvider.put(Submission.ITERATION_IS_COMPLETE_KEY, iterationIsComplete);
+
+        return newProvider;
+    }
+
     public SubmissionTestBuilder withSubmittedAtDate(OffsetDateTime date) {
         submission.setSubmittedAt(date);
         return this;
     }
 
-    public SubmissionTestBuilder withFlow(String flow){
+    public SubmissionTestBuilder withFlow(String flow) {
         submission.setFlow(flow);
         return this;
     }
@@ -77,7 +214,7 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withProviderSubmissionData(){
+    public SubmissionTestBuilder withProviderSubmissionData() {
         submission.getInputData().put("providerResponseFirstName", "Provider");
         submission.getInputData().put("providerResponseLastName", "LastName");
         submission.getInputData().put("providerResponseBusinessName", "DayCare Place");
@@ -98,17 +235,19 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withProviderStateLicense(){
+    public SubmissionTestBuilder withProviderStateLicense() {
         submission.getInputData().put("providerCurrentlyLicensed", "true");
         submission.getInputData().put("providerLicenseNumber", "123453646");
         submission.getInputData().put("providerLicenseState", "IL");
 
         return this;
     }
+
     public SubmissionTestBuilder withDayCareProvider() {
         submission.getInputData().put("familyIntendedProviderName", "Open Sesame");
         return this;
     }
+
     public SubmissionTestBuilder withClientResponseConfirmationCode(String confirmationCode) {
         Map<String, String> clientResponse = new HashMap<>();
         clientResponse.put("clientResponseConfirmationCode", confirmationCode);
@@ -136,17 +275,6 @@ public class SubmissionTestBuilder {
         submission.getInputData().put("parentHomeState", "CA - California");
         submission.getInputData().put("parentHomeZipCode", "94103");
         submission.getInputData().put("parentHasPartner", "false");
-        return this;
-    }
-
-    public SubmissionTestBuilder withHomelessDetails() {
-        submission.getInputData().put("parentFirstName", "HP_first");
-        submission.getInputData().put("parentLastName", "HP_last");
-        submission.getInputData().put("parentBirthMonth", "10");
-        submission.getInputData().put("parentBirthDay", "20");
-        submission.getInputData().put("parentBirthYear", "1922");
-        submission.getInputData().put("parentBirthDate", "10/20/1922");
-
         return this;
     }
 
@@ -210,31 +338,38 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withChild(String firstName, String lastName, String needFinancialAssistanceForChild) {
-        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().get("children");
-        if (children == null) {
-            children = new ArrayList<>();
-        }
+        withChild(firstName, lastName, needFinancialAssistanceForChild, true);
+        return this;
+    }
+
+    // already changed for multiple provider
+    public SubmissionTestBuilder withChild(String firstName, String lastName, String needFinancialAssistanceForChild,
+            Boolean iterationIsComplete) {
+        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData()
+                .getOrDefault("children", new ArrayList<>());
 
         Map<String, Object> child = new HashMap<>();
         String uuid = "%s-%s".formatted(firstName, lastName).toLowerCase();
         child.put("uuid", uuid);
         child.put("childFirstName", firstName);
         child.put("childLastName", lastName);
-        child.put("childInCare", "true");
         child.put("childDateOfBirthMonth", "10");
         child.put("childDateOfBirthDay", "11");
         child.put("childDateOfBirthYear", "2002");
         child.put("needFinancialAssistanceForChild", needFinancialAssistanceForChild);
         child.put("childIsUsCitizen", "Yes");
-        child.put("ccapStartDate", "01/10/2025");
-        child.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
+        with("childRelationship", "Grandchild");
+        with("childHasDisability", "No");
+        child.put(Submission.ITERATION_IS_COMPLETE_KEY, iterationIsComplete);
         children.add(child);
+
         submission.getInputData().put("children", children);
+
         return this;
     }
 
     public SubmissionTestBuilder withProvider(String providerName, String orderAdded) {
-        List<Map<String, Object>> providers  = (List<Map<String, Object>>) submission.getInputData().get("providers");
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) submission.getInputData().get("providers");
         if (providers == null) {
             providers = new ArrayList<>();
         }
@@ -249,42 +384,16 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-
-    public SubmissionTestBuilder withToddler(String firstName, String lastName, String needFinancialAssistanceForChild, Integer childAgeMonths) {
-        List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData().get("children");
-        if (children == null) {
-            children = new ArrayList<>();
-        }
-
-        Map<String, Object> child = new HashMap<>();
-
-        OffsetDateTime toddlerBirthDate = OffsetDateTime.now().minusMonths(childAgeMonths.longValue()).minusDays(1);
-
-        String uuid = "%s-%s".formatted(firstName, lastName).toLowerCase();
-        child.put("uuid", uuid);
-        child.put("childFirstName", firstName);
-        child.put("childLastName", lastName);
-        child.put("childInCare", "true");
-        child.put("childDateOfBirthMonth", toddlerBirthDate.getMonthValue());
-        child.put("childDateOfBirthDay", toddlerBirthDate.getDayOfMonth());
-        child.put("childDateOfBirthYear", toddlerBirthDate.getYear());
-        child.put("needFinancialAssistanceForChild", needFinancialAssistanceForChild);
-        child.put("childIsUsCitizen", "Yes");
-        child.put("ccapStartDate", "01/10/2025");
-        child.put(Submission.ITERATION_IS_COMPLETE_KEY, true);
-        children.add(child);
-        submission.getInputData().put("children", children);
-        return this;
-    }
     public SubmissionTestBuilder withProviderHouseholdMember(
-        String firstName,
-        String lastName,
-        String dateOfBirthDay,
-        String dateOfBirthMonth,
-        String dateOfBirthYear,
-        String relationship,
-        String SSN) {
-        List<Map<String, Object>> providerHouseholdMembers = (List<Map<String, Object>>) submission.getInputData().getOrDefault("providerHouseholdMembers", new ArrayList<>());
+            String firstName,
+            String lastName,
+            String dateOfBirthDay,
+            String dateOfBirthMonth,
+            String dateOfBirthYear,
+            String relationship,
+            String SSN) {
+        List<Map<String, Object>> providerHouseholdMembers = (List<Map<String, Object>>) submission.getInputData()
+                .getOrDefault("providerHouseholdMembers", new ArrayList<>());
 
         Map<String, Object> providerHouseholdMember = new HashMap<>();
         String uuid = "%s-%s".formatted(firstName, lastName).toLowerCase();
@@ -324,6 +433,7 @@ public class SubmissionTestBuilder {
         submission.getInputData().put(subflow, jobs);
         return this;
     }
+
     public SubmissionTestBuilder withJob(String subflow, HashMap<String, Object> fields) {
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get(subflow);
         if (jobs == null) {
@@ -336,14 +446,17 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder addJobWithStartDate(String activitiesJobStartDay, String activitiesJobStartMonth, String activitiesJobStartYear) {
+    public SubmissionTestBuilder addJobWithStartDate(String activitiesJobStartDay, String activitiesJobStartMonth,
+            String activitiesJobStartYear) {
         var job = new HashMap<String, Object>();
         job.put("activitiesJobStartDay", activitiesJobStartDay);
         job.put("activitiesJobStartMonth", activitiesJobStartMonth);
         job.put("activitiesJobStartYear", activitiesJobStartYear);
         return withJob("jobs", job);
     }
-    public SubmissionTestBuilder addPartnerJobWithStartDate(String activitiesPartnerJobStartDay, String activitiesPartnerJobStartMonth, String activitiesPartnerJobStartYear) {
+
+    public SubmissionTestBuilder addPartnerJobWithStartDate(String activitiesPartnerJobStartDay,
+            String activitiesPartnerJobStartMonth, String activitiesPartnerJobStartYear) {
         var job = new HashMap<String, Object>();
         job.put("activitiesPartnerJobStartDay", activitiesPartnerJobStartDay);
         job.put("activitiesPartnerJobStartMonth", activitiesPartnerJobStartMonth);
@@ -410,7 +523,8 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withMultipleChildcareSchedulesForProvider(List<String> childIDs, String providerUUID) {
-        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) submission.getInputData().getOrDefault("childcareSchedules", new ArrayList<>());
+        List<Map<String, Object>> childcareSchedules = (List<Map<String, Object>>) submission.getInputData()
+                .getOrDefault("childcareSchedules", new ArrayList<>());
 
         for (String childUUID : childIDs) {
             Map<String, Object> childcareSchedule = new HashMap<>();
@@ -444,7 +558,8 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withMultipleChildcareSchedulesAllBelongingToTheSameProvider(List<String> childIDs, String providerUUID) {
+    public SubmissionTestBuilder withMultipleChildcareSchedulesAllBelongingToTheSameProvider(List<String> childIDs,
+            String providerUUID) {
         List<Map<String, Object>> childcareSchedules = new ArrayList<>();
 
         for (String childUUID : childIDs) {
@@ -506,7 +621,7 @@ public class SubmissionTestBuilder {
 
             // Build a providerSchedule for this child+provider
             Map<String, Object> providerSchedule = new HashMap<>();
-            providerSchedule.put("uuid", "provider-child-schedule");
+            providerSchedule.put("uuid", String.format("provider-child-schedule-%s", i + 1));
             providerSchedule.put("childInCare", true);
             providerSchedule.put("ccapStartDate", "11/17/2025");
             providerSchedule.put("repeatForValue", providerUUID);
@@ -531,7 +646,8 @@ public class SubmissionTestBuilder {
         return this;
     }
 
-    public SubmissionTestBuilder withMultipleChildcareSchedulesBelongingToDifferentProviders(List<String> childIDs, List<String> providerUUIDs) {
+    public SubmissionTestBuilder withMultipleChildcareSchedulesBelongingToDifferentProviders(List<String> childIDs,
+            List<String> providerUUIDs) {
         List<Map<String, Object>> childcareSchedules = new ArrayList<>();
 
         for (int i = 0; i < childIDs.size(); i++) {
@@ -541,7 +657,7 @@ public class SubmissionTestBuilder {
             List<Map<String, Object>> providerSchedules = new ArrayList<>();
             Map<String, Object> providerSchedule = new HashMap<>();
 
-            providerSchedule.put("uuid", "provider-child-schedule");
+            providerSchedule.put("uuid", String.format("provider-child-schedule-%s", i + 1));
             providerSchedule.put("childInCare", true);
             providerSchedule.put("ccapStartDate", "11/17/2025");
             providerSchedule.put("repeatForValue", providerUUIDs.get(i));
@@ -733,7 +849,8 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withPartnerRegularWorkSchedule(List days) {
-        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133", "",
+        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133",
+                "",
                 "false");
 
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
@@ -753,7 +870,8 @@ public class SubmissionTestBuilder {
     }
 
     public SubmissionTestBuilder withPartnerRegularWorkScheduleAddHour(List days, TimeOption startTime, TimeOption endTime) {
-        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133", "",
+        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133",
+                "",
                 "false");
         List<Map<String, Object>> jobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (jobs == null) {
@@ -773,7 +891,8 @@ public class SubmissionTestBuilder {
 
     public SubmissionTestBuilder withPartnerWorkScheduleByDay(String day, TimeOption startTime, TimeOption endTime) {
         withParentPartnerDetails();
-        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133", "",
+        withPartnerJob("partnerJobs", "Partner Regular Schedule Job", "123 PartnerRegularJob Street", "Chicago", "IL", "60133",
+                "",
                 "false");
         List<Map<String, Object>> partnerJobs = (List<Map<String, Object>>) submission.getInputData().get("partnerJobs");
         if (partnerJobs == null) {
@@ -840,9 +959,11 @@ public class SubmissionTestBuilder {
         child.put("childAttendsOtherEd", (childAttendsOtherEd));
         return this;
     }
-    public SubmissionTestBuilder withDescriptionOfChildAttendsOtherSchoolDuringTheDay(int childIterationPosition, String childOtherEdHoursDescription) {
+
+    public SubmissionTestBuilder withDescriptionOfChildAttendsOtherSchoolDuringTheDay(int childIterationPosition,
+            String childOtherEdHoursDescription) {
         List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData()
-            .getOrDefault("children", emptyList());
+                .getOrDefault("children", emptyList());
         if (children.isEmpty()) {
             return this;
         }
@@ -852,6 +973,7 @@ public class SubmissionTestBuilder {
         child.put("childOtherEdHoursDescription", childOtherEdHoursDescription);
         return this;
     }
+
     public SubmissionTestBuilder withChildIsAUSCitizen(int childIterationPosition, String childIsUsCitizen) {
         List<Map<String, Object>> children = (List<Map<String, Object>>) submission.getInputData()
                 .getOrDefault("children", emptyList());
@@ -924,7 +1046,7 @@ public class SubmissionTestBuilder {
 
         return this;
     }
-    
+
     public SubmissionTestBuilder withFamilyIntendedProviderName(String providerName) {
         submission.getInputData().put("familyIntendedProviderName", providerName);
         return this;
