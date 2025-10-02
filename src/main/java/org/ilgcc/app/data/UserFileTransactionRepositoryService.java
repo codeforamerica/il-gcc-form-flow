@@ -51,12 +51,4 @@ public class UserFileTransactionRepositoryService {
     public List<UserFileTransaction> findBySubmissionIdAndTransactionStatus(UUID submissionId, TransactionStatus status) {
         return userFileTransactionRepository.findBySubmissionIdAndTransactionStatus(submissionId, status);
     }
-
-    /**
-     * @param transactionId The Transaction's UUID.
-     * @return A list of UserFileTransactions matching not completed for the given transaction
-     */
-    public List<UserFileTransaction> findIncompleteStatusByTransaction(UUID transactionId) {
-        return userFileTransactionRepository.findIncompleteStatusByTransaction(transactionId);
-    }
 }

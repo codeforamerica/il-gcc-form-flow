@@ -13,7 +13,4 @@ public interface UserFileTransactionRepository extends JpaRepository<UserFileTra
     List<UserFileTransaction> findByTransactionTransactionIdAndTransactionStatus(UUID transactionId, TransactionStatus status);
     
     List<UserFileTransaction> findBySubmissionIdAndTransactionStatus(UUID submissionId, TransactionStatus status);
-
-    @Query("SELECT f FROM UserFileTransaction f WHERE f.transactionStatus in ('FAILED','REQUESTED')")
-    List<UserFileTransaction> findIncompleteStatusByTransaction(UUID transactionId);
 }

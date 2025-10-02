@@ -1,17 +1,15 @@
 package org.ilgcc.jobs;
 
-import static org.ilgcc.app.utils.enums.CCMSEndpoints.APP_SUBMISSION_ENDPOINT;
+import static org.ilgcc.app.utils.enums.CCMSEndpoints.WORK_ITEM_LOOKUP_ENDPOINT;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import formflow.library.data.Submission;
 import formflow.library.data.SubmissionRepositoryService;
 import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -23,9 +21,8 @@ import org.ilgcc.app.data.UserFileTransactionRepositoryService;
 import org.ilgcc.app.data.ccms.CCMSApiClient;
 import org.ilgcc.app.data.ccms.CCMSJobSchedulingService;
 import org.ilgcc.app.data.ccms.CCMSJobSchedulingService.JobSchedule;
-import org.ilgcc.app.data.ccms.CCMSTransaction;
+import org.ilgcc.app.data.ccms.CCMSTransactionLookup;
 import org.ilgcc.app.data.ccms.CCMSTransactionPayloadService;
-import org.ilgcc.app.utils.SubmissionUtilities;
 import org.ilgcc.app.utils.enums.TransactionStatus;
 import org.jobrunr.jobs.JobId;
 import org.jobrunr.jobs.annotations.Job;
@@ -56,7 +53,7 @@ public class CCMSSubmissionFetchTransactionJob {
     public CCMSSubmissionFetchTransactionJob(JobScheduler jobScheduler,
             CCMSTransactionPayloadService ccmsTransactionPayloadService, CCMSApiClient ccmsApiClient,
             TransactionRepositoryService transactionRepositoryService, SubmissionRepositoryService submissionRepositoryService
-            ) {
+    ) {
         this.jobScheduler = jobScheduler;
         this.ccmsTransactionPayloadService = ccmsTransactionPayloadService;
         this.ccmsApiClient = ccmsApiClient;
@@ -65,26 +62,28 @@ public class CCMSSubmissionFetchTransactionJob {
         this.enableV2Api = ccmsApiClient.getConfiguration().isEnableV2Api();
     }
 
-    public void scheduleJob(@NotNull UUID submissionId, JobSchedule jobSchedule) {
+    public void scheduleJob(@NotNull UUID transactionId, JobSchedule jobSchedule) {
         JobId jobId = jobScheduler.schedule(Instant.now().plus(Duration.ofSeconds(jobSchedule.getOffsetDelaySeconds())),
-                () -> fetchCCMSTransaction(submissionId));
+                () -> fetchCCMSTransaction(transactionId));
 
-        log.info(String.format("%s %s for submission with ID: %s in %s. CCMS integration enabled: %s", jobSchedule.getMessage(),
-                jobId, submissionId, jobSchedule.getOffsetDelaySeconds(), isCCMSIntegrationEnabled()));
+        log.info(String.format("%s %s for transaction with ID: %s in %s seconds. CCMS integration enabled: %s",
+                jobSchedule.getMessage(),
+                jobId, transactionId, jobSchedule.getOffsetDelaySeconds(), isCCMSIntegrationEnabled()));
     }
 
 
     @Job(name = "Request CCMS Submission Status", retries = 5)
-    public void fetchCCMSTransaction(@NotNull UUID submissionId) throws IOException {
+    public void fetchCCMSTransaction(@NotNull UUID transactionId) throws IOException {
         if (!enableV2Api) {
             return;
         }
-        Transaction existingTransaction = transactionRepositoryService.getBySubmissionId(submissionId);
+        Transaction existingTransaction = transactionRepositoryService.getByTransactionId(transactionId);
 
-        if (jobSchedulingService.isOnlineNow()) {
-            Optional<Submission> submissionOptional = submissionRepositoryService.findById(submissionId);
-            if (submissionOptional.isPresent()) {
-                Submission submission = submissionOptional.get();
+        if (existingTransaction == null) {
+            throw new RuntimeException("Could not find transaction with ID: " + transactionId);
+        } else {
+            if (jobSchedulingService.isOnlineNow()) {
+                UUID submissionId = existingTransaction.getSubmissionId();
                 boolean acquired = false;
                 try {
                     // Try to acquire a permit with a timeout
@@ -97,60 +96,43 @@ public class CCMSSubmissionFetchTransactionJob {
                         throw new IOException("Timeout waiting to acquire semaphore permit for transmitting to CCMS.");
 
                     } else {     // Create a request for the fetch
-                        Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(
-                                submission);
+                        // Make the actual request
+                        try {
+                            JsonNode response = ccmsApiClient.fetchRequest(WORK_ITEM_LOOKUP_ENDPOINT.getValue(),
+                                    new CCMSTransactionLookup(existingTransaction.getTransactionId()));
+                            log.info("Received response from CCMS when requesting to fetch transaction payload: {}", response);
 
-                        if (ccmsTransactionOptional.isPresent()) {
-                            // Make the actual request
-                            try {
-                                JsonNode response = ccmsApiClient.sendRequest(APP_SUBMISSION_ENDPOINT.getValue(),
-                                        ccmsTransactionOptional.get());
-                                log.info("Received response from CCMS when sending transaction payload: {}", response);
+                            JsonNode files = response.hasNonNull("files") ? response.get("files") : null;
 
-                                // parse to get the files
-                                List<String> filesIds = Collections.emptyList();
-//                                    response.hasNonNull("workItemId") ? response.get("workItemId").asText() : null;
+                            List<String> fileIds = new ArrayList<>();
 
-                                List<UserFileTransaction> unconfirmedUserFiles =
-                                        userFileTransactionRepository.findIncompleteStatusByTransaction(
-                                                existingTransaction.getTransactionId());
-
-                                unconfirmedUserFiles.forEach(userFileTransaction -> {
-                                    if (filesIds.contains(userFileTransaction.getTransactionFileId())) {
-                                        userFileTransaction.setTransactionStatus(TransactionStatus.COMPLETED);
-                                        userFileTransaction.setTransaction(existingTransaction);
-                                        userFileTransactionRepository.save(userFileTransaction);
+                            if (files != null && files.isArray()) {
+                                for (JsonNode fileNode : files) {
+                                    if (fileNode.hasNonNull("id")) {
+                                        fileIds.add(fileNode.get("id").asText());
                                     }
-                                });
-
-                                List<UserFileTransaction> failedUserFiles =
-                                        userFileTransactionRepository.findByTransactionIdAndTransactionStatus(
-                                                existingTransaction.getTransactionId(), TransactionStatus.REQUESTED);
-
-                                unconfirmedUserFiles.forEach(userFileTransaction -> {
-                                    if (filesIds.contains(userFileTransaction.getTransactionFileId())) {
-                                        userFileTransaction.setTransactionStatus(TransactionStatus.FAILED);
-                                        userFileTransaction.setTransaction(existingTransaction);
-                                        userFileTransactionRepository.save(userFileTransaction);
-                                    }
-                                });
-
-                                log.info("All providers responded: {}. {} sent to CCMS with transaction {}",
-                                        SubmissionUtilities.haveAllProvidersResponded(submission), submissionId,
-                                        existingTransaction.getTransactionId());
-
-
-                            } catch (IOException e) {
-                                log.error("There was an error when attempting to send submission {} to CCMS",
-                                        submissionId, e);
-                                throw e;
-
+                                }
                             }
-                        } else {
-                            log.error("Could not create CCMS payload for submission : {}", submission.getId());
-                            throw new RuntimeException("Could not create CCMS payload for submission " + submission.getId());
-                        }
 
+                            List<UserFileTransaction> unconfirmedUserFiles =
+                                    userFileTransactionRepository.findByTransactionIdAndTransactionStatus(
+                                            existingTransaction.getTransactionId(), TransactionStatus.REQUESTED);
+
+                            unconfirmedUserFiles.forEach(userFileTransaction -> {
+                                if (fileIds.contains(userFileTransaction.getTransactionFileId())) {
+                                    updateUserFilesTransactionStatus(userFileTransaction, existingTransaction,
+                                            TransactionStatus.COMPLETED);
+                                } else {
+                                    updateUserFilesTransactionStatus(userFileTransaction, existingTransaction,
+                                            TransactionStatus.FAILED);
+                                }
+                            });
+                        } catch (IOException e) {
+                            log.error("There was an error when attempting to send submission {} to CCMS",
+                                    submissionId, e);
+                            throw e;
+
+                        }
                     }
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt(); // restore interrupt flag
@@ -161,38 +143,41 @@ public class CCMSSubmissionFetchTransactionJob {
                         concurrencyLimiter.release();
                     }
                 }
-
             } else {
-                throw new RuntimeException("Could not find submission with ID: " + submissionId);
+                log.info(
+                        "Skipping CCMS transaction because CCMS is currently offline. Requeuing CCMS Payload Transaction job "
+                                + "for transaction {}. CCMS integration enabled {}",
+                        transactionId, isCCMSIntegrationEnabled());
+                enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(transactionId);
             }
-        } else {
-            log.info(
-                    "Skipping CCMS transaction because CCMS is currently offline. Requeuing CCMS Payload Transaction job for {}. CCMS integration enabled {}",
-                    submissionId, isCCMSIntegrationEnabled());
-            enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(submissionId);
         }
-
-
     }
 
-    public void enqueueCCMSTransactionPayloadWithDelay(@NotNull UUID submissionId) {
-        scheduleJob(submissionId, jobSchedulingService.getJobScheduleWithDelay());
+    public void enqueueCCMSTransactionPayloadWithDelay(@NotNull UUID transactionId) {
+        scheduleJob(transactionId, jobSchedulingService.getJobScheduleWithDelay());
     }
 
-    public void enqueueCCMSTransactionPayloadWithSecondsOffset(@NotNull UUID submissionId, int offsetDelaySeconds) {
-        scheduleJob(submissionId, jobSchedulingService.getJobSecheduleWithSecondsOffset(offsetDelaySeconds));
+    public void enqueueCCMSTransactionPayloadWithSecondsOffset(@NotNull UUID transactionId, int offsetDelaySeconds) {
+        scheduleJob(transactionId, jobSchedulingService.getJobSecheduleWithSecondsOffset(offsetDelaySeconds));
     }
 
-    public void enqueueCCMSTransactionPayloadInstantly(@NotNull UUID submissionId) {
-        scheduleJob(submissionId, jobSchedulingService.getJobScheduleInstantly());
+    public void enqueueCCMSTransactionPayloadInstantly(@NotNull UUID transactionId) {
+        scheduleJob(transactionId, jobSchedulingService.getJobScheduleInstantly());
     }
 
-    private void enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(@NotNull UUID submissionId) {
-        scheduleJob(submissionId, jobSchedulingService.getJobScheduleWhileOffline());
+    private void enqueueSubmissionCCMSPayloadTransactionJobWhileOffline(@NotNull UUID transactionId) {
+        scheduleJob(transactionId, jobSchedulingService.getJobScheduleWhileOffline());
     }
 
     private boolean isCCMSIntegrationEnabled() {
         return ccmsApiClient.getConfiguration().isCCMSIntegrationEnabled();
+    }
+
+    private void updateUserFilesTransactionStatus(UserFileTransaction userFileTransaction,
+            Transaction currentTransaction, TransactionStatus transactionStatus) {
+        userFileTransaction.setTransactionStatus(transactionStatus);
+        userFileTransaction.setTransaction(currentTransaction);
+        userFileTransactionRepository.save(userFileTransaction);
     }
 
 }
