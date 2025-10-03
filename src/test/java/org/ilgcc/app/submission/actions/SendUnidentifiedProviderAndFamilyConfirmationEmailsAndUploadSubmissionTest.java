@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.ilgcc.app.data.SubmissionSenderService;
 import org.ilgcc.app.email.SendProviderDidNotRespondToFamilyEmail;
+import org.ilgcc.app.email.SendProviderNotIdentifiedFamilyEmail;
 import org.ilgcc.app.email.SendUnidentifiedProviderConfirmationEmail;
 import org.ilgcc.app.utils.SubmissionTestBuilder;
 import org.ilgcc.app.utils.enums.SubmissionStatus;
@@ -37,7 +38,7 @@ class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmissionTest
   SubmissionSenderService submissionSenderService;
 
   @MockitoSpyBean
-  SendProviderDidNotRespondToFamilyEmail sendProviderDidNotRespondToFamilyEmail;
+  SendProviderNotIdentifiedFamilyEmail sendProviderNotIdentifiedFamilyEmail;
 
   @MockitoSpyBean
   SendUnidentifiedProviderConfirmationEmail sendUnidentifiedProviderConfirmationEmail;
@@ -84,9 +85,9 @@ class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmissionTest
         .build();
     submissionRepositoryService.save(providerSubmission);
 
-    sendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission = new SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission(submissionSenderService, sendProviderDidNotRespondToFamilyEmail,sendUnidentifiedProviderConfirmationEmail, submissionRepositoryService);
+    sendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission = new SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission(submissionSenderService, sendProviderNotIdentifiedFamilyEmail,sendUnidentifiedProviderConfirmationEmail, submissionRepositoryService);
     sendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission.run(providerSubmission);
-    verify(submissionSenderService).sendProviderSubmissionInstantly(providerSubmission, Optional.of(sendProviderDidNotRespondToFamilyEmail));
+    verify(submissionSenderService).sendProviderSubmissionInstantly(providerSubmission, Optional.of(sendProviderNotIdentifiedFamilyEmail));
     verify(sendUnidentifiedProviderConfirmationEmail).send(providerSubmission);
   }
 
@@ -100,7 +101,7 @@ class SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmissionTest
         .build();
     submissionRepositoryService.save(providerSubmission);
 
-    sendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission = new SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission(submissionSenderService, sendProviderDidNotRespondToFamilyEmail, sendUnidentifiedProviderConfirmationEmail, submissionRepositoryService);
+    sendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission = new SendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission(submissionSenderService, sendProviderNotIdentifiedFamilyEmail, sendUnidentifiedProviderConfirmationEmail, submissionRepositoryService);
     sendUnidentifiedProviderAndFamilyConfirmationEmailsAndUploadSubmission.run(providerSubmission);
     verifyNoInteractions(submissionSenderService);
     verifyNoInteractions(sendUnidentifiedProviderConfirmationEmail);
