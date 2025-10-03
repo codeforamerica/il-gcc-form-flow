@@ -1,2 +1,4 @@
 User-Agent: *
 Disallow: /
+Allow: /sitemap.xml
+Sitemap: https://getchildcareil.org/sitemap.xml
