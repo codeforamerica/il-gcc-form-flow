@@ -109,6 +109,7 @@ public class ILGCCEmail implements Serializable {
         UNIDENTIFIED_PROVIDER_CONFIRMATION_EMAIL("Unidentified Provider Confirmation Email"),
         PROVIDER_DECLINES_CARE_FAMILY_EMAIL("Provider Declines Care Family Email"),
         PROVIDER_DID_NOT_RESPOND_FAMILY_EMAIL("Provider Did Not Respond Family Email"),
+        PROVIDER_NOT_IDENTIFIED_FAMILY_EMAIL("Provider Not Identified Family Email"),
         NEW_PROVIDER_AGREES_TO_CARE_FAMILY_EMAIL("New Provider Agrees to Care Family Email"),
         AUTOMATED_PROVIDER_OUTREACH_EMAIL("Automated Provider Outreach Email"),
         FAMILY_APPLICATION_TRANSMITTED_PROVIDER_CONFIRMATION_EMAIL("Family Application Transmitted Email to Provider"),
