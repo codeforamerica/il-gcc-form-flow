@@ -201,10 +201,7 @@ public class CCMSTransactionPayloadServiceTest {
     
     @Test
     void shouldIncludeFileIdInCCMSTransactionWhenV2FlagIsSet() {
-        Optional<CCMSTransaction> ccmsTransactionOptional = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(familySubmission, true);
-        assertThat(ccmsTransactionOptional.isPresent()).isTrue();
-
-        CCMSTransaction ccmsTransaction = ccmsTransactionOptional.get();
+        CCMSTransaction ccmsTransaction = ccmsTransactionPayloadService.generateSubmissionTransactionPayload(familySubmission, true);
         
         assertThat(ccmsTransaction).isNotNull();
         assertThat(ccmsTransaction.getFiles().size()).isEqualTo(5);
