@@ -6,14 +6,13 @@ import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.
 import static org.ilgcc.app.data.importer.FakeResourceOrganizationAndCountyData.PROJECT_CHILD_TEST_DATA;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.ilgcc.app.utils.AbstractBasePageTest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.springframework.test.context.TestPropertySource;
 
-@Disabled
 public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
 
     String TEST_FILLED_PDF_PATH = "src/test/resources/output/test_filled_ccap_NO_PROVIDER.pdf";
@@ -25,7 +24,6 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         // Home page
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("index.title"));
         testPage.clickButton(getEnMessage("index.apply-now"));
-
         // onboarding-getting-started
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-getting-started.title"));
         testPage.clickContinue();
@@ -33,25 +31,16 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-2-part.title"));
         assertThat(testPage.getHeader()).isEqualTo(getEnMessage("onboarding-2-part.header"));
         testPage.clickContinue();
-        //onboarding-language-preference
+        // onboarding-language-pref
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-language-pref.title"));
         testPage.selectFromDropdown("languageRead", "English");
         testPage.selectFromDropdown("languageSpeak", "Español");
         testPage.clickContinue();
 
-        // onboarding-chosen-provider
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-chosen-provider.title"));
-        testPage.clickNo();
-
-        // onboarding-no-provider-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("onboarding-no-provider-intro.title"));
-        testPage.clickButton(getEnMessage("onboarding-no-provider-intro.continue"));
-
         // parent-info-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-intro.title"));
-        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 5");
+        assertThat(testPage.findElementTextById("parent-info-intro-step")).isEqualTo("Step 1 of 7");
         testPage.clickContinue();
-
         // parent-info-basic-1
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-info-basic-1.title"));
         testPage.enter("parentFirstName", "parent first");
@@ -114,91 +103,9 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("parent-other-family.title"));
         testPage.clickNo();
 
-        // children-info-intro
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-single.title"));
-        assertThat(testPage.findElementTextById("children-info-intro-single-step")).isEqualTo("Step 2 of 5");
-        testPage.clickContinue();
-
-        // children-add
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
-        testPage.clickButton(getEnMessage("children-add.add-button"));
-
-        // children-info-basic
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-basic.title"));
-        testPage.enter("childFirstName", "mugully");
-        testPage.enter("childLastName", "glopklin");
-        testPage.enter("childDateOfBirthMonth", "1");
-        testPage.enter("childDateOfBirthDay", "1");
-        testPage.enter("childDateOfBirthYear", "2022");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.child"));
-        testPage.clickContinue();
-
-        // children-info-assistance
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
-        testPage.clickNo();
-        testPage.clickButton(getEnMessage("children-add.add-button"));
-        testPage.enter("childFirstName", "child");
-        testPage.enter("childLastName", "mcchild");
-        testPage.enter("childDateOfBirthMonth", "12");
-        testPage.enter("childDateOfBirthDay", "25");
-        testPage.enter("childDateOfBirthYear", "2018");
-        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.foster-child"));
-        testPage.clickContinue();
-
-        // children-info-assistance
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
-        testPage.clickYes();
-
-        // children-ccap-info
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
-        testPage.clickElementById("childGender-MALE");
-        testPage.clickElementById("childGender-TRANSGENDER");
-        testPage.selectRadio("childHasDisability", "No");
-        testPage.selectRadio("childIsUsCitizen", "Yes");
-        testPage.clickElementById("none__checkbox-childRaceEthnicity");
-        testPage.clickContinue();
-
-        //children-ccap-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-weekly-schedule.title"));
-        testPage.clickElementById("childcareWeeklySchedule-Thursday");
-        testPage.clickElementById("childcareWeeklySchedule-Friday");
-        testPage.clickContinue();
-
-        //children-childcare-hourly-schedule
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-childcare-hourly-schedule.title"));
-        testPage.selectFromDropdown("childcareStartTimeThursdayHour", "10");
-        testPage.enter("childcareStartTimeThursdayMinute", "00");
-        testPage.selectFromDropdown("childcareStartTimeThursdayAmPm", "AM");
-
-        testPage.selectFromDropdown("childcareEndTimeThursdayHour", "1");
-        testPage.enter("childcareEndTimeThursdayMinute", "00");
-        testPage.selectFromDropdown("childcareEndTimeThursdayAmPm", "PM");
-
-        testPage.selectFromDropdown("childcareStartTimeFridayHour", "9");
-        testPage.enter("childcareStartTimeFridayMinute", "00");
-        testPage.selectFromDropdown("childcareStartTimeFridayAmPm", "AM");
-
-        testPage.selectFromDropdown("childcareEndTimeFridayHour", "12");
-        testPage.enter("childcareEndTimeFridayMinute", "00");
-        testPage.selectFromDropdown("childcareEndTimeFridayAmPm", "PM");
-
-        testPage.clickContinue();
-
-        //children-ccap-child-other-ed
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
-        testPage.clickYes();
-
-        //children-school-weekly-schedule
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-school-weekly-schedule.title"));
-        testPage.clickContinue();
-
-        //children-add (with children listed)
-        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
-        testPage.clickButton(getEnMessage("children-add.thats-all"));
-
         //activities-parent-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-parent-intro.title"));
-        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 3 of 5");
+        assertThat(testPage.findElementTextById("activities-parent-intro-step")).isEqualTo("Step 2 of 7");
         testPage.clickContinue();
 
         //activities-parent-type
@@ -295,9 +202,127 @@ public class GccNoProviderFlowJourneyTest extends AbstractBasePageTest {
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("activities-add-jobs.title"));
         testPage.clickButton(getEnMessage("activities-add-jobs.this-is-all-my-jobs"));
 
+        // children-info-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-intro-multiple.title"));
+        assertThat(testPage.findElementTextById("children-info-intro-multiple-step")).isEqualTo("Step 3 of 7");
+        testPage.clickContinue();
+
+        // children-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+        testPage.clickButton(getEnMessage("children-add.add-button"));
+
+        // children-info-basic
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-basic.title"));
+        testPage.enter("childFirstName", "mugully");
+        testPage.enter("childLastName", "glopklin");
+        testPage.enter("childDateOfBirthMonth", "1");
+        testPage.enter("childDateOfBirthDay", "1");
+        testPage.enter("childDateOfBirthYear", "2022");
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.child"));
+        testPage.clickContinue();
+
+        // children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickNo();
+
+        //children-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+
+        //children-info-basic
+        testPage.clickButton(getEnMessage("children-add.add-button"));
+        testPage.enter("childFirstName", "child");
+        testPage.enter("childLastName", "mcchild");
+        testPage.enter("childDateOfBirthMonth", "12");
+        testPage.enter("childDateOfBirthDay", "25");
+        testPage.enter("childDateOfBirthYear", "2018");
+        testPage.selectFromDropdown("childRelationship", getEnMessage("general.relationship-option.foster-child"));
+        testPage.clickContinue();
+
+        // children-info-assistance
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-info-assistance.title"));
+        testPage.clickYes();
+
+        // children-ccap-info
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-info.title"));
+        testPage.clickElementById("childGender-MALE");
+        testPage.clickElementById("childGender-TRANSGENDER");
+        testPage.selectRadio("childHasDisability", "No");
+        testPage.selectRadio("childIsUsCitizen", "Yes");
+        testPage.clickElementById("none__checkbox-childRaceEthnicity");
+        testPage.clickContinue();
+
+        //children-ccap-child-other-ed
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-ccap-child-other-ed.title"));
+        testPage.clickYes();
+
+        // children-school-weekly-schedule
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-school-weekly-schedule.title"));
+        testPage.enter("childOtherEdHoursDescription", "M-F (8am - 5pm)");
+        testPage.clickContinue();
+
+        //children-add
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("children-add.title"));
+        testPage.clickButton(getEnMessage("children-add.thats-all"));
+
+        //providers-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-intro.title"));
+        assertThat(testPage.findElementTextById("providers-intro-step")).isEqualTo("Step 4 of 7");
+        testPage.clickContinue();
+
+        //providers-chosen
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-chosen.title"));
+        testPage.clickNo();
+
+        // providers-no-provider-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("providers-no-provider-intro.title"));
+        testPage.clickContinue();
+
+        //schedules-intro
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-intro-multiple.title"));
+        assertThat(testPage.findElementTextById("schedules-intro-single-step")).isEqualTo("Step 5 of 7");
+
+        testPage.clickContinue();
+
+        //schedules-start
+        List<Map<String, Object>> providers = (List<Map<String, Object>>) getSessionSubmission().getInputData().get("providers");
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickContinue();
+
+        //schedules-start-date
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-start-date.title"));
+        testPage.enter("ccapStartMonth", "12");
+        testPage.enter("ccapStartDay", "15");
+        testPage.enter("ccapStartYear", "2024");
+
+        testPage.clickContinue();
+
+        //schedules-days
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-days.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.clickElementById("childcareWeeklySchedule-Tuesday");
+        testPage.clickContinue();
+
+        //schedules-hours
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-hours.title"));
+        assertThat(testPage.getHeader()).containsIgnoringCase("Child");
+        testPage.selectFromDropdown("childcareStartTimeTuesdayHour", "10");
+        testPage.enter("childcareStartTimeTuesdayMinute", "14");
+        testPage.selectFromDropdown("childcareStartTimeTuesdayAmPm", "AM");
+
+        testPage.selectFromDropdown("childcareEndTimeTuesdayHour", "1");
+        testPage.enter("childcareEndTimeTuesdayMinute", "45");
+        testPage.selectFromDropdown("childcareEndTimeTuesdayAmPm", "PM");
+
+        testPage.clickContinue();
+
+        // schedules-review
+        assertThat(testPage.getTitle()).isEqualTo(getEnMessage("schedules-review.title"));
+        testPage.clickContinue();
+
         //unearned-income-intro
         assertThat(testPage.getTitle()).isEqualTo(getEnMessage("unearned-income-intro.title"));
-        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 4 of 5");
+        assertThat(testPage.findElementTextById("unearned-income-intro-step")).isEqualTo("Step 6 of 7");
         testPage.clickContinue();
 
         //unearned-income-source

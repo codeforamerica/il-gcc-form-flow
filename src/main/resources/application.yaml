@@ -142,7 +142,7 @@ il-gcc:
   resource-org-emails: ${RESOURCE_ORG_EMAILS:null}
   resource-org-emails-delay-seconds: ${RESOURCE_ORG_EMAILS_DELAY:15}
   no-provider-response-delay-seconds: ${NO_PROVIDER_RESPONSE_DELAY:5}
-  enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:false}
+  enable-multiple-providers: ${ENABLE_MULTIPLE_PROVIDERS:true}
   ccms-api:
     integration-enabled: ${ENABLE_CCMS_INTEGRATION:true}
     api-subscription-key: ${OCP_APIM_SUBSCRIPTION_KEY}

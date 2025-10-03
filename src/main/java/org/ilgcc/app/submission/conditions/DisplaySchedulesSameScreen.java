@@ -12,7 +12,7 @@ import org.ilgcc.app.utils.SubmissionUtilities;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DisplaySchedulesSameScreen extends EnableMultipleProviders implements Condition {
+public class DisplaySchedulesSameScreen implements Condition {
 
     @Override
     public Boolean run(Submission submission, String subflowUuid, String repeatForIterationUuid) {
@@ -23,19 +23,24 @@ public class DisplaySchedulesSameScreen extends EnableMultipleProviders implemen
         if (childcareSchedules.size() >= 2) {
             Map<String, Object> currentChildcareSchedule = submission.getSubflowEntryByUuid("childcareSchedules", subflowUuid);
 
-            Map<String, Object> currentProviderSchedule = relatedSubflowIterationData(currentChildcareSchedule, "providerSchedules",
-        repeatForIterationUuid);
+            Map<String, Object> currentProviderSchedule = relatedSubflowIterationData(currentChildcareSchedule,
+                    "providerSchedules",
+                    repeatForIterationUuid);
             String currentProviderUuidOrNoProvider = (String) currentProviderSchedule.get("repeatForValue");
-            List<Map<String, Object>> childcareSchedulesWithTheSameProvider = SubmissionUtilities.getRemainingChildcareSchedulesWithTheSameProvider(childcareSchedules, currentProviderUuidOrNoProvider, currentChildcareSchedule);
-            return super.run(submission) && (!childcareSchedulesWithTheSameProvider.isEmpty() &&
-               hasOnlyOneProviderScheduleForTheSameProvider(childcareSchedulesWithTheSameProvider, currentProviderUuidOrNoProvider));
+            List<Map<String, Object>> childcareSchedulesWithTheSameProvider = SubmissionUtilities.getRemainingChildcareSchedulesWithTheSameProvider(
+                    childcareSchedules, currentProviderUuidOrNoProvider, currentChildcareSchedule);
+            return (!childcareSchedulesWithTheSameProvider.isEmpty() &&
+                    hasOnlyOneProviderScheduleForTheSameProvider(childcareSchedulesWithTheSameProvider,
+                            currentProviderUuidOrNoProvider));
         }
         return false;
     }
 
-    private static boolean hasOnlyOneProviderScheduleForTheSameProvider(List<Map<String, Object>> childcareSchedulesWithSameProvider, String currentProviderUuidOrNoProvider){
+    private static boolean hasOnlyOneProviderScheduleForTheSameProvider(
+            List<Map<String, Object>> childcareSchedulesWithSameProvider, String currentProviderUuidOrNoProvider) {
         return childcareSchedulesWithSameProvider.stream().noneMatch(childcareSchedule -> {
-            Map<String, Object> providerSchedule = SubmissionUtilities.getProviderScheduleByRepeatForValue(childcareSchedule, currentProviderUuidOrNoProvider);
+            Map<String, Object> providerSchedule = SubmissionUtilities.getProviderScheduleByRepeatForValue(childcareSchedule,
+                    currentProviderUuidOrNoProvider);
             if (providerSchedule == null) {
                 return true;
             } else {

@@ -12,10 +12,8 @@ import java.util.Map;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class GccAddressJourneyTest extends AbstractBasePageTest {
 
     private final static String STREET_ADDRESS_LINE_1 = "110 E Sycamore St";

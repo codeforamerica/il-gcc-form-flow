@@ -11,11 +11,8 @@
                 <main id="content" role="main" class="form-card spacing-above-35">
                     <div class="text--centered">
                         <th:block th:replace="${iconFragment}"></th:block>
-                        <th:block
-                                th:with="stepCount=${@environment.getProperty('il-gcc.enable-multiple-providers') == 'true' ? '7' : '5'}">
                             <p class="text--grey-dark" th:id="${textPrefix+'-step'}"
                                th:text="${#messages.msg('general.step-header', currentStep , stepCount)}"></p>
-                        </th:block>
                         <th:block
                                 th:replace="~{fragments/cardHeader :: cardHeader(header=${#messages.msg(textPrefix+'.title')})}"/>
                     </div>

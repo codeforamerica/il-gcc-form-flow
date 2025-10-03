@@ -2,16 +2,11 @@ package org.ilgcc.app.journeys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class SignatureJourneyTest extends AbstractBasePageTest {
-    Map<String, List<String>> childcareScheduleIDs = new HashMap<>();
 
     @Test
     void signatureForPartnerExistsIfEligible() {

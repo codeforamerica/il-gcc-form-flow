@@ -10,14 +10,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HasProviderForOneChild implements Condition {
-    private final boolean enableMultipleProviders;
-
-    public HasProviderForOneChild(@Value("${il-gcc.enable-multiple-providers}") boolean enableMultipleProviders) {
-        this.enableMultipleProviders = enableMultipleProviders;
-    }
     @Override
     public Boolean run(Submission submission) {
         boolean oneChildNeedsChildcareAssistance = getChildrenNeedingAssistance(submission.getInputData()).size() == 1;
-        return enableMultipleProviders && hasChosenProvider(submission) && oneChildNeedsChildcareAssistance;
+        return hasChosenProvider(submission) && oneChildNeedsChildcareAssistance;
     }
 }

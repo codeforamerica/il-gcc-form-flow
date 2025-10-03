@@ -41,9 +41,10 @@ public class ValidateFEIN implements Action {
         } else {
             if (!fein.matches(FEIN_REGEX)) {
                 errorMessages.put(FEIN, List.of(messageSource.getMessage("provider-id-fein.error-invalid-format", null, locale)));
-            } else if (!providerRepositoryService.isFEINValid(fein)) {
-                errorMessages.put(FEIN, List.of(messageSource.getMessage("provider-id-fein.error-valid-fein-not-found", null, locale)));
             }
+//            else if (!providerRepositoryService.isFEINValid(fein)) {
+//                errorMessages.put(FEIN, List.of(messageSource.getMessage("provider-id-fein.error-valid-fein-not-found", null, locale)));
+//            }
         }
         return errorMessages;
     }

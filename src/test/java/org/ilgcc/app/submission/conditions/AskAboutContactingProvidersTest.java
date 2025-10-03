@@ -12,7 +12,7 @@ class AskAboutContactingProvidersTest {
   void returnsFalseWhenHasChoseProviderIsFalse() {
     boolean mockEnableMultipleProviders = true;
     Submission submission = new SubmissionTestBuilder().with("hasChosenProvider", "false").build();
-    AskAboutContactingProviders condition = new AskAboutContactingProviders(true);
+    AskAboutContactingProviders condition = new AskAboutContactingProviders();
 
     assertFalse(condition.run(submission));
   }
@@ -20,7 +20,7 @@ class AskAboutContactingProvidersTest {
   @Test
   void returnFalseWhenHasChoseProviderIsTrue() {
     Submission submission = new SubmissionTestBuilder().with("hasChosenProvider", "true").build();
-    AskAboutContactingProviders condition = new AskAboutContactingProviders(true);
+    AskAboutContactingProviders condition = new AskAboutContactingProviders();
     assertTrue(condition.run(submission));
   }
 }

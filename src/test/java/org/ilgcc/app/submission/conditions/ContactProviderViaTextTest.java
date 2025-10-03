@@ -47,13 +47,13 @@ class ContactProviderViaTextTest {
     
     @Test
     void returnsTrueWhenUserSelectedText() {
-        contactProviderViaText = new ContactProviderViaText(true);
+        contactProviderViaText = new ContactProviderViaText();
         assertThat(contactProviderViaText.run(testSubmission)).isTrue();
     }
 
     @Test
     void returnsFalseWhenUserDidNotSelectText() {
-        contactProviderViaText = new ContactProviderViaText(true);
+        contactProviderViaText = new ContactProviderViaText();
         testSubmission.getInputData().put("contactProviderMethod[]", List.of("EMAIL", "OTHER"));
         assertThat(contactProviderViaText.run(testSubmission)).isFalse();
     }

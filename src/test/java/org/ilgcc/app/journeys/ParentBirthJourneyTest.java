@@ -2,11 +2,9 @@ package org.ilgcc.app.journeys;
 
 import org.ilgcc.app.utils.AbstractBasePageTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@TestPropertySource(properties = {"il-gcc.enable-multiple-providers=true"})
 public class ParentBirthJourneyTest extends AbstractBasePageTest {
 
   @Test

@@ -10,7 +10,7 @@ class HouseholdHasAtLeastOneChildWithoutAProviderTest {
   @Test
   void shouldReturnFalseWhenChoseProviderForEveryChildInNeedOfCareIsTrue() {
     Submission submission = new SubmissionTestBuilder().with("choseProviderForEveryChildInNeedOfCare", "true").build();
-    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider(true);
+    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider();
 
     assertFalse(condition.run(submission));
   }
@@ -19,7 +19,7 @@ class HouseholdHasAtLeastOneChildWithoutAProviderTest {
   @Test
   void shouldReturnFalseChoseProviderForEveryChildInNeedOfCareIsFalse() {
     Submission submission = new SubmissionTestBuilder().with("choseProviderForEveryChildInNeedOfCare", "false").build();
-    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider(true);
+    HouseholdHasAtLeastOneChildWithoutAProvider condition = new HouseholdHasAtLeastOneChildWithoutAProvider();
     assertTrue(condition.run(submission));
   }
 }
