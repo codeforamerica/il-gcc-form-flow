@@ -1,6 +1,5 @@
 package org.ilgcc.app.data;
 
-
 import static org.ilgcc.app.utils.SubmissionUtilities.haveAllProvidersResponded;
 import static org.ilgcc.app.utils.SubmissionUtilities.isPreMultiProviderApplicationWithSingleProvider;
 import static org.ilgcc.app.utils.SubmissionUtilities.setCurrentProviderResponseInFamilyApplication;
@@ -63,9 +62,8 @@ public class SubmissionSenderService {
                     familySubmission.getInputData().put("providerApplicationResponseStatus", SubmissionStatus.RESPONDED.name());
                 }
 
-                String currentProviderUuid = (String) providerSubmission.getInputData().getOrDefault("currentProviderUuid", "");
                 submissionRepositoryService.save(familySubmission);
-                sendFamilyEmail.ifPresent(email -> email.send(familySubmission, "providers", currentProviderUuid));
+                sendFamilyEmail.ifPresent(email -> email.send(familySubmission));
 
 
                 if (haveAllProvidersResponded(familySubmission)) {
