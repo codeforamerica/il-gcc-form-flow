@@ -30,3 +30,8 @@ jobrunr:
 il-gcc:
   enable-emails: ${ENABLE_EMAILS_FLAG:false}
   base-url: https://localhost:8080
+  esri-address-api:
+    token-base-url: ${TOKEN_BASE_URL}
+    address-locator-url: ${ADDRESS_LOCATOR_BASE_URL}
+    username: ${ESRI_USERNAME}
+    password: ${ESRI_PASSWORD}
