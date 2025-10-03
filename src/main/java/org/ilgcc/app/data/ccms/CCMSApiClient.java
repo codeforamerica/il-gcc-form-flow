@@ -71,7 +71,7 @@ public class CCMSApiClient {
         return objectMapper.readTree(response);
     }
 
-    public JsonNode sendRequest(String endpoint, CCMSTransactionLookup requestBody) throws JsonProcessingException {
+    public JsonNode fetchRequest(String endpoint, CCMSTransactionLookup requestBody) throws JsonProcessingException {
         String response = client.post()
                 .uri(endpoint)
                 .headers(headers -> headers.addAll(createRequestHeaders()))
@@ -93,6 +93,12 @@ public class CCMSApiClient {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(CORRELATION_ID.getValue(), String.valueOf(UUID.randomUUID()));
+        headers.set(OCP_APIM_SUBSCRIPTION_KEY.getValue(), configuration.getApiSubscriptionKey());
+        return headers;
+    }
+
+    private HttpHeaders createFetchHeaders() {
+        HttpHeaders headers = new HttpHeaders();
         headers.set(OCP_APIM_SUBSCRIPTION_KEY.getValue(), configuration.getApiSubscriptionKey());
         return headers;
     }
