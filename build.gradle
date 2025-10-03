@@ -80,7 +80,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.6'
     testImplementation 'org.springframework.security:spring-security-test:6.5.5'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.35.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.36.0'
     testImplementation 'org.jsoup:jsoup:1.21.2'
     testImplementation 'org.awaitility:awaitility:4.3.0'
     testImplementation 'io.github.bonigarcia:webdrivermanager:6.3.2'
