@@ -192,7 +192,7 @@ public class MultiProviderPDFService {
                             new SingleField("receivedTimestamp", formattedSubmittedAtDate, null));
                 });
 
-                additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providers.size()),
+                additionalPDFs.put(getCCMSFileNameForAdditionalProviderPDF(familySubmission.getId(), i, providerSchedulesByUuid.size()- 1),
                         getFilledOutPDF("src/main/resources/pdfs/IL-CCAP-Form-Additional-Provider.pdf",
                                 submissionFields.values().stream().toList()));
             }
